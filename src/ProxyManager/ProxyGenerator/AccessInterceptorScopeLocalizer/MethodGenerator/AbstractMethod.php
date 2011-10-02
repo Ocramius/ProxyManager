@@ -30,6 +30,12 @@ use Zend\Code\Generator\MethodGenerator;
  */
 class AbstractMethod extends MethodGenerator
 {
+    /**
+     * Constructor.
+     *
+     * @param ReflectionClass $originalClass
+     * @param string          $name
+     */
     public function __construct(ReflectionClass $originalClass, $name)
     {
         parent::__construct($name);
@@ -38,17 +44,23 @@ class AbstractMethod extends MethodGenerator
         foreach ($method->getParameters() as $param) {
             $this->setParameter($param->getName());
         }
-
-        $this->setBody('');
     }
 
+    /**
+     * Return a collection of abstractMethods objects.
+     *
+     * @param ReflectionClass $originalClass
+     * @param array           $methods
+     *
+     * @return AbstractMethod[]
+     */
     public static function createCollection(ReflectionClass $originalClass, array $methods)
     {
         $methodCollection = array();
         foreach ($methods as $methodName) {
             $methodCollection[] = new self($originalClass, $methodName);
         }
-        
+
         return $methodCollection;
     }
 }
