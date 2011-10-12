@@ -20,8 +20,8 @@ namespace ProxyManager\Generator\Util;
 
 use ReflectionClass;
 use ReflectionMethod;
+use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ClassGenerator as GeneratorClass;
 
 /**
  * Util class to help to generate code
@@ -33,14 +33,14 @@ final class ClassGeneratorUtils
 {
     /**
      * @param ReflectionClass  $originalClass
-     * @param GeneratorClass   $classGenerator
+     * @param ClassGenerator   $classGenerator
      * @param MethodGenerator  $generatedMethod
      *
      * @return void|false
      */
     public static function addMethodIfNotFinal(
         ReflectionClass $originalClass,
-        GeneratorClass $classGenerator,
+        ClassGenerator $classGenerator,
         MethodGenerator $generatedMethod
     ) {
         $methodName = $generatedMethod->getName();
