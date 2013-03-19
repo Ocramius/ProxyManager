@@ -1,0 +1,34 @@
+{
+    "name":              "ocramius/proxy-manager",
+    "description":       "A library providing utilities to generate, instantiate and generally operate with Object Proxies",
+    "type":              "library",
+    "license":           "MIT",
+    "homepage":          "https://github.com/Ocramius/ProxyManager",
+    "minimum-stability": "dev",
+    "tags":        [
+        "proxy",
+        "proxy pattern",
+        "service proxies",
+        "lazy loading",
+        "aop"
+    ],
+    "authors": [
+        {
+            "name":     "Marco Pivetta",
+            "email":    "ocramius@gmail.com",
+            "homepage": "http://ocramius.github.com/"
+        }
+    ],
+    "require": {
+        "zendframework/zend-code": "*",
+        "jms/cg":                  "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=3.7"
+    },
+    "autoload": {
+        "psr-0": {
+            "ProxyManager\\": "src"
+        }
+    }
+}
