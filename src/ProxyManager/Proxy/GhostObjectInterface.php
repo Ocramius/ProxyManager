@@ -19,11 +19,11 @@
 namespace ProxyManager\Proxy;
 
 /**
- * Base proxy marker
+ * Ghost object marker
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ProxyInterface
+interface GhostObjectInterface extends ProxyInterface
 {
 }

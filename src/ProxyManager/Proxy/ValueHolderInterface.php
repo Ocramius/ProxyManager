@@ -19,11 +19,11 @@
 namespace ProxyManager\Proxy;
 
 /**
- * Base proxy marker
+ * Value holder marker
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ProxyInterface
+interface ValueHolderInterface extends ProxyInterface
 {
 }
