@@ -23,6 +23,7 @@ use CG\Generator\PhpProperty;
 use CG\Proxy\GeneratorInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor;
@@ -97,5 +98,7 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
         $generated->setMethod(new GetProxyInitializer($initializer));
         $generated->setMethod(new InitializeProxy($initializer));
         $generated->setMethod(new IsProxyInitialized($valueHolder));
+
+        $generated->setMethod(new GetWrappedValueHolderValue($valueHolder));
     }
 }

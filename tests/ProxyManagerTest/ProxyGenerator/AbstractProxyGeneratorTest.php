@@ -54,7 +54,6 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
         $generatorStrategy = new DefaultGeneratorStrategy();
         $classBody         = $generatorStrategy->generate($generatedClass);
 
-        die($classBody);
         eval($classBody);
 
         $generatedReflectionClass = new ReflectionClass($generatedClassName);
