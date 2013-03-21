@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <phpunit
     bootstrap="./tests/Bootstrap.php"
-    colors="true"
+    colors="false"
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
@@ -20,6 +20,6 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-clover" target="./clover.xml"/>
+        <log type="coverage-clover" target="./build/clover.xml"/>
     </logging>
 </phpunit>
