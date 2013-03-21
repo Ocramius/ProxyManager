@@ -57,6 +57,6 @@ class Autoloader implements AutoloaderInterface
             return false;
         }
 
-        return require_once $file;
+        return (bool) require_once $file;
     }
 }
