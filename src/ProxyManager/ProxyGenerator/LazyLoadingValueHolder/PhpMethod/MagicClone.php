@@ -40,15 +40,15 @@ class MagicClone extends PhpMethod
     ) {
         parent::__construct('__clone');
 
-        $inheritDoc              = $originalClass->hasMethod('__clone') ? "\n * {@inheritDoc}\n * " : '';
-        $initializerPropertyName = $initializerProperty->getName();
-        $valueHolderPropertyName = $valueHolderProperty->getName();
+        $inheritDoc  = $originalClass->hasMethod('__clone') ? "\n * {@inheritDoc}\n * " : '';
+        $initializer = $initializerProperty->getName();
+        $valueHolder = $valueHolderProperty->getName();
 
         $this->setDocblock('/**' . $inheritDoc . "\n */");
         $this->setBody(
-            '$this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
+            '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'__clone\', array());' . "\n\n"
-            . '$this->' . $valueHolderPropertyName . ' = clone $this->' . $valueHolderPropertyName . ';'
+            . '$this->' . $valueHolder . ' = clone $this->' . $valueHolder . ';'
         );
     }
 }

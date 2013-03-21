@@ -54,7 +54,7 @@ class LazyLoadingValueHolderFactory
         $this->configuration = $configuration;
 
         // localizing some properties for performance
-        $this->autoGenerate  = $this->configuration->getAutoGenerateProxies();
+        $this->autoGenerate  = $this->configuration->doesAutoGenerateProxies();
         $this->inflector     = $this->configuration->getClassNameInflector();
     }
 

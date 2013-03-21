@@ -41,13 +41,13 @@ class MagicSet extends PhpMethod
     ) {
         parent::__construct('__set');
 
-        $inheritDoc              = $originalClass->hasMethod('__set') ? "\n * {@inheritDoc}\n * " : '';
-        $initializerPropertyName = $initializerProperty->getName();
+        $inheritDoc  = $originalClass->hasMethod('__set') ? "\n * {@inheritDoc}\n * " : '';
+        $initializer = $initializerProperty->getName();
 
         $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n * @param mixed \$value\n */");
         $this->setParameters(array(new PhpParameter('name'), new PhpParameter('value')));
         $this->setBody(
-            '$this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
+            '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'__set\', array(\'name\' => $name, \'value\' => $value));' . "\n\n"
             . 'return $this->' . $valueHolderProperty->getName() . '->$name = $value;'
         );

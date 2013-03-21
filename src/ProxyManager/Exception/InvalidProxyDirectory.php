@@ -33,7 +33,7 @@ class InvalidProxyDirectory extends InvalidArgumentException implements Exceptio
      *
      * @return self
      */
-    public static function invalidProxyDirectory($directory)
+    public static function proxyDirectoryNotFound($directory)
     {
         return new self(sprintf('Provided directory "%s" does not exist', (string) $directory));
     }

@@ -43,27 +43,27 @@ class LazyLoadingMethodInterceptor extends PhpMethod
         PhpProperty $valueHolderProperty
     ) {
         /* @var $method self */
-        $method                = parent::fromReflection($originalMethod);
-        $initializerName       = $initializerProperty->getName();
+        $method            = parent::fromReflection($originalMethod);
+        $initializerName   = $initializerProperty->getName();
         /* @var $parameters \CG\Generator\PhpParameter[] */
-        $parameters            = $originalMethod->getParameters();
-        $methodName            = $originalMethod->getName();
-        $initializerParameters = array();
-        $forwardedParameters   = array();
+        $parameters        = $originalMethod->getParameters();
+        $methodName        = $originalMethod->getName();
+        $initializerParams = array();
+        $forwardedParams   = array();
 
         foreach ($parameters as $parameter) {
-            $parameterName           = $parameter->getName();
-            $initializerParameters[] = var_export($parameterName, true) . ' => $' . $parameterName;
-            $forwardedParameters[]   = '$' . $parameterName;
+            $parameterName       = $parameter->getName();
+            $initializerParams[] = var_export($parameterName, true) . ' => $' . $parameterName;
+            $forwardedParams[]   = '$' . $parameterName;
         }
 
         $method->setBody(
             '$this->' . $initializerName
             . ' && $this->' . $initializerName
             . '->__invoke($this, ' . var_export($methodName, true)
-            . ', array(' . implode(', ', $initializerParameters) . "));\n\n"
+            . ', array(' . implode(', ', $initializerParams) . "));\n\n"
             . 'return $this->' . $valueHolderProperty->getName() . '->'
-            . $methodName . '(' . implode(', ', $forwardedParameters) . ');'
+            . $methodName . '(' . implode(', ', $forwardedParams) . ');'
         );
         $method->setDocblock("/**\n * {@inheritDoc}\n */\n");
 

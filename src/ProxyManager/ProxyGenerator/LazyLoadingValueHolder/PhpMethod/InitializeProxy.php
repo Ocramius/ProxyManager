@@ -38,9 +38,10 @@ class InitializeProxy extends PhpMethod
         parent::__construct('initializeProxy');
         $this->setDocblock("/**\n * {@inheritDoc}\n */");
 
-        $initializerPropertyName = $initializerProperty->getName();
+        $initializer = $initializerProperty->getName();
+
         $this->setBody(
-            'return $this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
+            'return $this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'initializeProxy\', array());'
         );
     }

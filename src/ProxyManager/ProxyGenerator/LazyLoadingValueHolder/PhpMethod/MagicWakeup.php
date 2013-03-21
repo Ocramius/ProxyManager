@@ -34,11 +34,8 @@ class MagicWakeup extends PhpMethod
     /**
      * Constructor
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PhpProperty $initializerProperty,
-        PhpProperty $valueHolderProperty
-    ) {
+    public function __construct(ReflectionClass $originalClass)
+    {
         parent::__construct('__wakeup');
 
         $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';

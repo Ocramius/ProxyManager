@@ -41,13 +41,13 @@ class MagicIsset extends PhpMethod
     ) {
         parent::__construct('__isset');
 
-        $inheritDoc              = $originalClass->hasMethod('__isset') ? "\n * {@inheritDoc}\n * " : '';
-        $initializerPropertyName = $initializerProperty->getName();
+        $inheritDoc  = $originalClass->hasMethod('__isset') ? "\n * {@inheritDoc}\n * " : '';
+        $initializer = $initializerProperty->getName();
 
         $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n */");
         $this->setParameters(array(new PhpParameter('name')));
         $this->setBody(
-            '$this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
+            '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'__isset\', array(\'name\' => $name));' . "\n\n"
             . 'return isset($this->' . $valueHolderProperty->getName() . '->$name);'
         );

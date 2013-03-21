@@ -99,7 +99,7 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
         $generated->setMethod(new MagicIsset($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicClone($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicSleep($originalClass, $initializer, $valueHolder));
-        $generated->setMethod(new MagicWakeup($originalClass, $initializer, $valueHolder));
+        $generated->setMethod(new MagicWakeup($originalClass));
 
         $generated->setMethod(new SetProxyInitializer($initializer));
         $generated->setMethod(new GetProxyInitializer($initializer));

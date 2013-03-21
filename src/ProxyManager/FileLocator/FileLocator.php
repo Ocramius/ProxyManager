@@ -43,7 +43,7 @@ class FileLocator implements FileLocatorInterface
         $this->proxiesDirectory = realpath($proxiesDirectory);
 
         if (false === $this->proxiesDirectory) {
-            throw InvalidProxyDirectory::invalidProxyDirectory($proxiesDirectory);
+            throw InvalidProxyDirectory::proxyDirectoryNotFound($proxiesDirectory);
         }
     }
 

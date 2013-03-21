@@ -79,7 +79,7 @@ class Configuration
     /**
      * @return bool
      */
-    public function getAutoGenerateProxies()
+    public function doesAutoGenerateProxies()
     {
         return $this->autoGenerateProxies;
     }
