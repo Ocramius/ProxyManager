@@ -43,6 +43,8 @@ class FileWriterGeneratorStrategy extends DefaultGeneratorStrategy
     public function __construct(FileLocatorInterface $fileLocator)
     {
         $this->fileLocator = $fileLocator;
+
+        parent::__construct();
     }
 
     /**

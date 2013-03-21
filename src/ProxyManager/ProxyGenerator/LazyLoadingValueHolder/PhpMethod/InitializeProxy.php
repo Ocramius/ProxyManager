@@ -44,7 +44,7 @@ class InitializeProxy extends PhpMethod
         $initializerPropertyName = $initializerProperty->getName();
         $this->setBody(
             'return $this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
-                . '->__invoke($this, \'initializeProxy\', array(\'name\' => $name));'
+                . '->__invoke($this, \'initializeProxy\', array());'
         );
     }
 }
