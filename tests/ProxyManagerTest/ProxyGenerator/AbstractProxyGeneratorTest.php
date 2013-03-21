@@ -47,7 +47,7 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
         $generator          = $this->getProxyGenerator();
         $generatedClassName = 'AbstractProxyGeneratorTest_' . uniqid();
         $generatedClass     = new PhpClass($generatedClassName);
-        $originalClass      = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $originalClass      = new ReflectionClass('ProxyManagerTestAsset\\BaseClass');
 
         $generator->generate($originalClass, $generatedClass);
 
