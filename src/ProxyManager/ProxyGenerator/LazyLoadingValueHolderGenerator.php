@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator;
 use CG\Generator\PhpClass;
 use CG\Generator\PhpProperty;
 use CG\Proxy\GeneratorInterface;
+
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue;
@@ -34,14 +35,18 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\SetProxyInitializer;
+
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\ValueHolderProperty;
+
 use ReflectionClass;
 use ReflectionMethod;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
  * and {@see \ProxyManager\Proxy\LazyLoadingInterface}
+ *
+ * {@inheritDoc}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
