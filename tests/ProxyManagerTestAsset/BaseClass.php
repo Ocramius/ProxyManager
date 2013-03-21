@@ -60,7 +60,7 @@ class BaseClass
     /**
      * @return string
      */
-    public function privateMethod()
+    private function privateMethod()
     {
         return 'privateMethodDefault';
     }

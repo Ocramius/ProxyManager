@@ -31,6 +31,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\ValueHolderProperty;
 use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
@@ -44,38 +45,16 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
     /**
      * {@inheritDoc}
      */
-    public function generate(ReflectionClass $originalClass, PhpClass $generatedClass)
+    public function generate(ReflectionClass $originalClass, PhpClass $generated)
     {
-        $generatedClass->setParentClassName($originalClass->getName());
+        $generated->setParentClassName($originalClass->getName());
 
-        $generatedClass->setProperty($valueHolderProperty = new ValueHolderProperty());
-        $generatedClass->setProperty($initializerProperty = new InitializerProperty());
+        $generated->setProperty($valueHolder = new ValueHolderProperty());
+        $generated->setProperty($initializer = new InitializerProperty());
 
-        $generatedClass->setMethod(new Constructor($originalClass, $initializerProperty));
+        $generated->setMethod(new Constructor($originalClass, $initializer));
 
-        $interceptors = $this->createMethodInterceptors($originalClass, $initializerProperty, $valueHolderProperty);
-
-        foreach ($interceptors as $generatedMethod) {
-            $generatedClass->setMethod($generatedMethod);
-        }
-
-        $generatedClass->setMethod(new MagicGet($originalClass, $initializerProperty, $valueHolderProperty));
-        $generatedClass->setMethod(new MagicSet($originalClass, $initializerProperty, $valueHolderProperty));
-        $generatedClass->setMethod(new MagicIsset($originalClass, $initializerProperty, $valueHolderProperty));
-        $generatedClass->setMethod(new MagicClone($originalClass, $initializerProperty, $valueHolderProperty));
-        $generatedClass->setMethod(new MagicSleep($originalClass, $initializerProperty, $valueHolderProperty));
-    }
-
-    /**
-     * Create all required method overrides except for php magic
-     */
-    protected function createMethodInterceptors(
-        ReflectionClass $originalClass,
-        PhpProperty $initializerProperty,
-        PhpProperty $valueHolderProperty
-    ) {
-        $generatedMethods = array();
-        $excludedMethods  = array(
+        $excluded = array(
             '__get'    => true,
             '__set'    => true,
             '__isset'  => true,
@@ -84,24 +63,26 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
             '__wakeup' => true,
         );
 
-        foreach ($originalClass->getMethods() as $reflectionMethod) {
-            if (
-                ! $reflectionMethod->isPublic()
-                || $reflectionMethod->isConstructor()
-                || isset($excludedMethods[strtolower($reflectionMethod->getName())])
-                || $reflectionMethod->isFinal()
-                || $reflectionMethod->isStatic()
-            ) {
-                continue;
+        $methods = array_filter(
+            $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
+            function (ReflectionMethod $method) use ($excluded) {
+                return ! (
+                    $method->isConstructor()
+                    || isset($excluded[strtolower($method->getName())])
+                    || $method->isFinal()
+                    || $method->isStatic()
+                );
             }
+        );
 
-            $generatedMethods[] = LazyLoadingMethodInterceptor::fromReflection(
-                $reflectionMethod,
-                $initializerProperty,
-                $valueHolderProperty
-            );
+        foreach ($methods as $method) {
+            $generated->setMethod(LazyLoadingMethodInterceptor::fromReflection($method, $initializer, $valueHolder));
         }
 
-        return $generatedMethods;
+        $generated->setMethod(new MagicGet($originalClass, $initializer, $valueHolder));
+        $generated->setMethod(new MagicSet($originalClass, $initializer, $valueHolder));
+        $generated->setMethod(new MagicIsset($originalClass, $initializer, $valueHolder));
+        $generated->setMethod(new MagicClone($originalClass, $initializer, $valueHolder));
+        $generated->setMethod(new MagicSleep($originalClass, $initializer, $valueHolder));
     }
 }
