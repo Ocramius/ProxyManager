@@ -16,10 +16,9 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\Autoloader;
+namespace ProxyManager\FileLocator;
 
-use CG\Core\NamingStrategyInterface;
-use ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface;
+use ProxyManager\Exception\InvalidProxyDirectory;
 
 /**
  * {@inheritDoc}
@@ -27,36 +26,32 @@ use ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class Autoloader implements AutoloaderInterface
+class FileLocator implements FileLocatorInterface
 {
     /**
-     * @var \ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface
+     * @var string
      */
-    protected $fileLocator;
+    protected $proxiesDirectory;
 
     /**
-     * @param \ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface $fileLocator
+     * @param string $proxiesDirectory
+     *
+     * @throws \ProxyManager\Exception\InvalidProxyDirectory
      */
-    public function __construct(FileLocatorInterface $fileLocator)
+    public function __construct($proxiesDirectory)
     {
-        $this->fileLocator = $fileLocator;
+        $this->proxiesDirectory = realpath($proxiesDirectory);
+
+        if (false === $this->proxiesDirectory) {
+            throw InvalidProxyDirectory::invalidProxyDirectory($proxiesDirectory);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function __invoke($className)
+    public function getProxyFileName($className)
     {
-        if (false === strrpos($className, '\\' . NamingStrategyInterface::SEPARATOR . '\\')) {
-            return false;
-        }
-
-        $file = $this->fileLocator->getProxyFileName($className);
-
-        if ( ! file_exists($file)) {
-            return false;
-        }
-
-        return require_once $file;
+        return $this->proxiesDirectory . DIRECTORY_SEPARATOR . str_replace('\\', '', $className) . '.php';
     }
 }

@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\FileLocator;
+namespace ProxyManager\Autoloader;
 
 /**
  * Basic autoloader utilities required to work with proxy files
@@ -24,14 +24,14 @@ namespace ProxyManager\ProxyGenerator\FileLocator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface FileLocatorInterface
+interface AutoloaderInterface
 {
     /**
-     * Retrieves the file name for the given proxy
+     * Callback to allow the object to be handled as autoloader - tries to autoload the given class name
      *
-     * @param $className
+     * @param  string $className
      *
-     * @return mixed
+     * @return bool
      */
-    public function getProxyFileName($className);
+    public function __invoke($className);
 }

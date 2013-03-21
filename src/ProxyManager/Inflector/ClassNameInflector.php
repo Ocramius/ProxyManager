@@ -16,9 +16,10 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\FileLocator;
+namespace ProxyManager\Inflector;
 
-use ProxyManager\Exception\InvalidProxyDirectory;
+use CG\Core\ClassUtils;
+use CG\Core\NamingStrategyInterface;
 
 /**
  * {@inheritDoc}
@@ -26,32 +27,30 @@ use ProxyManager\Exception\InvalidProxyDirectory;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class FileLocator implements FileLocatorInterface
+class ClassNameInflector implements ClassNameInflectorInterface
 {
-    /**
-     * @var string
-     */
-    protected $proxiesDirectory;
+    protected $proxyNamespace;
 
-    /**
-     * @param string $proxiesDirectory
-     *
-     * @throws \ProxyManager\Exception\InvalidProxyDirectory
-     */
-    public function __construct($proxiesDirectory)
+    public function __construct($proxyNamespace)
     {
-        $this->proxiesDirectory = realpath($proxiesDirectory);
-
-        if (false === $this->proxiesDirectory) {
-            throw InvalidProxyDirectory::invalidProxyDirectory($proxiesDirectory);
-        }
+        $this->proxyNamespace = (string) $proxyNamespace;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getProxyFileName($className)
+    public function getUserClassName($className)
     {
-        return $this->proxiesDirectory . DIRECTORY_SEPARATOR . str_replace('\\', '', $className) . '.php';
+        return ClassUtils::getUserClass($className);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getProxyClassName($className)
+    {
+        return $this->proxyNamespace
+            . '\\' . NamingStrategyInterface::SEPARATOR
+            . '\\' . ClassUtils::getUserClass($className);
     }
 }

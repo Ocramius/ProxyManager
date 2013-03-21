@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\Inflector;
+namespace ProxyManager\Inflector;
 
 /**
  * Interface for a proxy- to user-class and user- to proxy-class name inflector

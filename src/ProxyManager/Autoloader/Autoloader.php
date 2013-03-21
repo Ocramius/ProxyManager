@@ -16,22 +16,47 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\Autoloader;
+namespace ProxyManager\Autoloader;
+
+use CG\Core\NamingStrategyInterface;
+use ProxyManager\FileLocator\FileLocatorInterface;
 
 /**
- * Basic autoloader utilities required to work with proxy files
+ * {@inheritDoc}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface AutoloaderInterface
+class Autoloader implements AutoloaderInterface
 {
     /**
-     * Callback to allow the object to be handled as autoloader - tries to autoload the given class name
-     *
-     * @param  string $className
-     *
-     * @return bool
+     * @var \ProxyManager\FileLocator\FileLocatorInterface
      */
-    public function __invoke($className);
+    protected $fileLocator;
+
+    /**
+     * @param \ProxyManager\FileLocator\FileLocatorInterface $fileLocator
+     */
+    public function __construct(FileLocatorInterface $fileLocator)
+    {
+        $this->fileLocator = $fileLocator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __invoke($className)
+    {
+        if (false === strrpos($className, '\\' . NamingStrategyInterface::SEPARATOR . '\\')) {
+            return false;
+        }
+
+        $file = $this->fileLocator->getProxyFileName($className);
+
+        if ( ! file_exists($file)) {
+            return false;
+        }
+
+        return require_once $file;
+    }
 }

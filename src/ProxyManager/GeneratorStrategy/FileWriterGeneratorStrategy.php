@@ -16,11 +16,11 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\GeneratorStrategy;
+namespace ProxyManager\GeneratorStrategy;
 
 use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
-use ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface;
+use ProxyManager\FileLocator\FileLocatorInterface;
 
 /**
  * Generator strategy that writes the generated classes to disk, and includes them
@@ -33,12 +33,12 @@ use ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface;
 class FileWriterGeneratorStrategy extends DefaultGeneratorStrategy
 {
     /**
-     * @var \ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface
+     * @var \ProxyManager\FileLocator\FileLocatorInterface
      */
     protected $fileLocator;
 
     /**
-     * @param \ProxyManager\ProxyGenerator\FileLocator\FileLocatorInterface $fileLocator
+     * @param \ProxyManager\FileLocator\FileLocatorInterface $fileLocator
      */
     public function __construct(FileLocatorInterface $fileLocator)
     {

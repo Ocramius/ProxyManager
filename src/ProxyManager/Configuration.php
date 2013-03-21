@@ -20,12 +20,13 @@ namespace ProxyManager;
 
 use CG\Core\DefaultNamingStrategy;
 use CG\Core\GeneratorStrategyInterface;
-use ProxyManager\Exception\InvalidAutoloaderException;
-use ProxyManager\ProxyGenerator\Autoloader\Autoloader;
-use ProxyManager\ProxyGenerator\FileLocator\FileLocator;
-use ProxyManager\ProxyGenerator\GeneratorStrategy\FileWriterGeneratorStrategy;
-use ProxyManager\ProxyGenerator\Inflector\ClassNameInflector;
-use ProxyManager\ProxyGenerator\Inflector\ClassNameInflectorInterface;
+
+use ProxyManager\Autoloader\AutoloaderInterface;
+use ProxyManager\Autoloader\Autoloader;
+use ProxyManager\FileLocator\FileLocator;
+use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
+use ProxyManager\Inflector\ClassNameInflector;
 
 /**
  * Base configuration class for the proxy manager - serves as micro disposable DIC/facade
@@ -84,16 +85,10 @@ class Configuration
     }
 
     /**
-     * @param callable $proxyAutoloader
-     *
-     * @throws \ProxyManager\Exception\InvalidAutoloaderException
+     * @param \ProxyManager\Autoloader\AutoloaderInterface $proxyAutoloader
      */
-    public function setProxyAutoloader($proxyAutoloader)
+    public function setProxyAutoloader(AutoloaderInterface $proxyAutoloader)
     {
-        if ( ! is_callable($proxyAutoloader)) {
-            throw InvalidAutoloaderException::invalidProvidedCallback($proxyAutoloader);
-        }
-
         $this->proxyAutoloader = $proxyAutoloader;
     }
 

@@ -16,41 +16,22 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\Inflector;
-
-use CG\Core\ClassUtils;
-use CG\Core\NamingStrategyInterface;
+namespace ProxyManager\FileLocator;
 
 /**
- * {@inheritDoc}
+ * Basic autoloader utilities required to work with proxy files
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassNameInflector implements ClassNameInflectorInterface
+interface FileLocatorInterface
 {
-    protected $proxyNamespace;
-
-    public function __construct($proxyNamespace)
-    {
-        $this->proxyNamespace = (string) $proxyNamespace;
-    }
-
     /**
-     * {@inheritDoc}
+     * Retrieves the file name for the given proxy
+     *
+     * @param $className
+     *
+     * @return mixed
      */
-    public function getUserClassName($className)
-    {
-        return ClassUtils::getUserClass($className);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getProxyClassName($className)
-    {
-        return $this->proxyNamespace
-            . '\\' . NamingStrategyInterface::SEPARATOR
-            . '\\' . ClassUtils::getUserClass($className);
-    }
+    public function getProxyFileName($className);
 }
