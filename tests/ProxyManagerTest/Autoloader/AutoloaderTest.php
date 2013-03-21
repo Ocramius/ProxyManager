@@ -27,10 +27,8 @@ use ProxyManager\Autoloader\Autoloader;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
- *
- * @covers \ProxyManager\Autoloader\Autoloader
  */
-class LazyLoadingValueHolderGeneratorTest extends PHPUnit_Framework_TestCase
+class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \ProxyManager\Autoloader\Autoloader
@@ -43,24 +41,12 @@ class LazyLoadingValueHolderGeneratorTest extends PHPUnit_Framework_TestCase
     protected $fileLocator;
 
     /**
-     * @var string
-     */
-    protected $directory;
-
-    /**
-     * @var string
-     */
-    protected $mockClass;
-
-    /**
      * @covers \ProxyManager\Autoloader\Autoloader::__construct
      */
     public function setUp()
     {
         $this->fileLocator = $this->getMock('ProxyManager\\FileLocator\\FileLocatorInterface');
         $this->autoloader  = new Autoloader($this->fileLocator);
-        $this->directory   = sys_get_temp_dir();
-        $this->mockClass   = '';
     }
 
     /**
@@ -95,7 +81,7 @@ class LazyLoadingValueHolderGeneratorTest extends PHPUnit_Framework_TestCase
     public function testWillAutoloadExistingFile()
     {
         $namespace = 'Foo\\' . NamingStrategyInterface::SEPARATOR;
-        $className = 'Bar';
+        $className = 'Bar' . uniqid();
         $fileName  = sys_get_temp_dir() . '/foo_' . uniqid() . '.php';
 
         file_put_contents($fileName, '<?php namespace ' . $namespace . '; class ' . $className . '{}');

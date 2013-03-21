@@ -26,7 +26,7 @@ use InvalidArgumentException;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class InvalidProxyDirectory extends InvalidArgumentException implements ExceptionInterface
+class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {
     /**
      * @param  string $directory

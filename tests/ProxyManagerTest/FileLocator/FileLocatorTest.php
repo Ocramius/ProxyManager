@@ -16,42 +16,38 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\FileLocator;
+namespace ProxyManagerTest\Autoloader;
 
-use ProxyManager\Exception\InvalidProxyDirectoryException;
+use CG\Core\NamingStrategyInterface;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Autoloader\Autoloader;
+use ProxyManager\FileLocator\FileLocator;
 
 /**
- * {@inheritDoc}
+ * Tests for {@see \ProxyManager\FileLocator\FileLocator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class FileLocator implements FileLocatorInterface
+class FileLocatorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var string
+     * @covers \ProxyManager\FileLocator\FileLocator::__construct
+     * @covers \ProxyManager\FileLocator\FileLocator::getProxyFileName
      */
-    protected $proxiesDirectory;
-
-    /**
-     * @param string $proxiesDirectory
-     *
-     * @throws \ProxyManager\Exception\InvalidProxyDirectoryException
-     */
-    public function __construct($proxiesDirectory)
+    public function testGetProxyFileName()
     {
-        $this->proxiesDirectory = realpath($proxiesDirectory);
+        $locator = new FileLocator(__DIR__);
 
-        if (false === $this->proxiesDirectory) {
-            throw InvalidProxyDirectoryException::proxyDirectoryNotFound($proxiesDirectory);
-        }
+        $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'FooBarBaz.php', $locator->getProxyFileName('Foo\\Bar\\Baz'));
+        $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'Foo_Bar_Baz.php', $locator->getProxyFileName('Foo_Bar_Baz'));
     }
-
     /**
-     * {@inheritDoc}
+     * @covers \ProxyManager\FileLocator\FileLocator::__construct
      */
-    public function getProxyFileName($className)
+    public function testRejectsNonExistingDirectory()
     {
-        return $this->proxiesDirectory . DIRECTORY_SEPARATOR . str_replace('\\', '', $className) . '.php';
+        $this->setExpectedException('ProxyManager\\Exception\\InvalidProxyDirectoryException');
+        new FileLocator(__DIR__ . '/non-existing');
     }
 }
