@@ -19,9 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 use ReflectionClass;
-use CG\Generator\PhpClass;
 use CG\Generator\PhpMethod;
-use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
 use ReflectionProperty;
 
@@ -44,6 +42,7 @@ class MagicWakeup extends PhpMethod
         parent::__construct('__wakeup');
 
         $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
+        /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
         $unsetProperties  = array();
 

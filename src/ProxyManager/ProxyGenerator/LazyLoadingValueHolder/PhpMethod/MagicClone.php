@@ -19,9 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 use ReflectionClass;
-use CG\Generator\PhpClass;
 use CG\Generator\PhpMethod;
-use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
 
 /**

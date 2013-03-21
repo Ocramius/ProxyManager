@@ -42,7 +42,7 @@ class LazyLoadingValueHolderFactory
     protected $autoGenerate;
 
     /**
-     * @var \ProxyManager\ProxyGenerator\Inflector\ClassNameInflectorInterface
+     * @var \ProxyManager\Inflector\ClassNameInflectorInterface
      */
     protected $inflector;
 

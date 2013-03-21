@@ -64,7 +64,7 @@ class Configuration
     protected $proxyAutoloader;
 
     /**
-     * @var \ProxyManager\ProxyGenerator\Inflector\ClassNameInflectorInterface|null
+     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|null
      */
     protected $classNameInflector;
 
@@ -93,7 +93,7 @@ class Configuration
     }
 
     /**
-     * @return callable|null
+     * @return \ProxyManager\Autoloader\AutoloaderInterface
      */
     public function getProxyAutoloader()
     {
@@ -161,7 +161,7 @@ class Configuration
     }
 
     /**
-     * @param \ProxyManager\ProxyGenerator\Inflector\ClassNameInflectorInterface $classNameInflector
+     * @param \ProxyManager\Inflector\ClassNameInflectorInterface $classNameInflector
      */
     public function setClassNameInflector(ClassNameInflectorInterface $classNameInflector)
     {
@@ -169,7 +169,7 @@ class Configuration
     }
 
     /**
-     * @return \ProxyManager\ProxyGenerator\Inflector\ClassNameInflectorInterface
+     * @return \ProxyManager\Inflector\ClassNameInflectorInterface
      */
     public function getClassNameInflector()
     {

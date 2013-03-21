@@ -19,7 +19,6 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 use ReflectionClass;
-use CG\Generator\PhpClass;
 use CG\Generator\PhpMethod;
 use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
@@ -41,6 +40,7 @@ class Constructor extends PhpMethod
 
         $this->addParameter(new PhpParameter('initializer'));
 
+        /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
         $unsetProperties  = array();
 
