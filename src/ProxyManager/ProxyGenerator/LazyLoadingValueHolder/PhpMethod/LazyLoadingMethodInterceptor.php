@@ -45,23 +45,25 @@ class LazyLoadingMethodInterceptor extends PhpMethod
         /* @var $method self */
         $method                = parent::fromReflection($originalMethod);
         $initializerName       = $initializerProperty->getName();
+        /* @var $parameters \CG\Generator\PhpParameter[] */
         $parameters            = $originalMethod->getParameters();
         $methodName            = $originalMethod->getName();
         $initializerParameters = array();
         $forwardedParameters   = array();
 
         foreach ($parameters as $parameter) {
-            $initializerParameters[] = var_export($parameter->getName(), true) . ' => $' . $parameter->getName();
-            $forwardedParameters[]   = '$' . $parameter->getName();
+            $parameterName           = $parameter->getName();
+            $initializerParameters[] = var_export($parameterName, true) . ' => $' . $parameterName;
+            $forwardedParameters[]   = '$' . $parameterName;
         }
 
         $method->setBody(
             '$this->' . $initializerName
-                . ' && $this->' . $initializerName
-                . '->__invoke($this, ' . var_export($methodName, true)
-                . ', array(' . implode(', ', $initializerParameters) . "));\n\n"
-                . 'return $this->' . $valueHolderProperty->getName() . '->'
-                . $methodName . '(' . implode(', ', $forwardedParameters) . ');'
+            . ' && $this->' . $initializerName
+            . '->__invoke($this, ' . var_export($methodName, true)
+            . ', array(' . implode(', ', $initializerParameters) . "));\n\n"
+            . 'return $this->' . $valueHolderProperty->getName() . '->'
+            . $methodName . '(' . implode(', ', $forwardedParameters) . ');'
         );
         $method->setDocblock("/**\n * {@inheritDoc}\n */\n");
 

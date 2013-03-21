@@ -33,7 +33,8 @@ class GetProxyInitializer extends PhpMethod
     /**
      * Constructor
      */
-    public function __construct(PhpProperty $initializerProperty) {
+    public function __construct(PhpProperty $initializerProperty)
+    {
         parent::__construct('getProxyInitializer');
         $this->setDocblock("/**\n * {@inheritDoc}\n */");
         $this->setBody('return $this->' . $initializerProperty->getName() . ';');

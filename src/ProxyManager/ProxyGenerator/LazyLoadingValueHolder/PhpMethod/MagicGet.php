@@ -48,8 +48,8 @@ class MagicGet extends PhpMethod
         $this->setParameters(array(new PhpParameter('name')));
         $this->setBody(
             '$this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
-                . '->__invoke($this, \'__get\', array(\'name\' => $name));' . "\n\n"
-                . 'return $this->' . $valueHolderProperty->getName() . '->$name;'
+            . '->__invoke($this, \'__get\', array(\'name\' => $name));' . "\n\n"
+            . 'return $this->' . $valueHolderProperty->getName() . '->$name;'
         );
     }
 }

@@ -33,7 +33,8 @@ class GetWrappedValueHolderValue extends PhpMethod
     /**
      * Constructor
      */
-    public function __construct(PhpProperty $valueHolderProperty) {
+    public function __construct(PhpProperty $valueHolderProperty)
+    {
         parent::__construct('getWrappedValueHolderValue');
         $this->setDocblock("/**\n * {@inheritDoc}\n */");
         $this->setBody('return $this->' . $valueHolderProperty->getName() . ';');

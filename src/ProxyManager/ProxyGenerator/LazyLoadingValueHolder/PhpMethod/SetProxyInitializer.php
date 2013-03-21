@@ -34,7 +34,8 @@ class SetProxyInitializer extends PhpMethod
     /**
      * Constructor
      */
-    public function __construct(PhpProperty $initializerProperty) {
+    public function __construct(PhpProperty $initializerProperty)
+    {
         parent::__construct('setProxyInitializer');
 
         $initializerParameter = new PhpParameter('initializer');

@@ -33,7 +33,8 @@ class IsProxyInitialized extends PhpMethod
     /**
      * Constructor
      */
-    public function __construct(PhpProperty $valueHolderProperty) {
+    public function __construct(PhpProperty $valueHolderProperty)
+    {
         parent::__construct('isProxyInitialized');
         $this->setDocblock("/**\n * {@inheritDoc}\n */");
         $this->setBody('return null !== $this->' . $valueHolderProperty->getName() . ';');

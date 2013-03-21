@@ -35,7 +35,8 @@ class Constructor extends PhpMethod
     /**
      * Constructor
      */
-    public function __construct(ReflectionClass $originalClass, PhpProperty $initializerProperty) {
+    public function __construct(ReflectionClass $originalClass, PhpProperty $initializerProperty)
+    {
         parent::__construct('__construct');
 
         $this->addParameter(new PhpParameter('initializer'));
@@ -50,11 +51,11 @@ class Constructor extends PhpMethod
 
         $this->setDocblock(
             "/**\n * @override constructor for lazy initialization\n"
-                . " * @param \\Closure|null \$initializer\n */"
+            . " * @param \\Closure|null \$initializer\n */"
         );
         $this->setBody(
             ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
-                . '$this->' . $initializerProperty->getName() . ' = $initializer;'
+            . '$this->' . $initializerProperty->getName() . ' = $initializer;'
         );
     }
 }

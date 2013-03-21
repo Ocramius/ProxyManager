@@ -48,8 +48,8 @@ class MagicIsset extends PhpMethod
         $this->setParameters(array(new PhpParameter('name')));
         $this->setBody(
             '$this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
-                . '->__invoke($this, \'__isset\', array(\'name\' => $name));' . "\n\n"
-                . 'return isset($this->' . $valueHolderProperty->getName() . '->$name);'
+            . '->__invoke($this, \'__isset\', array(\'name\' => $name));' . "\n\n"
+            . 'return isset($this->' . $valueHolderProperty->getName() . '->$name);'
         );
     }
 }

@@ -31,7 +31,8 @@ class InitializerProperty extends PhpProperty
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('initializer' . uniqid());
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
