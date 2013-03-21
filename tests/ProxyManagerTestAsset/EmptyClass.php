@@ -16,22 +16,14 @@
  * and is licensed under the MIT license.
  */
 
-$files = array(__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php');
+namespace ProxyManagerTestAsset;
 
-foreach ($files as $file) {
-    if (file_exists($file)) {
-        $loader = require $file;
-
-        break;
-    }
+/**
+ * Base test asset
+ *
+ * @author Marco Pivetta <ocramius@gmail.com>
+ * @license MIT
+ */
+class EmptyClass
+{
 }
-
-if ( ! isset($loader)) {
-    throw new RuntimeException('vendor/autoload.php could not be found. Did you run `php composer.phar install`?');
-}
-
-/* @var $loader \Composer\Autoload\ClassLoader */
-$loader->add('ProxyManagerTest\\', __DIR__);
-$loader->add('ProxyManagerTestAsset\\', __DIR__);
-
-unset($files, $file, $loader);

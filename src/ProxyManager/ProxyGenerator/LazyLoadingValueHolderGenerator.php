@@ -16,22 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-$files = array(__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php');
+namespace ProxyManager\ProxyGenerator;
 
-foreach ($files as $file) {
-    if (file_exists($file)) {
-        $loader = require $file;
+use CG\Generator\PhpClass;
+use CG\Proxy\GeneratorInterface;
+use ReflectionClass;
 
-        break;
+/**
+ * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
+ * and {@see \ProxyManager\Proxy\LazyLoadingInterface}
+ *
+ * @author Marco Pivetta <ocramius@gmail.com>
+ * @license MIT
+ */
+class LazyLoadingValueHolderGenerator implements GeneratorInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function generate(ReflectionClass $originalClass, PhpClass $generatedClass)
+    {
+        $generatedClass->setParentClassName($originalClass->getName());
     }
 }
-
-if ( ! isset($loader)) {
-    throw new RuntimeException('vendor/autoload.php could not be found. Did you run `php composer.phar install`?');
-}
-
-/* @var $loader \Composer\Autoload\ClassLoader */
-$loader->add('ProxyManagerTest\\', __DIR__);
-$loader->add('ProxyManagerTestAsset\\', __DIR__);
-
-unset($files, $file, $loader);
