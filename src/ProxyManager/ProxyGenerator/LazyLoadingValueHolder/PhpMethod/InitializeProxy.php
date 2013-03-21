@@ -16,27 +16,37 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty;
+namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
+use ReflectionClass;
+use CG\Generator\PhpClass;
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
+use ReflectionProperty;
 
 /**
- * Property that contains the wrapped value of a lazy loading proxy
+ * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::initializeProxy}
+ * for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ValueHolderProperty extends PhpProperty
+class InitializeProxy extends PhpMethod
 {
     /**
      * Constructor
      */
-    public function __construct() {
-        parent::__construct('valueHolder' . uniqid());
+    public function __construct(PhpProperty $initializerProperty) {
+        parent::__construct('initializeProxy');
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
 
-        $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setDocblock(
-            "/**\n * @var \\Closure|null initializer responsible for generating the wrapped object\n */\n"
+        $initializerPropertyName = $initializerProperty->getName();
+
+        $this->setParameters(array(new PhpParameter('name')));
+        $this->setBody(
+            'return $this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
+                . '->__invoke($this, \'__get\', array(\'name\' => $name));'
         );
     }
 }

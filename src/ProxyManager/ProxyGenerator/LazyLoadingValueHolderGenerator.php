@@ -22,6 +22,9 @@ use CG\Generator\PhpClass;
 use CG\Generator\PhpProperty;
 use CG\Proxy\GeneratorInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\InitializeProxy;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicClone;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicGet;
@@ -29,6 +32,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicIsset;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\SetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\ValueHolderProperty;
 use ReflectionClass;
@@ -49,11 +53,12 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
     public function generate(ReflectionClass $originalClass, PhpClass $generated)
     {
         $generated->setParentClassName($originalClass->getName());
-
+        $generated->setInterfaceNames(array(
+            'ProxyManager\\Proxy\\LazyLoadingInterface',
+            'ProxyManager\\Proxy\\ValueHolderInterface',
+        ));
         $generated->setProperty($valueHolder = new ValueHolderProperty());
         $generated->setProperty($initializer = new InitializerProperty());
-
-        $generated->setMethod(new Constructor($originalClass, $initializer));
 
         $excluded = array(
             '__get'    => true,
@@ -80,11 +85,17 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
             $generated->setMethod(LazyLoadingMethodInterceptor::fromReflection($method, $initializer, $valueHolder));
         }
 
+        $generated->setMethod(new Constructor($originalClass, $initializer));
         $generated->setMethod(new MagicGet($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicSet($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicIsset($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicClone($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicSleep($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicWakeup($originalClass, $initializer, $valueHolder));
+
+        $generated->setMethod(new SetProxyInitializer($initializer));
+        $generated->setMethod(new GetProxyInitializer($initializer));
+        $generated->setMethod(new InitializeProxy($initializer));
+        $generated->setMethod(new IsProxyInitialized($valueHolder));
     }
 }
