@@ -28,6 +28,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicIsset;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\ValueHolderProperty;
 use ReflectionClass;
@@ -84,5 +85,6 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
         $generated->setMethod(new MagicIsset($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicClone($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicSleep($originalClass, $initializer, $valueHolder));
+        $generated->setMethod(new MagicWakeup($originalClass, $initializer, $valueHolder));
     }
 }

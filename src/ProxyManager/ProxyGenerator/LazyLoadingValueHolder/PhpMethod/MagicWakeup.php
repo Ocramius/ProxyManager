@@ -23,14 +23,15 @@ use CG\Generator\PhpClass;
 use CG\Generator\PhpMethod;
 use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
+use ReflectionProperty;
 
 /**
- * Magic `__sleep` for lazy loading value holder objects
+ * Magic `__wakeup` for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleep extends PhpMethod
+class MagicWakeup extends PhpMethod
 {
     /**
      * Constructor
@@ -40,16 +41,19 @@ class MagicSleep extends PhpMethod
         PhpProperty $initializerProperty,
         PhpProperty $valueHolderProperty
     ) {
-        parent::__construct('__sleep');
+        parent::__construct('__wakeup');
 
-        $inheritDoc              = $originalClass->hasMethod('__sleep') ? "\n * {@inheritDoc}\n * " : '';
-        $initializerPropertyName = $initializerProperty->getName();
+        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
+        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $unsetProperties  = array();
+
+        foreach ($publicProperties as $publicProperty) {
+            $unsetProperties[] = '$' . $publicProperty->getName();
+        }
 
         $this->setDocblock('/**' . $inheritDoc . "\n */");
         $this->setBody(
-            '$this->' . $initializerPropertyName . ' && $this->' . $initializerPropertyName
-                . '->__invoke($this, \'__sleep\', array());' . "\n\n"
-                . 'return array(' . var_export($valueHolderProperty->getName(), true) . ');'
+            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
         );
     }
 }
