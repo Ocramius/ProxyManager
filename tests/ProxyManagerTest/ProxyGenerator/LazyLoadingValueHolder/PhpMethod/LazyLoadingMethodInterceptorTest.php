@@ -48,7 +48,7 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, 'publicByReferenceParameterMethod', "
+            "\$this->foo && \$this->foo->__invoke(\$this, \$this->bar, 'publicByReferenceParameterMethod', "
             . "array('param' => \$param, 'byRefParam' => \$byRefParam));\n\n"
             . "return \$this->bar->publicByReferenceParameterMethod(\$param, \$byRefParam);",
             $method->getBody()
@@ -74,7 +74,8 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
         $this->assertCount(0, $method->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, 'testBodyStructureWithoutParameters', array());\n\n"
+            "\$this->foo && \$this->foo->__invoke(\$this, \$this->bar, "
+            . "'testBodyStructureWithoutParameters', array());\n\n"
             . "return \$this->bar->testBodyStructureWithoutParameters();",
             $method->getBody()
         );

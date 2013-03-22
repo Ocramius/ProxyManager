@@ -42,12 +42,13 @@ class MagicSleep extends PhpMethod
 
         $inheritDoc  = $originalClass->hasMethod('__sleep') ? "\n * {@inheritDoc}\n * " : '';
         $initializer = $initializerProperty->getName();
+        $valueHolder = $valueHolderProperty->getName();
 
         $this->setDocblock('/**' . $inheritDoc . "\n */");
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, \'__sleep\', array());' . "\n\n"
-            . 'return array(' . var_export($valueHolderProperty->getName(), true) . ');'
+            . '->__invoke($this, $this->' . $valueHolder . ', \'__sleep\', array());' . "\n\n"
+            . 'return array(' . var_export($valueHolder, true) . ');'
         );
     }
 }

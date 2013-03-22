@@ -103,7 +103,7 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
 
         $generated->setMethod(new SetProxyInitializer($initializer));
         $generated->setMethod(new GetProxyInitializer($initializer));
-        $generated->setMethod(new InitializeProxy($initializer));
+        $generated->setMethod(new InitializeProxy($initializer, $valueHolder));
         $generated->setMethod(new IsProxyInitialized($valueHolder));
 
         $generated->setMethod(new GetWrappedValueHolderValue($valueHolder));

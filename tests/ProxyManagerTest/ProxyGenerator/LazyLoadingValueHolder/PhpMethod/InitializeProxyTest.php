@@ -35,15 +35,17 @@ class InitializeProxyTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $initializer = $this->getMock('CG\\Generator\\PhpProperty');
+        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $initializeProxy = new InitializeProxy($initializer);
+        $initializeProxy = new InitializeProxy($initializer, $valueHolder);
 
         $this->assertSame('initializeProxy', $initializeProxy->getName());
         $this->assertCount(0, $initializeProxy->getParameters());
         $this->assertSame(
-            'return $this->foo && $this->foo->__invoke($this, \'initializeProxy\', array());',
+            'return $this->foo && $this->foo->__invoke($this, $this->bar, \'initializeProxy\', array());',
             $initializeProxy->getBody()
         );
     }

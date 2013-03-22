@@ -10,6 +10,8 @@ before_script:
   - composer update --prefer-source --dev
 
 script:
-  - ./vendor/bin/phpunit
+  - ./vendor/bin/phpunit --coverage-clover ./build/coverage.xml --exclude-group Functional,Performance
+  - ./vendor/bin/phpunit --group=Functional
+  - ./vendor/bin/phpunit --group=Performance
   - php build/coverage-checker.php build/clover.xml 80
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/

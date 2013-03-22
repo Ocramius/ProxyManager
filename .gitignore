@@ -4,3 +4,4 @@ composer.lock
 composer.phar
 phpunit.xml
 phpmd.xml
+phpdox.xml

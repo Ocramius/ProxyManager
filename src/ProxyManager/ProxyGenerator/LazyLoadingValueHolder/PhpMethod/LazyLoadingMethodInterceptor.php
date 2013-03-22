@@ -45,6 +45,7 @@ class LazyLoadingMethodInterceptor extends PhpMethod
         /* @var $method self */
         $method            = parent::fromReflection($originalMethod);
         $initializerName   = $initializerProperty->getName();
+        $valueHolderName   = $valueHolderProperty->getName();
         /* @var $parameters \CG\Generator\PhpParameter[] */
         $parameters        = $originalMethod->getParameters();
         $methodName        = $originalMethod->getName();
@@ -60,9 +61,9 @@ class LazyLoadingMethodInterceptor extends PhpMethod
         $method->setBody(
             '$this->' . $initializerName
             . ' && $this->' . $initializerName
-            . '->__invoke($this, ' . var_export($methodName, true)
+            . '->__invoke($this, $this->' . $valueHolderName . ', ' . var_export($methodName, true)
             . ', array(' . implode(', ', $initializerParams) . "));\n\n"
-            . 'return $this->' . $valueHolderProperty->getName() . '->'
+            . 'return $this->' . $valueHolderName . '->'
             . $methodName . '(' . implode(', ', $forwardedParams) . ');'
         );
         $method->setDocblock("/**\n * {@inheritDoc}\n */\n");
