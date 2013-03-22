@@ -46,11 +46,11 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
             ->method('getProperties')
             ->will($this->returnValue(array($property1, $property2)));
 
-        $constructor = new MagicWakeup($reflectionClass);
+        $magicWakeup = new MagicWakeup($reflectionClass);
 
-        $this->assertSame('__wakeup', $constructor->getName());
-        $this->assertCount(0, $constructor->getParameters());
-        $this->assertSame("unset(\$this->bar, \$this->baz);", $constructor->getBody());
+        $this->assertSame('__wakeup', $magicWakeup->getName());
+        $this->assertCount(0, $magicWakeup->getParameters());
+        $this->assertSame("unset(\$this->bar, \$this->baz);", $magicWakeup->getBody());
     }
 
     /**
@@ -65,10 +65,10 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
             ->method('getProperties')
             ->will($this->returnValue(array()));
 
-        $constructor = new MagicWakeup($reflectionClass);
+        $magicWakeup = new MagicWakeup($reflectionClass);
 
-        $this->assertSame('__wakeup', $constructor->getName());
-        $this->assertCount(0, $constructor->getParameters());
-        $this->assertEmpty($constructor->getBody());
+        $this->assertSame('__wakeup', $magicWakeup->getName());
+        $this->assertCount(0, $magicWakeup->getParameters());
+        $this->assertEmpty($magicWakeup->getBody());
     }
 }

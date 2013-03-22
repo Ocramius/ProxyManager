@@ -18,9 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
-use CG\Core\NamingStrategyInterface;
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Inflector\ClassNameInflector;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
 
 /**
