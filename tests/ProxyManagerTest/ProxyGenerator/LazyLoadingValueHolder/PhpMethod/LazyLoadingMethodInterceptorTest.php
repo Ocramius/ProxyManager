@@ -42,8 +42,7 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
         $reflection = new ReflectionMethod('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
-
-        $method = LazyLoadingMethodInterceptor::fromReflection($reflection, $initializer, $valueHolder);
+        $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer, $valueHolder);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());
@@ -69,7 +68,7 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
-        $method = LazyLoadingMethodInterceptor::fromReflection($reflectionMethod, $initializer, $valueHolder);
+        $method = LazyLoadingMethodInterceptor::generateMethod($reflectionMethod, $initializer, $valueHolder);
 
         $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
         $this->assertCount(0, $method->getParameters());

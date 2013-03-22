@@ -37,13 +37,13 @@ class LazyLoadingMethodInterceptor extends PhpMethod
      *
      * @return LazyLoadingMethodInterceptor|static
      */
-    public static function fromReflection(
+    public static function generateMethod(
         ReflectionMethod $originalMethod,
         PhpProperty $initializerProperty,
         PhpProperty $valueHolderProperty
     ) {
         /* @var $method self */
-        $method            = parent::fromReflection($originalMethod);
+        $method            = static::fromReflection($originalMethod);
         $initializerName   = $initializerProperty->getName();
         $valueHolderName   = $valueHolderProperty->getName();
         /* @var $parameters \CG\Generator\PhpParameter[] */

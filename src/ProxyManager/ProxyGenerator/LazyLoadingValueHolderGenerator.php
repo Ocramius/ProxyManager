@@ -90,7 +90,7 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
         );
 
         foreach ($methods as $method) {
-            $generated->setMethod(LazyLoadingMethodInterceptor::fromReflection($method, $initializer, $valueHolder));
+            $generated->setMethod(LazyLoadingMethodInterceptor::generateMethod($method, $initializer, $valueHolder));
         }
 
         $generated->setMethod(new Constructor($originalClass, $initializer));
