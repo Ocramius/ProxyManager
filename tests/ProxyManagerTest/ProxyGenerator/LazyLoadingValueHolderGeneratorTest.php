@@ -20,7 +20,6 @@ namespace ProxyManagerTest\ProxyGenerator;
 
 use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
-use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ReflectionClass;
 

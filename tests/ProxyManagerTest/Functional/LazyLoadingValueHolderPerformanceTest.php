@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest;
+namespace ProxyManagerTest\Functional;
 
 use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;

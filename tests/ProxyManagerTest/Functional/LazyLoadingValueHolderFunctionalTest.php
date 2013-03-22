@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest;
+namespace ProxyManagerTest\Functional;
 
 use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
@@ -52,6 +52,25 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($proxy->isProxyInitialized());
 
         $this->assertSame('publicMethodDefault', $proxy->publicMethod());
+
+        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
+
+        $this->markTestIncomplete('Needs a data provider to check all methods');
+    }
+
+    public function testPropertyAccess()
+    {
+        $instance = new BaseClass();
+
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
+        $proxy = new $proxyName($this->createInitializer($instance));
+
+        $this->assertFalse($proxy->isProxyInitialized());
+
+        $this->assertSame('publicPropertyDefault', $proxy->publicProperty);
 
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
