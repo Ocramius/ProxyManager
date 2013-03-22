@@ -53,7 +53,7 @@ class Autoloader implements AutoloaderInterface
 
         $file = $this->fileLocator->getProxyFileName($className);
 
-        if ( ! file_exists($file)) {
+        if (! file_exists($file)) {
             return false;
         }
 
