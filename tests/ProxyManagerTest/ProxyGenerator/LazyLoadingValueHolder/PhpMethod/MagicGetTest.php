@@ -19,18 +19,18 @@
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicGet;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet}
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicGet}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSetTest extends PHPUnit_Framework_TestCase
+class MagicGetTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicGet::__construct
      */
     public function testBodyStructure()
     {
@@ -41,14 +41,14 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicSet = new MagicSet($reflectionClass, $initializer, $valueHolder);
+        $magicGet = new MagicGet($reflectionClass, $initializer, $valueHolder);
 
-        $this->assertSame('__set', $magicSet->getName());
-        $this->assertCount(2, $magicSet->getParameters());
+        $this->assertSame('__get', $magicGet->getName());
+        $this->assertCount(1, $magicGet->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__set', array('name' => \$name, 'value' => \$value));\n\n"
-            . "\$this->bar->\$name = \$value;",
-            $magicSet->getBody()
+            "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name));\n\n"
+            . "return \$this->bar->\$name;",
+            $magicGet->getBody()
         );
     }
 }
