@@ -56,4 +56,25 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $constructor->getParameters());
         $this->assertSame("unset(\$this->bar, \$this->baz);\n\n\$this->foo = \$initializer;", $constructor->getBody());
     }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor::__construct
+     */
+    public function testBodyStructureWithoutPublicProperties()
+    {
+        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
+        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
+
+        $reflectionClass
+            ->expects($this->any())
+            ->method('getProperties')
+            ->will($this->returnValue(array()));
+
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $constructor = new Constructor($reflectionClass, $initializer);
+
+        $this->assertCount(1, $constructor->getParameters());
+        $this->assertSame("\$this->foo = \$initializer;", $constructor->getBody());
+    }
 }
