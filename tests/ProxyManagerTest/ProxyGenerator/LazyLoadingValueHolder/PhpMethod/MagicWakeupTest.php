@@ -18,28 +18,25 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
-use CG\Core\NamingStrategyInterface;
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Inflector\ClassNameInflector;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor}
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ConstructorTest extends PHPUnit_Framework_TestCase
+class MagicWakeupTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup::__construct
      */
     public function testBodyStructure()
     {
         $property1       = $this->getMock('ReflectionProperty', array(), array(), '', false);
         $property2       = $this->getMock('ReflectionProperty', array(), array(), '', false);
         $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
 
         $property1->expects($this->any())->method('getName')->will($this->returnValue('bar'));
         $property2->expects($this->any())->method('getName')->will($this->returnValue('baz'));
@@ -49,34 +46,29 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
             ->method('getProperties')
             ->will($this->returnValue(array($property1, $property2)));
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $constructor = new MagicWakeup($reflectionClass);
 
-        $constructor = new Constructor($reflectionClass, $initializer);
-
-        $this->assertSame('__construct', $constructor->getName());
-        $this->assertCount(1, $constructor->getParameters());
-        $this->assertSame("unset(\$this->bar, \$this->baz);\n\n\$this->foo = \$initializer;", $constructor->getBody());
+        $this->assertSame('__wakeup', $constructor->getName());
+        $this->assertCount(0, $constructor->getParameters());
+        $this->assertSame("unset(\$this->bar, \$this->baz);", $constructor->getBody());
     }
 
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup::__construct
      */
     public function testBodyStructureWithoutPublicProperties()
     {
         $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
 
         $reflectionClass
             ->expects($this->any())
             ->method('getProperties')
             ->will($this->returnValue(array()));
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $constructor = new MagicWakeup($reflectionClass);
 
-        $constructor = new Constructor($reflectionClass, $initializer);
-
-        $this->assertSame('__construct', $constructor->getName());
-        $this->assertCount(1, $constructor->getParameters());
-        $this->assertSame("\$this->foo = \$initializer;", $constructor->getBody());
+        $this->assertSame('__wakeup', $constructor->getName());
+        $this->assertCount(0, $constructor->getParameters());
+        $this->assertEmpty($constructor->getBody());
     }
 }

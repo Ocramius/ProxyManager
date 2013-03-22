@@ -16,40 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
-use ReflectionClass;
-use CG\Generator\PhpMethod;
-use CG\Generator\PhpProperty;
-use ReflectionProperty;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue;
 
 /**
- * Magic `__wakeup` for lazy loading value holder objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicWakeup extends PhpMethod
+class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Constructor
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue::__construct
      */
-    public function __construct(ReflectionClass $originalClass)
+    public function testBodyStructure()
     {
-        parent::__construct('__wakeup');
+        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
 
-        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
-        }
+        $getter = new GetWrappedValueHolderValue($valueHolder);
 
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
-        $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
-        );
+        $this->assertSame('getWrappedValueHolderValue', $getter->getName());
+        $this->assertCount(0, $getter->getParameters());
+        $this->assertSame('return $this->foo;', $getter->getBody());
     }
 }

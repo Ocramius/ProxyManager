@@ -16,40 +16,35 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
-use ReflectionClass;
-use CG\Generator\PhpMethod;
-use CG\Generator\PhpProperty;
-use ReflectionProperty;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\InitializeProxy;
 
 /**
- * Magic `__wakeup` for lazy loading value holder objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\InitializeProxy}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicWakeup extends PhpMethod
+class InitializeProxyTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Constructor
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\InitializeProxy::__construct
      */
-    public function __construct(ReflectionClass $originalClass)
+    public function testBodyStructure()
     {
-        parent::__construct('__wakeup');
+        $initializer = $this->getMock('CG\\Generator\\PhpProperty');
 
-        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
-        }
+        $initializeProxy = new InitializeProxy($initializer);
 
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
-        $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
+        $this->assertSame('initializeProxy', $initializeProxy->getName());
+        $this->assertCount(0, $initializeProxy->getParameters());
+        $this->assertSame(
+            'return $this->foo && $this->foo->__invoke($this, \'initializeProxy\', array());',
+            $initializeProxy->getBody()
         );
     }
 }
