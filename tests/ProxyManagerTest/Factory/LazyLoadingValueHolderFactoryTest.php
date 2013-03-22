@@ -21,7 +21,6 @@ namespace ProxyManagerTest\Factory;
 use CG\Generator\PhpClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
-use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\Factory\LazyLoadingValueHolderFactoryTest}
@@ -75,7 +74,8 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = function () {};
+        $initializer = function () {
+        };
         /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
         $proxy       = $factory->createProxy($className, $initializer);
 
@@ -141,7 +141,8 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = function () {};
+        $initializer = function () {
+        };
         /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
         $proxy       = $factory->createProxy($className, $initializer);
 
