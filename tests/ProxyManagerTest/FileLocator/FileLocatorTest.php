@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\Autoloader;
+namespace ProxyManagerTest\FileLocator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\FileLocator\FileLocator;
@@ -40,6 +40,7 @@ class FileLocatorTest extends PHPUnit_Framework_TestCase
         $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'FooBarBaz.php', $locator->getProxyFileName('Foo\\Bar\\Baz'));
         $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'Foo_Bar_Baz.php', $locator->getProxyFileName('Foo_Bar_Baz'));
     }
+
     /**
      * @covers \ProxyManager\FileLocator\FileLocator::__construct
      */

@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\Autoloader;
+namespace ProxyManagerTest\Inflector;
 
 use CG\Core\NamingStrategyInterface;
 use PHPUnit_Framework_TestCase;
