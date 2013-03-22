@@ -46,7 +46,7 @@ class Constructor extends PhpMethod
         $unsetProperties  = array();
 
         foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$' . $publicProperty->getName();
+            $unsetProperties[] = '$this->' . $publicProperty->getName();
         }
 
         $this->setDocblock(
