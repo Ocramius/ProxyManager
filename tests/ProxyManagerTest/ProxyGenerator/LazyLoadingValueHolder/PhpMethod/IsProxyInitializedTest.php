@@ -19,35 +19,29 @@
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep}
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleepTest extends PHPUnit_Framework_TestCase
+class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
      */
     public function testBodyStructure()
     {
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
         $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicSleep = new MagicSleep($reflectionClass, $initializer, $valueHolder);
+        $magicSleep = new IsProxyInitialized($valueHolder);
 
-        $this->assertSame('__sleep', $magicSleep->getName());
+        $this->assertSame('isProxyInitialized', $magicSleep->getName());
         $this->assertCount(0, $magicSleep->getParameters());
-        $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__sleep', array());\n\nreturn array('bar');",
-            $magicSleep->getBody()
-        );
+        $this->assertSame('return null !== $this->bar;', $magicSleep->getBody());
     }
 }

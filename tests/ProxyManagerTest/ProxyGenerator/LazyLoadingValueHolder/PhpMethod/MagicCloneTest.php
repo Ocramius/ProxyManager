@@ -19,18 +19,18 @@
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicClone;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep}
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicClone}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleepTest extends PHPUnit_Framework_TestCase
+class MagicCloneTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicClone::__construct
      */
     public function testBodyStructure()
     {
@@ -41,13 +41,13 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicSleep = new MagicSleep($reflectionClass, $initializer, $valueHolder);
+        $magicClone = new MagicClone($reflectionClass, $initializer, $valueHolder);
 
-        $this->assertSame('__sleep', $magicSleep->getName());
-        $this->assertCount(0, $magicSleep->getParameters());
+        $this->assertSame('__clone', $magicClone->getName());
+        $this->assertCount(0, $magicClone->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__sleep', array());\n\nreturn array('bar');",
-            $magicSleep->getBody()
+            "\$this->foo && \$this->foo->__invoke(\$this, '__clone', array());\n\n\$this->bar = clone \$this->bar;",
+            $magicClone->getBody()
         );
     }
 }
