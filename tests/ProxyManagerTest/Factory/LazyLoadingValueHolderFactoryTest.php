@@ -113,7 +113,18 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
                 )
             );
 
-        $autoloader->expects($this->once())->method('__invoke')->with($proxyClassName);
+        // simulate autoloading
+        $autoloader
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($proxyClassName)
+            ->will(
+                $this->returnCallback(
+                    function () use ($proxyClassName) {
+                        eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
+                    }
+                )
+            );
 
         $this
             ->inflector
@@ -127,15 +138,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getUserClassName')
             ->with($className)
-            ->will(
-                $this->returnCallback(
-                    function () use ($proxyClassName) {
-                        eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
-
-                        return 'ProxyManagerTestAsset\\LazyLoadingMock';
-                    }
-                )
-            );
+            ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
         $initializer = function () {};
