@@ -49,7 +49,7 @@ class MagicSet extends PhpMethod
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'__set\', array(\'name\' => $name, \'value\' => $value));' . "\n\n"
-            . 'return $this->' . $valueHolderProperty->getName() . '->$name = $value;'
+            . '$this->' . $valueHolderProperty->getName() . '->$name = $value;'
         );
     }
 }
