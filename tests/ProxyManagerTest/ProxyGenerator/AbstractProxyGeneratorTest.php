@@ -56,10 +56,10 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
 
         eval($classBody);
 
-        $generatedReflectionClass = new ReflectionClass($generatedClassName);
+        $generatedReflection = new ReflectionClass($generatedClassName);
 
-        $this->assertSame($generatedClassName, $generatedReflectionClass->getName());
-        $this->assertSame($originalClass->getName(), $generatedReflectionClass->getParentClass()->getName());
+        $this->assertSame($generatedClassName, $generatedReflection->getName());
+        $this->assertSame($originalClass->getName(), $generatedReflection->getParentClass()->getName());
     }
 
     /**
