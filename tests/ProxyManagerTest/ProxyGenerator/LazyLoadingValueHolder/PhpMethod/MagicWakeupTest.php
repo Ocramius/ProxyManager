@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
+use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
 
@@ -34,19 +35,11 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $property1       = $this->getMock('ReflectionProperty', array(), array(), '', false);
-        $property2       = $this->getMock('ReflectionProperty', array(), array(), '', false);
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
+        $reflection  = new ReflectionClass(
+            'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoadingValueHolder\\PhpMethod\\ClassWithTwoPublicProperties'
+        );
 
-        $property1->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $property2->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-
-        $reflectionClass
-            ->expects($this->any())
-            ->method('getProperties')
-            ->will($this->returnValue(array($property1, $property2)));
-
-        $magicWakeup = new MagicWakeup($reflectionClass);
+        $magicWakeup = new MagicWakeup($reflection);
 
         $this->assertSame('__wakeup', $magicWakeup->getName());
         $this->assertCount(0, $magicWakeup->getParameters());
@@ -58,14 +51,7 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithoutPublicProperties()
     {
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-
-        $reflectionClass
-            ->expects($this->any())
-            ->method('getProperties')
-            ->will($this->returnValue(array()));
-
-        $magicWakeup = new MagicWakeup($reflectionClass);
+        $magicWakeup = new MagicWakeup(new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'));
 
         $this->assertSame('__wakeup', $magicWakeup->getName());
         $this->assertCount(0, $magicWakeup->getParameters());

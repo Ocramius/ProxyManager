@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
+use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor}
@@ -34,22 +35,14 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $property1       = $this->getMock('ReflectionProperty', array(), array(), '', false);
-        $property2       = $this->getMock('ReflectionProperty', array(), array(), '', false);
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
-
-        $property1->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $property2->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-
-        $reflectionClass
-            ->expects($this->any())
-            ->method('getProperties')
-            ->will($this->returnValue(array($property1, $property2)));
+        $initializer = $this->getMock('CG\\Generator\\PhpProperty');
+        $reflection  = new ReflectionClass(
+            'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoadingValueHolder\\PhpMethod\\ClassWithTwoPublicProperties'
+        );
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
-        $constructor = new Constructor($reflectionClass, $initializer);
+        $constructor = new Constructor($reflection, $initializer);
 
         $this->assertSame('__construct', $constructor->getName());
         $this->assertCount(1, $constructor->getParameters());
@@ -61,17 +54,11 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithoutPublicProperties()
     {
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
-
-        $reflectionClass
-            ->expects($this->any())
-            ->method('getProperties')
-            ->will($this->returnValue(array()));
+        $initializer = $this->getMock('CG\\Generator\\PhpProperty');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
-        $constructor = new Constructor($reflectionClass, $initializer);
+        $constructor = new Constructor(new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'), $initializer);
 
         $this->assertSame('__construct', $constructor->getName());
         $this->assertCount(1, $constructor->getParameters());

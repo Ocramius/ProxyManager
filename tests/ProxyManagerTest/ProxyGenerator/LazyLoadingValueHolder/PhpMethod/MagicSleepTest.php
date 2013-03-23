@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
+use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
 
@@ -34,14 +35,14 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $initializer = $this->getMock('CG\\Generator\\PhpProperty');
+        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicSleep = new MagicSleep($reflectionClass, $initializer, $valueHolder);
+        $magicSleep = new MagicSleep($reflection, $initializer, $valueHolder);
 
         $this->assertSame('__sleep', $magicSleep->getName());
         $this->assertCount(0, $magicSleep->getParameters());

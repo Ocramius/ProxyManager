@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
+use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicClone;
 
@@ -34,14 +35,14 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $initializer = $this->getMock('CG\\Generator\\PhpProperty');
+        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicClone = new MagicClone($reflectionClass, $initializer, $valueHolder);
+        $magicClone = new MagicClone($reflection, $initializer, $valueHolder);
 
         $this->assertSame('__clone', $magicClone->getName());
         $this->assertCount(0, $magicClone->getParameters());

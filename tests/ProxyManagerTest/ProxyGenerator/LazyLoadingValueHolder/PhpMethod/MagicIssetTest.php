@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
+use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicIsset;
 
@@ -34,14 +35,14 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflectionClass = $this->getMock('ReflectionClass', array(), array(), '', false);
-        $initializer     = $this->getMock('CG\\Generator\\PhpProperty');
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $initializer = $this->getMock('CG\\Generator\\PhpProperty');
+        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicIsset = new MagicIsset($reflectionClass, $initializer, $valueHolder);
+        $magicIsset = new MagicIsset($reflection, $initializer, $valueHolder);
 
         $this->assertSame('__isset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
