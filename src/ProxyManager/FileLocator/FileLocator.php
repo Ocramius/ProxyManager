@@ -16,18 +16,42 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\FileLocator;
+
+use ProxyManager\Exception\InvalidProxyDirectoryException;
 
 /**
- * Value holder marker
+ * {@inheritDoc}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class FileLocator implements FileLocatorInterface
 {
     /**
-     * @return object|null the wrapped value
+     * @var string
      */
-    public function getWrappedValueHolderValue();
+    protected $proxiesDirectory;
+
+    /**
+     * @param string $proxiesDirectory
+     *
+     * @throws \ProxyManager\Exception\InvalidProxyDirectoryException
+     */
+    public function __construct($proxiesDirectory)
+    {
+        $this->proxiesDirectory = realpath($proxiesDirectory);
+
+        if (false === $this->proxiesDirectory) {
+            throw InvalidProxyDirectoryException::proxyDirectoryNotFound($proxiesDirectory);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getProxyFileName($className)
+    {
+        return $this->proxiesDirectory . DIRECTORY_SEPARATOR . str_replace('\\', '', $className) . '.php';
+    }
 }

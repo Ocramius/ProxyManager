@@ -16,18 +16,41 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\Inflector;
+
+use CG\Core\ClassUtils;
+use CG\Core\NamingStrategyInterface;
 
 /**
- * Value holder marker
+ * {@inheritDoc}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class ClassNameInflector implements ClassNameInflectorInterface
 {
+    protected $proxyNamespace;
+
+    public function __construct($proxyNamespace)
+    {
+        $this->proxyNamespace = (string) $proxyNamespace;
+    }
+
     /**
-     * @return object|null the wrapped value
+     * {@inheritDoc}
      */
-    public function getWrappedValueHolderValue();
+    public function getUserClassName($className)
+    {
+        return ClassUtils::getUserClass($className);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getProxyClassName($className)
+    {
+        return $this->proxyNamespace
+            . '\\' . NamingStrategyInterface::SEPARATOR
+            . '\\' . ClassUtils::getUserClass($className);
+    }
 }

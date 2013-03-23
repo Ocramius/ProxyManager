@@ -16,18 +16,28 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty;
+
+use CG\Generator\PhpProperty;
 
 /**
- * Value holder marker
+ * Property that contains the wrapped value of a lazy loading proxy
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class ValueHolderProperty extends PhpProperty
 {
     /**
-     * @return object|null the wrapped value
+     * Constructor
      */
-    public function getWrappedValueHolderValue();
+    public function __construct()
+    {
+        parent::__construct('valueHolder' . uniqid());
+
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setDocblock(
+            "/**\n * @var \\Closure|null initializer responsible for generating the wrapped object\n */\n"
+        );
+    }
 }

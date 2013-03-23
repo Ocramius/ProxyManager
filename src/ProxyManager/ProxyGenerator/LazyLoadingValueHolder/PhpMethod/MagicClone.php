@@ -16,18 +16,39 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+
+use ReflectionClass;
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpProperty;
 
 /**
- * Value holder marker
+ * Magic `__clone` for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class MagicClone extends PhpMethod
 {
     /**
-     * @return object|null the wrapped value
+     * Constructor
      */
-    public function getWrappedValueHolderValue();
+    public function __construct(
+        ReflectionClass $originalClass,
+        PhpProperty $initializerProperty,
+        PhpProperty $valueHolderProperty
+    ) {
+        parent::__construct('__clone');
+
+        $inheritDoc  = $originalClass->hasMethod('__clone') ? "\n * {@inheritDoc}\n * " : '';
+        $initializer = $initializerProperty->getName();
+        $valueHolder = $valueHolderProperty->getName();
+
+        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setBody(
+            '$this->' . $initializer . ' && $this->' . $initializer
+            . '->__invoke($this, $this->' . $valueHolder . ', \'__clone\', array());' . "\n\n"
+            . '$this->' . $valueHolder . ' = clone $this->' . $valueHolder . ';'
+        );
+    }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdox xmlns="http://phpdox.de/config" silent="false">
+    <project
+        name="ProxyManager"
+        source="src"
+        workdir="build/phpdox"
+    >
+        <collector publiconly="false">
+            <include mask="*.php" />
+        </collector>
+
+        <generator output="build">
+            <build engine="html" enabled="true" output="api"/>
+        </generator>
+    </project>
+</phpdox>

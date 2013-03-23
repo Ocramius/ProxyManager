@@ -16,18 +16,22 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\FileLocator;
 
 /**
- * Value holder marker
+ * Basic autoloader utilities required to work with proxy files
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+interface FileLocatorInterface
 {
     /**
-     * @return object|null the wrapped value
+     * Retrieves the file name for the given proxy
+     *
+     * @param $className
+     *
+     * @return mixed
      */
-    public function getWrappedValueHolderValue();
+    public function getProxyFileName($className);
 }

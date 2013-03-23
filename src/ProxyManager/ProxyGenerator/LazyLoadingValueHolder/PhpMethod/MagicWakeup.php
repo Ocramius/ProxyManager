@@ -16,18 +16,40 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+
+use ReflectionClass;
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpProperty;
+use ReflectionProperty;
 
 /**
- * Value holder marker
+ * Magic `__wakeup` for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class MagicWakeup extends PhpMethod
 {
     /**
-     * @return object|null the wrapped value
+     * Constructor
      */
-    public function getWrappedValueHolderValue();
+    public function __construct(ReflectionClass $originalClass)
+    {
+        parent::__construct('__wakeup');
+
+        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
+        /* @var $publicProperties \ReflectionProperty[] */
+        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $unsetProperties  = array();
+
+        foreach ($publicProperties as $publicProperty) {
+            $unsetProperties[] = '$this->' . $publicProperty->getName();
+        }
+
+        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setBody(
+            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
+        );
+    }
 }

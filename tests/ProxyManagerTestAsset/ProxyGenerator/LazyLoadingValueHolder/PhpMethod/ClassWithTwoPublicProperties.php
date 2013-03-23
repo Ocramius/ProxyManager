@@ -16,18 +16,23 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTestAsset\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
 
 /**
- * Value holder marker
+ * Test asset with 2 public properties
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class ClassWithTwoPublicProperties
 {
     /**
-     * @return object|null the wrapped value
+     * @var mixed
      */
-    public function getWrappedValueHolderValue();
+    public $bar;
+
+    /**
+     * @var mixed
+     */
+    public $baz;
 }

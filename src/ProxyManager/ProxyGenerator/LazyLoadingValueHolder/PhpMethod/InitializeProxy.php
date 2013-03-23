@@ -16,18 +16,33 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpProperty;
 
 /**
- * Value holder marker
+ * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::initializeProxy}
+ * for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class InitializeProxy extends PhpMethod
 {
     /**
-     * @return object|null the wrapped value
+     * Constructor
      */
-    public function getWrappedValueHolderValue();
+    public function __construct(PhpProperty $initializerProperty, PhpProperty $valueHolderProperty)
+    {
+        parent::__construct('initializeProxy');
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+
+        $initializer = $initializerProperty->getName();
+
+        $this->setBody(
+            'return $this->' . $initializer . ' && $this->' . $initializer
+            . '->__invoke($this, $this->' . $valueHolderProperty->getName() . ', \'initializeProxy\', array());'
+        );
+    }
 }

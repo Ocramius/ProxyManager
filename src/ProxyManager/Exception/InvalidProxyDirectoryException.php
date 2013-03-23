@@ -16,18 +16,25 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\Exception;
+
+use InvalidArgumentException;
 
 /**
- * Value holder marker
+ * Exception for invalid directories
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {
     /**
-     * @return object|null the wrapped value
+     * @param  string $directory
+     *
+     * @return self
      */
-    public function getWrappedValueHolderValue();
+    public static function proxyDirectoryNotFound($directory)
+    {
+        return new self(sprintf('Provided directory "%s" does not exist', (string) $directory));
+    }
 }

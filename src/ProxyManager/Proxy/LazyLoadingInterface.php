@@ -19,11 +19,38 @@
 namespace ProxyManager\Proxy;
 
 /**
- * Lazy loading object marker
+ * Lazy loading object identifier
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
 interface LazyLoadingInterface extends ProxyInterface
 {
+    /**
+     * Set or unset the initializer for the proxy instance
+     *
+     * @param \Closure|null $initializer
+     *
+     * @return mixed
+     */
+    public function setProxyInitializer(\Closure $initializer = null);
+
+    /**
+     * @return \Closure|null
+     */
+    public function getProxyInitializer();
+
+    /**
+     * Force initialization of the proxy
+     *
+     * @return bool true if the proxy could be initialized
+     */
+    public function initializeProxy();
+
+    /**
+     * Retrieves current initialization status of the proxy
+     *
+     * @return bool
+     */
+    public function isProxyInitialized();
 }
