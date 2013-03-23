@@ -18,7 +18,7 @@ php composer.phar require ocramius/proxy-manager:0.1.*
 ## Lazy Loading Value Holders
 
 Currently, this library can generate [lazy loading value holders](http://www.martinfowler.com/eaaCatalog/lazyLoad.html),
-which are a way to save performance and memory for objects that require a lot of dependencies or cpu cycles to be
+which are a way to save performance and memory for objects that require a lot of dependencies or CPU cycles to be
 initialized, and may not always be used.
 
 #### What does a lazy loader value holder do?
@@ -62,7 +62,7 @@ tiny wrappers that have their same API, and that get initialized at first usage.
 
 Here's how you solve this problem with the lazy loading value holders provided by `ocramius/proxy-manager`:
 
- 1. write your "heavy" object
+ 1. Write your "heavy" object
 
     ```php
     namespace MyApp;
@@ -79,7 +79,7 @@ Here's how you solve this problem with the lazy loading value holders provided b
     }
     ```
 
- 2. unleash the proxy manager
+ 2. Unleash the proxy manager
 
     ```php
     use ProxyManager\Configuration;
@@ -100,7 +100,7 @@ Here's how you solve this problem with the lazy loading value holders provided b
         }
     );
     ```
- 3. use the proxy!
+ 3. Use the proxy! A proxy is a valid instance of `HeavyComplexObject`, you can use it everywhere!
 
     ```php
     // this will just work as before
