@@ -80,7 +80,9 @@ class BaseClass
      */
     public function & publicByReferenceMethod()
     {
-        return 'publicByReferenceMethodDefault';
+        $returnValue = 'publicByReferenceMethodDefault';
+
+        return $returnValue;
     }
 
     /**

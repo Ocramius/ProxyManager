@@ -40,29 +40,89 @@ use ReflectionClass;
  */
 class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 {
-    public function testMethodCalls()
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCalls($instance, $method, $params, $expectedValue)
     {
-        $instance = new BaseClass();
-
         $proxyName = $this->generateProxy(get_class($instance));
 
         /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
         $proxy = new $proxyName($this->createInitializer($instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
-
-        $this->assertSame('publicMethodDefault', $proxy->publicMethod());
-
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
-
-        $this->markTestIncomplete('Needs a data provider to check all methods');
     }
 
-    public function testPropertyAccess()
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCallsAfterUnSerialization($instance, $method, $params, $expectedValue)
     {
-        $instance = new BaseClass();
+        $proxyName = $this->generateProxy(get_class($instance));
 
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
+        $proxy = unserialize(serialize(new $proxyName($this->createInitializer($instance))));
+
+        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+    }
+
+    /**
+     * @dataProvider getPropertyAccessProxies
+     */
+    public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
+    {
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $this->assertSame($propertyValue, $proxy->$publicProperty);
+        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+    }
+
+    /**
+     * @dataProvider getPropertyAccessProxies
+     */
+    public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
+    {
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $newValue               = uniqid();
+        $proxy->$publicProperty = $newValue;
+
+        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertSame($newValue, $proxy->$publicProperty);
+        $this->assertSame($newValue, $proxy->getWrappedValueHolderValue()->$publicProperty);
+    }
+
+    /**
+     * @dataProvider getPropertyAccessProxies
+     */
+    public function testPropertyExistence($instance, $proxy, $publicProperty)
+    {
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
+        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+    }
+
+    /**
+     * @dataProvider getPropertyAccessProxies
+     */
+    public function testPropertyAbsence($instance, $proxy, $publicProperty)
+    {
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
+        $instance->$publicProperty = null;
+        $this->assertFalse(isset($proxy->$publicProperty));
+        $this->assertTrue($proxy->isProxyInitialized());
+    }
+
+    public function testPropertyUnset()
+    {
+        $this->markTestSkipped('Feature not yet implemented');
+        $instance  = new BaseClass();
         $proxyName = $this->generateProxy(get_class($instance));
 
         /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
@@ -70,12 +130,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($proxy->isProxyInitialized());
 
-        $this->assertSame('publicPropertyDefault', $proxy->publicProperty);
+        unset($proxy->publicProperty);
+
+        $this->assertFalse(isset($proxy->publicProperty));
+        $this->assertFalse(isset($instance->publicProperty));
 
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
-
-        $this->markTestIncomplete('Needs a data provider to check all methods');
     }
 
     /**
@@ -123,5 +184,47 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
             $initializerMatcher->__invoke($proxy, $wrappedObject, $method, $params);
         };
+    }
+
+    /**
+     * Generates a list of object | invoked method | parameters | expected result
+     *
+     * @return array
+     */
+    public function getProxyMethods()
+    {
+        return array(
+            array(new BaseClass(), 'publicMethod', array(), 'publicMethodDefault'),
+            array(new BaseClass(), 'publicTypeHintedMethod', array(new \stdClass()), 'publicTypeHintedMethodDefault'),
+            array(new BaseClass(), 'publicByReferenceMethod', array(), 'publicByReferenceMethodDefault'),
+        );
+    }
+
+    /**
+     * Generates proxies and instances with a public property to feed to the property accessor methods
+     *
+     * @return array
+     */
+    public function getPropertyAccessProxies()
+    {
+        $instance1 = new BaseClass();
+        $proxyName1 = $this->generateProxy(get_class($instance1));
+        $instance2 = new BaseClass();
+        $proxyName2 = $this->generateProxy(get_class($instance2));
+
+        return array(
+            array(
+                $instance1,
+                new $proxyName1($this->createInitializer($instance1)),
+                'publicProperty',
+                'publicPropertyDefault',
+            ),
+            array(
+                $instance2,
+                unserialize(serialize(new $proxyName2($this->createInitializer($instance2)))),
+                'publicProperty',
+                'publicPropertyDefault',
+            ),
+        );
     }
 }
