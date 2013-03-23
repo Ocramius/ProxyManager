@@ -16,18 +16,14 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\Exception;
 
 /**
- * Value holder marker
+ * Base exception class for the proxy manager
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+interface ExceptionInterface
 {
-    /**
-     * @return object|null the wrapped value
-     */
-    public function getWrappedValueHolderValue();
 }

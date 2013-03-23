@@ -16,18 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer;
 
 /**
- * Value holder marker
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class GetProxyInitializerTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @return object|null the wrapped value
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer::__construct
      */
-    public function getWrappedValueHolderValue();
+    public function testBodyStructure()
+    {
+        $initializer = $this->getMock('CG\\Generator\\PhpProperty');
+
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $getter = new GetProxyInitializer($initializer);
+
+        $this->assertSame('getProxyInitializer', $getter->getName());
+        $this->assertCount(0, $getter->getParameters());
+        $this->assertSame('return $this->foo;', $getter->getBody());
+    }
 }

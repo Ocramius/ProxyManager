@@ -16,18 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\Inflector;
 
 /**
- * Value holder marker
+ * Interface for a proxy- to user-class and user- to proxy-class name inflector
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+interface ClassNameInflectorInterface
 {
     /**
-     * @return object|null the wrapped value
+     * Retrieve the class name of a user-defined class
+     *
+     * @param  string $className
+     *
+     * @return string
      */
-    public function getWrappedValueHolderValue();
+    public function getUserClassName($className);
+
+    /**
+     * Retrieve the class name of the proxy for the given user-defined class name
+     *
+     * @param  string $className
+     *
+     * @return mixed
+     */
+    public function getProxyClassName($className);
 }

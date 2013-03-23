@@ -16,18 +16,47 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\Autoloader;
+
+use CG\Core\NamingStrategyInterface;
+use ProxyManager\FileLocator\FileLocatorInterface;
 
 /**
- * Value holder marker
+ * {@inheritDoc}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class Autoloader implements AutoloaderInterface
 {
     /**
-     * @return object|null the wrapped value
+     * @var \ProxyManager\FileLocator\FileLocatorInterface
      */
-    public function getWrappedValueHolderValue();
+    protected $fileLocator;
+
+    /**
+     * @param \ProxyManager\FileLocator\FileLocatorInterface $fileLocator
+     */
+    public function __construct(FileLocatorInterface $fileLocator)
+    {
+        $this->fileLocator = $fileLocator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __invoke($className)
+    {
+        if (false === strrpos($className, '\\' . NamingStrategyInterface::SEPARATOR . '\\')) {
+            return false;
+        }
+
+        $file = $this->fileLocator->getProxyFileName($className);
+
+        if (! file_exists($file)) {
+            return false;
+        }
+
+        return (bool) require_once $file;
+    }
 }

@@ -16,18 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
 
 /**
- * Value holder marker
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @return object|null the wrapped value
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
      */
-    public function getWrappedValueHolderValue();
+    public function testBodyStructure()
+    {
+        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+
+        $magicSleep = new IsProxyInitialized($valueHolder);
+
+        $this->assertSame('isProxyInitialized', $magicSleep->getName());
+        $this->assertCount(0, $magicSleep->getParameters());
+        $this->assertSame('return null !== $this->bar;', $magicSleep->getBody());
+    }
 }

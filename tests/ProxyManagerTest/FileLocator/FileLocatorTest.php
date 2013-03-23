@@ -16,18 +16,37 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTest\FileLocator;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\FileLocator\FileLocator;
 
 /**
- * Value holder marker
+ * Tests for {@see \ProxyManager\FileLocator\FileLocator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class FileLocatorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @return object|null the wrapped value
+     * @covers \ProxyManager\FileLocator\FileLocator::__construct
+     * @covers \ProxyManager\FileLocator\FileLocator::getProxyFileName
      */
-    public function getWrappedValueHolderValue();
+    public function testGetProxyFileName()
+    {
+        $locator = new FileLocator(__DIR__);
+
+        $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'FooBarBaz.php', $locator->getProxyFileName('Foo\\Bar\\Baz'));
+        $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'Foo_Bar_Baz.php', $locator->getProxyFileName('Foo_Bar_Baz'));
+    }
+
+    /**
+     * @covers \ProxyManager\FileLocator\FileLocator::__construct
+     */
+    public function testRejectsNonExistingDirectory()
+    {
+        $this->setExpectedException('ProxyManager\\Exception\\InvalidProxyDirectoryException');
+        new FileLocator(__DIR__ . '/non-existing');
+    }
 }

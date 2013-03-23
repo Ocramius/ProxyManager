@@ -16,18 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTest\Exception;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Exception\InvalidProxyDirectoryException;
 
 /**
- * Value holder marker
+ * Tests for {@see \ProxyManager\Exception\InvalidProxyDirectoryException}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class InvalidProxyDirectoryExceptionTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @return object|null the wrapped value
+     * @covers \ProxyManager\Exception\InvalidProxyDirectoryException::proxyDirectoryNotFound
      */
-    public function getWrappedValueHolderValue();
+    public function testProxyDirectoryNotFound()
+    {
+        $exception = InvalidProxyDirectoryException::proxyDirectoryNotFound('foo/bar');
+
+        $this->assertSame('Provided directory "foo/bar" does not exist', $exception->getMessage());
+    }
 }

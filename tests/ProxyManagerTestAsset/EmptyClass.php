@@ -16,18 +16,14 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTestAsset;
 
 /**
- * Value holder marker
+ * Base test asset
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class EmptyClass
 {
-    /**
-     * @return object|null the wrapped value
-     */
-    public function getWrappedValueHolderValue();
 }

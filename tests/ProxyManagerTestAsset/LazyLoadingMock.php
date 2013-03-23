@@ -16,18 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTestAsset;
 
 /**
- * Value holder marker
+ * Base test class to catch instantiations of lazy loading objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class LazyLoadingMock
 {
     /**
-     * @return object|null the wrapped value
+     * @var mixed
      */
-    public function getWrappedValueHolderValue();
+    public $initializer;
+
+    /**
+     * @param mixed $initializer
+     */
+    public function __construct($initializer)
+    {
+        $this->initializer = $initializer;
+    }
 }

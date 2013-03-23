@@ -16,18 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue;
 
 /**
- * Value holder marker
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ValueHolderInterface extends ProxyInterface
+class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @return object|null the wrapped value
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue::__construct
      */
-    public function getWrappedValueHolderValue();
+    public function testBodyStructure()
+    {
+        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
+
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $getter = new GetWrappedValueHolderValue($valueHolder);
+
+        $this->assertSame('getWrappedValueHolderValue', $getter->getName());
+        $this->assertCount(0, $getter->getParameters());
+        $this->assertSame('return $this->foo;', $getter->getBody());
+    }
 }
