@@ -21,7 +21,7 @@
     ],
     "require": {
         "php":    ">=5.3.3",
-        "jms/cg": "1.0.*"
+        "jms/cg": "dev-master@dev"
     },
     "require-dev": {
         "phpunit/phpunit":           ">=3.7",
