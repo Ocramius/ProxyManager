@@ -119,24 +119,20 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($proxy->isProxyInitialized());
     }
 
-    public function testPropertyUnset()
+    /**
+     * @dataProvider getPropertyAccessProxies
+     */
+    public function testPropertyUnset($instance, $proxy, $publicProperty)
     {
-        $this->markTestSkipped('Feature not yet implemented');
-        $instance  = new BaseClass();
-        $proxyName = $this->generateProxy(get_class($instance));
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
 
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
-        $proxy = new $proxyName($this->createInitializer($instance));
-
-        $this->assertFalse($proxy->isProxyInitialized());
-
-        unset($proxy->publicProperty);
-
-        $this->assertFalse(isset($proxy->publicProperty));
-        $this->assertFalse(isset($instance->publicProperty));
+        $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
+        unset($proxy->$publicProperty);
 
         $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
+
+        $this->assertFalse(isset($instance->$publicProperty));
+        $this->assertFalse(isset($proxy->$publicProperty));
     }
 
     /**

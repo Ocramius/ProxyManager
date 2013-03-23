@@ -33,6 +33,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicIsset;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\SetProxyInitializer;
 
@@ -72,6 +73,7 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
             '__get'    => true,
             '__set'    => true,
             '__isset'  => true,
+            '__unset'  => true,
             '__clone'  => true,
             '__sleep'  => true,
             '__wakeup' => true,
@@ -97,6 +99,7 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
         $generated->setMethod(new MagicGet($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicSet($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicIsset($originalClass, $initializer, $valueHolder));
+        $generated->setMethod(new MagicUnset($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicClone($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicSleep($originalClass, $initializer, $valueHolder));
         $generated->setMethod(new MagicWakeup($originalClass));
