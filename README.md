@@ -107,6 +107,8 @@ Here's how you solve this problem with the lazy loading value holders provided b
     $proxy->doFoo(); // OK!
     ```
 
+More documentation on usage of the lazy loading value holders can be found [in the `docs` directory](https://github.com/Ocramius/ProxyManager/tree/master/docs).
+
 ## Access Interceptors
 
 An access interceptor allows you to execute logic before and after a particular method is executed or a particular
