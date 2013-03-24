@@ -49,6 +49,12 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
     /**
      * @outputBuffering
      * @dataProvider getTestedClasses
+     *
+     * @param string $className
+     * @param array  $methods
+     * @param array  $properties
+     *
+     * @return void
      */
     public function testProxyInstantiationPerformance($className, array $methods, array $properties)
     {
@@ -308,9 +314,7 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
     private function endCapturing($messageTemplate)
     {
         $time     = microtime(true) - $this->startTime;
-        $overhead = memory_get_usage();
         $memory   = memory_get_usage() - $this->startMemory;
-        $memory   -= memory_get_usage() - $overhead;
 
         echo sprintf($messageTemplate, $time, $memory / 1024) . "\n";
 
