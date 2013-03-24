@@ -324,6 +324,12 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Display comparison between two profiles
+     * 
+     * @param array $baseProfile
+     * @param array $proxyProfile
+     */
     private function compareProfile(array $baseProfile, array $proxyProfile)
     {
         $timeOverhead   = ($proxyProfile['time'] / $baseProfile['time']) * 100;
