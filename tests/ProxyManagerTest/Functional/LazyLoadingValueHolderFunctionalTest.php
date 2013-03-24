@@ -72,6 +72,23 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCallsAfterCloning($instance, $method, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
+        $proxy  = new $proxyName($this->createInitializer($instance));
+        $cloned = clone $proxy;
+
+        $this->assertTrue($cloned->isProxyInitialized());
+        $this->assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
+        $this->assertSame($expectedValue, call_user_func_array(array($cloned, $method), $params));
+        $this->assertEquals($instance, $cloned->getWrappedValueHolderValue());
+    }
+
+    /**
      * @dataProvider getPropertyAccessProxies
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
