@@ -95,7 +95,10 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
         }
 
         foreach ($properties as $property) {
-            $this->profilePropertyAccess($className, $instances, $proxies, $property);
+            $this->profilePropertyWrites($className, $instances, $proxies, $property);
+            $this->profilePropertyReads($className, $instances, $proxies, $property);
+            $this->profilePropertyIsset($className, $instances, $proxies, $property);
+            $this->profilePropertyUnset($className, $instances, $proxies, $property);
         }
     }
 
@@ -148,7 +151,7 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
      * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
      * @param string                                     $property
      */
-    private function profilePropertyAccess($className, array $instances, array $proxies, $property)
+    private function profilePropertyWrites($className, array $instances, array $proxies, $property)
     {
         $iterations = count($instances);
 
@@ -171,6 +174,18 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
             $iterations . ' writes of proxied ' . $className . '::' . $property . ': %fms / %fKb'
         );
         $this->compareProfile($baseProfile, $proxyProfile);
+    }
+
+    /**
+     * @param string                                     $className
+     * @param object[]                                   $instances
+     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
+     * @param string                                     $property
+     */
+    private function profilePropertyReads($className, array $instances, array $proxies, $property)
+    {
+        $iterations = count($instances);
+
         $this->startCapturing();
 
         foreach ($instances as $instance) {
@@ -190,6 +205,18 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
             $iterations . ' reads of proxied ' . $className . '::' . $property . ': %fms / %fKb'
         );
         $this->compareProfile($baseProfile, $proxyProfile);
+    }
+
+    /**
+     * @param string                                     $className
+     * @param object[]                                   $instances
+     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
+     * @param string                                     $property
+     */
+    private function profilePropertyIsset($className, array $instances, array $proxies, $property)
+    {
+        $iterations = count($instances);
+
         $this->startCapturing();
 
         foreach ($instances as $instance) {
@@ -209,6 +236,18 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
             $iterations . ' isset of proxied ' . $className . '::' . $property . ': %fms / %fKb'
         );
         $this->compareProfile($baseProfile, $proxyProfile);
+    }
+
+    /**
+     * @param string                                     $className
+     * @param object[]                                   $instances
+     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
+     * @param string                                     $property
+     */
+    private function profilePropertyUnset($className, array $instances, array $proxies, $property)
+    {
+        $iterations = count($instances);
+
         $this->startCapturing();
 
         foreach ($instances as $instance) {
