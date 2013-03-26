@@ -20,11 +20,8 @@ namespace ProxyManagerTest\Functional;
 
 use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
-use Closure;
 use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject as Mock;
 use ProxyManager\Configuration;
-use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -48,11 +45,109 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxyName = $this->generateProxy(get_class($instance));
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
-        $proxy = new $proxyName($instance);
+        $proxy     = new $proxyName($instance);
 
-        //$this->assertFalse($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
-        //$this->assertTrue($proxy->isProxyInitialized());
+        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
+    }
+
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCallsWithPrefixListener($instance, $method, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $proxy     = new $proxyName($instance);
+        $listener  = $this->getMock('stdClass', array('__invoke'));
+        $listener
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($proxy, $instance, $method, $params, false);
+
+        $proxy->setMethodPrefixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+                $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
+            }
+        );
+
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
+    }
+
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCallsWithPrefixListenerReturnsEarly($instance, $method, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $proxy     = new $proxyName($instance);
+        $random    = uniqid();
+
+        $proxy->setMethodPrefixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($random) {
+                $returnEarly = true;
+
+                return $random;
+            }
+        );
+
+        $this->assertSame($random, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
+    }
+
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCallsWithSuffixListener($instance, $method, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $proxy     = new $proxyName($instance);
+        $listener  = $this->getMock('stdClass', array('__invoke'));
+        $listener
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($proxy, $instance, $method, $params, $expectedValue, false);
+
+        $proxy->setMethodSuffixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) {
+                $listener->__invoke($proxy, $instance, $method, $params, $returnValue, $returnEarly);
+            }
+        );
+
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
+    }
+
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCallsWithSuffixListenerReturnsEarly($instance, $method, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $proxy     = new $proxyName($instance);
+        $random    = uniqid();
+
+        $proxy->setMethodSuffixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($random) {
+                $returnEarly = true;
+
+                return $random;
+            }
+        );
+
+        $this->assertSame($random, call_user_func_array(array($proxy, $method), $params));
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
     }
 
@@ -61,13 +156,10 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testMethodCallsAfterUnSerialization($instance, $method, $params, $expectedValue)
     {
-        $this->markTestIncomplete('TBD');
         $proxyName = $this->generateProxy(get_class($instance));
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $proxy     = unserialize(serialize(new $proxyName($instance)));
 
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
-        $proxy = unserialize(serialize(new $proxyName($this->createInitializer($instance))));
-
-        $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
@@ -77,14 +169,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testMethodCallsAfterCloning($instance, $method, $params, $expectedValue)
     {
-        $this->markTestIncomplete('TBD');
         $proxyName = $this->generateProxy(get_class($instance));
 
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
-        $proxy  = new $proxyName($this->createInitializer($instance));
-        $cloned = clone $proxy;
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        $proxy     = new $proxyName($instance);
+        $cloned    = clone $proxy;
 
-        $this->assertTrue($cloned->isProxyInitialized());
         $this->assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
         $this->assertSame($expectedValue, call_user_func_array(array($cloned, $method), $params));
         $this->assertEquals($instance, $cloned->getWrappedValueHolderValue());
@@ -95,10 +185,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
     {
-        $this->markTestIncomplete('TBD');
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
-        $this->assertTrue($proxy->isProxyInitialized());
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
@@ -107,12 +195,10 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        $this->markTestIncomplete('TBD');
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
-        $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($newValue, $proxy->$publicProperty);
         $this->assertSame($newValue, $proxy->getWrappedValueHolderValue()->$publicProperty);
     }
@@ -122,10 +208,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testPropertyExistence($instance, $proxy, $publicProperty)
     {
-        $this->markTestIncomplete('TBD');
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
@@ -134,12 +218,10 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testPropertyAbsence($instance, $proxy, $publicProperty)
     {
-        $this->markTestIncomplete('TBD');
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         $instance->$publicProperty = null;
         $this->assertFalse(isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
     }
 
     /**
@@ -148,12 +230,10 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     public function testPropertyUnset($instance, $proxy, $publicProperty)
     {
         $this->markTestIncomplete('TBD');
-        /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
 
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         unset($proxy->$publicProperty);
-
-        $this->assertTrue($proxy->isProxyInitialized());
 
         $this->assertFalse(isset($instance->$publicProperty));
         $this->assertFalse(isset($proxy->$publicProperty));
@@ -174,37 +254,9 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $strategy           = new DefaultGeneratorStrategy();
 
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
-        echo $strategy->generate($generatedClass);
         eval($strategy->generate($generatedClass));
 
         return $generatedClassName;
-    }
-
-    /**
-     * @param object $realInstance
-     * @param Mock   $initializerMatcher
-     *
-     * @return \Closure
-     */
-    private function createPrefixListener($realInstance, Mock $initializerMatcher = null)
-    {
-        $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', array('__invoke'));
-
-        return function (
-            LazyLoadingInterface $proxy,
-            & $wrappedObject,
-            $method,
-            $params
-        ) use (
-            $initializerMatcher,
-            $realInstance
-            ) {
-            $proxy->setProxyInitializer(null);
-
-            $wrappedObject = $realInstance;
-
-            $initializerMatcher->__invoke($proxy, $wrappedObject, $method, $params);
-        };
     }
 
     /**
@@ -216,7 +268,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     {
         return array(
             array(new BaseClass(), 'publicMethod', array(), 'publicMethodDefault'),
-            array(new BaseClass(), 'publicTypeHintedMethod', array(new \stdClass()), 'publicTypeHintedMethodDefault'),
+            array(
+                new BaseClass(),
+                'publicTypeHintedMethod',
+                array('param' => new \stdClass()),
+                'publicTypeHintedMethodDefault'
+            ),
             array(new BaseClass(), 'publicByReferenceMethod', array(), 'publicByReferenceMethodDefault'),
         );
     }
@@ -228,7 +285,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function getPropertyAccessProxies()
     {
-        return array();
         $instance1  = new BaseClass();
         $proxyName1 = $this->generateProxy(get_class($instance1));
         $instance2  = new BaseClass();
@@ -237,13 +293,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         return array(
             array(
                 $instance1,
-                new $proxyName1($this->createInitializer($instance1)),
+                new $proxyName1($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
             array(
                 $instance2,
-                unserialize(serialize(new $proxyName2($this->createInitializer($instance2)))),
+                unserialize(serialize(new $proxyName2($instance2))),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
