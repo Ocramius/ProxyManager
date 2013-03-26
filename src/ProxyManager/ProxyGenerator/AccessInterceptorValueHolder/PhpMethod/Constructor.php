@@ -75,7 +75,7 @@ class Constructor extends PhpMethod
             ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
             . '$this->' . $valueHolder->getName() . " = \$wrappedObject;\n"
             . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
-            . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;\n"
+            . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
         );
     }
 }

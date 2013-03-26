@@ -82,9 +82,9 @@ class AccessInterceptorValueHolderGenerator implements GeneratorInterface
             function (ReflectionMethod $method) use ($excluded) {
                 return ! (
                     $method->isConstructor()
-                        || isset($excluded[strtolower($method->getName())])
-                        || $method->isFinal()
-                        || $method->isStatic()
+                    || isset($excluded[strtolower($method->getName())])
+                    || $method->isFinal()
+                    || $method->isStatic()
                 );
             }
         );

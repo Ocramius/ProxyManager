@@ -43,12 +43,12 @@ class MagicUnset extends PhpMethod
     ) {
         $inheritDoc  = $originalClass->hasMethod('__isset') ? "\n * {@inheritDoc}\n * " : '';
 
-        parent::__construct('__isset');
+        parent::__construct('__unset');
         $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n */");
         $this->setParameters(array(new PhpParameter('name')));
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(
-                '$returnValue = isset($this->' . $valueHolder->getName() . '->$name);',
+                'unset($this->' . $valueHolder->getName() . '->$name);' . "\n\n" . '$returnValue = true;',
                 $this,
                 $valueHolder,
                 $prefixInterceptors,
