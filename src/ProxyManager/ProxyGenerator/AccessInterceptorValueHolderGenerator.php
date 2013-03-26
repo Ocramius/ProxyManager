@@ -23,7 +23,10 @@ use CG\Generator\PhpProperty;
 use CG\Proxy\GeneratorInterface;
 
 use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup;
+use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\SetMethodPrefixInterceptor;
+use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\SetMethodSuffixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PhpProperty\MethodPrefixInterceptors;
+
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\Constructor;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\InterceptedMethod;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicClone;
@@ -94,6 +97,8 @@ class AccessInterceptorValueHolderGenerator implements GeneratorInterface
 
         $generated->setMethod(new Constructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
         $generated->setMethod(new GetWrappedValueHolderValue($valueHolder));
+        $generated->setMethod(new SetMethodPrefixInterceptor($prefixInterceptors));
+        $generated->setMethod(new SetMethodSuffixInterceptor($suffixInterceptors));
         $generated->setMethod(new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
         $generated->setMethod(new MagicGet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
         $generated->setMethod(new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));

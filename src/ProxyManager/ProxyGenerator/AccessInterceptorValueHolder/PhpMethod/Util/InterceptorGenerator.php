@@ -60,22 +60,24 @@ class InterceptorGenerator
         /* @var $parameter \CG\Generator\PhpParameter */
         foreach ($method->getParameters() as $parameter) {
             $parameterName = $parameter->getName();
-            $params[]      = var_export($parameterName, true) . ' => ' . $parameter->getName();
+            $params[]      = var_export($parameterName, true) . ' => $' . $parameter->getName();
         }
 
         $paramsString = 'array(' . implode(', ', $params) . ')';
 
         return "if (isset(\$this->$prefixInterceptors" . "[$name])) {\n"
+            . "    \$returnEarly       = false;\n"
             . "    \$prefixReturnValue = \$this->$prefixInterceptors" . "[$name]->__invoke("
-            . "\$this, \$this->$valueHolder, $name, $paramsString, & \$returnEarly);\n\n"
+            . "\$this, \$this->$valueHolder, $name, $paramsString, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
             . "        return \$prefixReturnValue;\n"
             . "    }\n"
             . "}\n\n"
             . $methodBody . "\n\n"
             . "if (isset(\$this->$suffixInterceptors" . "[$name])) {\n"
+            . "    \$returnEarly       = false;\n"
             . "    \$suffixReturnValue = \$this->$suffixInterceptors" . "[$name]->__invoke("
-            . "\$this, \$this->$valueHolder, $name, $paramsString, \$returnValue, & \$returnEarly);\n\n"
+            . "\$this, \$this->$valueHolder, $name, $paramsString, \$returnValue, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
             . "        return \$suffixReturnValue;\n"
             . "    }\n"

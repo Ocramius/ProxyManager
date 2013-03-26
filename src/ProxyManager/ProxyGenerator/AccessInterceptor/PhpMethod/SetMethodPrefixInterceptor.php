@@ -16,33 +16,35 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod;
+
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpParameter;
+use CG\Generator\PhpProperty;
 
 /**
- * Access interceptor object marker
+ * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodPrefixInterceptor}
+ * for access interceptor objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface AccessInterceptorInterface extends ProxyInterface
+class SetMethodPrefixInterceptor extends PhpMethod
 {
     /**
-     * Set or remove the prefix interceptor for a method
-     *
-     * @param string        $methodName
-     * @param \Closure|null $prefixInterceptor
-     *
-     * @return void
+     * Constructor
      */
-    public function setMethodPrefixInterceptor($methodName, \Closure $prefixInterceptor = null);
+    public function __construct(PhpProperty $prefixInterceptor)
+    {
+        parent::__construct('setMethodPrefixInterceptor');
 
-    /**
-     * Set or remove the suffix interceptor for a method
-     *
-     * @param string        $methodName
-     * @param \Closure|null $suffixInterceptor
-     *
-     * @return void
-     */
-    public function setMethodSuffixInterceptor($methodName, \Closure $suffixInterceptor = null);
+        $interceptor = new PhpParameter('prefixInterceptor');
+
+        $interceptor->setType('Closure');
+        $interceptor->setDefaultValue(null);
+        $this->addParameter(new PhpParameter('methodName'));
+        $this->addParameter($interceptor);
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setBody('$this->' . $prefixInterceptor->getName() . '[$methodName] = $prefixInterceptor;');
+    }
 }

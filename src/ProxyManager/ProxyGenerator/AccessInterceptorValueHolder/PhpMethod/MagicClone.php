@@ -50,10 +50,10 @@ class MagicClone extends PhpMethod
         $this->setBody(
             "\$this->$valueHolder = clone \$this->$valueHolder;\n\n"
             . "foreach (\$this->$prefix as \$key => \$value) {\n"
-            . "    \$this->$prefix\[\$key] = clone \$value;\n"
+            . "    \$this->$prefix" . "[\$key] = clone \$value;\n"
             . "}\n\n"
             . "foreach (\$this->$suffix as \$key => \$value) {\n"
-            . "    \$this->$suffix\[\$key] = clone \$value;\n"
+            . "    \$this->$suffix" . "[\$key] = clone \$value;\n"
             . "}"
         );
     }
