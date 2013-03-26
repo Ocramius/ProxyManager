@@ -16,40 +16,44 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod;
 
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\Util\InterceptorGenerator;
 use ReflectionClass;
 use CG\Generator\PhpMethod;
+use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
-use ReflectionProperty;
 
 /**
- * Magic `__wakeup` for lazy loading value holder objects
+ * Magic `__set` for method interceptor value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicWakeup extends PhpMethod
+class MagicSet extends PhpMethod
 {
     /**
      * Constructor
      */
-    public function __construct(ReflectionClass $originalClass)
-    {
-        parent::__construct('__wakeup');
+    public function __construct(
+        ReflectionClass $originalClass,
+        PhpProperty $valueHolder,
+        PhpProperty $prefixInterceptors,
+        PhpProperty $suffixInterceptors
+    ) {
+        $inheritDoc  = $originalClass->hasMethod('__set') ? "\n * {@inheritDoc}\n * " : '';
 
-        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
-
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
-        }
-
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        parent::__construct('__set');
+        $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n */");
+        $this->setParameters(array(new PhpParameter('name'), new PhpParameter('value')));
         $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
+            InterceptorGenerator::createInterceptedMethodBody(
+                '$returnValue = ($this->' . $valueHolder->getName() . '->$name = $value);',
+                $this,
+                $valueHolder,
+                $prefixInterceptors,
+                $suffixInterceptors
+            )
         );
     }
 }

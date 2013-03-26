@@ -22,9 +22,12 @@ use CG\Generator\PhpClass;
 use CG\Generator\PhpProperty;
 use CG\Proxy\GeneratorInterface;
 
+use ProxyManager\ProxyGenerator\ValueHolder\PhpMethod\GetWrappedValueHolderValue;
+
+use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup;
+
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor;
@@ -34,7 +37,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicIsset;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicUnset;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\SetProxyInitializer;
 
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\InitializerProperty;

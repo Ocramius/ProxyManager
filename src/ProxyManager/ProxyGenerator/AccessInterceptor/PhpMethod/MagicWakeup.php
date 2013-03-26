@@ -16,27 +16,40 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod;
 
+use ReflectionClass;
 use CG\Generator\PhpMethod;
 use CG\Generator\PhpProperty;
+use ReflectionProperty;
 
 /**
- * Implementation for {@see \ProxyManager\Proxy\ValueHolderInterface::getWrappedValueHolderValue}
- * for lazy loading value holder objects
+ * Magic `__wakeup` for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class GetWrappedValueHolderValue extends PhpMethod
+class MagicWakeup extends PhpMethod
 {
     /**
      * Constructor
      */
-    public function __construct(PhpProperty $valueHolderProperty)
+    public function __construct(ReflectionClass $originalClass)
     {
-        parent::__construct('getWrappedValueHolderValue');
-        $this->setDocblock("/**\n * {@inheritDoc}\n */");
-        $this->setBody('return $this->' . $valueHolderProperty->getName() . ';');
+        parent::__construct('__wakeup');
+
+        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
+        /* @var $publicProperties \ReflectionProperty[] */
+        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $unsetProperties  = array();
+
+        foreach ($publicProperties as $publicProperty) {
+            $unsetProperties[] = '$this->' . $publicProperty->getName();
+        }
+
+        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setBody(
+            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
+        );
     }
 }

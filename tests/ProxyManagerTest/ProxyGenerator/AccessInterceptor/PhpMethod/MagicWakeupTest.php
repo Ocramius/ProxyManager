@@ -16,14 +16,14 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\PhpMethod;
 
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
+use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup}
+ * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
@@ -31,7 +31,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup;
 class MagicWakeupTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup::__construct
+     * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup::__construct
      */
     public function testBodyStructure()
     {
@@ -47,7 +47,7 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicWakeup::__construct
+     * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup::__construct
      */
     public function testBodyStructureWithoutPublicProperties()
     {
