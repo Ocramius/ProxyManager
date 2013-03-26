@@ -19,24 +19,24 @@
 namespace ProxyManagerTest\ProxyGenerator;
 
 use CG\Generator\PhpClass;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator}
+ * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
- * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator
+ * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator
  */
-class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
+class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
 {
     /**
      * {@inheritDoc}
      */
     protected function getProxyGenerator()
     {
-        return new LazyLoadingValueHolderGenerator();
+        return new AccessInterceptorValueHolderGenerator();
     }
 
     /**
@@ -45,7 +45,7 @@ class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
     protected function getExpectedImplementedInterfaces()
     {
         return array(
-            'ProxyManager\\Proxy\\LazyLoadingInterface',
+            'ProxyManager\\Proxy\\AccessInterceptorInterface',
             'ProxyManager\\Proxy\\ValueHolderInterface',
         );
     }
