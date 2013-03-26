@@ -31,6 +31,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\Construct
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\InterceptedMethod;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicClone;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicGet;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicIsset;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicSet;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicUnset;
 
@@ -101,6 +102,7 @@ class AccessInterceptorValueHolderGenerator implements GeneratorInterface
         $generated->setMethod(new SetMethodSuffixInterceptor($suffixInterceptors));
         $generated->setMethod(new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
         $generated->setMethod(new MagicGet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
+        $generated->setMethod(new MagicIsset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
         $generated->setMethod(new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
         $generated->setMethod(new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
         $generated->setMethod(new MagicSleep($originalClass, $valueHolder));
