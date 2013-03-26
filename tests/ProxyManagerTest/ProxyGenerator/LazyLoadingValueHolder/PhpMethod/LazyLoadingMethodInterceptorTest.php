@@ -31,7 +31,7 @@ use ReflectionMethod;
 class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor::generateMethod
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor
      */
     public function testBodyStructure()
     {
@@ -55,7 +55,7 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor::generateMethod
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor
      */
     public function testBodyStructureWithoutParameters()
     {
