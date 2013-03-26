@@ -29,7 +29,7 @@ use ProxyManagerTest\ProxyGenerator\PhpProperty\AbstractUniquePropertyNameTest;
  *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\PhpProperty\MethodSuffixInterceptors
  */
-class MethodSuffixInterceptorstTest extends AbstractUniquePropertyNameTest
+class MethodSuffixInterceptorsTest extends AbstractUniquePropertyNameTest
 {
     /**
      * {@inheritDoc}

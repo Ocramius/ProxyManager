@@ -33,10 +33,11 @@ use ReflectionMethod;
 class InterceptedMethod extends PhpMethod
 {
     /**
-     * ReflectionClass $originalClass,
-     * PhpProperty $valueHolderProperty,
-     * PhpProperty $prefixInterceptors,
-     * PhpProperty $suffixInterceptors
+     * @param \ReflectionMethod         $originalMethod
+     * @param \CG\Generator\PhpProperty $valueHolderProperty
+     * @param \CG\Generator\PhpProperty $prefixInterceptors
+     * @param \CG\Generator\PhpProperty $suffixInterceptors
+     *
      * @return InterceptedMethod|static
      */
     public static function generateMethod(
