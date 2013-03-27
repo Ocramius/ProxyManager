@@ -63,7 +63,7 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
         $instances   = array();
         /* @var $proxies \ProxyManager\Proxy\LazyLoadingInterface[] */
         $proxies     = array();
-        $initializer = function (LazyLoadingInterface $proxy, & $valueHolder) use ($className) {
+        $initializer = function (& $valueHolder, LazyLoadingInterface $proxy) use ($className) {
             $proxy->setProxyInitializer(null);
 
             $valueHolder = new $className();

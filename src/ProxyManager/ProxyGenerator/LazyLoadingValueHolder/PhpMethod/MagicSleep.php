@@ -47,7 +47,7 @@ class MagicSleep extends PhpMethod
         $this->setDocblock('/**' . $inheritDoc . "\n */");
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, $this->' . $valueHolder . ', \'__sleep\', array());' . "\n\n"
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array());' . "\n\n"
             . 'return array(' . var_export($valueHolder, true) . ');'
         );
     }

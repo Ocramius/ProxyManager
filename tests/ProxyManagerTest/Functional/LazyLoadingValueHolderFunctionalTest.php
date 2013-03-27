@@ -183,8 +183,8 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', array('__invoke'));
 
         return function (
-            LazyLoadingInterface $proxy,
             & $wrappedObject,
+            LazyLoadingInterface $proxy,
             $method,
             $params
         ) use (

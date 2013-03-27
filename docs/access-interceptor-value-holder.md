@@ -77,9 +77,10 @@ A prefix interceptor (executed before method logic) should have following signat
  * @var object $proxy       the proxy that intercepted the method call
  * @var object $instance    the wrapped instance within the proxy
  * @var string $method      name of the called method
- * @var array  $params      sorted array of parameters passed to the intercepted method, indexed by parameter name
- * @var bool   $returnEarly flag to tell the interceptor proxy to return early, returning the interceptor's
- *                          return value instead of executing the method logic
+ * @var array  $params      sorted array of parameters passed to the intercepted
+ *                          method, indexed by parameter name
+ * @var bool   $returnEarly flag to tell the interceptor proxy to return early, returning
+ *                          the interceptor's return value instead of executing the method logic
  *
  * @return mixed
  */
@@ -93,14 +94,15 @@ A suffix interceptor (executed after method logic) should have following signatu
  * @var object $proxy       the proxy that intercepted the method call
  * @var object $instance    the wrapped instance within the proxy
  * @var string $method      name of the called method
- * @var array  $params      sorted array of parameters passed to the intercepted method, indexed by parameter name
+ * @var array  $params      sorted array of parameters passed to the intercepted
+ *                          method, indexed by parameter name
  * @var mixed  $returnValue the return value of the intercepted method
- * @var bool   $returnEarly flag to tell the proxy to return early, returning the interceptor's return value
- *                          instead of the value produced by the method
+ * @var bool   $returnEarly flag to tell the proxy to return early, returning the interceptor's
+ *                          return value instead of the value produced by the method
  *
  * @return mixed
  */
-$prefixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) {};
+$suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) {};
 ```
 
 ## Tuning performance for production

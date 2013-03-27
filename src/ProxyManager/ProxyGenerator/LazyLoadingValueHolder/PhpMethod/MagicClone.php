@@ -47,7 +47,7 @@ class MagicClone extends PhpMethod
         $this->setDocblock('/**' . $inheritDoc . "\n */");
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, $this->' . $valueHolder . ', \'__clone\', array());' . "\n\n"
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__clone\', array());' . "\n\n"
             . '$this->' . $valueHolder . ' = clone $this->' . $valueHolder . ';'
         );
     }
