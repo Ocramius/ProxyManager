@@ -16,32 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\PhpProperty;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+use ProxyManager\ProxyGenerator\AccessInterceptor\PhpProperty\MethodPrefixInterceptors;
+use ProxyManagerTest\ProxyGenerator\PhpProperty\AbstractUniquePropertyNameTest;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\PhpProperty\MethodPrefixInterceptors}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\PhpProperty\MethodPrefixInterceptors
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class MethodPrefixInterceptorsTest extends AbstractUniquePropertyNameTest
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * {@inheritDoc}
      */
-    public function testBodyStructure()
+    protected function createProperty()
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
-
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
-
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        return new MethodPrefixInterceptors();
     }
 }

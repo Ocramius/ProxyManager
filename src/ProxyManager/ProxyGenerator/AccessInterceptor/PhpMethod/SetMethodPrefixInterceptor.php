@@ -16,40 +16,35 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod;
 
-use ReflectionClass;
 use CG\Generator\PhpMethod;
+use CG\Generator\PhpParameter;
 use CG\Generator\PhpProperty;
-use ReflectionProperty;
 
 /**
- * Magic `__wakeup` for lazy loading value holder objects
+ * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodPrefixInterceptor}
+ * for access interceptor objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicWakeup extends PhpMethod
+class SetMethodPrefixInterceptor extends PhpMethod
 {
     /**
      * Constructor
      */
-    public function __construct(ReflectionClass $originalClass)
+    public function __construct(PhpProperty $prefixInterceptor)
     {
-        parent::__construct('__wakeup');
+        parent::__construct('setMethodPrefixInterceptor');
 
-        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
+        $interceptor = new PhpParameter('prefixInterceptor');
 
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
-        }
-
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
-        $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
-        );
+        $interceptor->setType('Closure');
+        $interceptor->setDefaultValue(null);
+        $this->addParameter(new PhpParameter('methodName'));
+        $this->addParameter($interceptor);
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setBody('$this->' . $prefixInterceptor->getName() . '[$methodName] = $prefixInterceptor;');
     }
 }

@@ -16,27 +16,37 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator;
 
-use CG\Generator\PhpMethod;
-use CG\Generator\PhpProperty;
+use CG\Generator\PhpClass;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 
 /**
- * Implementation for {@see \ProxyManager\Proxy\ValueHolderInterface::getWrappedValueHolderValue}
- * for lazy loading value holder objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator
  */
-class GetWrappedValueHolderValue extends PhpMethod
+class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
 {
     /**
-     * Constructor
+     * {@inheritDoc}
      */
-    public function __construct(PhpProperty $valueHolderProperty)
+    protected function getProxyGenerator()
     {
-        parent::__construct('getWrappedValueHolderValue');
-        $this->setDocblock("/**\n * {@inheritDoc}\n */");
-        $this->setBody('return $this->' . $valueHolderProperty->getName() . ';');
+        return new AccessInterceptorValueHolderGenerator();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getExpectedImplementedInterfaces()
+    {
+        return array(
+            'ProxyManager\\Proxy\\AccessInterceptorInterface',
+            'ProxyManager\\Proxy\\ValueHolderInterface',
+        );
     }
 }

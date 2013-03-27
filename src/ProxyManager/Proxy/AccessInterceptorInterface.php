@@ -26,4 +26,23 @@ namespace ProxyManager\Proxy;
  */
 interface AccessInterceptorInterface extends ProxyInterface
 {
+    /**
+     * Set or remove the prefix interceptor for a method
+     *
+     * @param string        $methodName
+     * @param \Closure|null $prefixInterceptor
+     *
+     * @return void
+     */
+    public function setMethodPrefixInterceptor($methodName, \Closure $prefixInterceptor = null);
+
+    /**
+     * Set or remove the suffix interceptor for a method
+     *
+     * @param string        $methodName
+     * @param \Closure|null $suffixInterceptor
+     *
+     * @return void
+     */
+    public function setMethodSuffixInterceptor($methodName, \Closure $suffixInterceptor = null);
 }

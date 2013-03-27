@@ -16,32 +16,40 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
-
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+namespace ProxyManagerTestAsset;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Base test class to catch instantiations of access interceptor value holders
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class AccessInterceptorValueHolderMock
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * @var mixed
      */
-    public function testBodyStructure()
+    public $instance;
+
+    /**
+     * @var mixed
+     */
+    public $prefixInterceptors;
+
+    /**
+     * @var mixed
+     */
+    public $suffixInterceptors;
+
+    /**
+     * @param mixed $instance
+     * @param mixed $prefixInterceptors
+     * @param mixed $suffixInterceptors
+     */
+    public function __construct($instance, $prefixInterceptors, $suffixInterceptors)
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
-
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
-
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        $this->instance           = $instance;
+        $this->prefixInterceptors = $prefixInterceptors;
+        $this->suffixInterceptors = $suffixInterceptors;
     }
 }

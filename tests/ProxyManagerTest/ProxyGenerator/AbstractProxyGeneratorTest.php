@@ -31,17 +31,9 @@ use ReflectionClass;
  */
 abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
 {
-    public function testExtendsOriginalClass()
-    {
-        $generator       = $this->getProxyGenerator();
-        $generatedClass  = new PhpClass('AbstractProxyGeneratorTest_' . uniqid());
-        $originalClass   = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-
-        $generator->generate($originalClass, $generatedClass);
-
-        $this->assertSame($originalClass->getName(), $generatedClass->getParentClassName());
-    }
-
+    /**
+     * Verifies that generated code is valid and implements expected interfaces
+     */
     public function testGeneratesValidCode()
     {
         $generator          = $this->getProxyGenerator();
@@ -60,10 +52,23 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($generatedClassName, $generatedReflection->getName());
         $this->assertSame($originalClass->getName(), $generatedReflection->getParentClass()->getName());
+
+        foreach ($this->getExpectedImplementedInterfaces() as $interface) {
+            $this->assertTrue($generatedReflection->implementsInterface($interface));
+        }
     }
 
     /**
+     * Retrieve a new generator instance
+     *
      * @return \CG\Proxy\GeneratorInterface
      */
     abstract protected function getProxyGenerator();
+
+    /**
+     * Retrieve interfaces that should be implemented by the generated code
+     *
+     * @return string[]
+     */
+    abstract protected function getExpectedImplementedInterfaces();
 }

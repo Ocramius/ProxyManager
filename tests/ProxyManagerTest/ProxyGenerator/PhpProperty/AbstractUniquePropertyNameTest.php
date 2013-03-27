@@ -16,32 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator\PhpProperty;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue}
+ * Base test for unique property names
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
+abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetWrappedValueHolderValue::__construct
+     * Verifies that a given property name is unique across two different instantiations of the property
      */
-    public function testBodyStructure()
+    public function testUniqueProperty()
     {
-        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
+        $property1 = $this->createProperty();
+        $property2 = $this->createProperty();
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-
-        $getter = new GetWrappedValueHolderValue($valueHolder);
-
-        $this->assertSame('getWrappedValueHolderValue', $getter->getName());
-        $this->assertCount(0, $getter->getParameters());
-        $this->assertSame('return $this->foo;', $getter->getBody());
+        $this->assertSame($property1->getName(), $property1->getName());
+        $this->assertNotEquals($property1->getName(), $property2->getName());
     }
+
+    /**
+     * @return \CG\Generator\PhpProperty
+     */
+    abstract protected function createProperty();
 }

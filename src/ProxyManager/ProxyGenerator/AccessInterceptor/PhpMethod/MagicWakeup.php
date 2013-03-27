@@ -16,32 +16,40 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+use ReflectionClass;
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpProperty;
+use ReflectionProperty;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Magic `__wakeup` for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class MagicWakeup extends PhpMethod
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * Constructor
      */
-    public function testBodyStructure()
+    public function __construct(ReflectionClass $originalClass)
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        parent::__construct('__wakeup');
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
+        /* @var $publicProperties \ReflectionProperty[] */
+        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $unsetProperties  = array();
 
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
+        foreach ($publicProperties as $publicProperty) {
+            $unsetProperties[] = '$this->' . $publicProperty->getName();
+        }
 
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setBody(
+            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
+        );
     }
 }
