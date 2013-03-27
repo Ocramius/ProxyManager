@@ -21,100 +21,42 @@ Currently, this library can generate [lazy loading value holders](http://www.mar
 which are a way to save performance and memory for objects that require a lot of dependencies or CPU cycles to be
 initialized, and may not always be used.
 
-#### What does a lazy loader value holder do?
-
-In userland, [lazy initialization](http://en.wikipedia.org/wiki/Lazy_initialization)
-looks like following:
-
 ```php
-class LazyHeavyComplexObject
-{
-    public function doFoo()
-    {
-        $this->init();
+$config  = new \ProxyManager\Configuration(); // customize this if needed for production
+$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($config);
 
-        // ... do foo
-    }
+$proxy = $factory->createProxy('MyApp\HeavyComplexObject', function ($proxy, &$wrappedObject, $method, $parameters) {
+    $wrappedObject = new HeavyComplexObject(); // instantiation logic here
 
-    private function init()
-    {
-        if ($this->initialized) {
-            return;
-        }
+    return true;
+});
 
-        $this->initialized = true;
-
-        // ... initialize everything
-    }
-}
+$proxy->doFoo();
 ```
 
-This code is horrible, and adds a lot of complexity that makes your test code even worse.
-
-Also, this kind of usage often ends up in coupling your code with a [Dependency Injection Container](http://martinfowler.com/articles/injection.html)
-or a framework that fetches dependencies for you. That way, further complexity is introduced, and some problems related
-with service location raise, as I've explained [here](http://ocramius.github.com/blog/zf2-and-symfony-service-proxies-with-doctrine-proxies/).
-
-Lazy loading value holders abstract this logic for you, hiding your complex, slow, performance-impacting objects behind
-tiny wrappers that have their same API, and that get initialized at first usage.
-
-#### How do I use Lazy Loading value holders?
-
-Here's how you solve this problem with the lazy loading value holders provided by `ocramius/proxy-manager`:
-
- 1. Write your "heavy" object
-
-    ```php
-    namespace MyApp;
-
-    class HeavyComplexObject
-    {
-        public function doFoo()
-        {
-            // ... do foo
-            echo 'OK!';
-            // just write your business logic
-            // don't worry about how heavy this object will be!
-        }
-    }
-    ```
-
- 2. Unleash the proxy manager
-
-    ```php
-    use ProxyManager\Configuration;
-    use ProxyManager\Factory\LazyLoadingValueHolderFactory as Factory;
-
-    $config  = new Configuration(); // customize this if needed for production
-    $factory = new Factory($config);
-
-    $proxy = $factory->createProxy(
-        'MyApp\HeavyComplexObject',
-        function ($proxy, &$wrappedObject, $method, $parameters) {
-            // you can add custom operations here, if you want
-
-            // inject dependencies into your HeavyComplexObject here
-            $wrappedObject = new HeavyComplexObject();
-
-            return true;
-        }
-    );
-    ```
- 3. Use the proxy! A proxy is a valid instance of `HeavyComplexObject`, you can use it everywhere!
-
-    ```php
-    // this will just work as before
-    $proxy->doFoo(); // OK!
-    ```
-
-More documentation on usage of the lazy loading value holders can be found [in the `docs` directory](https://github.com/Ocramius/ProxyManager/tree/master/docs).
+See the [complete documentation about lazy loading value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/lazy-loading-value-holder.md)
+in the `docs/` directory.
 
 ## Access Interceptors
 
 An access interceptor allows you to execute logic before and after a particular method is executed or a particular
 property is accessed, and it allows to manipulate parameters and return values depending on your needs.
 
-This feature is [planned](https://github.com/Ocramius/ProxyManager/issues/4).
+```php
+$config  = new \ProxyManager\Configuration(); // customize this if needed for production
+$factory = new \ProxyManager\Factory\AccessInterceptorValueHolderFactory($config);
+
+$proxy = $factory->createProxy(
+    new \My\Db\Connection(),
+    array('query' => function () { echo "Query being executed!\n"; }),
+    array('query' => function () { echo "Query completed!\n"; })
+);
+
+$proxy->query(); // produces "Query being executed!\nQuery completed!\n"
+```
+
+See the [complete documentation about access interceptor value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/access-interceptor-value-holder.md)
+in the `docs/` directory.
 
 ## Fallback Value Holders
 

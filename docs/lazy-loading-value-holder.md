@@ -1,7 +1,11 @@
 # Lazy Loading Value Holder Proxy
 
 A lazy loading value holder proxy is an object that is wrapping a lazily initialized "real" instance of the proxied
-class. In pseudo-code, it looks like following:
+class.
+
+## What is lazy loading?
+
+In pseudo-code, in userland, [lazy loading](http://www.martinfowler.com/eaaCatalog/lazyLoad.html) looks like following:
 
 ```php
 class MyObjectProxy
@@ -24,6 +28,18 @@ class MyObjectProxy
 }
 ```
 
+This code is problematic, and adds a lot of complexity that makes your unit tests' code even worse.
+
+Also, this kind of usage often ends up in coupling your code with a particular
+[Dependency Injection Container](http://martinfowler.com/articles/injection.html)
+or a framework that fetches dependencies for you.
+That way, further complexity is introduced, and some problems related
+with service location raise, as I've explained
+[in this article](http://ocramius.github.com/blog/zf2-and-symfony-service-proxies-with-doctrine-proxies/).
+
+Lazy loading value holders abstract this logic for you, hiding your complex, slow, performance-impacting objects behind
+tiny wrappers that have their same API, and that get initialized at first usage.
+
 ## When do I use a lazy value holder?
 
 You usually need a lazy value holder in cases where following applies
@@ -31,10 +47,29 @@ You usually need a lazy value holder in cases where following applies
  * your object takes a lot of time and memory to be initialized (with all dependencies)
  * your object is not always used, and the instantiation overhead can be avoided
 
-## Instantiation
+## Usage examples
 
 [ProxyManager](https://github.com/Ocramius/ProxyManager) provides a factory that eases instantiation of lazy loading
-value holders:
+value holders. To use it, follow these steps:
+
+First of all, define your object's logic without taking care of lazy loading:
+
+```php
+namespace MyApp;
+
+class HeavyComplexObject
+{
+    public function doFoo()
+    {
+        // ... do foo
+        echo 'OK!';
+        // just write your business logic
+        // don't worry about how heavy this object will be!
+    }
+}
+```
+
+Then use the proxy manager to create a lazy version of the object (as a proxy):
 
 ```php
 namespace MyApp;
@@ -56,8 +91,13 @@ $initializer = function (LazyLoadingInterface $proxy, & $wrappedObject, $method,
 };
 
 $instance = $factory->createProxy('MyApp\HeavyComplexObject', $initializer);
+```
 
-$instance->doFoo();
+You can now simply use your object as before:
+
+```php
+// this will just work as before
+$proxy->doFoo(); // OK!
 ```
 
 ## Lazy Initialization
@@ -72,6 +112,8 @@ The initializer closure signature should be as following:
  * @var string $method        the name of the method that triggered lazy initialization
  * @var string $method        an ordered list of parameters passed to the method that triggered initialization, indexed
  *                            by parameter name
+ *
+ * @return bool true on success
  */
 $initializer = function ($proxy, & $wrappedObject, $method, $parameters) {};
 ```
