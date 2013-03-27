@@ -16,32 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\ValueHolder\PhpMethod;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+use ReflectionClass;
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpProperty;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Magic `__sleep` for value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class MagicSleep extends PhpMethod
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * Constructor
      */
-    public function testBodyStructure()
+    public function __construct(ReflectionClass $originalClass, PhpProperty $valueHolderProperty)
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        parent::__construct('__sleep');
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $inheritDoc  = $originalClass->hasMethod('__sleep') ? "\n * {@inheritDoc}\n * " : '';
+        $valueHolder = $valueHolderProperty->getName();
 
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
-
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setBody('return array(' . var_export($valueHolder, true) . ');');
     }
 }

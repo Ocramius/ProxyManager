@@ -18,10 +18,8 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
-use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator}
@@ -41,24 +39,14 @@ class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
         return new LazyLoadingValueHolderGenerator();
     }
 
-    public function testGeneratedCodeImplementation()
+    /**
+     * {@inheritDoc}
+     */
+    protected function getExpectedImplementedInterfaces()
     {
-        $generator = new LazyLoadingValueHolderGenerator();
-
-        $generatedClassName = 'LazyLoadingValueHolderGeneratorTest_' . uniqid();
-        $generatedClass     = new PhpClass($generatedClassName);
-        $originalClass      = new ReflectionClass('stdClass');
-        $generatorStrategy  = new DefaultGeneratorStrategy();
-
-        $generator->generate($originalClass, $generatedClass);
-
-        $classBody = $generatorStrategy->generate($generatedClass);
-
-        eval($classBody);
-
-        $generatedReflection = new ReflectionClass($generatedClassName);
-
-        $this->assertTrue($generatedReflection->implementsInterface('ProxyManager\\Proxy\\LazyLoadingInterface'));
-        $this->assertTrue($generatedReflection->implementsInterface('ProxyManager\\Proxy\\ValueHolderInterface'));
+        return array(
+            'ProxyManager\\Proxy\\LazyLoadingInterface',
+            'ProxyManager\\Proxy\\ValueHolderInterface',
+        );
     }
 }

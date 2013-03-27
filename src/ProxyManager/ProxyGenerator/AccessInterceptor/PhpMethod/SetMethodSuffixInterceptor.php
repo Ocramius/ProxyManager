@@ -16,32 +16,35 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpParameter;
+use CG\Generator\PhpProperty;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodSuffixInterceptor}
+ * for access interceptor objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class SetMethodSuffixInterceptor extends PhpMethod
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * Constructor
      */
-    public function testBodyStructure()
+    public function __construct(PhpProperty $suffixInterceptor)
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        parent::__construct('setMethodSuffixInterceptor');
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $interceptor = new PhpParameter('suffixInterceptor');
 
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
-
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        $interceptor->setType('Closure');
+        $interceptor->setDefaultValue(null);
+        $this->addParameter(new PhpParameter('methodName'));
+        $this->addParameter($interceptor);
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setBody('$this->' . $suffixInterceptor->getName() . '[$methodName] = $suffixInterceptor;');
     }
 }

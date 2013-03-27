@@ -16,32 +16,29 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\PhpProperty;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+use CG\Generator\PhpProperty;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Property that contains the interceptor for operations to be executed before method execution
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class MethodPrefixInterceptors extends PhpProperty
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * Constructor
      */
-    public function testBodyStructure()
+    public function __construct()
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        parent::__construct('methodPrefixInterceptors' . uniqid());
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
-
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        $this->setDefaultValue(array());
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setDocblock(
+            "/**\n * @var \\Closure[] map of interceptors to be called per-method before execution\n */\n"
+        );
     }
 }

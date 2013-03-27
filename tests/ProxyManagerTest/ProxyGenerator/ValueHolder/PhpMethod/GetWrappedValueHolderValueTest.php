@@ -16,32 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator\ValueHolder\PhpMethod;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+use ProxyManager\ProxyGenerator\ValueHolder\PhpMethod\GetWrappedValueHolderValue;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Tests for {@see \ProxyManager\ProxyGenerator\ValueHolder\PhpMethod\GetWrappedValueHolderValue}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * @covers \ProxyManager\ProxyGenerator\ValueHolder\PhpMethod\GetWrappedValueHolderValue::__construct
      */
     public function testBodyStructure()
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        $valueHolder = $this->getMock('CG\\Generator\\PhpProperty');
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
+        $getter = new GetWrappedValueHolderValue($valueHolder);
 
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        $this->assertSame('getWrappedValueHolderValue', $getter->getName());
+        $this->assertCount(0, $getter->getParameters());
+        $this->assertSame('return $this->foo;', $getter->getBody());
     }
 }

@@ -16,32 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\PhpMethod;
 
+use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\SetMethodSuffixInterceptor;
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\SetMethodSuffixInterceptor}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class SetMethodSuffixInterceptorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\SetMethodSuffixInterceptor::__construct
      */
     public function testBodyStructure()
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
+        $suffix = $this->getMock('CG\\Generator\\PhpProperty');
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $suffix->expects($this->once())->method('getName')->will($this->returnValue('foo'));
 
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
+        $setter = new SetMethodSuffixInterceptor($suffix);
 
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        $this->assertSame('setMethodSuffixInterceptor', $setter->getName());
+        $this->assertCount(2, $setter->getParameters());
+        $this->assertSame('$this->foo[$methodName] = $suffixInterceptor;', $setter->getBody());
     }
 }

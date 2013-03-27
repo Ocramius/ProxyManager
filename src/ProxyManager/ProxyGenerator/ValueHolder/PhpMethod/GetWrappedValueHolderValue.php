@@ -16,32 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PhpMethod;
+namespace ProxyManager\ProxyGenerator\ValueHolder\PhpMethod;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
+use CG\Generator\PhpMethod;
+use CG\Generator\PhpProperty;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized}
+ * Implementation for {@see \ProxyManager\Proxy\ValueHolderInterface::getWrappedValueHolderValue}
+ * for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class GetWrappedValueHolderValue extends PhpMethod
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized::__construct
+     * Constructor
      */
-    public function testBodyStructure()
+    public function __construct(PhpProperty $valueHolderProperty)
     {
-        $valueHolder     = $this->getMock('CG\\Generator\\PhpProperty');
-
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-
-        $isProxyInitialized = new IsProxyInitialized($valueHolder);
-
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return null !== $this->bar;', $isProxyInitialized->getBody());
+        parent::__construct('getWrappedValueHolderValue');
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setBody('return $this->' . $valueHolderProperty->getName() . ';');
     }
 }
