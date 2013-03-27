@@ -61,7 +61,7 @@ class LazyLoadingMethodInterceptor extends PhpMethod
         $method->setBody(
             '$this->' . $initializerName
             . ' && $this->' . $initializerName
-            . '->__invoke($this, $this->' . $valueHolderName . ', ' . var_export($methodName, true)
+            . '->__invoke($this->' . $valueHolderName . ', $this, ' . var_export($methodName, true)
             . ', array(' . implode(', ', $initializerParams) . "));\n\n"
             . 'return $this->' . $valueHolderName . '->'
             . $methodName . '(' . implode(', ', $forwardedParams) . ');'

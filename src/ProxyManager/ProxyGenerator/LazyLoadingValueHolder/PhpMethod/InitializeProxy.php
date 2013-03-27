@@ -42,7 +42,7 @@ class InitializeProxy extends PhpMethod
 
         $this->setBody(
             'return $this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, $this->' . $valueHolderProperty->getName() . ', \'initializeProxy\', array());'
+            . '->__invoke($this->' . $valueHolderProperty->getName() . ', $this, \'initializeProxy\', array());'
         );
     }
 }

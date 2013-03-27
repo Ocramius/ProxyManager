@@ -82,7 +82,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $config      = new Configuration();
 $factory     = new LazyLoadingValueHolderFactory($config);
-$initializer = function (LazyLoadingInterface $proxy, & $wrappedObject, $method, array $parameters) {
+$initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters) {
     $proxy->setProxyInitializer(null); // disable initialization
 
     $wrappedObject = new HeavyComplexObject(); // fill your object with values here
@@ -107,15 +107,16 @@ The initializer closure signature should be as following:
 
 ```php
 /**
+ * @var object $wrappedObject the instance (passed by reference) of the wrapped object,
+ *                            set it to your real object
  * @var object $proxy         the instance proxy that is being initialized
- * @var object $wrappedObject the instance (passed by reference) of the wrapped object - set this to your real object
  * @var string $method        the name of the method that triggered lazy initialization
- * @var string $method        an ordered list of parameters passed to the method that triggered initialization, indexed
- *                            by parameter name
+ * @var string $method        an ordered list of parameters passed to the method that
+ *                            triggered initialization, indexed by parameter name
  *
  * @return bool true on success
  */
-$initializer = function ($proxy, & $wrappedObject, $method, $parameters) {};
+$initializer = function (& $wrappedObject, $proxy, $method, $parameters) {};
 ```
 
 The
@@ -129,6 +130,12 @@ At any point in time, you can set a new initializer for the proxy:
 
 ```php
 $proxy->setProxyInitializer($initializer);
+```
+
+In your initializer, you currently **MUST** turn off any further initialization:
+
+```php
+$proxy->setProxyInitializer(null);
 ```
 
 ## Triggering Initialization
