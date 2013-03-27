@@ -49,7 +49,7 @@ class MagicUnset extends PhpMethod
         $this->setParameters(array(new PhpParameter('name')));
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, $this->' . $valueHolder . ', \'__unset\', array(\'name\' => $name));' . "\n\n"
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__unset\', array(\'name\' => $name));' . "\n\n"
             . 'unset($this->' . $valueHolder . '->$name);'
         );
     }

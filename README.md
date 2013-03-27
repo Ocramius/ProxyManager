@@ -12,7 +12,7 @@ at the [@phpugffm](https://twitter.com/phpugffm) in January 2013.
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require ocramius/proxy-manager:0.1.*
+php composer.phar require ocramius/proxy-manager:0.2.*
 ```
 
 ## Lazy Loading Value Holders
@@ -27,8 +27,10 @@ $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($config);
 
 $proxy = $factory->createProxy(
     'MyApp\HeavyComplexObject',
-    function ($proxy, &$wrappedObject, $method, $parameters) {
+    function (& $wrappedObject, $proxy, $method, $parameters) {
         $wrappedObject = new HeavyComplexObject(); // instantiation logic here
+
+        $proxy->setProxyInitializer(null); // turning off further lazy initialization
     
         return true;
     }
@@ -103,4 +105,3 @@ This feature [yet to be planned](https://github.com/Ocramius/ProxyManager/issues
 
 Please read the [CONTRIBUTING.md](https://github.com/Ocramius/ProxyManager/blob/master/CONTRIBUTING.md) contents if you
 wish to help out!
-

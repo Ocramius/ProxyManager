@@ -47,7 +47,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, \$this->bar, "
+            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
             . "'__set', array('name' => \$name, 'value' => \$value));\n\n"
             . "\$this->bar->\$name = \$value;",
             $magicSet->getBody()

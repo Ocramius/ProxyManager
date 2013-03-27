@@ -29,6 +29,14 @@ interface LazyLoadingInterface extends ProxyInterface
     /**
      * Set or unset the initializer for the proxy instance
      *
+     * @link https://github.com/Ocramius/ProxyManager/blob/master/docs/lazy-loading-value-holder.md#lazy-initialization
+     *
+     * An initializer should have a signature like following:
+     *
+     * <code>
+     * $initializer = function (& $wrappedObject, $proxy, $method, $parameters) {};
+     * </code>
+     *
      * @param \Closure|null $initializer
      *
      * @return mixed
