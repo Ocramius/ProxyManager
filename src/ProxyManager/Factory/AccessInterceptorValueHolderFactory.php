@@ -29,7 +29,7 @@ use ReflectionClass;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingValueHolderFactory
+class AccessInterceptorValueHolderFactory
 {
     /**
      * @var \ProxyManager\Configuration
