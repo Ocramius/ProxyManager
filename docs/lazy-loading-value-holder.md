@@ -10,11 +10,16 @@ class MyObjectProxy
 
     public function doFoo()
     {
+        $this->init();
+
+        return $this->wrapped->doFoo();
+    }
+
+    private function init()
+    {
         if (null === $this->wrapped) {
             $this->wrapped = new MyObject();
         }
-
-        return $this->wrapped->doFoo();
     }
 }
 ```
@@ -43,43 +48,72 @@ require_once __DIR__ . '/vendor/autoload.php';
 $config      = new Configuration();
 $factory     = new LazyLoadingValueHolderFactory($config);
 $initializer = function (LazyLoadingInterface $proxy, & $wrappedObject, $method, array $parameters) {
-    // disable initialization
-    $proxy->setProxyInitializer(null);
+    $proxy->setProxyInitializer(null); // disable initialization
 
-    // fill your object with values here
-    $wrappedObject = new HeavyComplexObject();
+    $wrappedObject = new HeavyComplexObject(); // fill your object with values here
 
-    // confirm that initialization occurred correctly
-    return true;
+    return true; // confirm that initialization occurred correctly
 };
 
-$instance    = $factory->createProxy('MyApp\HeavyComplexObject', $initializer);
+$instance = $factory->createProxy('MyApp\HeavyComplexObject', $initializer);
 
 $instance->doFoo();
 ```
 
-As you can see, we use a closure to handle lazy initialization of the proxy instance at runtime. The parameters passed
-to the initializer closure are following:
+## Lazy Initialization
 
- 1. `$proxy` - the instance proxy that is being initialized
- 2. `& $wrappedObject` - the wrapped property that should be initialized with a correct object instance.
- 3. `$method` - the method being called when lazy initialization has to occur
- 4. `$parameters` - an ordered list of parameters, with keys being the parameter names, and values being their values.
-
-_NOTE_: In future, a compliance validator class for such initializers may be provided.
-
-## Initialization
-
-A proxy is initialized whenever you access any property or method of it. Any of the following would trigger lazy
-initialization:
+As you can see, we use a closure to handle lazy initialization of the proxy instance at runtime.
+The initializer closure signature should be as following:
 
 ```php
+/**
+ * @var object $proxy         the instance proxy that is being initialized
+ * @var object $wrappedObject the instance (passed by reference) of the wrapped object - set this to your real object
+ * @var string $method        the name of the method that triggered lazy initialization
+ * @var string $method        an ordered list of parameters passed to the method that triggered initialization, indexed
+ *                            by parameter name
+ */
+$initializer = function ($proxy, & $wrappedObject, $method, $parameters) {};
+```
+
+The
+[`ProxyManager\Factory\LazyLoadingValueHolderFactory`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/LazyLoadingValueHolderFactory.php)
+produces proxies that implement both the
+[`ProxyManager\Proxy\ValueHolderInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/ValueHolderInterface.php)
+and the
+[`ProxyManager\Proxy\LazyLoadingInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/LazyLoadingInterface.php).
+
+At any point in time, you can set a new initializer for the proxy:
+
+```php
+$proxy->setProxyInitializer($initializer);
+```
+
+## Triggering Initialization
+
+A lazy loading proxy is initialized whenever you access any property or method of it.
+Any of the following interactions would trigger lazy initialization:
+
+```php
+// calling a method
 $proxy->someMethod();
+
+// reading a property
 echo $proxy->someProperty;
+
+// writing a property
 $proxy->someProperty = 'foo';
+
+// checking for existence of a property
 isset($proxy->someProperty);
+
+// removing a property
 unset($proxy->someProperty);
+
+// cloning the entire proxy
 clone $proxy;
+
+// serializing the proxy
 $unserialized = serialize(unserialize($proxy));
 ```
 
@@ -88,23 +122,4 @@ than once.
 
 ## Tuning performance for production
 
-By default, `ProxyManager\Factory\LazyLoadingValueHolderFactory` generates a lazy loading proxy class and writes it to
-disk at each request.
-
-Proxy generation causes I/O operations and uses a lot of reflection, so be sure to have generated all of your proxies
-before deploying your code on a live system, or you may experience poor performance.
-
-You can configure ProxyManager so that it will try autoloading the proxies first.
-Generating them "bulk" is not yet implemented:
-
-```php
-$config = new \ProxyManager\Configuration();
-
-$config->setProxiesTargetDir(__DIR__ . '/my/generated/classes/cache/dir');
-$config->setAutoGenerateProxies(false);
-
-// then register the autoloader
-spl_autoload_register($config->getProxyAutoloader());
-```
-
-Generating a classmap with all your proxy classes in it will also work.
+See [Tuning ProxyManager for Production](https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.md).
