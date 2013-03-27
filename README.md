@@ -25,11 +25,14 @@ initialized, and may not always be used.
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($config);
 
-$proxy = $factory->createProxy('MyApp\HeavyComplexObject', function ($proxy, &$wrappedObject, $method, $parameters) {
-    $wrappedObject = new HeavyComplexObject(); // instantiation logic here
-
-    return true;
-});
+$proxy = $factory->createProxy(
+    'MyApp\HeavyComplexObject',
+    function ($proxy, &$wrappedObject, $method, $parameters) {
+        $wrappedObject = new HeavyComplexObject(); // instantiation logic here
+    
+        return true;
+    }
+);
 
 $proxy->doFoo();
 ```
