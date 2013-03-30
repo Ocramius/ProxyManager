@@ -21,6 +21,7 @@ namespace ProxyManagerTest\Autoloader;
 use CG\Core\NamingStrategyInterface;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\Autoloader;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
 
 /**
  * Tests for {@see \ProxyManager\Autoloader\Autoloader}
@@ -71,7 +72,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(__DIR__ . '/non-existing'));
 
         $this->assertFalse(
-            $this->autoloader->__invoke('Foo\\' . NamingStrategyInterface::SEPARATOR . '\\Bar' . uniqid())
+            $this->autoloader->__invoke('Foo\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Bar' . uniqid())
         );
     }
 
@@ -80,7 +81,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillAutoloadExistingFile()
     {
-        $namespace = 'Foo\\' . NamingStrategyInterface::SEPARATOR;
+        $namespace = 'Foo\\' . ClassNameInflectorInterface::PROXY_MARKER;
         $className = 'Bar' . uniqid();
         $fileName  = sys_get_temp_dir() . '/foo_' . uniqid() . '.php';
 

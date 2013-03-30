@@ -18,9 +18,9 @@
 
 namespace ProxyManagerTest\Inflector;
 
-use CG\Core\NamingStrategyInterface;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Inflector\ClassNameInflector;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
 
 /**
  * Tests for {@see \ProxyManager\Inflector\ClassNameInflector}
@@ -53,8 +53,8 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
     public function getClassNames()
     {
         return array(
-            array('Foo', 'ProxyNS\\' . NamingStrategyInterface::SEPARATOR . '\\Foo'),
-            array('Foo\\Bar', 'ProxyNS\\' . NamingStrategyInterface::SEPARATOR . '\\Foo\\Bar'),
+            array('Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo'),
+            array('Foo\\Bar', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\Bar'),
         );
     }
 }

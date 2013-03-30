@@ -18,8 +18,8 @@
 
 namespace ProxyManager\Autoloader;
 
-use CG\Core\NamingStrategyInterface;
 use ProxyManager\FileLocator\FileLocatorInterface;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
 
 /**
  * {@inheritDoc}
@@ -47,7 +47,7 @@ class Autoloader implements AutoloaderInterface
      */
     public function __invoke($className)
     {
-        if (false === strrpos($className, '\\' . NamingStrategyInterface::SEPARATOR . '\\')) {
+        if (false === strrpos($className, '\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\')) {
             return false;
         }
 
