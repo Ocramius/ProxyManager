@@ -21,6 +21,7 @@ namespace ProxyManagerTest\GeneratorStrategy;
 use CG\Generator\PhpClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}
@@ -39,23 +40,24 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $locator   = $this->getMock('ProxyManager\\FileLocator\\FileLocatorInterface');
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = sys_get_temp_dir() . '/FileWriterGeneratorStrategyTest' . uniqid() . '.php';
-        $className = 'Foo\\Bar' .uniqid();
+        $namespace = 'Foo';
+        $className = 'Bar' .uniqid();
+        $fqcn      = $namespace . '\\' . $className;
 
         $locator
             ->expects($this->any())
             ->method('getProxyFileName')
-            ->with($className)
+            ->with($fqcn)
             ->will($this->returnValue($tmpFile));
 
-        $class = new PhpClass($className);
+        $body = $generator->generate(new ClassGenerator($fqcn));
 
-        $generator->generate($class);
-
-        $this->assertFalse(class_exists($className, false));
+        $this->assertGreaterThan(0, strpos($body, $className));
+        $this->assertFalse(class_exists($fqcn, false));
         $this->assertTrue(file_exists($tmpFile));
 
         require $tmpFile;
 
-        $this->assertTrue(class_exists($className, false));
+        $this->assertTrue(class_exists($fqcn, false));
     }
 }

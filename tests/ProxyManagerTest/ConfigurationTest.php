@@ -97,9 +97,12 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testSetGetGeneratorStrategy()
     {
 
-        $this->assertInstanceOf('CG\\Core\\GeneratorStrategyInterface', $this->configuration->getGeneratorStrategy());
+        $this->assertInstanceOf(
+            'ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface',
+            $this->configuration->getGeneratorStrategy()
+        );
 
-        $strategy = $this->getMock('CG\\Core\\GeneratorStrategyInterface');
+        $strategy = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
 
         $this->configuration->setGeneratorStrategy($strategy);
         $this->assertSame($strategy, $this->configuration->getGeneratorStrategy());
