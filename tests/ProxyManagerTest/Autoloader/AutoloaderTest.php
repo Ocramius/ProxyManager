@@ -18,7 +18,6 @@
 
 namespace ProxyManagerTest\Autoloader;
 
-use CG\Core\NamingStrategyInterface;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\Inflector\ClassNameInflectorInterface;

@@ -18,8 +18,6 @@
 
 namespace ProxyManager\Inflector;
 
-use CG\Core\ClassUtils;
-
 /**
  * {@inheritDoc}
  *
