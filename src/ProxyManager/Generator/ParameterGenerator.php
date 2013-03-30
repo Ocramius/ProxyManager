@@ -19,6 +19,7 @@
 namespace ProxyManager\Generator;
 
 use Zend\Code\Generator\ParameterGenerator as ZendParameterGenerator;
+use Zend\Code\Reflection\ParameterReflection;
 
 /**
  * Parameter generator that ensures that the parameter type is a FQCN when it is a class
@@ -42,6 +43,36 @@ class ParameterGenerator extends ZendParameterGenerator
         'array',
         'callable'
     );
+
+    /**
+     * @override - uses `static` to instantiate the parameter
+     *
+     * {@inheritDoc}
+     */
+    public static function fromReflection(ParameterReflection $reflectionParameter)
+    {
+        /* @var $param self */
+        $param = new static();
+        $param->setName($reflectionParameter->getName());
+
+        if ($reflectionParameter->isArray()) {
+            $param->setType('array');
+        } else {
+            $typeClass = $reflectionParameter->getClass();
+            if ($typeClass) {
+                $param->setType($typeClass->getName());
+            }
+        }
+
+        $param->setPosition($reflectionParameter->getPosition());
+
+        if ($reflectionParameter->isOptional()) {
+            $param->setDefaultValue($reflectionParameter->getDefaultValue());
+        }
+        $param->setPassedByReference($reflectionParameter->isPassedByReference());
+
+        return $param;
+    }
 
     /**
      * {@inheritDoc}

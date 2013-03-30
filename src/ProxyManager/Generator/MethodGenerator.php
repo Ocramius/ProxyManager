@@ -18,6 +18,7 @@
 
 namespace ProxyManager\Generator;
 
+use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -53,13 +54,39 @@ class MethodGenerator extends ZendMethodGenerator
     }
 
     /**
+     * @override enforces generation of \ProxyManager\Generator\MethodGenerator
+     *
      * {@inheritDoc}
      */
     public static function fromReflection(MethodReflection $reflectionMethod)
     {
         /* @var $method self */
-        $method = parent::fromReflection($reflectionMethod);
+        $method = new static();
 
+        $method->setSourceContent($reflectionMethod->getContents(false));
+        $method->setSourceDirty(false);
+
+        if ($reflectionMethod->getDocComment() != '') {
+            $method->setDocBlock(DocBlockGenerator::fromReflection($reflectionMethod->getDocBlock()));
+        }
+
+        $method->setFinal($reflectionMethod->isFinal());
+
+        if ($reflectionMethod->isPrivate()) {
+            $method->setVisibility(self::VISIBILITY_PRIVATE);
+        } elseif ($reflectionMethod->isProtected()) {
+            $method->setVisibility(self::VISIBILITY_PROTECTED);
+        } else {
+            $method->setVisibility(self::VISIBILITY_PUBLIC);
+        }
+
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            $method->setParameter(ParameterGenerator::fromReflection($reflectionParameter));
+        }
+
+        $method->setStatic($reflectionMethod->isStatic());
+        $method->setName($reflectionMethod->getName());
+        $method->setBody($reflectionMethod->getBody());
         $method->setReturnsReference($reflectionMethod->returnsReference());
 
         return $method;

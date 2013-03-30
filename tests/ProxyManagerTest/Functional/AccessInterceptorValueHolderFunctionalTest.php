@@ -211,7 +211,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
 
-        //die($strategy->generate($generatedClass));
         eval($strategy->generate($generatedClass));
 
         return $generatedClassName;

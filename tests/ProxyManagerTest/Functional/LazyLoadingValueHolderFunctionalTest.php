@@ -167,6 +167,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $strategy           = new BaseGeneratorStrategy();
 
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
+        //die($strategy->generate($generatedClass));
         eval($strategy->generate($generatedClass));
 
         return $generatedClassName;

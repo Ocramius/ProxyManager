@@ -41,14 +41,12 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
         $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
 
-        $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
-
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
 
         $method = InterceptedMethod::generateMethod(
-            $reflection,
+            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod'),
             $valueHolder,
             $prefixInterceptors,
             $suffixInterceptors
