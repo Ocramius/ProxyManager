@@ -18,9 +18,6 @@
 
 namespace ProxyManager\Inflector;
 
-use CG\Core\ClassUtils;
-use CG\Core\NamingStrategyInterface;
-
 /**
  * {@inheritDoc}
  *
@@ -29,11 +26,29 @@ use CG\Core\NamingStrategyInterface;
  */
 class ClassNameInflector implements ClassNameInflectorInterface
 {
+    /**
+     * @var string
+     */
     protected $proxyNamespace;
 
+    /**
+     * @var int
+     */
+    private $proxyMarkerLength;
+
+    /**
+     * @var string
+     */
+    private $proxyMarker;
+
+    /**
+     * @param string $proxyNamespace
+     */
     public function __construct($proxyNamespace)
     {
-        $this->proxyNamespace = (string) $proxyNamespace;
+        $this->proxyNamespace    = (string) $proxyNamespace;
+        $this->proxyMarker       = '\\' . static::PROXY_MARKER . '\\';
+        $this->proxyMarkerLength = strlen($this->proxyMarker);
     }
 
     /**
@@ -41,7 +56,11 @@ class ClassNameInflector implements ClassNameInflectorInterface
      */
     public function getUserClassName($className)
     {
-        return ClassUtils::getUserClass($className);
+        if (false === $position = strrpos($className, $this->proxyMarker)) {
+            return $className;
+        }
+
+        return substr($className, $this->proxyMarkerLength + $position);
     }
 
     /**
@@ -49,8 +68,14 @@ class ClassNameInflector implements ClassNameInflectorInterface
      */
     public function getProxyClassName($className)
     {
-        return $this->proxyNamespace
-            . '\\' . NamingStrategyInterface::SEPARATOR
-            . '\\' . ClassUtils::getUserClass($className);
+        return $this->proxyNamespace . $this->proxyMarker . $this->getUserClassName($className);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isProxyClassName($className)
+    {
+        return false !== strrpos($className, $this->proxyMarker);
     }
 }
