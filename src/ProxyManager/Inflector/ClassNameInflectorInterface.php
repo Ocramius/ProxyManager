@@ -48,4 +48,13 @@ interface ClassNameInflectorInterface
      * @return mixed
      */
     public function getProxyClassName($className);
+
+    /**
+     * Retrieve whether the provided class name is a proxy
+     *
+     * @param  string $className
+     *
+     * @return bool
+     */
+    public function isProxyClassName($className);
 }

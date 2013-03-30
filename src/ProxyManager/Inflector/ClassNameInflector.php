@@ -72,4 +72,12 @@ class ClassNameInflector implements ClassNameInflectorInterface
     {
         return $this->proxyNamespace . $this->proxyMarker . $this->getUserClassName($className);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isProxyClassName($className)
+    {
+        return false !== strrpos($className, $this->proxyMarker);
+    }
 }
