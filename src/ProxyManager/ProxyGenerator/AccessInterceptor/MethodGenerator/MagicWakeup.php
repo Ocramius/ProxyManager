@@ -37,7 +37,6 @@ class MagicWakeup extends MethodGenerator
     {
         parent::__construct('__wakeup');
 
-        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
         /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
         $unsetProperties  = array();
@@ -46,7 +45,7 @@ class MagicWakeup extends MethodGenerator
             $unsetProperties[] = '$this->' . $publicProperty->getName();
         }
 
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setDocblock($originalClass->hasMethod('__wakeup') ? '{@inheritDoc}' : '');
         $this->setBody(
             ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
         );

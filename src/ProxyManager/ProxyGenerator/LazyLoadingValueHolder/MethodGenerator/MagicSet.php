@@ -41,11 +41,11 @@ class MagicSet extends MethodGenerator
     ) {
         parent::__construct('__set');
 
-        $inheritDoc  = $originalClass->hasMethod('__set') ? "\n * {@inheritDoc}\n * " : '';
+        $inheritDoc  = $originalClass->hasMethod('__set') ? "{@inheritDoc}\n" : '';
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
 
-        $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n * @param mixed \$value\n */");
+        $this->setDocblock($inheritDoc . "@param string \$name\n@param mixed \$value");
         $this->setParameters(array(new ParameterGenerator('name'), new ParameterGenerator('value')));
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer

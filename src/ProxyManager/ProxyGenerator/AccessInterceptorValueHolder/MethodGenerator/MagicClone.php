@@ -41,12 +41,11 @@ class MagicClone extends MethodGenerator
     ) {
         parent::__construct('__clone');
 
-        $inheritDoc  = $originalClass->hasMethod('__clone') ? "\n * {@inheritDoc}\n * " : '';
         $valueHolder = $valueHolderProperty->getName();
         $prefix      = $prefixInterceptors->getName();
         $suffix      = $suffixInterceptors->getName();
 
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setDocblock($originalClass->hasMethod('__wakeup') ? '{@inheritDoc}' : '');
         $this->setBody(
             "\$this->$valueHolder = clone \$this->$valueHolder;\n\n"
             . "foreach (\$this->$prefix as \$key => \$value) {\n"

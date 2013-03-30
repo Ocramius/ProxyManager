@@ -36,7 +36,7 @@ class InitializeProxy extends MethodGenerator
     public function __construct(PropertyGenerator $initializerProperty, PropertyGenerator $valueHolderProperty)
     {
         parent::__construct('initializeProxy');
-        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setDocblock('{@inheritDoc}');
 
         $initializer = $initializerProperty->getName();
 

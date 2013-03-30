@@ -41,10 +41,10 @@ class MagicSet extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        $inheritDoc  = $originalClass->hasMethod('__set') ? "\n * {@inheritDoc}\n * " : '';
+        $inheritDoc  = $originalClass->hasMethod('__set') ? "{@inheritDoc}\n" : '';
 
         parent::__construct('__set');
-        $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n */");
+        $this->setDocblock($inheritDoc . '@param string $name');
         $this->setParameters(array(new ParameterGenerator('name'), new ParameterGenerator('value')));
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(

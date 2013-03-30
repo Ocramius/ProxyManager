@@ -65,11 +65,10 @@ class Constructor extends MethodGenerator
         }
 
         $this->setDocblock(
-            "/**\n * @override constructor to setup interceptors\n"
-            . " * @param \\" . $originalClass->getName() . " \$wrappedObject\n"
-            . " * @param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
-            . " * @param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n"
-            . " */"
+            "@override constructor to setup interceptors\n\n"
+            . "@param \\" . $originalClass->getName() . " \$wrappedObject\n"
+            . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
+            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
         );
         $this->setBody(
             ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')

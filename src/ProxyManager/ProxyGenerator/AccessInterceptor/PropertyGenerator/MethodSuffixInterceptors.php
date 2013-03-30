@@ -37,8 +37,6 @@ class MethodSuffixInterceptors extends PropertyGenerator
 
         $this->setDefaultValue(array());
         $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setDocblock(
-            "/**\n * @var \\Closure[] map of interceptors to be called per-method after execution\n */\n"
-        );
+        $this->setDocblock('@var \\Closure[] map of interceptors to be called per-method after execution');
     }
 }

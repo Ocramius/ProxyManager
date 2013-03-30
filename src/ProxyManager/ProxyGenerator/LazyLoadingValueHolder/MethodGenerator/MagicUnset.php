@@ -41,11 +41,11 @@ class MagicUnset extends MethodGenerator
     ) {
         parent::__construct('__unset');
 
-        $inheritDoc  = $originalClass->hasMethod('__unset') ? "\n * {@inheritDoc}\n * " : '';
+        $inheritDoc  = $originalClass->hasMethod('__unset') ? "{@inheritDoc}\n" : '';
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
 
-        $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n */");
+        $this->setDocblock($inheritDoc . '@param string $name');
         $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer

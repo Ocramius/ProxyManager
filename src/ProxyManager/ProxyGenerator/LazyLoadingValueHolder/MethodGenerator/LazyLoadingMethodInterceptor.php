@@ -65,7 +65,7 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
             . 'return $this->' . $valueHolderName . '->'
             . $methodName . '(' . implode(', ', $forwardedParams) . ');'
         );
-        $method->setDocblock("/**\n * {@inheritDoc}\n */\n");
+        $method->setDocblock('{@inheritDoc}');
 
         return $method;
     }

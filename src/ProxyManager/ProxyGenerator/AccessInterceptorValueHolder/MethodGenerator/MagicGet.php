@@ -41,10 +41,10 @@ class MagicGet extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        $inheritDoc  = $originalClass->hasMethod('__get') ? "\n * {@inheritDoc}\n * " : '';
+        $inheritDoc  = $originalClass->hasMethod('__get') ? "{@inheritDoc}\n" : '';
 
         parent::__construct('__get');
-        $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n */");
+        $this->setDocblock($inheritDoc . '@param string $name');
         $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(

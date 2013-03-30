@@ -36,8 +36,6 @@ class ValueHolderProperty extends PropertyGenerator
         parent::__construct('valueHolder' . uniqid());
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setDocblock(
-            "/**\n * @var \\Closure|null initializer responsible for generating the wrapped object\n */\n"
-        );
+        $this->setDocblock('@var \\Closure|null initializer responsible for generating the wrapped object');
     }
 }

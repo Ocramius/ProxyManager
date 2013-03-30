@@ -41,10 +41,10 @@ class MagicIsset extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        $inheritDoc  = $originalClass->hasMethod('__isset') ? "\n * {@inheritDoc}\n * " : '';
+        $inheritDoc  = $originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '';
 
         parent::__construct('__isset');
-        $this->setDocblock('/**' . $inheritDoc . "\n * @param string \$name\n */");
+        $this->setDocblock($inheritDoc . '@param string $name');
         $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(

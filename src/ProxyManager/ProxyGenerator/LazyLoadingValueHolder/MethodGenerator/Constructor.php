@@ -49,10 +49,7 @@ class Constructor extends MethodGenerator
             $unsetProperties[] = '$this->' . $publicProperty->getName();
         }
 
-        $this->setDocblock(
-            "/**\n * @override constructor for lazy initialization\n"
-            . " * @param \\Closure|null \$initializer\n */"
-        );
+        $this->setDocblock("@override constructor for lazy initialization\n\n@param \\Closure|null \$initializer");
         $this->setBody(
             ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
             . '$this->' . $initializerProperty->getName() . ' = $initializer;'

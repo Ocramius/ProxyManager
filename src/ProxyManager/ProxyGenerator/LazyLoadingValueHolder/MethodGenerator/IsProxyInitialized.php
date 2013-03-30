@@ -36,7 +36,7 @@ class IsProxyInitialized extends MethodGenerator
     public function __construct(PropertyGenerator $valueHolderProperty)
     {
         parent::__construct('isProxyInitialized');
-        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setDocblock('{@inheritDoc}');
         $this->setBody('return null !== $this->' . $valueHolderProperty->getName() . ';');
     }
 }

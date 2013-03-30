@@ -40,11 +40,10 @@ class MagicSleep extends MethodGenerator
     ) {
         parent::__construct('__sleep');
 
-        $inheritDoc  = $originalClass->hasMethod('__sleep') ? "\n * {@inheritDoc}\n * " : '';
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
 
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setDocblock($originalClass->hasMethod('__sleep') ? '{@inheritDoc}' : '');
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array());' . "\n\n"

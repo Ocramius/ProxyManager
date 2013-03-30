@@ -40,11 +40,10 @@ class MagicClone extends MethodGenerator
     ) {
         parent::__construct('__clone');
 
-        $inheritDoc  = $originalClass->hasMethod('__clone') ? "\n * {@inheritDoc}\n * " : '';
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
 
-        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setDocblock($originalClass->hasMethod('__clone') ? '{@inheritDoc}' : '');
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__clone\', array());' . "\n\n"

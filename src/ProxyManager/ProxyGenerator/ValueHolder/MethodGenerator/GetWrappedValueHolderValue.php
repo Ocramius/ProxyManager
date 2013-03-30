@@ -36,7 +36,7 @@ class GetWrappedValueHolderValue extends MethodGenerator
     public function __construct(PropertyGenerator $valueHolderProperty)
     {
         parent::__construct('getWrappedValueHolderValue');
-        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setDocblock('{@inheritDoc}');
         $this->setBody('return $this->' . $valueHolderProperty->getName() . ';');
     }
 }
