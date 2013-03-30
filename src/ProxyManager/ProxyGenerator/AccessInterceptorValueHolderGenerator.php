@@ -18,31 +18,29 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use CG\Generator\PhpClass;
-use CG\Generator\PhpProperty;
-use CG\Proxy\GeneratorInterface;
+use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
+use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
+use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
+use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
 
-use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup;
-use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\SetMethodPrefixInterceptor;
-use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\SetMethodSuffixInterceptor;
-use ProxyManager\ProxyGenerator\AccessInterceptor\PhpProperty\MethodPrefixInterceptors;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicClone;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicGet;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicIsset;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset;
 
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\Constructor;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\InterceptedMethod;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicClone;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicGet;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicIsset;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicSet;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\PhpMethod\MagicUnset;
+use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 
-use ProxyManager\ProxyGenerator\ValueHolder\PhpMethod\GetWrappedValueHolderValue;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
 
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\InitializerProperty;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\ValueHolderProperty;
-
-use ProxyManager\ProxyGenerator\ValueHolder\PhpMethod\MagicSleep;
+use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ReflectionClass;
 use ReflectionMethod;
+use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
@@ -53,20 +51,20 @@ use ReflectionMethod;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class AccessInterceptorValueHolderGenerator implements GeneratorInterface
+class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function generate(ReflectionClass $originalClass, PhpClass $generated)
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $generated->setParentClassName($originalClass->getName());
-        $generated->setInterfaceNames(
+        $classGenerator->setExtendedClass($originalClass->getName());
+        $classGenerator->setImplementedInterfaces(
             array('ProxyManager\\Proxy\\AccessInterceptorInterface', 'ProxyManager\\Proxy\\ValueHolderInterface')
         );
-        $generated->setProperty($valueHolder = new ValueHolderProperty());
-        $generated->setProperty($prefixInterceptors = new MethodPrefixInterceptors());
-        $generated->setProperty($suffixInterceptors = new MethodPrefixInterceptors());
+        $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
+        $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
+        $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
 
         $excluded = array(
             '__get'    => true,
@@ -78,6 +76,7 @@ class AccessInterceptorValueHolderGenerator implements GeneratorInterface
             '__wakeup' => true,
         );
 
+        /* @var $methods \ReflectionMethod[] */
         $methods = array_filter(
             $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
             function (ReflectionMethod $method) use ($excluded) {
@@ -91,21 +90,48 @@ class AccessInterceptorValueHolderGenerator implements GeneratorInterface
         );
 
         foreach ($methods as $method) {
-            $generated->setMethod(
-                InterceptedMethod::generateMethod($method, $valueHolder, $prefixInterceptors, $suffixInterceptors)
+            $classGenerator->addMethodFromGenerator(
+                InterceptedMethod::generateMethod(
+                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                    $valueHolder,
+                    $prefixInterceptors,
+                    $suffixInterceptors
+                )
             );
         }
 
-        $generated->setMethod(new Constructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
-        $generated->setMethod(new GetWrappedValueHolderValue($valueHolder));
-        $generated->setMethod(new SetMethodPrefixInterceptor($prefixInterceptors));
-        $generated->setMethod(new SetMethodSuffixInterceptor($suffixInterceptors));
-        $generated->setMethod(new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
-        $generated->setMethod(new MagicGet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
-        $generated->setMethod(new MagicIsset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
-        $generated->setMethod(new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
-        $generated->setMethod(new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors));
-        $generated->setMethod(new MagicSleep($originalClass, $valueHolder));
-        $generated->setMethod(new MagicWakeup($originalClass, $valueHolder));
+        $classGenerator->addMethodFromGenerator(
+            new Constructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new GetWrappedValueHolderValue($valueHolder)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new SetMethodPrefixInterceptor($prefixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new SetMethodSuffixInterceptor($suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicGet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicIsset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicSleep($originalClass, $valueHolder)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicWakeup($originalClass, $valueHolder)
+        );
     }
 }

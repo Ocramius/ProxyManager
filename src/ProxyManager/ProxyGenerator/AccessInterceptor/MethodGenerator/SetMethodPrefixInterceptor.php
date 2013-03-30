@@ -16,24 +16,35 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
-use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\ParameterGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Generator strategy interface - defines basic behavior of class generators
+ * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodPrefixInterceptor}
+ * for access interceptor objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GeneratorStrategyInterface
+class SetMethodPrefixInterceptor extends MethodGenerator
 {
     /**
-     * Generate the provided class
-     *
-     * @param ClassGenerator $classGenerator
-     *
-     * @return string the class body
+     * Constructor
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function __construct(PropertyGenerator $prefixInterceptor)
+    {
+        parent::__construct('setMethodPrefixInterceptor');
+
+        $interceptor = new ParameterGenerator('prefixInterceptor');
+
+        $interceptor->setType('Closure');
+        $interceptor->setDefaultValue(null);
+        $this->setParameter(new ParameterGenerator('methodName'));
+        $this->setParameter($interceptor);
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setBody('$this->' . $prefixInterceptor->getName() . '[$methodName] = $prefixInterceptor;');
+    }
 }

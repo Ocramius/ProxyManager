@@ -21,19 +21,18 @@ namespace ProxyManager\GeneratorStrategy;
 use Zend\Code\Generator\ClassGenerator;
 
 /**
- * Generator strategy interface - defines basic behavior of class generators
+ * Generator strategy that generates the class body
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GeneratorStrategyInterface
+class BaseGeneratorStrategy implements GeneratorStrategyInterface
 {
     /**
-     * Generate the provided class
-     *
-     * @param ClassGenerator $classGenerator
-     *
-     * @return string the class body
+     * {@inheritDoc}
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function generate(ClassGenerator $classGenerator)
+    {
+        return $classGenerator->generate();
+    }
 }

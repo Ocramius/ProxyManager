@@ -22,10 +22,12 @@ use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
+use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
@@ -206,8 +208,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     {
         $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
         $generator          = new AccessInterceptorValueHolderGenerator();
-        $generatedClass     = new PhpClass($generatedClassName);
-        $strategy           = new DefaultGeneratorStrategy();
+        $generatedClass     = new ClassGenerator($generatedClassName);
+        $strategy           = new BaseGeneratorStrategy();
 
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
         eval($strategy->generate($generatedClass));

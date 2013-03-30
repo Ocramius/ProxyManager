@@ -18,32 +18,29 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use CG\Generator\PhpClass;
-use CG\Generator\PhpProperty;
-use CG\Proxy\GeneratorInterface;
+use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 
-use ProxyManager\ProxyGenerator\ValueHolder\PhpMethod\GetWrappedValueHolderValue;
+use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 
-use ProxyManager\ProxyGenerator\AccessInterceptor\PhpMethod\MagicWakeup;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\Constructor;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\GetProxyInitializer;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\InitializeProxy;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\IsProxyInitialized;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicClone;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicIsset;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicSet;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicSleep;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicUnset;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer;
 
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\Constructor;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\GetProxyInitializer;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\InitializeProxy;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\IsProxyInitialized;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\LazyLoadingMethodInterceptor;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicClone;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicGet;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicIsset;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSet;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicSleep;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\MagicUnset;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpMethod\SetProxyInitializer;
-
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\InitializerProperty;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PhpProperty\ValueHolderProperty;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
 
 use ReflectionClass;
 use ReflectionMethod;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
@@ -54,22 +51,22 @@ use ReflectionMethod;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingValueHolderGenerator implements GeneratorInterface
+class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function generate(ReflectionClass $originalClass, PhpClass $generated)
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $generated->setParentClassName($originalClass->getName());
-        $generated->setInterfaceNames(
+        $classGenerator->setExtendedClass($originalClass->getName());
+        $classGenerator->setImplementedInterfaces(
             array(
                 'ProxyManager\\Proxy\\LazyLoadingInterface',
                 'ProxyManager\\Proxy\\ValueHolderInterface',
             )
         );
-        $generated->setProperty($valueHolder = new ValueHolderProperty());
-        $generated->setProperty($initializer = new InitializerProperty());
+        $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
+        $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
 
         $excluded = array(
             '__get'    => true,
@@ -94,23 +91,25 @@ class LazyLoadingValueHolderGenerator implements GeneratorInterface
         );
 
         foreach ($methods as $method) {
-            $generated->setMethod(LazyLoadingMethodInterceptor::generateMethod($method, $initializer, $valueHolder));
+            $classGenerator->addMethodFromGenerator(
+                LazyLoadingMethodInterceptor::generateMethod($method, $initializer, $valueHolder)
+            );
         }
 
-        $generated->setMethod(new Constructor($originalClass, $initializer));
-        $generated->setMethod(new MagicGet($originalClass, $initializer, $valueHolder));
-        $generated->setMethod(new MagicSet($originalClass, $initializer, $valueHolder));
-        $generated->setMethod(new MagicIsset($originalClass, $initializer, $valueHolder));
-        $generated->setMethod(new MagicUnset($originalClass, $initializer, $valueHolder));
-        $generated->setMethod(new MagicClone($originalClass, $initializer, $valueHolder));
-        $generated->setMethod(new MagicSleep($originalClass, $initializer, $valueHolder));
-        $generated->setMethod(new MagicWakeup($originalClass));
+        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $initializer));
+        $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $initializer, $valueHolder));
+        $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $initializer, $valueHolder));
+        $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $initializer, $valueHolder));
+        $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $initializer, $valueHolder));
+        $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer, $valueHolder));
+        $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer, $valueHolder));
+        $classGenerator->addMethodFromGenerator(new MagicWakeup($originalClass));
 
-        $generated->setMethod(new SetProxyInitializer($initializer));
-        $generated->setMethod(new GetProxyInitializer($initializer));
-        $generated->setMethod(new InitializeProxy($initializer, $valueHolder));
-        $generated->setMethod(new IsProxyInitialized($valueHolder));
+        $classGenerator->addMethodFromGenerator(new SetProxyInitializer($initializer));
+        $classGenerator->addMethodFromGenerator(new GetProxyInitializer($initializer));
+        $classGenerator->addMethodFromGenerator(new InitializeProxy($initializer, $valueHolder));
+        $classGenerator->addMethodFromGenerator(new IsProxyInitialized($valueHolder));
 
-        $generated->setMethod(new GetWrappedValueHolderValue($valueHolder));
+        $classGenerator->addMethodFromGenerator(new GetWrappedValueHolderValue($valueHolder));
     }
 }

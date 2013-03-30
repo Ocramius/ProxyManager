@@ -16,24 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
-use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Generator strategy interface - defines basic behavior of class generators
+ * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::getProxyInitializer}
+ * for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GeneratorStrategyInterface
+class GetProxyInitializer extends MethodGenerator
 {
     /**
-     * Generate the provided class
-     *
-     * @param ClassGenerator $classGenerator
-     *
-     * @return string the class body
+     * Constructor
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function __construct(PropertyGenerator $initializerProperty)
+    {
+        parent::__construct('getProxyInitializer');
+        $this->setDocblock("/**\n * {@inheritDoc}\n */");
+        $this->setBody('return $this->' . $initializerProperty->getName() . ';');
+    }
 }

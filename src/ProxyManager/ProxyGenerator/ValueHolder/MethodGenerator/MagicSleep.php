@@ -16,24 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
-use Zend\Code\Generator\ClassGenerator;
+use ReflectionClass;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Generator strategy interface - defines basic behavior of class generators
+ * Magic `__sleep` for value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GeneratorStrategyInterface
+class MagicSleep extends MethodGenerator
 {
     /**
-     * Generate the provided class
-     *
-     * @param ClassGenerator $classGenerator
-     *
-     * @return string the class body
+     * Constructor
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function __construct(ReflectionClass $originalClass, PropertyGenerator $valueHolderProperty)
+    {
+        parent::__construct('__sleep');
+
+        $inheritDoc  = $originalClass->hasMethod('__sleep') ? "\n * {@inheritDoc}\n * " : '';
+        $valueHolder = $valueHolderProperty->getName();
+
+        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setBody('return array(' . var_export($valueHolder, true) . ');');
+    }
 }

@@ -16,24 +16,29 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator;
 
-use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Generator strategy interface - defines basic behavior of class generators
+ * Property that contains the interceptor for operations to be executed after method execution
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GeneratorStrategyInterface
+class MethodSuffixInterceptors extends PropertyGenerator
 {
     /**
-     * Generate the provided class
-     *
-     * @param ClassGenerator $classGenerator
-     *
-     * @return string the class body
+     * Constructor
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function __construct()
+    {
+        parent::__construct('methodSuffixInterceptors' . uniqid());
+
+        $this->setDefaultValue(array());
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setDocblock(
+            "/**\n * @var \\Closure[] map of interceptors to be called per-method after execution\n */\n"
+        );
+    }
 }

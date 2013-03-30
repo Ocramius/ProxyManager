@@ -16,24 +16,39 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
-use Zend\Code\Generator\ClassGenerator;
+use ReflectionClass;
+use ReflectionProperty;
+use Zend\Code\Generator\MethodGenerator;
 
 /**
- * Generator strategy interface - defines basic behavior of class generators
+ * Magic `__wakeup` for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GeneratorStrategyInterface
+class MagicWakeup extends MethodGenerator
 {
     /**
-     * Generate the provided class
-     *
-     * @param ClassGenerator $classGenerator
-     *
-     * @return string the class body
+     * Constructor
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function __construct(ReflectionClass $originalClass)
+    {
+        parent::__construct('__wakeup');
+
+        $inheritDoc       = $originalClass->hasMethod('__wakeup') ? "\n * {@inheritDoc}\n * " : '';
+        /* @var $publicProperties \ReflectionProperty[] */
+        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $unsetProperties  = array();
+
+        foreach ($publicProperties as $publicProperty) {
+            $unsetProperties[] = '$this->' . $publicProperty->getName();
+        }
+
+        $this->setDocblock('/**' . $inheritDoc . "\n */");
+        $this->setBody(
+            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
+        );
+    }
 }

@@ -18,10 +18,10 @@
 
 namespace ProxyManager\Factory;
 
-use CG\Generator\PhpClass;
 use ProxyManager\Configuration;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ReflectionClass;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Factory responsible of producing proxy objects
@@ -70,7 +70,7 @@ class LazyLoadingValueHolderFactory
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
-            $phpClass  = new PhpClass($proxyClassName);
+            $phpClass  = new ClassGenerator($proxyClassName);
             $generator = new LazyLoadingValueHolderGenerator();
 
             $generator->generate(new ReflectionClass($className), $phpClass);

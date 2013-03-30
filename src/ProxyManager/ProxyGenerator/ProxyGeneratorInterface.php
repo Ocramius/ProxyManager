@@ -16,24 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator;
 
+use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
 
 /**
- * Generator strategy interface - defines basic behavior of class generators
+ * Base interface for proxy generators - describes how a proxy generator should use
+ * reflection classes to modify given class generators
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GeneratorStrategyInterface
+interface ProxyGeneratorInterface
 {
     /**
-     * Generate the provided class
+     * Apply modifications to the provided $classGenerator to proxy logic from $originalClass
      *
-     * @param ClassGenerator $classGenerator
+     * @param \ReflectionClass                    $originalClass
+     * @param \Zend\Code\Generator\ClassGenerator $classGenerator
      *
-     * @return string the class body
+     * @return void
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator);
 }

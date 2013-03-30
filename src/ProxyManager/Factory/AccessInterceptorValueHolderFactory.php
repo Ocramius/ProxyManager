@@ -18,10 +18,10 @@
 
 namespace ProxyManager\Factory;
 
-use CG\Generator\PhpClass;
 use ProxyManager\Configuration;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ReflectionClass;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Factory responsible of producing proxy objects
@@ -73,7 +73,7 @@ class AccessInterceptorValueHolderFactory
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
-            $phpClass  = new PhpClass($proxyClassName);
+            $phpClass  = new ClassGenerator($proxyClassName);
             $generator = new AccessInterceptorValueHolderGenerator();
 
             $generator->generate(new ReflectionClass($className), $phpClass);
