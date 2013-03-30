@@ -18,7 +18,6 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use CG\Generator\PhpClass;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 
 /**

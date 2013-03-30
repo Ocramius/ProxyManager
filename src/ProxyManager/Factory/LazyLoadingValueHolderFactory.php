@@ -18,9 +18,9 @@
 
 namespace ProxyManager\Factory;
 
-use CG\Generator\PhpClass;
 use ProxyManager\Configuration;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
+use ProxyManager\Generator\ClassGenerator;
 use ReflectionClass;
 
 /**
@@ -70,7 +70,7 @@ class LazyLoadingValueHolderFactory
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
-            $phpClass  = new PhpClass($proxyClassName);
+            $phpClass  = new ClassGenerator($proxyClassName);
             $generator = new LazyLoadingValueHolderGenerator();
 
             $generator->generate(new ReflectionClass($className), $phpClass);

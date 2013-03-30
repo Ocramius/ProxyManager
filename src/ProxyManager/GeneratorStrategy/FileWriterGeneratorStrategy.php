@@ -18,19 +18,18 @@
 
 namespace ProxyManager\GeneratorStrategy;
 
-use CG\Core\DefaultGeneratorStrategy;
-use CG\Generator\PhpClass;
 use ProxyManager\FileLocator\FileLocatorInterface;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
- * Generator strategy that writes the generated classes to disk, and includes them
+ * Generator strategy that writes the generated classes to disk while generating them
  *
  * {@inheritDoc}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class FileWriterGeneratorStrategy extends DefaultGeneratorStrategy
+class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
 {
     /**
      * @var \ProxyManager\FileLocator\FileLocatorInterface
@@ -43,8 +42,6 @@ class FileWriterGeneratorStrategy extends DefaultGeneratorStrategy
     public function __construct(FileLocatorInterface $fileLocator)
     {
         $this->fileLocator = $fileLocator;
-
-        parent::__construct();
     }
 
     /**
@@ -52,12 +49,16 @@ class FileWriterGeneratorStrategy extends DefaultGeneratorStrategy
      *
      * {@inheritDoc}
      */
-    public function generate(PhpClass $class)
+    public function generate(ClassGenerator $classGenerator)
     {
-        $generatedCode = parent::generate($class);
-        $fileName      = $this->fileLocator->getProxyFileName($class->getName());
+        $className     = trim($classGenerator->getNamespaceName(), '\\')
+            . '\\' . trim($classGenerator->getName(), '\\');
+        $generatedCode = $classGenerator->generate();
+        $fileName      = $this->fileLocator->getProxyFileName($className);
         $tmpFileName   = $fileName . '.' . uniqid('', true);
 
+        // renaming files is necessary to avoid race conditions when the same file is written multiple times
+        // in a short time period
         file_put_contents($tmpFileName, "<?php\n\n" . $generatedCode);
         rename($tmpFileName, $fileName);
 

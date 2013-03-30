@@ -20,8 +20,8 @@
         }
     ],
     "require": {
-        "php":    ">=5.3.3",
-        "jms/cg": "dev-master@dev"
+        "php":                     ">=5.3.3",
+        "zendframework/zend-code": "2.*"
     },
     "require-dev": {
         "phpunit/phpunit":           ">=3.7",

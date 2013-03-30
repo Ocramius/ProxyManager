@@ -27,6 +27,11 @@ namespace ProxyManager\Inflector;
 interface ClassNameInflectorInterface
 {
     /**
+     * Marker for proxy classes - classes containing this marker are considered proxies
+     */
+    const PROXY_MARKER = '__PM__';
+
+    /**
      * Retrieve the class name of a user-defined class
      *
      * @param  string $className
@@ -43,4 +48,13 @@ interface ClassNameInflectorInterface
      * @return mixed
      */
     public function getProxyClassName($className);
+
+    /**
+     * Retrieve whether the provided class name is a proxy
+     *
+     * @param  string $className
+     *
+     * @return bool
+     */
+    public function isProxyClassName($className);
 }

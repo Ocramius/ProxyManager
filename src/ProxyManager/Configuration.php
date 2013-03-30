@@ -18,13 +18,11 @@
 
 namespace ProxyManager;
 
-use CG\Core\DefaultNamingStrategy;
-use CG\Core\GeneratorStrategyInterface;
-
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
+use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Inflector\ClassNameInflector;
 
@@ -54,7 +52,7 @@ class Configuration
     protected $proxiesNamespace = self::DEFAULT_PROXY_NAMESPACE;
 
     /**
-     * @var \CG\Core\GeneratorStrategyInterface|null
+     * @var \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface|null
      */
     protected $generatorStrategy;
 
@@ -98,7 +96,10 @@ class Configuration
     public function getProxyAutoloader()
     {
         if (null === $this->proxyAutoloader) {
-            $this->proxyAutoloader = new Autoloader(new FileLocator($this->getProxiesTargetDir()));
+            $this->proxyAutoloader = new Autoloader(
+                new FileLocator($this->getProxiesTargetDir()),
+                $this->getClassNameInflector()
+            );
         }
 
         return $this->proxyAutoloader;
@@ -141,7 +142,7 @@ class Configuration
     }
 
     /**
-     * @param \CG\Core\GeneratorStrategyInterface $generatorStrategy
+     * @param \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface $generatorStrategy
      */
     public function setGeneratorStrategy(GeneratorStrategyInterface $generatorStrategy)
     {
@@ -149,7 +150,7 @@ class Configuration
     }
 
     /**
-     * @return \CG\Core\GeneratorStrategyInterface
+     * @return \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface
      */
     public function getGeneratorStrategy()
     {
