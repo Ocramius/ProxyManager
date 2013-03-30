@@ -18,10 +18,9 @@
 
 namespace ProxyManagerTest\GeneratorStrategy;
 
-use CG\Generator\PhpClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
-use Zend\Code\Generator\ClassGenerator;
+use ProxyManager\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}

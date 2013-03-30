@@ -18,9 +18,9 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use CG\Core\DefaultGeneratorStrategy;
-use CG\Generator\PhpClass;
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ReflectionClass;
 
 /**
@@ -38,12 +38,12 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = 'AbstractProxyGeneratorTest_' . uniqid();
-        $generatedClass     = new PhpClass($generatedClassName);
+        $generatedClass     = new ClassGenerator($generatedClassName);
         $originalClass      = new ReflectionClass('ProxyManagerTestAsset\\BaseClass');
 
         $generator->generate($originalClass, $generatedClass);
 
-        $generatorStrategy = new DefaultGeneratorStrategy();
+        $generatorStrategy = new BaseGeneratorStrategy();
         $classBody         = $generatorStrategy->generate($generatedClass);
 
         eval($classBody);
@@ -61,7 +61,7 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * Retrieve a new generator instance
      *
-     * @return \CG\Proxy\GeneratorInterface
+     * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
      */
     abstract protected function getProxyGenerator();
 

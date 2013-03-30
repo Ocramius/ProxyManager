@@ -18,12 +18,12 @@
 
 namespace ProxyManagerTest\Functional;
 
-use CG\Core\DefaultGeneratorStrategy;
-use CG\Generator\PhpClass;
 use Closure;
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use ProxyManager\Configuration;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
@@ -163,8 +163,8 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
         $generator          = new LazyLoadingValueHolderGenerator();
-        $generatedClass     = new PhpClass($generatedClassName);
-        $strategy           = new DefaultGeneratorStrategy();
+        $generatedClass     = new ClassGenerator($generatedClassName);
+        $strategy           = new BaseGeneratorStrategy();
 
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
         eval($strategy->generate($generatedClass));

@@ -41,6 +41,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHo
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
@@ -78,6 +79,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
             '__wakeup' => true,
         );
 
+        /* @var $methods \ReflectionMethod[] */
         $methods = array_filter(
             $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
             function (ReflectionMethod $method) use ($excluded) {
@@ -92,7 +94,11 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
-                LazyLoadingMethodInterceptor::generateMethod($method, $initializer, $valueHolder)
+                LazyLoadingMethodInterceptor::generateMethod(
+                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                    $initializer,
+                    $valueHolder
+                )
             );
         }
 

@@ -20,7 +20,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use ReflectionClass;
 use ReflectionProperty;
-use Zend\Code\Generator\MethodGenerator;
+use ProxyManager\Generator\MethodGenerator;
 
 /**
  * Magic `__wakeup` for lazy loading value holder objects

@@ -18,7 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util;
 
-use Zend\Code\Generator\MethodGenerator;
+use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -36,7 +36,7 @@ class InterceptorGenerator
      * @param string                                 $methodBody the body of the previously generated code.
      *                                                           It MUST assign the return value to a variable
      *                                                           `$returnValue` instead of directly returning
-     * @param \Zend\Code\Generator\MethodGenerator   $method
+     * @param \ProxyManager\Generator\MethodGenerator   $method
      * @param \Zend\Code\Generator\PropertyGenerator $valueHolder
      * @param \Zend\Code\Generator\PropertyGenerator $prefixInterceptors
      * @param \Zend\Code\Generator\PropertyGenerator $suffixInterceptors

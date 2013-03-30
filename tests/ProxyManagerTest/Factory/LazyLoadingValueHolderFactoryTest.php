@@ -18,9 +18,9 @@
 
 namespace ProxyManagerTest\Factory;
 
-use CG\Generator\PhpClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+use ProxyManager\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\Factory\LazyLoadingValueHolderFactoryTest}
@@ -95,7 +95,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
     {
         $className      = 'foo' . uniqid();
         $proxyClassName = 'bar' . uniqid();
-        $generator      = $this->getMock('CG\\Core\\GeneratorStrategyInterface');
+        $generator      = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
 
         $this->config->expects($this->any())->method('doesAutoGenerateProxies')->will($this->returnValue(true));
@@ -107,7 +107,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->method('generate')
             ->with(
                 $this->callback(
-                    function (PhpClass $targetClass) use ($proxyClassName) {
+                    function (ClassGenerator $targetClass) use ($proxyClassName) {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
