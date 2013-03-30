@@ -42,12 +42,18 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     protected $fileLocator;
 
     /**
+     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $classNameInflector;
+
+    /**
      * @covers \ProxyManager\Autoloader\Autoloader::__construct
      */
     public function setUp()
     {
-        $this->fileLocator = $this->getMock('ProxyManager\\FileLocator\\FileLocatorInterface');
-        $this->autoloader  = new Autoloader($this->fileLocator);
+        $this->fileLocator        = $this->getMock('ProxyManager\\FileLocator\\FileLocatorInterface');
+        $this->classNameInflector = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
+        $this->autoloader         = new Autoloader($this->fileLocator, $this->classNameInflector);
     }
 
     /**
@@ -55,9 +61,14 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillNotAutoloadUserClasses()
     {
-        $this->assertFalse($this->autoloader->__invoke('foo' . uniqid()));
-        $this->assertFalse($this->autoloader->__invoke('some\\bar' . uniqid()));
-        $this->assertFalse($this->autoloader->__invoke('some_bar' . uniqid()));
+        $this
+            ->classNameInflector
+            ->expects($this->once())
+            ->method('isProxyClassName')
+            ->with('Foo\\Bar')
+            ->will($this->returnValue(false));
+
+        $this->assertFalse($this->autoloader->__invoke('Foo\\Bar'));
     }
 
     /**
@@ -66,13 +77,19 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     public function testWillNotAutoloadNonExistingFiles()
     {
         $this
+            ->classNameInflector
+            ->expects($this->once())
+            ->method('isProxyClassName')
+            ->with('Foo\\Bar')
+            ->will($this->returnValue(true));
+        $this
             ->fileLocator
             ->expects($this->once())
             ->method('getProxyFileName')
             ->will($this->returnValue(__DIR__ . '/non-existing'));
 
         $this->assertFalse(
-            $this->autoloader->__invoke('Foo\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Bar' . uniqid())
+            $this->autoloader->__invoke('Foo\\Bar')
         );
     }
 
@@ -81,18 +98,26 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillAutoloadExistingFile()
     {
-        $namespace = 'Foo\\' . ClassNameInflectorInterface::PROXY_MARKER;
+        $namespace = 'Foo';
         $className = 'Bar' . uniqid();
+        $fqcn      = $namespace . '\\' . $className;
         $fileName  = sys_get_temp_dir() . '/foo_' . uniqid() . '.php';
 
         file_put_contents($fileName, '<?php namespace ' . $namespace . '; class ' . $className . '{}');
+
+        $this
+            ->classNameInflector
+            ->expects($this->once())
+            ->method('isProxyClassName')
+            ->with($fqcn)
+            ->will($this->returnValue(true));
         $this
             ->fileLocator
             ->expects($this->once())
             ->method('getProxyFileName')
             ->will($this->returnValue($fileName));
 
-        $this->assertTrue($this->autoloader->__invoke($namespace . '\\' . $className));
-        $this->assertTrue(class_exists($namespace . '\\' . $className, false));
+        $this->assertTrue($this->autoloader->__invoke($fqcn));
+        $this->assertTrue(class_exists($fqcn, false));
     }
 }

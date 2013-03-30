@@ -98,7 +98,10 @@ class Configuration
     public function getProxyAutoloader()
     {
         if (null === $this->proxyAutoloader) {
-            $this->proxyAutoloader = new Autoloader(new FileLocator($this->getProxiesTargetDir()));
+            $this->proxyAutoloader = new Autoloader(
+                new FileLocator($this->getProxiesTargetDir()),
+                $this->getClassNameInflector()
+            );
         }
 
         return $this->proxyAutoloader;
