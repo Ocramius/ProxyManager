@@ -36,11 +36,14 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Inflector\ClassNameInflector::__construct
      * @covers \ProxyManager\Inflector\ClassNameInflector::getUserClassName
      * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
+     * @covers \ProxyManager\Inflector\ClassNameInflector::isProxyClassName
      */
     public function testGetProxyFileName($realClassName, $proxyClassName)
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
+        $this->assertFalse($inflector->isProxyClassName($realClassName));
+        $this->assertTrue($inflector->isProxyClassName($proxyClassName));
         $this->assertSame($realClassName, $inflector->getUserClassName($realClassName));
         $this->assertSame($proxyClassName, $inflector->getProxyClassName($proxyClassName));
         $this->assertSame($proxyClassName, $inflector->getProxyClassName($realClassName));
