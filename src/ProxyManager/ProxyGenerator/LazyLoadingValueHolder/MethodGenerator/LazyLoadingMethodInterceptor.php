@@ -18,9 +18,9 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
-use ReflectionMethod;
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Method decorator for lazy loading value holder objects
@@ -31,14 +31,14 @@ use Zend\Code\Generator\PropertyGenerator;
 class LazyLoadingMethodInterceptor extends MethodGenerator
 {
     /**
-     * @param ReflectionMethod $originalMethod
-     * @param PropertyGenerator      $initializerProperty
-     * @param PropertyGenerator      $valueHolderProperty
+     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
+     * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
+     * @param \Zend\Code\Generator\PropertyGenerator $valueHolderProperty
      *
      * @return LazyLoadingMethodInterceptor|static
      */
     public static function generateMethod(
-        ReflectionMethod $originalMethod,
+        MethodReflection $originalMethod,
         PropertyGenerator $initializerProperty,
         PropertyGenerator $valueHolderProperty
     ) {

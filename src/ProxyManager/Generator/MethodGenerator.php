@@ -93,7 +93,7 @@ class MethodGenerator extends ZendMethodGenerator
     }
 
     /**
-     * @override fixes byref return value in zf2's method generator
+     * @override fixes by-reference return value in zf2's method generator
      *
      * {@inheritDoc}
      */

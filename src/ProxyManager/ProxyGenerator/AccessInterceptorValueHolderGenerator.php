@@ -76,7 +76,6 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
             '__wakeup' => true,
         );
 
-        /* @var $methods \ReflectionMethod[] */
         $methods = array_filter(
             $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
             function (ReflectionMethod $method) use ($excluded) {
@@ -89,6 +88,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
             }
         );
 
+        /* @var $methods \ReflectionMethod[] */
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
                 InterceptedMethod::generateMethod(

@@ -20,7 +20,6 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor;
-use ReflectionMethod;
 use Zend\Code\Reflection\MethodReflection;
 
 /**

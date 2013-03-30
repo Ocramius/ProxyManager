@@ -19,7 +19,6 @@
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
-use ReflectionMethod;
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
@@ -33,7 +32,7 @@ use Zend\Code\Reflection\MethodReflection;
 class InterceptedMethod extends MethodGenerator
 {
     /**
-     * @param \ReflectionMethod                      $originalMethod
+     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      * @param \Zend\Code\Generator\PropertyGenerator $valueHolderProperty
      * @param \Zend\Code\Generator\PropertyGenerator $prefixInterceptors
      * @param \Zend\Code\Generator\PropertyGenerator $suffixInterceptors
