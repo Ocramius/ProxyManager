@@ -19,6 +19,7 @@
 namespace ProxyManager\Generator;
 
 use Zend\Code\Generator\ParameterGenerator as ZendParameterGenerator;
+use Zend\Code\Generator\ValueGenerator;
 use Zend\Code\Reflection\ParameterReflection;
 
 /**
@@ -84,5 +85,39 @@ class ParameterGenerator extends ZendParameterGenerator
         }
 
         return parent::setType($type);
+    }
+
+    /**
+     * @override fixes type hinting for arrays
+     *
+     * {@inheritDoc}
+     */
+    public function generate()
+    {
+        $output = '';
+
+        if ($this->type) {
+            $output .= $this->type . ' ';
+        }
+
+        if (true === $this->passedByReference) {
+            $output .= '&';
+        }
+
+        $output .= '$' . $this->name;
+
+        if ($this->defaultValue !== null) {
+            $output .= ' = ';
+            if (is_string($this->defaultValue)) {
+                $output .= ValueGenerator::escape($this->defaultValue);
+            } elseif ($this->defaultValue instanceof ValueGenerator) {
+                $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
+                $output .= $this->defaultValue;
+            } else {
+                $output .= $this->defaultValue;
+            }
+        }
+
+        return $output;
     }
 }
