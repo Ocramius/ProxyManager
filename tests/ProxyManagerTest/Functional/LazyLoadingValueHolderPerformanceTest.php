@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
+use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ReflectionClass;
@@ -287,10 +288,10 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
         $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
         $generator          = new LazyLoadingValueHolderGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
-        $strategy           = new BaseGeneratorStrategy();
+        $strategy           = new EvaluatingGeneratorStrategy();
 
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
-        eval($strategy->generate($generatedClass));
+        $strategy->generate($generatedClass);
 
         return $generatedClassName;
     }
