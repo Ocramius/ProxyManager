@@ -76,6 +76,16 @@ class BaseClass
     }
 
     /**
+     * @param array $param
+     *
+     * @return string
+     */
+    public function publicArrayHintedMethod(array $param)
+    {
+        return 'publicArrayHintedMethodDefault';
+    }
+
+    /**
      * @return string
      */
     public function & publicByReferenceMethod()
