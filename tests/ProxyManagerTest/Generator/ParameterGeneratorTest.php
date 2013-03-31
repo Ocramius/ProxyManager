@@ -33,6 +33,23 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Generator\ParameterGenerator::generate
      */
+    public function testGeneratesProperTypeHint()
+    {
+        $generator = new ParameterGenerator('foo');
+
+        $generator->setType('array');
+        $this->assertSame('array $foo', $generator->generate());
+
+        $generator->setType('stdClass');
+        $this->assertSame('\\stdClass $foo', $generator->generate());
+
+        $generator->setType('\\fooClass');
+        $this->assertSame('\\fooClass $foo', $generator->generate());
+    }
+
+    /**
+     * @covers \ProxyManager\Generator\ParameterGenerator::generate
+     */
     public function testGeneratesMethodWithCallableType()
     {
         if (PHP_VERSION_ID < 50400) {
