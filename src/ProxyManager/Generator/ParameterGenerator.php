@@ -19,6 +19,7 @@
 namespace ProxyManager\Generator;
 
 use Zend\Code\Generator\ParameterGenerator as ZendParameterGenerator;
+use Zend\Code\Generator\ValueGenerator;
 use Zend\Code\Reflection\ParameterReflection;
 
 /**
@@ -29,21 +30,6 @@ use Zend\Code\Reflection\ParameterReflection;
  */
 class ParameterGenerator extends ZendParameterGenerator
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected static $simple = array(
-        'int',
-        'bool',
-        'string',
-        'float',
-        'resource',
-        'mixed',
-        'object',
-        'array',
-        'callable'
-    );
-
     /**
      * @override - uses `static` to instantiate the parameter
      *
@@ -57,6 +43,8 @@ class ParameterGenerator extends ZendParameterGenerator
 
         if ($reflectionParameter->isArray()) {
             $param->setType('array');
+        } elseif (method_exists($reflectionParameter, 'isCallable') && $reflectionParameter->isCallable()) {
+            $param->setType('callable');
         } else {
             $typeClass = $reflectionParameter->getClass();
             if ($typeClass) {
@@ -75,14 +63,38 @@ class ParameterGenerator extends ZendParameterGenerator
     }
 
     /**
-     * {@inheritDoc}
+     * @return string
      */
-    public function setType($type)
+    public function generate()
     {
-        if ($type && ! in_array($type, static::$simple)) {
-            $type = '\\' . trim($type, '\\');
+        $output = '';
+
+        if ($this->type && !in_array($this->type, static::$simple)) {
+            if ('array' === $this->type || 'callable' === $this->type) {
+                $output .= $this->type . ' ';
+            } else {
+                $output .= '\\' . trim($this->type, '\\') . ' ';
+            }
         }
 
-        return parent::setType($type);
+        if (true === $this->passedByReference) {
+            $output .= '&';
+        }
+
+        $output .= '$' . $this->name;
+
+        if ($this->defaultValue !== null) {
+            $output .= ' = ';
+            if (is_string($this->defaultValue)) {
+                $output .= ValueGenerator::escape($this->defaultValue);
+            } elseif ($this->defaultValue instanceof ValueGenerator) {
+                $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
+                $output .= $this->defaultValue;
+            } else {
+                $output .= $this->defaultValue;
+            }
+        }
+
+        return $output;
     }
 }
