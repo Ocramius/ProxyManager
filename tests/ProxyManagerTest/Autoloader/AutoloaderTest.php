@@ -60,26 +60,28 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillNotAutoloadUserClasses()
     {
+        $className = 'Foo\\Bar' . uniqid();
         $this
             ->classNameInflector
             ->expects($this->once())
             ->method('isProxyClassName')
-            ->with('Foo\\Bar')
+            ->with($className)
             ->will($this->returnValue(false));
 
-        $this->assertFalse($this->autoloader->__invoke('Foo\\Bar'));
+        $this->assertFalse($this->autoloader->__invoke($className));
     }
 
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillNotAutoloadNonExistingFiles()
+    public function testWillNotAutoloadNonExistingClass()
     {
+        $className = 'Foo\\Bar' . uniqid();
         $this
             ->classNameInflector
             ->expects($this->once())
             ->method('isProxyClassName')
-            ->with('Foo\\Bar')
+            ->with($className)
             ->will($this->returnValue(true));
         $this
             ->fileLocator
@@ -87,9 +89,15 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
             ->method('getProxyFileName')
             ->will($this->returnValue(__DIR__ . '/non-existing'));
 
-        $this->assertFalse(
-            $this->autoloader->__invoke('Foo\\Bar')
-        );
+        $this->assertFalse($this->autoloader->__invoke($className));
+    }
+
+    /**
+     * @covers \ProxyManager\Autoloader\Autoloader::__invoke
+     */
+    public function testWillNotAutoloadExistingClass()
+    {
+        $this->assertFalse($this->autoloader->__invoke(__CLASS__));
     }
 
     /**
