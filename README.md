@@ -12,7 +12,7 @@ at the [@phpugffm](https://twitter.com/phpugffm) in January 2013.
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require ocramius/proxy-manager:0.2.*
+php composer.phar require ocramius/proxy-manager:0.3.*
 ```
 
 ## Lazy Loading Value Holders
