@@ -32,9 +32,29 @@ class EvaluatingGeneratorStrategyTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::generate
+     * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::__construct
      */
     public function testGenerate()
     {
+        $strategy       = new EvaluatingGeneratorStrategy();
+        $className      = 'Foo' . uniqid();
+        $classGenerator = new ClassGenerator($className);
+        $generated      = $strategy->generate($classGenerator);
+
+        $this->assertGreaterThan(0, strpos($generated, $className));
+        $this->assertTrue(class_exists($className, false));
+    }
+
+    /**
+     * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::generate
+     * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::__construct
+     */
+    public function testGenerateWithDisabledEval()
+    {
+        if (! ini_get('suhosin.executor.disable_eval')) {
+            $this->markTestIncomplete('Ini setting "suhosin.executor.disable_eval" is needed to run this test');
+        }
+
         $strategy       = new EvaluatingGeneratorStrategy();
         $className      = 'Foo' . uniqid();
         $classGenerator = new ClassGenerator($className);
