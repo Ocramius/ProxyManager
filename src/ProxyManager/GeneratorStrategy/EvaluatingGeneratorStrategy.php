@@ -29,6 +29,19 @@ use Zend\Code\Generator\ClassGenerator;
 class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
 {
     /**
+     * @var bool flag indicating whether {@see eval} can be used
+     */
+    private $canEval = true;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->canEval = ! ini_get('suhosin.executor.disable_eval');
+    }
+
+    /**
      * Evaluates the generated code before returning it
      *
      * {@inheritDoc}
@@ -36,6 +49,16 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
     public function generate(ClassGenerator $classGenerator)
     {
         $code = $classGenerator->generate();
+
+        if (! $this->canEval) {
+            $fileName = sys_get_temp_dir() . '/EvaluatingGeneratorStrategy.php.tmp.' . uniqid();
+
+            file_put_contents($fileName, "<?php\n" . $code);
+            require $fileName;
+            unlink($fileName);
+
+            return $code;
+        }
 
         eval($code);
 
