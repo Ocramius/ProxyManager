@@ -29,7 +29,7 @@ class HydratedObject
     /**
      * @var mixed
      */
-    public  $foo = 1;
+    public $foo = 1;
 
     /**
      * @var mixed
