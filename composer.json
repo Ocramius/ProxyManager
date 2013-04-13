@@ -5,7 +5,7 @@
     "license":           "MIT",
     "homepage":          "https://github.com/Ocramius/ProxyManager",
     "minimum-stability": "dev",
-    "tags":        [
+    "keywords":          [
         "proxy",
         "proxy pattern",
         "service proxies",
@@ -26,7 +26,11 @@
     "require-dev": {
         "phpunit/phpunit":           ">=3.7",
         "phpmd/phpmd":               "1.4.*",
-        "squizlabs/php_codesniffer": "1.4.*"
+        "squizlabs/php_codesniffer": "1.4.*",
+        "zendframework/zend-stdlib": "2.*"
+    },
+    "suggest": {
+        "zendframework/zend-stdlib": "To use the hydrator proxy"
     },
     "autoload": {
         "psr-0": {

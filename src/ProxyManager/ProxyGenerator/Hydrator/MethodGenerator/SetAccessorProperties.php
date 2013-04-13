@@ -20,27 +20,36 @@ namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
 use ProxyManager\Exception\DisabledMethodException;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Method generator for forcefully disabled methods
+ * Method generator for the `setAccessorProperties` method of a hydrator proxy
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class DisabledMethod extends MethodGenerator
+class SetAccessorProperties extends MethodGenerator
 {
     /**
-     * {@inheritDoc}
+     * @param \ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor[] $propertyAccessors
      */
-    public function generate()
+    public function __construct(array $propertyAccessors)
     {
-        $this->setBody('throw \\' . DisabledMethodException::NAME . '::disabledMethod(__METHOD__);');
-        $this->setDocblock(
-            "{@inheritDoc}\n\n@internal disabled since this object is not a real proxy\n\n"
-            . "@throws \\ProxyManager\\Exception\\DisabledMethodException"
-        );
+        parent::__construct('setAccessorProperties');
+        $this->setDocblock("{@inheritDoc}");
+        $this->setParameter(new ParameterGenerator('accessorProperties', 'array'));
 
-        return parent::generate();
+        $body = '';
+
+        foreach ($propertyAccessors as $propertyAccessor) {
+            $body .= '$this->'
+                . $propertyAccessor->getName()
+                . ' = $accessorProperties['
+                . var_export($propertyAccessor->getOriginalProperty()->getName(), true)
+                . "];\n";
+        }
+
+        $this->setBody($body);
     }
 }

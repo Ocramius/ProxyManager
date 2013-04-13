@@ -19,14 +19,21 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\GetAccessorProperties;
+use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\SetAccessorProperties;
+use ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor;
+use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMethod;
+use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Extract;
+use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Hydrate;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Generator for proxies being a hydrator ({@see \Zend\Stdlib\Hydrator\HydratorInterface})
+ * Generator for proxies being a hydrator - {@see \Zend\Stdlib\Hydrator\HydratorInterface}
  * for objects
  *
  * {@inheritDoc}
@@ -42,19 +49,27 @@ class HydratorProxyGenerator implements ProxyGeneratorInterface
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
         $classGenerator->setExtendedClass($originalClass->getName());
-        /*$classGenerator->setImplementedInterfaces(
-            array(
-                 'ProxyManager\\Proxy\\LazyLoadingInterface',
-                 'ProxyManager\\Proxy\\ValueHolderInterface',
-            )
-        );*/
+        $classGenerator->setImplementedInterfaces(
+            array('ProxyManager\\Proxy\\HydratorProxyInterface')
+        );
+
+        $excluded = array(
+            '__get'    => true,
+            '__set'    => true,
+            '__isset'  => true,
+            '__unset'  => true,
+            '__clone'  => true,
+            '__sleep'  => true,
+            '__wakeup' => true,
+        );
 
         /* @var $methods ReflectionMethod[] */
         $methods = array_filter(
             $originalClass->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED),
-            function (ReflectionMethod $method) {
+            function (ReflectionMethod $method) use ($excluded) {
                 return ! (
                     $method->isConstructor()
+                    || isset($excluded[strtolower($method->getName())])
                     || $method->isFinal()
                     || $method->isStatic()
                 );
@@ -69,14 +84,29 @@ class HydratorProxyGenerator implements ProxyGeneratorInterface
             );
         }
 
-        foreach (array('__get', '__set', '__isset', '__unset', '__clone', '__sleep', '__wakeup') as $magicMethod) {
-            // @todo params
+        foreach (array('__clone', '__sleep', '__wakeup') as $magicMethod) {
             $classGenerator->addMethodFromGenerator(new DisabledMethod($magicMethod));
         }
 
-        // empty constructor
-        $classGenerator->addMethodFromGenerator(new MethodGenerator('__construct'));
+        $classGenerator->addMethodFromGenerator(new DisabledMethod('__get', array('name')));
+        $classGenerator->addMethodFromGenerator(new DisabledMethod('__set', array('name', 'value')));
+        $classGenerator->addMethodFromGenerator(new DisabledMethod('__isset', array('name')));
+        $classGenerator->addMethodFromGenerator(new DisabledMethod('__unset', array('name')));
 
-        // @todo add further parameters
+        $accessibleFlag         = ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED;
+        $accessibleProperties   = $originalClass->getProperties($accessibleFlag);
+        $inaccessibleProps      = $originalClass->getProperties(ReflectionProperty::IS_PRIVATE);
+        $propertyAccessors      = array();
+
+        foreach ($inaccessibleProps as $inaccessibleProp) {
+            $propertyAccessors[] = new PropertyAccessor($inaccessibleProp);
+        }
+
+        $classGenerator->addProperties($propertyAccessors);
+        $classGenerator->addMethodFromGenerator(new Constructor($propertyAccessors));
+        $classGenerator->addMethodFromGenerator(new Hydrate($accessibleProperties, $propertyAccessors));
+        $classGenerator->addMethodFromGenerator(new Extract($accessibleProperties, $propertyAccessors));
+        $classGenerator->addMethodFromGenerator(new GetAccessorProperties($propertyAccessors));
+        $classGenerator->addMethodFromGenerator(new SetAccessorProperties($propertyAccessors));
     }
 }

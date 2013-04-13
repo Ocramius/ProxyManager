@@ -16,31 +16,43 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator;
 
-use ProxyManager\Exception\DisabledMethodException;
-use ProxyManager\Generator\MethodGenerator;
+use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Method generator for forcefully disabled methods
+ * Property that contains a {@see \ReflectionProperty} that functions as an accessor
+ * for inaccessible proxied object's properties.
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class DisabledMethod extends MethodGenerator
+class PropertyAccessor extends PropertyGenerator
 {
     /**
-     * {@inheritDoc}
+     * @var \ReflectionProperty
      */
-    public function generate()
-    {
-        $this->setBody('throw \\' . DisabledMethodException::NAME . '::disabledMethod(__METHOD__);');
-        $this->setDocblock(
-            "{@inheritDoc}\n\n@internal disabled since this object is not a real proxy\n\n"
-            . "@throws \\ProxyManager\\Exception\\DisabledMethodException"
-        );
+    protected $accessedProperty;
 
-        return parent::generate();
+    /**
+     * @param \ReflectionProperty $accessedProperty
+     */
+    public function __construct(ReflectionProperty $accessedProperty)
+    {
+        $this->accessedProperty = $accessedProperty;
+        $originalName           = $this->accessedProperty->getName();
+
+        parent::__construct($originalName . 'Accessor' . uniqid());
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setDocblock("@var \\ReflectionProperty used to access {@see parent::$originalName}");
+    }
+
+    /**
+     * @return \ReflectionProperty
+     */
+    public function getOriginalProperty()
+    {
+        return $this->accessedProperty;
     }
 }

@@ -16,31 +16,33 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator;
 
-use ProxyManager\Exception\DisabledMethodException;
-use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use ProxyManager\ProxyGenerator\HydratorProxyGenerator;
 
 /**
- * Method generator for forcefully disabled methods
+ * Tests for {@see \ProxyManager\ProxyGenerator\HydratorProxyGenerator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\HydratorProxyGenerator
  */
-class DisabledMethod extends MethodGenerator
+class HydratorProxyGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * {@inheritDoc}
      */
-    public function generate()
+    protected function getProxyGenerator()
     {
-        $this->setBody('throw \\' . DisabledMethodException::NAME . '::disabledMethod(__METHOD__);');
-        $this->setDocblock(
-            "{@inheritDoc}\n\n@internal disabled since this object is not a real proxy\n\n"
-            . "@throws \\ProxyManager\\Exception\\DisabledMethodException"
-        );
+        return new HydratorProxyGenerator();
+    }
 
-        return parent::generate();
+    /**
+     * {@inheritDoc}
+     */
+    protected function getExpectedImplementedInterfaces()
+    {
+        return array('ProxyManager\\Proxy\\HydratorProxyInterface');
     }
 }

@@ -16,31 +16,30 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
+namespace ProxyManager\Proxy;
 
-use ProxyManager\Exception\DisabledMethodException;
-use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Zend\Stdlib\Hydrator\HydratorInterface;
 
 /**
- * Method generator for forcefully disabled methods
+ * Hydrator proxy - allows access to protected members of a proxied object
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class DisabledMethod extends MethodGenerator
+interface HydratorProxyInterface extends ProxyInterface, HydratorInterface
 {
     /**
-     * {@inheritDoc}
+     * Set the reflection properties to be used to access members of the class
+     * when they are private
+     *
+     * @param \ReflectionProperty[] $reflectionProperties indexed by property name
+     *
+     * @return void
      */
-    public function generate()
-    {
-        $this->setBody('throw \\' . DisabledMethodException::NAME . '::disabledMethod(__METHOD__);');
-        $this->setDocblock(
-            "{@inheritDoc}\n\n@internal disabled since this object is not a real proxy\n\n"
-            . "@throws \\ProxyManager\\Exception\\DisabledMethodException"
-        );
+    public function setAccessorProperties(array $accessorProperties);
 
-        return parent::generate();
-    }
+    /**
+     * @return \ReflectionProperty[] indexed by property name
+     */
+    public function getAccessorProperties();
 }
