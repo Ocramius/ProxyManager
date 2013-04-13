@@ -84,13 +84,13 @@ class HydratorFunctionalTest extends PHPUnit_Framework_TestCase
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
         $strategy->generate($generatedClass);
 
-        $privateMethods = $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
-        $accessors      = array();
+        $privateProperties = $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
+        $accessors         = array();
 
-        foreach ($privateMethods as $privateMethod) {
-            $privateMethod->setAccessible(true);
+        foreach ($privateProperties as $privateProperty) {
+            $privateProperty->setAccessible(true);
 
-            $accessors[$privateMethod->getName()] = $privateMethod;
+            $accessors[$privateProperty->getName()] = $privateProperty;
         }
 
         return new $generatedClassName($accessors);
