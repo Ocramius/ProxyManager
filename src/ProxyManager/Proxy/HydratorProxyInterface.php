@@ -32,7 +32,7 @@ interface HydratorProxyInterface extends ProxyInterface, HydratorInterface
      * Set the reflection properties to be used to access members of the class
      * when they are private
      *
-     * @param \ReflectionProperty[] $reflectionProperties indexed by property name
+     * @param \ReflectionProperty[] $accessorProperties indexed by property name
      *
      * @return void
      */
