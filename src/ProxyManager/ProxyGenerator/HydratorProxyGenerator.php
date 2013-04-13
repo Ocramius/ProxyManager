@@ -50,7 +50,7 @@ class HydratorProxyGenerator implements ProxyGeneratorInterface
     {
         $classGenerator->setExtendedClass($originalClass->getName());
         $classGenerator->setImplementedInterfaces(
-            array('ProxyManager\\Proxy\\HydratorProxyInterface')
+            array('ProxyManager\\Proxy\\HydratorInterface')
         );
 
         $excluded = array(

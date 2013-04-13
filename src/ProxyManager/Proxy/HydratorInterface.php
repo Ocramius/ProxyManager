@@ -16,33 +16,30 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator;
+namespace ProxyManager\Proxy;
 
-use ProxyManager\ProxyGenerator\HydratorProxyGenerator;
+use Zend\Stdlib\Hydrator\HydratorInterface as ZendFrameworkHydrator;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\HydratorProxyGenerator}
+ * Hydrator proxy - allows access to protected members of a proxied object
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
- *
- * @covers \ProxyManager\ProxyGenerator\HydratorProxyGenerator
  */
-class HydratorProxyGeneratorTest extends AbstractProxyGeneratorTest
+interface HydratorInterface extends ProxyInterface, ZendFrameworkHydrator
 {
     /**
-     * {@inheritDoc}
+     * Set the reflection properties to be used to access members of the class
+     * when they are private
+     *
+     * @param \ReflectionProperty[] $accessorProperties indexed by property name
+     *
+     * @return void
      */
-    protected function getProxyGenerator()
-    {
-        return new HydratorProxyGenerator();
-    }
+    public function setAccessorProperties(array $accessorProperties);
 
     /**
-     * {@inheritDoc}
+     * @return \ReflectionProperty[] indexed by property name
      */
-    protected function getExpectedImplementedInterfaces()
-    {
-        return array('ProxyManager\\Proxy\\HydratorInterface');
-    }
+    public function getAccessorProperties();
 }

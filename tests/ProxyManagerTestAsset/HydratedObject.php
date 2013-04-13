@@ -16,30 +16,45 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Proxy;
-
-use Zend\Stdlib\Hydrator\HydratorInterface;
+namespace ProxyManagerTestAsset;
 
 /**
- * Hydrator proxy - allows access to protected members of a proxied object
+ * Test object to be hydrated
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface HydratorProxyInterface extends ProxyInterface, HydratorInterface
+class HydratedObject
 {
     /**
-     * Set the reflection properties to be used to access members of the class
-     * when they are private
-     *
-     * @param \ReflectionProperty[] $accessorProperties indexed by property name
-     *
-     * @return void
+     * @var mixed
      */
-    public function setAccessorProperties(array $accessorProperties);
+    public  $foo = 1;
 
     /**
-     * @return \ReflectionProperty[] indexed by property name
+     * @var mixed
      */
-    public function getAccessorProperties();
+    protected $bar = 2;
+
+    /**
+     * @var mixed
+     */
+    private $baz = 3;
+
+    /**
+     * Method to be disabled
+     */
+    public function doFoo()
+    {
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->$name;
+    }
 }
