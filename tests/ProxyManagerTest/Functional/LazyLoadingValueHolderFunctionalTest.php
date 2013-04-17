@@ -181,19 +181,34 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     private function createInitializer($realInstance, Mock $initializerMatcher = null)
     {
+        if (null === $initializerMatcher) {
+            $initializerMatcher = $this->getMock('stdClass', array('__invoke'));
+
+            $initializerMatcher
+                ->expects($this->once())
+                ->method('__invoke')
+                ->with(
+                    $this->logicalAnd(
+                        $this->isInstanceOf('ProxyManager\\Proxy\\LazyLoadingInterface'),
+                        $this->isInstanceOf(get_class($realInstance))
+                    ),
+                    $realInstance
+                );
+        }
+
         $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', array('__invoke'));
 
         return function (
             & $wrappedObject,
             LazyLoadingInterface $proxy,
             $method,
-            $params
+            $params,
+            & $initializer
         ) use (
             $initializerMatcher,
             $realInstance
             ) {
-            $proxy->setProxyInitializer(null);
-
+            $initializer   = null;
             $wrappedObject = $realInstance;
 
             $initializerMatcher->__invoke($proxy, $wrappedObject, $method, $params);

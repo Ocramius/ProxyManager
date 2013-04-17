@@ -82,9 +82,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $config      = new Configuration();
 $factory     = new LazyLoadingValueHolderFactory($config);
-$initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters) {
-    $proxy->setProxyInitializer(null); // disable initialization
-
+$initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, $initializer) {
+    $initializer   = null; // disable initialization
     $wrappedObject = new HeavyComplexObject(); // fill your object with values here
 
     return true; // confirm that initialization occurred correctly
@@ -107,16 +106,33 @@ The initializer closure signature should be as following:
 
 ```php
 /**
- * @var object $wrappedObject the instance (passed by reference) of the wrapped object,
- *                            set it to your real object
- * @var object $proxy         the instance proxy that is being initialized
- * @var string $method        the name of the method that triggered lazy initialization
- * @var string $method        an ordered list of parameters passed to the method that
- *                            triggered initialization, indexed by parameter name
+ * @var object  $wrappedObject the instance (passed by reference) of the wrapped object,
+ *                             set it to your real object
+ * @var object  $proxy         the instance proxy that is being initialized
+ * @var string  $method        the name of the method that triggered lazy initialization
+ * @var string  $method        an ordered list of parameters passed to the method that
+ *                             triggered initialization, indexed by parameter name
+ * @var Closure $initializer   a reference to the property that is the initializer for the
+ *                             proxy. Set it to null to disable further initialization
  *
  * @return bool true on success
  */
-$initializer = function (& $wrappedObject, $proxy, $method, $parameters) {};
+$initializer = function (& $wrappedObject, $proxy, $method, & $parameters, & $initializer) {};
+```
+
+The initializer closure should usually be coded like following:
+
+```php
+$initializer = function (& $wrappedObject, $proxy, $method, & $parameters, & $initializer) {
+    $newlyCreatedObject = new Foo(); // instantiation logic
+    $newlyCreatedObject->setBar('baz') // instantiation logic
+    $newlyCreatedObject->setBat('bam') // instantiation logic
+
+    $wrappedObject = $newlyCreatedObject; // set wrapped object in the proxy
+    $initializer   = null; // disable initializer
+
+    return true; // report success
+};
 ```
 
 The
@@ -136,6 +152,12 @@ In your initializer, you currently **MUST** turn off any further initialization:
 
 ```php
 $proxy->setProxyInitializer(null);
+```
+
+or
+
+```php
+$initializer = null; // if you use the initializer by reference
 ```
 
 ## Triggering Initialization

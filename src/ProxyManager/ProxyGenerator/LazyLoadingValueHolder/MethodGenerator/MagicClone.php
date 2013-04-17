@@ -46,7 +46,8 @@ class MagicClone extends MethodGenerator
         $this->setDocblock($originalClass->hasMethod('__clone') ? '{@inheritDoc}' : '');
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__clone\', array());' . "\n\n"
+            . '->__invoke($this->' . $valueHolder
+            . ', $this, \'__clone\', array(), $this->' . $initializer . ');' . "\n\n"
             . '$this->' . $valueHolder . ' = clone $this->' . $valueHolder . ';'
         );
     }
