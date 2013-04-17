@@ -49,7 +49,8 @@ class MagicUnset extends MethodGenerator
         $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__unset\', array(\'name\' => $name));' . "\n\n"
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__unset\', array(\'name\' => $name), $this->'
+            . $initializer . ');' . "\n\n"
             . 'unset($this->' . $valueHolder . '->$name);'
         );
     }

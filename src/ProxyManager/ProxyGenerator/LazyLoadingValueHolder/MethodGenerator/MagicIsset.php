@@ -49,7 +49,8 @@ class MagicIsset extends MethodGenerator
         $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__isset\', array(\'name\' => $name));' . "\n\n"
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__isset\', array(\'name\' => $name), $this->'
+            . $initializer . ');' . "\n\n"
             . 'return isset($this->' . $valueHolder . '->$name);'
         );
     }

@@ -46,7 +46,8 @@ class MagicSleep extends MethodGenerator
         $this->setDocblock($originalClass->hasMethod('__sleep') ? '{@inheritDoc}' : '');
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array());' . "\n\n"
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
+            . $initializer . ');' . "\n\n"
             . 'return array(' . var_export($valueHolder, true) . ');'
         );
     }
