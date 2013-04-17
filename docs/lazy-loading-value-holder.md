@@ -1,6 +1,6 @@
 # Lazy Loading Value Holder Proxy
 
-A lazy loading value holder proxy is an object that is wrapping a lazily initialized "real" instance of the proxied
+A lazy loading value holder proxy is a virtual proxy that wraps and lazily initializes a "real" instance of the proxied
 class.
 
 ## What is lazy loading?
