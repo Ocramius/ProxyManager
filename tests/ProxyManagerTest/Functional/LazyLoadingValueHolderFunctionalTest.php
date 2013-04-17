@@ -187,13 +187,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
             & $wrappedObject,
             LazyLoadingInterface $proxy,
             $method,
-            $params
+            $params,
+            & $initializer
         ) use (
             $initializerMatcher,
             $realInstance
             ) {
-            $proxy->setProxyInitializer(null);
-
+            $initializer   = null;
             $wrappedObject = $realInstance;
 
             $initializerMatcher->__invoke($proxy, $wrappedObject, $method, $params);
