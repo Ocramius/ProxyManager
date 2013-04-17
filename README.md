@@ -27,10 +27,9 @@ $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($config);
 
 $proxy = $factory->createProxy(
     'MyApp\HeavyComplexObject',
-    function (& $wrappedObject, $proxy, $method, $parameters) {
+    function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
         $wrappedObject = new HeavyComplexObject(); // instantiation logic here
-
-        $proxy->setProxyInitializer(null); // turning off further lazy initialization
+        $initializer   = null; // turning off further lazy initialization
     
         return true;
     }
