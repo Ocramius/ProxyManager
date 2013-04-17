@@ -15,11 +15,11 @@ The suggested installation method is via [composer](https://getcomposer.org/):
 php composer.phar require ocramius/proxy-manager:0.3.*
 ```
 
-## Lazy Loading Value Holders
+## Lazy Loading Value Holders (Virtual Proxy)
 
-Currently, this library can generate [lazy loading value holders](http://www.martinfowler.com/eaaCatalog/lazyLoad.html),
-which are a way to save performance and memory for objects that require a lot of dependencies or CPU cycles to be
-initialized, and may not always be used.
+ProxyManager can generate [lazy loading value holders](http://www.martinfowler.com/eaaCatalog/lazyLoad.html),
+which are virtual proxies capable of saving performance and memory for objects that require a lot of dependencies or
+CPU cycles to be loaded: particularly useful when you may not always need the object, but are constructing it anyways.
 
 ```php
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
@@ -44,8 +44,9 @@ in the `docs/` directory.
 
 ## Access Interceptors
 
-An access interceptor allows you to execute logic before and after a particular method is executed or a particular
-property is accessed, and it allows to manipulate parameters and return values depending on your needs.
+An access interceptor is a smart reference that allows you to execute logic before and after a particular method
+is executed or a particular property is accessed, and it allows to manipulate parameters and return values depending
+on your needs.
 
 ```php
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
@@ -83,12 +84,12 @@ the context of data mappers.
 
 This feature is [planned](https://github.com/Ocramius/ProxyManager/issues/6).
 
-## Smart References
+## Lazy References
 
-A smart reference proxy is actually a proxy backed by some kind of reference holder (usually a registry) that can fetch
+A lazy reference proxy is actually a proxy backed by some kind of reference holder (usually a registry) that can fetch
 existing instances of a particular object.
 
-A smart reference is usually necessary when multiple instances of the same object can be avoided, or when the instances
+A lazy reference is usually necessary when multiple instances of the same object can be avoided, or when the instances
 are not hard links (like with [Weakref](http://php.net/manual/en/book.weakref.php)), and could be garbage-collected to
 save memory in long time running processes.
 
