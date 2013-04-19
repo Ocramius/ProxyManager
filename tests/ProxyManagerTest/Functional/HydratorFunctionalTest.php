@@ -22,7 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
-use ProxyManager\ProxyGenerator\HydratorProxyGenerator;
+use ProxyManager\ProxyGenerator\HydratorGenerator;
 use ProxyManagerTestAsset\HydratedObject;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
@@ -76,7 +76,7 @@ class HydratorFunctionalTest extends PHPUnit_Framework_TestCase
     private function generateProxy($parentClassName)
     {
         $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
-        $generator          = new HydratorProxyGenerator();
+        $generator          = new HydratorGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();
         $reflection         = new ReflectionClass($parentClassName);

@@ -25,7 +25,7 @@ use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\HydratorInterface;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use ProxyManager\ProxyGenerator\HydratorProxyGenerator;
+use ProxyManager\ProxyGenerator\HydratorGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\HydratedObject;
@@ -152,7 +152,7 @@ class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
     private function generateHydrator($object)
     {
         $generatedClassName   = __NAMESPACE__ . '\\Foo' . uniqid();
-        $generator            = new HydratorProxyGenerator();
+        $generator            = new HydratorGenerator();
         $generatedClass       = new ClassGenerator($generatedClassName);
         $strategy             = new EvaluatingGeneratorStrategy();
         $reflection           = new ReflectionClass($object);

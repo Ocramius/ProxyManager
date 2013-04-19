@@ -18,10 +18,10 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\HydratorProxyGenerator;
+use ProxyManager\ProxyGenerator\HydratorGenerator;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\HydratorProxyGenerator}
+ * Tests for {@see \ProxyManager\ProxyGenerator\HydratorGenerator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
@@ -35,7 +35,7 @@ class HydratorProxyGeneratorTest extends AbstractProxyGeneratorTest
      */
     protected function getProxyGenerator()
     {
-        return new HydratorProxyGenerator();
+        return new HydratorGenerator();
     }
 
     /**

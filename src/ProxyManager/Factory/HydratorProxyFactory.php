@@ -20,7 +20,7 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\ProxyGenerator\HydratorProxyGenerator;
+use ProxyManager\ProxyGenerator\HydratorGenerator;
 use ReflectionClass;
 
 /**
@@ -89,7 +89,7 @@ class HydratorProxyFactory
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $classGenerator = new ClassGenerator($proxyClassName);
-            $generator      = new HydratorProxyGenerator();
+            $generator      = new HydratorGenerator();
 
             $generator->generate($reflection, $classGenerator);
             $this->configuration->getGeneratorStrategy()->generate($classGenerator);

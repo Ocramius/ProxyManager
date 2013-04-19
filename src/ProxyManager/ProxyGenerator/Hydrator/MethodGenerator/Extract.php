@@ -41,8 +41,24 @@ class Extract extends MethodGenerator
         $this->setDocblock("{@inheritDoc}");
         $this->setParameter(new ParameterGenerator('object'));
 
-        $body = 'return array(';
+        // @todo switch between this logic and the direct access one depending on the fact that ther
 
+        if (empty($accessibleProperties) && empty($propertyAccessors)) {
+            // no properties to hydrate
+            $this->setBody('return array();');
+
+            return;
+        }
+
+        $body = '';
+
+        if (count($propertyAccessors)) {
+            $body = "\$data = (array) \$object;\n\n";
+        }
+
+        $body .= 'return array(';
+
+        // @todo consider using `\0*\0bar` for protected properties if faster
         foreach ($accessibleProperties as $accessibleProperty) {
             $body .= "\n    "
                 . var_export($accessibleProperty->getName(), true)
@@ -52,9 +68,10 @@ class Extract extends MethodGenerator
         foreach ($propertyAccessors as $propertyAccessor) {
             $body .= "\n    "
                 . var_export($propertyAccessor->getOriginalProperty()->getName(), true)
-                . ' => $this->'
-                . $propertyAccessor->getName()
-                . '->getValue($object),';
+                . ' => $data["'
+                . '\\0' . $propertyAccessor->getOriginalProperty()->getDeclaringClass()->getName()
+                . '\\0' . $propertyAccessor->getOriginalProperty()->getName()
+                . '"],';
         }
 
         $body .= "\n);";

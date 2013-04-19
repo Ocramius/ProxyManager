@@ -41,7 +41,7 @@ use Zend\Code\Reflection\MethodReflection;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class HydratorProxyGenerator implements ProxyGeneratorInterface
+class HydratorGenerator implements ProxyGeneratorInterface
 {
     /**
      * {@inheritDoc}
