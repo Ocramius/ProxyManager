@@ -52,7 +52,7 @@ class Extract extends MethodGenerator
 
         $body = '';
 
-        if (count($propertyAccessors)) {
+        if (! empty($propertyAccessors)) {
             $body = "\$data = (array) \$object;\n\n";
         }
 
@@ -60,9 +60,15 @@ class Extract extends MethodGenerator
 
         // @todo consider using `\0*\0bar` for protected properties if faster
         foreach ($accessibleProperties as $accessibleProperty) {
-            $body .= "\n    "
-                . var_export($accessibleProperty->getName(), true)
-                . ' => $object->' . $accessibleProperty->getName() . ',';
+            if (empty($propertyAccessors) || ! $accessibleProperty->isProtected()) {
+                $body .= "\n    "
+                    . var_export($accessibleProperty->getName(), true)
+                    . ' => $object->' . $accessibleProperty->getName() . ',';
+            } else {
+                $body .= "\n    "
+                    . var_export($accessibleProperty->getName(), true)
+                    . ' => $data["\\0*\\0' . $accessibleProperty->getName() . '"],';
+            }
         }
 
         foreach ($propertyAccessors as $propertyAccessor) {
