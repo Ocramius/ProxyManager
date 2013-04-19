@@ -21,7 +21,6 @@ namespace ProxyManagerTest\Functional;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\HydratorGenerator;
 use ProxyManagerTestAsset\HydratedObject;
 use ReflectionClass;

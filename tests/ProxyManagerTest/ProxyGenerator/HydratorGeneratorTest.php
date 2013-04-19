@@ -26,9 +26,9 @@ use ProxyManager\ProxyGenerator\HydratorGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
- * @covers \ProxyManager\ProxyGenerator\HydratorProxyGenerator
+ * @covers \ProxyManager\ProxyGenerator\HydratorGenerator
  */
-class HydratorProxyGeneratorTest extends AbstractProxyGeneratorTest
+class HydratorGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * {@inheritDoc}
