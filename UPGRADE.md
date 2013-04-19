@@ -1,5 +1,10 @@
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 0.3.2
+
+ * An additional (optional) [by-ref parameter was added](https://github.com/Ocramius/ProxyManager/pull/31) 
+   to the lazy loading proxies' initializer to allow unsetting the initializer with less overhead.
+
 # 0.3.0
 
  * Dependency to [jms/cg](https://github.com/schmittjoh/cg-library) removed
