@@ -24,7 +24,8 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithProtectedProperties {
+class ClassWithProtectedProperties
+{
     protected $property0 = 'property0';
 
     protected $property1 = 'property1';

@@ -24,7 +24,8 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMixedProperties {
+class ClassWithMixedProperties
+{
     public $publicProperty0       = 'publicProperty0';
 
     public $publicProperty1       = 'publicProperty1';
