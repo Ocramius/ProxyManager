@@ -28,6 +28,10 @@ use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\HydratorGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\HydratedObject;
 use ReflectionClass;
 use ReflectionProperty;
@@ -126,7 +130,17 @@ class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
     {
         $data = array();
 
-        foreach (array(new stdClass(), new BaseClass(), new HydratedObject()) as $instance) {
+        $classes = array(
+            new stdClass(),
+            new BaseClass(),
+            new HydratedObject(),
+            new ClassWithPrivateProperties(),
+            new ClassWithProtectedProperties(),
+            new ClassWithPublicProperties(),
+            new ClassWithMixedProperties(),
+        );
+
+        foreach ($classes as $instance) {
             $definitions = $this->generateHydrator($instance);
             $hydrator    = $definitions['hydrator'];
             $properties  = $definitions['properties'];
