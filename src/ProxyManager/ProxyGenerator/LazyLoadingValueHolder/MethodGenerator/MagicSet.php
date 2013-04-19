@@ -50,7 +50,7 @@ class MagicSet extends MethodGenerator
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, '
-            . '\'__set\', array(\'name\' => $name, \'value\' => $value));' . "\n\n"
+            . '\'__set\', array(\'name\' => $name, \'value\' => $value), $this->' . $initializer . ');' . "\n\n"
             . '$this->' . $valueHolder . '->$name = $value;'
         );
     }

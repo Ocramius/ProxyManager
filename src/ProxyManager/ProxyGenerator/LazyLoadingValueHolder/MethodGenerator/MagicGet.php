@@ -49,7 +49,8 @@ class MagicGet extends MethodGenerator
         $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__get\', array(\'name\' => $name));' . "\n\n"
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__get\', array(\'name\' => $name), $this->'
+            . $initializer . ');' . "\n\n"
             . 'return $this->' . $valueHolder . '->$name;'
         );
     }

@@ -47,7 +47,8 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__isset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__isset', array('name' => \$name));\n\n"
+            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__isset', array('name' => \$name)"
+            . ", \$this->foo);\n\n"
             . "return isset(\$this->bar->\$name);",
             $magicIsset->getBody()
         );

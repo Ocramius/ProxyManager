@@ -48,7 +48,7 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
         $this->assertCount(0, $magicClone->getParameters());
         $this->assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
-            . "'__clone', array());\n\n\$this->bar = clone \$this->bar;",
+            . "'__clone', array(), \$this->foo);\n\n\$this->bar = clone \$this->bar;",
             $magicClone->getBody()
         );
     }
