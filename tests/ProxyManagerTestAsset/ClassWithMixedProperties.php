@@ -25,13 +25,21 @@ namespace ProxyManagerTestAsset;
  * @license MIT
  */
 class ClassWithMixedProperties {
-    public $publicProperty0    = 'publicProperty0';
-    public $publicProperty1    = 'publicProperty1';
-    public $publicProperty2    = 'publicProperty2';
-    public $protectedProperty0 = 'protectedProperty0';
-    public $protectedProperty1 = 'protectedProperty1';
-    public $protectedProperty2 = 'protectedProperty2';
-    public $privateProperty0   = 'privateProperty0';
-    public $privateProperty1   = 'privateProperty1';
-    public $privateProperty2   = 'privateProperty2';
+    public $publicProperty0       = 'publicProperty0';
+
+    public $publicProperty1       = 'publicProperty1';
+
+    public $publicProperty2       = 'publicProperty2';
+
+    protected $protectedProperty0 = 'protectedProperty0';
+
+    protected $protectedProperty1 = 'protectedProperty1';
+
+    protected $protectedProperty2 = 'protectedProperty2';
+
+    private $privateProperty0     = 'privateProperty0';
+
+    private $privateProperty1     = 'privateProperty1';
+
+    private $privateProperty2     = 'privateProperty2';
 }
