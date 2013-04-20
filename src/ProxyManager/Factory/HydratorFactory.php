@@ -29,7 +29,7 @@ use ReflectionClass;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class HydratorProxyFactory
+class HydratorFactory
 {
     /**
      * @var \ProxyManager\Configuration
@@ -74,7 +74,7 @@ class HydratorProxyFactory
     /**
      * @param string $className
      *
-     * @return mixed
+     * @return \Zend\Stdlib\Hydrator\HydratorInterface
      */
     public function createProxy($className)
     {
