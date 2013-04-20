@@ -20,7 +20,6 @@ namespace ProxyManagerTest\GeneratorStrategy;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Generator\ClassGenerator;
 
 /**
