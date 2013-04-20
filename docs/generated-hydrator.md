@@ -49,7 +49,7 @@ Here's the performance of the various hydrators of `Zend\Stdlib\Hydrator` compar
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-$iterations = 1000000;
+$iterations = 10000;
 
 class Example
 {
