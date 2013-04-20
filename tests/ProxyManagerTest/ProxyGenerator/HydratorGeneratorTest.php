@@ -43,6 +43,9 @@ class HydratorGeneratorTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array('ProxyManager\\Proxy\\HydratorInterface');
+        return array(
+            'ProxyManager\\Proxy\\HydratorInterface',
+            'Zend\\Stdlib\\Hydrator\\HydratorInterface'
+        );
     }
 }
