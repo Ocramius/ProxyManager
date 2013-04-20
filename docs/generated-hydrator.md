@@ -3,8 +3,19 @@
 A [hydrator](http://framework.zend.com/manual/2.1/en/modules/zend.stdlib.hydrator.html) is an object capable of
 extracting data from other objects, or filling them with data.
 
-ProxyManager uses proxying to instantiate very fast generators, since this will allow access to protected properties
+ProxyManager uses proxying to instantiate very fast hydrators, since this will allow access to protected properties
 of the object to be handled by the hydrator.
+
+Also, a hydrator of ProxyManager implements `Zend\Stdlib\Hydrator\HydratorInterface`.
+
+## Installation
+
+To use the generated hydrators, you will need `zendframework/zend-stdlib`:
+
+```sh
+php composer.phar require zendframework/zend-stdlib:2.*
+```
+
 
 ## Usage
 
