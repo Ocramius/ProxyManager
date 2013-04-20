@@ -101,9 +101,9 @@ This will produce something like following:
 0.60278487205505s
 ```
 
-As you can see, the generated proxy is 20 times faster than `Zend\Stdlib\Hydrator\Reflection`, and
-more than 90 times faster than `Zend\Stdlib\Hydrator\ClassMethods`. It is even 2 times faster than the
-hydrator relying on the object's implementation of array serialization.
+As you can see, the generated proxy is 20 times faster than `Zend\Stdlib\Hydrator\Reflection`
+and `Zend\Stdlib\Hydrator\ArraySerializable`, and more than 90 times faster than
+`Zend\Stdlib\Hydrator\ClassMethods`.
 
 ## Tuning performance for production
 
