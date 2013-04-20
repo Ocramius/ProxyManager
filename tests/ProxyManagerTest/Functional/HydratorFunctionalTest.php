@@ -22,10 +22,17 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\HydratorGenerator;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ReflectionProperty;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\HydratedObject} produced objects
@@ -37,43 +44,79 @@ use ReflectionProperty;
  */
 class HydratorFunctionalTest extends PHPUnit_Framework_TestCase
 {
-    public function testHydrate()
+    /**
+     * @dataProvider getProxyClasses
+     *
+     * @param object $instance
+     */
+    public function testHydrate($instance)
     {
-        $object      = new HydratedObject();
-        $proxy       = $this->generateProxy('ProxyManagerTestAsset\HydratedObject');
-        $initialData = array('foo' => 1, 'bar' => 2, 'baz' => 3);
-        $data        = array('foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz');
+        $reflection  = new ReflectionClass($instance);
+        $properties  = $reflection->getProperties();
+        $initialData = array();
+        $newData     = array();
 
-        $this->assertSame($initialData['foo'], $object->__get('foo'));
-        $this->assertSame($initialData['bar'], $object->__get('bar'));
-        $this->assertSame($initialData['baz'], $object->__get('baz'));
-        $this->assertSame($initialData, $proxy->extract($object));
+        foreach ($properties as $property) {
+            $propertyName = $property->getName();
 
-        $proxy->hydrate($data, $object);
+            $property->setAccessible(true);
+            $initialData[$propertyName] = $property->getValue($instance);
+            $newData[$propertyName]     = $property->getName() . '__new__value';
+        }
 
-        $this->assertSame($data['foo'], $object->__get('foo'));
-        $this->assertSame($data['bar'], $object->__get('bar'));
-        $this->assertSame($data['baz'], $object->__get('baz'));
-        $this->assertSame($data, $proxy->extract($object));
+        $proxy = $this->generateProxy($instance);
+
+        $this->assertSame($initialData, $proxy->extract($instance));
+        $proxy->hydrate($newData, $instance);
+
+        $inspectionData = array();
+
+        foreach ($properties as $property) {
+            $propertyName = $property->getName();
+
+            $property->setAccessible(true);
+            $inspectionData[$propertyName] = $property->getValue($instance);
+        }
+
+        $this->assertSame($inspectionData, $newData);
+        $this->assertSame($inspectionData, $proxy->extract($instance));
     }
 
     public function testDisabledMethod()
     {
-        $proxy = $this->generateProxy('ProxyManagerTestAsset\HydratedObject');
+        $proxy = $this->generateProxy(new HydratedObject());
 
         $this->setExpectedException('ProxyManager\Exception\DisabledMethodException');
         $proxy->doFoo();
     }
 
     /**
+     * @return array
+     */
+    public function getProxyClasses()
+    {
+        return array(
+            array(new stdClass()),
+            array(new EmptyClass()),
+            array(new HydratedObject()),
+            array(new BaseClass()),
+            array(new ClassWithPublicProperties()),
+            array(new ClassWithProtectedProperties()),
+            array(new ClassWithPrivateProperties()),
+            array(new ClassWithMixedProperties()),
+        );
+    }
+
+    /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
-     * @param  string $parentClassName
+     * @param  object $instance
      *
      * @return \ProxyManagerTestAsset\HydratedObject|\ProxyManager\Proxy\HydratorInterface
      */
-    private function generateProxy($parentClassName)
+    private function generateProxy($instance)
     {
+        $parentClassName    = get_class($instance);
         $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
         $generator          = new HydratorGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
