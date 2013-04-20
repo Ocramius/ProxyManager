@@ -16,30 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
+namespace ProxyManager\Exception;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+use BadMethodCallException;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Exception for forcefully disabled methods
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class DisabledMethodException extends BadMethodCallException implements ExceptionInterface
 {
-    /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
-     */
-    public function testGenerate()
-    {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+    const NAME = __CLASS__;
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
+    /**
+     * @param  string $method
+     *
+     * @return self
+     */
+    public static function disabledMethod($method)
+    {
+        return new self(sprintf('Method "%s" is forcefully disabled', (string) $method));
     }
 }

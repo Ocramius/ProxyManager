@@ -16,30 +16,43 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+use ReflectionProperty;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Property that contains a {@see \ReflectionProperty} that functions as an accessor
+ * for inaccessible proxied object's properties.
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class PropertyAccessor extends PropertyGenerator
 {
     /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
+     * @var \ReflectionProperty
      */
-    public function testGenerate()
-    {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+    protected $accessedProperty;
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
+    /**
+     * @param \ReflectionProperty $accessedProperty
+     */
+    public function __construct(ReflectionProperty $accessedProperty)
+    {
+        $this->accessedProperty = $accessedProperty;
+        $originalName           = $this->accessedProperty->getName();
+
+        parent::__construct($originalName . 'Accessor' . uniqid());
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setDocblock("@var \\ReflectionProperty used to access {@see parent::$originalName}");
+    }
+
+    /**
+     * @return \ReflectionProperty
+     */
+    public function getOriginalProperty()
+    {
+        return $this->accessedProperty;
     }
 }

@@ -23,7 +23,6 @@ use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\ValueHolderInterface;

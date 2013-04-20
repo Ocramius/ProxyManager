@@ -16,30 +16,30 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
+namespace ProxyManager\Proxy;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+use Zend\Stdlib\Hydrator\HydratorInterface as ZendFrameworkHydrator;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Hydrator proxy - allows access to protected members of a proxied object
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+interface HydratorInterface extends ProxyInterface, ZendFrameworkHydrator
 {
     /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
+     * Set the reflection properties to be used to access members of the class
+     * when they are private
+     *
+     * @param \ReflectionProperty[] $accessorProperties indexed by property name
+     *
+     * @return void
      */
-    public function testGenerate()
-    {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+    public function setAccessorProperties(array $accessorProperties);
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
-    }
+    /**
+     * @return \ReflectionProperty[] indexed by property name
+     */
+    public function getAccessorProperties();
 }

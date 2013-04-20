@@ -16,30 +16,33 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
-
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+namespace ProxyManagerTestAsset;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Base test class to play around with private properties
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class ClassWithPrivateProperties
 {
-    /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
-     */
-    public function testGenerate()
-    {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+    private $property0 = 'property0';
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
-    }
+    private $property1 = 'property1';
+
+    private $property2 = 'property2';
+
+    private $property3 = 'property3';
+
+    private $property4 = 'property4';
+
+    private $property5 = 'property5';
+
+    private $property6 = 'property6';
+
+    private $property7 = 'property7';
+
+    private $property8 = 'property8';
+
+    private $property9 = 'property9';
 }

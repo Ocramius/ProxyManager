@@ -16,30 +16,40 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Exception\DisabledMethodException;
+use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Method generator for the `getAccessorProperties` method of a hydrator proxy
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class GetAccessorProperties extends MethodGenerator
 {
     /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
+     * @param \ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor[] $propertyAccessors
      */
-    public function testGenerate()
+    public function __construct(array $propertyAccessors)
     {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+        parent::__construct('getAccessorProperties');
+        $this->setDocblock("{@inheritDoc}");
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
+        $body = 'return array(';
+
+        foreach ($propertyAccessors as $propertyAccessor) {
+            $body .= "\n    "
+                . var_export($propertyAccessor->getOriginalProperty()->getName(), true)
+                . ' => $this->'
+                . $propertyAccessor->getName()
+                . ',';
+        }
+
+        $body .= "\n);";
+
+        $this->setBody($body);
     }
 }
