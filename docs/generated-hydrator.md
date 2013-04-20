@@ -81,22 +81,22 @@ class Example
     }
 }
 
-$object  = new Example();
-$data    = array('foo' => 1, 'bar' => 2, 'baz' => 3);
-$factory = new ProxyManager\Factory\HydratorFactory(new ProxyManager\Configuration());
-$proxies = array(
+$object    = new Example();
+$data      = array('foo' => 1, 'bar' => 2, 'baz' => 3);
+$factory   = new ProxyManager\Factory\HydratorFactory(new ProxyManager\Configuration());
+$hydrators = array(
     $factory->createProxy('Example'),
     new Zend\Stdlib\Hydrator\ClassMethods(),
     new Zend\Stdlib\Hydrator\Reflection(),
     new Zend\Stdlib\Hydrator\ArraySerializable(),
 );
 
-foreach ($proxies as $proxy) {
+foreach ($hydrators as $hydrator) {
     $start = microtime(true);
 
     for ($i = 0; $i < $iterations; $i += 1) {
-        $proxy->hydrate($data, $object);
-        $proxy->extract($object);
+        $hydrator->hydrate($data, $object);
+        $hydrator->extract($object);
     }
 
     var_dump(microtime(true) - $start);
