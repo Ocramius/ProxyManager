@@ -49,9 +49,9 @@ class HydratorFactory
     /**
      * Cached proxy class names
      *
-     * @var string[]
+     * @var \Zend\Stdlib\Hydrator\HydratorInterface[]
      */
-    private $hydratorClassNames = array();
+    private $hydrators = array();
 
     /**
      * Cached reflection properties
@@ -78,10 +78,8 @@ class HydratorFactory
      */
     public function createProxy($className)
     {
-        if (isset($this->hydratorClassNames[$className])) {
-            $proxyClassName = $this->hydratorClassNames[$className];
-
-            return new $proxyClassName($this->reflectionProperties[$className]);
+        if (isset($this->hydrators[$className])) {
+            return $this->hydrators[$className];
         }
 
         $reflection     = new ReflectionClass($this->inflector->getUserClassName($className));
@@ -97,9 +95,8 @@ class HydratorFactory
         }
 
         $reflectionProperties                   = $reflection->getProperties();
-        $this->hydratorClassNames[$className]   = $proxyClassName;
         $this->reflectionProperties[$className] = $reflectionProperties;
 
-        return new $proxyClassName($reflectionProperties);
+        return $this->hydrators[$className] = new $proxyClassName($reflectionProperties);
     }
 }
