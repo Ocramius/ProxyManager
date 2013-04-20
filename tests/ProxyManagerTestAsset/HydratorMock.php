@@ -16,30 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
-
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+namespace ProxyManagerTestAsset;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Base test class to catch instantiations of hydrators
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class HydratorMock
 {
     /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
+     * @var mixed
      */
-    public function testGenerate()
-    {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+    public $reflectionProperties;
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
+    /**
+     * @param mixed $reflectionProperties
+     */
+    public function __construct($reflectionProperties)
+    {
+        $this->reflectionProperties = $reflectionProperties;
     }
 }

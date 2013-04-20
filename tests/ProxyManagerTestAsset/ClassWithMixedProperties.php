@@ -16,30 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
-
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+namespace ProxyManagerTestAsset;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Base test class to play around with mixed visibility properties
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class ClassWithMixedProperties
 {
-    /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
-     */
-    public function testGenerate()
-    {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+    public $publicProperty0       = 'publicProperty0';
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
-    }
+    public $publicProperty1       = 'publicProperty1';
+
+    public $publicProperty2       = 'publicProperty2';
+
+    protected $protectedProperty0 = 'protectedProperty0';
+
+    protected $protectedProperty1 = 'protectedProperty1';
+
+    protected $protectedProperty2 = 'protectedProperty2';
+
+    private $privateProperty0     = 'privateProperty0';
+
+    private $privateProperty1     = 'privateProperty1';
+
+    private $privateProperty2     = 'privateProperty2';
 }

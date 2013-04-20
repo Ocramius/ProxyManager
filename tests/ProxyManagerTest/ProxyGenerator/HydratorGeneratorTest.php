@@ -16,30 +16,36 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
+namespace ProxyManagerTest\ProxyGenerator;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\ProxyGenerator\HydratorGenerator;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Tests for {@see \ProxyManager\ProxyGenerator\HydratorGenerator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\HydratorGenerator
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class HydratorGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
+     * {@inheritDoc}
      */
-    public function testGenerate()
+    protected function getProxyGenerator()
     {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+        return new HydratorGenerator();
+    }
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
+    /**
+     * {@inheritDoc}
+     */
+    protected function getExpectedImplementedInterfaces()
+    {
+        return array(
+            'ProxyManager\\Proxy\\HydratorInterface',
+            'Zend\\Stdlib\\Hydrator\\HydratorInterface'
+        );
     }
 }

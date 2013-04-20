@@ -1,5 +1,9 @@
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 0.3.3
+
+ * [Generated hydrators](https://github.com/Ocramius/ProxyManager/tree/master/docs/generated-hydrator.md) were introduced
+
 # 0.3.2
 
  * An additional (optional) [by-ref parameter was added](https://github.com/Ocramius/ProxyManager/pull/31) 

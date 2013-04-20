@@ -16,30 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
+namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Exception\DisabledMethodException;
+use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Method generator for forcefully disabled methods
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class DisabledMethod extends MethodGenerator
 {
     /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
+     * {@inheritDoc}
      */
-    public function testGenerate()
+    public function generate()
     {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+        $this->setBody('throw \\' . DisabledMethodException::NAME . '::disabledMethod(__METHOD__);');
+        $this->setDocblock(
+            "{@inheritDoc}\n\n@internal disabled since this object is not a real proxy\n\n"
+            . "@throws \\ProxyManager\\Exception\\DisabledMethodException"
+        );
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
+        return parent::generate();
     }
 }

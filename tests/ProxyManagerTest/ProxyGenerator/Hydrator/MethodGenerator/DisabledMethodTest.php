@@ -16,30 +16,33 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\GeneratorStrategy;
+namespace ProxyManagerTest\ProxyGenerator\Hydrator\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
-use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMethod;
+use ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
 
 /**
- * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
+ * Tests for {@see \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMethod}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMethod
  */
-class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class DisabledMethodTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
+     * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMethod::generate
      */
-    public function testGenerate()
+    public function testGeneratedStructure()
     {
-        $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
-        $classGenerator = new ClassGenerator($className);
-        $generated      = $strategy->generate($classGenerator);
+        $disabledMethod = new DisabledMethod('foo');
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
+        $this->assertStringMatchesFormat(
+            '%athrow \\ProxyManager\\Exception\\DisabledMethodException::disabledMethod(__METHOD__);%a',
+            $disabledMethod->generate()
+        );
     }
 }
