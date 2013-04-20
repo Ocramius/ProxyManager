@@ -62,6 +62,12 @@ class Example
     public function getFoo() { return $this->foo; }
     public function getBar() { return $this->bar; }
     public function getBaz() { return $this->baz; }
+    public function exchangeArray($data) {
+        $this->foo = $data['foo']; $this->bar = $data['bar']; $this->baz = $data['baz'];
+    }
+    public function getArrayCopy() {
+        return array('foo' => $this->foo, 'bar' => $this->bar, 'baz' => $this->baz);
+    }
 }
 
 $object  = new Example();
@@ -71,6 +77,7 @@ $proxies = array(
     $factory->createProxy('Example'),
     new Zend\Stdlib\Hydrator\ClassMethods(),
     new Zend\Stdlib\Hydrator\Reflection(),
+    new Zend\Stdlib\Hydrator\ArraySerializable(),
 );
 
 foreach ($proxies as $proxy) {
@@ -91,10 +98,12 @@ This will produce something like following:
 0.028156042098999s
 2.606673002243s
 0.56710886955261s
+0.60278487205505s
 ```
 
 As you can see, the generated proxy is 20 times faster than `Zend\Stdlib\Hydrator\Reflection`, and
-more than 90 times faster than `Zend\Stdlib\Hydrator\ClassMethods`.
+more than 90 times faster than `Zend\Stdlib\Hydrator\ClassMethods`. It is even 2 times faster than the
+hydrator relying on the object's implementation of array serialization.
 
 ## Tuning performance for production
 
