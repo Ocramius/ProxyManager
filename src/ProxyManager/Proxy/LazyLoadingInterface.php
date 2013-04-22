@@ -34,7 +34,7 @@ interface LazyLoadingInterface extends ProxyInterface
      * An initializer should have a signature like following:
      *
      * <code>
-     * $initializer = function (& $wrappedObject, $proxy, $method, $parameters) {};
+     * $initializer = function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {};
      * </code>
      *
      * @param \Closure|null $initializer
