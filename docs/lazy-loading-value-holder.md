@@ -117,13 +117,13 @@ The initializer closure signature should be as following:
  *
  * @return bool true on success
  */
-$initializer = function (& $wrappedObject, $proxy, $method, & $parameters, & $initializer) {};
+$initializer = function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {};
 ```
 
 The initializer closure should usually be coded like following:
 
 ```php
-$initializer = function (& $wrappedObject, $proxy, $method, & $parameters, & $initializer) {
+$initializer = function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
     $newlyCreatedObject = new Foo(); // instantiation logic
     $newlyCreatedObject->setBar('baz') // instantiation logic
     $newlyCreatedObject->setBat('bam') // instantiation logic
