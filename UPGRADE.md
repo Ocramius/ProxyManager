@@ -1,5 +1,9 @@
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 0.3.4
+
+ * Interface names are also supported for proxy generation as of [#40](https://github.com/Ocramius/ProxyManager/pull/40)
+
 # 0.3.3
 
  * [Generated hydrators](https://github.com/Ocramius/ProxyManager/tree/master/docs/generated-hydrator.md) were introduced
