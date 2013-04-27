@@ -43,12 +43,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCalls($instance, $method, $params, $expectedValue)
+    public function testMethodCalls($className, $instance, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
-        $proxy = new $proxyName($this->createInitializer($instance));
+        $proxy = new $proxyName($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -59,12 +59,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCallsAfterUnSerialization($instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
-        $proxy = unserialize(serialize(new $proxyName($this->createInitializer($instance))));
+        $proxy = unserialize(serialize(new $proxyName($this->createInitializer($className, $instance))));
 
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -74,12 +74,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCallsAfterCloning($instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterCloning($className, $instance, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface|BaseClass */
-        $proxy  = new $proxyName($this->createInitializer($instance));
+        $proxy  = new $proxyName($this->createInitializer($className, $instance));
         $cloned = clone $proxy;
 
         $this->assertTrue($cloned->isProxyInitialized());
@@ -178,7 +178,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return \Closure
      */
-    private function createInitializer($realInstance, Mock $initializerMatcher = null)
+    private function createInitializer($className, $realInstance, Mock $initializerMatcher = null)
     {
         if (null === $initializerMatcher) {
             $initializerMatcher = $this->getMock('stdClass', array('__invoke'));
@@ -189,7 +189,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 ->with(
                     $this->logicalAnd(
                         $this->isInstanceOf('ProxyManager\\Proxy\\LazyLoadingInterface'),
-                        $this->isInstanceOf(get_class($realInstance))
+                        $this->isInstanceOf($className)
                     ),
                     $realInstance
                 );
@@ -222,9 +222,34 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     public function getProxyMethods()
     {
         return array(
-            array(new BaseClass(), 'publicMethod', array(), 'publicMethodDefault'),
-            array(new BaseClass(), 'publicTypeHintedMethod', array(new \stdClass()), 'publicTypeHintedMethodDefault'),
-            array(new BaseClass(), 'publicByReferenceMethod', array(), 'publicByReferenceMethodDefault'),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'publicMethod',
+                array(),
+                'publicMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'publicTypeHintedMethod',
+                array(new \stdClass()),
+                'publicTypeHintedMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'publicByReferenceMethod',
+                array(),
+                'publicByReferenceMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseInterface',
+                new BaseClass(),
+                'publicMethod',
+                array(),
+                'publicMethodDefault'
+            ),
         );
     }
 
@@ -243,13 +268,15 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 $instance1,
-                new $proxyName1($this->createInitializer($instance1)),
+                new $proxyName1($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance1)),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
             array(
                 $instance2,
-                unserialize(serialize(new $proxyName2($this->createInitializer($instance2)))),
+                unserialize(
+                    serialize(new $proxyName2($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance2)))
+                ),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
