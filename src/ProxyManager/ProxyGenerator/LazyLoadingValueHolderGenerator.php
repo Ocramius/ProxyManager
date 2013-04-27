@@ -59,13 +59,18 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $classGenerator->setExtendedClass($originalClass->getName());
-        $classGenerator->setImplementedInterfaces(
-            array(
-                'ProxyManager\\Proxy\\LazyLoadingInterface',
-                'ProxyManager\\Proxy\\ValueHolderInterface',
-            )
+        $interfaces = array(
+            'ProxyManager\\Proxy\\LazyLoadingInterface',
+            'ProxyManager\\Proxy\\ValueHolderInterface',
         );
+
+        if ($originalClass->isInterface()) {
+            $interfaces[] = $originalClass->getName();
+        } else {
+            $classGenerator->setExtendedClass($originalClass->getName());
+        }
+
+        $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
 
