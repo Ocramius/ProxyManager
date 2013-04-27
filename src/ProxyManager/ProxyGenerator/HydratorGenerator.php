@@ -48,10 +48,15 @@ class HydratorGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $classGenerator->setExtendedClass($originalClass->getName());
-        $classGenerator->setImplementedInterfaces(
-            array('ProxyManager\\Proxy\\HydratorInterface')
-        );
+        $interfaces = array('ProxyManager\\Proxy\\HydratorInterface',);
+
+        if ($originalClass->isInterface()) {
+            $interfaces[] = $originalClass->getName();
+        } else {
+            $classGenerator->setExtendedClass($originalClass->getName());
+        }
+
+        $classGenerator->setImplementedInterfaces($interfaces);
 
         $excluded = array(
             '__get'    => true,

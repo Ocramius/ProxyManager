@@ -32,14 +32,16 @@ use ReflectionClass;
 abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @dataProvider getTestedImplementations
+     *
      * Verifies that generated code is valid and implements expected interfaces
      */
-    public function testGeneratesValidCode()
+    public function testGeneratesValidCode($className)
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = 'AbstractProxyGeneratorTest_' . uniqid();
         $generatedClass     = new ClassGenerator($generatedClassName);
-        $originalClass      = new ReflectionClass('ProxyManagerTestAsset\\BaseClass');
+        $originalClass      = new ReflectionClass($className);
         $generatorStrategy  = new EvaluatingGeneratorStrategy();
 
         $generator->generate($originalClass, $generatedClass);
@@ -47,8 +49,13 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
 
         $generatedReflection = new ReflectionClass($generatedClassName);
 
+        if ($originalClass->isInterface()) {
+            $this->assertTrue($generatedReflection->implementsInterface($className));
+        } else {
+            $this->assertSame($originalClass->getName(), $generatedReflection->getParentClass()->getName());
+        }
+
         $this->assertSame($generatedClassName, $generatedReflection->getName());
-        $this->assertSame($originalClass->getName(), $generatedReflection->getParentClass()->getName());
 
         foreach ($this->getExpectedImplementedInterfaces() as $interface) {
             $this->assertTrue($generatedReflection->implementsInterface($interface));
@@ -68,4 +75,15 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
      * @return string[]
      */
     abstract protected function getExpectedImplementedInterfaces();
+
+    /**
+     * @return array
+     */
+    public function getTestedImplementations()
+    {
+        return array(
+            array('ProxyManagerTestAsset\\BaseClass'),
+            array('ProxyManagerTestAsset\\BaseInterface'),
+        );
+    }
 }
