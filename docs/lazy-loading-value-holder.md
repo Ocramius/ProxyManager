@@ -191,6 +191,12 @@ $unserialized = serialize(unserialize($proxy));
 Remember to call `$proxy->setProxyInitializer(null);` to disable initialization of your proxy, or it will happen more
 than once.
 
+## Proxying interfaces
+
+You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the
+methods defined by the interface itself, even if the `wrappedObject` implements more methods. This will anyway save
+some memory since the proxy won't contain useless inherited properties.
+
 ## Tuning performance for production
 
 See [Tuning ProxyManager for Production](https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.md).

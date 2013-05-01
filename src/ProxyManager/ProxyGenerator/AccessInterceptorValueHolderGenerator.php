@@ -58,10 +58,18 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $classGenerator->setExtendedClass($originalClass->getName());
-        $classGenerator->setImplementedInterfaces(
-            array('ProxyManager\\Proxy\\AccessInterceptorInterface', 'ProxyManager\\Proxy\\ValueHolderInterface')
+        $interfaces = array(
+            'ProxyManager\\Proxy\\AccessInterceptorInterface',
+            'ProxyManager\\Proxy\\ValueHolderInterface',
         );
+
+        if ($originalClass->isInterface()) {
+            $interfaces[] = $originalClass->getName();
+        } else {
+            $classGenerator->setExtendedClass($originalClass->getName());
+        }
+
+        $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());

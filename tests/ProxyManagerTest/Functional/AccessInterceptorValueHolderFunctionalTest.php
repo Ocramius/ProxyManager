@@ -40,9 +40,9 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCalls($instance, $method, $params, $expectedValue)
+    public function testMethodCalls($className, $instance, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $proxy     = new $proxyName($instance);
@@ -82,9 +82,9 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCallsWithSuffixListener($instance, $method, $params, $expectedValue)
+    public function testMethodCallsWithSuffixListener($className, $instance, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $proxy     = new $proxyName($instance);
@@ -120,9 +120,9 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCallsAfterUnSerialization($instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $proxy     = unserialize(serialize(new $proxyName($instance)));
 
@@ -133,9 +133,9 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCallsAfterCloning($instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterCloning($className, $instance, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $proxy     = new $proxyName($instance);
@@ -223,14 +223,34 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     public function getProxyMethods()
     {
         return array(
-            array(new BaseClass(), 'publicMethod', array(), 'publicMethodDefault'),
             array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'publicMethod',
+                array(),
+                'publicMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
                 new BaseClass(),
                 'publicTypeHintedMethod',
                 array('param' => new \stdClass()),
                 'publicTypeHintedMethodDefault'
             ),
-            array(new BaseClass(), 'publicByReferenceMethod', array(), 'publicByReferenceMethodDefault'),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'publicByReferenceMethod',
+                array(),
+                'publicByReferenceMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseInterface',
+                new BaseClass(),
+                'publicMethod',
+                array(),
+                'publicMethodDefault'
+            ),
         );
     }
 
