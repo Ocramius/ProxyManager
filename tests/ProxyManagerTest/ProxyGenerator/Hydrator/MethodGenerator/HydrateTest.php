@@ -55,7 +55,7 @@ class HydrateTest extends PHPUnit_Framework_TestCase
         $this->assertSame('hydrate', $hydrate->getName());
         $this->assertSame(
             "\$object->publicProperty = \$data['publicProperty'];\n"
-            . "\$this->foo->setValue(\$object, \$data['privateProperty']);\n",
+            . "\$this->foo->setValue(\$object, \$data['privateProperty']);\n\nreturn \$object;",
             $hydrate->getBody()
         );
 

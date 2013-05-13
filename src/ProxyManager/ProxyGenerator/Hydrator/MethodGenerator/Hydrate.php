@@ -60,6 +60,8 @@ class Hydrate extends MethodGenerator
                 . "]);\n";
         }
 
+        $body .= "\nreturn \$object;";
+
         $this->setBody($body);
     }
 }

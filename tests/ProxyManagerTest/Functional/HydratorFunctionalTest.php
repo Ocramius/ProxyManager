@@ -49,7 +49,7 @@ class HydratorFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @param object $instance
      */
-    public function testHydrate($instance)
+    public function testHydrator($instance)
     {
         $reflection  = new ReflectionClass($instance);
         $properties  = $reflection->getProperties();
@@ -67,7 +67,7 @@ class HydratorFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy = $this->generateProxy($instance);
 
         $this->assertSame($initialData, $proxy->extract($instance));
-        $proxy->hydrate($newData, $instance);
+        $this->assertSame($instance, $proxy->hydrate($newData, $instance));
 
         $inspectionData = array();
 
