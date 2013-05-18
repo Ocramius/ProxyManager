@@ -2,10 +2,11 @@
 
 [![Build Status](https://travis-ci.org/Ocramius/ProxyManager.png?branch=master)](https://travis-ci.org/Ocramius/ProxyManager) [![Dependency Status](https://www.versioneye.com/package/php--ocramius--proxy-manager/badge.png)](https://www.versioneye.com/package/php--ocramius--proxy-manager) [![Coverage Status](https://coveralls.io/repos/Ocramius/ProxyManager/badge.png?branch=master)](https://coveralls.io/r/Ocramius/ProxyManager)
 
-This library aims at providing abstraction for generating various kinds of proxy classes.
+This library aims at providing abstraction for generating various kinds of [proxy classes](http://marco-pivetta.com/proxy-pattern-in-php/).
 
-The idea was originated by a [talk about Proxies in PHP OOP](http://marco-pivetta.com/proxy-pattern-in-php/) that I gave
-at the [@phpugffm](https://twitter.com/phpugffm) in January 2013.
+Currently, this project supports generation of **Virtual Proxies** and **Smart References**. 
+Additionally, it can generate a small high-performance **Hydrator** class to optimize transition
+of data from and into your objects.
 
 ## Installation
 
@@ -127,3 +128,9 @@ in the `docs/` directory.
 
 Please read the [CONTRIBUTING.md](https://github.com/Ocramius/ProxyManager/blob/master/CONTRIBUTING.md) contents if you
 wish to help out!
+
+## Credits
+
+The idea was originated by a [talk about Proxies in PHP OOP](http://marco-pivetta.com/proxy-pattern-in-php/) that I gave
+at the [@phpugffm](https://twitter.com/phpugffm) in January 2013.
+
