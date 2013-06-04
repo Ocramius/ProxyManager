@@ -60,13 +60,13 @@ class HydratorFactoryFunctionalTest extends PHPUnit_Framework_TestCase
         $this->config  = new Configuration();
         $this->factory = new HydratorFactory($this->config);
 
-        $generator    = new EvaluatingGeneratorStrategy();
-        $className    = 'foo' . uniqid();
-        $proxiedClass = ClassGenerator::fromReflection(
+        $generator                = new EvaluatingGeneratorStrategy();
+        $this->generatedClassName = 'foo' . uniqid();
+        $proxiedClass             = ClassGenerator::fromReflection(
             new ClassReflection('ProxyManagerTestAsset\\ClassWithMixedProperties')
         );
 
-        $proxiedClass->setName($className);
+        $proxiedClass->setName($this->generatedClassName);
         $proxiedClass->setNamespaceName(null);
         $generator->generate($proxiedClass); // evaluating the generated class
 
