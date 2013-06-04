@@ -94,7 +94,14 @@ class HydratorFactory
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
 
-        $reflectionProperties                   = $reflection->getProperties();
+        /* @var $properties \ReflectionProperty[] */
+        $properties           = $reflection->getProperties();
+        $reflectionProperties = array();
+
+        foreach ($properties as $property) {
+            $reflectionProperties[$property->getName()] = $property;
+        }
+
         $this->reflectionProperties[$className] = $reflectionProperties;
 
         return $this->hydrators[$className] = new $proxyClassName($reflectionProperties);
