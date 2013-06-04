@@ -48,22 +48,18 @@ class HydratorFactoryFunctionalTest extends PHPUnit_Framework_TestCase
     protected $config;
 
     /**
+     * @var string
+     */
+    protected $generatedClassName;
+
+    /**
      * {@inheritDoc}
      */
     public function setUp()
     {
         $this->config  = new Configuration();
         $this->factory = new HydratorFactory($this->config);
-    }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\HydratorFactory::__construct
-     * @covers \ProxyManager\Factory\HydratorFactory::createProxy
-     */
-    public function testWillGenerateValidProxy()
-    {
         $generator    = new EvaluatingGeneratorStrategy();
         $className    = 'foo' . uniqid();
         $proxiedClass = ClassGenerator::fromReflection(
@@ -75,11 +71,30 @@ class HydratorFactoryFunctionalTest extends PHPUnit_Framework_TestCase
         $generator->generate($proxiedClass); // evaluating the generated class
 
         $this->config->setGeneratorStrategy($generator);
+    }
 
-        $proxy = $this->factory->createProxy($className);
+    /**
+     * @covers \ProxyManager\Factory\HydratorFactory::__construct
+     * @covers \ProxyManager\Factory\HydratorFactory::createProxy
+     */
+    public function testWillGenerateValidProxy()
+    {
+        $this->assertInstanceOf(
+            'Zend\\Stdlib\\Hydrator\\HydratorInterface',
+            $this->factory->createProxy($this->generatedClassName)
+        );
+    }
 
-        $this->assertInstanceOf('Zend\\Stdlib\\Hydrator\\HydratorInterface', $proxy);
-
-        $this->assertSame($proxy, $this->factory->createProxy($className), 'Hydrator instances are cached');
+    /**
+     * @covers \ProxyManager\Factory\HydratorFactory::__construct
+     * @covers \ProxyManager\Factory\HydratorFactory::createProxy
+     */
+    public function testWillCacheProxyInstancesProxy()
+    {
+        $this->assertSame(
+            $this->factory->createProxy($this->generatedClassName),
+            $this->factory->createProxy($this->generatedClassName),
+            'Hydrator instances are cached'
+        );
     }
 }
