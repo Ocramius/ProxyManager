@@ -100,6 +100,7 @@ class HydratorFactory
 
         foreach ($properties as $property) {
             $property->setAccessible(true);
+
             $reflectionProperties[$property->getName()] = $property;
         }
 
