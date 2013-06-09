@@ -21,10 +21,8 @@ namespace ProxyManagerTest\Factory;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\HydratorFactory;
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ReflectionClass;
 use Zend\Code\Reflection\ClassReflection;
 
 /**

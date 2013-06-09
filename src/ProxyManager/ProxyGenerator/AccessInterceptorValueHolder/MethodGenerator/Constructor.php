@@ -43,7 +43,6 @@ class Constructor extends MethodGenerator
     ) {
         parent::__construct('__construct');
 
-
         $prefix = new ParameterGenerator('prefixInterceptors');
         $suffix = new ParameterGenerator('suffixInterceptors');
 

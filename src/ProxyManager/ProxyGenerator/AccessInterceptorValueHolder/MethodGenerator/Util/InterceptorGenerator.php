@@ -33,13 +33,13 @@ use Zend\Code\Generator\PropertyGenerator;
 class InterceptorGenerator
 {
     /**
-     * @param string                                 $methodBody the body of the previously generated code.
+     * @param string $methodBody the body of the previously generated code.
      *                                                           It MUST assign the return value to a variable
      *                                                           `$returnValue` instead of directly returning
-     * @param \ProxyManager\Generator\MethodGenerator   $method
-     * @param \Zend\Code\Generator\PropertyGenerator $valueHolder
-     * @param \Zend\Code\Generator\PropertyGenerator $prefixInterceptors
-     * @param \Zend\Code\Generator\PropertyGenerator $suffixInterceptors
+     * @param \ProxyManager\Generator\MethodGenerator $method
+     * @param \Zend\Code\Generator\PropertyGenerator  $valueHolder
+     * @param \Zend\Code\Generator\PropertyGenerator  $prefixInterceptors
+     * @param \Zend\Code\Generator\PropertyGenerator  $suffixInterceptors
      *
      * @return string
      */

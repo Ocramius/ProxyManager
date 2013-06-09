@@ -29,7 +29,7 @@ interface AutoloaderInterface
     /**
      * Callback to allow the object to be handled as autoloader - tries to autoload the given class name
      *
-     * @param  string $className
+     * @param string $className
      *
      * @return bool
      */

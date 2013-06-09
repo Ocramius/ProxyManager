@@ -21,7 +21,6 @@ namespace ProxyManagerTest\ProxyGenerator\Hydrator\MethodGenerator;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\GetAccessorProperties;
 use ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
 use ReflectionProperty;
 
 /**

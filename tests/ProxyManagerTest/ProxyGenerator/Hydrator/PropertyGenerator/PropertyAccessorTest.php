@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\ProxyGenerator\Hydrator\PropertyGenerator;
 
 use ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
 use ReflectionProperty;
 

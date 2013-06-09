@@ -20,8 +20,6 @@ namespace ProxyManagerTest\ProxyGenerator\Hydrator\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMethod;
-use ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMethod}

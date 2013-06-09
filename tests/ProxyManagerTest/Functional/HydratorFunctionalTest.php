@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\HydratorGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -110,7 +109,7 @@ class HydratorFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
-     * @param  object $instance
+     * @param object $instance
      *
      * @return \ProxyManagerTestAsset\HydratedObject|\ProxyManager\Proxy\HydratorInterface
      */

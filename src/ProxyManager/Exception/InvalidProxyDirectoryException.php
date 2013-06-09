@@ -29,7 +29,7 @@ use InvalidArgumentException;
 class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {
     /**
-     * @param  string $directory
+     * @param string $directory
      *
      * @return self
      */

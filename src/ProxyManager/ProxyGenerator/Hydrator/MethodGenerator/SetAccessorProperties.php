@@ -18,7 +18,6 @@
 
 namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
-use ProxyManager\Exception\DisabledMethodException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;

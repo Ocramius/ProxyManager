@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
@@ -285,7 +284,7 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
-     * @param  string $parentClassName
+     * @param string $parentClassName
      *
      * @return string
      */
@@ -333,7 +332,7 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
 
     /**
      * Display comparison between two profiles
-     * 
+     *
      * @param array $baseProfile
      * @param array $proxyProfile
      */

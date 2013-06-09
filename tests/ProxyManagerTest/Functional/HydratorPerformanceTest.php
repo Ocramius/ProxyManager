@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\HydratorInterface;
@@ -74,7 +73,6 @@ class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
                 $property->setValue($instance, $data[$key]);
             }
         }
-
 
         $base = $this->endCapturing('Baseline hydration: ' . $iterations . ' "' . $className . '": %fms / %fKb');
         $this->startCapturing();
@@ -156,7 +154,7 @@ class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
     /**
      * Generates a proxy for the given class name, and retrieves an instance of it
      *
-     * @param  object $object
+     * @param object $object
      *
      * @return array
      */
@@ -173,7 +171,6 @@ class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
 
         $generator->generate($reflection, $generatedClass);
         $strategy->generate($generatedClass);
-
 
         foreach ($reflectionProperties as $reflectionProperty) {
             $reflectionProperty->setAccessible(true);
@@ -222,7 +219,7 @@ class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
 
     /**
      * Display comparison between two profiles
-     * 
+     *
      * @param array $baseProfile
      * @param array $proxyProfile
      */

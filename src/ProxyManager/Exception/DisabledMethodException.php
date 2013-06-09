@@ -31,7 +31,7 @@ class DisabledMethodException extends BadMethodCallException implements Exceptio
     const NAME = __CLASS__;
 
     /**
-     * @param  string $method
+     * @param string $method
      *
      * @return self
      */
