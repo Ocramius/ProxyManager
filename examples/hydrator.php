@@ -12,7 +12,6 @@ class Foo
     public $baz    = 3;
 }
 
-$startTime = microtime(true);
 $config    = new Configuration();
 $factory   = new HydratorFactory($config);
 $hydrator  = $factory->createProxy('Foo');
