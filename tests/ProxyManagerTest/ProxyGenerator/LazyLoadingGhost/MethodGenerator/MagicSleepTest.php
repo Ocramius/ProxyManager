@@ -37,12 +37,10 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
     {
         $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
         $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicSleep = new MagicSleep($reflection, $initializer, $valueHolder);
+        $magicSleep = new MagicSleep($reflection, $initializer);
 
         $this->assertSame('__sleep', $magicSleep->getName());
         $this->assertCount(0, $magicSleep->getParameters());

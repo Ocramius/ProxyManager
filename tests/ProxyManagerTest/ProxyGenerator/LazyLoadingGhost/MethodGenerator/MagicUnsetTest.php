@@ -37,12 +37,10 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
     {
         $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
         $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicIsset = new MagicUnset($reflection, $initializer, $valueHolder);
+        $magicIsset = new MagicUnset($reflection, $initializer);
 
         $this->assertSame('__unset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
@@ -50,6 +48,53 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
             "\$this->foo && \$this->foo->__invoke(\$this, '__unset', array('name' => \$name)"
             . ", \$this->foo);\n\n"
             . "if (in_array(\$name, array())) {\n    unset(\$this->\$name);\n}",
+            $magicIsset->getBody()
+        );
+    }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset::__construct
+     */
+    public function testBodyStructureWithPublicProperties()
+    {
+        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection  = new ReflectionClass(
+            'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+        );
+
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $magicIsset = new MagicUnset($reflection, $initializer);
+
+        $this->assertSame('__unset', $magicIsset->getName());
+        $this->assertCount(1, $magicIsset->getParameters());
+        $this->assertSame(
+            "\$this->foo && \$this->foo->__invoke(\$this, '__unset', array('name' => \$name)"
+            . ", \$this->foo);\n\n"
+            . "if (in_array(\$name, array('bar', 'baz'))) {\n    unset(\$this->\$name);\n}",
+            $magicIsset->getBody()
+        );
+    }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset::__construct
+     */
+    public function testBodyStructureWithOverriddenMagicGet()
+    {
+        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
+
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $magicIsset = new MagicUnset($reflection, $initializer);
+
+        $this->assertSame('__unset', $magicIsset->getName());
+        $this->assertCount(1, $magicIsset->getParameters());
+        $this->assertSame(
+            "\$this->foo && \$this->foo->__invoke(\$this, '__unset', array('name' => \$name)"
+            . ", \$this->foo);\n\n"
+            . "if (in_array(\$name, array())) {\n    unset(\$this->\$name);\n}\n\n"
+            . "return parent::__unset(\$name);",
             $magicIsset->getBody()
         );
     }

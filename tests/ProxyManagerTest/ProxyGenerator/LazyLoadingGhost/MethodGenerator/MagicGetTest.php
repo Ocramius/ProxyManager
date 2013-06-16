@@ -37,12 +37,10 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     {
         $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
         $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicGet = new MagicGet($reflection, $initializer, $valueHolder);
+        $magicGet = new MagicGet($reflection, $initializer);
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
@@ -51,6 +49,54 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
             . ", \$this->foo);\n\n"
             . "if (in_array(\$name, array())) {\n    return \$this->\$name;\n}\n\n"
             . "trigger_error(sprintf('Undefined property: %s::$%s', __CLASS__, \$name), E_USER_NOTICE);",
+            $magicGet->getBody()
+        );
+    }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet::__construct
+     */
+    public function testBodyStructureWithPublicProperties()
+    {
+        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection  = new ReflectionClass(
+            'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+        );
+
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $magicGet = new MagicGet($reflection, $initializer);
+
+        $this->assertSame('__get', $magicGet->getName());
+        $this->assertCount(1, $magicGet->getParameters());
+        $this->assertSame(
+            "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name)"
+                . ", \$this->foo);\n\n"
+                . "if (in_array(\$name, array('bar', 'baz'))) {\n    return \$this->\$name;\n}\n\n"
+                . "trigger_error(sprintf('Undefined property: %s::$%s', __CLASS__, \$name), E_USER_NOTICE);",
+            $magicGet->getBody()
+        );
+    }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet::__construct
+     */
+    public function testBodyStructureWithOverriddenMagicGet()
+    {
+        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
+
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $magicGet = new MagicGet($reflection, $initializer);
+
+        $this->assertSame('__get', $magicGet->getName());
+        $this->assertCount(1, $magicGet->getParameters());
+        $this->assertSame(
+            "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name)"
+                . ", \$this->foo);\n\n"
+                . "if (in_array(\$name, array())) {\n    return \$this->\$name;\n}\n\n"
+                . "return parent::__get(\$name);",
             $magicGet->getBody()
         );
     }

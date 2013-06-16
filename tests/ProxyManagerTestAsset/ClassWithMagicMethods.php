@@ -16,32 +16,59 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
-
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
+namespace ProxyManagerTestAsset;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized}
+ * Base test class to play around with pre-existing magic methods
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
+class ClassWithMagicMethods
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized::__construct
+     * {@inheritDoc}
      */
-    public function testBodyStructure()
+    public function __set($name, $value)
     {
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        return array($name => $value);
+    }
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+    /**
+     * {@inheritDoc}
+     */
+    public function __get($name)
+    {
+        return $name;
+    }
 
-        $isProxyInitialized = new IsProxyInitialized($initializer);
+    /**
+     * {@inheritDoc}
+     */
+    public function __isset($name)
+    {
+        return (bool) $name;
+    }
 
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return ! $this->foo;', $isProxyInitialized->getBody());
+    /**
+     * {@inheritDoc}
+     */
+    public function __unset($name)
+    {
+        return (bool) $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __sleep()
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __wakeup()
+    {
     }
 }

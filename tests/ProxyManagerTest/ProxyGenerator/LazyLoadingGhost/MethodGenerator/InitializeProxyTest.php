@@ -35,12 +35,10 @@ class InitializeProxyTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $initializeProxy = new InitializeProxy($initializer, $valueHolder);
+        $initializeProxy = new InitializeProxy($initializer);
 
         $this->assertSame('initializeProxy', $initializeProxy->getName());
         $this->assertCount(0, $initializeProxy->getParameters());
