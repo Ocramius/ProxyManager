@@ -20,11 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
-use ReflectionClass;
 
 /**
  * Base performance test logic for lazy loading proxies
@@ -34,28 +30,8 @@ use ReflectionClass;
  *
  * @group Performance
  */
-abstract class BaseLazyLoadingPerformanceTest extends PHPUnit_Framework_TestCase
+abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
 {
-    /**
-     * @var float time when last capture was started
-     */
-    private $startTime   = 0;
-
-    /**
-     * @var int bytes when last capture was started
-     */
-    private $startMemory = 0;
-
-    /**
-     * {@inheritDoc}
-     */
-    public static function setUpBeforeClass()
-    {
-        $header = "Performance test - " . get_called_class() . ":";
-
-        echo "\n\n" . str_repeat('=', strlen($header)) . "\n" . $header . "\n\n";
-    }
-
     /**
      * @param string                                     $className
      * @param object[]                                   $instances
@@ -220,47 +196,4 @@ abstract class BaseLazyLoadingPerformanceTest extends PHPUnit_Framework_TestCase
      * @return string
      */
     abstract protected function generateProxy($parentClassName);
-
-    /**
-     * Start profiler snapshot
-     */
-    protected function startCapturing()
-    {
-        $this->startMemory = memory_get_usage();
-        $this->startTime   = microtime(true);
-    }
-
-    /**
-     * Echo current profiler output
-     *
-     * @param string $messageTemplate
-     *
-     * @return array
-     */
-    protected function endCapturing($messageTemplate)
-    {
-        $time     = microtime(true) - $this->startTime;
-        $memory   = memory_get_usage() - $this->startMemory;
-
-        echo sprintf($messageTemplate, $time, $memory / 1024) . "\n";
-
-        return array(
-            'time'   => $time,
-            'memory' => $memory
-        );
-    }
-
-    /**
-     * Display comparison between two profiles
-     *
-     * @param array $baseProfile
-     * @param array $proxyProfile
-     */
-    protected function compareProfile(array $baseProfile, array $proxyProfile)
-    {
-        $timeOverhead   = ($proxyProfile['time'] / $baseProfile['time']) * 100;
-        $memoryOverhead = ($proxyProfile['memory'] / $baseProfile['memory']) * 100;
-
-        echo sprintf('Comparison time / memory: %f%% / %f%%', $timeOverhead, $memoryOverhead) . "\n\n";
-    }
 }
