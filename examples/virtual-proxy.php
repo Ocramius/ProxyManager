@@ -24,18 +24,17 @@ $factory   = new LazyLoadingValueHolderFactory($config);
 
 for ($i = 0; $i < 1000; $i += 1) { 
     $proxy = $factory->createProxy(
-        'Foo', 
-        function(& $wrapped, $proxy) {
-            $wrapped = new Foo();
+        'Foo',
+        function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
+            $initializer   = null;
+            $wrappedObject = new Foo();
 
-	        $proxy->setProxyInitializer(null);
-
-	        return true;
+            return true;
         }
     );
 }
 
-var_dump('time after instantiations: ' . (microtime(true) - $startTime));
+var_dump('time after 1000 instantiations: ' . (microtime(true) - $startTime));
 
 $proxy->doFoo();
 

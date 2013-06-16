@@ -7,10 +7,10 @@ use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 
 class Foo
 {
-   public function doFoo()
-   {
-       echo "Foo!\n";
-   }
+    public function doFoo()
+    {
+        echo "Foo!\n";
+    }
 }
 
 $config = new Configuration();
