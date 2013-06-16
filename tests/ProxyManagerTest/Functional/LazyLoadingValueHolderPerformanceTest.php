@@ -33,18 +33,8 @@ use ReflectionClass;
  *
  * @group Performance
  */
-class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
+class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTest
 {
-    /**
-     * @var float time when last capture was started
-     */
-    private $startTime   = 0;
-
-    /**
-     * @var int bytes when last capture was started
-     */
-    private $startMemory = 0;
-
     /**
      * @outputBuffering
      * @dataProvider getTestedClasses
@@ -126,169 +116,9 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string                                     $className
-     * @param object[]                                   $instances
-     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
-     * @param string                                     $methodName
-     * @param array                                      $parameters
+     * {@inheritDoc}
      */
-    private function profileMethodAccess($className, array $instances, array $proxies, $methodName, array $parameters)
-    {
-        $iterations = count($instances);
-
-        $this->startCapturing();
-
-        foreach ($instances as $instance) {
-            call_user_func_array(array($instance, $methodName), $parameters);
-        }
-
-        $baseProfile = $this->endCapturing(
-            $iterations . ' calls to ' . $className . '#' . $methodName . ': %fms / %fKb'
-        );
-        $this->startCapturing();
-
-        foreach ($proxies as $proxy) {
-            call_user_func_array(array($proxy, $methodName), $parameters);
-        }
-
-        $proxyProfile = $this->endCapturing(
-            $iterations . ' calls to proxied ' . $className . '#' . $methodName . ': %fms / %fKb'
-        );
-        $this->compareProfile($baseProfile, $proxyProfile);
-    }
-
-    /**
-     * @param string                                     $className
-     * @param object[]                                   $instances
-     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
-     * @param string                                     $property
-     */
-    private function profilePropertyWrites($className, array $instances, array $proxies, $property)
-    {
-        $iterations = count($instances);
-
-        $this->startCapturing();
-
-        foreach ($instances as $instance) {
-            $instance->$property = 'foo';
-        }
-
-        $baseProfile = $this->endCapturing(
-            $iterations . ' writes of ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->startCapturing();
-
-        foreach ($proxies as $proxy) {
-            $proxy->$property = 'foo';
-        }
-
-        $proxyProfile = $this->endCapturing(
-            $iterations . ' writes of proxied ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->compareProfile($baseProfile, $proxyProfile);
-    }
-
-    /**
-     * @param string                                     $className
-     * @param object[]                                   $instances
-     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
-     * @param string                                     $property
-     */
-    private function profilePropertyReads($className, array $instances, array $proxies, $property)
-    {
-        $iterations = count($instances);
-
-        $this->startCapturing();
-
-        foreach ($instances as $instance) {
-            $instance->$property;
-        }
-
-        $baseProfile = $this->endCapturing(
-            $iterations . ' reads of ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->startCapturing();
-
-        foreach ($proxies as $proxy) {
-            $proxy->$property;
-        }
-
-        $proxyProfile = $this->endCapturing(
-            $iterations . ' reads of proxied ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->compareProfile($baseProfile, $proxyProfile);
-    }
-
-    /**
-     * @param string                                     $className
-     * @param object[]                                   $instances
-     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
-     * @param string                                     $property
-     */
-    private function profilePropertyIsset($className, array $instances, array $proxies, $property)
-    {
-        $iterations = count($instances);
-
-        $this->startCapturing();
-
-        foreach ($instances as $instance) {
-            isset($instance->$property);
-        }
-
-        $baseProfile = $this->endCapturing(
-            $iterations . ' isset of ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->startCapturing();
-
-        foreach ($proxies as $proxy) {
-            isset($proxy->$property);
-        }
-
-        $proxyProfile = $this->endCapturing(
-            $iterations . ' isset of proxied ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->compareProfile($baseProfile, $proxyProfile);
-    }
-
-    /**
-     * @param string                                     $className
-     * @param object[]                                   $instances
-     * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
-     * @param string                                     $property
-     */
-    private function profilePropertyUnset($className, array $instances, array $proxies, $property)
-    {
-        $iterations = count($instances);
-
-        $this->startCapturing();
-
-        foreach ($instances as $instance) {
-            unset($instance->$property);
-        }
-
-        $baseProfile = $this->endCapturing(
-            $iterations . ' unset of ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->startCapturing();
-
-        foreach ($proxies as $proxy) {
-            unset($proxy->$property);
-        }
-
-        $proxyProfile = $this->endCapturing(
-            $iterations . ' unset of proxied ' . $className . '::' . $property . ': %fms / %fKb'
-        );
-        $this->compareProfile($baseProfile, $proxyProfile);
-    }
-
-    /**
-     * Generates a proxy for the given class name, and retrieves its class name
-     *
-     * @param string $parentClassName
-     *
-     * @return string
-     */
-    private function generateProxy($parentClassName)
+    protected function generateProxy($parentClassName)
     {
         $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
         $generator          = new LazyLoadingValueHolderGenerator();
@@ -299,48 +129,5 @@ class LazyLoadingValueHolderPerformanceTest extends PHPUnit_Framework_TestCase
         $strategy->generate($generatedClass);
 
         return $generatedClassName;
-    }
-
-    /**
-     * Start profiler snapshot
-     */
-    private function startCapturing()
-    {
-        $this->startMemory = memory_get_usage();
-        $this->startTime   = microtime(true);
-    }
-
-    /**
-     * Echo current profiler output
-     *
-     * @param string $messageTemplate
-     *
-     * @return array
-     */
-    private function endCapturing($messageTemplate)
-    {
-        $time     = microtime(true) - $this->startTime;
-        $memory   = memory_get_usage() - $this->startMemory;
-
-        echo sprintf($messageTemplate, $time, $memory / 1024) . "\n";
-
-        return array(
-            'time'   => $time,
-            'memory' => $memory
-        );
-    }
-
-    /**
-     * Display comparison between two profiles
-     *
-     * @param array $baseProfile
-     * @param array $proxyProfile
-     */
-    private function compareProfile(array $baseProfile, array $proxyProfile)
-    {
-        $timeOverhead   = ($proxyProfile['time'] / $baseProfile['time']) * 100;
-        $memoryOverhead = ($proxyProfile['memory'] / $baseProfile['memory']) * 100;
-
-        echo sprintf('Comparison time / memory: %f%% / %f%%', $timeOverhead, $memoryOverhead) . "\n\n";
     }
 }
