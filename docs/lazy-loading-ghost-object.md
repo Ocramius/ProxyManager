@@ -29,6 +29,8 @@ class MyObjectProxy
 
             $this->name    = $data['name'];
             $this->surname = $data['surname'];
+
+            $this->initialized = true;
         }
     }
 }
