@@ -54,7 +54,7 @@ class MagicIsset extends MethodGenerator
         // @todo can be skipped when no public properties are available
         $callParent = 'if (in_array($name, array(' . implode(', ', $publicProperties) . '))) {' . "\n"
             . '    return isset($this->$name);'
-            . "}\n\n";
+            . "\n}\n\n";
 
         if ($override) {
             // @todo move to private static var to remove overhead!

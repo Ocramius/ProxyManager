@@ -16,35 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
-use ReflectionClass;
-use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
 
 /**
- * Magic `__clone` for lazy loading ghost objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicClone extends MethodGenerator
+class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Constructor
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized::__construct
      */
-    public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
+    public function testBodyStructure()
     {
-        parent::__construct('__clone');
+        $valueHolder     = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
 
-        $override    = $originalClass->hasMethod('__clone');
-        $initializer = $initializerProperty->getName();
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $this->setDocblock($override ? '{@inheritDoc}' : '');
-        $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, \'__clone\', array(), $this->' . $initializer . ');'
-            . ($override ? "\n\nparent::__clone();" : '')
-        );
+        $isProxyInitialized = new IsProxyInitialized($valueHolder);
+
+        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
+        $this->assertCount(0, $isProxyInitialized->getParameters());
+        $this->assertSame('return ! $this->bar;', $isProxyInitialized->getBody());
     }
 }

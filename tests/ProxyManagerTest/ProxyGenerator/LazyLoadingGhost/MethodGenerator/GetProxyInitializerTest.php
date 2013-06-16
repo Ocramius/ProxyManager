@@ -16,23 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 
 /**
- * Test asset with 2 public properties
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithTwoPublicProperties
+class GetProxyInitializerTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var mixed
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer::__construct
      */
-    public $bar;
+    public function testBodyStructure()
+    {
+        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
 
-    /**
-     * @var mixed
-     */
-    public $baz;
+        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $getter = new GetProxyInitializer($initializer);
+
+        $this->assertSame('getProxyInitializer', $getter->getName());
+        $this->assertCount(0, $getter->getParameters());
+        $this->assertSame('return $this->foo;', $getter->getBody());
+    }
 }

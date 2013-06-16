@@ -54,11 +54,11 @@ class MagicUnset extends MethodGenerator
         // @todo can be skipped when no public properties are available
         $callParent = 'if (in_array($name, array(' . implode(', ', $publicProperties) . '))) {' . "\n"
             . '    unset($this->$name);'
-            . "}\n\n";
+            . "\n}";
 
         if ($override) {
             // @todo move to private static var to remove overhead!
-            $callParent .= 'return parent::__unset($name);';
+            $callParent .= "\n\nreturn parent::__unset(\$name);";
         }
 
         $this->setBody(
