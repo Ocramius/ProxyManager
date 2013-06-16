@@ -19,16 +19,17 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 
 /**
- * Tests for {@see \ProxyManager\Factory\LazyLoadingValueHolderFactory}
+ * Tests for {@see \ProxyManager\Factory\LazyLoadingGhostFactory}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
+class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -57,8 +58,8 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritDoc}
      *
-     * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::__construct
-     * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::createProxy
+     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
+     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::createProxy
      */
     public function testWillSkipAutoGeneration()
     {
@@ -73,7 +74,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->with($className)
             ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
 
-        $factory     = new LazyLoadingValueHolderFactory($this->config);
+        $factory     = new LazyLoadingGhostFactory($this->config);
         $initializer = function () {
         };
         /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
@@ -86,8 +87,8 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritDoc}
      *
-     * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::__construct
-     * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::createProxy
+     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
+     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::createProxy
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
@@ -140,7 +141,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->with($className)
             ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
 
-        $factory     = new LazyLoadingValueHolderFactory($this->config);
+        $factory     = new LazyLoadingGhostFactory($this->config);
         $initializer = function () {
         };
         /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
