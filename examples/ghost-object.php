@@ -29,7 +29,7 @@ $startTime = microtime(true);
 $config    = new Configuration();
 $factory   = new LazyLoadingGhostFactory($config);
 
-for ($i = 0; $i < 1000; $i += 1) { 
+for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
         'Foo',
         function ($proxy, $method, $parameters, & $initializer) {

@@ -7,22 +7,22 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
 class Foo
 {
-   public function __construct()
-   {
-      sleep(5);
-   }
+    public function __construct()
+    {
+        sleep(5);
+    }
 
-   public function doFoo()
-   {
-       echo "Foo!";
-   }
+    public function doFoo()
+    {
+        echo "Foo!";
+    }
 }
 
 $startTime = microtime(true);
 $config    = new Configuration();
 $factory   = new LazyLoadingValueHolderFactory($config);
 
-for ($i = 0; $i < 1000; $i += 1) { 
+for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
         'Foo',
         function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
