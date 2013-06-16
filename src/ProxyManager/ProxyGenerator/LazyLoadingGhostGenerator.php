@@ -28,7 +28,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicWakeup;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
 
@@ -97,7 +96,6 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $initializer));
         $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer));
         $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer));
-        $classGenerator->addMethodFromGenerator(new MagicWakeup($originalClass));
 
         $classGenerator->addMethodFromGenerator(new SetProxyInitializer($initializer));
         $classGenerator->addMethodFromGenerator(new GetProxyInitializer($initializer));
