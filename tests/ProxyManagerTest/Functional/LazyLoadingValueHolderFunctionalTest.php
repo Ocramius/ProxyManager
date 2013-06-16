@@ -172,6 +172,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $className
      * @param object $realInstance
      * @param Mock   $initializerMatcher
      *

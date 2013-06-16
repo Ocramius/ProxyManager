@@ -71,9 +71,9 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name)"
-                . ", \$this->foo);\n\n"
-                . "if (in_array(\$name, array('bar', 'baz'))) {\n    return \$this->\$name;\n}\n\n"
-                . "trigger_error(sprintf('Undefined property: %s::$%s', __CLASS__, \$name), E_USER_NOTICE);",
+            . ", \$this->foo);\n\n"
+            . "if (in_array(\$name, array('bar', 'baz'))) {\n    return \$this->\$name;\n}\n\n"
+            . "trigger_error(sprintf('Undefined property: %s::$%s', __CLASS__, \$name), E_USER_NOTICE);",
             $magicGet->getBody()
         );
     }
@@ -94,9 +94,9 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name)"
-                . ", \$this->foo);\n\n"
-                . "if (in_array(\$name, array())) {\n    return \$this->\$name;\n}\n\n"
-                . "return parent::__get(\$name);",
+            . ", \$this->foo);\n\n"
+            . "if (in_array(\$name, array())) {\n    return \$this->\$name;\n}\n\n"
+            . "return parent::__get(\$name);",
             $magicGet->getBody()
         );
     }

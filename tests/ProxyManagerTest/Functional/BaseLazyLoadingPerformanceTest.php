@@ -18,7 +18,6 @@
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Proxy\LazyLoadingInterface;
 
