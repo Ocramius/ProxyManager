@@ -22,45 +22,56 @@ use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ReflectionClass;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
  * @group Performance
  */
-class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTest
+class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
 {
     /**
      * @outputBuffering
      * @dataProvider getTestedClasses
      *
-     * @param string $className
-     * @param array  $methods
-     * @param array  $properties
+     * @param string                $className
+     * @param array                 $methods
+     * @param array                 $properties
+     * @param \ReflectionProperty[] $reflectionProperties
      *
      * @return void
      */
-    public function testProxyInstantiationPerformance($className, array $methods, array $properties)
-    {
-        $proxyName   = $this->generateProxy($className);
-        $iterations  = 20000;
-        $instances   = array();
+    public function testProxyInstantiationPerformance(
+        $className,
+        array $methods,
+        array $properties,
+        array $reflectionProperties
+    ) {
+        $proxyName    = $this->generateProxy($className);
+        $iterations   = 20000;
+        $instances    = array();
         /* @var $proxies \ProxyManager\Proxy\LazyLoadingInterface[] */
-        $proxies     = array();
-        $initializer = function (
-            & $valueHolder,
+        $proxies      = array();
+        $realInstance = new $className();
+        $initializer  = function (
             LazyLoadingInterface $proxy,
             $method,
             $params,
             & $initializer
-        ) use ($className) {
+        ) use (
+            $reflectionProperties,
+            $realInstance
+            ) {
             $initializer = null;
-            $valueHolder = new $className();
+
+            foreach ($reflectionProperties as $reflectionProperty) {
+                $reflectionProperty->setValue($proxy, $reflectionProperty->getValue($realInstance));
+            }
 
             return true;
         };
@@ -109,10 +120,25 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
      */
     public function getTestedClasses()
     {
-        return array(
+        $testedClasses = array(
             array('stdClass', array(), array()),
             array('ProxyManagerTestAsset\\BaseClass', array('publicMethod' => array()), array('publicProperty')),
         );
+
+        foreach ($testedClasses as $key => $testedClass) {
+            $reflectionProperties = array();
+            $reflectionClass      = new ReflectionClass($testedClass[0]);
+
+            foreach ($reflectionClass->getProperties() as $property) {
+                $property->setAccessible(true);
+
+                $reflectionProperties[$property->getName()] = $property;
+            }
+
+            $testedClasses[$key][] = $reflectionProperties;
+        }
+
+        return $testedClasses;
     }
 
     /**
@@ -121,7 +147,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
     protected function generateProxy($parentClassName)
     {
         $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
-        $generator          = new LazyLoadingValueHolderGenerator();
+        $generator          = new LazyLoadingGhostGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();
 
