@@ -82,7 +82,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $config      = new Configuration();
 $factory     = new LazyLoadingValueHolderFactory($config);
-$initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, $initializer) {
+$initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, & $initializer) {
     $initializer   = null; // disable initialization
     $wrappedObject = new HeavyComplexObject(); // fill your object with values here
 

@@ -18,7 +18,7 @@
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
+use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\HydratorInterface;
@@ -41,18 +41,8 @@ use stdClass;
  *
  * @group Performance
  */
-class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
+class HydratorPerformanceTest extends BasePerformanceTest
 {
-    /**
-     * @var float time when last capture was started
-     */
-    private $startTime   = 0;
-
-    /**
-     * @var int bytes when last capture was started
-     */
-    private $startMemory = 0;
-
     /**
      * @dataProvider getTestedClasses
      *
@@ -186,48 +176,5 @@ class HydratorPerformanceTest extends PHPUnit_Framework_TestCase
             'hydrator'   => new $generatedClassName($accessors),
             'properties' => $properties,
         );
-    }
-
-    /**
-     * Start profiler snapshot
-     */
-    private function startCapturing()
-    {
-        $this->startMemory = memory_get_usage();
-        $this->startTime   = microtime(true);
-    }
-
-    /**
-     * Echo current profiler output
-     *
-     * @param string $messageTemplate
-     *
-     * @return array
-     */
-    private function endCapturing($messageTemplate)
-    {
-        $time     = microtime(true) - $this->startTime;
-        $memory   = memory_get_usage() - $this->startMemory;
-
-        echo sprintf($messageTemplate, $time, $memory / 1024) . "\n";
-
-        return array(
-            'time'   => $time,
-            'memory' => $memory
-        );
-    }
-
-    /**
-     * Display comparison between two profiles
-     *
-     * @param array $baseProfile
-     * @param array $proxyProfile
-     */
-    private function compareProfile(array $baseProfile, array $proxyProfile)
-    {
-        $timeOverhead   = ($proxyProfile['time'] / $baseProfile['time']) * 100;
-        $memoryOverhead = ($proxyProfile['memory'] / $baseProfile['memory']) * 100;
-
-        echo sprintf('Comparison time / memory: %f%% / %f%%', $timeOverhead, $memoryOverhead) . "\n\n";
     }
 }

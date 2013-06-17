@@ -16,23 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
+
+use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Test asset with 2 public properties
+ * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::isProxyInitialized}
+ * for lazy loading value holder objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithTwoPublicProperties
+class IsProxyInitialized extends MethodGenerator
 {
     /**
-     * @var mixed
+     * Constructor
      */
-    public $bar;
-
-    /**
-     * @var mixed
-     */
-    public $baz;
+    public function __construct(PropertyGenerator $initializerProperty)
+    {
+        parent::__construct('isProxyInitialized');
+        $this->setDocblock('{@inheritDoc}');
+        $this->setBody('return ! $this->' . $initializerProperty->getName() . ';');
+    }
 }
