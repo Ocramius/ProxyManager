@@ -110,7 +110,7 @@ The initializer closure signature should be as following:
  *                             set it to your real object
  * @var object  $proxy         the instance proxy that is being initialized
  * @var string  $method        the name of the method that triggered lazy initialization
- * @var string  $method        an ordered list of parameters passed to the method that
+ * @var string  $parameters    an ordered list of parameters passed to the method that
  *                             triggered initialization, indexed by parameter name
  * @var Closure $initializer   a reference to the property that is the initializer for the
  *                             proxy. Set it to null to disable further initialization
