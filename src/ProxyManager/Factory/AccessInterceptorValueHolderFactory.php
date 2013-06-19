@@ -69,7 +69,7 @@ class AccessInterceptorValueHolderFactory
     public function createProxy($instance, array $prefixInterceptors = array(), array $suffixInterceptors = array())
     {
         $className      = get_class($instance);
-        $proxyClassName = $this->inflector->getProxyClassName($className);
+        $proxyClassName = $this->inflector->getProxyClassName($className, array('factory' => get_class($this)));
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);

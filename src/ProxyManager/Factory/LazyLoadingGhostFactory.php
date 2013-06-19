@@ -20,9 +20,9 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\Generator\ClassGenerator;
 use ReflectionClass;
+use Closure;
 
 /**
  * Factory responsible of producing ghost objects
@@ -65,9 +65,9 @@ class LazyLoadingGhostFactory
      *
      * @return \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\GhostObjectInterface
      */
-    public function createProxy($className, \Closure $initializer)
+    public function createProxy($className, Closure $initializer)
     {
-        $proxyClassName = $this->inflector->getProxyClassName($className);
+        $proxyClassName = $this->inflector->getProxyClassName($className, array('factory' => get_class($this)));
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);

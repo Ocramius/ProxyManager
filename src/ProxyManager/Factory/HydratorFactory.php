@@ -83,7 +83,10 @@ class HydratorFactory
         }
 
         $reflection     = new ReflectionClass($this->inflector->getUserClassName($className));
-        $proxyClassName = $this->inflector->getProxyClassName($reflection->getName());
+        $proxyClassName = $this->inflector->getProxyClassName(
+            $reflection->getName(),
+            array('factory' => get_class($this))
+        );
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $classGenerator = new ClassGenerator($proxyClassName);
