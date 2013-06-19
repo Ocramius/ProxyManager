@@ -6,8 +6,6 @@ Currently, this project supports generation of **Virtual Proxies** and **Smart R
 Additionally, it can generate a small high-performance **Hydrator** class to optimize transition
 of data from and into your objects.
 
-## Project status
-
 [![Build Status](https://travis-ci.org/Ocramius/ProxyManager.png?branch=master)](https://travis-ci.org/Ocramius/ProxyManager)
 [![Coverage Status](https://coveralls.io/repos/Ocramius/ProxyManager/badge.png?branch=master)](https://coveralls.io/r/Ocramius/ProxyManager)
 [![Total Downloads](https://poser.pugx.org/ocramius/proxy-manager/downloads.png)](https://packagist.org/packages/ocramius/proxy-manager)
