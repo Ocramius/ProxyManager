@@ -47,6 +47,13 @@ class AccessInterceptorValueHolderFactory
     protected $inflector;
 
     /**
+     * Cached generated class names
+     *
+     * @var string[]
+     */
+    protected $generatedClasses = array();
+
+    /**
      * @param \ProxyManager\Configuration $configuration
      */
     public function __construct(Configuration $configuration)
@@ -68,8 +75,16 @@ class AccessInterceptorValueHolderFactory
      */
     public function createProxy($instance, array $prefixInterceptors = array(), array $suffixInterceptors = array())
     {
-        $className      = get_class($instance);
-        $proxyClassName = $this->inflector->getProxyClassName($className, array('factory' => get_class($this)));
+        $className = get_class($instance);
+
+        if (! isset($this->generatedClasses[$className])) {
+            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
+                $className,
+                array('factory' => get_class($this))
+            );
+        }
+
+        $proxyClassName = $this->generatedClasses[$className];
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);

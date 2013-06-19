@@ -48,6 +48,13 @@ class LazyLoadingValueHolderFactory
     protected $inflector;
 
     /**
+     * Cached generated class names
+     *
+     * @var string[]
+     */
+    protected $generatedClasses = array();
+
+    /**
      * @param \ProxyManager\Configuration $configuration
      */
     public function __construct(Configuration $configuration)
@@ -67,7 +74,14 @@ class LazyLoadingValueHolderFactory
      */
     public function createProxy($className, Closure $initializer)
     {
-        $proxyClassName = $this->inflector->getProxyClassName($className, array('factory' => get_class($this)));
+        if (! isset($this->generatedClasses[$className])) {
+            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
+                $className,
+                array('factory' => get_class($this))
+            );
+        }
+
+        $proxyClassName = $this->generatedClasses[$className];
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
