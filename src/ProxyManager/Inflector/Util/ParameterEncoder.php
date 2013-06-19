@@ -16,46 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Inflector;
+namespace ProxyManager\Inflector\Util;
 
 /**
- * Interface for a proxy- to user-class and user- to proxy-class name inflector
+ * Encodes parameters into a class-name safe string
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface ClassNameInflectorInterface
+class ParameterEncoder
 {
     /**
-     * Marker for proxy classes - classes containing this marker are considered proxies
-     */
-    const PROXY_MARKER = '__PM__';
-
-    /**
-     * Retrieve the class name of a user-defined class
+     * Converts the given parameters into a set of characters that are safe to
+     * use in a class name
      *
-     * @param string $className
+     * @param array $parameters
      *
      * @return string
      */
-    public function getUserClassName($className);
-
-    /**
-     * Retrieve the class name of the proxy for the given user-defined class name
-     *
-     * @param string $className
-     * @param array  $options   arbitrary options to be used for the generated class name
-     *
-     * @return mixed
-     */
-    public function getProxyClassName($className, array $options = array());
-
-    /**
-     * Retrieve whether the provided class name is a proxy
-     *
-     * @param string $className
-     *
-     * @return bool
-     */
-    public function isProxyClassName($className);
+    public function encodeParameters(array $parameters)
+    {
+        return strtr(base64_encode(serialize($parameters)), '+/=', '†‡•');
+    }
 }

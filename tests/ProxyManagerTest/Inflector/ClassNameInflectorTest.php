@@ -38,16 +38,59 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
      * @covers \ProxyManager\Inflector\ClassNameInflector::isProxyClassName
      */
-    public function testGetProxyFileName($realClassName, $proxyClassName)
+    public function testInflector($realClassName, $proxyClassName)
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
         $this->assertFalse($inflector->isProxyClassName($realClassName));
         $this->assertTrue($inflector->isProxyClassName($proxyClassName));
-        $this->assertSame($realClassName, $inflector->getUserClassName($realClassName));
-        $this->assertSame($proxyClassName, $inflector->getProxyClassName($proxyClassName));
-        $this->assertSame($proxyClassName, $inflector->getProxyClassName($realClassName));
-        $this->assertSame($realClassName, $inflector->getUserClassName($proxyClassName));
+        $this->assertStringMatchesFormat($realClassName, $inflector->getUserClassName($realClassName));
+        $this->assertStringMatchesFormat($proxyClassName, $inflector->getProxyClassName($proxyClassName));
+        $this->assertStringMatchesFormat($proxyClassName, $inflector->getProxyClassName($realClassName));
+        $this->assertStringMatchesFormat($realClassName, $inflector->getUserClassName($proxyClassName));
+    }
+
+    /**
+     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
+     */
+    public function testGeneratesSameClassNameWithSameParameters()
+    {
+        $inflector = new ClassNameInflector('ProxyNS');
+
+        $this->assertSame($inflector->getProxyClassName('Foo\\Bar'), $inflector->getProxyClassName('Foo\\Bar'));
+        $this->assertSame(
+            $inflector->getProxyClassName('Foo\\Bar', array('baz' => 'tab')),
+            $inflector->getProxyClassName('Foo\\Bar', array('baz' => 'tab'))
+        );
+        $this->assertSame(
+            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz')),
+            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz'))
+        );
+    }
+
+    /**
+     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
+     */
+    public function testGeneratesDifferentClassNameWithDifferentParameters()
+    {
+        $inflector = new ClassNameInflector('ProxyNS');
+
+        $this->assertNotSame(
+            $inflector->getProxyClassName('Foo\\Bar'),
+            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar'))
+        );
+        $this->assertNotSame(
+            $inflector->getProxyClassName('Foo\\Bar', array('baz' => 'tab')),
+            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz'))
+        );
+        $this->assertNotSame(
+            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar', 'tab' => 'baz')),
+            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar'))
+        );
+        $this->assertNotSame(
+            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar', 'tab' => 'baz')),
+            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz', 'foo' => 'bar'))
+        );
     }
 
     /**
@@ -56,8 +99,8 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
     public function getClassNames()
     {
         return array(
-            array('Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo'),
-            array('Foo\\Bar', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\Bar'),
+            array('Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\%s'),
+            array('Foo\\Bar', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\Bar\\%s'),
         );
     }
 }

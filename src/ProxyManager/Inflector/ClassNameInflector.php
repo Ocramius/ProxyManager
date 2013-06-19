@@ -18,6 +18,8 @@
 
 namespace ProxyManager\Inflector;
 
+use ProxyManager\Inflector\Util\ParameterEncoder;
+
 /**
  * {@inheritDoc}
  *
@@ -42,6 +44,11 @@ class ClassNameInflector implements ClassNameInflectorInterface
     private $proxyMarker;
 
     /**
+     * @var \ProxyManager\Inflector\Util\ParameterEncoder
+     */
+    private $parameterEncoder;
+
+    /**
      * @param string $proxyNamespace
      */
     public function __construct($proxyNamespace)
@@ -49,6 +56,7 @@ class ClassNameInflector implements ClassNameInflectorInterface
         $this->proxyNamespace    = (string) $proxyNamespace;
         $this->proxyMarker       = '\\' . static::PROXY_MARKER . '\\';
         $this->proxyMarkerLength = strlen($this->proxyMarker);
+        $this->parameterEncoder  = new ParameterEncoder();
     }
 
     /**
@@ -60,15 +68,22 @@ class ClassNameInflector implements ClassNameInflectorInterface
             return $className;
         }
 
-        return substr($className, $this->proxyMarkerLength + $position);
+        return substr(
+            $className,
+            $this->proxyMarkerLength + $position,
+            strrpos($className, '\\') - ($position + $this->proxyMarkerLength)
+        );
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getProxyClassName($className)
+    public function getProxyClassName($className, array $options = array())
     {
-        return $this->proxyNamespace . $this->proxyMarker . $this->getUserClassName($className);
+        return $this->proxyNamespace
+            . $this->proxyMarker
+            . $this->getUserClassName($className)
+            . '\\' . $this->parameterEncoder->encodeParameters($options);
     }
 
     /**
