@@ -19,31 +19,26 @@
 namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\Generator\ClassGenerator;
 use ReflectionClass;
+use Closure;
 
 /**
- * Factory responsible of producing proxy objects
+ * Base factory common logic
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
+abstract class AbstractLazyFactory extends AbstractBaseFactory
 {
     /**
-     * @param object     $instance           the object to be wrapped within the value holder
-     * @param \Closure[] $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
-     *                                       before method logic is executed
-     * @param \Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
-     *                                       after method logic is executed
+     * @param string   $className   name of the class to be proxied
+     * @param \Closure $initializer initializer to be passed to the proxy
      *
-     * @return \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface
+     * @return \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\GhostObjectInterface
      */
-    public function createProxy($instance, array $prefixInterceptors = array(), array $suffixInterceptors = array())
+    public function createProxy($className, Closure $initializer)
     {
-        $className = get_class($instance);
-
         if (! isset($this->generatedClasses[$className])) {
             $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
                 $className,
@@ -56,13 +51,17 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
             $phpClass  = new ClassGenerator($proxyClassName);
-            $generator = new AccessInterceptorValueHolderGenerator();
 
-            $generator->generate(new ReflectionClass($className), $phpClass);
+            $this->getGenerator()->generate(new ReflectionClass($className), $phpClass);
             $this->configuration->getGeneratorStrategy()->generate($phpClass);
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
 
-        return new $proxyClassName($instance, $prefixInterceptors, $suffixInterceptors);
+        return new $proxyClassName($initializer);
     }
+
+    /**
+     * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
+     */
+    abstract protected function getGenerator();
 }

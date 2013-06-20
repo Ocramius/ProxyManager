@@ -29,23 +29,8 @@ use ReflectionClass;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class HydratorFactory
+class HydratorFactory extends AbstractBaseFactory
 {
-    /**
-     * @var \ProxyManager\Configuration
-     */
-    protected $configuration;
-
-    /**
-     * @var bool
-     */
-    protected $autoGenerate;
-
-    /**
-     * @var \ProxyManager\Inflector\ClassNameInflectorInterface
-     */
-    protected $inflector;
-
     /**
      * Cached proxy class names
      *
@@ -59,17 +44,6 @@ class HydratorFactory
      * @var \ReflectionProperty[][]
      */
     private $reflectionProperties = array();
-
-    /**
-     * @param \ProxyManager\Configuration $configuration
-     */
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-        // localizing some properties for performance
-        $this->autoGenerate  = $this->configuration->doesAutoGenerateProxies();
-        $this->inflector     = $this->configuration->getClassNameInflector();
-    }
 
     /**
      * @param string $className
