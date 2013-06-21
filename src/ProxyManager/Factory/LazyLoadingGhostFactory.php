@@ -25,6 +25,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @method \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\GhostObjectInterface createProxy($className, \Closure $initializer)
  */
 class LazyLoadingGhostFactory extends AbstractLazyFactory
 {
