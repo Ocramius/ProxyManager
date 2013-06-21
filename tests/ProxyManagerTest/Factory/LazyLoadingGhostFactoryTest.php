@@ -90,6 +90,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::createProxy
+     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::getGenerator
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */

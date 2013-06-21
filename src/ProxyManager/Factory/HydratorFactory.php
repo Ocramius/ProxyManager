@@ -29,23 +29,8 @@ use ReflectionClass;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class HydratorFactory
+class HydratorFactory extends AbstractBaseFactory
 {
-    /**
-     * @var \ProxyManager\Configuration
-     */
-    protected $configuration;
-
-    /**
-     * @var bool
-     */
-    protected $autoGenerate;
-
-    /**
-     * @var \ProxyManager\Inflector\ClassNameInflectorInterface
-     */
-    protected $inflector;
-
     /**
      * Cached proxy class names
      *
@@ -61,17 +46,6 @@ class HydratorFactory
     private $reflectionProperties = array();
 
     /**
-     * @param \ProxyManager\Configuration $configuration
-     */
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-        // localizing some properties for performance
-        $this->autoGenerate  = $this->configuration->doesAutoGenerateProxies();
-        $this->inflector     = $this->configuration->getClassNameInflector();
-    }
-
-    /**
      * @param string $className
      *
      * @return \Zend\Stdlib\Hydrator\HydratorInterface
@@ -83,7 +57,10 @@ class HydratorFactory
         }
 
         $reflection     = new ReflectionClass($this->inflector->getUserClassName($className));
-        $proxyClassName = $this->inflector->getProxyClassName($reflection->getName());
+        $proxyClassName = $this->inflector->getProxyClassName(
+            $reflection->getName(),
+            array('factory' => get_class($this))
+        );
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $classGenerator = new ClassGenerator($proxyClassName);

@@ -16,30 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Factory;
-
-use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+namespace ProxyManager\Inflector\Util;
 
 /**
- * Factory responsible of producing ghost instances
+ * Encodes parameters into a class-name safe string
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
- *
- * @method \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\GhostObjectInterface createProxy($className, \Closure $initializer)
  */
-class LazyLoadingGhostFactory extends AbstractLazyFactory
+class ParameterEncoder
 {
     /**
-     * @var \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator
+     * Converts the given parameters into a set of characters that are safe to
+     * use in a class name
+     *
+     * @param array $parameters
+     *
+     * @return string
      */
-    protected $generator;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getGenerator()
+    public function encodeParameters(array $parameters)
     {
-        return $this->generator ? $this->generator : $this->generator = new LazyLoadingGhostGenerator();
+        return strtr(base64_encode(serialize($parameters)), '+/=', '†‡•');
     }
 }
