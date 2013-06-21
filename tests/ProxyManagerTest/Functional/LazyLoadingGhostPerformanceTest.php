@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
@@ -146,7 +147,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
      */
     protected function generateProxy($parentClassName)
     {
-        $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
+        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingGhostGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();

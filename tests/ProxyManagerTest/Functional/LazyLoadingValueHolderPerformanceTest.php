@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
@@ -120,7 +121,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
      */
     protected function generateProxy($parentClassName)
     {
-        $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
+        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingValueHolderGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();

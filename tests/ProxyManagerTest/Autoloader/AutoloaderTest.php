@@ -21,6 +21,7 @@ namespace ProxyManagerTest\Autoloader;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Tests for {@see \ProxyManager\Autoloader\Autoloader}
@@ -60,7 +61,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillNotAutoloadUserClasses()
     {
-        $className = 'Foo\\Bar' . uniqid();
+        $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
             ->classNameInflector
             ->expects($this->once())
@@ -76,7 +77,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillNotAutoloadNonExistingClass()
     {
-        $className = 'Foo\\Bar' . uniqid();
+        $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
             ->classNameInflector
             ->expects($this->once())
@@ -106,7 +107,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     public function testWillAutoloadExistingFile()
     {
         $namespace = 'Foo';
-        $className = 'Bar' . uniqid();
+        $className = UniqueIdentifierGenerator::getIdentifier('Bar');
         $fqcn      = $namespace . '\\' . $className;
         $fileName  = sys_get_temp_dir() . '/foo_' . uniqid() . '.php';
 

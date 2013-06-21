@@ -22,6 +22,7 @@ use Closure;
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\ValueHolderInterface;
@@ -160,7 +161,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     private function generateProxy($parentClassName)
     {
-        $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
+        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingValueHolderGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();

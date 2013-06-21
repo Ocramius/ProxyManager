@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator;
 
 use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Property that contains a {@see \ReflectionProperty} that functions as an accessor
@@ -43,7 +44,7 @@ class PropertyAccessor extends PropertyGenerator
         $this->accessedProperty = $accessedProperty;
         $originalName           = $this->accessedProperty->getName();
 
-        parent::__construct($originalName . 'Accessor' . uniqid());
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier($originalName . 'Accessor'));
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setDocblock("@var \\ReflectionProperty used to access {@see parent::$originalName}");
     }

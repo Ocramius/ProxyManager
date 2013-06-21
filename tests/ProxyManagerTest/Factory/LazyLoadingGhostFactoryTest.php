@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Tests for {@see \ProxyManager\Factory\LazyLoadingGhostFactory}
@@ -63,7 +64,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testWillSkipAutoGeneration()
     {
-        $className = 'foo' . uniqid();
+        $className = UniqueIdentifierGenerator::getIdentifier('foo');
 
         $this->config->expects($this->any())->method('doesAutoGenerateProxies')->will($this->returnValue(false));
 
@@ -94,8 +95,8 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testWillTryAutoGeneration()
     {
-        $className      = 'foo' . uniqid();
-        $proxyClassName = 'bar' . uniqid();
+        $className      = UniqueIdentifierGenerator::getIdentifier('foo');
+        $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
 

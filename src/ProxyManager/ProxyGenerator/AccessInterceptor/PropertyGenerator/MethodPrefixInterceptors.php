@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator;
 
 use Zend\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Property that contains the interceptor for operations to be executed before method execution
@@ -33,7 +34,7 @@ class MethodPrefixInterceptors extends PropertyGenerator
      */
     public function __construct()
     {
-        parent::__construct('methodPrefixInterceptors' . uniqid());
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('methodPrefixInterceptors'));
 
         $this->setDefaultValue(array());
         $this->setVisibility(self::VISIBILITY_PRIVATE);

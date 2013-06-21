@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ReflectionClass;
 
@@ -39,7 +40,7 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
     public function testGeneratesValidCode($className)
     {
         $generator          = $this->getProxyGenerator();
-        $generatedClassName = 'AbstractProxyGeneratorTest_' . uniqid();
+        $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');
         $generatedClass     = new ClassGenerator($generatedClassName);
         $originalClass      = new ReflectionClass($className);
         $generatorStrategy  = new EvaluatingGeneratorStrategy();

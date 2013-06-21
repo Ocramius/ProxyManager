@@ -25,6 +25,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
@@ -203,7 +204,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     private function generateProxy($parentClassName)
     {
-        $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
+        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new AccessInterceptorValueHolderGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();

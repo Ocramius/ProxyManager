@@ -21,6 +21,7 @@ namespace ProxyManagerTest\Factory;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use stdClass;
 
 /**
@@ -95,7 +96,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
     public function testWillTryAutoGeneration()
     {
         $instance       = new stdClass();
-        $proxyClassName = 'bar' . uniqid();
+        $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
 

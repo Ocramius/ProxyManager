@@ -23,6 +23,7 @@ use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
@@ -150,7 +151,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     private function generateProxy($parentClassName)
     {
-        $generatedClassName = __NAMESPACE__ . '\\Foo' . uniqid();
+        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingGhostGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();
