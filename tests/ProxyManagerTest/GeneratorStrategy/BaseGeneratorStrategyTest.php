@@ -21,6 +21,7 @@ namespace ProxyManagerTest\GeneratorStrategy;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
@@ -36,7 +37,7 @@ class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
     public function testGenerate()
     {
         $strategy       = new BaseGeneratorStrategy();
-        $className      = 'Foo' . uniqid();
+        $className      = UniqueIdentifierGenerator::getIdentifier('Foo');
         $classGenerator = new ClassGenerator($className);
         $generated      = $strategy->generate($classGenerator);
 

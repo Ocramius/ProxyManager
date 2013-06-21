@@ -21,6 +21,7 @@ namespace ProxyManagerTest\Factory;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\HydratorFactory;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Tests for {@see \ProxyManager\Factory\HydratorFactory}
@@ -62,7 +63,7 @@ class HydratorFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testWillSkipAutoGeneration()
     {
-        $className = 'foo' . uniqid();
+        $className = UniqueIdentifierGenerator::getIdentifier('foo');
 
         $this->config->expects($this->any())->method('doesAutoGenerateProxies')->will($this->returnValue(false));
         $this
@@ -105,8 +106,8 @@ class HydratorFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testWillTryAutoGeneration()
     {
-        $className      = 'foo' . uniqid();
-        $proxyClassName = 'bar' . uniqid();
+        $className      = UniqueIdentifierGenerator::getIdentifier('foo');
+        $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
 

@@ -16,52 +16,38 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
-
-use Zend\Code\Generator\ClassGenerator;
+namespace ProxyManager\Generator\Util;
 
 /**
- * Generator strategy that produces the code and evaluates it at runtime
+ * Utility class capable of generating unique
+ * valid class/property/method identifiers
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
+abstract class UniqueIdentifierGenerator
 {
-    /**
-     * @var bool flag indicating whether {@see eval} can be used
-     */
-    private $canEval = true;
+    const VALID_IDENTIFIER_FORMAT = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/';
+    const DEFAULT_IDENTIFIER = 'g';
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->canEval = ! ini_get('suhosin.executor.disable_eval');
-    }
-
-    /**
-     * Evaluates the generated code before returning it
+     * Generates a valid unique identifier from the given name
      *
-     * {@inheritDoc}
+     * @param string $name
+     *
+     * @return string
      */
-    public function generate(ClassGenerator $classGenerator)
+    public static function getIdentifier($name)
     {
-        $code = $classGenerator->generate();
-
-        if (! $this->canEval) {
-            $fileName = sys_get_temp_dir() . '/EvaluatingGeneratorStrategy.php.tmp.' . uniqid('', true);
-
-            file_put_contents($fileName, "<?php\n" . $code);
-            require $fileName;
-            unlink($fileName);
-
-            return $code;
-        }
-
-        eval($code);
-
-        return $code;
+        return str_replace(
+            '.',
+            '',
+            uniqid(
+                preg_match(static::VALID_IDENTIFIER_FORMAT, $name)
+                ? $name
+                : static::DEFAULT_IDENTIFIER,
+                true
+            )
+        );
     }
 }

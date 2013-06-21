@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\HydratorFactory;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use Zend\Code\Reflection\ClassReflection;
 
@@ -59,7 +60,7 @@ class HydratorFactoryFunctionalTest extends PHPUnit_Framework_TestCase
         $this->factory = new HydratorFactory($this->config);
 
         $generator                = new EvaluatingGeneratorStrategy();
-        $this->generatedClassName = 'foo' . uniqid();
+        $this->generatedClassName = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxiedClass             = ClassGenerator::fromReflection(
             new ClassReflection('ProxyManagerTestAsset\\ClassWithMixedProperties')
         );

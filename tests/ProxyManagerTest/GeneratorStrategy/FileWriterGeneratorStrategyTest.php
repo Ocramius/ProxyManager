@@ -21,6 +21,7 @@ namespace ProxyManagerTest\GeneratorStrategy;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}
@@ -40,7 +41,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = sys_get_temp_dir() . '/FileWriterGeneratorStrategyTest' . uniqid() . '.php';
         $namespace = 'Foo';
-        $className = 'Bar' .uniqid();
+        $className = UniqueIdentifierGenerator::getIdentifier('Bar');
         $fqcn      = $namespace . '\\' . $className;
 
         $locator

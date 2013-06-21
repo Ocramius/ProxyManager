@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\HydratorInterface;
 use ProxyManager\ProxyGenerator\HydratorGenerator;
@@ -150,7 +151,7 @@ class HydratorPerformanceTest extends BasePerformanceTest
      */
     private function generateHydrator($object)
     {
-        $generatedClassName   = __NAMESPACE__ . '\\Foo' . uniqid();
+        $generatedClassName   = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator            = new HydratorGenerator();
         $generatedClass       = new ClassGenerator($generatedClassName);
         $strategy             = new EvaluatingGeneratorStrategy();

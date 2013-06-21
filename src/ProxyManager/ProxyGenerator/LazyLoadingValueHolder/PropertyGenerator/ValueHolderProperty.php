@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator;
 
 use Zend\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Property that contains the wrapped value of a lazy loading proxy
@@ -33,7 +34,7 @@ class ValueHolderProperty extends PropertyGenerator
      */
     public function __construct()
     {
-        parent::__construct('valueHolder' . uniqid());
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('valueHolder'));
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setDocblock('@var \\Closure|null initializer responsible for generating the wrapped object');
