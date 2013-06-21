@@ -18,11 +18,10 @@
 
 namespace ProxyManagerTest\Functional;
 
-use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ReflectionClass;
 
@@ -56,11 +55,11 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
         $proxyName    = $this->generateProxy($className);
         $iterations   = 20000;
         $instances    = array();
-        /* @var $proxies \ProxyManager\Proxy\LazyLoadingInterface[] */
+        /* @var $proxies \ProxyManager\Proxy\GhostObjectInterface[] */
         $proxies      = array();
         $realInstance = new $className();
         $initializer  = function (
-            LazyLoadingInterface $proxy,
+            GhostObjectInterface $proxy,
             $method,
             $params,
             & $initializer

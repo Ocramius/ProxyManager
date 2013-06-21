@@ -16,30 +16,14 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Factory;
-
-use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+namespace ProxyManager\Proxy;
 
 /**
- * Factory responsible of producing ghost instances
+ * Virtual Proxy - a lazy initializing object wrapping around the proxied subject
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
- *
- * @method \ProxyManager\Proxy\GhostObjectInterface createProxy($className, \Closure $initializer)
  */
-class LazyLoadingGhostFactory extends AbstractLazyFactory
+interface VirtualProxyInterface extends LazyLoadingInterface, ValueHolderInterface
 {
-    /**
-     * @var \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator
-     */
-    protected $generator;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getGenerator()
-    {
-        return $this->generator ? $this->generator : $this->generator = new LazyLoadingGhostGenerator();
-    }
 }

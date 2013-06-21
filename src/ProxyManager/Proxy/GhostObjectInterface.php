@@ -24,6 +24,6 @@ namespace ProxyManager\Proxy;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface GhostObjectInterface extends ProxyInterface
+interface GhostObjectInterface extends LazyLoadingInterface
 {
 }

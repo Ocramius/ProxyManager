@@ -18,11 +18,10 @@
 
 namespace ProxyManagerTest\Functional;
 
-use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ReflectionClass;
 
@@ -51,11 +50,11 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
         $proxyName   = $this->generateProxy($className);
         $iterations  = 20000;
         $instances   = array();
-        /* @var $proxies \ProxyManager\Proxy\LazyLoadingInterface[] */
+        /* @var $proxies \ProxyManager\Proxy\VirtualProxyInterface[] */
         $proxies     = array();
         $initializer = function (
             & $valueHolder,
-            LazyLoadingInterface $proxy,
+            VirtualProxyInterface $proxy,
             $method,
             $params,
             & $initializer

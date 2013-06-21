@@ -72,10 +72,8 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             }
         }
 
-        $this->assertInstanceOf('ProxyManager\Proxy\LazyLoadingInterface', $generated[0]);
         $this->assertInstanceOf('ProxyManager\Proxy\GhostObjectInterface', $generated[0]);
-        $this->assertInstanceOf('ProxyManager\Proxy\LazyLoadingInterface', $generated[1]);
-        $this->assertInstanceOf('ProxyManager\Proxy\ValueHolderInterface', $generated[1]);
+        $this->assertInstanceOf('ProxyManager\Proxy\VirtualProxyInterface', $generated[1]);
         $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[2]);
         $this->assertInstanceOf('ProxyManager\Proxy\ValueHolderInterface', $generated[2]);
         $this->assertInstanceOf('Zend\Stdlib\Hydrator\HydratorInterface', $generated[3]);
