@@ -1,5 +1,12 @@
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 0.4.0
+
+ * An optional parameter `$options` was introduced
+   in [`ProxyManager\Inflector\ClassNameInflectorInterface#getProxyClassName($className, array $options = array())`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Inflector/ClassNameInflectorInterface.php)
+   parametrize the generated class name as of [#10](https://github.com/Ocramius/ProxyManager/pull/10)
+   and [#59](https://github.com/Ocramius/ProxyManager/pull/59)
+
 # 0.3.4
 
  * Interface names are also supported for proxy generation as of [#40](https://github.com/Ocramius/ProxyManager/pull/40)

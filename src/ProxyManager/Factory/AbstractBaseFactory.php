@@ -18,28 +18,46 @@
 
 namespace ProxyManager\Factory;
 
-use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManager\Configuration;
 
 /**
- * Factory responsible of producing ghost instances
+ * Base factory common logic
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
- *
- * @method \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\GhostObjectInterface createProxy($className, \Closure $initializer)
  */
-class LazyLoadingGhostFactory extends AbstractLazyFactory
+abstract class AbstractBaseFactory
 {
     /**
-     * @var \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator
+     * @var \ProxyManager\Configuration
      */
-    protected $generator;
+    protected $configuration;
 
     /**
-     * {@inheritDoc}
+     * @var bool
      */
-    protected function getGenerator()
+    protected $autoGenerate;
+
+    /**
+     * @var \ProxyManager\Inflector\ClassNameInflectorInterface
+     */
+    protected $inflector;
+
+    /**
+     * Cached generated class names
+     *
+     * @var string[]
+     */
+    protected $generatedClasses = array();
+
+    /**
+     * @param \ProxyManager\Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
     {
-        return $this->generator ? $this->generator : $this->generator = new LazyLoadingGhostGenerator();
+        $this->configuration = $configuration;
+        // localizing some properties for performance
+        $this->autoGenerate  = $this->configuration->doesAutoGenerateProxies();
+        $this->inflector     = $this->configuration->getClassNameInflector();
     }
 }

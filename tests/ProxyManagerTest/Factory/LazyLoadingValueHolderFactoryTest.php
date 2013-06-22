@@ -89,6 +89,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::__construct
      * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::createProxy
+     * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::getGenerator
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
