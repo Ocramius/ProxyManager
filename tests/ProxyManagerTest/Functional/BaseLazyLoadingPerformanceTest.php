@@ -18,7 +18,6 @@
 
 namespace ProxyManagerTest\Functional;
 
-use ProxyManager\Configuration;
 use ProxyManager\Proxy\LazyLoadingInterface;
 
 /**
@@ -190,7 +189,7 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
-     * @param  string $parentClassName
+     * @param string $parentClassName
      *
      * @return string
      */
