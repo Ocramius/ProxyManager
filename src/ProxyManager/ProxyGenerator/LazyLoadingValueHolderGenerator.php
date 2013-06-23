@@ -44,8 +44,7 @@ use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
- * and {@see \ProxyManager\Proxy\LazyLoadingInterface}
+ * Generator for proxies implementing {@see \ProxyManager\Proxy\VirtualProxyInterface}
  *
  * {@inheritDoc}
  *
@@ -59,10 +58,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $interfaces = array(
-            'ProxyManager\\Proxy\\LazyLoadingInterface',
-            'ProxyManager\\Proxy\\ValueHolderInterface',
-        );
+        $interfaces = array('ProxyManager\\Proxy\\VirtualProxyInterface');
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();

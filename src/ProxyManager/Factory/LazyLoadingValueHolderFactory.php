@@ -26,7 +26,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
- * @method \ProxyManager\Proxy\LazyLoadingInterface|\ProxyManager\Proxy\ValueHolderInterface createProxy($className, \Closure $initializer)
+ * @method \ProxyManager\Proxy\VirtualProxyInterface createProxy($className, \Closure $initializer)
  */
 class LazyLoadingValueHolderFactory extends AbstractLazyFactory
 {
