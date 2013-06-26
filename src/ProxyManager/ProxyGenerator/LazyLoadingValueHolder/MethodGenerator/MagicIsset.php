@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -29,7 +30,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicIsset extends MethodGenerator
+class MagicIsset extends MagicMethodGenerator
 {
     /**
      * Constructor
@@ -39,14 +40,13 @@ class MagicIsset extends MethodGenerator
         PropertyGenerator $initializerProperty,
         PropertyGenerator $valueHolderProperty
     ) {
-        parent::__construct('__isset');
+        parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
 
         $inheritDoc  = $originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '';
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
 
         $this->setDocblock($inheritDoc . '@param string $name');
-        $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__isset\', array(\'name\' => $name), $this->'

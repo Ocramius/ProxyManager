@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -28,7 +29,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicClone extends MethodGenerator
+class MagicClone extends MagicMethodGenerator
 {
     /**
      * Constructor
@@ -39,13 +40,12 @@ class MagicClone extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('__clone');
+        parent::__construct($originalClass, '__clone');
 
         $valueHolder = $valueHolderProperty->getName();
         $prefix      = $prefixInterceptors->getName();
         $suffix      = $suffixInterceptors->getName();
 
-        $this->setDocblock($originalClass->hasMethod('__wakeup') ? '{@inheritDoc}' : '');
         $this->setBody(
             "\$this->$valueHolder = clone \$this->$valueHolder;\n\n"
             . "foreach (\$this->$prefix as \$key => \$value) {\n"

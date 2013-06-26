@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -28,16 +29,15 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleep extends MethodGenerator
+class MagicSleep extends MagicMethodGenerator
 {
     /**
      * Constructor
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $valueHolderProperty)
     {
-        parent::__construct('__sleep');
+        parent::__construct($originalClass, '__sleep');
 
-        $this->setDocblock($originalClass->hasMethod('__sleep') ? '{@inheritDoc}' : '');
         $this->setBody('return array(' . var_export($valueHolderProperty->getName(), true) . ');');
     }
 }
