@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ReflectionProperty;
 use ProxyManager\Generator\MethodGenerator;
@@ -28,14 +29,14 @@ use ProxyManager\Generator\MethodGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicWakeup extends MethodGenerator
+class MagicWakeup extends MagicMethodGenerator
 {
     /**
      * Constructor
      */
     public function __construct(ReflectionClass $originalClass)
     {
-        parent::__construct('__wakeup');
+        parent::__construct($originalClass, '__wakeup');
 
         /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
@@ -45,9 +46,6 @@ class MagicWakeup extends MethodGenerator
             $unsetProperties[] = '$this->' . $publicProperty->getName();
         }
 
-        $this->setDocblock($originalClass->hasMethod('__wakeup') ? '{@inheritDoc}' : '');
-        $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '')
-        );
+        $this->setBody($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '');
     }
 }

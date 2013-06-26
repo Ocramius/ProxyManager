@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -28,23 +29,21 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicClone extends MethodGenerator
+class MagicClone extends MagicMethodGenerator
 {
     /**
      * Constructor
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {
-        parent::__construct('__clone');
+        parent::__construct($originalClass, '__clone');
 
-        $override    = $originalClass->hasMethod('__clone');
         $initializer = $initializerProperty->getName();
 
-        $this->setDocblock($override ? '{@inheritDoc}' : '');
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'__clone\', array(), $this->' . $initializer . ');'
-            . ($override ? "\n\nparent::__clone();" : '')
+            . ($originalClass->hasMethod('__clone') ? "\n\nparent::__clone();" : '')
         );
     }
 }

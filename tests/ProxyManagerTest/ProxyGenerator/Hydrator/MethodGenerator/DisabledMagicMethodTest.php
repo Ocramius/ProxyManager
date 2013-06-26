@@ -16,39 +16,34 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\Hydrator\MethodGenerator;
 
-use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
-use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMagicMethod;
 
 /**
- * Magic `__sleep` for lazy loading value holder objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMagicMethod}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMagicMethod
  */
-class MagicSleep extends MagicMethodGenerator
+class DisabledMagicMethodTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Constructor
+     * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\DisabledMagicMethod::generate
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
-    ) {
-        parent::__construct($originalClass, '__sleep');
+    public function testGeneratedStructure()
+    {
+        $disabledMethod  = new DisabledMagicMethod(new ReflectionClass($this), __FUNCTION__, array('foo'));
 
-        $initializer = $initializerProperty->getName();
-        $valueHolder = $valueHolderProperty->getName();
-
-        $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
-            . $initializer . ');' . "\n\n"
-            . 'return array(' . var_export($valueHolder, true) . ');'
+        $this->assertStringMatchesFormat(
+            '%athrow \\ProxyManager\\Exception\\DisabledMethodException::disabledMethod(__METHOD__);%a',
+            $disabledMethod->generate()
         );
+        $this->assertSame(__FUNCTION__, $disabledMethod->getName());
+        $this->assertCount(1, $disabledMethod->getParameters());
     }
 }

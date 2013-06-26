@@ -16,39 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
+use ProxyManager\Exception\DisabledMethodException;
 use ProxyManager\Generator\MagicMethodGenerator;
-use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Magic `__sleep` for lazy loading value holder objects
+ * Method generator for forcefully disabled methods
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleep extends MagicMethodGenerator
+class DisabledMagicMethod extends MagicMethodGenerator
 {
     /**
-     * Constructor
+     * {@inheritDoc}
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
-    ) {
-        parent::__construct($originalClass, '__sleep');
-
-        $initializer = $initializerProperty->getName();
-        $valueHolder = $valueHolderProperty->getName();
-
-        $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
-            . $initializer . ');' . "\n\n"
-            . 'return array(' . var_export($valueHolder, true) . ');'
+    public function generate()
+    {
+        $this->setBody('throw \\' . DisabledMethodException::NAME . '::disabledMethod(__METHOD__);');
+        $this->setDocblock(
+            "{@inheritDoc}\n\n@internal disabled since this object is not a real proxy\n\n"
+            . "@throws \\ProxyManager\\Exception\\DisabledMethodException"
         );
+
+        return parent::generate();
     }
 }
