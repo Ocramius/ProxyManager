@@ -85,6 +85,7 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
         return array(
             array('ProxyManagerTestAsset\\BaseClass'),
             array('ProxyManagerTestAsset\\ClassWithMagicMethods'),
+            array('ProxyManagerTestAsset\\ClassWithByRefMagicGet'),
             array('ProxyManagerTestAsset\\BaseInterface'),
         );
     }
