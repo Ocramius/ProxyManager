@@ -19,8 +19,6 @@
 namespace ProxyManager\Generator;
 
 use ReflectionClass;
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
 
 /**
  * Method generator for magic methods

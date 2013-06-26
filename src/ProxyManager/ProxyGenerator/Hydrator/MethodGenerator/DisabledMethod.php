@@ -20,7 +20,6 @@ namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
 use ProxyManager\Exception\DisabledMethodException;
 use ProxyManager\Generator\MethodGenerator;
-use ReflectionClass;
 
 /**
  * Method generator for forcefully disabled methods
