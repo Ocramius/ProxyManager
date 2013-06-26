@@ -24,13 +24,51 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithByRefMagicGet
+class ClassWithByRefMagicMethods
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function & __set($name, $value)
+    {
+        return array($name => $value);
+    }
+
     /**
      * {@inheritDoc}
      */
     public function & __get($name)
     {
         return $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function & __isset($name)
+    {
+        return (bool) $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function & __unset($name)
+    {
+        return (bool) $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function & __sleep()
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function & __wakeup()
+    {
     }
 }
