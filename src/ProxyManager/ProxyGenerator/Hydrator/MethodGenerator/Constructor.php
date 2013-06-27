@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -31,25 +32,43 @@ use Zend\Code\Generator\PropertyGenerator;
 class Constructor extends MethodGenerator
 {
     /**
+     * @param \ReflectionClass                                                           $originalClass
      * @param \ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor[] $propertyAccessors
      */
-    public function __construct(array $propertyAccessors)
+    public function __construct(ReflectionClass $originalClass, array $propertyAccessors)
     {
         parent::__construct('__construct');
 
-        $this->setDocblock("@param \\ReflectionProperty[] \$propertyAccessors to hydrate private properties");
-        $this->setParameter(new ParameterGenerator('propertyAccessors', 'array'));
+        $this->setDocblock($originalClass->hasMethod('__construct') ? '{@inheritDoc}' : 'Constructor.');
 
-        $body = '';
+        if (! empty($propertyAccessors)) {
+            $this->setBody($this->getPropertyAccessorsInitialization($originalClass, $propertyAccessors));
+        }
+    }
+
+    /**
+     * Generates access interceptors initialization code
+     *
+     * @param \ReflectionClass                                                           $originalClass
+     * @param \ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor[] $propertyAccessors
+     *
+     * @return string
+     */
+    private function getPropertyAccessorsInitialization(ReflectionClass $originalClass, array $propertyAccessors)
+    {
+        $reflectionInit   = '$reflectionClass = new \ReflectionClass('
+            . var_export($originalClass->getName(), true) . ');';
+        $propertiesInit   = '';
+        $propertiesAccess = '';
 
         foreach ($propertyAccessors as $propertyAccessor) {
-            $body .= '$this->'
-                . $propertyAccessor->getName()
-                . ' = $propertyAccessors['
-                . var_export($propertyAccessor->getOriginalProperty()->getName(), true)
-                . "];\n";
+            $accessorName = $propertyAccessor->getName();
+
+            $propertiesInit .= '$this->' . $accessorName . ' = $reflectionClass->getProperty('
+                . var_export($propertyAccessor->getOriginalProperty()->getName(), true) . ");\n";
+            $propertiesAccess .= '$this->' . $propertyAccessor->getName() . "->setAccessible(true);\n";
         }
 
-        $this->setBody($body);
+        return $reflectionInit . "\n\n" . $propertiesInit . "\n" . $propertiesAccess;
     }
 }

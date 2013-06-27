@@ -21,6 +21,7 @@ namespace ProxyManagerTest\ProxyGenerator\Hydrator\MethodGenerator;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\Hydrator\PropertyGenerator\PropertyAccessor;
+use ReflectionClass;
 use ReflectionProperty;
 
 /**
@@ -47,17 +48,16 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $accessor->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $accessor->expects($this->any())->method('getOriginalProperty')->will($this->returnValue($property));
 
-        $constructor = new Constructor(array($accessor));
-        $parameters  = $constructor->getParameters();
+        $constructor = new Constructor(new ReflectionClass(__CLASS__), array($accessor));
 
         $this->assertSame('__construct', $constructor->getName());
-        $this->assertSame("\$this->foo = \$propertyAccessors['publicProperty'];\n", $constructor->getBody());
-        $this->assertCount(1, $parameters);
+        $this->assertSame(
+            "\$reflectionClass = new \\ReflectionClass(" . var_export(__CLASS__, true) . ");\n\n"
+            . "\$this->foo = \$reflectionClass->getProperty('publicProperty');\n\n"
+            . "\$this->foo->setAccessible(true);\n",
+            $constructor->getBody()
+        );
+        $this->assertEmpty($constructor->getParameters());
 
-        /* @var $accessorsParam \Zend\Code\Generator\ParameterGenerator */
-        $accessorsParam = reset($parameters);
-
-        $this->assertSame('propertyAccessors', $accessorsParam->getName());
-        $this->assertSame('array', $accessorsParam->getType());
     }
 }
