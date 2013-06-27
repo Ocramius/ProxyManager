@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -28,20 +29,19 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleep extends MethodGenerator
+class MagicSleep extends MagicMethodGenerator
 {
     /**
      * Constructor
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {
-        parent::__construct('__sleep');
+        parent::__construct($originalClass, '__sleep');
 
         $override    = $originalClass->hasMethod('__sleep');
         $initializer = $initializerProperty->getName();
 
         // @todo can be optimized to not use `array_keys`, but use the directly property names instead
-        $this->setDocblock($override ? '{@inheritDoc}' : '');
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'__sleep\', array(), $this->'

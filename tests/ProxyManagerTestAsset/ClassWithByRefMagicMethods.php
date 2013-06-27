@@ -16,39 +16,59 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
-
-use ProxyManager\Generator\MagicMethodGenerator;
-use ReflectionClass;
-use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+namespace ProxyManagerTestAsset;
 
 /**
- * Magic `__sleep` for lazy loading value holder objects
+ * Test class used to verify that proxy-manager respects magic getters with a byref return value
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleep extends MagicMethodGenerator
+class ClassWithByRefMagicMethods
 {
     /**
-     * Constructor
+     * {@inheritDoc}
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
-    ) {
-        parent::__construct($originalClass, '__sleep');
+    public function & __set($name, $value)
+    {
+        return array($name => $value);
+    }
 
-        $initializer = $initializerProperty->getName();
-        $valueHolder = $valueHolderProperty->getName();
+    /**
+     * {@inheritDoc}
+     */
+    public function & __get($name)
+    {
+        return $name;
+    }
 
-        $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
-            . $initializer . ');' . "\n\n"
-            . 'return array(' . var_export($valueHolder, true) . ');'
-        );
+    /**
+     * {@inheritDoc}
+     */
+    public function & __isset($name)
+    {
+        return (bool) $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function & __unset($name)
+    {
+        return (bool) $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function & __sleep()
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function & __wakeup()
+    {
     }
 }

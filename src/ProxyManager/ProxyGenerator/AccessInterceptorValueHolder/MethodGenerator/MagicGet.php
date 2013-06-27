@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
@@ -30,7 +31,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicGet extends MethodGenerator
+class MagicGet extends MagicMethodGenerator
 {
     /**
      * Constructor
@@ -41,11 +42,11 @@ class MagicGet extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        $inheritDoc  = $originalClass->hasMethod('__get') ? "{@inheritDoc}\n" : '';
+        parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
 
-        parent::__construct('__get');
+        $inheritDoc = $originalClass->hasMethod('__get') ? "{@inheritDoc}\n" : '';
+
         $this->setDocblock($inheritDoc . '@param string $name');
-        $this->setParameters(array(new ParameterGenerator('name')));
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(
                 '$returnValue = $this->' . $valueHolder->getName() . '->$name;',

@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -30,14 +31,14 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicIsset extends MethodGenerator
+class MagicIsset extends MagicMethodGenerator
 {
     /**
      * Constructor
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {
-        parent::__construct('__isset');
+        parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
 
         $override         = $originalClass->hasMethod('__isset');
         $initializer      = $initializerProperty->getName();
@@ -49,7 +50,6 @@ class MagicIsset extends MethodGenerator
         );
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-        $this->setParameters(array(new ParameterGenerator('name')));
 
         // @todo can be skipped when no public properties are available
         $callParent = 'if (in_array($name, array(' . implode(', ', $publicProperties) . '))) {' . "\n"

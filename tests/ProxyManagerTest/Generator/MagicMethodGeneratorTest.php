@@ -16,39 +16,39 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManagerTest\Generator;
 
-use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
-use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\MagicMethodGenerator;
 
 /**
- * Magic `__sleep` for lazy loading value holder objects
+ * Tests for {@see \ProxyManager\Generator\MagicMethodGenerator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleep extends MagicMethodGenerator
+class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Constructor
+     * @covers \ProxyManager\Generator\MagicMethodGenerator::__construct
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
-    ) {
-        parent::__construct($originalClass, '__sleep');
+    public function testGeneratesCorrectByRefReturnValue()
+    {
+        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithByRefMagicMethods');
+        $magicMethod = new MagicMethodGenerator($reflection, '__get', array('name'));
 
-        $initializer = $initializerProperty->getName();
-        $valueHolder = $valueHolderProperty->getName();
+        $this->assertTrue($magicMethod->returnsReference());
+    }
 
-        $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
-            . $initializer . ');' . "\n\n"
-            . 'return array(' . var_export($valueHolder, true) . ');'
-        );
+    /**
+     * @covers \ProxyManager\Generator\MagicMethodGenerator::__construct
+     */
+    public function testGeneratesCorrectByValReturnValue()
+    {
+        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
+        $magicMethod = new MagicMethodGenerator($reflection, '__get', array('name'));
+
+        $this->assertFalse($magicMethod->returnsReference());
     }
 }

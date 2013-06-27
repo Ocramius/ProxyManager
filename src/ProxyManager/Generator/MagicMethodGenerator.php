@@ -16,39 +16,30 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManager\Generator;
 
-use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
-use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Magic `__sleep` for lazy loading value holder objects
+ * Method generator for magic methods
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class MagicSleep extends MagicMethodGenerator
+class MagicMethodGenerator extends MethodGenerator
 {
-    /**
-     * Constructor
-     */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
-    ) {
-        parent::__construct($originalClass, '__sleep');
-
-        $initializer = $initializerProperty->getName();
-        $valueHolder = $valueHolderProperty->getName();
-
-        $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
-            . $initializer . ');' . "\n\n"
-            . 'return array(' . var_export($valueHolder, true) . ');'
+    public function __construct(ReflectionClass $originalClass, $name, array $parameters = array())
+    {
+        parent::__construct(
+            $name,
+            $parameters,
+            static::FLAG_PUBLIC,
+            null,
+            $originalClass->hasMethod($name) ? '{@inheritDoc}' : null
         );
+
+        if ($originalClass->hasMethod($name)) {
+            $this->setReturnsReference($originalClass->getMethod($name)->returnsReference());
+        }
     }
 }
