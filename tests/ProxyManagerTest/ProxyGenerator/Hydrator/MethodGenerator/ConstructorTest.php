@@ -36,6 +36,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Constructor::__construct
+     * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Constructor::getPropertyAccessorsInitialization
      */
     public function testGeneratedStructure()
     {
@@ -58,6 +59,17 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
             $constructor->getBody()
         );
         $this->assertEmpty($constructor->getParameters());
+    }
 
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Constructor::__construct
+     */
+    public function testGeneratedStructureWithoutAccessors()
+    {
+        $constructor = new Constructor(new ReflectionClass(__CLASS__), array());
+
+        $this->assertEmpty($constructor->getBody());
+        $this->assertEmpty($constructor->getParameters());
     }
 }
