@@ -39,13 +39,6 @@ class HydratorFactory extends AbstractBaseFactory
     private $hydrators = array();
 
     /**
-     * Cached reflection properties
-     *
-     * @var \ReflectionProperty[][]
-     */
-    private $reflectionProperties = array();
-
-    /**
      * @param string $className
      *
      * @return \Zend\Stdlib\Hydrator\HydratorInterface
@@ -56,33 +49,18 @@ class HydratorFactory extends AbstractBaseFactory
             return $this->hydrators[$className];
         }
 
-        $reflection     = new ReflectionClass($this->inflector->getUserClassName($className));
-        $proxyClassName = $this->inflector->getProxyClassName(
-            $reflection->getName(),
-            array('factory' => get_class($this))
-        );
+        $realClassName  = $this->inflector->getUserClassName($className);
+        $proxyClassName = $this->inflector->getProxyClassName($realClassName, array('factory' => get_class($this)));
 
         if ($this->autoGenerate && ! class_exists($proxyClassName)) {
             $classGenerator = new ClassGenerator($proxyClassName);
             $generator      = new HydratorGenerator();
 
-            $generator->generate($reflection, $classGenerator);
+            $generator->generate(new ReflectionClass($realClassName), $classGenerator);
             $this->configuration->getGeneratorStrategy()->generate($classGenerator);
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
 
-        /* @var $properties \ReflectionProperty[] */
-        $properties           = $reflection->getProperties();
-        $reflectionProperties = array();
-
-        foreach ($properties as $property) {
-            $property->setAccessible(true);
-
-            $reflectionProperties[$property->getName()] = $property;
-        }
-
-        $this->reflectionProperties[$className] = $reflectionProperties;
-
-        return $this->hydrators[$className] = new $proxyClassName($reflectionProperties);
+        return $this->hydrators[$className] = new $proxyClassName();
     }
 }

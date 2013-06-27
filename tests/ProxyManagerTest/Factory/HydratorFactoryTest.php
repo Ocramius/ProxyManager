@@ -78,21 +78,13 @@ class HydratorFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getProxyClassName')
             ->with('ProxyManagerTestAsset\\BaseClass')
-            ->will($this->returnValue('ProxyManagerTestAsset\\HydratorMock'));
+            ->will($this->returnValue('ProxyManagerTestAsset\\EmptyClass'));
 
         $factory = new HydratorFactory($this->config);
         /* @var $proxy \ProxyManagerTestAsset\HydratorMock */
         $proxy   = $factory->createProxy($className);
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\HydratorMock', $proxy);
-        $this->assertCount(3, $proxy->reflectionProperties);
-
-        /* @var $reflectionProperty \ReflectionProperty */
-        foreach ($proxy->reflectionProperties as $reflectionProperty) {
-            $this->assertInstanceOf('ReflectionProperty', $reflectionProperty);
-            $this->assertSame('ProxyManagerTestAsset\\BaseClass', $reflectionProperty->getDeclaringClass()->getName());
-        }
-
+        $this->assertInstanceOf('ProxyManagerTestAsset\\EmptyClass', $proxy);
         $this->assertSame($proxy, $factory->createProxy($className), 'Generated proxies are cached');
     }
 
