@@ -19,7 +19,6 @@
 namespace ProxyManager\ProxyGenerator\Hydrator\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 

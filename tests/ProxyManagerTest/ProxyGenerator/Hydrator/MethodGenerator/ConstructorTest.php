@@ -61,7 +61,6 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($constructor->getParameters());
     }
 
-
     /**
      * @covers \ProxyManager\ProxyGenerator\Hydrator\MethodGenerator\Constructor::__construct
      */
