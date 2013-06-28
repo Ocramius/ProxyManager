@@ -111,7 +111,7 @@ class HydratorGenerator implements ProxyGeneratorInterface
         }
 
         $classGenerator->addProperties($propertyAccessors);
-        $classGenerator->addMethodFromGenerator(new Constructor($propertyAccessors));
+        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $propertyAccessors));
         $classGenerator->addMethodFromGenerator(new Hydrate($accessibleProperties, $propertyAccessors));
         $classGenerator->addMethodFromGenerator(new Extract($accessibleProperties, $propertyAccessors));
         $classGenerator->addMethodFromGenerator(new GetAccessorProperties($propertyAccessors));
