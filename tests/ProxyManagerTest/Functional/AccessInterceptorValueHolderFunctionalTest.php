@@ -23,6 +23,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -193,6 +194,26 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         $this->assertFalse(isset($instance->$publicProperty));
         $this->assertFalse(isset($proxy->$publicProperty));
+    }
+
+    /**
+     * Verifies that accessing a public property containing an array behaves like in a normal context
+     */
+    public function testCanWriteToArrayKeysInPublicProperty()
+    {
+        $instance    = new ClassWithPublicArrayProperty();
+        $className   = get_class($instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithPublicArrayProperty */
+        $proxy       = new $proxyName($instance);
+
+        $proxy->arrayProperty['foo'] = 'bar';
+
+        $this->assertSame('bar', $proxy->arrayProperty['foo']);
+
+        $proxy->arrayProperty = array('tab' => 'taz');
+
+        $this->assertSame(array('tab' => 'taz'), $proxy->arrayProperty);
     }
 
     /**
