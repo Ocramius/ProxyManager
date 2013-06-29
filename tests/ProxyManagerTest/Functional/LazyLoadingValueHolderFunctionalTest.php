@@ -152,7 +152,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getPropertyAccessProxies
+     * Verifies that accessing a public property containing an array behaves like in a normal context
      */
     public function testCanWriteToArrayKeysInPublicProperty()
     {
