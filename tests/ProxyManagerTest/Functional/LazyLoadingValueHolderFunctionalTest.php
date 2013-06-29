@@ -27,6 +27,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ReflectionClass;
 
 /**
@@ -148,6 +149,27 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse(isset($instance->$publicProperty));
         $this->assertFalse(isset($proxy->$publicProperty));
+    }
+
+    /**
+     * @dataProvider getPropertyAccessProxies
+     */
+    public function testCanWriteToArrayKeysInPublicProperty()
+    {
+        $instance    = new ClassWithPublicArrayProperty();
+        $className   = get_class($instance);
+        $initializer = $this->createInitializer($className, $instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithPublicArrayProperty */
+        $proxy       = new $proxyName($initializer);
+
+        $proxy->arrayProperty['foo'] = 'bar';
+
+        $this->assertSame('bar', $proxy->arrayProperty['foo']);
+
+        $proxy->arrayProperty = array('tab' => 'taz');
+
+        $this->assertSame(array('tab' => 'taz'), $proxy->arrayProperty);
     }
 
     /**
