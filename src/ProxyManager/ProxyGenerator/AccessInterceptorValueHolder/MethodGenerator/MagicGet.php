@@ -47,9 +47,10 @@ class MagicGet extends MagicMethodGenerator
         $inheritDoc = $originalClass->hasMethod('__get') ? "{@inheritDoc}\n" : '';
 
         $this->setDocblock($inheritDoc . '@param string $name');
+        $this->setReturnsReference(true);
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(
-                '$returnValue = $this->' . $valueHolder->getName() . '->$name;',
+                '$returnValue = & $this->' . $valueHolder->getName() . '->$name;',
                 $this,
                 $valueHolder,
                 $prefixInterceptors,
