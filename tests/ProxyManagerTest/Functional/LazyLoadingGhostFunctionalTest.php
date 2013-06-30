@@ -28,6 +28,7 @@ use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;
 
 /**
@@ -161,6 +162,26 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy->arrayProperty = array('tab' => 'taz');
 
         $this->assertSame(array('tab' => 'taz'), $proxy->arrayProperty);
+    }
+
+    /**
+     * Verifies that public properties retrieved via `__get` don't get modified in the object itself
+     */
+    public function testWillNotModifyRetrievedPublicProperties()
+    {
+        $instance    = new ClassWithPublicProperties();
+        $className   = get_class($instance);
+        $initializer = $this->createInitializer($className, $instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithPublicProperties */
+        $proxy       = new $proxyName($initializer);
+        $variable    = $proxy->property0;
+
+        $this->assertSame('property0', $variable);
+
+        $variable = 'foo';
+
+        $this->assertSame('property0', $proxy->property0);
     }
 
     /**
