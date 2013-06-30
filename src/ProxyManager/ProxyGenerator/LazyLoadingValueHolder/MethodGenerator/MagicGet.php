@@ -47,6 +47,7 @@ class MagicGet extends MagicMethodGenerator
         $valueHolder = $valueHolderProperty->getName();
 
         $this->setDocblock($inheritDoc . '@param string $name');
+        $this->setReturnsReference(true);
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__get\', array(\'name\' => $name), $this->'
