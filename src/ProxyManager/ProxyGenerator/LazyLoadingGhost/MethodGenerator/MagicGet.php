@@ -50,6 +50,7 @@ class MagicGet extends MagicMethodGenerator
         );
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setReturnsReference(true);
 
         // @todo can be skipped when no public properties are available
         $callParent = 'if (in_array($name, array(' . implode(', ', $publicProperties) . '))) {' . "\n"

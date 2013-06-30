@@ -48,6 +48,6 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
-        $this->assertGreaterThan(0, strpos($magicGet->getBody(), '$returnValue = $this->bar->$name;'));
+        $this->assertGreaterThan(0, strpos($magicGet->getBody(), '$returnValue = & $this->bar->$name;'));
     }
 }
