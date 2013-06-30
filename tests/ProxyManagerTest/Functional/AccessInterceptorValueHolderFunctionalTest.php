@@ -218,7 +218,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     }
 
     /**
-     * Verifies that public properties retrieved via `__get` don't get modified in the object itself
+     * Verifies that public properties retrieved via `__get` don't get modified in the object state
      */
     public function testWillNotModifyRetrievedPublicProperties()
     {
@@ -234,6 +234,25 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $variable = 'foo';
 
         $this->assertSame('property0', $proxy->property0);
+    }
+
+    /**
+     * Verifies that public properties references retrieved via `__get` modify in the object state
+     */
+    public function testWillModifyByRefRetrievedPublicProperties()
+    {
+        $instance    = new ClassWithPublicProperties();
+        $className   = get_class($instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithPublicProperties */
+        $proxy       = new $proxyName($instance);
+        $variable    = & $proxy->property0;
+
+        $this->assertSame('property0', $variable);
+
+        $variable = 'foo';
+
+        $this->assertSame('foo', $proxy->property0);
     }
 
     /**

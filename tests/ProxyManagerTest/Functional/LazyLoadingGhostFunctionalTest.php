@@ -185,6 +185,26 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Verifies that public properties references retrieved via `__get` modify in the object state
+     */
+    public function testWillModifyByRefRetrievedPublicProperties()
+    {
+        $instance    = new ClassWithPublicProperties();
+        $className   = get_class($instance);
+        $initializer = $this->createInitializer($className, $instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithPublicProperties */
+        $proxy       = new $proxyName($initializer);
+        $variable    = & $proxy->property0;
+
+        $this->assertSame('property0', $variable);
+
+        $variable = 'foo';
+
+        $this->assertSame('foo', $proxy->property0);
+    }
+
+    /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
      * @param string $parentClassName
