@@ -23,6 +23,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;
@@ -253,6 +254,17 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+    }
+
+    public function testWillDisallowAccessToProtectedProperties()
+    {
+        $instance    = new ClassWithMixedProperties();
+        $className   = get_class($instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithMixedProperties */
+        $proxy       = new $proxyName($instance);
+
+        $this->assertNull($proxy->protectedProperty0);
     }
 
     /**

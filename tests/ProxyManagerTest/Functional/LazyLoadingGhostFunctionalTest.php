@@ -27,6 +27,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;
@@ -202,6 +203,30 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+    }
+
+    public function testWillDisallowAccessToProtectedProperties()
+    {
+        $instance    = new ClassWithMixedProperties();
+        $className   = get_class($instance);
+        $initializer = $this->createInitializer($className, $instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithMixedProperties */
+        $proxy       = new $proxyName($initializer);
+
+        $this->assertNull($proxy->protectedProperty0);
+    }
+
+    public function testWillDisallowAccessToPrivateProperties()
+    {
+        $instance    = new ClassWithMixedProperties();
+        $className   = get_class($instance);
+        $initializer = $this->createInitializer($className, $instance);
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithMixedProperties */
+        $proxy       = new $proxyName($initializer);
+
+        $this->assertNull($proxy->privateProperty0);
     }
 
     /**
