@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -40,16 +41,34 @@ class MagicUnset extends MagicMethodGenerator
         ReflectionClass $originalClass,
         PropertyGenerator $valueHolder,
         PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
+        PropertyGenerator $suffixInterceptors,
+        PublicPropertiesMap $publicProperties
     ) {
         parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
 
-        $inheritDoc = $originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '';
+        $override        = $originalClass->hasMethod('__unset');
+        $valueHolderName = $valueHolder->getName();
+        $callParent      = '$returnValue = false;';
 
-        $this->setDocblock($inheritDoc . '@param string $name');
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setReturnsReference(true);
+
+        if ($override) {
+            $callParent .= '$returnValue = $this->' . $valueHolderName . '->__unset($name);';
+        } else {
+            // @todo must check against protected properties and deny access!
+            $callParent .= 'unset($this->' . $valueHolderName . '->$name);';
+        }
+
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    unset($this->' . $valueHolderName . '->$name);'
+                . "\n} else {\n    $callParent\n}\n\n\$returnValue = false;";
+        }
+
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(
-                'unset($this->' . $valueHolder->getName() . '->$name);' . "\n\n" . '$returnValue = true;',
+                $callParent,
                 $this,
                 $valueHolder,
                 $prefixInterceptors,

@@ -31,6 +31,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Mag
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset;
 
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
@@ -57,7 +58,9 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $interfaces = array(
+        $publicProperties    = new PublicPropertiesMap($originalClass);
+        $hasPublicProperties = ! $publicProperties->isEmpty();
+        $interfaces          = array(
             'ProxyManager\\Proxy\\AccessInterceptorInterface',
             'ProxyManager\\Proxy\\ValueHolderInterface',
         );
@@ -72,6 +75,10 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
+
+        if ($hasPublicProperties) {
+            $classGenerator->addPropertyFromGenerator($publicProperties);
+        }
 
         $excluded = array(
             '__get'    => true,
@@ -119,6 +126,57 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addMethodFromGenerator(
             new SetMethodSuffixInterceptor($suffixInterceptors)
         );
+
+
+        if ($classGenerator->hasMethod('__get') || $hasPublicProperties) {
+            $classGenerator->addMethodFromGenerator(
+                new MagicGet(
+                    $originalClass,
+                    $valueHolder,
+                    $prefixInterceptors,
+                    $suffixInterceptors,
+                    $publicProperties
+                )
+            );
+        }
+
+        if ($classGenerator->hasMethod('__set') || $hasPublicProperties) {
+            $classGenerator->addMethodFromGenerator(
+                new MagicSet(
+                    $originalClass,
+                    $valueHolder,
+                    $prefixInterceptors,
+                    $suffixInterceptors,
+                    $publicProperties
+                )
+            );
+        }
+
+        if ($classGenerator->hasMethod('__isset') || $hasPublicProperties) {
+            $classGenerator->addMethodFromGenerator(
+                new MagicISset(
+                    $originalClass,
+                    $valueHolder,
+                    $prefixInterceptors,
+                    $suffixInterceptors,
+                    $publicProperties
+                )
+            );
+        }
+
+        if ($classGenerator->hasMethod('__unset') || $hasPublicProperties) {
+            $classGenerator->addMethodFromGenerator(
+                new MagicUnset(
+                    $originalClass,
+                    $valueHolder,
+                    $prefixInterceptors,
+                    $suffixInterceptors,
+                    $publicProperties
+                )
+            );
+        }
+
+        /*
         $classGenerator->addMethodFromGenerator(
             new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
         );
@@ -131,6 +189,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addMethodFromGenerator(
             new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
         );
+        */
         $classGenerator->addMethodFromGenerator(
             new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
         );

@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -40,7 +41,8 @@ class MagicSet extends MagicMethodGenerator
         ReflectionClass $originalClass,
         PropertyGenerator $valueHolder,
         PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
+        PropertyGenerator $suffixInterceptors,
+        PublicPropertiesMap $publicProperties
     ) {
         parent::__construct(
             $originalClass,
@@ -48,12 +50,30 @@ class MagicSet extends MagicMethodGenerator
             array(new ParameterGenerator('name'), new ParameterGenerator('value'))
         );
 
-        $inheritDoc = $originalClass->hasMethod('__set') ? "{@inheritDoc}\n" : '';
+        $override        = $originalClass->hasMethod('__set');
+        $valueHolderName = $valueHolder->getName();
+        $callParent      = '';
 
-        $this->setDocblock($inheritDoc . '@param string $name');
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setReturnsReference(true);
+
+
+        if ($override) {
+            $callParent .= '$returnValue = $this->' . $valueHolderName . '->__set($name, $value);';
+        } else {
+            // @todo must check against protected properties and deny access!
+            $callParent .= '$returnValue = $this->' . $valueHolderName . '->$name = $value;';
+        }
+
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    $returnValue = $this->' . $valueHolderName . '->$name = $value;'
+                . "\n} else {\n    $callParent\n}\n\n";
+        }
+
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(
-                '$returnValue = ($this->' . $valueHolder->getName() . '->$name = $value);',
+                $callParent,
                 $this,
                 $valueHolder,
                 $prefixInterceptors,
