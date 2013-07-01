@@ -176,20 +176,6 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
             );
         }
 
-        /*
-        $classGenerator->addMethodFromGenerator(
-            new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicGet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicIsset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
-        );
-        */
         $classGenerator->addMethodFromGenerator(
             new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
         );
