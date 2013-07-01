@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -34,30 +35,30 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicIsset extends MagicMethodGenerator
 {
     /**
-     * Constructor
+     * @param \ReflectionClass                                                   $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator                             $initializerProperty
+     * @param \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap $publicProperties
      */
-    public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
-    {
+    public function __construct(
+        ReflectionClass $originalClass,
+        PropertyGenerator $initializerProperty,
+        PublicPropertiesMap $publicProperties
+    ) {
         parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
 
-        $override         = $originalClass->hasMethod('__isset');
-        $initializer      = $initializerProperty->getName();
-        $publicProperties = array_map(
-            function (ReflectionProperty $publicProperty) {
-                return var_export($publicProperty->getName(), true);
-            },
-            $originalClass->getProperties(ReflectionProperty::IS_PUBLIC)
-        );
+        $override    = $originalClass->hasMethod('__isset');
+        $initializer = $initializerProperty->getName();
+        $callParent  = '';
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        // @todo can be skipped when no public properties are available
-        $callParent = 'if (in_array($name, array(' . implode(', ', $publicProperties) . '))) {' . "\n"
-            . '    return isset($this->$name);'
-            . "\n}\n\n";
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    return isset($this->$name);'
+                . "\n}\n\n";
+        }
 
         if ($override) {
-            // @todo move to private static var to remove overhead!
             $callParent .= 'return parent::__isset($name);';
         } else {
             $callParent .= 'return false;';
