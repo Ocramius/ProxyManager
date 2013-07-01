@@ -216,7 +216,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException('PHPUnit_Framework_Error_Notice');
 
-        $this->assertNull($proxy->protectedProperty0);
+        $this->assertNull($proxy->{'protectedProperty0'});
     }
 
     public function testWillDisallowReadAccessToPrivateProperties()
@@ -230,7 +230,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException('PHPUnit_Framework_Error_Notice');
 
-        $this->assertNull($proxy->privateProperty0);
+        $this->assertNull($proxy->{'privateProperty0'});
     }
 
     /**
