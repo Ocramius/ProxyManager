@@ -223,7 +223,9 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy ClassWithMixedProperties */
         $proxy       = new $proxyName($initializer);
 
-        $this->assertNull($proxy->protectedProperty0);
+        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
+
+        $this->assertNull($proxy->{'protectedProperty0'});
     }
 
     public function testWillDisallowAccessToPrivateProperties()
@@ -235,7 +237,9 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy ClassWithMixedProperties */
         $proxy       = new $proxyName($initializer);
 
-        $this->assertNull($proxy->privateProperty0);
+        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
+
+        $this->assertNull($proxy->{'privateProperty0'});
     }
 
     /**

@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -38,20 +39,34 @@ class MagicUnset extends MagicMethodGenerator
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
+        PropertyGenerator $valueHolderProperty,
+        PublicPropertiesMap $publicProperties
     ) {
         parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
 
-        $inheritDoc  = $originalClass->hasMethod('__unset') ? "{@inheritDoc}\n" : '';
+        $override    = $originalClass->hasMethod('__isset');
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
+        $callParent  = '';
 
-        $this->setDocblock($inheritDoc . '@param string $name');
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    unset($this->' . $valueHolder . '->$name);' . "\n\n". 'return;'
+                . "\n}\n\n";
+        }
+
+        if ($override) {
+            $callParent .= 'return $this->' . $valueHolder . '->__unset($name);';
+        } else {
+            $callParent .= 'return false;';
+        }
+
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__unset\', array(\'name\' => $name), $this->'
-            . $initializer . ');' . "\n\n"
-            . 'unset($this->' . $valueHolder . '->$name);'
+            . $initializer . ');' . "\n\n" . $callParent
         );
     }
 }

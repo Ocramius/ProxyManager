@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -38,7 +39,8 @@ class MagicSet extends MagicMethodGenerator
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
+        PropertyGenerator $valueHolderProperty,
+        PublicPropertiesMap $publicProperties
     ) {
         parent::__construct(
             $originalClass,
@@ -46,16 +48,30 @@ class MagicSet extends MagicMethodGenerator
             array(new ParameterGenerator('name'), new ParameterGenerator('value'))
         );
 
-        $inheritDoc  = $originalClass->hasMethod('__set') ? "{@inheritDoc}\n" : '';
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
+        $override    = $originalClass->hasMethod('__set');
+        $callParent  = '';
 
-        $this->setDocblock($inheritDoc . "@param string \$name\n@param mixed \$value");
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . "@param string \$name\n@param mixed \$value");
+
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    return ($this->' . $valueHolder . '->$name = $value);'
+                . "\n}\n\n";
+        }
+
+        if ($override) {
+            $callParent .= 'return $this->' . $valueHolder . '->__set($name, $value);';
+        } else {
+            $callParent .= 'return ($this->' . $valueHolder . '->$name = $value);';
+        }
+
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, '
-            . '\'__set\', array(\'name\' => $name, \'value\' => $value), $this->' . $initializer . ');' . "\n\n"
-            . '$this->' . $valueHolder . '->$name = $value;'
+            . '\'__set\', array(\'name\' => $name, \'value\' => $value), $this->' . $initializer . ');'
+            . "\n\n" . $callParent
         );
     }
 }

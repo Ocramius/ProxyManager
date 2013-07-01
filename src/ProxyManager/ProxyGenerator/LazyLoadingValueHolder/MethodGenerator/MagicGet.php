@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -38,21 +39,37 @@ class MagicGet extends MagicMethodGenerator
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
+        PropertyGenerator $valueHolderProperty,
+        PublicPropertiesMap $publicProperties
     ) {
         parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
 
-        $inheritDoc  = $originalClass->hasMethod('__get') ? "{@inheritDoc}\n" : '';
+        $override    = $originalClass->hasMethod('__get');
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
 
-        $this->setDocblock($inheritDoc . '@param string $name');
+        $callParent  = '';
+
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
+
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    return $this->' . $valueHolder . '->$name;'
+                . "\n}\n\n";
+        }
+
+        if ($override) {
+            $callParent .= 'return $this->' . $valueHolder . '->__get($name);';
+        } else {
+            $callParent .= 'trigger_error(sprintf(\'Undefined property: %s::$%s\', __CLASS__, $name), E_USER_NOTICE);';
+        }
+
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__get\', array(\'name\' => $name), $this->'
             . $initializer . ');' . "\n\n"
-            . 'return $this->' . $valueHolder . '->$name;'
+            . "\n\n" . $callParent
         );
     }
 }
