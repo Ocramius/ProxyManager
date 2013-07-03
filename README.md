@@ -18,7 +18,7 @@ of data from and into your objects.
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require ocramius/proxy-manager:0.3.*
+php composer.phar require ocramius/proxy-manager:0.4.*
 ```
 
 ## Lazy Loading Value Holders (Virtual Proxy)
