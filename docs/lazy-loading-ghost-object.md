@@ -19,7 +19,7 @@ class MyObjectProxy
     {
         $this->init();
 
-        return $this->wrapped->doFoo();
+        // Perform doFoo routine using loaded variables
     }
 
     private function init()
