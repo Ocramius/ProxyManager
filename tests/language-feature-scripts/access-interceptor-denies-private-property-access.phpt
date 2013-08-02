@@ -5,16 +5,16 @@ Verifies that generated access interceptors disallow private property direct acc
 
 require_once __DIR__ . '/init.php';
 
-class Foo
+class Kitchen
 {
     private $sweets;
 }
 
 $factory = new \ProxyManager\Factory\AccessInterceptorValueHolderFactory($configuration);
 
-$proxy = $factory->createProxy(new Foo());
+$proxy = $factory->createProxy(new Kitchen());
 
 $proxy->sweets;
 ?>
 --EXPECTF--
-Fatal error: Cannot access private property Foo::$sweets in %s on line %d
+Fatal error: Cannot access private property Kitchen::$sweets in %s on line %d
