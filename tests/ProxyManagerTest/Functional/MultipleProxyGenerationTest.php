@@ -49,7 +49,6 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         $ghostProxyFactory        = new LazyLoadingGhostFactory($config);
         $virtualProxyFactory      = new LazyLoadingValueHolderFactory($config);
         $accessInterceptorFactory = new AccessInterceptorValueHolderFactory($config);
-        $hydratorFactory          = new HydratorFactory($config);
         $initializer              = function () {
         };
 
@@ -57,7 +56,6 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
-            $hydratorFactory->createProxy($className),
         );
 
         foreach ($generated as $key => $proxy) {
@@ -76,7 +74,6 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ProxyManager\Proxy\VirtualProxyInterface', $generated[1]);
         $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[2]);
         $this->assertInstanceOf('ProxyManager\Proxy\ValueHolderInterface', $generated[2]);
-        $this->assertInstanceOf('Zend\Stdlib\Hydrator\HydratorInterface', $generated[3]);
     }
 
     /**
@@ -93,7 +90,6 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             array('ProxyManagerTestAsset\\ClassWithProtectedProperties'),
             array('ProxyManagerTestAsset\\ClassWithPublicProperties'),
             array('ProxyManagerTestAsset\\EmptyClass'),
-            array('ProxyManagerTestAsset\\HydratedObject'),
             array('ProxyManagerTestAsset\\HydratedObject'),
         );
     }
