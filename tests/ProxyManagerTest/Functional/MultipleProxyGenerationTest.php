@@ -21,7 +21,6 @@ namespace ProxyManagerTest\Functional;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
-use ProxyManager\Factory\HydratorFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
