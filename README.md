@@ -135,28 +135,6 @@ There's various possible remote proxy implementations, which could be based on x
 
 This feature [yet to be planned](https://github.com/Ocramius/ProxyManager/issues/7).
 
-## Hydrator
-
-A [hydrator](http://framework.zend.com/manual/2.1/en/modules/zend.stdlib.hydrator.html) is an object that can read
-other object's data or fill them with values. ProxyManager can generate highly optimized hydrator objects to speed up
-batch processing of instantiation of a large number of objects.
-
-```php
-$config  = new \ProxyManager\Configuration();
-$factory = new \ProxyManager\Factory\HydratorFactory($config);
-
-$hydrator = $factory->createProxy('My\Entity');
-
-$object = new My\Entity();
-
-// following will be VERY fast!
-$hydrator->hydrate(array('foo' => 'bar'), $object);
-var_dump($hydrator->extract($object)); // array('foo' => 'bar')
-```
-
-See the [complete documentation about generated hydrators](https://github.com/Ocramius/ProxyManager/tree/master/docs/generated-hydrator.md)
-in the `docs/` directory.
-
 ## Contributing
 
 Please read the [CONTRIBUTING.md](https://github.com/Ocramius/ProxyManager/blob/master/CONTRIBUTING.md) contents if you
