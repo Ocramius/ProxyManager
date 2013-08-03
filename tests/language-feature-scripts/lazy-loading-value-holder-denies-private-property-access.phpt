@@ -12,9 +12,9 @@ class Kitchen
 
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($configuration);
 
-$proxy = $factory->createProxy(new Kitchen());
+$proxy = $factory->createProxy('Kitchen', function () {});
 
 $proxy->sweets;
 ?>
 --EXPECTF--
-Fatal error: Cannot access private property Kitchen::$sweets in %s on line %d
+Fatal error: Cannot access private property %s::$sweets in %s on line %d
