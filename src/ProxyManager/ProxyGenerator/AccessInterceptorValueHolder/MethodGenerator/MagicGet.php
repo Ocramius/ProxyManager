@@ -56,16 +56,18 @@ class MagicGet extends MagicMethodGenerator
         if ($override) {
             $callParent .= '$returnValue = & $this->' . $valueHolderName . '->__get($name);';
         } else {
+            // simulating access from global scope
+            // @todo consider using parent object's scope eventually
             $bindTo = PHP_VERSION_ID > 50400
-                ? '$accessor = $accessor->bindTo(new \stdClass(), \'stdClass\');' . "\n"
+                ? '    $accessor = $accessor->bindTo(new \stdClass(), \'stdClass\');' . "\n"
                 : '';
 
             $callParent .= '$valueHolder = $this->' . $valueHolderName . ";\n"
-                . '$accessor = function () use ($valueHolder, $name) {' . "\n"
-                . '    return $valueHolder->$name;' . "\n"
-                . "};\n"
+                . '    $accessor = function () use ($valueHolder, $name) {' . "\n"
+                . '        return $valueHolder->$name;' . "\n"
+                . "    };\n"
                 . $bindTo
-                . '$accessor();' . "\n";
+                . '    $returnValue = $accessor();';
         }
 
         if (! $publicProperties->isEmpty()) {
