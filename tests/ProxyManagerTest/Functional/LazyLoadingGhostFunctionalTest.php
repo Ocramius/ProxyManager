@@ -205,34 +205,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame('foo', $proxy->property0);
     }
 
-    public function testWillDisallowReadAccessToProtectedProperties()
-    {
-        $instance    = new ClassWithMixedProperties();
-        $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
-        $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithMixedProperties */
-        $proxy       = new $proxyName($initializer);
-
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
-
-        $this->assertNull($proxy->{'protectedProperty0'});
-    }
-
-    public function testWillDisallowReadAccessToPrivateProperties()
-    {
-        $instance    = new ClassWithMixedProperties();
-        $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
-        $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithMixedProperties */
-        $proxy       = new $proxyName($initializer);
-
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
-
-        $this->assertNull($proxy->{'privateProperty0'});
-    }
-
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *

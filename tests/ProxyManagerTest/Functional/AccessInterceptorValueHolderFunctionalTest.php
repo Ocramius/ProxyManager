@@ -256,32 +256,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $this->assertSame('foo', $proxy->property0);
     }
 
-    public function testWillDisallowAccessToProtectedProperties()
-    {
-        $instance    = new ClassWithMixedProperties();
-        $className   = get_class($instance);
-        $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithMixedProperties */
-        $proxy       = new $proxyName($instance);
-
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
-
-        $this->assertNull($proxy->{'protectedProperty0'});
-    }
-
-    public function testWillDisallowAccessToPrivateProperties()
-    {
-        $instance    = new ClassWithMixedProperties();
-        $className   = get_class($instance);
-        $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithMixedProperties */
-        $proxy       = new $proxyName($instance);
-
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
-
-        $this->assertNull($proxy->{'privateProperty0'});
-    }
-
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
