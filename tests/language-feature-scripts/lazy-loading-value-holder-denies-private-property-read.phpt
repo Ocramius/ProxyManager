@@ -1,5 +1,5 @@
 --TEST--
-Verifies that generated lazy loading value holders disallow private property direct access
+Verifies that generated lazy loading value holders disallow private property direct read
 --FILE--
 <?php
 

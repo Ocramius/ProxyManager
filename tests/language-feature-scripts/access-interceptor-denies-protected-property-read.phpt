@@ -1,5 +1,5 @@
 --TEST--
-Verifies that generated access interceptors disallow protected property direct access
+Verifies that generated access interceptors disallow protected property direct read
 --FILE--
 <?php
 
