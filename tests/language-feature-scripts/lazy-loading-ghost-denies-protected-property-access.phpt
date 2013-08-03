@@ -1,5 +1,5 @@
 --TEST--
-Verifies that generated lazy loading ghost objects disallow private property direct access
+Verifies that generated lazy loading ghost objects disallow protected property direct access
 --FILE--
 <?php
 
