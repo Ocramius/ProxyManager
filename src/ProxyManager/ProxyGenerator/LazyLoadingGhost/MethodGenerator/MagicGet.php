@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\PrivateAccessFailure;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -60,10 +61,9 @@ class MagicGet extends MagicMethodGenerator
         }
 
         if ($override) {
-            // @todo move to private static var to remove overhead!
             $callParent .= 'return parent::__get($name);';
         } else {
-            $callParent .= 'trigger_error(sprintf(\'Undefined property: %s::$%s\', __CLASS__, $name), E_USER_NOTICE);';
+            $callParent .= PrivateAccessFailure::getAccessViolationFatal(PrivateAccessFailure::OPERATION_GET, 'name');
         }
 
         $this->setBody(

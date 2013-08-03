@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\PrivateAccessFailure;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -60,7 +61,12 @@ class MagicIsset extends MagicMethodGenerator
         if ($override) {
             $callParent .= 'return $this->' . $valueHolder . '->__isset($name);';
         } else {
-            $callParent .= 'return false;';
+            $callParent .= PrivateAccessFailure::getAccessViolationFatal(
+                PrivateAccessFailure::OPERATION_ISSET,
+                'name',
+                null,
+                $valueHolderProperty
+            );
         }
 
         $this->setBody(

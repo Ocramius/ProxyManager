@@ -7,14 +7,17 @@ require_once __DIR__ . '/init.php';
 
 class Kitchen
 {
-    private $sweets;
+    private $sweets = 'candy';
+
+    /** Defined to force magic methods generation */
+    public $accessible;
 }
 
 $factory = new \ProxyManager\Factory\LazyLoadingGhostFactory($configuration);
 
 $proxy = $factory->createProxy('Kitchen', function () {});
 
-isset($proxy->sweets);
+var_dump(isset($proxy->sweets));
 ?>
---EXPECTF--
-Fatal error: Cannot access private property %s::$sweets in %s on line %d
+--EXPECT--
+bool(false)

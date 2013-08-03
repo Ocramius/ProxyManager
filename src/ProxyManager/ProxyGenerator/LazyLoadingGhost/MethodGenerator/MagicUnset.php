@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\PrivateAccessFailure;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -61,6 +62,8 @@ class MagicUnset extends MagicMethodGenerator
 
         if ($override) {
             $callParent .= "\n\nreturn parent::__unset(\$name);";
+        } else {
+            $callParent .= PrivateAccessFailure::getAccessViolationFatal(PrivateAccessFailure::OPERATION_UNSET, 'name');
         }
 
         $this->setBody(

@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\PrivateAccessFailure;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -61,8 +62,13 @@ class MagicSet extends MagicMethodGenerator
         if ($override) {
             $callParent .= '$returnValue = $this->' . $valueHolderName . '->__set($name, $value);';
         } else {
-            // @todo must check against protected properties and deny access!
-            $callParent .= '$returnValue = $this->' . $valueHolderName . '->$name = $value;';
+            $callParent = PrivateAccessFailure::getAccessViolationFatal(
+                PrivateAccessFailure::OPERATION_SET,
+                'name',
+                'value',
+                $valueHolder,
+                'returnValue'
+            );
         }
 
         if (! $publicProperties->isEmpty()) {
