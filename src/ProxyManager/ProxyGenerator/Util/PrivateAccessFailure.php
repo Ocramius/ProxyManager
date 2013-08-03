@@ -55,15 +55,47 @@ class PrivateAccessFailure
         PropertyGenerator $valueHolder = null,
         $returnPropertyName = null
     ) {
-        $byRef = (static::OPERATION_GET === $operationType || static::OPERATION_SET === $operationType) ? '& ' : '';
+        $byRef = self::getByRefReturnValue($operationType);
         $value = static::OPERATION_SET === $operationType ? ', $value' : '';
 
-        return '$targetObject = $this' . ($valueHolder ? '->' . $valueHolder->getName() : '') . ";\n"
+        return '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
             . '    $accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
             . '        ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ';' . "\n"
             . "    };\n"
             . self::getScopeReBind()
             . '    ' . ($returnPropertyName ? '$' . $returnPropertyName . ' =' : 'return') . ' $accessor();';
+    }
+
+    /**
+     * Defines whether the given operation produces a reference.
+     *
+     * Note: if the object is a wrapper, the wrapped instance is accessed directly. If the object
+     * is a ghost or the proxy has no wrapper, then an instance of the parent class is created via
+     * on-the-fly unserialization
+     *
+     * @param string $operationType
+     *
+     * @return string
+     */
+    private static function getByRefReturnValue($operationType)
+    {
+        return (static::OPERATION_GET === $operationType || static::OPERATION_SET === $operationType) ? '& ' : '';
+    }
+
+    /**
+     * Retrieves the logic to fetch the object on which access should be attempted
+     *
+     * @param PropertyGenerator $valueHolder
+     *
+     * @return string
+     */
+    private static function getTargetObject(PropertyGenerator $valueHolder = null)
+    {
+        if ($valueHolder) {
+            return '$this->' . $valueHolder->getName();
+        }
+
+        return 'unserialize(sprintf(\'O:%d:"%s":0:{}\', strlen(get_parent_class($this)), get_parent_class($this)));';
     }
 
     /**
