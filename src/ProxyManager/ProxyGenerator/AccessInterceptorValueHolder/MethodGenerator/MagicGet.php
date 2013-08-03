@@ -56,7 +56,16 @@ class MagicGet extends MagicMethodGenerator
         if ($override) {
             $callParent .= '$returnValue = & $this->' . $valueHolderName . '->__get($name);';
         } else {
-            $callParent .= 'trigger_error(sprintf(\'Undefined property: %s::$%s\', __CLASS__, $name), E_USER_NOTICE);';
+            $bindTo = PHP_VERSION_ID > 50400
+                ? '$accessor = $accessor->bindTo(new \stdClass(), \'stdClass\');' . "\n"
+                : '';
+
+            $callParent .= '$valueHolder = $this->' . $valueHolderName . ";\n"
+                . '$accessor = function () use ($valueHolder, $name) {' . "\n"
+                . '    return $valueHolder->$name;' . "\n"
+                . "};\n"
+                . $bindTo
+                . '$accessor();' . "\n";
         }
 
         if (! $publicProperties->isEmpty()) {
