@@ -56,12 +56,12 @@ class MagicUnset extends MagicMethodGenerator
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
                 . '    unset($this->$name);'
-                . "\n\n return;"
+                . "\n\n    return;"
                 . "\n}\n\n";
         }
 
         if ($override) {
-            $callParent .= "\n\nreturn parent::__unset(\$name);";
+            $callParent .= "return parent::__unset(\$name);";
         } else {
             $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_UNSET, 'name');
         }
