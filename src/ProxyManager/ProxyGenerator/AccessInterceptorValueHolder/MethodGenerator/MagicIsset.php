@@ -49,22 +49,17 @@ class MagicIsset extends MagicMethodGenerator
 
         $override        = $originalClass->hasMethod('__isset');
         $valueHolderName = $valueHolder->getName();
-        $callParent      = '';
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
-        if ($override) {
-            $callParent .= '$returnValue = $this->' . $valueHolderName . '->__isset($name);';
-        } else {
-            $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
-                PublicScopeSimulator::OPERATION_ISSET,
-                'name',
-                'value',
-                $valueHolder,
-                'returnValue'
-            );
-        }
+        $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_ISSET,
+            'name',
+            'value',
+            $valueHolder,
+            'returnValue'
+        );
 
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"

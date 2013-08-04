@@ -39,12 +39,23 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
         $valueHolder        = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $publicProperties   = $this
+            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
 
-        $magicSet = new MagicSet($reflection, $valueHolder, $prefixInterceptors, $suffixInterceptors);
+        $magicSet = new MagicSet(
+            $reflection,
+            $valueHolder,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $publicProperties
+        );
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());

@@ -49,28 +49,25 @@ class MagicUnset extends MagicMethodGenerator
 
         $override        = $originalClass->hasMethod('__unset');
         $valueHolderName = $valueHolder->getName();
-        $callParent      = '$returnValue = false;';
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
-        if ($override) {
-            $callParent .= '$returnValue = $this->' . $valueHolderName . '->__unset($name);';
-        } else {
-            $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
-                PublicScopeSimulator::OPERATION_UNSET,
-                'name',
-                'value',
-                $valueHolder,
-                'returnValue'
-            );
-        }
+        $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_UNSET,
+            'name',
+            'value',
+            $valueHolder,
+            'returnValue'
+        );
 
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
                 . '    unset($this->' . $valueHolderName . '->$name);'
-                . "\n} else {\n    $callParent\n}\n\n\$returnValue = false;";
+                . "\n} else {\n    $callParent\n}\n\n";
         }
+
+        $callParent .= '$returnValue = false;';
 
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(

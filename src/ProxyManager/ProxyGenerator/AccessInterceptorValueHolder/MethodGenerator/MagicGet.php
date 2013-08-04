@@ -54,17 +54,13 @@ class MagicGet extends MagicMethodGenerator
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
-        if ($override) {
-            $callParent .= '$returnValue = & $this->' . $valueHolderName . '->__get($name);';
-        } else {
-            $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
-                PublicScopeSimulator::OPERATION_GET,
-                'name',
-                'value',
-                $valueHolder,
-                'returnValue'
-            );
-        }
+        $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_GET,
+            'name',
+            'value',
+            $valueHolder,
+            'returnValue'
+        );
 
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
