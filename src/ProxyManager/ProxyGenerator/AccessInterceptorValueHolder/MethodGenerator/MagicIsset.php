@@ -64,7 +64,6 @@ class MagicIsset extends MagicMethodGenerator
                 $valueHolder,
                 'returnValue'
             );
-            //$callParent = 'die("foo");';
         }
 
         if (! $publicProperties->isEmpty()) {
