@@ -45,29 +45,24 @@ class MagicUnset extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
 
-        $override    = $originalClass->hasMethod('__isset');
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
         $callParent  = '';
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocblock(($originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
-                . '    unset($this->' . $valueHolder . '->$name);' . "\n\n". 'return;'
+                . '    unset($this->' . $valueHolder . '->$name);' . "\n\n    return;"
                 . "\n}\n\n";
         }
 
-        if ($override) {
-            $callParent .= 'return $this->' . $valueHolder . '->__unset($name);';
-        } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
-                PublicScopeSimulator::OPERATION_UNSET,
-                'name',
-                null,
-                $valueHolderProperty
-            );
-        }
+        $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_UNSET,
+            'name',
+            null,
+            $valueHolderProperty
+        );
 
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer

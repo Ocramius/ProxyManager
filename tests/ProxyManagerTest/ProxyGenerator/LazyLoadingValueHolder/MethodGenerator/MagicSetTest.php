@@ -35,21 +35,28 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection       = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $valueHolder      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $publicProperties = $this
+            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicSet = new MagicSet($reflection, $initializer, $valueHolder);
+        $magicSet = new MagicSet($reflection, $initializer, $valueHolder, $publicProperties);
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
-        $this->assertSame(
+        $this->assertStringMatchesFormat(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
             . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
-            . "\$this->bar->\$name = \$value;",
+            . "if (isset(self::\$bar[\$name])) {\n    return (\$this->bar->\$name = \$value);\n}"
+            . "%areturn %s;",
             $magicSet->getBody()
         );
     }

@@ -45,36 +45,26 @@ class MagicGet extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
 
-        $override    = $originalClass->hasMethod('__get');
-        $initializer = $initializerProperty->getName();
-        $valueHolder = $valueHolderProperty->getName();
-
-        $callParent  = '';
-
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocblock(($originalClass->hasMethod('__get') ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
-        if (! $publicProperties->isEmpty()) {
-            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
-                . '    return $this->' . $valueHolder . '->$name;'
-                . "\n}\n\n";
-        }
+        $initializer = $initializerProperty->getName();
+        $valueHolder = $valueHolderProperty->getName();
+        $callParent  = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+            . '    return $this->' . $valueHolder . '->$name;'
+            . "\n}\n\n";
 
-        if ($override) {
-            $callParent .= 'return $this->' . $valueHolder . '->__get($name);';
-        } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
-                PublicScopeSimulator::OPERATION_GET,
-                'name',
-                null,
-                $valueHolderProperty
-            );
-        }
+        $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_GET,
+            'name',
+            null,
+            $valueHolderProperty
+        );
 
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__get\', array(\'name\' => $name), $this->'
-            . $initializer . ');' . "\n\n"
+            . $initializer . ');'
             . "\n\n" . $callParent
         );
     }

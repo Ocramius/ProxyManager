@@ -51,10 +51,11 @@ class MagicSet extends MagicMethodGenerator
 
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
-        $override    = $originalClass->hasMethod('__set');
         $callParent  = '';
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . "@param string \$name\n@param mixed \$value");
+        $this->setDocblock(
+            ($originalClass->hasMethod('__set') ? "{@inheritDoc}\n" : '') . "@param string \$name\n@param mixed \$value"
+        );
 
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
@@ -62,16 +63,12 @@ class MagicSet extends MagicMethodGenerator
                 . "\n}\n\n";
         }
 
-        if ($override) {
-            $callParent .= 'return $this->' . $valueHolder . '->__set($name, $value);';
-        } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
-                PublicScopeSimulator::OPERATION_SET,
-                'name',
-                'value',
-                $valueHolderProperty
-            );
-        }
+        $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_SET,
+            'name',
+            'value',
+            $valueHolderProperty
+        );
 
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
