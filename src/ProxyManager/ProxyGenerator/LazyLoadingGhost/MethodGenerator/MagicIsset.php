@@ -62,7 +62,10 @@ class MagicIsset extends MagicMethodGenerator
         if ($override) {
             $callParent .= 'return parent::__isset($name);';
         } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_ISSET, 'name');
+            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_ISSET,
+                'name'
+            );
         }
 
         $this->setBody(

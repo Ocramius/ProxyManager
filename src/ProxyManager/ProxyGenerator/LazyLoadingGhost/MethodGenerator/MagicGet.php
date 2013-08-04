@@ -63,7 +63,10 @@ class MagicGet extends MagicMethodGenerator
         if ($override) {
             $callParent .= 'return parent::__get($name);';
         } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_GET, 'name');
+            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_GET,
+                'name'
+            );
         }
 
         $this->setBody(

@@ -63,7 +63,10 @@ class MagicUnset extends MagicMethodGenerator
         if ($override) {
             $callParent .= "return parent::__unset(\$name);";
         } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_UNSET, 'name');
+            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_UNSET,
+                'name'
+            );
         }
 
         $this->setBody(
