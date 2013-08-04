@@ -59,7 +59,6 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
         $publicProperties    = new PublicPropertiesMap($originalClass);
-        $hasPublicProperties = ! $publicProperties->isEmpty();
         $interfaces          = array(
             'ProxyManager\\Proxy\\AccessInterceptorInterface',
             'ProxyManager\\Proxy\\ValueHolderInterface',

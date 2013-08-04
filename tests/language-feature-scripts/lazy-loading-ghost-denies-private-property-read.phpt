@@ -8,9 +8,6 @@ require_once __DIR__ . '/init.php';
 class Kitchen
 {
     private $sweets;
-
-    /** Defined to force magic methods generation */
-    public $accessible;
 }
 
 $factory = new \ProxyManager\Factory\LazyLoadingGhostFactory($configuration);

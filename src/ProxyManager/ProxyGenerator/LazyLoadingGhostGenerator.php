@@ -56,7 +56,6 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     {
         $interfaces          = array('ProxyManager\\Proxy\\GhostObjectInterface');
         $publicProperties    = new PublicPropertiesMap($originalClass);
-        $hasPublicProperties = ! $publicProperties->isEmpty();
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -66,10 +65,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
-
-        if ($hasPublicProperties) {
-            $classGenerator->addPropertyFromGenerator($publicProperties);
-        }
+        $classGenerator->addPropertyFromGenerator($publicProperties);
 
         $excluded = array(
             '__get'    => true,
@@ -105,22 +101,10 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $initializer));
 
-        if ($classGenerator->hasMethod('__get') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $initializer, $publicProperties));
-        }
-
-        if ($classGenerator->hasMethod('__set') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $initializer, $publicProperties));
-        }
-
-        if ($classGenerator->hasMethod('__isset') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $initializer, $publicProperties));
-        }
-
-        if ($classGenerator->hasMethod('__unset') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $initializer, $publicProperties));
-        }
-
+        $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $initializer, $publicProperties));
+        $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $initializer, $publicProperties));
+        $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $initializer, $publicProperties));
+        $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $initializer, $publicProperties));
         $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer));
         $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer));
 
