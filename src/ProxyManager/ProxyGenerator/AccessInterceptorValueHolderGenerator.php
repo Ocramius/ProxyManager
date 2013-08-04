@@ -75,10 +75,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
-
-        if ($hasPublicProperties) {
-            $classGenerator->addPropertyFromGenerator($publicProperties);
-        }
+        $classGenerator->addPropertyFromGenerator($publicProperties);
 
         $excluded = array(
             '__get'    => true,
@@ -127,54 +124,21 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
             new SetMethodSuffixInterceptor($suffixInterceptors)
         );
 
+        $classGenerator->addMethodFromGenerator(
+            new MagicGet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
+        );
 
-        if ($classGenerator->hasMethod('__get') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(
-                new MagicGet(
-                    $originalClass,
-                    $valueHolder,
-                    $prefixInterceptors,
-                    $suffixInterceptors,
-                    $publicProperties
-                )
-            );
-        }
+        $classGenerator->addMethodFromGenerator(
+            new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
+        );
 
-        if ($classGenerator->hasMethod('__set') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(
-                new MagicSet(
-                    $originalClass,
-                    $valueHolder,
-                    $prefixInterceptors,
-                    $suffixInterceptors,
-                    $publicProperties
-                )
-            );
-        }
+        $classGenerator->addMethodFromGenerator(
+            new MagicIsset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
+        );
 
-        if ($classGenerator->hasMethod('__isset') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(
-                new MagicISset(
-                    $originalClass,
-                    $valueHolder,
-                    $prefixInterceptors,
-                    $suffixInterceptors,
-                    $publicProperties
-                )
-            );
-        }
-
-        if ($classGenerator->hasMethod('__unset') || $hasPublicProperties) {
-            $classGenerator->addMethodFromGenerator(
-                new MagicUnset(
-                    $originalClass,
-                    $valueHolder,
-                    $prefixInterceptors,
-                    $suffixInterceptors,
-                    $publicProperties
-                )
-            );
-        }
+        $classGenerator->addMethodFromGenerator(
+            new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
+        );
 
         $classGenerator->addMethodFromGenerator(
             new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
