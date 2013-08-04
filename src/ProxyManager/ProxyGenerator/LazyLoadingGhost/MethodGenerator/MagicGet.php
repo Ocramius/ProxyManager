@@ -20,7 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
-use ProxyManager\ProxyGenerator\Util\PrivateAccessFailure;
+use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -63,7 +63,7 @@ class MagicGet extends MagicMethodGenerator
         if ($override) {
             $callParent .= 'return parent::__get($name);';
         } else {
-            $callParent .= PrivateAccessFailure::getAccessViolationFatal(PrivateAccessFailure::OPERATION_GET, 'name');
+            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_GET, 'name');
         }
 
         $this->setBody(

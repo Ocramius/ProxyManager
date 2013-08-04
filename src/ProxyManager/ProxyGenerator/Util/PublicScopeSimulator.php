@@ -28,7 +28,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class PrivateAccessFailure
+class PublicScopeSimulator
 {
     const OPERATION_SET   = 'set';
     const OPERATION_GET   = 'get';
@@ -48,7 +48,7 @@ class PrivateAccessFailure
      *
      * @throws \InvalidArgumentException
      */
-    public static function getAccessViolationFatal(
+    public static function getPublicAccessSimulationCode(
         $operationType,
         $nameParameter,
         $valueParameter = null,

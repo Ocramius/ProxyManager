@@ -21,7 +21,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
-use ProxyManager\ProxyGenerator\Util\PrivateAccessFailure;
+use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -57,8 +57,8 @@ class MagicIsset extends MagicMethodGenerator
         if ($override) {
             $callParent .= '$returnValue = $this->' . $valueHolderName . '->__isset($name);';
         } else {
-            $callParent = PrivateAccessFailure::getAccessViolationFatal(
-                PrivateAccessFailure::OPERATION_ISSET,
+            $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_ISSET,
                 'name',
                 'value',
                 $valueHolder,
