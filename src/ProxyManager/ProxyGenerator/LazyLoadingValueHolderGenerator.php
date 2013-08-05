@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
@@ -58,7 +59,8 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $interfaces = array('ProxyManager\\Proxy\\VirtualProxyInterface');
+        $interfaces          = array('ProxyManager\\Proxy\\VirtualProxyInterface');
+        $publicProperties    = new PublicPropertiesMap($originalClass);
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -69,6 +71,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
+        $classGenerator->addPropertyFromGenerator($publicProperties);
 
         $excluded = array(
             '__get'    => true,
@@ -104,10 +107,19 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         }
 
         $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $initializer));
-        $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $initializer, $valueHolder));
+
+        $classGenerator->addMethodFromGenerator(
+            new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicIsset($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicUnset($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
         $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer, $valueHolder));
         $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer, $valueHolder));
         $classGenerator->addMethodFromGenerator(new MagicWakeup($originalClass));

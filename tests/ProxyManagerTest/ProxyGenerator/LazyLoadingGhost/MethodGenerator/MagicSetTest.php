@@ -31,24 +31,46 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSet;
 class MagicSetTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @var \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $initializer;
+
+    /**
+     * @var \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $publicProperties;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
+    {
+        $this->initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $this->publicProperties = $this
+            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+    }
+
+    /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSet::__construct
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-
-        $magicSet = new MagicSet($reflection, $initializer);
+        $reflection = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $magicSet   = new MagicSet($reflection, $this->initializer, $this->publicProperties);
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
-        $this->assertSame(
+        $this->assertStringMatchesFormat(
             "\$this->foo && \$this->foo->__invoke(\$this, "
             . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
-            . "if (in_array(\$name, array())) {\n    return (\$this->\$name = \$value);\n}\n\n"
-            . "return (\$this->\$name = \$value);",
+            . "if (isset(self::\$bar[\$name])) {\n    return (\$this->\$name = \$value);\n}\n\n"
+            . "%areturn %s;",
             $magicSet->getBody()
         );
     }
@@ -58,22 +80,19 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithPublicProperties()
     {
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $reflection  = new ReflectionClass(
+        $reflection = new ReflectionClass(
             'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
         );
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-
-        $magicSet = new MagicSet($reflection, $initializer);
+        $magicSet   = new MagicSet($reflection, $this->initializer, $this->publicProperties);
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
-        $this->assertSame(
+        $this->assertStringMatchesFormat(
             "\$this->foo && \$this->foo->__invoke(\$this, "
             . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
-            . "if (in_array(\$name, array('bar', 'baz'))) {\n    return (\$this->\$name = \$value);\n}\n\n"
-            . "return (\$this->\$name = \$value);",
+            . "if (isset(self::\$bar[\$name])) {\n    return (\$this->\$name = \$value);\n}\n\n"
+            . "%areturn %s;",
             $magicSet->getBody()
         );
     }
@@ -83,19 +102,15 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithOverriddenMagicGet()
     {
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
-
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-
-        $magicSet = new MagicSet($reflection, $initializer);
+        $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
+        $magicSet   = new MagicSet($reflection, $this->initializer, $this->publicProperties);
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
         $this->assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this, "
             . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
-            . "if (in_array(\$name, array())) {\n    return (\$this->\$name = \$value);\n}\n\n"
+            . "if (isset(self::\$bar[\$name])) {\n    return (\$this->\$name = \$value);\n}\n\n"
             . "return parent::__set(\$name, \$value);",
             $magicSet->getBody()
         );

@@ -20,6 +20,8 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -40,16 +42,34 @@ class MagicIsset extends MagicMethodGenerator
         ReflectionClass $originalClass,
         PropertyGenerator $valueHolder,
         PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
+        PropertyGenerator $suffixInterceptors,
+        PublicPropertiesMap $publicProperties
     ) {
         parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
 
-        $inheritDoc = $originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '';
+        $override        = $originalClass->hasMethod('__isset');
+        $valueHolderName = $valueHolder->getName();
 
-        $this->setDocblock($inheritDoc . '@param string $name');
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setReturnsReference(true);
+
+        $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_ISSET,
+            'name',
+            'value',
+            $valueHolder,
+            'returnValue'
+        );
+
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    $returnValue = isset($this->' . $valueHolderName . '->$name);'
+                . "\n} else {\n    $callParent\n}\n\n";
+        }
+
         $this->setBody(
             InterceptorGenerator::createInterceptedMethodBody(
-                '$returnValue = isset($this->' . $valueHolder->getName() . '->$name);',
+                $callParent,
                 $this,
                 $valueHolder,
                 $prefixInterceptors,
