@@ -19,6 +19,8 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -34,31 +36,37 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicUnset extends MagicMethodGenerator
 {
     /**
-     * Constructor
+     * @param \ReflectionClass                                                   $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator                             $initializerProperty
+     * @param \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap $publicProperties
      */
-    public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
-    {
+    public function __construct(
+        ReflectionClass $originalClass,
+        PropertyGenerator $initializerProperty,
+        PublicPropertiesMap $publicProperties
+    ) {
         parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
 
-        $override         = $originalClass->hasMethod('__unset');
-        $initializer      = $initializerProperty->getName();
-        $publicProperties = array_map(
-            function (ReflectionProperty $publicProperty) {
-                return var_export($publicProperty->getName(), true);
-            },
-            $originalClass->getProperties(ReflectionProperty::IS_PUBLIC)
-        );
+        $override    = $originalClass->hasMethod('__unset');
+        $initializer = $initializerProperty->getName();
+        $callParent  = '';
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        // @todo can be skipped when no public properties are available
-        $callParent = 'if (in_array($name, array(' . implode(', ', $publicProperties) . '))) {' . "\n"
-            . '    unset($this->$name);'
-            . "\n}";
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    unset($this->$name);'
+                . "\n\n    return;"
+                . "\n}\n\n";
+        }
 
         if ($override) {
-            // @todo move to private static var to remove overhead!
-            $callParent .= "\n\nreturn parent::__unset(\$name);";
+            $callParent .= "return parent::__unset(\$name);";
+        } else {
+            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_UNSET,
+                'name'
+            );
         }
 
         $this->setBody(

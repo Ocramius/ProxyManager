@@ -27,6 +27,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;

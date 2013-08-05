@@ -19,6 +19,8 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -38,20 +40,34 @@ class MagicIsset extends MagicMethodGenerator
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
-        PropertyGenerator $valueHolderProperty
+        PropertyGenerator $valueHolderProperty,
+        PublicPropertiesMap $publicProperties
     ) {
         parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
 
-        $inheritDoc  = $originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '';
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
+        $callParent  = '';
 
-        $this->setDocblock($inheritDoc . '@param string $name');
+        $this->setDocblock(($originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '') . '@param string $name');
+
+        if (! $publicProperties->isEmpty()) {
+            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    return isset($this->' . $valueHolder . '->$name);'
+                . "\n}\n\n";
+        }
+
+        $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_ISSET,
+            'name',
+            null,
+            $valueHolderProperty
+        );
+
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this->' . $valueHolder . ', $this, \'__isset\', array(\'name\' => $name), $this->'
-            . $initializer . ');' . "\n\n"
-            . 'return isset($this->' . $valueHolder . '->$name);'
+            . $initializer . ');' . "\n\n" . $callParent
         );
     }
 }

@@ -39,15 +39,26 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
         $valueHolder        = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $publicProperties   = $this
+            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
 
-        $magicGet = new MagicGet($reflection, $valueHolder, $prefixInterceptors, $suffixInterceptors);
+        $magicGet = new MagicGet(
+            $reflection,
+            $valueHolder,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $publicProperties
+        );
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
-        $this->assertGreaterThan(0, strpos($magicGet->getBody(), '$returnValue = & $this->bar->$name;'));
+        $this->assertStringMatchesFormat('%A$returnValue = & $this->bar->$name;%A', $magicGet->getBody());
     }
 }

@@ -27,6 +27,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;

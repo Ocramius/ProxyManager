@@ -35,21 +35,28 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection       = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $valueHolder      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $publicProperties = $this
+            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicIsset = new MagicUnset($reflection, $initializer, $valueHolder);
+        $magicIsset = new MagicUnset($reflection, $initializer, $valueHolder, $publicProperties);
 
         $this->assertSame('__unset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertSame(
+        $this->assertStringMatchesFormat(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__unset', array('name' => \$name)"
             . ", \$this->foo);\n\n"
-            . "unset(\$this->bar->\$name);",
+            . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->bar->\$name);\n\n    return;\n}"
+            . "%areturn %s;",
             $magicIsset->getBody()
         );
     }
