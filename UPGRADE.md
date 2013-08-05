@@ -1,5 +1,10 @@
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 0.5.0
+
+ * The Generated Hydrator has been removed - it is now available as a separate project
+   at [Ocramius/GeneratedHydrator](https://github.com/Ocramius/GeneratedHydrator) [#65](https://github.com/Ocramius/ProxyManager/pull/65)
+
 # 0.4.0
 
  * An optional parameter `$options` was introduced
