@@ -108,32 +108,7 @@ class MethodGenerator extends ZendMethodGenerator
             $output .= $docBlock->generate();
         }
 
-        $output .= $indent;
-
-        if ($this->isAbstract()) {
-            $output .= 'abstract ';
-        } else {
-            $output .= (($this->isFinal()) ? 'final ' : '');
-        }
-
-        $output .= $this->getVisibility()
-            . (($this->isStatic()) ? ' static' : '')
-            . ' function '
-            . (($this->returnsReference()) ? '& ' : '')
-            . $this->getName() . '(';
-        $parameters = $this->getParameters();
-
-        if (!empty($parameters)) {
-            $parameterOutput = array();
-
-            foreach ($parameters as $parameter) {
-                $parameterOutput[] = $parameter->generate();
-            }
-
-            $output .= implode(', ', $parameterOutput);
-        }
-
-        $output .= ')' . self::LINE_FEED . $indent . '{' . self::LINE_FEED;
+        $output .= $indent . $this->generateMethodDeclaration() . self::LINE_FEED . $indent . '{' . self::LINE_FEED;
 
         if ($this->body) {
             $output .= preg_replace('#^(.+?)$#m', $indent . $indent . '$1', trim($this->body))
@@ -143,5 +118,33 @@ class MethodGenerator extends ZendMethodGenerator
         $output .= $indent . '}' . self::LINE_FEED;
 
         return $output;
+    }
+
+    /**
+     * @return string
+     */
+    private function generateMethodDeclaration()
+    {
+        $output = $this->generateVisibility()
+            . ' function '
+            . (($this->returnsReference()) ? '& ' : '')
+            . $this->getName() . '(';
+
+        $parameterOutput = array();
+
+        foreach ($this->getParameters() as $parameter) {
+            $parameterOutput[] = $parameter->generate();
+        }
+
+        return $output . implode(', ', $parameterOutput) . ')';
+    }
+
+    /**
+     * @return string
+     */
+    private function generateVisibility()
+    {
+        return $this->isAbstract() ? 'abstract ' : (($this->isFinal()) ? 'final ' : '')
+            . ($this->getVisibility() . (($this->isStatic()) ? ' static' : ''));
     }
 }

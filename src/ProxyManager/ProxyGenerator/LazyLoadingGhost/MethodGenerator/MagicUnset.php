@@ -24,7 +24,6 @@ use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
-use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
