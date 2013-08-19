@@ -99,8 +99,8 @@ class PublicScopeSimulator
     }
 
     /**
-     * @param string $operationType
-     * @param string $nameParameter
+     * @param string      $operationType
+     * @param string      $nameParameter
      * @param string|null $valueParameter
      *
      * @return string
