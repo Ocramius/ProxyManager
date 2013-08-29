@@ -21,7 +21,6 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use ReflectionProperty;
-use ProxyManager\Generator\MethodGenerator;
 
 /**
  * Magic `__wakeup` for lazy loading value holder objects

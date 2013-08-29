@@ -18,7 +18,6 @@
 
 namespace ProxyManager\Factory;
 
-use ProxyManager\Configuration;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\Generator\ClassGenerator;
 use ReflectionClass;

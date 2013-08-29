@@ -23,7 +23,6 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Uti
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
-use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -49,7 +48,6 @@ class MagicGet extends MagicMethodGenerator
 
         $override        = $originalClass->hasMethod('__get');
         $valueHolderName = $valueHolder->getName();
-        $callParent      = '';
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
