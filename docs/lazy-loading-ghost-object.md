@@ -117,7 +117,7 @@ The initializer closure signature for ghost objects should be as following:
 /**
  * @var object  $proxy         the instance the ghost object proxy that is being initialized
  * @var string  $method        the name of the method that triggered lazy initialization
- * @var string  $method        an ordered list of parameters passed to the method that
+ * @var array   $parameters    an ordered list of parameters passed to the method that
  *                             triggered initialization, indexed by parameter name
  * @var Closure $initializer   a reference to the property that is the initializer for the
  *                             proxy. Set it to null to disable further initialization
