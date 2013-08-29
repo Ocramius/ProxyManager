@@ -40,7 +40,6 @@ class MagicSleep extends MagicMethodGenerator
         $override    = $originalClass->hasMethod('__sleep');
         $initializer = $initializerProperty->getName();
 
-        // @todo can be optimized to not use `array_keys`, but use the directly property names instead
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
             . '->__invoke($this, \'__sleep\', array(), $this->'

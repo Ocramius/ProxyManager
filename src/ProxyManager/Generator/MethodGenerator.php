@@ -25,8 +25,6 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Method generator that fixes minor quirks in ZF2's method generator
  *
- * @todo provide links to fixes PRs
- *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
