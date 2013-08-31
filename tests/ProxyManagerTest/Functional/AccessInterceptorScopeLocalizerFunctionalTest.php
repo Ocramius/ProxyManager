@@ -40,6 +40,16 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * {@inheritDoc}
+     */
+    public function setUp()
+    {
+        if (PHP_VERSION_ID < 50400) {
+            $this->markTestSkipped('PHP 5.3 doesn\'t support scope localization of private properties');
+        }
+    }
+
+    /**
      * @dataProvider getProxyMethods
      */
     public function testMethodCalls($className, $instance, $method, $params, $expectedValue)
