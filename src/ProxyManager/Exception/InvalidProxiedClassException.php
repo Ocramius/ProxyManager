@@ -16,53 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\GeneratorStrategy;
+namespace ProxyManager\Exception;
 
-use Zend\Code\Generator\ClassGenerator;
+use InvalidArgumentException;
+use ReflectionClass;
 
 /**
- * Generator strategy that produces the code and evaluates it at runtime
+ * Exception for invalid proxied classes
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
+class InvalidProxiedClassException extends InvalidArgumentException implements ExceptionInterface
 {
     /**
-     * @var bool flag indicating whether {@see eval} can be used
-     */
-    private $canEval = true;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->canEval = ! ini_get('suhosin.executor.disable_eval');
-    }
-
-    /**
-     * Evaluates the generated code before returning it
+     * @param ReflectionClass $reflection
      *
-     * {@inheritDoc}
+     * @return self
      */
-    public function generate(ClassGenerator $classGenerator)
+    public static function interfaceNotSupported(ReflectionClass $reflection)
     {
-        $code = $classGenerator->generate();
-
-        if (! $this->canEval) {
-            $fileName = sys_get_temp_dir() . '/EvaluatingGeneratorStrategy.php.tmp.' . uniqid('', true);
-
-            file_put_contents($fileName, "<?php\n" . $code);
-            require $fileName;
-            unlink($fileName);
-
-            return $code;
-        }
-
-        //die($code);
-        eval($code);
-
-        return $code;
+        return new self(sprintf('Provided interface "%s" cannot be proxied', $reflection->getName()));
     }
 }
