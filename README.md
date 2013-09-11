@@ -76,7 +76,27 @@ A fallback value holder is a particular value holder that implements the [null o
 
 This kind of value holder allows you to have fallback logic in case loading of the wrapped value failed.
 
-This feature is [planned](https://github.com/Ocramius/ProxyManager/issues/5).
+```php
+$config  = new \ProxyManager\Configuration(); // customize this if needed for production
+$factory = new \ProxyManager\Factory\NullObjectFactory($config);
+
+$proxy = $factory->createProxy('My\EntityObject);
+
+$proxy->getName(); // empty return
+```
+
+Proxy can be create from object, classe name or interface name :
+
+```php
+$config  = new \ProxyManager\Configuration(); // customize this if needed for production
+$factory = new \ProxyManager\Factory\NullObjectFactory($config);
+
+$proxy = $factory->createProxy('My\EntityObjectInterface);
+$proxy->getName(); // empty return
+
+$proxy = $factory->createProxy($entity);
+$proxy->getName(); // empty return
+```
 
 ## Ghost Objects
 
