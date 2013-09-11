@@ -33,7 +33,7 @@ class NullObjectFactory extends AbstractBaseFactory
     /**
      * @param object     $instanceOrClassName           the object to be wrapped or interface to transform to null object
      *
-     * @return \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface
+     * @return \ProxyManager\Proxy\NullobjectInterface
      */
     public function createProxy($instanceOrClassName)
     {

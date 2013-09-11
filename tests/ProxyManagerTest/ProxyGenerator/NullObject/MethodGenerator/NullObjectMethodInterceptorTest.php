@@ -16,14 +16,14 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor}
+ * Tests for {@see \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
@@ -31,7 +31,7 @@ use Zend\Code\Reflection\MethodReflection;
 class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor
+     * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor
      */
     public function testBodyStructure()
     {
@@ -44,7 +44,7 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor
+     * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor
      */
     public function testBodyStructureWithoutParameters()
     {

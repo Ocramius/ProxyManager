@@ -22,7 +22,7 @@ use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Method decorator for lazy loading value holder objects
+ * Method decorator for null objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT

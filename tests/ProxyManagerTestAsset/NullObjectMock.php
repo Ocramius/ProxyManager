@@ -19,18 +19,12 @@
 namespace ProxyManagerTestAsset;
 
 /**
- * Base test class to catch instantiations of access interceptor value holders
+ * Base test class to catch instantiations of null object
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
 class NullObjectMock
 {
-    /**
-     * 
-     */
-    public function __construct()
-    {
-        
-    }
+    
 }

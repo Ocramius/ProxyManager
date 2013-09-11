@@ -28,8 +28,7 @@ use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
- * and {@see \ProxyManager\Proxy\AccessInterceptorInterface}
+ * Generator for proxies implementing {@see \ProxyManager\Proxy\NullObjectInterface}
  *
  * {@inheritDoc}
  *
