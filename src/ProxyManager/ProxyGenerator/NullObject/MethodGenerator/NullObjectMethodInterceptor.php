@@ -38,7 +38,11 @@ class NullObjectMethodInterceptor extends MethodGenerator
         /* @var $method self */
         $method            = static::fromReflection($originalMethod);
         
-        $method->setBody('');
+        if ($originalMethod->returnsReference()) {
+            $method->setBody("\$ref = null;\nreturn \$ref;");
+        } else {
+            $method->setBody('');
+        }
 
         return $method;
     }

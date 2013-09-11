@@ -85,7 +85,7 @@ $proxy = $factory->createProxy('My\EntityObject');
 $proxy->getName(); // empty return
 ```
 
-Proxy can be create from object, classe name or interface name :
+Proxy can be created from object, classe name or interface name :
 
 ```php
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
@@ -98,7 +98,7 @@ $proxy = $factory->createProxy($entity);
 $proxy->getName(); // empty return
 ```
 
-See the [complete documentation about lazy loading value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/null-object.md.md)
+See the [complete documentation about null object proxy](https://github.com/Ocramius/ProxyManager/tree/master/docs/null-object.md.md)
 in the `docs/` directory.
 
 ## Ghost Objects

@@ -24,7 +24,8 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ReflectionClass;
-
+use ReflectionMethod;
+use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator}
@@ -64,6 +65,19 @@ class NullObjectTest extends PHPUnit_Framework_TestCase
 
         foreach ($this->getExpectedImplementedInterfaces() as $interface) {
             $this->assertTrue($generatedReflection->implementsInterface($interface));
+        }
+        
+        $proxyGenerated = new $generatedClassName();
+        
+        foreach ($generatedReflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+            $this->assertNull($proxyGenerated->$property);
+        }
+        
+        /** @var \ReflectionMethod $method */
+        foreach ($generatedReflection->getMethods(ReflectionProperty::IS_PUBLIC) as $method) {
+            if ($method->getNumberOfParameters() == 0) {
+                $this->assertNull(call_user_func(array($proxyGenerated, $method->getName())));
+            }
         }
     }
     
