@@ -16,18 +16,16 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
 use ReflectionClass;
 use ReflectionProperty;
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * The `__construct` implementation for lazy loading proxies
+ * The `__construct` implementation for null object proxies
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class Constructor extends MethodGenerator
@@ -35,27 +33,23 @@ class Constructor extends MethodGenerator
     /**
      * Constructor
      * 
-     * @param ReflectionClass   $originalClass          Reflection of the class to proxy
-     * @param PropertyGenerator $initializerProperty    Initializer property
+     * @param ReflectionClass $originalClass Reflection of the class to proxy
      */
-    public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
+    public function __construct(ReflectionClass $originalClass)
     {
         parent::__construct('__construct');
 
-        $this->setParameter(new ParameterGenerator('initializer'));
-
         /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
+        $nullableProperties  = array();
 
         foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
+            $nullableProperties[] = '$this->' . $publicProperty->getName() . ' = null;';
         }
 
-        $this->setDocblock("@override constructor for lazy initialization\n\n@param \\Closure|null \$initializer");
-        $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
-            . '$this->' . $initializerProperty->getName() . ' = $initializer;'
-        );
+        $this->setDocblock("@override constructor for null object initialization");
+        if ($nullableProperties) {
+                $this->setBody(implode("\n", $nullableProperties));
+        }
     }
 }
