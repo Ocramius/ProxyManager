@@ -80,7 +80,7 @@ This kind of value holder allows you to have fallback logic in case loading of t
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
 $factory = new \ProxyManager\Factory\NullObjectFactory($config);
 
-$proxy = $factory->createProxy('My\EntityObject);
+$proxy = $factory->createProxy('My\EntityObject');
 
 $proxy->getName(); // empty return
 ```
