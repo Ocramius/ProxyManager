@@ -29,7 +29,7 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\NullObjectGenerator

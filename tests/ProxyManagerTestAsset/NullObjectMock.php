@@ -21,7 +21,7 @@ namespace ProxyManagerTestAsset;
 /**
  * Base test class to catch instantiations of null object
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class NullObjectMock

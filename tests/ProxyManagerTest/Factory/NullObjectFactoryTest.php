@@ -27,7 +27,7 @@ use stdClass;
 /**
  * Tests for {@see \ProxyManager\Factory\NullObjectFactory}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class NullObjectFactoryTest extends PHPUnit_Framework_TestCase

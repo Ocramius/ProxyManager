@@ -21,7 +21,7 @@ namespace ProxyManager\Proxy;
 /**
  * Null object marker
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 interface NullObjectInterface extends ProxyInterface

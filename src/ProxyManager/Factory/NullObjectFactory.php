@@ -25,7 +25,7 @@ use ReflectionClass;
 /**
  * Factory responsible of producing proxy objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class NullObjectFactory extends AbstractBaseFactory
@@ -37,11 +37,7 @@ class NullObjectFactory extends AbstractBaseFactory
      */
     public function createProxy($instanceOrClassName)
     {
-        if (is_object($instanceOrClassName)) {
-            $className = get_class($instanceOrClassName);
-        } else {
-            $className = $instanceOrClassName;
-        }
+        $className = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
 
         if (! isset($this->generatedClasses[$className])) {
             $this->generatedClasses[$className] = $this->inflector->getProxyClassName(

@@ -25,7 +25,7 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase

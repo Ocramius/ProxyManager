@@ -18,8 +18,8 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
+use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 
 use ReflectionClass;
 use ReflectionMethod;
@@ -32,7 +32,7 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * {@inheritDoc}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class NullObjectGenerator implements ProxyGeneratorInterface
@@ -79,10 +79,12 @@ class NullObjectGenerator implements ProxyGeneratorInterface
         /* @var $methods \ReflectionMethod[] */
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
-                NullObjectMethodInterceptor::generateMethod(
+                NullObjectMethodInterceptor::fromReflection(
                     new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
                 )
             );
         }
+        
+        $classGenerator->addMethodFromGenerator(new Constructor($originalClass));
     }
 }

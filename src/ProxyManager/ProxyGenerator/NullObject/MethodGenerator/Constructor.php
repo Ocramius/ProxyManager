@@ -18,28 +18,36 @@
 
 namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
+use ReflectionClass;
+use ReflectionProperty;
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Method decorator for null objects
+ * The `__construct` implementation for null object proxies
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class Constructor extends MethodGenerator
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * Constructor
      */
-    public static function generateMethod(MethodReflection $originalMethod) {
-        /* @var $method self */
-        $method            = static::fromReflection($originalMethod);
-        
-        $method->setBody('');
+    public function __construct(ReflectionClass $originalClass)
+    {
+        parent::__construct('__construct');
 
-        return $method;
+        /* @var $publicProperties \ReflectionProperty[] */
+        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $nullableProperties  = array();
+
+        foreach ($publicProperties as $publicProperty) {
+            $nullableProperties[] = '$this->' . $publicProperty->getName() . ' = null;';
+        }
+
+        $this->setDocblock("@override constructor for null object initialization");
+        if ($nullableProperties) {
+                $this->setBody(implode("\n", $nullableProperties));
+        }
     }
 }
