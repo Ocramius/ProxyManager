@@ -40,7 +40,10 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('__construct', $constructor->getName());
         $this->assertCount(0, $constructor->getParameters());
-        $this->assertSame("\$this->publicProperty0 = null;\n\$this->publicProperty1 = null;\n\$this->publicProperty2 = null;", $constructor->getBody());
+        $this->assertSame(
+            "\$this->publicProperty0 = null;\n\$this->publicProperty1 = null;\n\$this->publicProperty2 = null;",
+            $constructor->getBody()
+        );
     }
 
     /**

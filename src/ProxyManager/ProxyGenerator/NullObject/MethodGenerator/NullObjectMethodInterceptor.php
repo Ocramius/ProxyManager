@@ -34,7 +34,8 @@ class NullObjectMethodInterceptor extends MethodGenerator
      *
      * @return NullObjectMethodInterceptor|static
      */
-    public static function generateMethod(MethodReflection $originalMethod) {
+    public static function generateMethod(MethodReflection $originalMethod)
+    {
         /* @var $method self */
         $method = static::fromReflection($originalMethod);
         

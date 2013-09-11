@@ -47,7 +47,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
         } else {
-            foreach($originalClass->getInterfaceNames() as $name) {
+            foreach ($originalClass->getInterfaceNames() as $name) {
                 $interfaces[] = $name;
             }
         }
