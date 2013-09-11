@@ -98,6 +98,9 @@ $proxy = $factory->createProxy($entity);
 $proxy->getName(); // empty return
 ```
 
+See the [complete documentation about lazy loading value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/null-object.md.md)
+in the `docs/` directory.
+
 ## Ghost Objects
 
 

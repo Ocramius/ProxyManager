@@ -79,7 +79,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
         /* @var $methods \ReflectionMethod[] */
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
-                NullObjectMethodInterceptor::fromReflection(
+                NullObjectMethodInterceptor::generateMethod(
                     new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
                 )
             );
