@@ -42,7 +42,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $interfaces          = array('ProxyManager\\Proxy\\NullObjectInterface');
+        $interfaces = array('ProxyManager\\Proxy\\NullObjectInterface');
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();

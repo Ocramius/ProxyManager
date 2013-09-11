@@ -32,6 +32,7 @@ class Constructor extends MethodGenerator
 {
     /**
      * Constructor
+     * @param ReflectionClass $originalClass Reflection of the class to proxy
      */
     public function __construct(ReflectionClass $originalClass)
     {

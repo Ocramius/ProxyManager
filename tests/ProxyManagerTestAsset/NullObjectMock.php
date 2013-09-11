@@ -26,5 +26,4 @@ namespace ProxyManagerTestAsset;
  */
 class NullObjectMock
 {
-    
 }

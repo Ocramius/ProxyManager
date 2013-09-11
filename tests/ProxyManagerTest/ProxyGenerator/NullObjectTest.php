@@ -24,7 +24,6 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ReflectionClass;
-use ReflectionMethod;
 use ReflectionProperty;
 
 /**

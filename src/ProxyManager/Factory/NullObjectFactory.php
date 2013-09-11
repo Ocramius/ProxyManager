@@ -31,7 +31,7 @@ use ReflectionClass;
 class NullObjectFactory extends AbstractBaseFactory
 {
     /**
-     * @param object     $instanceOrClassName           the object to be wrapped or interface to transform to null object
+     * @param object     $instanceOrClassName   the object to be wrapped or interface to transform to null object
      *
      * @return \ProxyManager\Proxy\NullobjectInterface
      */
