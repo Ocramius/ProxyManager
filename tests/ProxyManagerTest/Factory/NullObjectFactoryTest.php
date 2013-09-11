@@ -75,9 +75,9 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->with('stdClass')
             ->will($this->returnValue('ProxyManagerTestAsset\\NullObjectMock'));
 
-        $factory     = new NullObjectFactory($this->config);
+        $factory    = new NullObjectFactory($this->config);
         /* @var $proxy \ProxyManagerTestAsset\NullObjectMock */
-        $proxy       = $factory->createProxy($instance);
+        $proxy      = $factory->createProxy($instance);
 
         $this->assertInstanceOf('ProxyManagerTestAsset\\NullObjectMock', $proxy);
     }
