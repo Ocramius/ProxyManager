@@ -1,12 +1,12 @@
 # Null Object Proxy
 
 A Null Object proxy is a [null object pattern](http://en.wikipedia.org/wiki/Null_Object_pattern) implementation.
-The proxy create an object with defined neutral behavior based on an other object, class name or interface.
+The proxy factory creates a new object with defined neutral behavior based on an other object, class name or interface.
 
 ## What is null object proxy ?
 
 In your application, when you can't return the object related to the request, the consumer of the model must check 
-for these nulls and handle the condition gracefully, thus generating an explosion of conditionals throughout your code.
+for the return value and handle the failing condition gracefully, thus generating an explosion of conditionals throughout your code.
 Fortunately, this seemingly-tangled situation can be sorted out simply by creating a polymorphic implementation of the 
 domain object, which would implement the same interface as the one of the object in question, only that its methods 
 wouldn’t do anything, therefore offloading client code from doing repetitive checks for ugly null values when the operation
@@ -17,6 +17,12 @@ wouldn’t do anything, therefore offloading client code from doing repetitive c
 ```php
 class UserMapper
 {   
+    private $adapter;
+    
+    public function __construct(DatabaseAdapterInterface $adapter) {
+        $this->adapter = $adapter;
+    }
+
     public function fetchById($id) {
         $this->adapter->select("users", array("id" => $id));
         if (!$row = $this->adapter->fetch()) {
@@ -33,8 +39,8 @@ class UserMapper
 }
 ```
 
-If you want to remove conditionals from client code, you need to have a version of the entity conforms to the corresponding 
-interface, but the methods are empty wrappers with no actual implementation. With the Null Object Proxy, you can cuild this object :
+If you want to remove conditionals from client code, you need to have a version of the entity conforming to the corresponding 
+interface. With the Null Object Proxy, you can build this object :
 
 ```php
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
@@ -42,7 +48,7 @@ $factory = new \ProxyManager\Factory\NullObjectFactory($config);
 
 $nullUser = $factory->createProxy('Entity\User');
 
-$nullUser->getName(); // empty return
+var_dump($nullUser->getName()); // empty return
 ```
 
 You can now return a valid entity :
@@ -50,6 +56,12 @@ You can now return a valid entity :
 ```php
 class UserMapper
 {   
+    private $adapter;
+    
+    public function __construct(DatabaseAdapterInterface $adapter) {
+        $this->adapter = $adapter;
+    }
+
     public function fetchById($id) {
         $this->adapter->select("users", array("id" => $id));
         return $this->createUser($this->adapter->fetch());
@@ -57,8 +69,10 @@ class UserMapper
      
     private function createUser($row) {
         if (!$row) {
-            // get the null user
-            return new $nullUser;
+            $config  = new \ProxyManager\Configuration();
+            $factory = new \ProxyManager\Factory\NullObjectFactory($config);
+
+            return $factory->createProxy('Entity\User');
         }
         $user = new Entity\User($row["name"], $row["email"]);
         $user->setId($row["id"]);
