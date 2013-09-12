@@ -20,7 +20,6 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;

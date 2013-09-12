@@ -18,7 +18,6 @@
 
 namespace ProxyManagerTest\Functional;
 
-use Closure;
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use ProxyManager\Generator\ClassGenerator;

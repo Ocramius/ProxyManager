@@ -20,7 +20,6 @@ namespace ProxyManagerTest\Autoloader;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\Autoloader;
-use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
