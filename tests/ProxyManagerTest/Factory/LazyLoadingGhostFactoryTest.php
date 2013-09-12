@@ -61,9 +61,9 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
      */
-    public function testWithOptionnalFactory()
+    public function testWithOptionalFactory()
     {
-        $factory    = new LazyLoadingGhostFactory();
+        $factory = new LazyLoadingGhostFactory();
         $this->assertAttributeNotEmpty('configuration', $factory);
         $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
     }
