@@ -53,8 +53,11 @@ abstract class AbstractBaseFactory
     /**
      * @param \ProxyManager\Configuration $configuration
      */
-    public function __construct(Configuration $configuration)
+    public function __construct(Configuration $configuration = null)
     {
+        if (null === $configuration) {
+            $configuration = new Configuration();
+        }
         $this->configuration = $configuration;
         // localizing some properties for performance
         $this->autoGenerate  = $this->configuration->doesAutoGenerateProxies();
