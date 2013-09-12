@@ -18,8 +18,6 @@
 
 namespace ProxyManagerTest\Functional;
 
-use ProxyManager\Proxy\LazyLoadingInterface;
-
 /**
  * Base performance test logic for lazy loading proxies
  *
