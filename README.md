@@ -98,7 +98,7 @@ $proxy = $factory->createProxy($entity);
 $proxy->getName(); // empty return
 ```
 
-See the [complete documentation about null object proxy](https://github.com/Ocramius/ProxyManager/tree/master/docs/null-object.md.md)
+See the [complete documentation about null object proxy](https://github.com/Ocramius/ProxyManager/tree/master/docs/null-object.md)
 in the `docs/` directory.
 
 ## Ghost Objects
