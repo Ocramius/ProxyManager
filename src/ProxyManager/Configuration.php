@@ -37,11 +37,6 @@ class Configuration
     const DEFAULT_PROXY_NAMESPACE = 'ProxyManagerGeneratedProxy';
 
     /**
-     * @var bool
-     */
-    protected $autoGenerateProxies = true;
-
-    /**
      * @var string|null
      */
     protected $proxiesTargetDir;
@@ -65,22 +60,6 @@ class Configuration
      * @var \ProxyManager\Inflector\ClassNameInflectorInterface|null
      */
     protected $classNameInflector;
-
-    /**
-     * @param bool $autoGenerateProxies
-     */
-    public function setAutoGenerateProxies($autoGenerateProxies)
-    {
-        $this->autoGenerateProxies = (bool) $autoGenerateProxies;
-    }
-
-    /**
-     * @return bool
-     */
-    public function doesAutoGenerateProxies()
-    {
-        return $this->autoGenerateProxies;
-    }
 
     /**
      * @param \ProxyManager\Autoloader\AutoloaderInterface $proxyAutoloader
