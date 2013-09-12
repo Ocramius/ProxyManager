@@ -55,10 +55,7 @@ abstract class AbstractBaseFactory
      */
     public function __construct(Configuration $configuration = null)
     {
-        if (null === $configuration) {
-            $configuration = new Configuration();
-        }
-        $this->configuration = $configuration;
+        $this->configuration = $configuration ?: new Configuration();
         // localizing some properties for performance
         $this->autoGenerate  = $this->configuration->doesAutoGenerateProxies();
         $this->inflector     = $this->configuration->getClassNameInflector();
