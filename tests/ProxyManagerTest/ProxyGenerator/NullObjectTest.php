@@ -57,11 +57,8 @@ class NullObjectTest extends PHPUnit_Framework_TestCase
         if ($originalClass->isInterface()) {
             $this->assertTrue($generatedReflection->implementsInterface($className));
         } else {
-            $this->assertEquals(0, 
-                    count(array_diff(
-                            $originalClass->getInterfaceNames(), 
-                            $generatedReflection->getInterfaceNames())
-                    )
+            $this->assertEmpty(
+                array_diff($originalClass->getInterfaceNames(), $generatedReflection->getInterfaceNames())
             );
         }
 
