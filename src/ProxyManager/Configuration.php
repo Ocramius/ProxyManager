@@ -65,13 +65,18 @@ class Configuration
      * @param bool $autoGenerateProxies
      * @deprecated deprecated since version 0.5
      */
-    public function setAutoGenerateProxies($autoGenerateProxies) {}
+    public function setAutoGenerateProxies($autoGenerateProxies)
+    {
+    }
     
     /**
-     * @return void
+     * @return bool
      * @deprecated deprecated since version 0.5
      */
-    public function doesAutoGenerateProxies() {}
+    public function doesAutoGenerateProxies()
+    {
+        return true;
+    }
     
     /**
      * @param \ProxyManager\Autoloader\AutoloaderInterface $proxyAutoloader
