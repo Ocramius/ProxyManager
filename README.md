@@ -70,11 +70,11 @@ $proxy->query(); // produces "Query being executed!\nQuery completed!\n"
 See the [complete documentation about access interceptor value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/access-interceptor-value-holder.md)
 in the `docs/` directory.
 
-## Fallback Value Holders
+## Null Objects
 
-A fallback value holder is a particular value holder that implements the [null object pattern](http://en.wikipedia.org/wiki/Null_Object_pattern).
+A Null Object proxy implements the [null object pattern](http://en.wikipedia.org/wiki/Null_Object_pattern).
 
-This kind of value holder allows you to have fallback logic in case loading of the wrapped value failed.
+This kind of proxr allows you to have fallback logic in case loading of the wrapped value failed.
 
 ```php
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
@@ -85,7 +85,7 @@ $proxy = $factory->createProxy('My\EntityObject');
 $proxy->getName(); // empty return
 ```
 
-Proxy can be created from object, classe name or interface name :
+A Null Object Proxy can be created from an object, a class name or an interface name:
 
 ```php
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
