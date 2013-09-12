@@ -11,7 +11,6 @@ class Kitchen
 }
 
 $configuration->setProxiesTargetDir(__DIR__ . '/cache');
-$configuration->setAutoGenerateProxies(false);
 $fileLocator = new \ProxyManager\FileLocator\FileLocator($configuration->getProxiesTargetDir());
 $configuration->setGeneratorStrategy(
     new \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy($fileLocator)
