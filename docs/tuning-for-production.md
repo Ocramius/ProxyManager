@@ -14,9 +14,7 @@ Generating them "bulk" is not yet implemented:
 
 ```php
 $config = new \ProxyManager\Configuration();
-
 $config->setProxiesTargetDir(__DIR__ . '/my/generated/classes/cache/dir');
-$config->setAutoGenerateProxies(false);
 
 // then register the autoloader
 spl_autoload_register($config->getProxyAutoloader());
