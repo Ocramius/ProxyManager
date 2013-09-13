@@ -61,8 +61,6 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
         ) use ($className) {
             $initializer = null;
             $valueHolder = new $className();
-
-            return true;
         };
 
         $this->startCapturing();

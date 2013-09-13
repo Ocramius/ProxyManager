@@ -94,8 +94,6 @@ $initializer = function (LazyLoadingInterface $proxy, $method, array $parameters
     // load data and modify the object here
     $proxy->setName('Agent');
     $proxy->setSurname('Smith');
-
-    return true; // confirm that initialization occurred correctly
 };
 
 $instance = $factory->createProxy('MyApp\Customer', $initializer);
@@ -136,8 +134,6 @@ $initializer = function ($proxy, $method, $parameters, & $initializer) {
     // modify the object with loaded data
     $proxy->setFoo(/* ... */);
     $proxy->setBar(/* ... */);
-
-    return true; // report success
 };
 ```
 
