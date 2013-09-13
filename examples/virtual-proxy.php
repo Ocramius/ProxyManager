@@ -28,8 +28,6 @@ for ($i = 0; $i < 1000; $i += 1) {
         function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
             $initializer   = null;
             $wrappedObject = new Foo();
-
-            return true;
         }
     );
 }

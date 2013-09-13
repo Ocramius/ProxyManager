@@ -37,8 +37,6 @@ $proxy = $factory->createProxy(
     function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
         $wrappedObject = new HeavyComplexObject(); // instantiation logic here
         $initializer   = null; // turning off further lazy initialization
-    
-        return true;
     }
 );
 
@@ -105,8 +103,6 @@ $proxy = $factory->createProxy(
         // modify the proxy instance
         $proxy->setFoo('foo');
         $proxy->setBar('bar');
-
-        return true;
     }
 );
 

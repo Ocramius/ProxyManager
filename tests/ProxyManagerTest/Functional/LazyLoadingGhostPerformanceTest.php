@@ -72,8 +72,6 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
             foreach ($reflectionProperties as $reflectionProperty) {
                 $reflectionProperty->setValue($proxy, $reflectionProperty->getValue($realInstance));
             }
-
-            return true;
         };
 
         $this->startCapturing();

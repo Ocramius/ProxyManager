@@ -35,8 +35,6 @@ for ($i = 0; $i < 1000; $i += 1) {
         function ($proxy, $method, $parameters, & $initializer) {
             $initializer   = null;
             $proxy->setFoo('Hello World!');
-
-            return true;
         }
     );
 }

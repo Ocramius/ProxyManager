@@ -85,8 +85,6 @@ $factory     = new LazyLoadingValueHolderFactory($config);
 $initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, & $initializer) {
     $initializer   = null; // disable initialization
     $wrappedObject = new HeavyComplexObject(); // fill your object with values here
-
-    return true; // confirm that initialization occurred correctly
 };
 
 $instance = $factory->createProxy('MyApp\HeavyComplexObject', $initializer);
@@ -130,8 +128,6 @@ $initializer = function (& $wrappedObject, $proxy, $method, $parameters, & $init
 
     $wrappedObject = $newlyCreatedObject; // set wrapped object in the proxy
     $initializer   = null; // disable initializer
-
-    return true; // report success
 };
 ```
 
