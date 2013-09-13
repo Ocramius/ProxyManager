@@ -50,7 +50,7 @@ abstract class AbstractLazyFactory extends AbstractBaseFactory
 
         $proxyClassName = $this->generatedClasses[$className];
 
-        if ($this->autoGenerate && ! class_exists($proxyClassName)) {
+        if ($this->autoGenerate || ! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
             $phpClass  = new ClassGenerator($proxyClassName);
 
