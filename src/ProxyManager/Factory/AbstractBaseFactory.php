@@ -32,12 +32,7 @@ abstract class AbstractBaseFactory
      * @var \ProxyManager\Configuration
      */
     protected $configuration;
-
-    /**
-     * @var bool
-     */
-    protected $autoGenerate;
-
+    
     /**
      * @var \ProxyManager\Inflector\ClassNameInflectorInterface
      */
@@ -57,7 +52,6 @@ abstract class AbstractBaseFactory
     {
         $this->configuration = $configuration ?: new Configuration();
         // localizing some properties for performance
-        $this->autoGenerate  = $this->configuration->doesAutoGenerateProxies();
         $this->inflector     = $this->configuration->getClassNameInflector();
     }
 }
