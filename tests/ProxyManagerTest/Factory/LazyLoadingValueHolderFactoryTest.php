@@ -59,6 +59,18 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      * {@inheritDoc}
      *
      * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::__construct
+     */
+    public function testWithOptionalFactory()
+    {
+        $factory = new LazyLoadingValueHolderFactory();
+        $this->assertAttributeNotEmpty('configuration', $factory);
+        $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
+    }
+    
+    /**
+     * {@inheritDoc}
+     *
+     * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::__construct
      * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::createProxy
      */
     public function testWillSkipAutoGeneration()
