@@ -1,5 +1,5 @@
 --TEST--
-Verifies that generated lazy loading ghost objects disallow private property direct isset check
+Verifies that lazy loading value holder proxy file is generated
 --FILE--
 <?php
 
@@ -16,14 +16,20 @@ $configuration->setGeneratorStrategy(
     new \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy($fileLocator)
 );
 
-$factory = new \ProxyManager\Factory\LazyLoadingGhostFactory($configuration);
+$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($configuration);
 
-$proxy = $factory->createProxy('Kitchen', function () {});
+$proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
+    $initializer = null;
+    $wrapped     = new Kitchen();
+});
 
 $filename = $fileLocator->getProxyFileName(get_class($proxy));
 var_dump(file_exists($filename));
 
-$proxy = $factory->createProxy('Kitchen', function () {});
+$proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
+    $initializer = null;
+    $wrapped     = new Kitchen();
+});
 
 var_dump(file_exists($filename));
 @unlink($filename);
