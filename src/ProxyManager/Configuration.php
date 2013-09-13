@@ -68,7 +68,7 @@ class Configuration
     public function setAutoGenerateProxies($autoGenerateProxies)
     {
     }
-    
+
     /**
      * @return bool
      * @deprecated deprecated since version 0.5
@@ -77,7 +77,7 @@ class Configuration
     {
         return true;
     }
-    
+
     /**
      * @param \ProxyManager\Autoloader\AutoloaderInterface $proxyAutoloader
      */

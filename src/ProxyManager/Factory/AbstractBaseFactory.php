@@ -32,7 +32,7 @@ abstract class AbstractBaseFactory
      * @var \ProxyManager\Configuration
      */
     protected $configuration;
-    
+
     /**
      * @var \ProxyManager\Inflector\ClassNameInflectorInterface
      */
