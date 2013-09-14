@@ -43,21 +43,6 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \ProxyManager\Configuration::doesAutoGenerateProxies
-     * @covers \ProxyManager\Configuration::setAutoGenerateProxies
-     */
-    public function testGetSetAutoGenerateProxies()
-    {
-        $this->assertTrue($this->configuration->doesAutoGenerateProxies(), 'Default setting check for BC');
-
-        $this->configuration->setAutoGenerateProxies(false);
-        $this->assertFalse($this->configuration->doesAutoGenerateProxies());
-
-        $this->configuration->setAutoGenerateProxies(true);
-        $this->assertTrue($this->configuration->doesAutoGenerateProxies());
-    }
-
-    /**
      * @covers \ProxyManager\Configuration::getProxiesNamespace
      * @covers \ProxyManager\Configuration::setProxiesNamespace
      */

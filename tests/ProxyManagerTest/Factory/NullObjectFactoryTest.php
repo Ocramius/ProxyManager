@@ -66,8 +66,6 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
     {
         $instance = new stdClass();
 
-        $this->config->expects($this->any())->method('doesAutoGenerateProxies')->will($this->returnValue(false));
-
         $this
             ->inflector
             ->expects($this->once())
@@ -97,7 +95,6 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
         $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
 
-        $this->config->expects($this->any())->method('doesAutoGenerateProxies')->will($this->returnValue(true));
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
         $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
 
