@@ -48,7 +48,7 @@ class NullObjectFactory extends AbstractBaseFactory
 
         $proxyClassName = $this->generatedClasses[$className];
 
-        if ($this->autoGenerate && ! class_exists($proxyClassName)) {
+        if (! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
             $phpClass  = new ClassGenerator($proxyClassName);
             $generator = new NullObjectGenerator();
