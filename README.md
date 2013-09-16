@@ -91,10 +91,10 @@ A Null Object Proxy can be created from an object, a class name or an interface 
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
 $factory = new \ProxyManager\Factory\NullObjectFactory($config);
 
-$proxy = $factory->createProxy('My\EntityObjectInterface);
+$proxy = $factory->createProxy('My\EntityObjectInterface'); // created from interface name
 $proxy->getName(); // empty return
 
-$proxy = $factory->createProxy($entity);
+$proxy = $factory->createProxy($entity); // created from object
 $proxy->getName(); // empty return
 ```
 
