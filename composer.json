@@ -21,7 +21,11 @@
     ],
     "require": {
         "php":                     ">=5.3.3",
-        "zendframework/zend-code": "2.*"
+        "zendframework/zend-code": "2.*",
+        "zendframework/zend-server": "2.*",
+        "zendframework/zend-xmlrpc": "2.*",
+        "zendframework/zend-json": "2.*",
+        "zendframework/zend-soap": "2.*"
     },
     "require-dev": {
         "phpunit/phpunit":           ">=3.7",
@@ -42,5 +46,8 @@
         "branch-alias": {
             "dev-master": "0.5.x-dev"
         }
+    },
+    "config": {
+        "process-timeout": 600
     }
 }
