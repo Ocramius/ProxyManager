@@ -22,13 +22,47 @@ use ProxyManager\Factory\RemoteObject\AdapterInterface;
 
 abstract class BaseAdapter implements AdapterInterface
 {
-    protected $options;
+    /**
+     * Uri webservices
+     * @var string 
+     */
+    protected $uri;
     
-    protected $map;
-
-    public function __construct(array $options = array(), array $map = array())
+    /**
+     * Soap client
+     * @var \Zend\Soap\Client 
+     */
+    protected $client;
+    
+    /**
+     * Rpc client building
+     * @param string $uri
+     * @param array $map
+     */
+    public function __construct($uri)
     {
-        $this->options = $options;
-        $this->map = $map;
+        $this->uri = $uri;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function call($wrappedClass, $method, array $params = array())
+    {
+        $client = $this->getClient();
+        $serviceName = $this->assemble($wrappedClass, $method);
+        return $client->call($serviceName, $params);
+    }
+    
+    /**
+     * Build service name
+     * @return string
+     */
+    abstract protected function assemble($wrappedClass, $method);
+    
+    /**
+     * Build webservices client
+     * @return \Zend\Server\Client
+     */
+    abstract protected function getClient();
 }

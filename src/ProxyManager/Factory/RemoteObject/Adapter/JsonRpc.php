@@ -19,6 +19,7 @@
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use Zend\Json\Server\Client;
+use ProxyManager\Proxy\Exception\RemoteObjectException;
 
 /**
  * Remote Object JSON RPC adapter
@@ -29,38 +30,24 @@ use Zend\Json\Server\Client;
 class JsonRpc extends BaseAdapter
 {
     /**
-     *  JSON client
-     * @var \Zend\Json\Client 
+     * {@inheritDoc}
      */
-    protected $client;
-
-    /**
-     * Adapter construction
-     * @throws RemoteObjectException
-     */
-    protected function init()
+    protected function assemble($wrappedClass, $method)
     {
-        if(!$this->options['host']) {
-            throw new RemoteObjectException('JsonRpc host is required in the "host" key options');
-        }
-        if(null === $this->client) {
-            $this->client = new Client($this->options['host']);
-        }
+        return $wrappedClass . '.' . $method;
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public function call($wrappedClass, $method, array $params = array())
+    protected function getClient()
     {
-        $this->init();
-        if(isset($this->map[$wrappedClass])) {
-            $wrappedClass = $this->map[$wrappedClass];
+        if(null === $this->client) {
+            if(empty($this->uri)) {
+                throw new RemoteObjectException('Webservices URI is required');
+            }
+            $this->client = new Client($this->uri);
         }
-        $method = $wrappedClass.'.'.$method;
-        if(isset($this->map[$method])) {
-            $method = $this->map[$method];
-        }
-        return $this->client->call($method, $params);
-    }
+        return $this->client;
+    } 
 }

@@ -2,7 +2,12 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-class Kitchen
+interface FooService
+{
+    public function foo();
+}
+
+class Foo implements FooService
 {
     public function foo()
     {
@@ -11,6 +16,5 @@ class Kitchen
 }
 
 $server = new Zend\Json\Server\Server();
-$kitchen = isset($_GET['mapping']) ? 'KitchenService' : 'Kitchen';
-$server->setClass('Kitchen', $kitchen);
+$server->setClass('Foo', 'FooService');  // my FooService implementation
 $server->handle();
