@@ -18,8 +18,8 @@
 
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
-use ProxyManager\Proxy\Exception\RemoteObjectException;
 use Zend\XmlRpc\Client;
+use ProxyManager\Proxy\Exception\RemoteObjectException;
 
 /**
  * Remote Object XML RPC adapter
@@ -30,38 +30,24 @@ use Zend\XmlRpc\Client;
 class XmlRpc extends BaseAdapter
 {
     /**
-     * XML RPC client
-     * @var \Zend\XmlRpc\Client 
+     * {@inheritDoc}
      */
-    protected $client;
-
-    /**
-     * Adapter construction
-     * @throws RemoteObjectException
-     */
-    protected function init()
+    protected function assemble($wrappedClass, $method)
     {
-        if(!$this->options['host']) {
-            throw new RemoteObjectException('XmlRpc host is required in the "host" key options');
-        }
-        if(null === $this->client) {
-            $this->client = new Client($this->options['host']);
-        }
+        return $wrappedClass . '.' . $method;
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public function call($wrappedClass, $method, array $params = array())
+    protected function getClient()
     {
-        $this->init();
-        if(isset($this->map[$wrappedClass])) {
-            $wrappedClass = $this->map[$wrappedClass];
+        if(null === $this->client) {
+            if(empty($this->uri)) {
+                throw new RemoteObjectException('Webservices URI is required');
+            }
+            $this->client = new Client($this->uri);
         }
-        $method = $wrappedClass.'.'.$method;
-        if(isset($this->map[$method])) {
-            $method = $this->map[$method];
-        }
-        return $this->client->call($method, $params);
+        return $this->client;
     }
 }

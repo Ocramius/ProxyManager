@@ -2,7 +2,12 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-class Kitchen
+interface FooService
+{
+    public function foo();
+}
+
+class Foo implements FooService
 {
     public function foo()
     {
@@ -10,6 +15,6 @@ class Kitchen
     }
 }
 
-$server = new Zend\Soap\Server(__DIR__ . '/soap.wsdl');
-$server->setClass('Kitchen');
+$server = new Zend\Soap\Server('soap.wsdl');
+$server->setClass('Foo'); // my FooService implementation
 $server->handle();

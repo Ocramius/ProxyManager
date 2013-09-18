@@ -19,6 +19,7 @@
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use Zend\Soap\Client;
+use ProxyManager\Proxy\Exception\RemoteObjectException;
 
 /**
  * Remote Object SOAP adapter
@@ -29,34 +30,24 @@ use Zend\Soap\Client;
 class Soap extends BaseAdapter
 {
     /**
-     * Soap client
-     * @var \Zend\Soap\Client 
+     * {@inheritDoc}
      */
-    protected $client;
-
-    /**
-     * Adapter construction
-     * @throws RemoteObjectException
-     */
-    protected function init()
+    protected function assemble($wrappedClass, $method)
     {
-        if(!$this->options['wsdl']) {
-            throw new RemoteObjectException('Soap wsdl is required in the "wsdl" key options');
-        }
-        if(null === $this->client) {
-            $this->client = new Client($this->options['wsdl']);
-        }
+        return $method;
     }
-
+    
     /**
      * {@inheritDoc}
      */
-    public function call($wrappedClass, $method, array $params = array())
+    protected function getClient()
     {
-        $this->init();
-        if(isset($this->map[$method])) {
-            $method = $this->map[$method];
+        if(null === $this->client) {
+            if(empty($this->uri)) {
+                throw new RemoteObjectException('Soap WSDL is required');
+            }
+            $this->client = new Client($this->uri);
         }
-        return $this->client->call($method, $params);
+        return $this->client;
     }
 }

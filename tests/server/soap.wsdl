@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<definitions name="Kitchen"
+<definitions
     targetNamespace="http://tempuri.org/wsdl/"
     xmlns:wsdlns="http://tempuri.org/wsdl/"
     xmlns:typens="http://tempuri.org/xsd"
@@ -11,32 +11,34 @@
     <message name="foo">
     </message>
     
-    <portType name="KitchenPort">
-        <operation name="foo" parameterOrder="arg" >
+    <message name="fooResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+    
+    <portType name="FooPort">
+        <operation name="foo">
             <input message="wsdlns:foo"/>
+            <output message="wsdlns:fooResponse"/>
         </operation>
     </portType>
     
-    <binding name="KitchenBinding" type="KitchenPort">
+    <binding name="FooBinding" type="FooPort">
     <stk:binding preferredEncoding="UTF-8" />
     <soap:binding style="rpc" 
-     transport="http://schemas.xmlsoap.org/soap/http"/>
+        transport="http://schemas.xmlsoap.org/soap/http"/>
     <operation name="foo">
-        <soap:operation
-            soapAction="http://tempuri.org/action/Simple.foo"/>
+        <soap:operation soapAction=""/>
         <input>
-            <soap:body use="encoded" namespace="http://tempuri.org/message/" 
-                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            <soap:body use="literal" />
         </input>
         <output>
-            <soap:body use="encoded" namespace="http://tempuri.org/message/" 
-                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            <soap:body use="literal" />
         </output>
     </operation>
     </binding>
 
-    <service name="KitchenService">
-        <port name="KitchenPort" binding="wsdlns:KitchenBinding">
+    <service name="FooService">
+        <port name="FooPort" binding="wsdlns:FooBinding">
             <soap:address location="http://127.0.0.1/soap.php"/>
         </port>
     </service>

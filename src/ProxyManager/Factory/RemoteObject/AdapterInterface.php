@@ -27,14 +27,6 @@ namespace ProxyManager\Factory\RemoteObject;
 interface AdapterInterface
 {
     /**
-     * Build with remote options and mapping options
-     * 
-     * @param array $options
-     * @param array $map
-     */
-    public function __construct(array $options = array(), array $map = array());
-
-    /**
      * Call remote object
      * 
      * @param string $wrappedClass

@@ -20,6 +20,7 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Proxy\Exception\RemoteObjectException;
 use ReflectionClass;
 
 /**
@@ -30,27 +31,32 @@ use ReflectionClass;
  */
 class RemoteObjectFactory extends AbstractBaseFactory
 {
-    public function createProxy($className, RemoteObject\AdapterInterface $adapter)
+    public function createProxy($interfaceName, RemoteObject\AdapterInterface $adapter)
     {
-        if (! isset($this->generatedClasses[$className])) {
-            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
-                $className,
+        if (! isset($this->generatedClasses[$interfaceName])) {
+            $this->generatedClasses[$interfaceName] = $this->inflector->getProxyClassName(
+                $interfaceName,
                 array('factory' => get_class($this))
             );
         }
 
-        $proxyClassName = $this->generatedClasses[$className];
+        $proxyClassName = $this->generatedClasses[$interfaceName];
 
         if (! class_exists($proxyClassName)) {
-            $className = $this->inflector->getUserClassName($className);
+            $interfaceReflection = new ReflectionClass($interfaceName);
+            if (! $interfaceReflection->isInterface()) {
+                throw new RemoteObjectException('Wrapped remote services must be an interface');
+            }
+            
+            $interfaceName = $this->inflector->getUserClassName($interfaceName);
             $phpClass  = new ClassGenerator($proxyClassName);
             $generator = new RemoteObjectGenerator();
 
-            $generator->generate(new ReflectionClass($className), $phpClass);
+            $generator->generate($interfaceReflection, $phpClass);
             $this->configuration->getGeneratorStrategy()->generate($phpClass);
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
 
-        return new $proxyClassName($className, $adapter);
+        return new $proxyClassName($interfaceName, $adapter);
     }
 }
