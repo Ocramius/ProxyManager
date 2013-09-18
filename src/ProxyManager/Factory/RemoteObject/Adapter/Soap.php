@@ -47,7 +47,18 @@ class Soap extends BaseAdapter
                 throw new RemoteObjectException('Soap WSDL is required');
             }
             $this->client = new Client($this->uri);
+            $this->client->setSoapVersion(SOAP_1_1);
         }
         return $this->client;
+    }
+    
+    /**
+     * Set the Soap version
+     * @param type $version
+     */
+    public function setSoapVersion($version)
+    {
+        $client = $this->getClient();
+        $client->setSoapVersion($version);
     }
 }
