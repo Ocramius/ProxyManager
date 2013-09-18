@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions name="Kitchen"
+    targetNamespace="http://tempuri.org/wsdl/"
+    xmlns:wsdlns="http://tempuri.org/wsdl/"
+    xmlns:typens="http://tempuri.org/xsd"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:stk="http://schemas.microsoft.com/soap-toolkit/wsdl-extension"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <message name="foo">
+    </message>
+    
+    <portType name="KitchenPort">
+        <operation name="foo" parameterOrder="arg" >
+            <input message="wsdlns:foo"/>
+        </operation>
+    </portType>
+    
+    <binding name="KitchenBinding" type="KitchenPort">
+    <stk:binding preferredEncoding="UTF-8" />
+    <soap:binding style="rpc" 
+     transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="foo">
+        <soap:operation
+            soapAction="http://tempuri.org/action/Simple.foo"/>
+        <input>
+            <soap:body use="encoded" namespace="http://tempuri.org/message/" 
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </input>
+        <output>
+            <soap:body use="encoded" namespace="http://tempuri.org/message/" 
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </output>
+    </operation>
+    </binding>
+
+    <service name="KitchenService">
+        <port name="KitchenPort" binding="wsdlns:KitchenBinding">
+            <soap:address location="http://127.0.0.1/soap.php"/>
+        </port>
+    </service>
+</definitions>
