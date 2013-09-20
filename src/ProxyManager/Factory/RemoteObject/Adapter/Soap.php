@@ -46,8 +46,10 @@ class Soap extends BaseAdapter
             if(empty($this->uri)) {
                 throw new RemoteObjectException('Soap WSDL is required');
             }
+            if (! class_exists('\Zend\Soap\Client')) {
+                throw new RemoteObjectException('Soap adapter does not exists. Please install zend-soap package.');
+            }
             $this->client = new Client($this->uri);
-            $this->client->setSoapVersion(SOAP_1_1);
         }
         return $this->client;
     }
