@@ -21,11 +21,7 @@
     ],
     "require": {
         "php":                     ">=5.3.3",
-        "zendframework/zend-code": "2.*",
-        "zendframework/zend-server": "2.*",
-        "zendframework/zend-xmlrpc": "2.*",
-        "zendframework/zend-json": "2.*",
-        "zendframework/zend-soap": "2.*"
+        "zendframework/zend-code": "2.*"
     },
     "require-dev": {
         "phpunit/phpunit":           ">=3.7",
@@ -35,7 +31,11 @@
     },
     "suggest": {
         "zendframework/zend-stdlib":   "To use the hydrator proxy",
-        "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects"
+        "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
+        "zendframework/zend-server": "Use with the Remote Object feature",
+        "zendframework/zend-xmlrpc": "To have the XmlRpx adapter (Remote Object feature)",
+        "zendframework/zend-json": "To have the JsonRpc adapter (Remote Object feature)",
+        "zendframework/zend-soap": "To have the Soap adapter (Remote Object feature)"
     },
     "autoload": {
         "psr-0": {
@@ -46,8 +46,5 @@
         "branch-alias": {
             "dev-master": "0.5.x-dev"
         }
-    },
-    "config": {
-        "process-timeout": 600
     }
 }
