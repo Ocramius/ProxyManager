@@ -46,6 +46,9 @@ class JsonRpc extends BaseAdapter
             if(empty($this->uri)) {
                 throw new RemoteObjectException('Webservices URI is required');
             }
+            if (!class_exists('\Zend\Json\Server\Client')) {
+                throw new RemoteObjectException('JsonRpc adapter does not exists. Please install zend-json package.');
+            }
             $this->client = new Client($this->uri);
         }
         return $this->client;

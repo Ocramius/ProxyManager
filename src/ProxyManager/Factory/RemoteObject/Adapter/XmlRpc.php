@@ -46,6 +46,9 @@ class XmlRpc extends BaseAdapter
             if(empty($this->uri)) {
                 throw new RemoteObjectException('Webservices URI is required');
             }
+            if (! class_exists('\Zend\XmlRpc\Client')) {
+                throw new RemoteObjectException('XmlRpc adapter does not exists. Please install zend-xmlrpc package.');
+            }
             $this->client = new Client($this->uri);
         }
         return $this->client;
