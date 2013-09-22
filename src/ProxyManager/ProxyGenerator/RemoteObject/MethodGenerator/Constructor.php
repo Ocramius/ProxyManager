@@ -47,6 +47,6 @@ class Constructor extends MethodGenerator
         $this->setParameters(array(new ParameterGenerator($classnameName), new ParameterGenerator($adapterName, '\ProxyManager\Factory\RemoteObject\AdapterInterface')));
 
         $this->setDocblock("@override constructor for remote object control\n\n@param string \$classname\n\n@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter");
-        $this->setBody('$this->' . $classnameName . ' = "' . $originalClass->getName() . '";' . "\n" . '$this->' . $adapterName . ' = $' . $adapterName . ';' . "\n");
+        $this->setBody('$this->' . $classnameName . ' = "' . $originalClass->getName() . '";' . "\n" . '$this->' . $adapterName . ' = $' . $adapterName . ';');
     }
 }
