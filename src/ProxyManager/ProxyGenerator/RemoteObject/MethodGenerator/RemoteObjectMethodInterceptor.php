@@ -48,8 +48,13 @@ class RemoteObjectMethodInterceptor extends MethodGenerator
         $classnameName     = $classnameProperty->getName();
         $parameters        = $originalMethod->getParameters();
         $methodName        = $originalMethod->getName();
+  
+        $list = array();
+        foreach($parameters as $parameter) {
+            $list[] = '$' . $parameter->getName();
+        }
 
-        $method->setBody('return $this->' . $adapterName . '->call($this->' . $classnameName . ', "' . $methodName . '", array('. implode(', ', $parameters) .'));');
+        $method->setBody('return $this->' . $adapterName . '->call($this->' . $classnameName . ', "' . $methodName . '", array('. implode(', ', $list) .'));');
 
         return $method;
     }
