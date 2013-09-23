@@ -34,7 +34,7 @@ use ReflectionProperty;
  *
  * @covers \ProxyManager\ProxyGenerator\NullObjectGenerator
  */
-class NullObjectTest extends PHPUnit_Framework_TestCase
+class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getTestedImplementations
