@@ -34,7 +34,7 @@ use ReflectionProperty;
  *
  * @covers \ProxyManager\ProxyGenerator\RemoteObjectGenerator
  */
-class RemoteObjectTest extends PHPUnit_Framework_TestCase
+class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getTestedImplementations
