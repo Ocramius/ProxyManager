@@ -42,15 +42,17 @@ class Constructor extends MethodGenerator
     ) {
         parent::__construct('__construct');
 
-        $prefix = new ParameterGenerator('prefixInterceptors');
-        $suffix = new ParameterGenerator('suffixInterceptors');
+        $localizedObject = new ParameterGenerator('localizedObject');
+        $prefix          = new ParameterGenerator('prefixInterceptors');
+        $suffix          = new ParameterGenerator('suffixInterceptors');
 
+        $localizedObject->setType($originalClass->getName());
         $prefix->setDefaultValue(array());
         $suffix->setDefaultValue(array());
         $prefix->setType('array');
         $suffix->setType('array');
 
-        $this->setParameter(new ParameterGenerator('localizedObject'));
+        $this->setParameter($localizedObject);
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
@@ -63,9 +65,14 @@ class Constructor extends MethodGenerator
 
             $propertyName = $originalProperty->getName();
 
-            $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
-                . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
-                . '}, $this, ' . var_export($originalProperty->getDeclaringClass()->getName(), true) . ')->__invoke();';
+            if ($originalProperty->isPrivate()) {
+                $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
+                    . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
+                    . '}, $this, ' . var_export($originalProperty->getDeclaringClass()->getName(), true)
+                    . ')->__invoke();';
+            } else {
+                $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
+            }
         }
 
         $this->setDocblock(
