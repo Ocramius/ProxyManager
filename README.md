@@ -45,7 +45,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-See the [complete documentation about lazy loading value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/lazy-loading-value-holder.md)
+See the [complete documentation about lazy loading value holders](/docs/lazy-loading-value-holder.md)
 in the `docs/` directory.
 
 ## Access Interceptor Value Holder
@@ -67,7 +67,7 @@ $proxy = $factory->createProxy(
 $proxy->query(); // produces "Query being executed!\nQuery completed!\n"
 ```
 
-See the [complete documentation about access interceptor value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/access-interceptor-value-holder.md)
+See the [complete documentation about access interceptor value holders](/docs/access-interceptor-value-holder.md)
 in the `docs/` directory.
 
 ## Access Interceptor Scope Localizer
@@ -106,7 +106,7 @@ $proxy = $factory->createProxy($entity); // created from object
 $proxy->getName(); // empty return
 ```
 
-See the [complete documentation about null object proxy](https://github.com/Ocramius/ProxyManager/tree/master/docs/null-object.md)
+See the [complete documentation about null object proxy](/docs/null-object.md)
 in the `docs/` directory.
 
 ## Ghost Objects
@@ -144,7 +144,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-See the [complete documentation about lazy loading ghost objects](https://github.com/Ocramius/ProxyManager/tree/master/docs/lazy-loading-ghost-object.md)
+See the [complete documentation about lazy loading ghost objects](/docs/lazy-loading-ghost-object.md)
 in the `docs/` directory.
 
 This feature is [planned](https://github.com/Ocramius/ProxyManager/issues/6).
