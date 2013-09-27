@@ -18,10 +18,10 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ReflectionClass;
-use ReflectionProperty;
+use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -57,6 +57,10 @@ class Constructor extends MethodGenerator
         $localizedProperties = array();
 
         foreach ($originalClass->getProperties() as $originalProperty) {
+            if (PHP_VERSION_ID < 50400 && $originalProperty->isPrivate()) {
+                throw UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty($originalProperty);
+            }
+
             $propertyName = $originalProperty->getName();
 
             $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
