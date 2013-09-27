@@ -60,7 +60,6 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
             return $code;
         }
 
-        //die($code);
         eval($code);
 
         return $code;
