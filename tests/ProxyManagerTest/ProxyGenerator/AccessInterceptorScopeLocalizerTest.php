@@ -41,6 +41,13 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
     {
         $reflectionClass = new ReflectionClass($className);
 
+        if ($reflectionClass->isInterface()) {
+            // @todo interfaces *may* be proxied by deferring property localization to the constructor (no hardcoding)
+            $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
+
+            return parent::testGeneratesValidCode($className);
+        }
+
         if (PHP_VERSION_ID < 50400 && $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)) {
             $this->setExpectedException('ProxyManager\Exception\UnsupportedProxiedClassException');
         }
