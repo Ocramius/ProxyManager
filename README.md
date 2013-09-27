@@ -75,7 +75,7 @@ in the `docs/` directory.
 An access interceptor scope localizer works exactly like an access interceptor value holder,
 but it is safe to use to proxy fluent interfaces.
 
-See the [complete documentation about access interceptor scope localizer](https://github.com/Ocramius/ProxyManager/tree/master/docs/access-interceptor-scope-localizer.md)
+See the [complete documentation about access interceptor scope localizer](/docs/access-interceptor-scope-localizer.md)
 in the `docs/` directory.
 
 ## Null Objects
