@@ -19,27 +19,26 @@
 namespace ProxyManagerTest\Exception;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Exception\UnsupportedProxiedClassException;
-use ReflectionProperty;
+use ProxyManager\Exception\InvalidProxiedClassException;
+use ReflectionClass;
 
 /**
- * Tests for {@see \ProxyManager\Exception\UnsupportedProxiedClassException}
+ * Tests for {@see \ProxyManager\Exception\InvalidProxiedClassException}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class UnsupportedProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
+class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\Exception\UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty
+     * @covers \ProxyManager\Exception\InvalidProxiedClassException::interfaceNotSupported
      */
-    public function testUnsupportedLocalizedReflectionProperty()
+    public function testInterfaceNotSupported()
     {
         $this->assertSame(
-            'Provided reflection property "property0" of class "ProxyManagerTestAsset\ClassWithPrivateProperties" '
-            . 'is private and cannot be localized in PHP 5.3',
-            UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty(
-                new ReflectionProperty('ProxyManagerTestAsset\ClassWithPrivateProperties', 'property0')
+            'Provided interface "ProxyManagerTestAsset\BaseInterface" cannot be proxied',
+            InvalidProxiedClassException::interfaceNotSupported(
+                new ReflectionClass('ProxyManagerTestAsset\BaseInterface')
             )->getMessage()
         );
     }
