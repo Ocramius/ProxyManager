@@ -60,7 +60,9 @@ class Constructor extends MethodGenerator
 
         foreach ($originalClass->getProperties() as $originalProperty) {
             if (PHP_VERSION_ID < 50400 && $originalProperty->isPrivate()) {
+                // @codeCoverageIgnoreStart
                 throw UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty($originalProperty);
+                // @codeCoverageIgnoreEnd
             }
 
             $propertyName = $originalProperty->getName();
