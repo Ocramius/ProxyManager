@@ -45,14 +45,14 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-See the [complete documentation about lazy loading value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/lazy-loading-value-holder.md)
+See the [complete documentation about lazy loading value holders](/docs/lazy-loading-value-holder.md)
 in the `docs/` directory.
 
-## Access Interceptors
+## Access Interceptor Value Holder
 
-An access interceptor is a smart reference that allows you to execute logic before and after a particular method
-is executed or a particular property is accessed, and it allows to manipulate parameters and return values depending
-on your needs.
+An access interceptor value holder is a smart reference that allows you to execute logic before
+and after a particular method is executed or a particular property is accessed, and it allows to
+manipulate parameters and return values depending on your needs.
 
 ```php
 $config  = new \ProxyManager\Configuration(); // customize this if needed for production
@@ -67,7 +67,15 @@ $proxy = $factory->createProxy(
 $proxy->query(); // produces "Query being executed!\nQuery completed!\n"
 ```
 
-See the [complete documentation about access interceptor value holders](https://github.com/Ocramius/ProxyManager/tree/master/docs/access-interceptor-value-holder.md)
+See the [complete documentation about access interceptor value holders](/docs/access-interceptor-value-holder.md)
+in the `docs/` directory.
+
+## Access Interceptor Scope Localizer
+
+An access interceptor scope localizer works exactly like an access interceptor value holder,
+but it is safe to use to proxy fluent interfaces.
+
+See the [complete documentation about access interceptor scope localizer](/docs/access-interceptor-scope-localizer.md)
 in the `docs/` directory.
 
 ## Null Objects
@@ -98,7 +106,7 @@ $proxy = $factory->createProxy($entity); // created from object
 $proxy->getName(); // empty return
 ```
 
-See the [complete documentation about null object proxy](https://github.com/Ocramius/ProxyManager/tree/master/docs/null-object.md)
+See the [complete documentation about null object proxy](/docs/null-object.md)
 in the `docs/` directory.
 
 ## Ghost Objects
@@ -136,7 +144,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-See the [complete documentation about lazy loading ghost objects](https://github.com/Ocramius/ProxyManager/tree/master/docs/lazy-loading-ghost-object.md)
+See the [complete documentation about lazy loading ghost objects](/docs/lazy-loading-ghost-object.md)
 in the `docs/` directory.
 
 This feature is [planned](https://github.com/Ocramius/ProxyManager/issues/6).
