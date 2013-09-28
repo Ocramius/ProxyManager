@@ -47,7 +47,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
     public function testSignature()
     {
         $constructor = new Constructor(
-            new ReflectionClass(__CLASS__),
+            new ReflectionClass('ProxyManagerTestAsset\\ClassWithProtectedProperties'),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
@@ -57,7 +57,10 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
 
         $this->assertCount(3, $parameters);
 
-        $this->assertSame(__CLASS__, $parameters['localizedObject']->getType());
+        $this->assertSame(
+            'ProxyManagerTestAsset\\ClassWithProtectedProperties',
+            $parameters['localizedObject']->getType()
+        );
         $this->assertSame('array', $parameters['prefixInterceptors']->getType());
         $this->assertSame('array', $parameters['suffixInterceptors']->getType());
     }
