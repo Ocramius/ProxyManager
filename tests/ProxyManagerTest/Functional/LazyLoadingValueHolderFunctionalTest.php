@@ -267,7 +267,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         ) use (
             $initializerMatcher,
             $realInstance
-            ) {
+        ) {
             $initializer   = null;
             $wrappedObject = $realInstance;
 
