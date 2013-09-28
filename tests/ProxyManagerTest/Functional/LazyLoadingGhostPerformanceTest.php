@@ -66,7 +66,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
         ) use (
             $reflectionProperties,
             $realInstance
-            ) {
+        ) {
             $initializer = null;
 
             foreach ($reflectionProperties as $reflectionProperty) {
