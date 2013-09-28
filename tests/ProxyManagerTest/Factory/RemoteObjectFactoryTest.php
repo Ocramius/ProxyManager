@@ -22,7 +22,6 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObjectFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManagerTestAsset\RemoteObject\AdapterMock;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObjectFactory}
@@ -69,13 +68,14 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getProxyClassName')
             ->with('ProxyManagerTestAsset\\BaseInterface')
-            ->will($this->returnValue('ProxyManagerTestAsset\\RemoteObjectMock'));
+            ->will($this->returnValue('StdClass'));
 
         $factory    = new RemoteObjectFactory($this->config);
-        /* @var $proxy \ProxyManagerTestAsset\RemoteObjectMock */
-        $proxy      = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', new AdapterMock());
+        /* @var $proxy \StdClass */
+        $adapter    = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        $proxy      = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\RemoteObjectMock', $proxy);
+        $this->assertInstanceOf('stdClass', $proxy);
     }
 
     /**
@@ -116,7 +116,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
                     function () use ($proxyClassName) {
                         eval(
                             'class ' . $proxyClassName
-                            . ' extends \\ProxyManagerTestAsset\\RemoteObjectMock {}'
+                            . ' extends stdClass {}'
                         );
                     }
                 )
@@ -134,11 +134,12 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getUserClassName')
             ->with('ProxyManagerTestAsset\\BaseInterface')
-            ->will($this->returnValue('ProxyManagerTestAsset\\RemoteObjectMock'));
+            ->will($this->returnValue('stdClass'));
 
         $factory    = new RemoteObjectFactory($this->config);
-        /* @var $proxy \ProxyManagerTestAsset\RemoteObjectMock */
-        $proxy      = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', new AdapterMock());
+        /* @var $proxy stdClass */
+        $adapter    = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        $proxy      = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
 
         $this->assertInstanceOf($proxyClassName, $proxy);
     }
