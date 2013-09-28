@@ -30,6 +30,27 @@ use ProxyManager\Proxy\Exception\RemoteObjectException;
 class XmlRpc extends BaseAdapter
 {
     /**
+     * XmlRpc client
+     * @var \Zend\XmlRpc\Client
+     */
+    private $client;
+
+    /**
+     * Rpc client building
+     * @param string $uri
+     */
+    public function __construct($uri)
+    {
+        if (! class_exists('Zend\XmlRpc\Client')) {
+            throw new RemoteObjectException('XmlRpc adapter does not exists. Please install zend-xmlrpc package.');
+        }
+        if (empty($uri)) {
+            throw new RemoteObjectException('Webservices URI is required');
+        }
+        parent::__construct($uri);
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function assemble($wrappedClass, $method)
@@ -40,17 +61,13 @@ class XmlRpc extends BaseAdapter
     /**
      * {@inheritDoc}
      */
-    protected function getClient()
+    public function getClient()
     {
-        if(null === $this->client) {
-            if(empty($this->uri)) {
-                throw new RemoteObjectException('Webservices URI is required');
-            }
-            if (! class_exists('\Zend\XmlRpc\Client')) {
-                throw new RemoteObjectException('XmlRpc adapter does not exists. Please install zend-xmlrpc package.');
-            }
-            $this->client = new Client($this->uri);
+        if ($this->client) {
+            return $this->client;
         }
+        $this->client = new Client($this->uri);
+        
         return $this->client;
     }
 }

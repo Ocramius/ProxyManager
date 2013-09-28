@@ -19,19 +19,19 @@
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethodInterceptor;
+use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethodInterceptor}
+ * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod}
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class RemoteObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
+class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethodInterceptor
+     * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
     public function testBodyStructureWithParameters()
     {
@@ -43,7 +43,7 @@ class RemoteObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
         
         $reflectionMethod = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
 
-        $method = RemoteObjectMethodInterceptor::generateMethod($reflectionMethod, $adapter, $classname);
+        $method = RemoteObjectMethod::generateMethod($reflectionMethod, $adapter, $classname);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());
@@ -51,7 +51,7 @@ class RemoteObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
     }
     
     /**
-     * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethodInterceptor
+     * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
     public function testBodyStructureWithArrayParameter()
     {
@@ -63,7 +63,7 @@ class RemoteObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
         
         $reflectionMethod = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicArrayHintedMethod');
 
-        $method = RemoteObjectMethodInterceptor::generateMethod($reflectionMethod, $adapter, $classname);
+        $method = RemoteObjectMethod::generateMethod($reflectionMethod, $adapter, $classname);
 
         $this->assertSame('publicArrayHintedMethod', $method->getName());
         $this->assertCount(1, $method->getParameters());
@@ -71,7 +71,7 @@ class RemoteObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
     }
     
     /**
-     * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethodInterceptor
+     * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
     public function testBodyStructureWithoutParameters()
     {
@@ -83,7 +83,7 @@ class RemoteObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
         
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
 
-        $method = RemoteObjectMethodInterceptor::generateMethod($reflectionMethod, $adapter, $classname);
+        $method = RemoteObjectMethod::generateMethod($reflectionMethod, $adapter, $classname);
 
         $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
         $this->assertCount(0, $method->getParameters());

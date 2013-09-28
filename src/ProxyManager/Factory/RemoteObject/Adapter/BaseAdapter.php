@@ -20,24 +20,23 @@ namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 
+/**
+ * Remote Object base adapter
+ *
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
+ * @license MIT
+ */
 abstract class BaseAdapter implements AdapterInterface
 {
     /**
-     * Uri webservices
+     * URI of the webservice endpoint
      * @var string 
      */
     protected $uri;
     
     /**
-     * Soap client
-     * @var \Zend\Soap\Client 
-     */
-    protected $client;
-    
-    /**
-     * Rpc client building
+     * Constructor
      * @param string $uri
-     * @param array $map
      */
     public function __construct($uri)
     {
@@ -49,14 +48,15 @@ abstract class BaseAdapter implements AdapterInterface
      */
     public function call($wrappedClass, $method, array $params = array())
     {
-        $client = $this->getClient();
+        $client      = $this->getClient();
         $serviceName = $this->assemble($wrappedClass, $method);
+        
         return $client->call($serviceName, $params);
     }
     
     /**
-     * Build service name
-     * @return string
+     * Assembly of the service name will be used by the adapter
+     * @return string Service name
      */
     abstract protected function assemble($wrappedClass, $method);
     
@@ -64,5 +64,5 @@ abstract class BaseAdapter implements AdapterInterface
      * Build webservices client
      * @return \Zend\Server\Client
      */
-    abstract protected function getClient();
+    abstract public function getClient();
 }

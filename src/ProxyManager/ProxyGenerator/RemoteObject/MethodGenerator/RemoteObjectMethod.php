@@ -28,14 +28,14 @@ use Zend\Code\Reflection\MethodReflection;
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class RemoteObjectMethodInterceptor extends MethodGenerator
+class RemoteObjectMethod extends MethodGenerator
 {
     /**
      * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
      * @param \Zend\Code\Generator\PropertyGenerator $classnameProperty
      *
-     * @return RemoteObjectMethodInterceptor|static
+     * @return RemoteObjectMethod|static
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
@@ -43,18 +43,20 @@ class RemoteObjectMethodInterceptor extends MethodGenerator
         PropertyGenerator $classnameProperty
     ) {
         /* @var $method self */
-        $method            = static::fromReflection($originalMethod);
-        $adapterName	   = $adapterProperty->getName();
-        $classnameName     = $classnameProperty->getName();
-        $parameters        = $originalMethod->getParameters();
-        $methodName        = $originalMethod->getName();
-  
-        $list = array();
+        $method        = static::fromReflection($originalMethod);
+        $adapterName   = $adapterProperty->getName();
+        $classnameName = $classnameProperty->getName();
+        $parameters    = $originalMethod->getParameters();
+        $methodName    = $originalMethod->getName();
+        $list          = array();
+        
         foreach($parameters as $parameter) {
             $list[] = '$' . $parameter->getName();
         }
 
-        $method->setBody('return $this->' . $adapterName . '->call($this->' . $classnameName . ', "' . $methodName . '", array('. implode(', ', $list) .'));');
+        $body = 'return $this->' . $adapterName . '->call($this->' . $classnameName;
+        $body .= ', "' . $methodName . '", array('. implode(', ', $list) .'));';
+        $method->setBody($body);
 
         return $method;
     }

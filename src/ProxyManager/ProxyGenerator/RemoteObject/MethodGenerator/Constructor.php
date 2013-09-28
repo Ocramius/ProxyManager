@@ -24,7 +24,7 @@ use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * The `__construct` implementation for lazy loading proxies
+ * The `__construct` implementation for remote object proxies
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
@@ -35,18 +35,24 @@ class Constructor extends MethodGenerator
      * Constructor
      * 
      * @param ReflectionClass   $originalClass          Reflection of the class to proxy
-     * @param PropertyGenerator $classname		        Classname property
-     * @param PropertyGenerator $adapter		        Adapater property
+     * @param PropertyGenerator $classname		Classname property
+     * @param PropertyGenerator $adapter		Adapater property
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $classname, PropertyGenerator $adapter)
     {
         parent::__construct('__construct');
 
-        $classnameName 	= $classname->getName();
-        $adapterName	= $adapter->getName();
-        $this->setParameters(array(new ParameterGenerator($classnameName), new ParameterGenerator($adapterName, '\ProxyManager\Factory\RemoteObject\AdapterInterface')));
+        $classnameName = $classname->getName();
+        $adapterName   = $adapter->getName();
+        
+        $this->setParameters(array(new ParameterGenerator($classnameName), new ParameterGenerator($adapterName, 'ProxyManager\Factory\RemoteObject\AdapterInterface')));
 
-        $this->setDocblock("@override constructor for remote object control\n\n@param string \$classname\n\n@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter");
-        $this->setBody('$this->' . $classnameName . ' = "' . $originalClass->getName() . '";' . "\n" . '$this->' . $adapterName . ' = $' . $adapterName . ';');
+        $docBlock = "@override constructor for remote object control\n\n@param string \$classname\n\n";
+        $docBlock .= "@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter";
+        $this->setDocblock($docBlock);
+        
+        $body = '$this->' . $classnameName . ' = "' . $originalClass->getName() . '";' . "\n";
+        $body .= '$this->' . $adapterName . ' = $' . $adapterName . ';';
+        $this->setBody($body);
     }
 }

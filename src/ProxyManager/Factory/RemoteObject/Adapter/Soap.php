@@ -30,6 +30,27 @@ use ProxyManager\Proxy\Exception\RemoteObjectException;
 class Soap extends BaseAdapter
 {
     /**
+     * Soap client
+     * @var \Zend\Soap\Client
+     */
+    private $client;
+
+    /**
+     * Rpc client building
+     * @param string $uri
+     */
+    public function __construct($uri)
+    {
+        if (! class_exists('Zend\Soap\Client')) {
+            throw new RemoteObjectException('Soap adapter does not exists. Please install zend-soap package.');
+        }
+        if (empty($uri)) {
+            throw new RemoteObjectException('Soap WSDL is required');
+        }
+        parent::__construct($uri);
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function assemble($wrappedClass, $method)
@@ -40,27 +61,13 @@ class Soap extends BaseAdapter
     /**
      * {@inheritDoc}
      */
-    protected function getClient()
+    public function getClient()
     {
-        if(null === $this->client) {
-            if(empty($this->uri)) {
-                throw new RemoteObjectException('Soap WSDL is required');
-            }
-            if (! class_exists('\Zend\Soap\Client')) {
-                throw new RemoteObjectException('Soap adapter does not exists. Please install zend-soap package.');
-            }
-            $this->client = new Client($this->uri);
+        if ($this->client) {
+            return $this->client;
         }
+        $this->client = new Client($this->uri);
+        
         return $this->client;
-    }
-    
-    /**
-     * Set the Soap version
-     * @param type $version
-     */
-    public function setSoapVersion($version)
-    {
-        $client = $this->getClient();
-        $client->setSoapVersion($version);
     }
 }
