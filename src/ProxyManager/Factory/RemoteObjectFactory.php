@@ -18,20 +18,27 @@
 
 namespace ProxyManager\Factory;
 
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Proxy\Exception\RemoteObjectException;
 use ReflectionClass;
 
 /**
- * Factory responsible of producing proxy objects
+ * Factory responsible of producing remote proxy objects
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class RemoteObjectFactory extends AbstractBaseFactory
 {
-    public function createProxy($interfaceName, RemoteObject\AdapterInterface $adapter)
+    /**
+     * @param string            $interfaceName   
+     * @param AdapterInterface  $adapter   
+     * 
+     * @return \ProxyManager\Proxy\RemoteObjectInterface
+     */
+    public function createProxy($interfaceName, AdapterInterface $adapter)
     {
         if (! isset($this->generatedClasses[$interfaceName])) {
             $this->generatedClasses[$interfaceName] = $this->inflector->getProxyClassName(
@@ -49,8 +56,8 @@ class RemoteObjectFactory extends AbstractBaseFactory
             }
             
             $interfaceName = $this->inflector->getUserClassName($interfaceName);
-            $phpClass  = new ClassGenerator($proxyClassName);
-            $generator = new RemoteObjectGenerator();
+            $phpClass      = new ClassGenerator($proxyClassName);
+            $generator     = new RemoteObjectGenerator();
 
             $generator->generate($interfaceReflection, $phpClass);
             $this->configuration->getGeneratorStrategy()->generate($phpClass);

@@ -2,17 +2,17 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-interface FooService
+interface FooServiceInterface
 {
     public function foo();
 }
 
-interface BazService
+interface BazServiceInterface
 {
     public function baz($param);
 }
 
-class Foo implements FooService, BazService
+class Foo implements FooServiceInterface, BazServiceInterface
 {
     /**
      * Foo function
@@ -35,6 +35,6 @@ class Foo implements FooService, BazService
 }
 
 $server = new Zend\XmlRpc\Server();
-$server->setClass('Foo', 'FooService');  // my FooService implementation
-$server->setClass('Foo', 'BazService');  // my BazService implementation
+$server->setClass('Foo', 'FooServiceInterface');  // my FooServiceInterface implementation
+$server->setClass('Foo', 'BazServiceInterface');  // my BazServiceInterface implementation
 $server->handle();

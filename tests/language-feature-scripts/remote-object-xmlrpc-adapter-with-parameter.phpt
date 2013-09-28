@@ -5,12 +5,12 @@ Verifies that generated remote object can call public method
 
 require_once __DIR__ . '/init.php';
 
-interface FooService
+interface FooServiceInterface
 {
     public function foo();
 }
 
-interface BazService
+interface BazServiceInterface
 {
     /**
      * Baz function
@@ -25,7 +25,7 @@ $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
     'http://127.0.0.1/xmlrpc.php' // host to /tests/server/xmlrpc.php
 );
 
-$proxy = $factory->createProxy('BazService', $adapter);
+$proxy = $factory->createProxy('BazServiceInterface', $adapter);
 
 var_dump($proxy->baz('baz'));
 ?>

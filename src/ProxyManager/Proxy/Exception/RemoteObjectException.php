@@ -19,12 +19,11 @@
 namespace ProxyManager\Proxy\Exception;
 
 /**
- * Access interceptor object marker
+ * Remote object exception
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
 class RemoteObjectException extends \RuntimeException
 {
-    
 }

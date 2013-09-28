@@ -5,7 +5,7 @@ Verifies that generated remote object can call public method
 
 require_once __DIR__ . '/init.php';
 
-interface FooService
+interface FooServiceInterface
 {
     public function foo();
 }
@@ -15,7 +15,7 @@ $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
     'http://127.0.0.1/xmlrpc.php' // host to /tests/server/xmlrpc.php
 );
 
-$proxy = $factory->createProxy('FooService', $adapter);
+$proxy = $factory->createProxy('FooServiceInterface', $adapter);
 
 var_dump($proxy->foo());
 ?>

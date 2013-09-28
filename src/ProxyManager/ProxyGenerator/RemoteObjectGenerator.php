@@ -18,7 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethodInterceptor;
+use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\ClassnameProperty;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
@@ -43,7 +43,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $interfaces          = array('ProxyManager\\Proxy\\RemoteObjectInterface');
+        $interfaces = array('ProxyManager\\Proxy\\RemoteObjectInterface');
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -82,10 +82,12 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
 
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
-                RemoteObjectMethodInterceptor::generateMethod(
-                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-					$adapter,
-					$classname
+                RemoteObjectMethod::generateMethod(
+                    new MethodReflection(
+                        $method->getDeclaringClass()->getName(),
+                        $method->getName()),
+			$adapter,
+			$classname
                 )
             );
         }
