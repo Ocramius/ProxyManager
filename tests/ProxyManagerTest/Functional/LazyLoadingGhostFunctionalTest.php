@@ -256,7 +256,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         ) use (
             $initializerMatcher,
             $realInstance
-            ) {
+        ) {
             $initializer     = null;
             $reflectionClass = new ReflectionClass($realInstance);
 
