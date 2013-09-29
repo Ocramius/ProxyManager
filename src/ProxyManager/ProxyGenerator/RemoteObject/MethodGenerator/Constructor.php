@@ -48,7 +48,15 @@ class Constructor extends MethodGenerator
         $docBlock = "@override constructor for remote object control\n\n";
         $docBlock .= "@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter";
         $this->setDocblock($docBlock);
-        
-        $this->setBody('$this->' . $adapterName . ' = $' . $adapterName . ';');
+
+        $body = '$this->' . $adapterName . ' = $' . $adapterName . ';';
+
+        foreach ($originalClass->getProperties() as $property) {
+            if ($property->isPublic() && ! $property->isStatic()) {
+                $body .= "\nunset(\$this->" . $property->getName() . ');';
+            }
+        }
+
+        $this->setBody($body);
     }
 }
