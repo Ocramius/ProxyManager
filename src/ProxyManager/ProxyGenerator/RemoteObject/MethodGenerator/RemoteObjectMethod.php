@@ -50,7 +50,7 @@ class RemoteObjectMethod extends MethodGenerator
         $list          = array();
         
         foreach ($parameters as $parameter) {
-            $list[] = '$' . $parameter->getName();
+            $list[] = /*var_export($parameter->getName(), true) . ' => $'*/ '$' . $parameter->getName();
         }
 
         $body = 'return $this->' . $adapterName . '->call("' . $className . '"';

@@ -5,10 +5,9 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     xmlns:stk="http://schemas.microsoft.com/soap-toolkit/wsdl-extension"
-    xmlns="http://schemas.xmlsoap.org/wsdl/">
-
-    <message name="foo">
-    </message>
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+>
+    <message name="foo"/>
 
     <message name="fooResponse">
         <part name="result" type="xsd:string"/>
@@ -22,23 +21,22 @@
     </portType>
 
     <binding name="FooBinding" type="FooPort">
-    <stk:binding preferredEncoding="UTF-8" />
-    <soap:binding style="rpc"
-        transport="http://schemas.xmlsoap.org/soap/http"/>
-    <operation name="foo">
-        <soap:operation soapAction=""/>
-        <input>
-            <soap:body use="literal" />
-        </input>
-        <output>
-            <soap:body use="literal" />
-        </output>
-    </operation>
+        <stk:binding preferredEncoding="UTF-8" />
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="foo">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+        </operation>
     </binding>
 
     <service name="FooService">
         <port name="FooPort" binding="wsdlns:FooBinding">
-            <soap:address location="http://127.0.0.1/soap.php"/>
+            <soap:address location="http://127.0.0.1:8080/soap.php"/>
         </port>
     </service>
 </definitions>

@@ -17,10 +17,10 @@ interface BazServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
-    'http://127.0.0.1/jsonrpc.php' // host to /tests/server/jsonrpc.php
+    'http://127.0.0.1:8080/jsonrpc.php' // host to /tests/server/jsonrpc.php
 );
 
-$proxy = $factory->createProxy('BazServiceInterface', $adapter);
+$proxy = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\BazServiceInterface', $adapter);
 
 var_dump($proxy->baz('baz'));
 ?>
