@@ -68,6 +68,6 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('publicByReferenceMethod', $method->getName());
         $this->assertCount(0, $method->getParameters());
-        $this->assertTrue((bool)preg_match('#\$ref[0-9a-z]+ = null;\sreturn \$ref[0-9a-z]+;#', $method->getBody()));
+        $this->assertStringMatchesFormat("\$ref%s = null;\nreturn \$ref%s;", $method->getBody());
     }
 }

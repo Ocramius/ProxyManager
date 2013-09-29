@@ -24,7 +24,6 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ReflectionClass;
-use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObjectGenerator}
