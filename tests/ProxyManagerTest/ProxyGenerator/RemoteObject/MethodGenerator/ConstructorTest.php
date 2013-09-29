@@ -44,7 +44,8 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__construct', $constructor->getName());
         $this->assertCount(1, $constructor->getParameters());
         $this->assertSame(
-            "\$this->adapter = \$adapter;",
+            "\$this->adapter = \$adapter;\nunset(\$this->publicProperty0);"
+            . "\nunset(\$this->publicProperty1);\nunset(\$this->publicProperty2);",
             $constructor->getBody()
         );
     }
