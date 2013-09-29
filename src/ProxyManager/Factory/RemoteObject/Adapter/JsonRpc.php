@@ -37,16 +37,21 @@ class JsonRpc extends BaseAdapter
 
     /**
      * Rpc client building
+     *
      * @param string $uri
+     *
+     * @throws \ProxyManager\Proxy\Exception\RemoteObjectException
      */
     public function __construct($uri)
     {
         if (! class_exists('Zend\Json\Server\Client')) {
             throw new RemoteObjectException('JsonRpc adapter does not exists. Please install zend-json package.');
         }
+
         if (empty($uri)) {
             throw new RemoteObjectException('Webservices URI is required');
         }
+
         parent::__construct($uri);
     }
 
@@ -66,8 +71,7 @@ class JsonRpc extends BaseAdapter
         if ($this->client) {
             return $this->client;
         }
-        $this->client = new Client($this->uri);
         
-        return $this->client;
-    } 
+        return $this->client = new Client($this->uri);
+    }
 }

@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -40,8 +41,9 @@ class NullObjectMethodInterceptor extends MethodGenerator
         $method = static::fromReflection($originalMethod);
         
         if ($originalMethod->returnsReference()) {
-            $id = uniqid();
-            $method->setBody("\$ref$id = null;\nreturn \$ref$id;");
+            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
+
+            $method->setBody("$reference = null;\nreturn \$reference;");
         } else {
             $method->setBody('');
         }
