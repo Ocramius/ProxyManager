@@ -39,13 +39,15 @@ $callback->setType('instance')
             ->setClass('Foo')
             ->setMethod('__get');
 
-$server->loadFunctions(array(
-    new Zend\Server\Method\Definition(
-        array(
-            'name' => 'FooServiceInterface.__get',
-            'invokeArguments' => array('name'),
-            'callback' => $callback,
+$server->loadFunctions(
+    array(
+        new Zend\Server\Method\Definition(
+            array(
+                'name' => 'FooServiceInterface.__get',
+                'invokeArguments' => array('name'),
+                'callback' => $callback,
+            )
         )
     )
-));
+);
 $server->handle();

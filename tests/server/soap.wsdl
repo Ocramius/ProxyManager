@@ -2,7 +2,6 @@
 <definitions
     targetNamespace="http://tempuri.org/wsdl/"
     xmlns:wsdlns="http://tempuri.org/wsdl/"
-    xmlns:typens="http://tempuri.org/xsd"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     xmlns:stk="http://schemas.microsoft.com/soap-toolkit/wsdl-extension"
@@ -10,21 +9,21 @@
 
     <message name="foo">
     </message>
-    
+
     <message name="fooResponse">
         <part name="result" type="xsd:string"/>
     </message>
-    
+
     <portType name="FooPort">
         <operation name="foo">
             <input message="wsdlns:foo"/>
             <output message="wsdlns:fooResponse"/>
         </operation>
     </portType>
-    
+
     <binding name="FooBinding" type="FooPort">
     <stk:binding preferredEncoding="UTF-8" />
-    <soap:binding style="rpc" 
+    <soap:binding style="rpc"
         transport="http://schemas.xmlsoap.org/soap/http"/>
     <operation name="foo">
         <soap:operation soapAction=""/>
