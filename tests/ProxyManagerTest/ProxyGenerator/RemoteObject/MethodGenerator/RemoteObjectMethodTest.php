@@ -43,7 +43,11 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
             'publicByReferenceParameterMethod'
         );
 
-        $method = RemoteObjectMethod::generateMethod($reflectionMethod, $adapter, 'Zend\\Code\\Generator\\PropertyGenerator');
+        $method = RemoteObjectMethod::generateMethod(
+            $reflectionMethod,
+            $adapter,
+            'Zend\\Code\\Generator\\PropertyGenerator'
+        );
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());
