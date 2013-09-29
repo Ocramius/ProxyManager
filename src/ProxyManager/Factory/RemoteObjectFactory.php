@@ -19,9 +19,8 @@
 namespace ProxyManager\Factory;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Proxy\Exception\RemoteObjectException;
+use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ReflectionClass;
 
 /**

@@ -40,7 +40,7 @@ class MagicSet extends MagicMethodGenerator
     ) {
         parent::__construct(
             $originalClass,
-            '__set', 
+            '__set',
             array(new ParameterGenerator('name'), new ParameterGenerator('value'))
         );
 

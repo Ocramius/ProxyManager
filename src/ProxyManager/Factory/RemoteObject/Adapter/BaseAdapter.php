@@ -53,15 +53,20 @@ abstract class BaseAdapter implements AdapterInterface
         
         return $client->call($serviceName, $params);
     }
-    
+
     /**
      * Assembly of the service name will be used by the adapter
+     *
+     * @param string $wrappedClass
+     * @param string $method
+     *
      * @return string Service name
      */
     abstract protected function assemble($wrappedClass, $method);
     
     /**
      * Build webservices client
+     *
      * @return \Zend\Server\Client
      */
     abstract public function getClient();
