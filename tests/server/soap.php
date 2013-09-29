@@ -1,20 +1,9 @@
 <?php
 
-require __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../Bootstrap.php';
 
-interface FooServiceInterface
-{
-    public function foo();
-}
+$server = new Zend\Soap\Server(__DIR__ . '/soap.wsdl');
 
-class Foo implements FooServiceInterface
-{
-    public function foo()
-    {
-        return 'bar remote';
-    }
-}
+$server->setClass('ProxyManagerTestAsset\RemoteProxy\Foo');
 
-$server = new Zend\Soap\Server('soap.wsdl');
-$server->setClass('Foo'); // my FooServiceInterface implementation
 $server->handle();

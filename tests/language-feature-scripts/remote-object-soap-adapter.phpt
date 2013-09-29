@@ -12,11 +12,11 @@ interface FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\Soap(
-    'http://127.0.0.1/soap.wsdl' // host to /tests/server/soap.php
+    'http://127.0.0.1:8080/soap.wsdl' // host to /tests/server/soap.php
 );
 $adapter->getClient()->setSoapVersion(SOAP_1_1);
 
-$proxy = $factory->createProxy('FooServiceInterface', $adapter);
+$proxy = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\FooServiceInterface', $adapter);
 
 var_dump($proxy->foo());
 ?>
