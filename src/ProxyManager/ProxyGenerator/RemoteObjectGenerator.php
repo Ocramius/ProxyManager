@@ -20,7 +20,6 @@ namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
-use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\ClassnameProperty;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
 
 use ReflectionClass;
@@ -53,7 +52,6 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
 
         $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($adapter = new AdapterProperty());
-        $classGenerator->addPropertyFromGenerator($classname = new ClassnameProperty());
 
         $excluded = array(
             '__get'    => true,
@@ -65,7 +63,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
             '__wakeup' => true,
         );
 
-        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $classname, $adapter));
+        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $adapter));
         
         /* @var $methods \ReflectionMethod[] */
         $methods = array_filter(
@@ -79,15 +77,16 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
                 );
             }
         );
-
+        
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
                 RemoteObjectMethod::generateMethod(
                     new MethodReflection(
                         $method->getDeclaringClass()->getName(),
-                        $method->getName()),
-			$adapter,
-			$classname
+                        $method->getName()
+                    ),
+                    $adapter,
+                    $originalClass->getName()
                 )
             );
         }

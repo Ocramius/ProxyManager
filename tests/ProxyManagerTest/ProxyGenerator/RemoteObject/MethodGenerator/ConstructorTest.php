@@ -38,16 +38,13 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
         
-        $classname = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $classname->expects($this->any())->method('getName')->will($this->returnValue('classname'));
-        
         $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMixedProperties');
-        $constructor = new Constructor($reflection, $classname, $adapter);
+        $constructor = new Constructor($reflection, $adapter);
 
         $this->assertSame('__construct', $constructor->getName());
-        $this->assertCount(2, $constructor->getParameters());
+        $this->assertCount(1, $constructor->getParameters());
         $this->assertSame(
-            "\$this->classname = \"".$reflection->getName()."\";\n\$this->adapter = \$adapter;",
+            "\$this->adapter = \$adapter;",
             $constructor->getBody()
         );
     }

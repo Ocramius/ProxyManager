@@ -33,19 +33,18 @@ class RemoteObjectMethod extends MethodGenerator
     /**
      * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
-     * @param \Zend\Code\Generator\PropertyGenerator $classnameProperty
+     * @param string                                 $classname
      *
      * @return RemoteObjectMethod|static
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
         PropertyGenerator $adapterProperty,
-        PropertyGenerator $classnameProperty
+        $classname
     ) {
         /* @var $method self */
         $method        = static::fromReflection($originalMethod);
         $adapterName   = $adapterProperty->getName();
-        $classnameName = $classnameProperty->getName();
         $parameters    = $originalMethod->getParameters();
         $methodName    = $originalMethod->getName();
         $list          = array();
@@ -54,7 +53,7 @@ class RemoteObjectMethod extends MethodGenerator
             $list[] = '$' . $parameter->getName();
         }
 
-        $body = 'return $this->' . $adapterName . '->call($this->' . $classnameName;
+        $body = 'return $this->' . $adapterName . '->call("' . $classname . '"';
         $body .= ', "' . $methodName . '", array('. implode(', ', $list) .'));';
         $method->setBody($body);
 

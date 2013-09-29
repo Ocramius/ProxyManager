@@ -64,6 +64,6 @@ class RemoteObjectFactory extends AbstractBaseFactory
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
 
-        return new $proxyClassName($interfaceName, $adapter);
+        return new $proxyClassName($adapter);
     }
 }
