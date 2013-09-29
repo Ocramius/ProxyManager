@@ -55,7 +55,7 @@ class Soap extends BaseAdapter
      */
     protected function assemble($wrappedClass, $method)
     {
-        return $method;
+        return (string) $method;
     }
     
     /**
