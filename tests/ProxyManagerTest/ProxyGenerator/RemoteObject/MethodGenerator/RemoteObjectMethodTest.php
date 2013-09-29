@@ -37,7 +37,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     {
         $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
-        
+
         $reflectionMethod = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
 
         $method = RemoteObjectMethod::generateMethod($reflectionMethod, $adapter, 'Zend\\Code\\Generator\\PropertyGenerator');

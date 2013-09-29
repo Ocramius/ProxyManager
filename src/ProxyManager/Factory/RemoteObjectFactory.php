@@ -33,33 +33,30 @@ use ReflectionClass;
 class RemoteObjectFactory extends AbstractBaseFactory
 {
     /**
-     * @param string            $interfaceName   
+     * @param string            $instanceOrClassName   
      * @param AdapterInterface  $adapter   
      * 
      * @return \ProxyManager\Proxy\RemoteObjectInterface
      */
-    public function createProxy($interfaceName, AdapterInterface $adapter)
+    public function createProxy($instanceOrClassName, AdapterInterface $adapter)
     {
-        if (! isset($this->generatedClasses[$interfaceName])) {
-            $this->generatedClasses[$interfaceName] = $this->inflector->getProxyClassName(
-                $interfaceName,
+        $className = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
+        
+        if (! isset($this->generatedClasses[$className])) {
+            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
+                $className,
                 array('factory' => get_class($this))
             );
         }
 
-        $proxyClassName = $this->generatedClasses[$interfaceName];
+        $proxyClassName = $this->generatedClasses[$className];
 
         if (! class_exists($proxyClassName)) {
-            $interfaceReflection = new ReflectionClass($interfaceName);
-            if (! $interfaceReflection->isInterface()) {
-                throw new RemoteObjectException('Wrapped remote services must be an interface');
-            }
-            
-            $interfaceName = $this->inflector->getUserClassName($interfaceName);
+            $className     = $this->inflector->getUserClassName($className);
             $phpClass      = new ClassGenerator($proxyClassName);
             $generator     = new RemoteObjectGenerator();
 
-            $generator->generate($interfaceReflection, $phpClass);
+            $generator->generate(new ReflectionClass($className), $phpClass);
             $this->configuration->getGeneratorStrategy()->generate($phpClass);
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
