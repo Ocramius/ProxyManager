@@ -93,6 +93,10 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
     public function getTestedImplementations()
     {
         return array(
+            array('ProxyManagerTestAsset\\BaseClass'),
+            array('ProxyManagerTestAsset\\ClassWithMagicMethods'),
+            array('ProxyManagerTestAsset\\ClassWithByRefMagicMethods'),
+            array('ProxyManagerTestAsset\\ClassWithMixedProperties'),
             array('ProxyManagerTestAsset\\BaseInterface'),
         );
     }
