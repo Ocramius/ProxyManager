@@ -19,6 +19,8 @@
 namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
+use ProxyManager\Generator\ClassGenerator;
+use ReflectionClass;
 
 /**
  * Base factory common logic
@@ -44,6 +46,11 @@ abstract class AbstractBaseFactory
      * @var string[]
      */
     protected $generatedClasses = array();
+    
+    /**
+     * @var \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator
+     */
+    protected $generator;
 
     /**
      * @param \ProxyManager\Configuration $configuration
@@ -54,4 +61,37 @@ abstract class AbstractBaseFactory
         // localizing some properties for performance
         $this->inflector     = $this->configuration->getClassNameInflector();
     }
+    
+    /**
+     * Generate a proxy from a class name
+     * @param string $className
+     * @return string proxy class name
+     */
+    protected function generateProxy($className)
+    {
+        if (! isset($this->generatedClasses[$className])) {
+            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
+                $className,
+                array('factory' => get_class($this))
+            );
+        }
+
+        $proxyClassName = $this->generatedClasses[$className];
+
+        if (! class_exists($proxyClassName)) {
+            $className = $this->inflector->getUserClassName($className);
+            $phpClass  = new ClassGenerator($proxyClassName);
+
+            $this->getGenerator()->generate(new ReflectionClass($className), $phpClass);
+            $this->configuration->getGeneratorStrategy()->generate($phpClass);
+            $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
+        }
+        
+        return $proxyClassName;
+    }
+    
+    /**
+     * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
+     */
+    abstract protected function getGenerator();
 }
