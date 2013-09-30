@@ -19,8 +19,6 @@
 namespace ProxyManager\Factory;
 
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
-use ProxyManager\Generator\ClassGenerator;
-use ReflectionClass;
 
 /**
  * Factory responsible of producing proxy objects
@@ -37,27 +35,17 @@ class NullObjectFactory extends AbstractBaseFactory
      */
     public function createProxy($instanceOrClassName)
     {
-        $className = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
-
-        if (! isset($this->generatedClasses[$className])) {
-            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
-                $className,
-                array('factory' => get_class($this))
-            );
-        }
-
-        $proxyClassName = $this->generatedClasses[$className];
-
-        if (! class_exists($proxyClassName)) {
-            $className = $this->inflector->getUserClassName($className);
-            $phpClass  = new ClassGenerator($proxyClassName);
-            $generator = new NullObjectGenerator();
-
-            $generator->generate(new ReflectionClass($className), $phpClass);
-            $this->configuration->getGeneratorStrategy()->generate($phpClass);
-            $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
-        }
+        $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
+        $proxyClassName = $this->generateProxy($className);
 
         return new $proxyClassName();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    protected function getGenerator()
+    {
+        return $this->generator ? $this->generator : $this->generator = new NullObjectGenerator();
     }
 }
