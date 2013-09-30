@@ -37,16 +37,21 @@ class Soap extends BaseAdapter
 
     /**
      * Rpc client building
+     *
      * @param string $uri
+     *
+     * @throws \ProxyManager\Proxy\Exception\RemoteObjectException
      */
     public function __construct($uri)
     {
         if (! class_exists('Zend\Soap\Client')) {
             throw new RemoteObjectException('Soap adapter does not exists. Please install zend-soap package.');
         }
+
         if (empty($uri)) {
             throw new RemoteObjectException('Soap WSDL is required');
         }
+
         parent::__construct($uri);
     }
 
@@ -66,8 +71,7 @@ class Soap extends BaseAdapter
         if ($this->client) {
             return $this->client;
         }
-        $this->client = new Client($this->uri);
-        
-        return $this->client;
+
+        return $this->client = new Client($this->uri);
     }
 }

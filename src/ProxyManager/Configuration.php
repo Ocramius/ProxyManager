@@ -62,10 +62,9 @@ class Configuration
     protected $classNameInflector;
 
     /**
-     * @param bool $autoGenerateProxies
      * @deprecated deprecated since version 0.5
      */
-    public function setAutoGenerateProxies($autoGenerateProxies)
+    public function setAutoGenerateProxies()
     {
     }
 

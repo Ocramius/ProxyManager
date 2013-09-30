@@ -37,16 +37,21 @@ class XmlRpc extends BaseAdapter
 
     /**
      * Rpc client building
+     *
      * @param string $uri
+     *
+     * @throws \ProxyManager\Proxy\Exception\RemoteObjectException
      */
     public function __construct($uri)
     {
         if (! class_exists('Zend\XmlRpc\Client')) {
             throw new RemoteObjectException('XmlRpc adapter does not exists. Please install zend-xmlrpc package.');
         }
+
         if (empty($uri)) {
             throw new RemoteObjectException('Webservices URI is required');
         }
+
         parent::__construct($uri);
     }
 
@@ -66,8 +71,7 @@ class XmlRpc extends BaseAdapter
         if ($this->client) {
             return $this->client;
         }
-        $this->client = new Client($this->uri);
-        
-        return $this->client;
+
+        return $this->client = new Client($this->uri);
     }
 }

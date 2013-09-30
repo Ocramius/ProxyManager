@@ -21,7 +21,6 @@ namespace ProxyManagerTest\Factory;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Generator\ClassGenerator;
-use \ProxyManager\Configuration;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**

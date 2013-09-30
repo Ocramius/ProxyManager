@@ -22,10 +22,10 @@ class Foo implements FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
-    'http://127.0.0.1/jsonrpc.php' // host to /tests/server/jsonrpc.php
+    'http://127.0.0.1:8080/jsonrpc.php' // host to /tests/server/jsonrpc.php
 );
 
-$proxy = $factory->createProxy('FooServiceInterface', $adapter);
+$proxy = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\FooServiceInterface', $adapter);
 
 var_dump($proxy->foo);
 ?>

@@ -137,7 +137,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('stdClass'));
 
         $factory    = new RemoteObjectFactory($this->config);
-        /* @var $proxy stdClass */
+        /* @var $proxy \stdClass */
         $adapter    = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
         $proxy      = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
 

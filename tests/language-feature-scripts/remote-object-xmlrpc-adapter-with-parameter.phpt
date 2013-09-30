@@ -22,10 +22,10 @@ interface BazServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
-    'http://127.0.0.1/xmlrpc.php' // host to /tests/server/xmlrpc.php
+    'http://127.0.0.1:8080/xmlrpc.php' // host to /tests/server/xmlrpc.php
 );
 
-$proxy = $factory->createProxy('BazServiceInterface', $adapter);
+$proxy = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\BazServiceInterface', $adapter);
 
 var_dump($proxy->baz('baz'));
 ?>
