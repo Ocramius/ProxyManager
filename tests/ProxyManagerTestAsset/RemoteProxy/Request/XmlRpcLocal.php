@@ -16,20 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset\RemoteProxy;
+namespace ProxyManagerTestAsset\RemoteProxy\Request;
+
+use Zend\XmlRpc\Request\Http as HttpRequest;
 
 /**
- * Simple interface for a remote API
+ * XmlRpx local request
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-interface BazServiceInterface
+class XmlRpcLocal extends HttpRequest
 {
     /**
-     * @param string $param
+     * Constructor
      *
-     * @return string
+     * Attempts to read from php://input to get raw POST request; if an error
+     * occurs in doing so, or if the XML is invalid, the request is declared a
+     * fault.
+     *
      */
-    public function baz($param);
+    public function __construct()
+    {
+    }
 }

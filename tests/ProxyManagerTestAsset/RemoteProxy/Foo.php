@@ -35,7 +35,9 @@ class Foo implements FooServiceInterface, BazServiceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param string $param
+     *
+     * @return string
      */
     public function baz($param)
     {
@@ -43,7 +45,9 @@ class Foo implements FooServiceInterface, BazServiceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param string $param
+     *
+     * @return string
      */
     public function __get($name)
     {
