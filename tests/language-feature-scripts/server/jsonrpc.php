@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../Bootstrap.php';
-
 $server = new Zend\Json\Server\Server();
 $server->setClass('ProxyManagerTestAsset\RemoteProxy\Foo', 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface');
 $server->setClass('ProxyManagerTestAsset\RemoteProxy\Foo', 'ProxyManagerTestAsset\RemoteProxy\BazServiceInterface');
@@ -18,11 +16,11 @@ $server->loadFunctions(
         new Zend\Server\Method\Definition(
             array(
                 'name' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.__get',
-                'invokeArguments' => array('name'),
                 'callback' => $callback,
             )
         )
     )
 );
 
+$server->setRequest($request); // request variable is auto included for tests
 $server->handle();

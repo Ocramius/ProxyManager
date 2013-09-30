@@ -43,7 +43,7 @@ interface FooServiceInterface
     public function foo();
 }
 
-$factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
+$factory = new \ProxyManager\Factory\RemoteObjectFactory();
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
     'http://127.0.0.1/xmlrpc.php'
 );
@@ -70,6 +70,98 @@ interface AdapterInterface
 ```
 
 It is very easy to create your own implementation (Rest for example) !
+
+## Adapter usages examples
+
+* Example with JsonRpc adapter :
+
+Json server side code :
+
+```php
+interface FooServiceInterface
+{
+    public function foo();
+}
+
+class Foo implements FooServiceInterface
+{
+    /**
+     * Foo function
+     * @return string
+     */
+    public function foo()
+    {
+        return 'bar remote';
+    }
+}
+
+$server = new Zend\Json\Server\Server();
+$server->setClass('Foo', 'FooServiceInterface');  // my FooServiceInterface implementation
+$server->handle();
+```
+
+Client side code (proxy) :
+
+```php
+interface FooServiceInterface
+{
+    public function foo();
+}
+
+$factory = new \ProxyManager\Factory\RemoteObjectFactory();
+$adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
+    'http://127.0.0.1/jsonrpc.php'
+);
+
+$proxy = $factory->createProxy('FooServiceInterface', $adapter);
+
+var_dump($proxy->foo()); // "bar remote"
+```
+
+* Example with Soap adapter :
+
+Json server side code :
+
+```php
+interface FooServiceInterface
+{
+    public function foo();
+}
+
+class Foo implements FooServiceInterface
+{
+    /**
+     * Foo function
+     * @return string
+     */
+    public function foo()
+    {
+        return 'bar remote';
+    }
+}
+
+$server = new Zend\Soap\Server(__DIR__ . '/soap.wsdl');
+$server->setClass('Foo');  // my FooServiceInterface implementation
+$server->handle();
+```
+
+Client side code (proxy) :
+
+```php
+interface FooServiceInterface
+{
+    public function foo();
+}
+
+$factory = new \ProxyManager\Factory\RemoteObjectFactory();
+$adapter = new \ProxyManager\Factory\RemoteObject\Adapter\Soap(
+    'http://127.0.0.1/soap.php'
+);
+
+$proxy = $factory->createProxy('FooServiceInterface', $adapter);
+
+var_dump($proxy->foo()); // "bar remote"
+```
 
 ## Tuning performance for production
 
