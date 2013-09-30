@@ -41,29 +41,8 @@ abstract class AbstractLazyFactory extends AbstractBaseFactory
      */
     public function createProxy($className, Closure $initializer)
     {
-        if (! isset($this->generatedClasses[$className])) {
-            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
-                $className,
-                array('factory' => get_class($this))
-            );
-        }
-
-        $proxyClassName = $this->generatedClasses[$className];
-
-        if (! class_exists($proxyClassName)) {
-            $className = $this->inflector->getUserClassName($className);
-            $phpClass  = new ClassGenerator($proxyClassName);
-
-            $this->getGenerator()->generate(new ReflectionClass($className), $phpClass);
-            $this->configuration->getGeneratorStrategy()->generate($phpClass);
-            $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
-        }
-
+        $proxyClassName = $this->generateProxy($className);
+        
         return new $proxyClassName($initializer);
     }
-
-    /**
-     * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
-     */
-    abstract protected function getGenerator();
 }
