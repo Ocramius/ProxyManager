@@ -61,9 +61,6 @@ class MethodGenerator extends ZendMethodGenerator
         /* @var $method self */
         $method = new static();
 
-        $method->setSourceContent($reflectionMethod->getContents(false));
-        $method->setSourceDirty(false);
-
         if ($reflectionMethod->getDocComment() != '') {
             $method->setDocBlock(DocBlockGenerator::fromReflection($reflectionMethod->getDocBlock()));
         }
@@ -84,7 +81,6 @@ class MethodGenerator extends ZendMethodGenerator
 
         $method->setStatic($reflectionMethod->isStatic());
         $method->setName($reflectionMethod->getName());
-        $method->setBody($reflectionMethod->getBody());
         $method->setReturnsReference($reflectionMethod->returnsReference());
 
         return $method;
