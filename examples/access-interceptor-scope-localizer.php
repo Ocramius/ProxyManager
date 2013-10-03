@@ -10,11 +10,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 
-class Foo
+class FluentCounter
 {
     public $counter = 0;
 
-    public function doFoo()
+    /** @return FluentCounter */
+    public function fluentMethod()
     {
         $this->counter += 1;
 
@@ -24,11 +25,16 @@ class Foo
 
 $config = new Configuration();
 $factory = new AccessInterceptorScopeLocalizerFactory($config);
+$foo = new FluentCounter();
 
+/* @var $proxy FluentCounter */
 $proxy = $factory->createProxy(
-    new Foo(),
-    array('doFoo' => function ($proxy) { echo "pre-foo #{$proxy->counter}!\n"; }),
-    array('doFoo' => function ($proxy) { echo "post-foo #{$proxy->counter}!\n"; })
+    $foo,
+    array('fluentMethod' => function ($proxy) { echo "pre-fluentMethod #{$proxy->counter}!\n"; }),
+    array('fluentMethod' => function ($proxy) { echo "post-fluentMethod #{$proxy->counter}!\n"; })
 );
 
-$proxy->doFoo()->doFoo()->doFoo()->doFoo();
+$proxy->fluentMethod()->fluentMethod()->fluentMethod()->fluentMethod();
+
+echo 'The proxy counter is now at ' . $proxy->counter . "\n";
+echo 'The real instance counter is now at ' . $foo->counter . "\n";

@@ -38,7 +38,7 @@ class ExampleProxy extends Example
 ```
 
 This allows to create a mirror copy of the real instance, where any change in the proxy or in the real
-instance is reflected.
+instance is reflected in both objects.
 
 The main advantage of this approach is that the proxy is now safe against fluent interfaces, which
 would break an [access interceptor value holder](access-interceptor-value-holder.md) instead.
