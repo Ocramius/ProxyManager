@@ -59,36 +59,20 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $publicProperties = new PublicPropertiesMap($originalClass);
-        $interfaces       = array('ProxyManager\\Proxy\\AccessInterceptorInterface');
-
         if ($originalClass->isInterface()) {
             throw InvalidProxiedClassException::interfaceNotSupported($originalClass);
-        } else {
-            $classGenerator->setExtendedClass($originalClass->getName());
         }
 
-        $classGenerator->setImplementedInterfaces($interfaces);
+        $classGenerator->setExtendedClass($originalClass->getName());
+        $classGenerator->setImplementedInterfaces(array('ProxyManager\\Proxy\\AccessInterceptorInterface'));
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
-        $classGenerator->addPropertyFromGenerator($publicProperties);
-
-        $excluded = array(
-            '__get'    => true,
-            '__set'    => true,
-            '__isset'  => true,
-            '__unset'  => true,
-            '__clone'  => true,
-            '__sleep'  => true,
-            '__wakeup' => true,
-        );
 
         $methods = array_filter(
             $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($excluded) {
+            function (ReflectionMethod $method) {
                 return ! (
                     $method->isConstructor()
-                    || isset($excluded[strtolower($method->getName())])
                     || $method->isFinal()
                     || $method->isStatic()
                 );

@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Configuration;
+use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
@@ -43,18 +44,18 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      */
     public function testCanGenerateMultipleDifferentProxiesForSameClass($className)
     {
-        $config = new Configuration();
-
-        $ghostProxyFactory        = new LazyLoadingGhostFactory($config);
-        $virtualProxyFactory      = new LazyLoadingValueHolderFactory($config);
-        $accessInterceptorFactory = new AccessInterceptorValueHolderFactory($config);
-        $initializer              = function () {
+        $ghostProxyFactory                      = new LazyLoadingGhostFactory();
+        $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
+        $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
+        $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
+        $initializer                            = function () {
         };
 
         $generated = array(
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
+            $accessInterceptorScopeLocalizerFactory->createProxy(new $className()),
         );
 
         foreach ($generated as $key => $proxy) {
@@ -73,6 +74,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ProxyManager\Proxy\VirtualProxyInterface', $generated[1]);
         $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[2]);
         $this->assertInstanceOf('ProxyManager\Proxy\ValueHolderInterface', $generated[2]);
+        $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[3]);
     }
 
     /**
