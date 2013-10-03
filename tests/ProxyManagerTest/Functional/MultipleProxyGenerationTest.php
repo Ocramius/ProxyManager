@@ -24,6 +24,8 @@ use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+use ReflectionClass;
+use ReflectionProperty;
 
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
@@ -44,6 +46,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      */
     public function testCanGenerateMultipleDifferentProxiesForSameClass($className)
     {
+        $skipScopeLocalizerTests                = false;
         $ghostProxyFactory                      = new LazyLoadingGhostFactory();
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
@@ -51,12 +54,22 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         $initializer                            = function () {
         };
 
+        $reflectionClass = new ReflectionClass($className);
+
+        if (PHP_VERSION_ID < 50400 && $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)) {
+            $skipScopeLocalizerTests = true;
+        }
+
         $generated = array(
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
             $accessInterceptorScopeLocalizerFactory->createProxy(new $className()),
         );
+
+        if (! $skipScopeLocalizerTests) {
+            $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy(new $className());
+        }
 
         foreach ($generated as $key => $proxy) {
             $this->assertInstanceOf($className, $proxy);
@@ -74,7 +87,10 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ProxyManager\Proxy\VirtualProxyInterface', $generated[1]);
         $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[2]);
         $this->assertInstanceOf('ProxyManager\Proxy\ValueHolderInterface', $generated[2]);
-        $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[3]);
+
+        if (! $skipScopeLocalizerTests) {
+            $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[3]);
+        }
     }
 
     /**
