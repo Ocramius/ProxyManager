@@ -1,4 +1,9 @@
 <?php
+/**
+ * This example demonstrates how an access interceptor scope localizer
+ * (which is a specific type of smart reference) is safe to use to
+ * proxy fluent interfaces.
+ */
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
