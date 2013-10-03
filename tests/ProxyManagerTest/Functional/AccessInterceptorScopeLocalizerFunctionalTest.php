@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\Functional;
 
+use PHPUnit_Framework_SkippedTestError;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -43,10 +44,12 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    public static function setUpBeforeClass()
     {
         if (PHP_VERSION_ID < 50400) {
-            $this->markTestSkipped('PHP 5.3 doesn\'t support scope localization of private properties');
+            throw new PHPUnit_Framework_SkippedTestError(
+                'PHP 5.3 doesn\'t support scope localization of private properties'
+            );
         }
     }
 
