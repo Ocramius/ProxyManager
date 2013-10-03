@@ -49,14 +49,13 @@ class MagicSet extends MagicMethodGenerator
             array(new ParameterGenerator('name'), new ParameterGenerator('value'))
         );
 
-        $override    = $originalClass->hasMethod('__set');
-        $callParent  = '';
+        $override = $originalClass->hasMethod('__set');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
         if ($override) {
-            $callParent .= '$returnValue = & parent::__set($name, $value);';
+            $callParent = '$returnValue = & parent::__set($name, $value);';
         } else {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_SET,

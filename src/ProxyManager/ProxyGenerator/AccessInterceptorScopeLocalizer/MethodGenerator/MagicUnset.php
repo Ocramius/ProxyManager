@@ -46,14 +46,13 @@ class MagicUnset extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
 
-        $override    = $originalClass->hasMethod('__unset');
-        $callParent  = '';
+        $override = $originalClass->hasMethod('__unset');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
         if ($override) {
-            $callParent .= '$returnValue = & parent::__unset($name);';
+            $callParent = '$returnValue = & parent::__unset($name);';
         } else {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_UNSET,

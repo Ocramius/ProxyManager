@@ -45,14 +45,13 @@ class MagicGet extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
 
-        $override    = $originalClass->hasMethod('__get');
-        $callParent  = '';
+        $override = $originalClass->hasMethod('__get');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
         if ($override) {
-            $callParent .= '$returnValue = & parent::__get($name);';
+            $callParent = '$returnValue = & parent::__get($name);';
         } else {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_GET,

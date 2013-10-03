@@ -46,14 +46,13 @@ class MagicIsset extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
 
-        $override    = $originalClass->hasMethod('__isset');
-        $callParent  = '';
+        $override = $originalClass->hasMethod('__isset');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
         $this->setReturnsReference(true);
 
         if ($override) {
-            $callParent .= '$returnValue = & parent::__isset($name);';
+            $callParent = '$returnValue = & parent::__isset($name);';
         } else {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_ISSET,
