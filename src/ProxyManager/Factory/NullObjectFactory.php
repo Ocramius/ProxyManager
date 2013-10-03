@@ -46,6 +46,6 @@ class NullObjectFactory extends AbstractBaseFactory
      */
     protected function getGenerator()
     {
-        return $this->generator ? $this->generator : $this->generator = new NullObjectGenerator();
+        return $this->generator ?: $this->generator = new NullObjectGenerator();
     }
 }

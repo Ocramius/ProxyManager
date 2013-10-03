@@ -50,6 +50,6 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      */
     protected function getGenerator()
     {
-        return $this->generator ? $this->generator : $this->generator = new AccessInterceptorValueHolderGenerator();
+        return $this->generator ?: $this->generator = new AccessInterceptorValueHolderGenerator();
     }
 }
