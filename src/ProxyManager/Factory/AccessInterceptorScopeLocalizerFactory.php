@@ -19,8 +19,6 @@
 namespace ProxyManager\Factory;
 
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
-use ProxyManager\Generator\ClassGenerator;
-use ReflectionClass;
 
 /**
  * Factory responsible of producing proxy objects
@@ -41,27 +39,16 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
      */
     public function createProxy($instance, array $prefixInterceptors = array(), array $suffixInterceptors = array())
     {
-        $className = get_class($instance);
-
-        if (! isset($this->generatedClasses[$className])) {
-            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
-                $className,
-                array('factory' => get_class($this))
-            );
-        }
-
-        $proxyClassName = $this->generatedClasses[$className];
-
-        if ($this->autoGenerate && ! class_exists($proxyClassName)) {
-            $className = $this->inflector->getUserClassName($className);
-            $phpClass  = new ClassGenerator($proxyClassName);
-            $generator = new AccessInterceptorScopeLocalizerGenerator();
-
-            $generator->generate(new ReflectionClass($className), $phpClass);
-            $this->configuration->getGeneratorStrategy()->generate($phpClass);
-            $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
-        }
+        $proxyClassName = $this->generateProxy(get_class($instance));
 
         return new $proxyClassName($instance, $prefixInterceptors, $suffixInterceptors);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getGenerator()
+    {
+        return $this->generator ?: $this->generator = new AccessInterceptorScopeLocalizerGenerator();
     }
 }
