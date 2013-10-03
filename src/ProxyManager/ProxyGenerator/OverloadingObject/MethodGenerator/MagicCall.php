@@ -32,14 +32,16 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicCall extends MagicMethodGenerator
 {
     /**
-     * @param \ReflectionClass                                                   $originalClass
-     * @param \Zend\Code\Generator\PropertyGenerator                             $overloading
+     * @param \ReflectionClass                          $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator    $overloading
      */
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $prototypes
     ) {
-        parent::__construct($originalClass, '__call', array(new ParameterGenerator('name'), new ParameterGenerator('arguments', 'array')));
+        parent::__construct($originalClass, '__call', array(
+            new ParameterGenerator('name'), new ParameterGenerator('arguments', 'array'))
+        );
 
         $override    = $originalClass->hasMethod('__call');
 

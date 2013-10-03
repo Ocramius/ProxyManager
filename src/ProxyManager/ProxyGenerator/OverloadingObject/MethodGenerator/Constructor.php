@@ -54,9 +54,10 @@ class Constructor extends MethodGenerator
                 $list[] = '$' . $parameter->getName();
             }
             
-            $body .= '$closure = function(' . implode(',', $list) . ') {' . $reflection->getBody() . '};' . "\n";
-            $body .= '$prototype = $this->getPrototypeFromClosure($closure);' . "\n";
-            $body .= '$this->' . $prototypes->getName() . "['$methodName'][\$prototype] = \$closure;\n";
+            $content = $reflection->getBody();
+            $body .= '$closure = function(' . implode(',', $list) . ') {' . trim($content) . '};' . "\n"
+                   . '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
+                   . '$this->' . $prototypes->getName() . "['$methodName'][\$prototype] = \$closure;\n";
         }
         
         $this->setBody($body);
