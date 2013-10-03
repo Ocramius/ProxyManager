@@ -54,6 +54,8 @@ would break an [access interceptor value holder](access-interceptor-value-holder
 ## Known limitations
 
  * It is **NOT** possible to intercept access to public properties
+ * It is **NOT** possible to proxy interfaces, since this proxy relies on `parent::method()` calls.
+   Interfaces obviously don't provide a parent method implementation.
  * calling `unset` on a property of an access interceptor scope localizer (or the real instance)
    will cause the two objects to be un-synchronized, with possible unexpected behaviour.
  * serializing or un-serializing an access interceptor scope localizer (or the real instance)
