@@ -75,7 +75,6 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
             '__unset'  => true,
             '__clone'  => true,
             '__sleep'  => true,
-            '__wakeup' => true,
         );
 
         $methods = array_filter(
