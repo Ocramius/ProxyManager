@@ -64,7 +64,6 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
-            $accessInterceptorScopeLocalizerFactory->createProxy(new $className()),
         );
 
         if (! $skipScopeLocalizerTests) {
