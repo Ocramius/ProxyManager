@@ -56,8 +56,6 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $publicProperties = new PublicPropertiesMap($originalClass);
-
         if ($originalClass->isInterface()) {
             throw InvalidProxiedClassException::interfaceNotSupported($originalClass);
         }
@@ -66,7 +64,6 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         $classGenerator->setImplementedInterfaces(array('ProxyManager\\Proxy\\AccessInterceptorInterface'));
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
-        $classGenerator->addPropertyFromGenerator($publicProperties);
 
         $excluded = array(
             '__get'    => true,
