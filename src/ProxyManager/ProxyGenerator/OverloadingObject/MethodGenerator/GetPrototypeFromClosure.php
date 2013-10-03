@@ -63,19 +63,4 @@ class GetPrototypeFromClosure extends MethodGenerator
         
         $this->setBody($body);
     }
-    
-    public static function getPrototypeFromClosure(\Closure $closure)
-    {
-        $prototype = '';
-        $r = new \ReflectionFunction($closure);
-        foreach($r->getParameters() as $arg) {
-            if ($arg->isArray()) {
-                $prototype .= 'array $' . $arg->getPosition();
-            } else {
-                $class = $arg->getClass();
-                $prototype .= ($class ?: '') . '$' . $arg->getPosition();
-            }
-        }
-        return $prototype;
-    }
 }

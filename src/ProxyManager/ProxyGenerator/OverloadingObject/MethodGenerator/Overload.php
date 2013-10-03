@@ -48,9 +48,9 @@ class Overload extends MethodGenerator
         
         $body = 
               '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
-            . 'if (isset($this->' . $prototypes->getName() . '[$methodName][$prototype])) {'
-            . '    throw new \ProxyManager\Proxy\Exception\OverloadingObjectException("An other method ($methodName) with the same prototype already exists");'
-            . '}'
+            . 'if (isset($this->' . $prototypes->getName() . '[$methodName][$prototype])) {' . "\n"
+            . '    throw new \ProxyManager\Proxy\Exception\OverloadingObjectException("An other method ($methodName) with the same prototype already exists");' . "\n"
+            . '}' . "\n"
             . '$this->' . $prototypes->getName() . '[$methodName][$prototype] = $closure;';
         $this->setBody($body);
     }
