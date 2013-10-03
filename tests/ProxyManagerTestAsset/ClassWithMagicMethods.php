@@ -71,4 +71,11 @@ class ClassWithMagicMethods
     public function __wakeup()
     {
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __clone()
+    {
+    }
 }

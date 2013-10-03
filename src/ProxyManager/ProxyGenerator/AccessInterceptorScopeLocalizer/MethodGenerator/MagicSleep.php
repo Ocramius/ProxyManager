@@ -42,7 +42,7 @@ class MagicSleep extends MagicMethodGenerator
         parent::__construct($originalClass, '__sleep');
 
         $callParent = $originalClass->hasMethod('__sleep')
-            ? '$returnValue = parent::__sleep();'
+            ? '$returnValue = & parent::__sleep();'
             : '$returnValue = array_keys((array) $this);';
 
         $this->setBody(
