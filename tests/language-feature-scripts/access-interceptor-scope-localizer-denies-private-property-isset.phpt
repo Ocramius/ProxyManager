@@ -3,7 +3,7 @@ Verifies that generated access interceptors disallow private property direct iss
 --SKIPIF--
 <?php
 if (PHP_VERSION_ID < 50400) {
-    die('PHP 5.4+ is needed to localize private properties');
+    echo 'skip PHP 5.4+ is needed to localize private properties';
 }
 ?>
 --FILE--
