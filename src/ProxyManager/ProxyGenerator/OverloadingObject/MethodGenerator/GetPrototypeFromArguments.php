@@ -50,7 +50,7 @@ class GetPrototypeFromArguments extends MethodGenerator
             . 'foreach($arguments as $arg => $value) {' . "\n"
             . '    if (is_array($arg)) {' . "\n"
             . '        $prototype .= \'array $\' . $position++;' . "\n"
-            . (preg_match('#^5\.4#', PHP_VERSION) ?
+            . (PHP_VERSION_ID >= 50400 ?
               '    } else if (is_callable($arg)) {' . "\n"
             . '        $prototype .= \'callable $\' . $position++;' . "\n"
               : '')

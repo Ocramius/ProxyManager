@@ -50,7 +50,7 @@ class GetPrototypeFromClosure extends MethodGenerator
             . 'foreach($r->getParameters() as $arg) {' . "\n"
             . '    if ($arg->isArray()) {' . "\n"
             . '        $prototype .= \'array $\' . $arg->getPosition();' . "\n"
-            . (preg_match('#^5\.4#', PHP_VERSION) ?
+            . (PHP_VERSION_ID >= 50400 ?
               '    } else if ($arg->isCallable()) {' . "\n"
             . '        $prototype .= \'callable $\' . $arg->getPosition();' . "\n"
               : '')

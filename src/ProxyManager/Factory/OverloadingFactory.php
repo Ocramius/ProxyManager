@@ -46,6 +46,6 @@ class OverloadingFactory extends AbstractBaseFactory
      */
     protected function getGenerator()
     {
-        return $this->generator ? $this->generator : $this->generator = new OverloadingObjectGenerator();
+        return $this->generator ?: $this->generator = new OverloadingObjectGenerator();
     }
 }
