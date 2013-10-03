@@ -19,25 +19,22 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Exception\InvalidProxiedClassException;
-use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
+
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
 
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicClone;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicGet;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicIsset;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicClone;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicGet;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSet;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicIsset;
 
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSleep;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
-use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
-
-use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
@@ -59,6 +56,8 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
+        $publicProperties = new PublicPropertiesMap($originalClass);
+
         if ($originalClass->isInterface()) {
             throw InvalidProxiedClassException::interfaceNotSupported($originalClass);
         }
@@ -67,12 +66,24 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         $classGenerator->setImplementedInterfaces(array('ProxyManager\\Proxy\\AccessInterceptorInterface'));
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
+        $classGenerator->addPropertyFromGenerator($publicProperties);
+
+        $excluded = array(
+            '__get'    => true,
+            '__set'    => true,
+            '__isset'  => true,
+            '__unset'  => true,
+            '__clone'  => true,
+            '__sleep'  => true,
+            '__wakeup' => true,
+        );
 
         $methods = array_filter(
             $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) {
+            function (ReflectionMethod $method) use ($excluded) {
                 return ! (
                     $method->isConstructor()
+                    || isset($excluded[strtolower($method->getName())])
                     || $method->isFinal()
                     || $method->isStatic()
                 );
@@ -95,5 +106,23 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         );
         $classGenerator->addMethodFromGenerator(new SetMethodPrefixInterceptor($prefixInterceptors));
         $classGenerator->addMethodFromGenerator(new SetMethodSuffixInterceptor($suffixInterceptors));
+        $classGenerator->addMethodFromGenerator(
+            new MagicGet($originalClass, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicSet($originalClass, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicIsset($originalClass, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicUnset($originalClass, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors)
+        );
+        $classGenerator->addMethodFromGenerator(
+            new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors)
+        );
     }
 }
