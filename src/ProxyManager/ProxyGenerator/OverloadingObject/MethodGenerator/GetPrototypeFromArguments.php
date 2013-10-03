@@ -45,20 +45,21 @@ class GetPrototypeFromArguments extends MethodGenerator
         $this->setDocblock('{@inheritDoc}');
         
         $body = 
-              '$prototype = \'p\';' . "\n"
+              '$prototype = array();' . "\n"
             . '$position = 0;' . "\n"
             . 'foreach($arguments as $arg => $value) {' . "\n"
-            . '    if (is_array($arg)) {' . "\n"
-            . '        $prototype .= \'array $\' . $position++;' . "\n"
+            . '    if (is_array($value)) {' . "\n"
+            . '        $prototype[] = \'array $\' . $position++;' . "\n"
             . (PHP_VERSION_ID >= 50400 ?
-              '    } else if (is_callable($arg)) {' . "\n"
-            . '        $prototype .= \'callable $\' . $position++;' . "\n"
+              '    } else if (is_callable($value)) {' . "\n"
+            . '        $prototype[] = \'callable $\' . $position++;' . "\n"
               : '')
             . '    } else {' . "\n"
             . '        $class = is_object($value) ? get_class($value) : \'\';' . "\n"
-            . '        $prototype .= ($class && $class != "stdClass" ? $class : \'\') . \'$\' . $position++;' . "\n"
+            . '        $prototype[] = ($class ? $class . \' \' : \'\') . \'$\' . $position++;' . "\n"
             . '    }' . "\n"
             . '}' . "\n"
+            . '$prototype = $prototype ? implode(\',\', $prototype): \'void\';' . "\n"
             . 'return $prototype;';
         
         $this->setBody($body);

@@ -37,7 +37,7 @@ class GetPrototypeFromClosure extends MethodGenerator
         parent::__construct('getPrototypeFromClosure');
         parent::setVisibility(parent::VISIBILITY_PROTECTED);
         
-        $interceptor = new ParameterGenerator('function');
+        $interceptor = new ParameterGenerator('closure');
 
         $interceptor->setType('Closure');
         
@@ -45,20 +45,21 @@ class GetPrototypeFromClosure extends MethodGenerator
         $this->setDocblock('{@inheritDoc}');
         
         $body = 
-              '$prototype = \'p\';' . "\n"
-            . '$r = new \ReflectionFunction($function);' . "\n"
+              '$prototype = array();' . "\n"
+            . '$r = new \ReflectionFunction($closure);' . "\n"
             . 'foreach($r->getParameters() as $arg) {' . "\n"
             . '    if ($arg->isArray()) {' . "\n"
-            . '        $prototype .= \'array $\' . $arg->getPosition();' . "\n"
+            . '        $prototype[] = \'array $\' . $arg->getPosition();' . "\n"
             . (PHP_VERSION_ID >= 50400 ?
               '    } else if ($arg->isCallable()) {' . "\n"
-            . '        $prototype .= \'callable $\' . $arg->getPosition();' . "\n"
+            . '        $prototype[] = \'callable $\' . $arg->getPosition();' . "\n"
               : '')
             . '    } else {' . "\n"
             . '        $class = $arg->getClass();' . "\n"
-            . '        $prototype .= ($class ? $class->getName() : \'\') . \'$\' . $arg->getPosition();' . "\n"
+            . '        $prototype[] = ($class ? $class->getName() . \' \' : \'\') . \'$\' . $arg->getPosition();' . "\n"
             . '    }' . "\n"
             . '}' . "\n"
+            . '$prototype = $prototype ? implode(\',\', $prototype): \'void\';' . "\n"
             . 'return $prototype;';
         
         $this->setBody($body);
