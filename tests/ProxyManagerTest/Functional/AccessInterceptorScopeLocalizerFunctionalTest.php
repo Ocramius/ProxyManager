@@ -289,16 +289,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();
 
-        try {
-            $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
-        } catch (UnsupportedProxiedClassException $exception) {
-            if (PHP_VERSION_ID >= 50400) {
-                throw $exception;
-            }
-
-            $this->markTestSkipped('PHP 5.3 does not support proxying private properties');
-        }
-
+        $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
         $strategy->generate($generatedClass);
 
         return $generatedClassName;
