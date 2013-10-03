@@ -39,7 +39,7 @@ class BaseClass implements BaseInterface
     /**
      * @var string
      */
-    protected $privateProperty = 'privatePropertyDefault';
+    private $privateProperty = 'privatePropertyDefault';
 
     /**
      * @return string
