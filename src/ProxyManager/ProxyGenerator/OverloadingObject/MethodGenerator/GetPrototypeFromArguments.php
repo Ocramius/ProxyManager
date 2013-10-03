@@ -50,10 +50,6 @@ class GetPrototypeFromArguments extends MethodGenerator
             . 'foreach($arguments as $arg => $value) {' . "\n"
             . '    if (is_array($value)) {' . "\n"
             . '        $prototype[] = \'array $\' . $position++;' . "\n"
-            . (PHP_VERSION_ID >= 50400 ?
-              '    } else if (is_callable($value)) {' . "\n"
-            . '        $prototype[] = \'callable $\' . $position++;' . "\n"
-              : '')
             . '    } else {' . "\n"
             . '        $class = is_object($value) ? get_class($value) : \'\';' . "\n"
             . '        $prototype[] = ($class ? $class . \' \' : \'\') . \'$\' . $position++;' . "\n"

@@ -54,32 +54,32 @@ class GetPrototypeFromClosureTestTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals(
             'void',
-            $getPrototypeFromClosure(function() { return; })
+            $getPrototypeFromClosure(function() {})
         );
         
         $this->assertEquals(
             'array $0',
-            $getPrototypeFromClosure(function(array $foo) { return; })
+            $getPrototypeFromClosure(function(array $foo) {})
         );
         
         $this->assertEquals(
             '$0,$1',
-            $getPrototypeFromClosure(function($foo, $bar) { return; })
+            $getPrototypeFromClosure(function($foo, $bar) {})
         );
         
         $this->assertEquals(
             '$0,array $1',
-            $getPrototypeFromClosure(function($foo, array $bar) { return; })
+            $getPrototypeFromClosure(function($foo, array $bar) {})
         );
         
         $this->assertEquals(
             '$0,ProxyManagerTestAsset\OverloadingObjectMock $1',
-            $getPrototypeFromClosure(function($foo, \ProxyManagerTestAsset\OverloadingObjectMock $bar) { return; })
+            $getPrototypeFromClosure(function($foo, \ProxyManagerTestAsset\OverloadingObjectMock $bar) {})
         );
         
         $this->assertEquals(
             '$0,stdClass $1',
-            $getPrototypeFromClosure(function($foo, \stdClass $bar) { return; })
+            $getPrototypeFromClosure(function($foo, \stdClass $bar) {})
         );
     }
 }

@@ -38,7 +38,6 @@ class GetPrototypeFromClosure extends MethodGenerator
         parent::setVisibility(parent::VISIBILITY_PROTECTED);
         
         $interceptor = new ParameterGenerator('closure');
-
         $interceptor->setType('Closure');
         
         $this->setParameter($interceptor);
@@ -50,10 +49,6 @@ class GetPrototypeFromClosure extends MethodGenerator
             . 'foreach($r->getParameters() as $arg) {' . "\n"
             . '    if ($arg->isArray()) {' . "\n"
             . '        $prototype[] = \'array $\' . $arg->getPosition();' . "\n"
-            . (PHP_VERSION_ID >= 50400 ?
-              '    } else if ($arg->isCallable()) {' . "\n"
-            . '        $prototype[] = \'callable $\' . $arg->getPosition();' . "\n"
-              : '')
             . '    } else {' . "\n"
             . '        $class = $arg->getClass();' . "\n"
             . '        $prototype[] = ($class ? $class->getName() . \' \' : \'\') . \'$\' . $arg->getPosition();' . "\n"
