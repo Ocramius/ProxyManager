@@ -35,6 +35,6 @@ class LazyLoadingValueHolderFactory extends AbstractLazyFactory
      */
     protected function getGenerator()
     {
-        return $this->generator ? $this->generator : $this->generator = new LazyLoadingValueHolderGenerator();
+        return $this->generator ?: $this->generator = new LazyLoadingValueHolderGenerator();
     }
 }

@@ -35,6 +35,6 @@ class LazyLoadingGhostFactory extends AbstractLazyFactory
      */
     protected function getGenerator()
     {
-        return $this->generator ? $this->generator : $this->generator = new LazyLoadingGhostGenerator();
+        return $this->generator ?: $this->generator = new LazyLoadingGhostGenerator();
     }
 }
