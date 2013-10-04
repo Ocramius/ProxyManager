@@ -68,6 +68,6 @@ class JsonRpc extends BaseAdapter
      */
     public function getClient()
     {
-        return $this->client ?: $this->client = new Client($this->uri);
+        return $this->client ?: $this->client = new Client($this->uri->toString());
     }
 }

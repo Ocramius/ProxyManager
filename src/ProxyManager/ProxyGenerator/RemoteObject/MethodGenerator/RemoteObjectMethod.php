@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use ReflectionClass;
 
 /**
  * Method decorator for remote objects
@@ -33,14 +34,14 @@ class RemoteObjectMethod extends MethodGenerator
     /**
      * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
-     * @param string                                 $className
+     * @param \ReflectionClass;                      $originalClass
      *
      * @return RemoteObjectMethod|static
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
         PropertyGenerator $adapterProperty,
-        $className
+        ReflectionClass $originalClass
     ) {
         /* @var $method self */
         $method        = static::fromReflection($originalMethod);
@@ -52,8 +53,8 @@ class RemoteObjectMethod extends MethodGenerator
         }
 
         $method->setBody(
-            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($className, true)
-            . ', "' . $originalMethod->getName() . '", array('. implode(', ', $list) .'));'
+            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+            . ', ' . var_export($originalMethod->getName(), true) . ', array('. implode(', ', $list) .'));'
         );
 
         return $method;

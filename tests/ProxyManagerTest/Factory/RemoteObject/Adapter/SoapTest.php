@@ -50,6 +50,7 @@ class SoapTest extends PHPUnit_Framework_TestCase
     {
         $xmlRpc = new Soap('http://localhost/webservices.php');
         $client = $xmlRpc->getClient();
+        
         $this->assertTrue($client instanceof \Zend\Soap\Client);
     }
 }

@@ -37,6 +37,7 @@ class LocalHttp extends HttpClient
         if (!file_exists($uri)) {
             throw new \InvalidArgumentException(sprintf('Target file "%s" do not exists', $uri));
         }
+        
         $this->uri = $uri;
         $this->type = $type;
     }

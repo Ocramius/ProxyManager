@@ -46,7 +46,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $interfaces       = array('ProxyManager\\Proxy\\RemoteObjectInterface');
+        $interfaces = array('ProxyManager\\Proxy\\RemoteObjectInterface');
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -62,9 +62,6 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
             '__set'    => true,
             '__isset'  => true,
             '__unset'  => true,
-            '__clone'  => true,
-            '__sleep'  => true,
-            '__wakeup' => true,
         );
         
         /* @var $methods \ReflectionMethod[] */
@@ -88,29 +85,15 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
                         $method->getName()
                     ),
                     $adapter,
-                    $originalClass->getName()
+                    $originalClass
                 )
             );
         }
         
-        $classGenerator->addMethodFromGenerator(
-            new Constructor($originalClass, $adapter)
-        );
-        
-        $classGenerator->addMethodFromGenerator(
-            new MagicGet($originalClass, $adapter)
-        );
-        
-        $classGenerator->addMethodFromGenerator(
-            new MagicSet($originalClass, $adapter)
-        );
-        
-        $classGenerator->addMethodFromGenerator(
-            new MagicIsset($originalClass, $adapter)
-        );
-        
-        $classGenerator->addMethodFromGenerator(
-            new MagicUnset($originalClass, $adapter)
-        );
+        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $adapter));
+        $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $adapter));
+        $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $adapter));
+        $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $adapter));
+        $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $adapter));
     }
 }

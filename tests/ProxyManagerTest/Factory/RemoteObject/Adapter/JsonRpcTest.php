@@ -50,6 +50,7 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
     {
         $xmlRpc = new JsonRpc('http://localhost/webservices.php');
         $client = $xmlRpc->getClient();
+        
         $this->assertTrue($client instanceof \Zend\Json\Server\Client);
     }
 }

@@ -19,6 +19,7 @@
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
+use Zend\Uri\Http as HttpUri;
 
 /**
  * Remote Object base adapter
@@ -30,7 +31,7 @@ abstract class BaseAdapter implements AdapterInterface
 {
     /**
      * URI of the webservice endpoint
-     * @var string 
+     * @var HttpUri 
      */
     protected $uri;
     
@@ -40,7 +41,10 @@ abstract class BaseAdapter implements AdapterInterface
      */
     public function __construct($uri)
     {
-        $this->uri = $uri;
+        $this->uri = new HttpUri($uri);
+        if (! $this->uri->isValid()) {
+            throw new RemoteObjectException(sprintf('Uri "%s" is not a valid HTTP uri', $uri));
+        }
     }
     
     /**

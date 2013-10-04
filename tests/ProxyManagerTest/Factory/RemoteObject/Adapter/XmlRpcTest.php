@@ -50,6 +50,7 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
     {
         $xmlRpc = new XmlRpc('http://localhost/webservices.php');
         $client = $xmlRpc->getClient();
+        
         $this->assertTrue($client instanceof \Zend\XmlRpc\Client);
     }
 }
