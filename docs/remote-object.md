@@ -45,7 +45,7 @@ interface FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory();
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
-    'http://127.0.0.1/xmlrpc.php'
+    'https://example.org/xmlrpc.php'
 );
 
 $proxy = $factory->createProxy('FooServiceInterface', $adapter);
@@ -110,7 +110,7 @@ interface FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory();
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
-    'http://127.0.0.1/jsonrpc.php'
+    'https://example.org/jsonrpc.php'
 );
 
 $proxy = $factory->createProxy('FooServiceInterface', $adapter);
@@ -155,7 +155,7 @@ interface FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory();
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\Soap(
-    'http://127.0.0.1/soap.php'
+    'https://example.org/soap.php'
 );
 
 $proxy = $factory->createProxy('FooServiceInterface', $adapter);

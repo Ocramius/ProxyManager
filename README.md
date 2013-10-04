@@ -167,10 +167,10 @@ interface FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory();
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
-    'http://127.0.0.1/xmlrpc.php' // your XmlRpc host
+    'https://example.org/xmlrpc.php' // your XmlRpc host
 );
 
-// proxy is your distant implementation
+// proxy is your remote implementation
 $proxy = $factory->createProxy('FooServiceInterface', $adapter);
 ```
 
