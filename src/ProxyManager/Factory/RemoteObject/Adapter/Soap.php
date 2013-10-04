@@ -18,9 +18,6 @@
 
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
-use Zend\Soap\Client;
-use ProxyManager\Proxy\Exception\RemoteObjectException;
-
 /**
  * Remote Object SOAP adapter
  *
@@ -30,41 +27,10 @@ use ProxyManager\Proxy\Exception\RemoteObjectException;
 class Soap extends BaseAdapter
 {
     /**
-     * Rpc client building
-     *
-     * @param string $uri
-     *
-     * @throws \ProxyManager\Proxy\Exception\RemoteObjectException
-     */
-    public function __construct($uri)
-    {
-        if (! class_exists('Zend\Soap\Client')) {
-            throw new RemoteObjectException('Soap adapter does not exists. Please install zend-soap package.');
-        }
-
-        if (empty($uri)) {
-            throw new RemoteObjectException('Soap WSDL is required');
-        }
-
-        parent::__construct($uri);
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected function assemble($wrappedClass, $method)
     {
         return (string) $method;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public function getClient()
-    {
-        if (null === $this->client) {
-            $this->setClient(new Client($this->uri->toString()));
-        }
-        return $this->client;
     }
 }

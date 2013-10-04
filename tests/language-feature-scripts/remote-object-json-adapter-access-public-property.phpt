@@ -6,6 +6,7 @@ Verifies that generated remote object can call public property
 require_once __DIR__ . '/init.php';
 
 use ProxyManagerTestAsset\RemoteProxy\Client\LocalHttp;
+use Zend\Json\Server\Client;
 
 interface FooServiceInterface
 {
@@ -24,7 +25,7 @@ class Foo implements FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
-    'http://127.0.0.1:8080/jsonrpc.php' // host to /tests/server/jsonrpc.php
+    new Client('http://127.0.0.1:8080/jsonrpc.php') // host to /tests/server/jsonrpc.php
 );
 
 /**

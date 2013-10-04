@@ -6,6 +6,7 @@ Verifies that generated remote object can call public method
 require_once __DIR__ . '/init.php';
 
 use ProxyManagerTestAsset\RemoteProxy\Client\LocalHttp;
+use Zend\XmlRpc\Client;
 
 interface FooServiceInterface
 {
@@ -14,7 +15,7 @@ interface FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
-    'http://127.0.0.1:8080/xmlrpc.php' // host to /tests/server/xmlrpc.php
+    new Client('http://127.0.0.1:8080/xmlrpc.php') // host to /tests/server/xmlrpc.php
 );
 
 /**

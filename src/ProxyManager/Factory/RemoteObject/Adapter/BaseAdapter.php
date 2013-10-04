@@ -19,6 +19,7 @@
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
+use ProxyManager\Proxy\Exception\RemoteObjectException;
 use Zend\Uri\Http as HttpUri;
 use Zend\Server\Client;
 
@@ -45,13 +46,12 @@ abstract class BaseAdapter implements AdapterInterface
     /**
      * Constructor
      * 
-     * @param string $uri
+     * @param Client $client
      */
-    public function __construct($uri)
+    public function __construct(Client $client = null)
     {
-        $this->uri = new HttpUri($uri);
-        if (! $this->uri->isValid()) {
-            throw new RemoteObjectException(sprintf('Uri "%s" is not a valid HTTP uri', $uri));
+        if ($client) {
+            $this->setClient($client);
         }
     }
     
@@ -81,7 +81,13 @@ abstract class BaseAdapter implements AdapterInterface
      *
      * @return \Zend\Server\Client
      */
-    abstract public function getClient();
+    public function getClient()
+    {
+        if (null === $this->client) {
+            throw new RemoteObjectException('You must defined an adapter client');
+        }
+        return $this->client;
+    }
     
     /**
      * Set adapter client

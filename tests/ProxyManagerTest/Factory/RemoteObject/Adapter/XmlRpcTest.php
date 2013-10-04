@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc;
+use Zend\XmlRpc\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc}
@@ -37,7 +38,8 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
     public function testCannotBuiltXmlRpcWithoutUri()
     {
         $this->setExpectedException('ProxyManager\Proxy\Exception\RemoteObjectException');
-        new XmlRpc('');
+        $adapter = new XmlRpc();
+        $adapter->getClient();
     }
     
     /**
@@ -48,7 +50,7 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
      */
     public function testCanBuiltXmlRpcWithUri()
     {
-        $xmlRpc = new XmlRpc('http://localhost/webservices.php');
+        $xmlRpc = new XmlRpc(new Client('http://localhost/webservices.php'));
         $client = $xmlRpc->getClient();
         
         $this->assertTrue($client instanceof \Zend\XmlRpc\Client);

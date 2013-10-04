@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\Soap;
+use Zend\Soap\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\Soap}
@@ -37,7 +38,8 @@ class SoapTest extends PHPUnit_Framework_TestCase
     public function testCannotBuiltSoapWithoutUri()
     {
         $this->setExpectedException('ProxyManager\Proxy\Exception\RemoteObjectException');
-        new Soap('');
+        $adapter = new Soap();
+        $adapter->getClient();
     }
     
     /**
@@ -48,7 +50,7 @@ class SoapTest extends PHPUnit_Framework_TestCase
      */
     public function testCanBuiltSoapWithUri()
     {
-        $xmlRpc = new Soap('http://localhost/webservices.php');
+        $xmlRpc = new Soap(new Client('http://localhost/webservices.php'));
         $client = $xmlRpc->getClient();
         
         $this->assertTrue($client instanceof \Zend\Soap\Client);

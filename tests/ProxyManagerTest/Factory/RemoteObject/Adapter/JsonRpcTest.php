@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc;
+use Zend\Json\Server\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc}
@@ -37,7 +38,8 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
     public function testCannotBuiltJsonRpcWithoutUri()
     {
         $this->setExpectedException('ProxyManager\Proxy\Exception\RemoteObjectException');
-        new JsonRpc('');
+        $adapter = new JsonRpc();
+        $adapter->getClient();
     }
     
     /**
@@ -48,7 +50,7 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
      */
     public function testCanBuiltJsonRpcWithUri()
     {
-        $xmlRpc = new JsonRpc('http://localhost/webservices.php');
+        $xmlRpc = new JsonRpc(new Client('http://localhost/webservices.php'));
         $client = $xmlRpc->getClient();
         
         $this->assertTrue($client instanceof \Zend\Json\Server\Client);
