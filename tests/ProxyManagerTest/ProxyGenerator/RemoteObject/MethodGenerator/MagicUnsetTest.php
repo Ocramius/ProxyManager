@@ -44,7 +44,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__unset', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertStringMatchesFormat(
-            'return $this->foo->call("ProxyManagerTestAsset\EmptyClass", "__unset", array($name));',
+            'return $this->foo->call(\'ProxyManagerTestAsset\\\EmptyClass\', \'__unset\', array($name));',
             $magicGet->getBody()
         );
     }

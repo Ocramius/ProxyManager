@@ -44,18 +44,17 @@ class RemoteObjectMethod extends MethodGenerator
     ) {
         /* @var $method self */
         $method        = static::fromReflection($originalMethod);
-        $adapterName   = $adapterProperty->getName();
         $parameters    = $originalMethod->getParameters();
-        $methodName    = $originalMethod->getName();
         $list          = array();
         
         foreach ($parameters as $parameter) {
-            $list[] = /*var_export($parameter->getName(), true) . ' => $'*/ '$' . $parameter->getName();
+            $list[] = '$' . $parameter->getName();
         }
 
-        $body = 'return $this->' . $adapterName . '->call("' . $className . '"';
-        $body .= ', "' . $methodName . '", array('. implode(', ', $list) .'));';
-        $method->setBody($body);
+        $method->setBody(
+            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($className, true)
+            . ', "' . $originalMethod->getName() . '", array('. implode(', ', $list) .'));'
+        );
 
         return $method;
     }

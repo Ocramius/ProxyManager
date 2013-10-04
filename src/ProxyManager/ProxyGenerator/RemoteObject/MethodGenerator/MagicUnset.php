@@ -33,19 +33,17 @@ class MagicUnset extends MagicMethodGenerator
 {
     /**
      * Constructor
+     * @param ReflectionClass                        $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $adapterProperty
-    ) {
+    public function __construct(ReflectionClass $originalClass,PropertyGenerator $adapterProperty)
+    {
         parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
 
-        $adapterName = $adapterProperty->getName();
-        
         $this->setDocblock('@param string $name');
-
-        $body = 'return $this->' . $adapterName . '->call("' . $originalClass->getName() . '"';
-        $body .= ', "__unset", array($name));';
-        $this->setBody($body);
+        $this->setBody(
+              'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+             . ', \'__unset\', array($name));'
+        );
     }
 }

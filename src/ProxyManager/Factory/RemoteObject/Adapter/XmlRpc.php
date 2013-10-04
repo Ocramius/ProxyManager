@@ -68,10 +68,6 @@ class XmlRpc extends BaseAdapter
      */
     public function getClient()
     {
-        if ($this->client) {
-            return $this->client;
-        }
-
-        return $this->client = new Client($this->uri);
+        return $this->client ?: $this->client = new Client($this->uri);
     }
 }

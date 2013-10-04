@@ -33,23 +33,21 @@ class MagicSet extends MagicMethodGenerator
 {
     /**
      * Constructor
+     * @param ReflectionClass                        $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $adapterProperty
-    ) {
+    public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapterProperty)
+    {
         parent::__construct(
             $originalClass,
             '__set',
             array(new ParameterGenerator('name'), new ParameterGenerator('value'))
         );
-
-        $adapterName = $adapterProperty->getName();
         
         $this->setDocblock('@param string \$name\n@param mixed \$value');
-
-        $body = 'return $this->' . $adapterName . '->call("' . $originalClass->getName() . '"';
-        $body .= ', "__set", array($name, $value));';
-        $this->setBody($body);
+        $this->setBody(
+            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+            .', \'__set\', array($name, $value));'
+        );
     }
 }

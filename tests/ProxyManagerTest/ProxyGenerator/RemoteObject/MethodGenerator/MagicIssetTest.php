@@ -44,7 +44,7 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__isset', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertStringMatchesFormat(
-            'return $this->foo->call("ProxyManagerTestAsset\EmptyClass", "__isset", array($name));',
+            'return $this->foo->call(\'ProxyManagerTestAsset\\\EmptyClass\', \'__isset\', array($name));',
             $magicGet->getBody()
         );
     }

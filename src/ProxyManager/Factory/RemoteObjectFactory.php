@@ -48,6 +48,6 @@ class RemoteObjectFactory extends AbstractBaseFactory
      */
     protected function getGenerator()
     {
-        return $this->generator ? $this->generator : $this->generator = new RemoteObjectGenerator();
+        return $this->generator ?: $this->generator = new RemoteObjectGenerator();
     }
 }

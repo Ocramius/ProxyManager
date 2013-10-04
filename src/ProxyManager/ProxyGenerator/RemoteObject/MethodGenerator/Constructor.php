@@ -41,13 +41,14 @@ class Constructor extends MethodGenerator
     {
         parent::__construct('__construct');
 
-        $adapterName   = $adapter->getName();
+        $adapterName = $adapter->getName();
         
         $this->setParameter(new ParameterGenerator($adapterName, 'ProxyManager\Factory\RemoteObject\AdapterInterface'));
 
-        $docBlock = "@override constructor for remote object control\n\n";
-        $docBlock .= "@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter";
-        $this->setDocblock($docBlock);
+        $this->setDocblock(
+              '@override constructor for remote object control\n\n'
+            . '@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter'
+        );
 
         $body = '$this->' . $adapterName . ' = $' . $adapterName . ';';
 
