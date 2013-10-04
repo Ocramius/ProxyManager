@@ -30,12 +30,6 @@ use ProxyManager\Proxy\Exception\RemoteObjectException;
 class XmlRpc extends BaseAdapter
 {
     /**
-     * XmlRpc client
-     * @var \Zend\XmlRpc\Client
-     */
-    private $client;
-
-    /**
      * Rpc client building
      *
      * @param string $uri
@@ -68,6 +62,9 @@ class XmlRpc extends BaseAdapter
      */
     public function getClient()
     {
-        return $this->client ?: $this->client = new Client($this->uri->toString());
+        if (null === $this->client) {
+            $this->setClient(new Client($this->uri->toString()));
+        }
+        return $this->client;
     }
 }

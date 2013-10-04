@@ -20,6 +20,7 @@ namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use Zend\Uri\Http as HttpUri;
+use Zend\Server\Client;
 
 /**
  * Remote Object base adapter
@@ -36,7 +37,14 @@ abstract class BaseAdapter implements AdapterInterface
     protected $uri;
     
     /**
+     * Adapter client
+     * @var \Zend\Json\Server\Client
+     */
+    protected $client;
+    
+    /**
      * Constructor
+     * 
      * @param string $uri
      */
     public function __construct($uri)
@@ -69,9 +77,19 @@ abstract class BaseAdapter implements AdapterInterface
     abstract protected function assemble($wrappedClass, $method);
     
     /**
-     * Build webservices client
+     * Get adapter client
      *
      * @return \Zend\Server\Client
      */
     abstract public function getClient();
+    
+    /**
+     * Set adapter client
+     *
+     * @return \Zend\Server\Client
+     */
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
+    }
 }
