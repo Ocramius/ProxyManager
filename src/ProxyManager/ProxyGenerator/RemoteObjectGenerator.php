@@ -46,7 +46,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        $interfaces          = array('ProxyManager\\Proxy\\RemoteObjectInterface');
+        $interfaces       = array('ProxyManager\\Proxy\\RemoteObjectInterface');
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();

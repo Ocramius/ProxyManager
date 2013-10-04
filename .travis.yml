@@ -13,7 +13,6 @@ before_script:
 script:
   - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --exclude-group Functional,Performance
   - ./vendor/bin/phpunit --group=Functional
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.4' ]; then echo 'starting PHP server on port 8080'; php -S localhost:8080 -t tests/server/ & fi"
   - ./vendor/bin/phpunit ./tests/language-feature-scripts/
   - php -n ./vendor/bin/phpunit --group=Performance
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
