@@ -29,7 +29,7 @@ class XmlRpc extends BaseAdapter
     /**
      * {@inheritDoc}
      */
-    protected function assemble($wrappedClass, $method)
+    protected function getServiceName($wrappedClass, $method)
     {
         return $wrappedClass . '.' . $method;
     }

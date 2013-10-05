@@ -64,7 +64,7 @@ abstract class BaseAdapter implements AdapterInterface
     public function call($wrappedClass, $method, array $params = array())
     {
         $client      = $this->getClient();
-        $serviceName = $this->assemble($wrappedClass, $method);
+        $serviceName = $this->getServiceName($wrappedClass, $method);
         
         if (isset($this->map[$serviceName])) {
             $serviceName = $this->map[$serviceName];
@@ -74,14 +74,14 @@ abstract class BaseAdapter implements AdapterInterface
     }
 
     /**
-     * Assembly of the service name will be used by the adapter
+     *Get the service name will be used by the adapter
      *
      * @param string $wrappedClass
      * @param string $method
      *
      * @return string Service name
      */
-    abstract protected function assemble($wrappedClass, $method);
+    abstract protected function getServiceName($wrappedClass, $method);
     
     /**
      * Get adapter client
