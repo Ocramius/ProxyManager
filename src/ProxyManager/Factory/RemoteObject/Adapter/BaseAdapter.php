@@ -36,6 +36,10 @@ abstract class BaseAdapter implements AdapterInterface
      */
     protected $client;
     
+    /**
+     * Service name mapping
+     * @var array
+     */
     protected $map = array();
     
     /**
