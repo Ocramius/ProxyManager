@@ -139,7 +139,9 @@ class PublicScopeSimulator
     private static function getScopeReBind()
     {
         if (PHP_VERSION_ID < 50400) {
+            // @codeCoverageIgnoreStart
             return '';
+            // @codeCoverageIgnoreEnd
         }
 
         return '    $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT);' . "\n"

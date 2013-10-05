@@ -18,28 +18,41 @@
 
 namespace ProxyManagerTest\Functional;
 
+use PHPUnit_Framework_SkippedTestError;
 use PHPUnit_Framework_TestCase;
-use PHPUnit_Framework_MockObject_MockObject as Mock;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\Proxy\GhostObjectInterface;
-use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator} produced objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
  * @group Functional
  */
-class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
+class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritDoc}
+     */
+    public static function setUpBeforeClass()
+    {
+        if (PHP_VERSION_ID < 50400) {
+            throw new PHPUnit_Framework_SkippedTestError(
+                'PHP 5.3 doesn\'t support scope localization of private properties'
+            );
+        }
+    }
+
     /**
      * @dataProvider getProxyMethods
      */
@@ -47,12 +60,79 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy = new $proxyName($this->createInitializer($className, $instance));
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
+        $proxy     = new $proxyName($instance);
 
-        $this->assertFalse($proxy->isProxyInitialized());
+        $this->assertProxySynchronized($instance, $proxy);
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
-        $this->assertTrue($proxy->isProxyInitialized());
+
+        $listener  = $this->getMock('stdClass', array('__invoke'));
+        $listener
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($proxy, $proxy, $method, $params, false);
+
+        $proxy->setMethodPrefixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+                $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
+            }
+        );
+
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+
+        $random = uniqid();
+
+        $proxy->setMethodPrefixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($random) {
+                $returnEarly = true;
+
+                return $random;
+            }
+        );
+
+        $this->assertSame($random, call_user_func_array(array($proxy, $method), $params));
+        $this->assertProxySynchronized($instance, $proxy);
+    }
+
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testMethodCallsWithSuffixListener($className, $instance, $method, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy($className);
+
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
+        $proxy     = new $proxyName($instance);
+        $listener  = $this->getMock('stdClass', array('__invoke'));
+        $listener
+            ->expects($this->once())
+            ->method('__invoke')
+            ->with($proxy, $proxy, $method, $params, $expectedValue, false);
+
+        $proxy->setMethodSuffixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) {
+                $listener->__invoke($proxy, $instance, $method, $params, $returnValue, $returnEarly);
+            }
+        );
+
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+
+        $random = uniqid();
+
+        $proxy->setMethodSuffixInterceptor(
+            $method,
+            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($random) {
+                $returnEarly = true;
+
+                return $random;
+            }
+        );
+
+        $this->assertSame($random, call_user_func_array(array($proxy, $method), $params));
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -61,12 +141,11 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($className);
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
+        $proxy     = unserialize(serialize(new $proxyName($instance)));
 
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy = unserialize(serialize(new $proxyName($this->createInitializer($className, $instance))));
-
-        $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -76,12 +155,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy  = new $proxyName($this->createInitializer($className, $instance));
-        $cloned = clone $proxy;
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
+        $proxy     = new $proxyName($instance);
+        $cloned    = clone $proxy;
 
-        $this->assertTrue($cloned->isProxyInitialized());
+        $this->assertProxySynchronized($instance, $proxy);
         $this->assertSame($expectedValue, call_user_func_array(array($cloned, $method), $params));
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -89,9 +169,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
     {
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
-        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -99,12 +179,12 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
-        $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($newValue, $proxy->$publicProperty);
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -112,20 +192,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyExistence($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface */
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
         $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
-    }
+        $this->assertProxySynchronized($instance, $proxy);
 
-    /**
-     * @dataProvider getPropertyAccessProxies
-     */
-    public function testPropertyAbsence($instance, $proxy, $publicProperty)
-    {
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface */
-        $proxy->$publicProperty = null;
+        $instance->$publicProperty = null;
         $this->assertFalse(isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -133,13 +206,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyUnset($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface */
-
+        $this->markTestSkipped('It is currently not possible to synchronize properties un-setting');
+        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
         unset($proxy->$publicProperty);
 
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertTrue(isset($instance->$publicProperty));
+        $this->assertFalse(isset($instance->$publicProperty));
         $this->assertFalse(isset($proxy->$publicProperty));
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -149,10 +222,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $instance    = new ClassWithPublicArrayProperty();
         $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicArrayProperty */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = new $proxyName($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -161,19 +233,19 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy->arrayProperty = array('tab' => 'taz');
 
         $this->assertSame(array('tab' => 'taz'), $proxy->arrayProperty);
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
-     * Verifies that public properties retrieved via `__get` don't get modified in the object itself
+     * Verifies that public properties retrieved via `__get` don't get modified in the object state
      */
     public function testWillNotModifyRetrievedPublicProperties()
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = new $proxyName($instance);
         $variable    = $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -181,6 +253,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $variable = 'foo';
 
         $this->assertSame('property0', $proxy->property0);
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -190,10 +263,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = new $proxyName($instance);
         $variable    = & $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -201,6 +273,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+        $this->assertProxySynchronized($instance, $proxy);
     }
 
     /**
@@ -209,11 +282,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string $parentClassName
      *
      * @return string
+     *
+     * @throws UnsupportedProxiedClassException
      */
     private function generateProxy($parentClassName)
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
-        $generator          = new LazyLoadingGhostGenerator();
+        $generator          = new AccessInterceptorScopeLocalizerGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();
 
@@ -221,52 +296,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $strategy->generate($generatedClass);
 
         return $generatedClassName;
-    }
-
-    /**
-     * @param string $className
-     * @param object $realInstance
-     * @param Mock   $initializerMatcher
-     *
-     * @return \Closure
-     */
-    private function createInitializer($className, $realInstance, Mock $initializerMatcher = null)
-    {
-        if (null === $initializerMatcher) {
-            $initializerMatcher = $this->getMock('stdClass', array('__invoke'));
-
-            $initializerMatcher
-                ->expects($this->once())
-                ->method('__invoke')
-                ->with(
-                    $this->logicalAnd(
-                        $this->isInstanceOf('ProxyManager\\Proxy\\GhostObjectInterface'),
-                        $this->isInstanceOf($className)
-                    )
-                );
-        }
-
-        $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', array('__invoke'));
-
-        return function (
-            GhostObjectInterface $proxy,
-            $method,
-            $params,
-            & $initializer
-        ) use (
-            $initializerMatcher,
-            $realInstance
-        ) {
-            $initializer     = null;
-            $reflectionClass = new ReflectionClass($realInstance);
-
-            foreach ($reflectionClass->getProperties() as $property) {
-                $property->setAccessible(true);
-                $property->setValue($proxy, $property->getValue($realInstance));
-            }
-
-            $initializerMatcher->__invoke($proxy, $method, $params);
-        };
     }
 
     /**
@@ -288,7 +317,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'ProxyManagerTestAsset\\BaseClass',
                 new BaseClass(),
                 'publicTypeHintedMethod',
-                array(new \stdClass()),
+                array('param' => new \stdClass()),
                 'publicTypeHintedMethodDefault'
             ),
             array(
@@ -308,26 +337,35 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getPropertyAccessProxies()
     {
-        $instance1 = new BaseClass();
+        $instance1  = new BaseClass();
         $proxyName1 = $this->generateProxy(get_class($instance1));
-        $instance2 = new BaseClass();
-        $proxyName2 = $this->generateProxy(get_class($instance2));
 
         return array(
             array(
                 $instance1,
-                new $proxyName1($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance1)),
-                'publicProperty',
-                'publicPropertyDefault',
-            ),
-            array(
-                $instance2,
-                unserialize(
-                    serialize(new $proxyName2($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance2)))
-                ),
+                new $proxyName1($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
         );
+    }
+
+    /**
+     * @param object                     $instance
+     * @param AccessInterceptorInterface $proxy
+     */
+    private function assertProxySynchronized($instance, AccessInterceptorInterface $proxy)
+    {
+        $reflectionClass = new ReflectionClass($instance);
+
+        foreach ($reflectionClass->getProperties() as $property) {
+            $property->setAccessible(true);
+
+            $this->assertSame(
+                $property->getValue($instance),
+                $property->getValue($proxy),
+                'Property "' . $property->getName() . '" is synchronized between instance and proxy'
+            );
+        }
     }
 }

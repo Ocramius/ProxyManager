@@ -16,66 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset;
+namespace ProxyManager\Exception;
+
+use InvalidArgumentException;
+use ReflectionClass;
 
 /**
- * Base test class to play around with pre-existing magic methods
+ * Exception for invalid proxied classes
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMagicMethods
+class InvalidProxiedClassException extends InvalidArgumentException implements ExceptionInterface
 {
     /**
-     * {@inheritDoc}
+     * @param ReflectionClass $reflection
+     *
+     * @return self
      */
-    public function __set($name, $value)
+    public static function interfaceNotSupported(ReflectionClass $reflection)
     {
-        return array($name => $value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __get($name)
-    {
-        return $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __isset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __unset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __sleep()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __wakeup()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __clone()
-    {
+        return new self(sprintf('Provided interface "%s" cannot be proxied', $reflection->getName()));
     }
 }
