@@ -16,66 +16,38 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset;
+namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
+
+use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
+use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Base test class to play around with pre-existing magic methods
+ * Magic `__clone` for lazy loading ghost objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMagicMethods
+class MagicClone extends MagicMethodGenerator
 {
     /**
-     * {@inheritDoc}
+     * Constructor
      */
-    public function __set($name, $value)
-    {
-        return array($name => $value);
-    }
+    public function __construct(
+        ReflectionClass $originalClass,
+        PropertyGenerator $prefixInterceptors,
+        PropertyGenerator $suffixInterceptors
+    ) {
+        parent::__construct($originalClass, '__clone');
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __get($name)
-    {
-        return $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __isset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __unset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __sleep()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __wakeup()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __clone()
-    {
+        $this->setBody(
+            InterceptorGenerator::createInterceptedMethodBody(
+                $originalClass->hasMethod('__clone') ? '$returnValue = parent::__clone();' : '$returnValue = null;',
+                $this,
+                $prefixInterceptors,
+                $suffixInterceptors
+            )
+        );
     }
 }

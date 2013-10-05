@@ -51,6 +51,7 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
         $code = $classGenerator->generate();
 
         if (! $this->canEval) {
+            // @codeCoverageIgnoreStart
             $fileName = sys_get_temp_dir() . '/EvaluatingGeneratorStrategy.php.tmp.' . uniqid('', true);
 
             file_put_contents($fileName, "<?php\n" . $code);
@@ -58,6 +59,7 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
             unlink($fileName);
 
             return $code;
+            // @codeCoverageIgnoreEnd
         }
 
         eval($code);

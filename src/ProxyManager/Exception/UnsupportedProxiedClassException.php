@@ -16,66 +16,32 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset;
+namespace ProxyManager\Exception;
+
+use LogicException;
+use ReflectionProperty;
 
 /**
- * Base test class to play around with pre-existing magic methods
+ * Exception for invalid proxied classes
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMagicMethods
+class UnsupportedProxiedClassException extends LogicException implements ExceptionInterface
 {
     /**
-     * {@inheritDoc}
+     * @param ReflectionProperty $property
+     *
+     * @return self
      */
-    public function __set($name, $value)
+    public static function unsupportedLocalizedReflectionProperty(ReflectionProperty $property)
     {
-        return array($name => $value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __get($name)
-    {
-        return $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __isset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __unset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __sleep()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __wakeup()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __clone()
-    {
+        return new self(
+            sprintf(
+                'Provided reflection property "%s" of class "%s" is private and cannot be localized in PHP 5.3',
+                $property->getName(),
+                $property->getDeclaringClass()->getName()
+            )
+        );
     }
 }

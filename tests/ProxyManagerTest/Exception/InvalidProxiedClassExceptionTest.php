@@ -16,66 +16,30 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset;
+namespace ProxyManagerTest\Exception;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Exception\InvalidProxiedClassException;
+use ReflectionClass;
 
 /**
- * Base test class to play around with pre-existing magic methods
+ * Tests for {@see \ProxyManager\Exception\InvalidProxiedClassException}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMagicMethods
+class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * {@inheritDoc}
+     * @covers \ProxyManager\Exception\InvalidProxiedClassException::interfaceNotSupported
      */
-    public function __set($name, $value)
+    public function testInterfaceNotSupported()
     {
-        return array($name => $value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __get($name)
-    {
-        return $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __isset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __unset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __sleep()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __wakeup()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __clone()
-    {
+        $this->assertSame(
+            'Provided interface "ProxyManagerTestAsset\BaseInterface" cannot be proxied',
+            InvalidProxiedClassException::interfaceNotSupported(
+                new ReflectionClass('ProxyManagerTestAsset\BaseInterface')
+            )->getMessage()
+        );
     }
 }

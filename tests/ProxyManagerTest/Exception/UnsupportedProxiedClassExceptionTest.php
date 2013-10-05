@@ -16,66 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset;
+namespace ProxyManagerTest\Exception;
+
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Exception\UnsupportedProxiedClassException;
+use ReflectionProperty;
 
 /**
- * Base test class to play around with pre-existing magic methods
+ * Tests for {@see \ProxyManager\Exception\UnsupportedProxiedClassException}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMagicMethods
+class UnsupportedProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * {@inheritDoc}
+     * @covers \ProxyManager\Exception\UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty
      */
-    public function __set($name, $value)
+    public function testUnsupportedLocalizedReflectionProperty()
     {
-        return array($name => $value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __get($name)
-    {
-        return $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __isset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __unset($name)
-    {
-        return (bool) $name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __sleep()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __wakeup()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __clone()
-    {
+        $this->assertSame(
+            'Provided reflection property "property0" of class "ProxyManagerTestAsset\ClassWithPrivateProperties" '
+            . 'is private and cannot be localized in PHP 5.3',
+            UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty(
+                new ReflectionProperty('ProxyManagerTestAsset\ClassWithPrivateProperties', 'property0')
+            )->getMessage()
+        );
     }
 }
