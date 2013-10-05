@@ -20,7 +20,6 @@ namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Proxy\Exception\RemoteObjectException;
-use Zend\Uri\Http as HttpUri;
 use Zend\Server\Client;
 
 /**
@@ -31,12 +30,6 @@ use Zend\Server\Client;
  */
 abstract class BaseAdapter implements AdapterInterface
 {
-    /**
-     * URI of the webservice endpoint
-     * @var HttpUri 
-     */
-    protected $uri;
-    
     /**
      * Adapter client
      * @var \Zend\Json\Server\Client
