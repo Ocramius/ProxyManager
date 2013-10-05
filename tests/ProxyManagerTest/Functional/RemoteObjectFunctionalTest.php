@@ -42,9 +42,9 @@ use Zend\Json\Server\Client as JsonRpcClient;
 class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider getProxyMethods
+     * @return \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc
      */
-    public function testXmlRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
+    protected function getXmlRpcAdapter()
     {
         $adapter = new XmlRpcAdapter(
             new XmlRpcClient('http://127.0.0.1:8080/xmlrpc.php'),
@@ -52,10 +52,33 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         );
         $adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../../ProxyManagerTestAsset/RemoteProxy/ServerSide/xmlrpc.php', 'xml-rpc'));
         
+        return $adapter;
+    }
+    
+    /**
+     * @return \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc
+     */
+    protected function getJsonRpcAdapter()
+    {
+        $adapter = new JsonRpcAdapter(
+            new JsonRpcClient('http://127.0.0.1:8080/jsonrpc.php'),
+            array('ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo')
+        );
+        $adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../../ProxyManagerTestAsset/RemoteProxy/ServerSide/jsonrpc.php', 'json-rpc'));
+        
+        return $adapter;
+    }
+    
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testXmlRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
+    {
+        
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName($adapter);
+        $proxy     = new $proxyName($this->getXmlRpcAdapter());
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
@@ -65,18 +88,26 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testJsonRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
     {
-        $adapter = new JsonRpcAdapter(
-            new JsonRpcClient('http://127.0.0.1:8080/jsonrpc.php'),
-            array('ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo')
-        );
-        $adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../../ProxyManagerTestAsset/RemoteProxy/ServerSide/jsonrpc.php', 'json-rpc'));
+        $proxyName = $this->generateProxy($instanceOrClassname);
         
+        /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
+        $proxy     = new $proxyName($this->getJsonRpcAdapter());
+
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+    }
+    
+    /**
+     * @dataProvider getPropertyAccessProxies
+     */
+    public function testJsonRpcPropertyReadAccess($instanceOrClassname, $publicProperty, $propertyValue)
+    {
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName($adapter);
-
-        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $proxy     = new $proxyName($this->getJsonRpcAdapter());
+        
+        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
+        $this->assertSame($propertyValue, $proxy->$publicProperty);
     }
     
     /**
@@ -130,6 +161,22 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 'baz',
                 array('baz'),
                 'baz remote'
+            ),
+        );
+    }
+    
+    /**
+     * Generates proxies and instances with a public property to feed to the property accessor methods
+     *
+     * @return array
+     */
+    public function getPropertyAccessProxies()
+    {
+        return array(
+            array(
+                'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface',
+                'publicProperty',
+                'publicProperty remote',
             ),
         );
     }

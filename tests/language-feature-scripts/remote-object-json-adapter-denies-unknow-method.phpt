@@ -25,18 +25,18 @@ class Foo implements FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
 $adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
-    new Client('http://127.0.0.1:8080/jsonrpc.php') // host to /tests/server/jsonrpc.php
+    new Client('http://127.0.0.1:8080/jsonrpc.php')
 );
 
 /**
  * Only for local tests
  * Don't include this line in your code
  */
-$adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/server/jsonrpc.php', 'json-rpc')); 
+$adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../ProxyManagerTestAsset/RemoteProxy/ServerSide/jsonrpc.php', 'json-rpc')); 
 
 $proxy = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\FooServiceInterface', $adapter);
 
-var_dump($proxy->foo);
+var_dump($proxy->unknow());
 ?>
---EXPECT--
-string(10) "foo remote"
+--EXPECTF--
+Fatal error: Call to undefined method %s::unknow() in %s on line %d
