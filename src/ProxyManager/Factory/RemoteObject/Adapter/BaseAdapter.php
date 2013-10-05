@@ -36,15 +36,21 @@ abstract class BaseAdapter implements AdapterInterface
      */
     protected $client;
     
+    protected $map = array();
+    
     /**
      * Constructor
      * 
      * @param Client $client
      */
-    public function __construct(Client $client = null)
+    public function __construct(Client $client = null, array $map = array())
     {
         if ($client) {
             $this->setClient($client);
+        }
+        
+        if ($map) {
+            $this->map = $map;
         }
     }
     
@@ -55,6 +61,10 @@ abstract class BaseAdapter implements AdapterInterface
     {
         $client      = $this->getClient();
         $serviceName = $this->assemble($wrappedClass, $method);
+        
+        if (isset($this->map[$serviceName])) {
+            $serviceName = $this->map[$serviceName];
+        }
         
         return $client->call($serviceName, $params);
     }

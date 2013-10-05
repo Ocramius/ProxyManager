@@ -27,7 +27,7 @@ namespace ProxyManagerTestAsset\RemoteProxy;
 class Foo implements FooServiceInterface, BazServiceInterface
 {
     /**
-     * {@inheritDoc}
+     * @return string
      */
     public function foo()
     {
