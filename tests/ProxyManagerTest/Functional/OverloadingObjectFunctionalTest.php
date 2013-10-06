@@ -24,6 +24,7 @@ use ProxyManager\ProxyGenerator\OverloadingObjectGenerator;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManagerTestAsset\OverloadingObject\Baz;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\OverloadingObjectGenerator} produced objects
@@ -71,18 +72,48 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseInterface');
     }
     
-    public function testOverloadedMethodCalls()
+    public function testOverloadedMethodCallsWithSimpleObject()
     {
         $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseClass');
 
         /* @var $proxy \ProxyManager\Proxy\OverloadingObjectInterface */
         $proxy = new $proxyName();
         
-        $data = $this->getOverloadingMethods();
-        foreach($data as $overload) {
-            $proxy->overload($overload[0], $overload[1]);
-            $this->assertSame($overload[3], call_user_func_array(array($proxy, $overload[0]), $overload[2]));
-        }
+        $proxy->overload('publicMethod', function($string) { return 'publicMethodDefault ' . $string; });
+        $proxy->overload('publicMethod', function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; });
+        $proxy->overload('publicMethod', function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; });
+        $proxy->overload('publicMethod', function(Baz $baz) { return $baz; });
+        $proxy->overload('newMethod', function() { return 'newMethod'; });
+        $proxy->overload('newMethod', function($string) { return 'newMethod' . $string; });
+        $proxy->overload('newMethodWithParam', function($string) { return 'newMethodWith' . $string; });
+        
+        $this->assertEquals('publicMethodDefault overloaded', $proxy->publicMethod('overloaded'));
+        $this->assertEquals('publicMethodDefault overloaded!', $proxy->publicMethod('overloaded', '!'));
+        $this->assertEquals('publicMethodDefault(stdClass)', $proxy->publicMethod(new \stdClass()));
+        $this->assertEquals('baz class', $proxy->publicMethod(new Baz()));
+        $this->assertEquals('newMethod', $proxy->newMethod());
+        $this->assertEquals('newMethod!', $proxy->newMethod('!'));
+        $this->assertEquals('newMethodWithParam', $proxy->newMethodWithParam('Param'));
+    }
+    
+    public function testOverloadedMethodCallsWithObjectInterfaceBased()
+    {
+        $proxyName = $this->generateProxy('ProxyManagerTestAsset\\OverloadingObject\\Foo');
+
+        /* @var $proxy \ProxyManager\Proxy\OverloadingObjectInterface */
+        $proxy = new $proxyName();
+        
+        $proxy->overload('bar', function($string) { return $string; });
+        $proxy->overload('bar', function(Baz $b, $string) { return $b . $string; });
+        $proxy->overload('baz', function() { return 'baz default'; });
+        $proxy->overload('baz', function($string, $otherString) { return $string . $otherString; });
+        
+        $this->assertEquals('default', $proxy->bar());
+        $this->assertEquals('test', $proxy->bar('test'));
+        $this->assertEquals('baz class!', $proxy->bar(new Baz(), '!'));
+        $this->assertEquals('baz!', $proxy->baz('!'));
+        $this->assertEquals('bazzz!', $proxy->baz('bazzz', '!'));
+        $this->assertEquals('baz default', $proxy->baz());
     }
 
     /**
@@ -130,53 +161,6 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicByReferenceMethod',
                 array(),
                 'publicByReferenceMethodDefault'
-            ),
-        );
-    }
-    
-    /**
-     * Generates a list of object | overaloded method name | overload | parameters call | expected result
-     *
-     * @return array
-     */
-    public function getOverloadingMethods()
-    {
-        return array(
-            array(
-                'publicMethod',
-                function($string) { return 'publicMethodDefault ' . $string; },
-                array('overloaded'),
-                'publicMethodDefault overloaded',
-            ),
-            array(
-                'publicMethod',
-                function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; },
-                array('overloaded', '!'),
-                'publicMethodDefault overloaded!',
-            ),
-            array(
-                'publicMethod',
-                function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; },
-                array(new \stdClass()),
-                'publicMethodDefault(stdClass)',
-            ),
-            array(
-                'newMethod',
-                function() { return 'newMethod'; },
-                array(),
-                'newMethod',
-            ),
-            array(
-                'newMethod',
-                function($string) { return 'newMethod' . $string; },
-                array('!'),
-                'newMethod!',
-            ),
-            array(
-                'newMethodWithParam',
-                function($string) { return 'newMethodWith' . $string; },
-                array('Param'),
-                'newMethodWithParam',
             ),
         );
     }
