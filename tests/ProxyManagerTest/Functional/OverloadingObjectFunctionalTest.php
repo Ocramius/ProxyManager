@@ -149,6 +149,20 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 array('overloaded'),
                 'publicMethodDefault overloaded',
             ),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                'publicMethod',
+                function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; },
+                array('overloaded', '!'),
+                'publicMethodDefault overloaded!',
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                'publicMethod',
+                function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; },
+                array(new \stdClass()),
+                'publicMethodDefault(stdClass)',
+            ),
         );
     }
 }
