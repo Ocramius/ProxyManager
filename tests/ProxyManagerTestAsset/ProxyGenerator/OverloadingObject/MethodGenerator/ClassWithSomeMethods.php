@@ -24,15 +24,20 @@ namespace ProxyManagerTestAsset\ProxyGenerator\OverloadingObject\MethodGenerator
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class ClassWithTwoMethod
+class ClassWithSomeMethods
 {
     public function foo()
     {
         return 'foo';
     }
 
-    public function bar()
+    public function bar(array $bar)
     {
         return 'bar';
+    }
+    
+    public function baz(\stdClass $baz)
+    {
+        return 'baz';
     }
 }

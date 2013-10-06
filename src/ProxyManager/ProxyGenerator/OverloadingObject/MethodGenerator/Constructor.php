@@ -51,7 +51,13 @@ class Constructor extends MethodGenerator
             
             $list = array();
             foreach ($method->getParameters() as $parameter) {
-                $list[] = '$' . $parameter->getName();
+                $type = '';
+                if($parameter->isArray()) {
+                   $type = 'array ';
+                } else if($parameter->getClass()) {
+                    $type = '\\' . $parameter->getClass()->getName() . ' ';
+                }
+                $list[] = $type . '$' . $parameter->getName();
             }
             
             $content = $reflection->getBody();

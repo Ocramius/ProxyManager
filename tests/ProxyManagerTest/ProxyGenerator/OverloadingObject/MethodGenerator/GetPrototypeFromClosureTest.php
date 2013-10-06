@@ -39,7 +39,7 @@ class GetPrototypeFromClosureTestTest extends PHPUnit_Framework_TestCase
         $prototypes->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         
         $reflection  = new ReflectionClass(
-            'ProxyManagerTestAsset\\ProxyGenerator\\OverloadingObject\\MethodGenerator\\ClassWithTwoMethod'
+            'ProxyManagerTestAsset\\ProxyGenerator\\OverloadingObject\\MethodGenerator\\ClassWithSomeMethods'
         );
         
         $method = new GetPrototypeFromClosure();

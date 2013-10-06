@@ -39,7 +39,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $prototypes->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         
         $reflection  = new ReflectionClass(
-            'ProxyManagerTestAsset\\ProxyGenerator\\OverloadingObject\\MethodGenerator\\ClassWithTwoMethod'
+            'ProxyManagerTestAsset\\ProxyGenerator\\OverloadingObject\\MethodGenerator\\ClassWithSomeMethods'
         );
         
         $constructor = new Constructor($prototypes, $reflection->getMethods());
@@ -50,9 +50,12 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $body =   '$closure = function() {return \'foo\';};' . "\n"
                 . '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
                 . '$this->foo[\'foo\'][$prototype] = $closure;' . "\n"
-                . '$closure = function() {return \'bar\';};' . "\n"
+                . '$closure = function(array $bar) {return \'bar\';};' . "\n"
                 . '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
-                . '$this->foo[\'bar\'][$prototype] = $closure;' . "\n";
+                . '$this->foo[\'bar\'][$prototype] = $closure;' . "\n"
+                . '$closure = function(\stdClass $baz) {return \'baz\';};' . "\n"
+                . '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
+                . '$this->foo[\'baz\'][$prototype] = $closure;' . "\n";
         $this->assertSame($body, $constructor->getBody());
     }
 

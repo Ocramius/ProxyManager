@@ -70,6 +70,20 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('ProxyManager\Proxy\Exception\OverloadingObjectException');
         $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseInterface');
     }
+    
+    /**
+     * @dataProvider getOverloadingMethods
+     */
+    public function testOverloadedMethodCalls($object, $methodName, $closure, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy($object);
+
+        /* @var $proxy \ProxyManager\Proxy\OverloadingObjectInterface */
+        $proxy = new $proxyName();
+        $proxy->overload($methodName, $closure);
+
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $methodName), $params));
+    }
 
     /**
      * Generates a proxy for the given class name, and retrieves its class name
@@ -116,6 +130,24 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicByReferenceMethod',
                 array(),
                 'publicByReferenceMethodDefault'
+            ),
+        );
+    }
+    
+    /**
+     * Generates a list of object | overaloded method name | overload | parameters call | expected result
+     *
+     * @return array
+     */
+    public function getOverloadingMethods()
+    {
+        return array(
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                'publicMethod',
+                function($string) { return 'publicMethodDefault ' . $string; },
+                array('overloaded'),
+                'publicMethodDefault overloaded',
             ),
         );
     }
