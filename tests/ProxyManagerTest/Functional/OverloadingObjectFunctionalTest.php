@@ -71,18 +71,18 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseInterface');
     }
     
-    /**
-     * @dataProvider getOverloadingMethods
-     */
-    public function testOverloadedMethodCalls($object, $methodName, $closure, $params, $expectedValue)
+    public function testOverloadedMethodCalls()
     {
-        $proxyName = $this->generateProxy($object);
+        $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseClass');
 
         /* @var $proxy \ProxyManager\Proxy\OverloadingObjectInterface */
         $proxy = new $proxyName();
-        $proxy->overload($methodName, $closure);
-
-        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $methodName), $params));
+        
+        $data = $this->getOverloadingMethods();
+        foreach($data as $overload) {
+            $proxy->overload($overload[0], $overload[1]);
+            $this->assertSame($overload[3], call_user_func_array(array($proxy, $overload[0]), $overload[2]));
+        }
     }
 
     /**
@@ -143,25 +143,40 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'ProxyManagerTestAsset\\BaseClass',
                 'publicMethod',
                 function($string) { return 'publicMethodDefault ' . $string; },
                 array('overloaded'),
                 'publicMethodDefault overloaded',
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
                 'publicMethod',
                 function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; },
                 array('overloaded', '!'),
                 'publicMethodDefault overloaded!',
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
                 'publicMethod',
                 function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; },
                 array(new \stdClass()),
                 'publicMethodDefault(stdClass)',
+            ),
+            array(
+                'newMethod',
+                function() { return 'newMethod'; },
+                array(),
+                'newMethod',
+            ),
+            array(
+                'newMethod',
+                function($string) { return 'newMethod' . $string; },
+                array('!'),
+                'newMethod!',
+            ),
+            array(
+                'newMethodWithParam',
+                function($string) { return 'newMethodWith' . $string; },
+                array('Param'),
+                'newMethodWithParam',
             ),
         );
     }

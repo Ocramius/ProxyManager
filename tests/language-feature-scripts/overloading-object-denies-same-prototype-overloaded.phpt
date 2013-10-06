@@ -24,14 +24,9 @@ $foo = new Foo();
 
 $factory = new \ProxyManager\Factory\OverloadingFactory();
 $proxy = $factory->createProxy($foo);
-
-try {
-    $proxy->overload('bar', function($string) { return $string; });
-    $proxy->overload('bar', function($otherString) { return $otherString; });
-} catch(\Exception $e) {
-    var_dump($e->getMessage());
-}
+$proxy->overload('bar', function($string) { return $string; });
+$proxy->overload('bar', function($otherString) { return $otherString; });
 
 ?>
---EXPECT--
-string(60) "An other method (bar) with the same prototype already exists"
+--EXPECTF--
+Fatal error: Uncaught exception %sAn other method (bar) with the same prototype already exists%s
