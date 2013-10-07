@@ -26,8 +26,7 @@ class Foo
 }
 
 $startTime = microtime(true);
-$config    = new Configuration();
-$factory   = new LazyLoadingGhostFactory($config);
+$factory   = new LazyLoadingGhostFactory();
 
 for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(

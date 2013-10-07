@@ -13,8 +13,7 @@ class Foo
     }
 }
 
-$config = new Configuration();
-$factory = new AccessInterceptorValueHolderFactory($config);
+$factory = new AccessInterceptorValueHolderFactory();
 
 $proxy = $factory->createProxy(
     new Foo(),

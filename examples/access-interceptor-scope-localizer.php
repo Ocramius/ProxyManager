@@ -23,8 +23,7 @@ class FluentCounter
     }
 }
 
-$config = new Configuration();
-$factory = new AccessInterceptorScopeLocalizerFactory($config);
+$factory = new AccessInterceptorScopeLocalizerFactory();
 $foo = new FluentCounter();
 
 /* @var $proxy FluentCounter */

@@ -19,8 +19,7 @@ class Foo
 }
 
 $startTime = microtime(true);
-$config    = new Configuration();
-$factory   = new LazyLoadingValueHolderFactory($config);
+$factory   = new LazyLoadingValueHolderFactory();
 
 for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
