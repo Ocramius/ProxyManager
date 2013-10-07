@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 
 class Foo
