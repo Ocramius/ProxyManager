@@ -19,6 +19,7 @@
 namespace ProxyManager\Factory;
 
 use ProxyManager\ProxyGenerator\OverloadingObjectGenerator;
+use ProxyManager\Proxy\OverloadingObjectInterface;
 
 /**
  * Factory responsible of producing overloading proxy objects
@@ -31,7 +32,7 @@ class OverloadingFactory extends AbstractBaseFactory
     /**
      * @param object     $instanceOrClassName   the object to be wrapped or interface to transform to overloadable object
      *
-     * @return \ProxyManager\Proxy\NullobjectInterface
+     * @return \ProxyManager\Proxy\OverloadingobjectInterface
      */
     public function createProxy($instanceOrClassName)
     {
@@ -39,6 +40,22 @@ class OverloadingFactory extends AbstractBaseFactory
         $proxyClassName = $this->generateProxy($className);
         
         return new $proxyClassName();
+    }
+    
+    /**
+     * 
+     * @param \ProxyManager\Factory\OverloadingObjectInterface $proxy
+     * @param string                                           $filename
+     */
+    public function createProxyDocumentation(OverloadingObjectInterface $proxy, $filename = null)
+    {
+        $className     = array_search(get_class($proxy), $this->generatedClasses);
+        $documentation = $this->getGenerator()->generateDocumentation($proxy, $className);
+        
+        if (! $filename) {
+            return $documentation;
+        }
+        file_put_contents($filename, $documentation);
     }
     
     /**
