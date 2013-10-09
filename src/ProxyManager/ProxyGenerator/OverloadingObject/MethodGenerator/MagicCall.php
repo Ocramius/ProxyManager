@@ -48,7 +48,8 @@ class MagicCall extends MagicMethodGenerator
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . "@param string \$name\n@param array \$arguments");
 
         $body = 
-              '$prototype = $this->getPrototypeFromArguments($arguments);' . "\n"
+              '$argReflection = new \ProxyManager\ProxyGenerator\Util\ReflectionTools();'
+            . '$prototype = $argReflection->getArgumentsLine($arguments)->toIdentifiableString();' . "\n"
             . 'if (isset($this->' . $prototypes->getName() . '[$name][$prototype])) {' . "\n"
             . '    return call_user_func_array($this->' . $prototypes->getName() . '[$name][$prototype], $arguments);' . "\n"
             . '}';

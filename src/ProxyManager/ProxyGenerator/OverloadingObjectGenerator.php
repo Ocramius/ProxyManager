@@ -19,15 +19,13 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\Constructor;
-use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\GetPrototypeFromClosure;
-use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\GetPrototypeFromArguments;
 use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\MagicCall;
-use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\Overload;
 use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\OverloadingObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\OverloadingObject\PropertyGenerator\PrototypesProperty;
 use ProxyManager\Proxy\Exception\OverloadingObjectException;
 use ProxyManager\Proxy\OverloadingObjectInterface;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\Util\ReflectionTools;
 use Zend\Code\Reflection\ParameterReflection;
 
 use ReflectionClass;
@@ -46,7 +44,14 @@ use Zend\Code\Generator\MethodGenerator;
  * @license MIT
  */
 class OverloadingObjectGenerator implements ProxyGeneratorInterface
-{
+{    
+    /**
+     * Default proxy methods
+     * 
+     * @var array
+     */
+    protected $defaultMethods = array();
+    
     /**
      * @var PrototypesProperty 
      */
@@ -61,13 +66,14 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
             throw new OverloadingObjectException('Interface overloading is not allowed');
         }
         
-        $interfaces          = array('ProxyManager\\Proxy\\OverloadingObjectInterface');
+        $prototypes = $this->getPrototypes();
+        $interfaces = array('ProxyManager\\Proxy\\OverloadingObjectInterface');
         foreach ($originalClass->getInterfaceNames() as $name) {
             $interfaces[] = $name;
         }
 
         $classGenerator->setImplementedInterfaces($interfaces);
-        $classGenerator->addPropertyFromGenerator($this->prototypes = new PrototypesProperty());
+        $classGenerator->addPropertyFromGenerator($prototypes);
 
         $excluded = array(
             '__call'    => true,
@@ -92,12 +98,8 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
                 );
             }
         );
-        
-        $classGenerator->addMethodFromGenerator(new Constructor($this->prototypes, $methods));
-        $classGenerator->addMethodFromGenerator(new GetPrototypeFromClosure());
-        $classGenerator->addMethodFromGenerator(new GetPrototypeFromArguments());
-        $classGenerator->addMethodFromGenerator(new MagicCall($originalClass, $this->prototypes));
-        $classGenerator->addMethodFromGenerator(new Overload($this->prototypes));
+        $classGenerator->addMethodFromGenerator(new Constructor($prototypes, $methods, $this->defaultMethods));
+        $classGenerator->addMethodFromGenerator(new MagicCall($originalClass, $prototypes));
         
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
@@ -119,34 +121,18 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
     public function generateDocumentation(OverloadingObjectInterface $proxy, $className)
     {
         $reflection = new ReflectionClass($proxy);
-        $property = $reflection->getProperty($this->prototypes->getName());
+        $prototypes = $this->getPrototypes();
+        $property   = $reflection->getProperty($prototypes->getName());
         $property->setAccessible(true);
-        $value = $property->getValue($proxy);
+        $value      = $property->getValue($proxy);
+        $property->setAccessible(false);
         
         $classGenerator = new OverloadingClassGenerator($className);
         
         foreach($value as $methodName => $methods) {
             foreach($methods as $closure) {
                 
-                /** ZF2 PR : https://github.com/zendframework/zf2/pull/5245 */
-                $reflectionFunction = new \ReflectionFunction($closure);
-                
-                $lines = array_slice(
-                    file($reflectionFunction->getFileName(), FILE_IGNORE_NEW_LINES),
-                    $reflectionFunction->getStartLine() - 1,
-                    ($reflectionFunction->getEndLine() - ($reflectionFunction->getStartLine() - 1)),
-                    true
-                );
-
-                $functionLine = implode(' ', $lines);
-                if ($reflectionFunction->isClosure()) {
-                    preg_match('#^\s*\$[^\=]+=\s*function\s*\([^\)]*\)\s*\{(.*)\}\s*;\s*$#', $functionLine, $matches);
-                } else {
-                    preg_match('#^\s*function\s*[^\(]+\([^\)]*\)\s*\{(.*)\}\s*$#', $functionLine, $matches);
-                }
-                
-                $body = trim($matches[1]);
-                 /** ZF2 PR end */
+                $body = ReflectionTools::getFunctionContent($closure);
                 
                 $r = new \ReflectionFunction($closure);
                 $parameters = array();
@@ -164,5 +150,26 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
         }
         
         return $classGenerator->generate();
+    }
+    
+    /**
+     * @return PrototypesProperty
+     */
+    public function getPrototypes()
+    {
+        if (null === $this->prototypes) {
+            $this->prototypes = new PrototypesProperty();
+        }
+        return $this->prototypes;
+    }
+    
+    /**
+     * Set default proxy methods
+     * 
+     * @param array $methods
+     */
+    public function setDefaultMethods(array $methods)
+    {
+        $this->defaultMethods = $methods;
     }
 }

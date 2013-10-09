@@ -31,15 +31,29 @@ class OverloadingFactory extends AbstractBaseFactory
 {
     /**
      * @param object     $instanceOrClassName   the object to be wrapped or interface to transform to overloadable object
+     * @param array      $methods
      *
      * @return \ProxyManager\Proxy\OverloadingobjectInterface
      */
-    public function createProxy($instanceOrClassName)
+    public function createProxy($instanceOrClassName, array $methods = array())
     {
         $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
+        if ($methods) {         
+            $this->getGenerator()->setDefaultMethods($methods);
+        }
         $proxyClassName = $this->generateProxy($className);
         
         return new $proxyClassName();
+    }
+    
+    /**
+     * 
+     * @param \ProxyManager\Proxy\OverloadingObjectInterface $proxy
+     * @param array                                          $methods
+     */
+    public function createProxyMethods(OverloadingObjectInterface $proxy, array $methods = array())
+    {
+        
     }
     
     /**

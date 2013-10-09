@@ -38,5 +38,6 @@ class PrototypesProperty extends PropertyGenerator
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setDocblock('@var array prototypes methods for generating the wrapped object');
+        $this->setDefaultValue(array());
     }
 }
