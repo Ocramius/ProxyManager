@@ -46,7 +46,7 @@ class FunctionArgumentsParsing
         $prototype = array();
         foreach($this->reflection->getParameters() as $parameter) {
             if ($parameter->isArray()) {
-                $prototype[] = 'array $' . $parameter->getPosition();
+                $prototype[] = 'array $' . $parameter->getName();
             } else {
                 $class = $parameter->getClass();
                 $prototype[] = ($class ? '\\' . $class->getName() . ' ' : '') . '$' . $parameter->getName();

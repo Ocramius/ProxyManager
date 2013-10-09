@@ -48,7 +48,11 @@ class MethodArgumentsParsing
         $reflection = MethodGenerator::fromReflection($this->reflection);
         
         foreach($reflection->getParameters() as $parameter) {
-            $prototype[] = $parameter->getType() . ' ' . $parameter->getName();
+            $type = $parameter->getType();
+            if ($type && $type != 'array') {
+                $type = '\\' . $type;
+            }
+            $prototype[] = ($type ? $type . ' ' : '') . '$' . $parameter->getName();
         }
         
         return $prototype;

@@ -48,14 +48,11 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertCount(0, $constructor->getParameters());
         
         $body =   '$closure = function() {return \'foo\';};' . "\n"
-                . '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
-                . '$this->foo[\'foo\'][$prototype] = $closure;' . "\n"
+                . '$this->foo[\'baz\'][\'void\'] = $closure;' . "\n"
                 . '$closure = function(array $bar) {return \'bar\';};' . "\n"
-                . '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
-                . '$this->foo[\'bar\'][$prototype] = $closure;' . "\n"
+                . '$this->foo[\'baz\'][\'array $\'] = $closure;' . "\n"
                 . '$closure = function(\stdClass $baz) {return \'baz\';};' . "\n"
-                . '$prototype = $this->getPrototypeFromClosure($closure);' . "\n"
-                . '$this->foo[\'baz\'][$prototype] = $closure;' . "\n";
+                . '$this->foo[\'baz\'][\'\\\stdClass $\'] = $closure;' . "\n";
         $this->assertSame($body, $constructor->getBody());
     }
 
