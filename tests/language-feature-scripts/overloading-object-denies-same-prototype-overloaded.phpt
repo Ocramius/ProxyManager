@@ -24,8 +24,14 @@ $foo = new Foo();
 
 $factory = new \ProxyManager\Factory\OverloadingFactory();
 $proxy = $factory->createProxy($foo);
-$proxy->overload('bar', function($string) { return $string; });
-$proxy->overload('bar', function($otherString) { return $otherString; });
+$factory->createProxyMethods($proxy, array(
+    array('bar' => 
+        $c = function($string) { return $string; }
+    ),
+    array('bar' => 
+        $c = function($otherString) { return $otherString; }
+    ),
+));
 
 ?>
 --EXPECTF--
