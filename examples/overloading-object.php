@@ -27,13 +27,11 @@ $proxy = $factory->createProxy($foo, array(
 $proxy = $factory->createProxy($foo);
 
 // be careful, methods adding in live is slower
-/*
-$proxy->createProxyMethods($proxy, array(
+$factory->createProxyMethods($proxy, array(
     array('bar' => 
-        function($string, $otherString) { return $string . $otherString; }
+        $c = function($string, $otherString) { return $string . $otherString; }
     ),
 ));
-*/
 
 echo "#1: " . $proxy->bar('foo') . "\n"; // 'foo'
 //echo "#2: " . $proxy->bar('foo', 'bar'); // 'foobar'

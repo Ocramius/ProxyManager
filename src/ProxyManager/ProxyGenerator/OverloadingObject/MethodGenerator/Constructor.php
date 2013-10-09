@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\ReflectionTools;
+use ProxyManager\Proxy\Exception\OverloadingObjectException;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
@@ -65,7 +66,7 @@ class Constructor extends MethodGenerator
             $argReflection      = $reflectionTools->getArgumentsLine(new ReflectionFunction($closure));
             
             if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
-                die('error');
+                throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
             }
                      
             $content = ReflectionTools::getFunctionContent($closure);

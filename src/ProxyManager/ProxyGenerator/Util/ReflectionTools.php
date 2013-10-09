@@ -59,7 +59,7 @@ class ReflectionTools
     public static function getFunctionContent($function)
     {
         /** ZF2 PR : https://github.com/zendframework/zf2/pull/5245 */
-        $reflectionFunction = new \ReflectionFunction($function);
+        $reflectionFunction = new ReflectionFunction($function);
 
         $lines = array_slice(
             file($reflectionFunction->getFileName(), FILE_IGNORE_NEW_LINES),

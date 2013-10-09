@@ -20,6 +20,10 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\ProxyGenerator\OverloadingObjectGenerator;
 use ProxyManager\Proxy\OverloadingObjectInterface;
+use ProxyManager\ProxyGenerator\Util\ReflectionTools;
+use ProxyManager\Proxy\Exception\OverloadingObjectException;
+use ReflectionFunction;
+use ReflectionObject;
 
 /**
  * Factory responsible of producing overloading proxy objects
@@ -38,9 +42,7 @@ class OverloadingFactory extends AbstractBaseFactory
     public function createProxy($instanceOrClassName, array $methods = array())
     {
         $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
-        if ($methods) {         
-            $this->getGenerator()->setDefaultMethods($methods);
-        }
+        $this->getGenerator()->setDefaultMethods($methods);
         $proxyClassName = $this->generateProxy($className);
         
         return new $proxyClassName();
@@ -53,7 +55,30 @@ class OverloadingFactory extends AbstractBaseFactory
      */
     public function createProxyMethods(OverloadingObjectInterface $proxy, array $methods = array())
     {
+        $reflection = new ReflectionObject($proxy);
+        $prototypes = $this->getGenerator()->getPrototypes();
+        $property   = $reflection->getProperty($prototypes->getName());
+        $property->setAccessible(true);
         
+        $list = $property->getValue($proxy);
+        $reflectionTools = new ReflectionTools();
+        
+        foreach($methods as $method) {
+            $methodName         = key($method);
+            $closure            = current($method);
+            
+            $argReflection      = $reflectionTools->getArgumentsLine(new ReflectionFunction($closure));
+            
+            if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
+                throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
+            }
+                     
+            $content = ReflectionTools::getFunctionContent($closure);
+            $list[$methodName][$argReflection->toIdentifiableString()] = $closure;
+        }
+        
+        $property->setValue($proxy, $list);
+        $property->setAccessible(false);
     }
     
     /**
