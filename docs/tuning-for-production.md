@@ -1,6 +1,6 @@
 ## Tuning the ProxyManager for production
 
-By default, all proxy factories ge generate the required proxy classes at runtime.
+By default, all proxy factories generate the required proxy classes at runtime.
 
 Proxy generation causes I/O operations and uses a lot of reflection, so be sure to have
 generated all of your proxies **before deploying your code on a live system**, or you
