@@ -7,7 +7,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 
 class FluentCounter
@@ -23,8 +22,7 @@ class FluentCounter
     }
 }
 
-$config = new Configuration();
-$factory = new AccessInterceptorScopeLocalizerFactory($config);
+$factory = new AccessInterceptorScopeLocalizerFactory();
 $foo = new FluentCounter();
 
 /* @var $proxy FluentCounter */

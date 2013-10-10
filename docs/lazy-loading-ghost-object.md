@@ -80,14 +80,12 @@ You will be responsible of setting its state during lazy loading:
 ```php
 namespace MyApp;
 
-use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$config      = new Configuration();
-$factory     = new LazyLoadingGhostFactory($config);
+$factory     = new LazyLoadingGhostFactory();
 $initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer) {
     $initializer   = null; // disable initialization
 

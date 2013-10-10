@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
 class Foo
@@ -19,8 +18,7 @@ class Foo
 }
 
 $startTime = microtime(true);
-$config    = new Configuration();
-$factory   = new LazyLoadingValueHolderFactory($config);
+$factory   = new LazyLoadingValueHolderFactory();
 
 for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(

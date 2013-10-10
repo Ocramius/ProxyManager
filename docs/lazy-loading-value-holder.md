@@ -74,14 +74,12 @@ Then use the proxy manager to create a lazy version of the object (as a proxy):
 ```php
 namespace MyApp;
 
-use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$config      = new Configuration();
-$factory     = new LazyLoadingValueHolderFactory($config);
+$factory     = new LazyLoadingValueHolderFactory();
 $initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, & $initializer) {
     $initializer   = null; // disable initialization
     $wrappedObject = new HeavyComplexObject(); // fill your object with values here
