@@ -19,6 +19,7 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Configuration;
 use ProxyManager\Factory\OverloadingFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -151,11 +152,34 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\OverloadingFactory::__construct
      * @covers \ProxyManager\Factory\OverloadingFactory::createProxy
-     * @covers \ProxyManager\Factory\OverloadingFactory::createProxyMethods
+     */
+    public function testCanCreateDefaultProxyMethods()
+    {
+        $config = new Configuration();
+        $config->setProxiesNamespace(Configuration::DEFAULT_PROXY_NAMESPACE . __FUNCTION__);
+        
+        $factory = new OverloadingFactory($config);
+        $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock', array(
+            array('foo' => 
+                $c = function($foo) { return $foo; }
+            ),
+        ));
+        $this->assertEquals('bar', $proxy->foo('bar'));
+    }
+    
+    /**
+     * {@inheritDoc}
      *
+     * @covers \ProxyManager\Factory\OverloadingFactory::__construct
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxy
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxyMethods
+     */
     public function testCanCreateProxyMethods()
     {
-        $factory = new OverloadingFactory();
+        $config = new Configuration();
+        $config->setProxiesNamespace(Configuration::DEFAULT_PROXY_NAMESPACE . __FUNCTION__);
+        
+        $factory = new OverloadingFactory($config);
         $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock');
         $factory->createProxyMethods($proxy, array(
             array('foo' => 
@@ -163,19 +187,33 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
             ),
         ));
         $this->assertEquals('bar', $proxy->foo('bar'));
-    }*/
+    }
     
     /**
      * {@inheritDoc}
      *
      * @covers \ProxyManager\Factory\OverloadingFactory::__construct
      * @covers \ProxyManager\Factory\OverloadingFactory::createProxy
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxyMethods
      * @covers \ProxyManager\Factory\OverloadingFactory::createProxyDocumentation
      */
     public function testCanCreateDocumentationBasedExistingClass()
     {
-        $factory = new OverloadingFactory();
-        $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock');
+        $config = new Configuration();
+        $config->setProxiesNamespace(Configuration::DEFAULT_PROXY_NAMESPACE . __FUNCTION__);
+        
+        $factory = new OverloadingFactory($config);
+        $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock', array(
+            array('bar' => 
+                $c = function($bar) { return $bar . '!'; }
+            ),
+        ));
+        
+        $factory->createProxyMethods($proxy, array(
+            array('foo' => 
+                $c = function($foo) { return $foo; }
+            ),
+        ));
         
         $documentation = $factory->createProxyDocumentation($proxy);
         $content = 'namespace ProxyManagerTestAsset;
@@ -198,9 +236,31 @@ class OverloadingObjectMock
         return \'function3\' . $baz;
     }
 
+    public function bar($bar)
+    {
+        return $bar . \'!\';
+    }
+
+    public function foo($foo)
+    {
+        return $foo;
+    }
+
 
 }
 ';
         $this->assertEquals($documentation, $content);
+    }
+    
+    /**
+     * {@inheritDoc}
+     *
+     * @covers \ProxyManager\Factory\OverloadingFactory::__construct
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxy
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxyDocumentation
+     */
+    public function testCanCreateDocumentationWithClassExtension()
+    {
+        
     }
 }
