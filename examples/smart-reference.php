@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 
 class Foo
@@ -13,8 +12,7 @@ class Foo
     }
 }
 
-$config = new Configuration();
-$factory = new AccessInterceptorValueHolderFactory($config);
+$factory = new AccessInterceptorValueHolderFactory();
 
 $proxy = $factory->createProxy(
     new Foo(),

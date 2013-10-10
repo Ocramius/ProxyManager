@@ -43,8 +43,7 @@ If you want to remove conditionals from client code, you need to have a version 
 interface. With the Null Object Proxy, you can build this object :
 
 ```php
-$config  = new \ProxyManager\Configuration(); // customize this if needed for production
-$factory = new \ProxyManager\Factory\NullObjectFactory($config);
+$factory = new \ProxyManager\Factory\NullObjectFactory();
 
 $nullUser = $factory->createProxy('Entity\User');
 
@@ -69,8 +68,7 @@ class UserMapper
      
     private function createUser($row) {
         if (!$row) {
-            $config  = new \ProxyManager\Configuration();
-            $factory = new \ProxyManager\Factory\NullObjectFactory($config);
+            $factory = new \ProxyManager\Factory\NullObjectFactory();
 
             return $factory->createProxy('Entity\User');
         }
