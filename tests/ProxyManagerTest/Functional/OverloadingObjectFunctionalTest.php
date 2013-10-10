@@ -74,18 +74,34 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
     
     public function testOverloadedMethodCallsWithSimpleObject()
     {
-        $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseClass');
+        $methods = array(
+            array('publicMethod' => 
+                $c = function($string) { return 'publicMethodDefault ' . $string; }
+            ),
+            array('publicMethod' => 
+                $c = function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; }
+            ),
+            array('publicMethod' => 
+                $c = function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; }
+            ),
+            array('publicMethod' => 
+                $c = function(Baz $baz) { return $baz; }
+            ),
+            array('newMethod' => 
+                $c = function() { return 'newMethod'; }
+            ),
+            array('newMethod' => 
+                $c = function($string) { return 'newMethod' . $string; }
+            ),
+            array('newMethodWithParam' => 
+                $c = function($string) { return 'newMethodWith' . $string; }
+            ),
+        );
+        
+        $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseClass', $methods);
 
         /* @var $proxy \ProxyManager\Proxy\OverloadingObjectInterface */
         $proxy = new $proxyName();
-        
-        $proxy->overload('publicMethod', function($string) { return 'publicMethodDefault ' . $string; });
-        $proxy->overload('publicMethod', function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; });
-        $proxy->overload('publicMethod', function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; });
-        $proxy->overload('publicMethod', function(Baz $baz) { return $baz; });
-        $proxy->overload('newMethod', function() { return 'newMethod'; });
-        $proxy->overload('newMethod', function($string) { return 'newMethod' . $string; });
-        $proxy->overload('newMethodWithParam', function($string) { return 'newMethodWith' . $string; });
         
         $this->assertEquals('publicMethodDefault overloaded', $proxy->publicMethod('overloaded'));
         $this->assertEquals('publicMethodDefault overloaded!', $proxy->publicMethod('overloaded', '!'));
@@ -98,15 +114,25 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
     
     public function testOverloadedMethodCallsWithObjectInterfaceBased()
     {
-        $proxyName = $this->generateProxy('ProxyManagerTestAsset\\OverloadingObject\\Foo');
+        $methods = array(
+            array('bar' => 
+                $c = function($string) { return $string; }
+            ),
+            array('bar' => 
+                $c = function(Baz $b, $string) { return $b . $string; }
+            ),
+            array('baz' => 
+                $c = function() { return 'baz default'; }
+            ),
+            array('baz' => 
+                $c = function($string, $otherString) { return $string . $otherString; }
+            ),
+        );
+        
+        $proxyName = $this->generateProxy('ProxyManagerTestAsset\\OverloadingObject\\Foo', $methods);
 
         /* @var $proxy \ProxyManager\Proxy\OverloadingObjectInterface */
         $proxy = new $proxyName();
-        
-        $proxy->overload('bar', function($string) { return $string; });
-        $proxy->overload('bar', function(Baz $b, $string) { return $b . $string; });
-        $proxy->overload('baz', function() { return 'baz default'; });
-        $proxy->overload('baz', function($string, $otherString) { return $string . $otherString; });
         
         $this->assertEquals('default', $proxy->bar());
         $this->assertEquals('test', $proxy->bar('test'));
@@ -123,10 +149,11 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    private function generateProxy($parentClassName)
+    private function generateProxy($parentClassName, array $methods = array())
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new OverloadingObjectGenerator();
+        $generator->setDefaultMethods($methods);
         $generatedClass     = new ClassGenerator($generatedClassName);
         $strategy           = new EvaluatingGeneratorStrategy();
 
