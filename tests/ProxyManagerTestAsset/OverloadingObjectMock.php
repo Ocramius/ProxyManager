@@ -18,6 +18,8 @@
 
 namespace ProxyManagerTestAsset;
 
+use ProxyManagerTestAsset\OverloadingObject\Baz;
+
 /**
  * Base test class to catch instantiations of overloading object
  *
@@ -26,4 +28,18 @@ namespace ProxyManagerTestAsset;
  */
 class OverloadingObjectMock
 {
+    public function function1()
+    {
+        return 'function1';
+    }
+    
+    public function function2($string)
+    {
+        return 'function2' . $string;
+    }
+    
+    public function function3(Baz $baz)
+    {
+        return 'function3' . $baz;
+    }
 }

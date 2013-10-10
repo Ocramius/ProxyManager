@@ -45,10 +45,12 @@ class MethodArgumentsParsing
     protected function parse()
     {
         $prototype  = array();
-        $reflection = MethodGenerator::fromReflection($this->reflection);
         
-        foreach($reflection->getParameters() as $parameter) {
+        foreach($this->reflection->getParameters() as $parameter) {
             $type = $parameter->getType();
+            if ($type == 'mixed') {
+                $type = '';
+            }
             if ($type && $type != 'array') {
                 $type = '\\' . $type;
             }

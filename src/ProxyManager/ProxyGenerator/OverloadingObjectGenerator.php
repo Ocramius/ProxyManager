@@ -128,7 +128,6 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
         $property->setAccessible(false);
         
         $classGenerator = new OverloadingClassGenerator($className);
-        
         foreach($value as $methodName => $methods) {
             foreach($methods as $closure) {
                 

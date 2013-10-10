@@ -72,8 +72,7 @@ class OverloadingFactory extends AbstractBaseFactory
             if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
                 throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
             }
-                     
-            $content = ReflectionTools::getFunctionContent($closure);
+            
             $list[$methodName][$argReflection->toIdentifiableString()] = $closure;
         }
         

@@ -74,7 +74,7 @@ class Constructor extends MethodGenerator
         }
         
         $body = '';
-        foreach($list as $method) {
+        foreach($list as $methodName => $method) {
             foreach($method as $identifiableString => $closure) {
                 $body .= '$closure = ' . $closure . "\n"
                        . '$this->' . $prototypes->getName() . "['$methodName'][" . var_export($identifiableString, true) . "] = \$closure;\n";

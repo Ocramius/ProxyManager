@@ -23,6 +23,7 @@ use ProxyManager\Factory\OverloadingFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use stdClass;
+use Zend\Code\Reflection\ClassReflection;
 
 /**
  * Tests for {@see \ProxyManager\Factory\OverloadingFactory}
@@ -144,5 +145,44 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
         $proxy      = $factory->createProxy($instance);
 
         $this->assertInstanceOf($proxyClassName, $proxy);
+    }
+    
+    /**
+     * {@inheritDoc}
+     *
+     * @covers \ProxyManager\Factory\OverloadingFactory::__construct
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxy
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxyDocumentation
+     */
+    public function testCanCreateDocumentationBasedExistingClass()
+    {
+        $factory = new OverloadingFactory();
+        $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock');
+        
+        $documentation = $factory->createProxyDocumentation($proxy);
+        $content = 'namespace ProxyManagerTestAsset;
+
+class OverloadingObjectMock
+{
+
+    public function function1()
+    {
+        return \'function1\';
+    }
+
+    public function function2($string)
+    {
+        return \'function2\' . $string;
+    }
+
+    public function function3(\ProxyManagerTestAsset\OverloadingObject\Baz $baz)
+    {
+        return \'function3\' . $baz;
+    }
+
+
+}
+';
+        $this->assertEquals($documentation, $content);
     }
 }
