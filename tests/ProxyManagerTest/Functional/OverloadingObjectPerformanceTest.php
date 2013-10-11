@@ -64,6 +64,8 @@ class OverloadingObjectPerformanceTest extends BasePerformanceTest
             'Instantiation for ' . $iterations . ' proxies of type ' . $className . ': %fms / %fKb'
         );
         
+        $this->compareProfile($baseProfile, $proxyProfile);
+        
         $instance = new $className();
         $this->startCapturing();
         for ($i = 0; $i < $iterations; $i += 1) {
@@ -82,6 +84,8 @@ class OverloadingObjectPerformanceTest extends BasePerformanceTest
         $proxyProfile = $this->endCapturing(
             'Method call for ' . $iterations . ' proxies of type ' . $className . ': %fms / %fKb'
         );
+        
+        $this->compareProfile($baseProfile, $proxyProfile);
     }
 
     /**
