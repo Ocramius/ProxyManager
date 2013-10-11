@@ -75,13 +75,17 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
     public function testOverloadedMethodCallsWithSimpleObject()
     {
         $methods = array(
-            array('publicMethod' => function($string) { return 'publicMethodDefault ' . $string; }),
-            array('publicMethod' => function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; }),
-            array('publicMethod' => function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; }),
-            array('publicMethod' => function(Baz $baz) { return $baz; }),
-            array('newMethod' => function() { return 'newMethod'; }),
-            array('newMethod' => function($string) { return 'newMethod' . $string; }),
-            array('newMethodWithParam' => function($string) { return 'newMethodWith' . $string; }),
+            'publicMethod' => array(
+                function($string) { return 'publicMethodDefault ' . $string; },
+                function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; },
+                function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; },
+                function(Baz $baz) { return $baz; },
+            ),
+            'newMethod' => array(
+                function() { return 'newMethod'; },
+                function($string) { return 'newMethod' . $string; },
+            ),
+            'newMethodWithParam' => function($string) { return 'newMethodWith' . $string; },
         );
         
         $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseClass', $methods);
@@ -101,10 +105,13 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
     public function testOverloadedMethodCallsWithObjectInterfaceBased()
     {
         $methods = array(
-                array('bar' => function($string) { return $string; }),
-                array('bar' => function(Baz $b, $string) { return $b . $string; }),
-                array('baz' => function() { return 'baz default'; }),
-                array('baz' => function($string, $otherString) { return $string . $otherString; }
+            'bar' => array(
+                function($string) { return $string; },
+                function(Baz $b, $string) { return $b . $string; },
+            ),
+            'baz' => array(
+                function() { return 'baz default'; },
+                function($string, $otherString) { return $string . $otherString; },
             ),
         );
         

@@ -63,17 +63,18 @@ class OverloadingFactory extends AbstractBaseFactory
         $list = $property->getValue($proxy);
         $reflectionTools = new ReflectionTools();
         
-        foreach($methods as $method) {
-            $methodName         = key($method);
-            $closure            = current($method);
+        foreach($methods as $methodName => $method) {
             
-            $argReflection      = $reflectionTools->getArgumentsLine(new ReflectionFunction($closure));
-            
-            if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
-                throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
+            $closures = is_array($method) ? $method : array($method);
+            foreach($closures as $closure) {
+                $argReflection      = $reflectionTools->getArgumentsLine(new ReflectionFunction($closure));
+
+                if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
+                    throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
+                }
+
+                $list[$methodName][$argReflection->toIdentifiableString()] = $closure;
             }
-            
-            $list[$methodName][$argReflection->toIdentifiableString()] = $closure;
         }
         
         $property->setValue($proxy, $list);

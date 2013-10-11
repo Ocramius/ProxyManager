@@ -25,8 +25,10 @@ $foo = new Foo();
 $factory = new \ProxyManager\Factory\OverloadingFactory();
 $proxy = $factory->createProxy($foo);
 $factory->createProxyMethods($proxy, array(
-    array('bar' => function($string) { return $string; }),
-    array('bar' => function($otherString) { return $otherString; }),
+    'bar' => array(
+        function($string) { return $string; },
+        function($otherString) { return $otherString; },
+    )
 ));
 
 ?>

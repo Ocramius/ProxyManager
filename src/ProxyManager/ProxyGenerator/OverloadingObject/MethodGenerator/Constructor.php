@@ -59,18 +59,19 @@ class Constructor extends MethodGenerator
             $list[$methodName][$argReflection->toIdentifiableString()] = 'function(' . $argReflection->toString() . ') {' . trim($reflection->getBody()) . '};';
         }
         
-        foreach($defaultMethods as $defaultMethod) {
-            $methodName         = key($defaultMethod);
-            $closure            = current($defaultMethod);
+        foreach($defaultMethods as $methodName => $defaultMethod) {
             
-            $argReflection      = $reflectionTools->getArgumentsLine(new ReflectionFunction($closure));
-            
-            if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
-                throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
+            $closures = is_array($defaultMethod) ? $defaultMethod : array($defaultMethod);
+            foreach($closures as $closure) {
+                $argReflection      = $reflectionTools->getArgumentsLine(new ReflectionFunction($closure));
+
+                if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
+                    throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
+                }
+
+                $content = ReflectionTools::getFunctionContent($closure);
+                $list[$methodName][$argReflection->toIdentifiableString()] = 'function(' . $argReflection->toString() . ') {' . trim($content) . '};';
             }
-                     
-            $content = ReflectionTools::getFunctionContent($closure);
-            $list[$methodName][$argReflection->toIdentifiableString()] = 'function(' . $argReflection->toString() . ') {' . trim($content) . '};';
         }
         
         $body = '';

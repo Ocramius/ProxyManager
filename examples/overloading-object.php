@@ -15,16 +15,18 @@ class Foo
 $foo = new Foo();
 
 $factory = new OverloadingFactory();
+
+// create proxy with some additional methods
 $proxy = $factory->createProxy($foo, array(
-    array('bar' => function($string) { return $string; }),
-    array('bar' => function(\stdClass $std) { return $std->string; }),
+    'bar' => array(
+        function($string) { return $string; },
+        function(\stdClass $std) { return $std->string; }
+    ),
 ));
-    
-$proxy = $factory->createProxy($foo);
 
 // be careful, methods adding in live is slower
 $factory->createProxyMethods($proxy, array(
-    array('bar' => function($string, $otherString) { return $string . $otherString; }),
+    'bar' => function($string, $otherString) { return $string . $otherString; },
 ));
 
 echo "#1: " . $proxy->bar('foo') . "\n"; // 'foo'
