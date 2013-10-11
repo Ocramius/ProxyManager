@@ -160,9 +160,7 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
         
         $factory = new OverloadingFactory($config);
         $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock', array(
-            array('foo' => 
-                $c = function($foo) { return $foo; }
-            ),
+            array('foo' => function($foo) { return $foo; }),
         ));
         $this->assertEquals('bar', $proxy->foo('bar'));
     }
@@ -182,9 +180,7 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
         $factory = new OverloadingFactory($config);
         $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock');
         $factory->createProxyMethods($proxy, array(
-            array('foo' => 
-                $c = function($foo) { return $foo; }
-            ),
+            array('foo' => function($foo) { return $foo; }),
         ));
         $this->assertEquals('bar', $proxy->foo('bar'));
     }
@@ -246,15 +242,11 @@ class OverloadingObjectMock
         
         $factory = new OverloadingFactory($config);
         $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock', array(
-            array('bar' => 
-                $c = function($bar) { return $bar . '!'; }
-            ),
+            array('bar' => function($bar) { return $bar . '!'; }),
         ));
         
         $factory->createProxyMethods($proxy, array(
-            array('foo' => 
-                $c = function($foo) { return $foo; }
-            ),
+            array('foo' => function($foo) { return $foo; }),
         ));
         
         $documentation = $factory->createProxyDocumentation($proxy);

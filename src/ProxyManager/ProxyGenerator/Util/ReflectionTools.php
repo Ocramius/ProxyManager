@@ -70,7 +70,7 @@ class ReflectionTools
         
         $functionLine = implode("\n", $lines);
         if ($reflectionFunction->isClosure()) {
-            preg_match('#^\s*\$[^\=]+=\s*function\s*\([^\)]*\)\s*\{(.*)\}\s*;?$#s', $functionLine, $matches);
+            preg_match('#function\s*\([^\)]*\)\s*\{(.*\;)\s*\}#s', $functionLine, $matches);
         } else {
             preg_match('#^\s*function\s*[^\(]+\([^\)]*\)\s*\{(.*)\}\s*$#s', $functionLine, $matches);
         }

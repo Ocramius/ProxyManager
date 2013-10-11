@@ -75,27 +75,13 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
     public function testOverloadedMethodCallsWithSimpleObject()
     {
         $methods = array(
-            array('publicMethod' => 
-                $c = function($string) { return 'publicMethodDefault ' . $string; }
-            ),
-            array('publicMethod' => 
-                $c = function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; }
-            ),
-            array('publicMethod' => 
-                $c = function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; }
-            ),
-            array('publicMethod' => 
-                $c = function(Baz $baz) { return $baz; }
-            ),
-            array('newMethod' => 
-                $c = function() { return 'newMethod'; }
-            ),
-            array('newMethod' => 
-                $c = function($string) { return 'newMethod' . $string; }
-            ),
-            array('newMethodWithParam' => 
-                $c = function($string) { return 'newMethodWith' . $string; }
-            ),
+            array('publicMethod' => function($string) { return 'publicMethodDefault ' . $string; }),
+            array('publicMethod' => function($string, $otherString) { return 'publicMethodDefault ' . $string . $otherString; }),
+            array('publicMethod' => function(\stdClass $object) { return 'publicMethodDefault(stdClass)'; }),
+            array('publicMethod' => function(Baz $baz) { return $baz; }),
+            array('newMethod' => function() { return 'newMethod'; }),
+            array('newMethod' => function($string) { return 'newMethod' . $string; }),
+            array('newMethodWithParam' => function($string) { return 'newMethodWith' . $string; }),
         );
         
         $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseClass', $methods);
@@ -115,17 +101,10 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
     public function testOverloadedMethodCallsWithObjectInterfaceBased()
     {
         $methods = array(
-            array('bar' => 
-                $c = function($string) { return $string; }
-            ),
-            array('bar' => 
-                $c = function(Baz $b, $string) { return $b . $string; }
-            ),
-            array('baz' => 
-                $c = function() { return 'baz default'; }
-            ),
-            array('baz' => 
-                $c = function($string, $otherString) { return $string . $otherString; }
+                array('bar' => function($string) { return $string; }),
+                array('bar' => function(Baz $b, $string) { return $b . $string; }),
+                array('baz' => function() { return 'baz default'; }),
+                array('baz' => function($string, $otherString) { return $string . $otherString; }
             ),
         );
         
