@@ -42,4 +42,12 @@ class OverloadingObjectMock
     {
         return 'function3' . $baz;
     }
+    
+    /**
+     * @return string
+     */
+    public function publicMethod()
+    {
+        return 'publicMethodDefault';
+    }
 }
