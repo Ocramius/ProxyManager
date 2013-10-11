@@ -71,6 +71,10 @@ abstract class BasePerformanceTest extends PHPUnit_Framework_TestCase
         $time     = microtime(true) - $this->startTime;
         $memory   = memory_get_usage() - $this->startMemory;
 
+        if (gc_enable()) {
+            gc_collect_cycles();
+        }
+        
         echo sprintf($messageTemplate, $time, $memory / 1024) . "\n";
 
         return array(
