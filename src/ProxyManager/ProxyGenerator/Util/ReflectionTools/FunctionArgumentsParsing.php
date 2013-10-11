@@ -47,6 +47,8 @@ class FunctionArgumentsParsing
         foreach($this->reflection->getParameters() as $parameter) {
             if ($parameter->isArray()) {
                 $prototype[] = 'array $' . $parameter->getName();
+            } else if(PHP_VERSION_ID >= 50400 && $parameter->isCallable()) {
+                $prototype[] = 'callable $' . $parameter->getName();
             } else {
                 $class = $parameter->getClass();
                 $prototype[] = ($class ? '\\' . $class->getName() . ' ' : '') . '$' . $parameter->getName();

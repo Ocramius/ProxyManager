@@ -127,6 +127,27 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bazzz!', $proxy->baz('bazzz', '!'));
         $this->assertEquals('baz default', $proxy->baz());
     }
+    
+    public function testOverloadedMethodCallsWithCallableType()
+    {
+        if (PHP_VERSION_ID < 50400) {
+            $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
+        }
+        
+        $methods = array(
+            'bar' => array(
+                function($string) { return $string; },
+                function(callable $callable) { return $callable(); },
+            ),
+        );
+        
+        $proxyName = $this->generateProxy('ProxyManagerTestAsset\\OverloadingObject\\Foo', $methods);
+        
+        /* @var $proxy \ProxyManager\Proxy\OverloadingObjectInterface */
+        $proxy = new $proxyName();
+        
+        $this->assertEquals('callable', $proxy->bar(function() { return 'callable'; }));
+    }
 
     /**
      * Generates a proxy for the given class name, and retrieves its class name

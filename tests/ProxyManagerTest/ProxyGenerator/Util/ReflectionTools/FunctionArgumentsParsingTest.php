@@ -54,4 +54,16 @@ class FunctionArgumentsParsingTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('$foo,\stdClass $bar', $argReflection->toString());
         $this->assertEquals('$,\stdClass $', $argReflection->toIdentifiableString());
     }
+    
+    public function testArgumentCallable()
+    {
+        if (PHP_VERSION_ID < 50400) {
+            $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
+        }
+        
+        $closure = function() { return 'bar'; };
+        $argReflection = new FunctionArgumentsParsing(new ReflectionFunction(function($foo, callable $closure) {}));
+        $this->assertEquals('$foo,callable $closure', $argReflection->toString());
+        $this->assertEquals('$,callable $', $argReflection->toIdentifiableString());
+    }
 }

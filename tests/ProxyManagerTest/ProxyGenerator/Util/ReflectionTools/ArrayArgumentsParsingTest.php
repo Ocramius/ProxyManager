@@ -31,7 +31,7 @@ use ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing;
  */
 class ArrayArgumentsParsingTest extends PHPUnit_Framework_TestCase
 {
-    public function testArgumentsLi()
+    public function testArguments()
     {
         $argReflection = new ArrayArgumentsParsing(array());
         $this->assertEquals('', $argReflection->toString());
@@ -52,5 +52,16 @@ class ArrayArgumentsParsingTest extends PHPUnit_Framework_TestCase
         $argReflection = new ArrayArgumentsParsing(array('foo', new \stdClass()));
         $this->assertEquals('$0,\stdClass $1', $argReflection->toString());
         $this->assertEquals('$,\stdClass $', $argReflection->toIdentifiableString());
+    }
+    
+    public function testArgumentCallable()
+    {
+        if (PHP_VERSION_ID < 50400) {
+            $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
+        }
+        
+        $argReflection = new ArrayArgumentsParsing(array('foo', function() { return 'foo'; }));
+        $this->assertEquals('$0,callable $1', $argReflection->toString());
+        $this->assertEquals('$,callable $', $argReflection->toIdentifiableString());
     }
 }

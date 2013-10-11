@@ -46,6 +46,8 @@ class ArrayArgumentsParsing
        foreach($this->argument as $p => $value) {
            if (is_array($value)) {
                $prototype[] = 'array $' . $position++;
+           } else if (PHP_VERSION_ID >= 50400 && is_callable($value)) {
+               $prototype[] = 'callable $' . $position++;
            } else {
                $class = is_object($value) ? get_class($value) : '';
                $prototype[] = ($class ? '\\' . $class . ' ' : '') . '$' . $position++;
