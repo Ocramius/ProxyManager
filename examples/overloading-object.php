@@ -12,12 +12,10 @@ class Foo
     }
 }
 
-$foo = new Foo();
-
 $factory = new OverloadingFactory();
 
 // create proxy with some additional methods
-$proxy = $factory->createProxy($foo, array(
+$proxy = $factory->createProxy(new Foo(), array(
     'bar' => array(
         function($string) { return $string; },
         function(\stdClass $std) { return $std->string; }

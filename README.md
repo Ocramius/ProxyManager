@@ -159,6 +159,42 @@ There's various possible remote proxy implementations, which could be based on x
 
 This feature [yet to be planned](https://github.com/Ocramius/ProxyManager/issues/7).
 
+## Overloading Object
+
+A overloading object proxy is an extensible object. You can apply some new methods on the object during the building or at runtime.
+The only one limitation is about the internal PHP class, only your object can be extended :
+
+```php
+class Foo
+{
+    public function bar()
+    {
+        return 'default';
+    }
+}
+
+$factory = new OverloadingFactory();
+
+// create proxy with some additional methods
+$proxy = $factory->createProxy(new Foo(), array(
+    'bar' => array(
+        function($string) { return $string; },
+        function(\stdClass $std) { return $std->string; }
+    ),
+));
+
+// be careful, methods adding in live is slower
+$factory->createProxyMethods($proxy, array(
+    'bar' => function($string, $otherString) { return $string . $otherString; },
+));
+
+echo $proxy->bar('foo'); // 'foo'
+echo $proxy->bar('foo', 'bar'); // 'foobar'
+```
+
+See the [complete documentation about overloading objects](https://github.com/Ocramius/ProxyManager/tree/master/docs/overloading-object.md)
+in the `docs/` directory.
+
 ## Contributing
 
 Please read the [CONTRIBUTING.md](https://github.com/Ocramius/ProxyManager/blob/master/CONTRIBUTING.md) contents if you

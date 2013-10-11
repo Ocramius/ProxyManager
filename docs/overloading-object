@@ -1,0 +1,46 @@
+# Overloading Object Proxy
+
+A overloading object proxy is an extensible object. You can apply some new methods on the object during the building or at runtime.
+The only one limitation is about the internal PHP class, only your object can be extended.
+
+## What is an overloading proxy ?
+
+The overloading object proxy generate a new object from an other object, but with additional methods that you have defined.
+The proxy doesn't wrap the object, but it implements the object interfaces.
+A "createProxyDocumentation" in the factory will let you to see the body of the new object available.
+
+## Usage examples
+
+```php
+class Foo
+{
+    public function bar()
+    {
+        return 'default';
+    }
+}
+
+$factory = new OverloadingFactory();
+
+// create proxy with some additional methods
+$proxy = $factory->createProxy(new Foo(), array(
+    'bar' => array(
+        function($string) { return $string; },
+        function(\stdClass $std) { return $std->string; }
+    ),
+));
+
+// be careful, methods adding in live is slower
+$factory->createProxyMethods($proxy, array(
+    'bar' => function($string, $otherString) { return $string . $otherString; },
+));
+
+echo $proxy->bar('foo'); // 'foo'
+echo $proxy->bar('foo', 'bar'); // 'foobar'
+
+echo $factory->createProxyDocumentation($proxy); // print the extended class documentation
+```
+
+## Tuning performance for production
+
+See [Tuning ProxyManager for Production](https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.md).
