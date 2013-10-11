@@ -56,7 +56,7 @@ class Constructor extends MethodGenerator
             $reflection         = ZendMethodGenerator::fromReflection($methodReflection);
             $argReflection      = $reflectionTools->getArgumentsLine($methodReflection);
             
-            $list[$methodName][$argReflection->toIdentifiableString()] = 'function(' . $argReflection->toString() . ') {' . trim($reflection->getBody()) . '};';
+            $list[$methodName][$argReflection->toIdentifiableString()] = 'function(' . $argReflection->toString() . ') {' . trim($reflection->getBody()) . '}';
         }
         
         foreach($defaultMethods as $methodName => $defaultMethod) {
@@ -70,16 +70,21 @@ class Constructor extends MethodGenerator
                 }
 
                 $content = ReflectionTools::getFunctionContent($closure);
-                $list[$methodName][$argReflection->toIdentifiableString()] = 'function(' . $argReflection->toString() . ') {' . trim($content) . '};';
+                $list[$methodName][$argReflection->toIdentifiableString()] = 'function(' . $argReflection->toString() . ') {' . trim($content) . '}';
             }
         }
         
         $body = '';
-        foreach($list as $methodName => $method) {
-            foreach($method as $identifiableString => $closure) {
-                $body .= '$closure = ' . $closure . "\n"
-                       . '$this->' . $prototypes->getName() . "['$methodName'][" . var_export($identifiableString, true) . "] = \$closure;\n";
+        if ($list) {
+            $body = '$this->' . $prototypes->getName() . ' = array(' . "\n";
+            foreach($list as $methodName => $method) {
+                $body .= '    "' . $methodName . '" => array(' . "\n";
+                foreach($method as $identifiableString => $closure) {
+                    $body .= '       ' . var_export($identifiableString, true) . ' => ' . $closure . ",\n";
+                }
+                $body .= '    ),' . "\n";
             }
+            $body .= ');';
         }
         
         $this->setBody($body);

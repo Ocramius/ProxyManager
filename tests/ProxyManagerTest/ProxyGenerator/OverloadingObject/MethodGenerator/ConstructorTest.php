@@ -47,12 +47,17 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__construct', $constructor->getName());
         $this->assertCount(0, $constructor->getParameters());
         
-        $body =   '$closure = function() {return \'foo\';};' . "\n"
-                . '$this->foo[\'foo\'][\'void\'] = $closure;' . "\n"
-                . '$closure = function(array $bar) {return \'bar\';};' . "\n"
-                . '$this->foo[\'bar\'][\'array $\'] = $closure;' . "\n"
-                . '$closure = function(\stdClass $baz) {return \'baz\';};' . "\n"
-                . '$this->foo[\'baz\'][\'\\\stdClass $\'] = $closure;' . "\n";
+        $body =   '$this->foo = array(' . "\n"
+                . '    "foo" => array(' . "\n"
+                . '       \'void\' => function() {return \'foo\';},' . "\n"
+                . '    ),' . "\n"
+                . '    "bar" => array(' . "\n"
+                . '       \'array $\' => function(array $bar) {return \'bar\';},' . "\n"
+                . '    ),' . "\n"
+                . '    "baz" => array(' . "\n"
+                . '       \'\\\stdClass $\' => function(\stdClass $baz) {return \'baz\';},' . "\n"
+                . '    ),' . "\n"
+                . ');';
         $this->assertSame($body, $constructor->getBody());
     }
 

@@ -222,6 +222,11 @@ class OverloadingObjectMock
         return \'function3\' . $baz;
     }
 
+    public function publicMethod()
+    {
+        return \'publicMethodDefault\';
+    }
+
 
 }
 ';
@@ -268,6 +273,11 @@ class OverloadingObjectMock
     public function function3(\ProxyManagerTestAsset\OverloadingObject\Baz $baz)
     {
         return \'function3\' . $baz;
+    }
+
+    public function publicMethod()
+    {
+        return \'publicMethodDefault\';
     }
 
     public function bar($bar)
