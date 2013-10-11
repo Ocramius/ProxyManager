@@ -69,13 +69,22 @@ class ReflectionTools
         );
         
         $functionLine = implode("\n", $lines);
+        
+        $body = false;
         if ($reflectionFunction->isClosure()) {
             preg_match('#function\s*\([^\)]*\)\s*\{(.*\;)\s*\}#s', $functionLine, $matches);
+            if ($matches[1]) {
+                $body = $matches[1];
+            }
         } else {
-            preg_match('#^\s*function\s*[^\(]+\([^\)]*\)\s*\{(.*)\}\s*$#s', $functionLine, $matches);
+            $name = substr($reflectionFunction->getName(), strrpos($reflectionFunction->getName(), '\\')+1);
+            preg_match('#function\s+' . $name . '\s*\([^\)]*\)\s*{([^{}]+({[^}]+})*[^}]+)}#', $functionLine, $matches);
+            if ($matches[1]) {
+                $body = $matches[1];
+            }
         }
 
-        return trim($matches[1]);
+        return $body;
          /** ZF2 PR end */
     }
 }
