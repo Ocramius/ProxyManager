@@ -203,6 +203,48 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
         $config->setProxiesNamespace(Configuration::DEFAULT_PROXY_NAMESPACE . __FUNCTION__);
         
         $factory = new OverloadingFactory($config);
+        $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock');
+        
+        $documentation = $factory->createProxyDocumentation($proxy);
+        $content = 'namespace ProxyManagerTestAsset;
+
+class OverloadingObjectMock
+{
+
+    public function function1()
+    {
+        return \'function1\';
+    }
+
+    public function function2($string)
+    {
+        return \'function2\' . $string;
+    }
+
+    public function function3(\ProxyManagerTestAsset\OverloadingObject\Baz $baz)
+    {
+        return \'function3\' . $baz;
+    }
+
+
+}
+';
+        $this->assertEquals($documentation, $content);
+    }
+    
+    /**
+     * {@inheritDoc}
+     *
+     * @covers \ProxyManager\Factory\OverloadingFactory::__construct
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxy
+     * @covers \ProxyManager\Factory\OverloadingFactory::createProxyDocumentation
+     */
+    public function testCanCreateDocumentationWithClassExtension()
+    {
+        $config = new Configuration();
+        $config->setProxiesNamespace(Configuration::DEFAULT_PROXY_NAMESPACE . __FUNCTION__);
+        
+        $factory = new OverloadingFactory($config);
         $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock', array(
             array('bar' => 
                 $c = function($bar) { return $bar . '!'; }
@@ -250,17 +292,5 @@ class OverloadingObjectMock
 }
 ';
         $this->assertEquals($documentation, $content);
-    }
-    
-    /**
-     * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\OverloadingFactory::__construct
-     * @covers \ProxyManager\Factory\OverloadingFactory::createProxy
-     * @covers \ProxyManager\Factory\OverloadingFactory::createProxyDocumentation
-     */
-    public function testCanCreateDocumentationWithClassExtension()
-    {
-        
     }
 }

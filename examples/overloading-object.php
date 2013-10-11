@@ -34,6 +34,6 @@ $factory->createProxyMethods($proxy, array(
 ));
 
 echo "#1: " . $proxy->bar('foo') . "\n"; // 'foo'
-//echo "#2: " . $proxy->bar('foo', 'bar'); // 'foobar'
+echo "#2: " . $proxy->bar('foo', 'bar') . "\n"; // 'foobar'
 
 echo "Proxy documentation :\n\n" . $factory->createProxyDocumentation($proxy);
