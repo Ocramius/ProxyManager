@@ -29,30 +29,6 @@ use Zend\Code\Reflection\MethodReflection;
 class ReflectionTools
 {
     /**
-     * Get arguments line parser
-     * 
-     * @param mixed $entry
-     * @return \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing|\ProxyManager\ProxyGenerator\Util\ReflectionTools\MethodArgumentsParsing|\ProxyManager\ProxyGenerator\Util\ReflectionTools\FunctionArgumentsParsing
-     * @throws \InvalidArgumentException
-     */
-    public function getArgumentsLine($entry)
-    {
-        if (is_array($entry)) {
-            return new ReflectionTools\ArrayArgumentsParsing($entry);
-        }
-        if($entry instanceof MethodReflection) {
-            return new ReflectionTools\MethodArgumentsParsing($entry);
-        }
-        if($entry instanceof ReflectionFunction || is_string($entry)) {
-            if (is_string($entry)) {
-                $entry = new ReflectionFunction($entry);
-            }
-            return new ReflectionTools\FunctionArgumentsParsing($entry);
-        }
-        throw new \InvalidArgumentException('Parameter type is not supported');
-    }
-    
-    /**
      * @param string|closure $function
      * @return string
      */

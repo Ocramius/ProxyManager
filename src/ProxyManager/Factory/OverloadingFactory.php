@@ -20,7 +20,7 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\ProxyGenerator\OverloadingObjectGenerator;
 use ProxyManager\Proxy\OverloadingObjectInterface;
-use ProxyManager\ProxyGenerator\Util\ReflectionTools;
+use ProxyManager\ProxyGenerator\Util\ReflectionTools\FunctionArgumentsParsing;
 use ProxyManager\Proxy\Exception\OverloadingObjectException;
 use ReflectionFunction;
 use ReflectionObject;
@@ -61,19 +61,18 @@ class OverloadingFactory extends AbstractBaseFactory
         $property->setAccessible(true);
         
         $list = $property->getValue($proxy);
-        $reflectionTools = new ReflectionTools();
         
         foreach($methods as $methodName => $method) {
             
             $closures = is_array($method) ? $method : array($method);
             foreach($closures as $closure) {
-                $argReflection      = $reflectionTools->getArgumentsLine(new ReflectionFunction($closure));
+                $argLine      = FunctionArgumentsParsing::toIdentifiableString(new ReflectionFunction($closure));
 
-                if (isset($list[$methodName][$argReflection->toIdentifiableString()])) {
+                if (isset($list[$methodName][$argLine])) {
                     throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
                 }
 
-                $list[$methodName][$argReflection->toIdentifiableString()] = $closure;
+                $list[$methodName][$argLine] = $closure;
             }
         }
         

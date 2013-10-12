@@ -33,25 +33,25 @@ class ArrayArgumentsParsingTest extends PHPUnit_Framework_TestCase
 {
     public function testArguments()
     {
-        $argReflection = new ArrayArgumentsParsing(array());
-        $this->assertEquals('', $argReflection->toString());
-        $this->assertEquals('void', $argReflection->toIdentifiableString());
+        $arg = array();
+        $this->assertEquals('', ArrayArgumentsParsing::toString($arg));
+        $this->assertEquals('void', ArrayArgumentsParsing::toIdentifiableString($arg));
         
-        $argReflection = new ArrayArgumentsParsing(array('foo'));
-        $this->assertEquals('$0', $argReflection->toString());
-        $this->assertEquals('$', $argReflection->toIdentifiableString());
+        $arg = array('foo');
+        $this->assertEquals('$0', ArrayArgumentsParsing::toString($arg));
+        $this->assertEquals('$', ArrayArgumentsParsing::toIdentifiableString($arg));
         
-        $argReflection = new ArrayArgumentsParsing(array('foo', 'bar'));
-        $this->assertEquals('$0,$1', $argReflection->toString());
-        $this->assertEquals('$,$', $argReflection->toIdentifiableString());
+        $arg = array('foo', 'bar');
+        $this->assertEquals('$0,$1', ArrayArgumentsParsing::toString($arg));
+        $this->assertEquals('$,$', ArrayArgumentsParsing::toIdentifiableString($arg));
         
-        $argReflection = new ArrayArgumentsParsing(array('foo', array()));
-        $this->assertEquals('$0,array $1', $argReflection->toString());
-        $this->assertEquals('$,array $', $argReflection->toIdentifiableString());
+        $arg = array('foo', array());
+        $this->assertEquals('$0,array $1', ArrayArgumentsParsing::toString($arg));
+        $this->assertEquals('$,array $', ArrayArgumentsParsing::toIdentifiableString($arg));
         
-        $argReflection = new ArrayArgumentsParsing(array('foo', new \stdClass()));
-        $this->assertEquals('$0,\stdClass $1', $argReflection->toString());
-        $this->assertEquals('$,\stdClass $', $argReflection->toIdentifiableString());
+        $arg = array('foo', new \stdClass());
+        $this->assertEquals('$0,\stdClass $1', ArrayArgumentsParsing::toString($arg));
+        $this->assertEquals('$,\stdClass $', ArrayArgumentsParsing::toIdentifiableString($arg));
     }
     
     public function testArgumentCallable()
@@ -60,8 +60,8 @@ class ArrayArgumentsParsingTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
         }
         
-        $argReflection = new ArrayArgumentsParsing(array('foo', function() { return 'foo'; }));
-        $this->assertEquals('$0,callable $1', $argReflection->toString());
-        $this->assertEquals('$,callable $', $argReflection->toIdentifiableString());
+        $arg = array('foo', function() { return 'foo'; });
+        $this->assertEquals('$0,callable $1', ArrayArgumentsParsing::toString($arg));
+        $this->assertEquals('$,callable $', ArrayArgumentsParsing::toIdentifiableString($arg));
     }
 }

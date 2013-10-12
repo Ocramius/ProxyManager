@@ -18,22 +18,24 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\Constructor;
-use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\MagicCall;
+use ProxyManager\Generator\OverloadingObject\ClassGenerator as OverloadingClassGenerator;
 use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\OverloadingObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\OverloadingObject\PropertyGenerator\PrototypesProperty;
+use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\MagicCall;
 use ProxyManager\Proxy\Exception\OverloadingObjectException;
 use ProxyManager\Proxy\OverloadingObjectInterface;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\ReflectionTools;
-use Zend\Code\Reflection\ParameterReflection;
 
+use ReflectionFunction;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
-use ProxyManager\Generator\OverloadingObject\ClassGenerator as OverloadingClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
-use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Reflection\ParameterReflection;
+use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Generator\DocBlockGenerator;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\OverloadingObjectInterface}
@@ -45,6 +47,13 @@ use Zend\Code\Generator\MethodGenerator;
  */
 class OverloadingObjectGenerator implements ProxyGeneratorInterface
 {    
+    /**
+     * Object Method
+     * 
+     * @var \ReflectionMethod[]
+     */
+    protected $methods = array();
+    
     /**
      * Default proxy methods
      * 
@@ -71,6 +80,19 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
         foreach ($originalClass->getInterfaceNames() as $name) {
             $interfaces[] = $name;
         }
+        
+        $defaultProperties = $originalClass->getDefaultProperties();
+        foreach($originalClass->getProperties() as $propertyReflection) {
+            $property = new PropertyGenerator($propertyReflection->getName(), $defaultProperties[$propertyReflection->getName()]);
+            if ($propertyReflection->isPublic()) {
+                $property->setVisibility(PropertyGenerator::FLAG_PUBLIC);
+            } else if ($propertyReflection->isPrivate()) {
+                $property->setVisibility(PropertyGenerator::FLAG_PRIVATE);
+            } else if ($propertyReflection->isProtected()) {
+                $property->setVisibility(PropertyGenerator::FLAG_PROTECTED);
+            }
+            $classGenerator->addPropertyFromGenerator($property);
+        }
 
         $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($prototypes);
@@ -86,8 +108,10 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
             '__wakeup' => true,
         );
         
+        $classGenerator->addMethodFromGenerator(new MagicCall($originalClass, $prototypes));
+        
         /* @var $methods \ReflectionMethod[] */
-        $methods = array_filter(
+        $this->methods = array_filter(
             $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
             function (ReflectionMethod $method) use ($excluded) {
                 return ! (
@@ -98,13 +122,32 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
                 );
             }
         );
-        $classGenerator->addMethodFromGenerator(new Constructor($prototypes, $methods, $this->defaultMethods));
-        $classGenerator->addMethodFromGenerator(new MagicCall($originalClass, $prototypes));
         
-        foreach ($methods as $method) {
+        $list = array();
+        foreach ($this->methods as $method) {
+            $methodName    = $method->getName();
+            $list[]        = $methodName;
+            $defautMethods = isset($this->defaultMethods[$methodName]) ? $this->defaultMethods[$methodName] : array();
+            
             $classGenerator->addMethodFromGenerator(
                 OverloadingObjectMethodInterceptor::generateMethod(
-                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
+                    $prototypes,
+                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                    $defautMethods
+                )
+            );
+        }
+        
+        foreach ($this->defaultMethods as $defaultMethodName => $defautMethods) {
+            if (in_array($defaultMethodName, $list)) {
+                continue;
+            }
+            
+            $classGenerator->addMethodFromGenerator(
+                OverloadingObjectMethodInterceptor::generateFunction(
+                    $prototypes,
+                    $defaultMethodName,
+                    $defautMethods
                 )
             );
         }
@@ -128,21 +171,33 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
         $property->setAccessible(false);
         
         $classGenerator = new OverloadingClassGenerator($className);
-        foreach($value as $methodName => $methods) {
-            foreach($methods as $closure) {
+        foreach($this->methods as $method) {
+            $reflectionMethod = new MethodReflection($method->getDeclaringClass()->getName(), $method->getName());
+            $methodGenerator = MethodGenerator::fromReflection($reflectionMethod);
+            $classGenerator->addMethodFromGenerator($methodGenerator);
+        }
+        
+        $methods = array_merge_recursive($this->defaultMethods, $value);
+        foreach($methods as $methodName => $closures) {
+            foreach($closures as $closure) {
                 
                 $body = ReflectionTools::getFunctionContent($closure);
                 
-                $r = new \ReflectionFunction($closure);
+                $reflectionFunction = new ReflectionFunction($closure);
                 $parameters = array();
-                foreach($r->getParameters() as $parameter) {
+                $tags = array();
+                foreach($reflectionFunction->getParameters() as $parameter) {
                     $reflectionParameter = new ParameterReflection($closure, $parameter->getName());
                     $parameters[] = ParameterGenerator::fromReflection($reflectionParameter);
+                    $tags[] = array('name' => 'param', 'description' => '$' . $parameter->getName());
                 }
                 
                 $methodGenerator = new MethodGenerator($methodName);
                 $methodGenerator->setBody($body);
                 $methodGenerator->setParameters($parameters);
+                $docBlock = new DocBlockGenerator();
+                $docBlock->setTags($tags);
+                $methodGenerator->setDocBlock($docBlock);
                 
                 $classGenerator->addMethodFromGenerator($methodGenerator);
             }
@@ -169,6 +224,9 @@ class OverloadingObjectGenerator implements ProxyGeneratorInterface
      */
     public function setDefaultMethods(array $methods)
     {
-        $this->defaultMethods = $methods;
+        $this->defaultMethods = array();
+        foreach($methods as $methodName => $methods) {
+            $this->defaultMethods[$methodName] = is_array($methods) ? $methods : array($methods);
+        }
     }
 }

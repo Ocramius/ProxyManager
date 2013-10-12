@@ -19,7 +19,6 @@
 namespace ProxyManager\ProxyGenerator\Util\ReflectionTools;
 
 use Zend\Code\Reflection\MethodReflection;
-use Zend\Code\Generator\MethodGenerator;
 
 /**
  *
@@ -29,24 +28,15 @@ use Zend\Code\Generator\MethodGenerator;
 class MethodArgumentsParsing
 {
     /**
-     * @var MethodReflection
-     */
-    protected $reflection;
-    
-    public function __construct(MethodReflection $reflection)
-    {
-        $this->reflection = $reflection;
-    }
-    
-    /**
      * Arguments parsing
+     * @param \Zend\Code\Reflection\MethodReflection $reflection
      * @return string
      */
-    protected function parse()
+    protected static function parse(MethodReflection $reflection)
     {
         $prototype  = array();
         
-        foreach($this->reflection->getParameters() as $parameter) {
+        foreach($reflection->getParameters() as $parameter) {
             $type = $parameter->getType();
             if ($type == 'mixed') {
                 $type = '';
@@ -62,21 +52,23 @@ class MethodArgumentsParsing
    
     /**
      * Get arguments string description
-     * @return type
+     * @param \Zend\Code\Reflection\MethodReflection $reflection
+     * @return string
      */
-    public function toString()
+    public static function toString(MethodReflection $reflection)
     {
-       $prototype = $this->parse();
+       $prototype = self::parse($reflection);
        return implode(',', $prototype);
     }
     
     /**
      * Get arguments string identifier
-     * @return type
+     * @param \Zend\Code\Reflection\MethodReflection $reflection
+     * @return string
      */
-    public function toIdentifiableString()
+    public static function toIdentifiableString(MethodReflection $reflection)
     {
-       $string = $this->toString();
+       $string = self::toString($reflection);
        return $string ? preg_replace('#\$[^\s,\$]+#', '$', $string) : 'void';
     }
 }

@@ -28,6 +28,8 @@ use ProxyManagerTestAsset\OverloadingObject\Baz;
  */
 class OverloadingObjectMock
 {
+    public $property = 'propertyDefault';
+    
     public function function1()
     {
         return 'function1';

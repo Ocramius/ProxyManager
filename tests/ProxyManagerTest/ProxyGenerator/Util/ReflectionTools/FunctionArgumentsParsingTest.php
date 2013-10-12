@@ -34,25 +34,25 @@ class FunctionArgumentsParsingTest extends PHPUnit_Framework_TestCase
 {
     public function testArgumentsLi()
     {
-        $argReflection = new FunctionArgumentsParsing(new ReflectionFunction(function() {}));
-        $this->assertEquals('', $argReflection->toString());
-        $this->assertEquals('void', $argReflection->toIdentifiableString());
+        $argReflection = new ReflectionFunction(function() {});
+        $this->assertEquals('', FunctionArgumentsParsing::toString($argReflection));
+        $this->assertEquals('void', FunctionArgumentsParsing::toIdentifiableString($argReflection));
         
-        $argReflection = new FunctionArgumentsParsing(new ReflectionFunction(function($foo) {}));
-        $this->assertEquals('$foo', $argReflection->toString());
-        $this->assertEquals('$', $argReflection->toIdentifiableString());
+        $argReflection = new ReflectionFunction(function($foo) {});
+        $this->assertEquals('$foo', FunctionArgumentsParsing::toString($argReflection));
+        $this->assertEquals('$', FunctionArgumentsParsing::toIdentifiableString($argReflection));
         
-        $argReflection = new FunctionArgumentsParsing(new ReflectionFunction(function($foo, $bar) {}));
-        $this->assertEquals('$foo,$bar', $argReflection->toString());
-        $this->assertEquals('$,$', $argReflection->toIdentifiableString());
+        $argReflection = new ReflectionFunction(function($foo, $bar) {});
+        $this->assertEquals('$foo,$bar', FunctionArgumentsParsing::toString($argReflection));
+        $this->assertEquals('$,$', FunctionArgumentsParsing::toIdentifiableString($argReflection));
         
-        $argReflection = new FunctionArgumentsParsing(new ReflectionFunction(function($foo, array $bar) {}));
-        $this->assertEquals('$foo,array $bar', $argReflection->toString());
-        $this->assertEquals('$,array $', $argReflection->toIdentifiableString());
+        $argReflection = new ReflectionFunction(function($foo, array $bar) {});
+        $this->assertEquals('$foo,array $bar', FunctionArgumentsParsing::toString($argReflection));
+        $this->assertEquals('$,array $', FunctionArgumentsParsing::toIdentifiableString($argReflection));
         
-        $argReflection = new FunctionArgumentsParsing(new ReflectionFunction(function($foo, \stdClass $bar) {}));
-        $this->assertEquals('$foo,\stdClass $bar', $argReflection->toString());
-        $this->assertEquals('$,\stdClass $', $argReflection->toIdentifiableString());
+        $argReflection = new ReflectionFunction(function($foo, \stdClass $bar) {});
+        $this->assertEquals('$foo,\stdClass $bar', FunctionArgumentsParsing::toString($argReflection));
+        $this->assertEquals('$,\stdClass $', FunctionArgumentsParsing::toIdentifiableString($argReflection));
     }
     
     public function testArgumentCallable()
@@ -62,8 +62,8 @@ class FunctionArgumentsParsingTest extends PHPUnit_Framework_TestCase
         }
         
         $closure = function() { return 'bar'; };
-        $argReflection = new FunctionArgumentsParsing(new ReflectionFunction(function($foo, callable $closure) {}));
-        $this->assertEquals('$foo,callable $closure', $argReflection->toString());
-        $this->assertEquals('$,callable $', $argReflection->toIdentifiableString());
+        $argReflection = new ReflectionFunction(function($foo, callable $closure) {});
+        $this->assertEquals('$foo,callable $closure', FunctionArgumentsParsing::toString($argReflection));
+        $this->assertEquals('$,callable $', FunctionArgumentsParsing::toIdentifiableString($argReflection));
     }
 }

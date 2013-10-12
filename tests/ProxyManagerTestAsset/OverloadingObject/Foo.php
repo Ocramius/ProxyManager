@@ -26,6 +26,8 @@ namespace ProxyManagerTestAsset\OverloadingObject;
  */
 class Foo implements FooInterface
 {
+    public $foo = 'foo default';
+    
     public function bar()
     {
         return 'default';

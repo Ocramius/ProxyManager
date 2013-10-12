@@ -16,10 +16,11 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\OverloadingObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\OverloadingObjectMethodInterceptor;
+use ProxyManager\ProxyGenerator\OverloadingObject\PropertyGenerator\PrototypesProperty;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -33,16 +34,26 @@ class OverloadingObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\OverloadingObjectMethodInterceptor
      */
-    public function testBodyStructure()
+    public function testBodyStructureWitNoAdditionalMethod()
     {
-        $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicArrayHintedMethod');
-        $method     = OverloadingObjectMethodInterceptor::generateMethod($reflection);
+        $reflection    = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicArrayHintedMethod');
+        $property      = new PrototypesProperty();
+        $prototypeName = OverloadingObjectMethodInterceptor::getPrototypeName();
+        $method        = OverloadingObjectMethodInterceptor::generateMethod($property, $reflection, array());
 
         $this->assertSame('publicArrayHintedMethod', $method->getName());
         $this->assertCount(1, $method->getParameters());
         $this->assertSame(
               '$args = func_get_args();' . "\n"
-            . 'return $this->__call(__FUNCTION__, $args);',
+            . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n"
+            . 'if (' . $prototypeName .' == "array $") {' . "\n"
+            . '        return \'publicArrayHintedMethodDefault\';' . "\n"
+            . '}' . "\n"
+            . 'else if (isset($this->' . $property->getName() . '["publicArrayHintedMethod"][' . $prototypeName .'])) {' . "\n"
+            . '    return call_user_func_array($this->' . $property->getName() . '["publicArrayHintedMethod"][' . $prototypeName .'], $args);' . "\n"
+            . '} else {' . "\n"
+            . '    trigger_error("Call to undefined method publicArrayHintedMethod", E_USER_ERROR);' . "\n"
+            . '}',
             $method->getBody()
         );
     }
@@ -50,17 +61,35 @@ class OverloadingObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator\OverloadingObjectMethodInterceptor
      */
-    public function testBodyStructureWithReferenceReturn()
+    public function testBodyStructureWitAdditionalMethod()
     {
-        $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceMethod');
-        $method = OverloadingObjectMethodInterceptor::generateMethod($reflection);
+        $reflection    = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceMethod');
+        $property      = new PrototypesProperty();
+        $prototypeName = OverloadingObjectMethodInterceptor::getPrototypeName();
+        $method        = OverloadingObjectMethodInterceptor::generateMethod($property, $reflection, array(
+            function($foo, $bar) { return $foo . $bar; }
+        ));
 
         $this->assertSame('publicByReferenceMethod', $method->getName());
         $this->assertCount(0, $method->getParameters());
         $this->assertSame(
-            '$args = func_get_args();' . "\n"
-            . '$return = $this->__call(__FUNCTION__, $args);' . "\n"
-            . 'return $return;',
+              '$args = func_get_args();' . "\n"
+            . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n"
+            . 'if (' . $prototypeName .' == "void") {' . "\n"
+            . '        $returnValue = \'publicByReferenceMethodDefault\';' . "\n"
+            . '' . "\n"
+            . '        return $returnValue;' . "\n"
+            . '}' . "\n"
+            . 'else if (' . $prototypeName .' === \'$,$\') {' . "\n"
+            . '$foo = $args[0];' . "\n"
+            . '$bar = $args[1];' . "\n"
+            . ' return $foo . $bar;' . "\n"
+            . '}' . "\n"
+            . 'else if (isset($this->' . $property->getName() . '["publicByReferenceMethod"][' . $prototypeName .'])) {' . "\n"
+            . '    return call_user_func_array($this->' . $property->getName() . '["publicByReferenceMethod"][' . $prototypeName .'], $args);' . "\n"
+            . '} else {' . "\n"
+            . '    trigger_error("Call to undefined method publicByReferenceMethod", E_USER_ERROR);' . "\n"
+            . '}',
             $method->getBody()
         );
     }

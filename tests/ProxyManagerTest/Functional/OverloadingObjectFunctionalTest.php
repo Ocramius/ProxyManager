@@ -85,7 +85,11 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 function() { return 'newMethod'; },
                 function($string) { return 'newMethod' . $string; },
             ),
+            'newMethodWithReference' => function(&$foo) { $foo .= ' overloaded'; },
             'newMethodWithParam' => function($string) { return 'newMethodWith' . $string; },
+            'readPublicProperty' => function() { return $this->publicProperty; },
+            'readProtectedProperty' => function() { return $this->protectedProperty; },
+            'readPrivateProperty' => function() { return $this->privateProperty; },
         );
         
         $proxyName = $this->generateProxy('ProxyManagerTestAsset\\BaseClass', $methods);
@@ -99,7 +103,13 @@ class OverloadingObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('baz class', $proxy->publicMethod(new Baz()));
         $this->assertEquals('newMethod', $proxy->newMethod());
         $this->assertEquals('newMethod!', $proxy->newMethod('!'));
+        $foo = 'newMethodWithReference';
+        $proxy->newMethodWithReference(&$foo);
+        $this->assertEquals('newMethodWithReference overloaded', $foo);
         $this->assertEquals('newMethodWithParam', $proxy->newMethodWithParam('Param'));
+        $this->assertEquals('publicPropertyDefault', $proxy->readPublicProperty());
+        $this->assertEquals('protectedPropertyDefault', $proxy->readProtectedProperty());
+        $this->assertEquals('privatePropertyDefault', $proxy->readPrivateProperty());
     }
     
     public function testOverloadedMethodCallsWithObjectInterfaceBased()

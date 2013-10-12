@@ -182,6 +182,7 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
         $factory->createProxyMethods($proxy, array(
             'foo' => function($foo) { return $foo; },
         ));
+            
         $this->assertEquals('bar', $proxy->foo('bar'));
     }
     
@@ -222,6 +223,9 @@ class OverloadingObjectMock
         return \'function3\' . $baz;
     }
 
+    /**
+     * @return string
+     */
     public function publicMethod()
     {
         return \'publicMethodDefault\';
@@ -275,16 +279,25 @@ class OverloadingObjectMock
         return \'function3\' . $baz;
     }
 
+    /**
+     * @return string
+     */
     public function publicMethod()
     {
         return \'publicMethodDefault\';
     }
 
+    /**
+     * @param $bar
+     */
     public function bar($bar)
     {
         return $bar . \'!\';
     }
 
+    /**
+     * @param $foo
+     */
     public function foo($foo)
     {
         return $foo;

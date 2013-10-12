@@ -26,24 +26,15 @@ namespace ProxyManager\ProxyGenerator\Util\ReflectionTools;
 class ArrayArgumentsParsing
 {
     /**
-     * @var array
-     */
-    protected $argument;
-    
-    public function __construct(array $argument)
-    {
-        $this->argument = $argument;
-    }
-    
-    /**
      * Arguments parsing
+     * @param array $argument
      * @return string
      */
-    protected function parse()
+    protected static function parse(array $argument)
     {
        $prototype = array();
        $position = 0;
-       foreach($this->argument as $p => $value) {
+       foreach($argument as $p => $value) {
            if (is_array($value)) {
                $prototype[] = 'array $' . $position++;
            } else if (PHP_VERSION_ID >= 50400 && is_callable($value)) {
@@ -59,21 +50,23 @@ class ArrayArgumentsParsing
    
     /**
      * Get arguments string description
+     * @param array $argument
      * @return type
      */
-    public function toString()
+    public static function toString(array $argument)
     {
-       $prototype = $this->parse();
+       $prototype = self::parse($argument);
        return implode(',', $prototype);
     }
     
     /**
      * Get arguments string identifier
+     * @param array $argument
      * @return type
      */
-    public function toIdentifiableString()
+    public static function toIdentifiableString(array $argument)
     {
-       $string = $this->toString();
+       $string = self::toString($argument);
        return $string ? preg_replace('#\$[^\s,\$]+#', '$', $string) : 'void';
     }
 }

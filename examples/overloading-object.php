@@ -20,6 +20,9 @@ $proxy = $factory->createProxy(new Foo(), array(
         function($string) { return $string; },
         function(\stdClass $std) { return $std->string; }
     ),
+    'foo' => array(
+        function($string) { return 'foo' . $string; },
+    ),
 ));
 
 // be careful, methods adding in live is slower

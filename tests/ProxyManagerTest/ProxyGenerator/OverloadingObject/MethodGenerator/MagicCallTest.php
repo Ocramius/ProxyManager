@@ -47,8 +47,7 @@ class MagicCallTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__call', $call->getName());
         $this->assertCount(2, $call->getParameters());
         
-        $body =   '$argReflection = new \ProxyManager\ProxyGenerator\Util\ReflectionTools();' . "\n"
-                . '$prototype = $argReflection->getArgumentsLine($arguments)->toIdentifiableString();' . "\n"
+        $body =   '$prototype = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($arguments);' . "\n"
                 . 'if (isset($this->foo[$name][$prototype])) {' . "\n"
                 . '    return call_user_func_array($this->foo[$name][$prototype], $arguments);' . "\n"
                 . '}';

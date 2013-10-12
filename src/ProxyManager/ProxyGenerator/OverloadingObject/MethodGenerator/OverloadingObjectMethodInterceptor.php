@@ -19,7 +19,13 @@
 namespace ProxyManager\ProxyGenerator\OverloadingObject\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\ProxyGenerator\OverloadingObject\PropertyGenerator\PrototypesProperty;
+use ProxyManager\ProxyGenerator\Util\ReflectionTools;
+use ProxyManager\ProxyGenerator\Util\ReflectionTools\MethodArgumentsParsing;
+use ProxyManager\ProxyGenerator\Util\ReflectionTools\FunctionArgumentsParsing;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use ReflectionFunction;
 
 /**
  * Implementation for overloading objects
@@ -30,11 +36,20 @@ use Zend\Code\Reflection\MethodReflection;
 class OverloadingObjectMethodInterceptor extends MethodGenerator
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * Property name
+     * @var string
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public static $prototypeName;
+    
+    /**
+     * 
+     * @param PrototypesProperty                     $prototypes
+     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
+     * @param array                                  $defaultMethods
+     * @return OverloadingObjectMethodInterceptor|static
+     * @throws OverloadingObjectException
+     */
+    public static function generateMethod(PrototypesProperty $prototypes, MethodReflection $originalMethod, array $defaultMethods = array())
     {
         /* @var $method self */
         $method = static::fromReflection($originalMethod);
@@ -43,16 +58,119 @@ class OverloadingObjectMethodInterceptor extends MethodGenerator
             $parameter->setDefaultValue(null);
         }
         
-        $body =  '$args = func_get_args();' . "\n";
-        if ($originalMethod->returnsReference()) {
-            $body .= 
-                  '$return = $this->__call(__FUNCTION__, $args);' . "\n"
-                . 'return $return;';
-        } else {
-            $body .= 'return $this->__call(__FUNCTION__, $args);';
+        $argLine       = MethodArgumentsParsing::toIdentifiableString($originalMethod);
+        $prototypeName = self::getPrototypeName();
+        $list          = array($argLine);
+        
+        $body =  '$args = func_get_args();' . "\n"
+            . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n"
+            . 'if (' . $prototypeName . ' == "' . $argLine . '") {' . "\n"
+            .      $method->getBody() . "\n"
+            . '}' . "\n";
+        
+        foreach($defaultMethods as $methodName => $defaultMethod) {
+            
+            $closures = is_array($defaultMethod) ? $defaultMethod : array($defaultMethod);
+            foreach($closures as $closure) {
+                $reflectionFunction = new ReflectionFunction($closure);
+                $argLine = FunctionArgumentsParsing::toIdentifiableString($reflectionFunction);
+
+                if (in_array($argLine, $list)) {
+                    throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $methodName));
+                }
+
+                $list[] = $argLine;
+                $content = ReflectionTools::getFunctionContent($closure);
+                $body .= 'else if (' . $prototypeName . ' === ' . var_export($argLine, true) . ') {' . "\n";
+                      
+                foreach($reflectionFunction->getParameters() as $functionParameter) {
+                    if ($functionParameter->isPassedByReference()) {
+                        $body .= '$trace = debug_backtrace();' . "\n"
+                               . '$' . $functionParameter->getName() . ' = ' . '& $trace[0]["args"][' . $functionParameter->getPosition() . '];' . "\n";
+                    } else {
+                        $body .= '$' . $functionParameter->getName() . ' = ' . '$args[' . $functionParameter->getPosition() . '];' . "\n";
+                    }
+                }
+                
+                $body .=  $content . "\n"
+                        . '}' . "\n";
+            }
         }
+        
+        $body .= 'else if (isset($this->' . $prototypes->getName() . '["' . $method->getName() . '"][' . $prototypeName . '])) {' . "\n"
+               . '    return call_user_func_array($this->' . $prototypes->getName() . '["' . $method->getName() . '"][' . $prototypeName . '], $args);' . "\n"
+               . '} else {' . "\n"
+               . '    trigger_error("Call to undefined method ' . $method->getName() . '", E_USER_ERROR);' . "\n"
+               . '}';
         $method->setBody($body);
 
         return $method;
+    }
+    
+    /**
+     * 
+     * @param PrototypesProperty $prototypes
+     * @param string             $name
+     * @param array              $functions
+     * @return OverloadingObjectMethodInterceptor|static
+     * @throws OverloadingObjectException
+     */
+    public static function generateFunction(PrototypesProperty $prototypes, $name, array $functions)
+    {
+        $method = new static();
+        $method->setParameters(array());
+        $method->setName($name);
+        
+        $prototypeName = self::getPrototypeName();
+        $list          = array();
+        
+        $body = '$args = func_get_args();' . "\n"
+            . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n";
+        
+        foreach($functions as $function) {
+            $reflectionFunction = new ReflectionFunction($function);
+            $argLine = FunctionArgumentsParsing::toIdentifiableString($reflectionFunction);
+
+            if (in_array($argLine, $list)) {
+                throw new OverloadingObjectException(sprintf('A method "%s" with the same prototype already exists', $name));
+            }
+            
+            $list[] = $argLine;
+            $content = ReflectionTools::getFunctionContent($function);
+            $body .= 'if (' . $prototypeName . ' === ' . var_export($argLine, true) . ') {' . "\n";
+            
+            foreach($reflectionFunction->getParameters() as $functionParameter) {
+                if ($functionParameter->isPassedByReference()) {
+                    $body .= '$trace = debug_backtrace();' . "\n"
+                           . '$' . $functionParameter->getName() . ' = ' . '& $trace[0]["args"][' . $functionParameter->getPosition() . '];' . "\n";
+                } else {
+                    $body .= '$' . $functionParameter->getName() . ' = ' . '$args[' . $functionParameter->getPosition() . '];' . "\n";
+                }
+            }
+            
+            $body .=  $content . "\n"
+                    . '}' . "\n";
+        }
+        
+        $body .= 'else if (isset($this->' . $prototypes->getName() . '["' . $method->getName() . '"][' . $prototypeName . '])) {' . "\n"
+               . '    return call_user_func_array($this->' . $prototypes->getName() . '["' . $method->getName() . '"][' . $prototypeName . '], $args);' . "\n"
+               . '} else {' . "\n"
+               . '    trigger_error("Call to undefined method ' . $method->getName() . '", E_USER_ERROR);' . "\n"
+               . '}';
+        $method->setBody($body);
+        
+        return $method;
+    }
+    
+    /**
+     * Get property name to avoid colision
+     * @return string
+     */
+    public static function getPrototypeName()
+    {
+        if (null === self::$prototypeName) {
+            self::$prototypeName = '$' . UniqueIdentifierGenerator::getIdentifier('prototype');
+        }
+        return self::$prototypeName;
     }
 }

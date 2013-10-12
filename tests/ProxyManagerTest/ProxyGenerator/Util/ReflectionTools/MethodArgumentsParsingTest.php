@@ -35,23 +35,19 @@ class MethodArgumentsParsingTest extends PHPUnit_Framework_TestCase
     public function testArgumentsLi()
     {
         $methodReflection   = new MethodReflection('ProxyManagerTestAsset\BaseClass', 'publicMethod');
-        $argReflection = new MethodArgumentsParsing($methodReflection);
-        $this->assertEquals('', $argReflection->toString());
-        $this->assertEquals('void', $argReflection->toIdentifiableString());
+        $this->assertEquals('', MethodArgumentsParsing::toString($methodReflection));
+        $this->assertEquals('void', MethodArgumentsParsing::toIdentifiableString($methodReflection));
         
         $methodReflection   = new MethodReflection('ProxyManagerTestAsset\BaseClass', 'publicByReferenceParameterMethod');
-        $argReflection = new MethodArgumentsParsing($methodReflection);
-        $this->assertEquals('$param,$byRefParam', $argReflection->toString());
-        $this->assertEquals('$,$', $argReflection->toIdentifiableString());
+        $this->assertEquals('$param,$byRefParam', MethodArgumentsParsing::toString($methodReflection));
+        $this->assertEquals('$,$', MethodArgumentsParsing::toIdentifiableString($methodReflection));
         
         $methodReflection   = new MethodReflection('ProxyManagerTestAsset\BaseClass', 'publicArrayHintedMethod');
-        $argReflection = new MethodArgumentsParsing($methodReflection);
-        $this->assertEquals('array $param', $argReflection->toString());
-        $this->assertEquals('array $', $argReflection->toIdentifiableString());
+        $this->assertEquals('array $param', MethodArgumentsParsing::toString($methodReflection));
+        $this->assertEquals('array $', MethodArgumentsParsing::toIdentifiableString($methodReflection));
         
         $methodReflection   = new MethodReflection('ProxyManagerTestAsset\BaseClass', 'publicTypeHintedMethod');
-        $argReflection = new MethodArgumentsParsing($methodReflection);
-        $this->assertEquals('\stdClass $param', $argReflection->toString());
-        $this->assertEquals('\stdClass $', $argReflection->toIdentifiableString());
+        $this->assertEquals('\stdClass $param', MethodArgumentsParsing::toString($methodReflection));
+        $this->assertEquals('\stdClass $', MethodArgumentsParsing::toIdentifiableString($methodReflection));
     }
 }

@@ -28,23 +28,14 @@ use ReflectionFunction;
 class FunctionArgumentsParsing
 {
     /**
-     * @var ReflectionFunction
-     */
-    protected $reflection;
-    
-    public function __construct(ReflectionFunction $reflection)
-    {
-        $this->reflection = $reflection;
-    }
-    
-    /**
      * Arguments parsing
+     * @param ReflectionFunction $reflection
      * @return string
      */
-    protected function parse()
+    protected static function parse(ReflectionFunction $reflection)
     {
         $prototype = array();
-        foreach($this->reflection->getParameters() as $parameter) {
+        foreach($reflection->getParameters() as $parameter) {
             if ($parameter->isArray()) {
                 $prototype[] = 'array $' . $parameter->getName();
             } else if(PHP_VERSION_ID >= 50400 && $parameter->isCallable()) {
@@ -60,21 +51,23 @@ class FunctionArgumentsParsing
    
     /**
      * Get arguments string description
+     * @param ReflectionFunction $reflection
      * @return type
      */
-    public function toString()
+    public static function toString(ReflectionFunction $reflection)
     {
-       $prototype = $this->parse();
+       $prototype = self::parse($reflection);
        return implode(',', $prototype);
     }
     
     /**
      * Get arguments string identifier
+     * @param ReflectionFunction $reflection
      * @return type
      */
-    public function toIdentifiableString()
+    public static function toIdentifiableString(ReflectionFunction $reflection)
     {
-       $string = $this->toString();
+       $string = self::toString($reflection);
        return $string ? preg_replace('#\$[^\s,\$]+#', '$', $string) : 'void';
     }
 }
