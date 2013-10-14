@@ -62,7 +62,8 @@ class OverloadingObjectMethodInterceptor extends MethodGenerator
         $prototypeName = self::getPrototypeName();
         $list          = array($argLine);
         
-        $body =  '$args = func_get_args();' . "\n"
+        $body =  '$self = $this;' . "\n"
+            . '$args = func_get_args();' . "\n"
             . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n"
             . 'if (' . $prototypeName . ' == "' . $argLine . '") {' . "\n"
             .      $method->getBody() . "\n"
@@ -124,7 +125,8 @@ class OverloadingObjectMethodInterceptor extends MethodGenerator
         $prototypeName = self::getPrototypeName();
         $list          = array();
         
-        $body = '$args = func_get_args();' . "\n"
+        $body = '$self = $this;' . "\n"
+            . '$args = func_get_args();' . "\n"
             . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n";
         
         foreach($functions as $function) {

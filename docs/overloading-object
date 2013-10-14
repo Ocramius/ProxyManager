@@ -14,6 +14,8 @@ A "createProxyDocumentation" in the factory will let you to see the body of the 
 ```php
 class Foo
 {
+    public $property = 'propertyDefault';
+
     public function bar()
     {
         return 'default';
@@ -28,6 +30,9 @@ $proxy = $factory->createProxy(new Foo(), array(
         function($string) { return $string; },
         function(\stdClass $std) { return $std->string; }
     ),
+    'property' => array(
+        function($name) { return $this->$name; }
+    ),
 ));
 
 // be careful, methods adding in live is slower
@@ -37,8 +42,37 @@ $factory->createProxyMethods($proxy, array(
 
 echo $proxy->bar('foo'); // 'foo'
 echo $proxy->bar('foo', 'bar'); // 'foobar'
+echo $proxy->property('myPublicProperty'); // 'propertyDefault'
 
 echo $factory->createProxyDocumentation($proxy); // print the extended class documentation
+```
+
+## Scope usage
+
+If the proxy and the closure are created in a class, use $self instead of $this (during the proxy building) to avoid scope problem, 
+and use your proxy instance when you add in live your methods :
+
+```php
+class MyClass()
+{
+    public function getProxy()
+    {
+        // create proxy with some additional methods
+        $proxy = $factory->createProxy(new Foo(), array(
+            'bar' => array(
+                function($string) { return $string; },
+                function(\stdClass $std) { return $std->string; }
+            ),
+            'property' => array(
+                function($name) { return $self->$name; } // $self will be automatically created
+            ),
+        ));
+
+        $factory->createProxyMethods($proxy, array(
+            'publicProperty' => function() use ($proxy) { return $proxy->property; } // use $proxy, the current object
+        ));
+    }
+}
 ```
 
 ## Tuning performance for production

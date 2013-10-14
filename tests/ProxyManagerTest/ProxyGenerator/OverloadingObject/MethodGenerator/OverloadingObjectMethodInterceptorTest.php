@@ -44,7 +44,8 @@ class OverloadingObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('publicArrayHintedMethod', $method->getName());
         $this->assertCount(1, $method->getParameters());
         $this->assertSame(
-              '$args = func_get_args();' . "\n"
+              '$self = $this;' . "\n"
+            . '$args = func_get_args();' . "\n"
             . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n"
             . 'if (' . $prototypeName .' == "array $") {' . "\n"
             . '        return \'publicArrayHintedMethodDefault\';' . "\n"
@@ -73,7 +74,8 @@ class OverloadingObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('publicByReferenceMethod', $method->getName());
         $this->assertCount(0, $method->getParameters());
         $this->assertSame(
-              '$args = func_get_args();' . "\n"
+              '$self = $this;' . "\n"
+            . '$args = func_get_args();' . "\n"
             . $prototypeName . ' = \ProxyManager\ProxyGenerator\Util\ReflectionTools\ArrayArgumentsParsing::toIdentifiableString($args);' . "\n"
             . 'if (' . $prototypeName .' == "void") {' . "\n"
             . '        $returnValue = \'publicByReferenceMethodDefault\';' . "\n"

@@ -161,8 +161,10 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
         $factory = new OverloadingFactory($config);
         $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock', array(
             'foo' => function($foo) { return $foo; },
+            'useThis' => function() { return $self->property; } // $self will create automatically
         ));
         $this->assertEquals('bar', $proxy->foo('bar'));
+        $this->assertEquals('propertyDefault', $proxy->useThis());
     }
     
     /**
@@ -181,9 +183,11 @@ class OverloadingFactoryTest extends PHPUnit_Framework_TestCase
         $proxy = $factory->createProxy('ProxyManagerTestAsset\\OverloadingObjectMock');
         $factory->createProxyMethods($proxy, array(
             'foo' => function($foo) { return $foo; },
+            'useThis' => function() use ($proxy) { return $proxy->property; } // use current object
         ));
             
         $this->assertEquals('bar', $proxy->foo('bar'));
+        $this->assertEquals('propertyDefault', $proxy->useThis());
     }
     
     /**

@@ -6,6 +6,8 @@ use ProxyManager\Factory\OverloadingFactory;
 
 class Foo
 {
+    public $myPublicProperty = 'propertyDefault';
+    
     public function bar()
     {
         return 'default';
@@ -23,6 +25,9 @@ $proxy = $factory->createProxy(new Foo(), array(
     'foo' => array(
         function($string) { return 'foo' . $string; },
     ),
+    'property' => array(
+        function($name) { return $this->$name; }
+    ),
 ));
 
 // be careful, methods adding in live is slower
@@ -32,5 +37,6 @@ $factory->createProxyMethods($proxy, array(
 
 echo "#1: " . $proxy->bar('foo') . "\n"; // 'foo'
 echo "#2: " . $proxy->bar('foo', 'bar') . "\n"; // 'foobar'
+echo "#3: " . $proxy->property('myPublicProperty') . "\n"; // 'propertyDefault'
 
 echo "Proxy documentation :\n\n" . $factory->createProxyDocumentation($proxy);
