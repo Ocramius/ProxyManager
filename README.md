@@ -29,8 +29,7 @@ which are virtual proxies capable of saving performance and memory for objects t
 CPU cycles to be loaded: particularly useful when you may not always need the object, but are constructing it anyways.
 
 ```php
-$config  = new \ProxyManager\Configuration(); // customize this if needed for production
-$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($config);
+$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
 
 $proxy = $factory->createProxy(
     'MyApp\HeavyComplexObject',
@@ -55,8 +54,7 @@ and after a particular method is executed or a particular property is accessed, 
 manipulate parameters and return values depending on your needs.
 
 ```php
-$config  = new \ProxyManager\Configuration(); // customize this if needed for production
-$factory = new \ProxyManager\Factory\AccessInterceptorValueHolderFactory($config);
+$factory = new \ProxyManager\Factory\AccessInterceptorValueHolderFactory();
 
 $proxy = $factory->createProxy(
     new \My\Db\Connection(),
@@ -85,8 +83,7 @@ A Null Object proxy implements the [null object pattern](http://en.wikipedia.org
 This kind of proxr allows you to have fallback logic in case loading of the wrapped value failed.
 
 ```php
-$config  = new \ProxyManager\Configuration(); // customize this if needed for production
-$factory = new \ProxyManager\Factory\NullObjectFactory($config);
+$factory = new \ProxyManager\Factory\NullObjectFactory();
 
 $proxy = $factory->createProxy('My\EntityObject');
 
@@ -96,8 +93,7 @@ $proxy->getName(); // empty return
 A Null Object Proxy can be created from an object, a class name or an interface name:
 
 ```php
-$config  = new \ProxyManager\Configuration(); // customize this if needed for production
-$factory = new \ProxyManager\Factory\NullObjectFactory($config);
+$factory = new \ProxyManager\Factory\NullObjectFactory();
 
 $proxy = $factory->createProxy('My\EntityObjectInterface'); // created from interface name
 $proxy->getName(); // empty return
@@ -125,8 +121,7 @@ Additionally, the overhead introduced by ghost objects is very low when compared
 caused by virtual proxies.
 
 ```php
-$config  = new \ProxyManager\Configuration(); // customize this if needed for production
-$factory = new \ProxyManager\Factory\LazyLoadingGhostFactory($config);
+$factory = new \ProxyManager\Factory\LazyLoadingGhostFactory();
 
 $proxy = $factory->createProxy(
     'MyApp\HeavyComplexObject',
