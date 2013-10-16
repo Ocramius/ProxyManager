@@ -16,38 +16,41 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
-
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+namespace ProxyManagerTestAsset\RemoteProxy;
 
 /**
- * Method decorator for null objects
+ * Simple interface for a remote API
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
+ * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class Foo implements FooServiceInterface, BazServiceInterface
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * @return string
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public function foo()
     {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
+        return 'bar remote';
+    }
 
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
+    /**
+     * @param string $param
+     *
+     * @return string
+     */
+    public function baz($param)
+    {
+        return $param . ' remote';
+    }
 
-        return $method;
+    /**
+     * @param string $param
+     *
+     * @return string
+     */
+    public function __get($name)
+    {
+        return $name . ' remote';
     }
 }

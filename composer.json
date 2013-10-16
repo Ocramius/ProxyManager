@@ -31,7 +31,10 @@
     },
     "suggest": {
         "zendframework/zend-stdlib":   "To use the hydrator proxy",
-        "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects"
+        "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
+        "zendframework/zend-xmlrpc": "To use as XmlRpc adapter (Remote Object feature)",
+        "zendframework/zend-json": "To use as JsonRpc adapter (Remote Object feature)",
+        "zendframework/zend-soap": "To use as Soap adapter (Remote Object feature)"
     },
     "autoload": {
         "psr-0": {

@@ -16,38 +16,30 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManagerTestAsset\RemoteProxy\Client;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
+use ProxyManagerTestAsset\RemoteProxy\Server\SampleServer;
 
 /**
- * Method decorator for null objects
+ * Client side mock
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class SampleAdapter implements AdapterInterface
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * Call remote object
+     * 
+     * @param string $wrappedClass
+     * @param string $method
+     * @param array $params
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public function call($wrappedClass, $method, array $params = array())
     {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
-
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
-
-        return $method;
+        $serviceName = $wrappedClass . '.' . $method;
+        $server = new SampleServer();
+        return $server->dispatch($serviceName, $params);
     }
 }

@@ -16,38 +16,34 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
-
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+namespace ProxyManagerTestAsset\RemoteProxy\Server;
 
 /**
- * Method decorator for null objects
+ * Server side mock
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class SampleServer
 {
+    protected $alias = array(
+        'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface' => 'ProxyManagerTestAsset\RemoteProxy\Foo',
+        'ProxyManagerTestAsset\RemoteProxy\BazServiceInterface' => 'ProxyManagerTestAsset\RemoteProxy\Foo',
+    );
+    
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * Dispatch request
+     * @param strng $serviceName
+     * @param array $params
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public function dispatch($serviceName, array $params)
     {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
-
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
+        $infos = explode('.', $serviceName);
+        $className = $infos[0];
+        if (isset($this->alias[$className])) {
+            $className = $this->alias[$className];
         }
-
-        return $method;
+        $class = new $className;
+        return call_user_func_array(array($class, $infos[1]), $params);
     }
 }

@@ -16,38 +16,34 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use ProxyManager\Generator\MagicMethodGenerator;
+use ReflectionClass;
+use ProxyManager\Generator\ParameterGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Method decorator for null objects
+ * Magic `__unset` method for remote objects
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class MagicUnset extends MagicMethodGenerator
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * Constructor
+     * @param ReflectionClass                        $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public function __construct(ReflectionClass $originalClass,PropertyGenerator $adapterProperty)
     {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
+        parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
 
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
-
-        return $method;
+        $this->setDocblock('@param string $name');
+        $this->setBody(
+              'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+             . ', \'__unset\', array($name));'
+        );
     }
 }
