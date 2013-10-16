@@ -157,7 +157,7 @@ This feature [yet to be planned](https://github.com/Ocramius/ProxyManager/issues
 A remote object proxy is an object that is located on a different system, but is used as if it was available locally.
 There's various possible remote proxy implementations, which could be based on xmlrpc/jsonrpc/soap/dnode/etc.
 
-Three adapters are available by default : XmlRpc, JsonRpc & Soap. Custom adapters must implement ProxyManager\Factory\RemoteObject\AdapterInterface.
+Remote object adapters must implement ProxyManager\Factory\RemoteObject\AdapterInterface.
 
 ```php
 interface FooServiceInterface
@@ -165,10 +165,22 @@ interface FooServiceInterface
     public function foo();
 }
 
+class CustomAdapter implements AdapterInterface
+{
+    public function call($wrappedClass, $method, array $params = array())
+    {
+        // build your service name
+        $serviceName = $wrappedClass . '.' . $method;
+        
+        // do your server request here ...
+        
+        // return server result
+        return $result;
+    }
+}
+
 $factory = new \ProxyManager\Factory\RemoteObjectFactory();
-$adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
-    'https://example.org/xmlrpc.php' // your XmlRpc host
-);
+$adapter = new CustomAdapter();
 
 // proxy is your remote implementation
 $proxy = $factory->createProxy('FooServiceInterface', $adapter);

@@ -10,6 +10,8 @@ must be implemented both by the client and the RPC server.
 
 ## Usage examples
 
+Zend RPC components (XmlRpc, JsonRpc & Soap) can be used easily with the remote object.
+
 RPC server side code :
 
 ```php
@@ -38,13 +40,29 @@ $server->handle();
 Client side code (proxy) :
 
 ```php
+
 interface FooServiceInterface
 {
     public function foo();
 }
 
+class XmlRpcAdapter implements AdapterInterface
+{
+    public function __construct($webservice)
+    {
+        $this->webservice = $webservice;
+    }
+
+    public function call($wrappedClass, $method, array $params = array())
+    {
+        $serviceName = wrappedClass . '.' . method;
+        $client = new \Zend\XmlRpc\Client($this->webservice);
+        return $client->call($serviceName, $params);
+    }
+}
+
 $factory = new \ProxyManager\Factory\RemoteObjectFactory();
-$adapter = new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
+$adapter = new XmlRpcAdapter(
     'https://example.org/xmlrpc.php'
 );
 
@@ -53,7 +71,7 @@ $proxy = $factory->createProxy('FooServiceInterface', $adapter);
 var_dump($proxy->foo()); // "bar remote"
 ```
 
-Three adapters are available by default : `ProxyManager\Factory\RemoteObject\Adapter\XmlRpc`, `ProxyManager\Factory\RemoteObject\Adapter\JsonRpc` & `ProxyManager\Factory\RemoteObject\Adapter\Soap`. Custom adapter must implement `ProxyManager\Factory\RemoteObject\AdapterInterface` :
+Your adapters must implement `ProxyManager\Factory\RemoteObject\AdapterInterface` :
 
 ```php
 interface AdapterInterface
@@ -70,98 +88,6 @@ interface AdapterInterface
 ```
 
 It is very easy to create your own implementation (Rest for example) !
-
-## Adapter usages examples
-
-* Example with JsonRpc adapter :
-
-Json server side code :
-
-```php
-interface FooServiceInterface
-{
-    public function foo();
-}
-
-class Foo implements FooServiceInterface
-{
-    /**
-     * Foo function
-     * @return string
-     */
-    public function foo()
-    {
-        return 'bar remote';
-    }
-}
-
-$server = new Zend\Json\Server\Server();
-$server->setClass('Foo', 'FooServiceInterface');  // my FooServiceInterface implementation
-$server->handle();
-```
-
-Client side code (proxy) :
-
-```php
-interface FooServiceInterface
-{
-    public function foo();
-}
-
-$factory = new \ProxyManager\Factory\RemoteObjectFactory();
-$adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
-    'https://example.org/jsonrpc.php'
-);
-
-$proxy = $factory->createProxy('FooServiceInterface', $adapter);
-
-var_dump($proxy->foo()); // "bar remote"
-```
-
-* Example with Soap adapter :
-
-Json server side code :
-
-```php
-interface FooServiceInterface
-{
-    public function foo();
-}
-
-class Foo implements FooServiceInterface
-{
-    /**
-     * Foo function
-     * @return string
-     */
-    public function foo()
-    {
-        return 'bar remote';
-    }
-}
-
-$server = new Zend\Soap\Server(__DIR__ . '/soap.wsdl');
-$server->setClass('Foo');  // my FooServiceInterface implementation
-$server->handle();
-```
-
-Client side code (proxy) :
-
-```php
-interface FooServiceInterface
-{
-    public function foo();
-}
-
-$factory = new \ProxyManager\Factory\RemoteObjectFactory();
-$adapter = new \ProxyManager\Factory\RemoteObject\Adapter\Soap(
-    'https://example.org/soap.php'
-);
-
-$proxy = $factory->createProxy('FooServiceInterface', $adapter);
-
-var_dump($proxy->foo()); // "bar remote"
-```
 
 ## Tuning performance for production
 
