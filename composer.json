@@ -27,17 +27,14 @@
         "phpunit/phpunit":           ">=3.7",
         "phpmd/phpmd":               "1.4.*",
         "squizlabs/php_codesniffer": "1.4.*",
-        "satooshi/php-coveralls":    "~0.6",
-        "zendframework/zend-xmlrpc": "2.*",
-        "zendframework/zend-json": "2.*",
-        "zendframework/zend-soap": "2.*"
+        "satooshi/php-coveralls":    "~0.6"
     },
     "suggest": {
         "zendframework/zend-stdlib":   "To use the hydrator proxy",
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
-        "zendframework/zend-xmlrpc": "To have the XmlRpc adapter (Remote Object feature)",
-        "zendframework/zend-json": "To have the JsonRpc adapter (Remote Object feature)",
-        "zendframework/zend-soap": "To have the Soap adapter (Remote Object feature)"
+        "zendframework/zend-xmlrpc": "To use as XmlRpc adapter (Remote Object feature)",
+        "zendframework/zend-json": "To use as JsonRpc adapter (Remote Object feature)",
+        "zendframework/zend-soap": "To use as Soap adapter (Remote Object feature)"
     },
     "autoload": {
         "psr-0": {
