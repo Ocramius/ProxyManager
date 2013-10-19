@@ -25,7 +25,11 @@ use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManagerTestAsset\RemoteProxy\Client\SampleAdapter;
+use ProxyManagerTestAsset\RemoteProxy\Client\LocalHttp;
+use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
+use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
+use Zend\XmlRpc\Client as XmlRpcClient;
+use Zend\Json\Server\Client as JsonRpcClient;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObjectGenerator} produced objects
@@ -38,15 +42,56 @@ use ProxyManagerTestAsset\RemoteProxy\Client\SampleAdapter;
 class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @return \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc
+     */
+    protected function getXmlRpcAdapter()
+    {
+        $adapter = new XmlRpcAdapter(
+            new XmlRpcClient('http://127.0.0.1:8080/xmlrpc.php'),
+            array('ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo')
+        );
+        $adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../../ProxyManagerTestAsset/RemoteProxy/ServerSide/xmlrpc.php', 'xml-rpc'));
+        
+        return $adapter;
+    }
+    
+    /**
+     * @return \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc
+     */
+    protected function getJsonRpcAdapter()
+    {
+        $adapter = new JsonRpcAdapter(
+            new JsonRpcClient('http://127.0.0.1:8080/jsonrpc.php'),
+            array('ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo')
+        );
+        $adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../../ProxyManagerTestAsset/RemoteProxy/ServerSide/jsonrpc.php', 'json-rpc'));
+        
+        return $adapter;
+    }
+    
+    /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
+    public function testXmlRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
     {
         
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName(new SampleAdapter());
+        $proxy     = new $proxyName($this->getXmlRpcAdapter());
+
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+    }
+    
+    /**
+     * @dataProvider getProxyMethods
+     */
+    public function testJsonRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
+    {
+        $proxyName = $this->generateProxy($instanceOrClassname);
+        
+        /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
+        $proxy     = new $proxyName($this->getJsonRpcAdapter());
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
@@ -54,12 +99,12 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyReadAccess($instanceOrClassname, $publicProperty, $propertyValue)
+    public function testJsonRpcPropertyReadAccess($instanceOrClassname, $publicProperty, $propertyValue)
     {
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName(new SampleAdapter());
+        $proxy     = new $proxyName($this->getJsonRpcAdapter());
         
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);

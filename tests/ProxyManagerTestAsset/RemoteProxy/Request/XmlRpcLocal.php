@@ -16,30 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset\RemoteProxy\Client;
+namespace ProxyManagerTestAsset\RemoteProxy\Request;
 
-use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use ProxyManagerTestAsset\RemoteProxy\Server\SampleServer;
+use Zend\XmlRpc\Request\Http as HttpRequest;
 
 /**
- * Client side mock
+ * XmlRpx local request
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class SampleAdapter implements AdapterInterface
+class XmlRpcLocal extends HttpRequest
 {
     /**
-     * Call remote object
-     * 
-     * @param string $wrappedClass
-     * @param string $method
-     * @param array $params
+     * Constructor
+     *
+     * Attempts to read from php://input to get raw POST request; if an error
+     * occurs in doing so, or if the XML is invalid, the request is declared a
+     * fault.
+     *
      */
-    public function call($wrappedClass, $method, array $params = array())
+    public function __construct()
     {
-        $serviceName = $wrappedClass . '.' . $method;
-        $server = new SampleServer();
-        return $server->dispatch($serviceName, $params);
     }
 }

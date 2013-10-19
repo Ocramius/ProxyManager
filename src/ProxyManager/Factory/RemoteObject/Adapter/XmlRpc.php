@@ -16,34 +16,21 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset\RemoteProxy\Server;
+namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 /**
- * Server side mock
+ * Remote Object XML RPC adapter
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class SampleServer
+class XmlRpc extends BaseAdapter
 {
-    protected $alias = array(
-        'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface' => 'ProxyManagerTestAsset\RemoteProxy\Foo',
-        'ProxyManagerTestAsset\RemoteProxy\BazServiceInterface' => 'ProxyManagerTestAsset\RemoteProxy\Foo',
-    );
-    
     /**
-     * Dispatch request
-     * @param strng $serviceName
-     * @param array $params
+     * {@inheritDoc}
      */
-    public function dispatch($serviceName, array $params)
+    protected function getServiceName($wrappedClass, $method)
     {
-        $infos = explode('.', $serviceName);
-        $className = $infos[0];
-        if (isset($this->alias[$className])) {
-            $className = $this->alias[$className];
-        }
-        $class = new $className;
-        return call_user_func_array(array($class, $infos[1]), $params);
+        return $wrappedClass . '.' . $method;
     }
 }
