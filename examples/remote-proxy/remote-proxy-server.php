@@ -8,15 +8,13 @@ class FooServerSide
     }
 }
 
-$alias = array(
-    'FooClientSide' => 'FooServerSide',
-);
+$alias = array('FooClientSide' => 'FooServerSide');
 
 // extract infos from service name called
-$infos = explode('.', $serviceName);
-$className = $infos[0];
+list($className, $methodName) = explode('.', $serviceName);
+
 if (isset($alias[$className])) {
     $className = $alias[$className];
 }
-$class = new $className;
-$result = call_user_func_array(array($class, $infos[1]), $params);
+
+$result = call_user_func_array(array(new $className, $methodName), $params);
