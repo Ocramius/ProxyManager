@@ -28,7 +28,7 @@ class CustomAdapter implements AdapterInterface
     }
 }
 
-$factory = new RemoteObjectFactory(new CustomAdapter());
-$proxy = $factory->createProxy('FooClientSide');
+$factory = new RemoteObjectFactory();
+$proxy = $factory->createProxy('FooClientSide', new CustomAdapter());
 
 var_dump($proxy->bar()); // bar remote !

@@ -179,10 +179,11 @@ class CustomAdapter implements AdapterInterface
     }
 }
 
-$factory = new \ProxyManager\Factory\RemoteObjectFactory(new CustomAdapter());
+$factory = new \ProxyManager\Factory\RemoteObjectFactory();
+$adapter = new CustomAdapter();
 
 // proxy is your remote implementation
-$proxy = $factory->createProxy('FooServiceInterface');
+$proxy = $factory->createProxy('FooServiceInterface', $adapter);
 ```
 
 See the [complete documentation about remote objects](https://github.com/Ocramius/ProxyManager/tree/master/docs/remote-object.md)

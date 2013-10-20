@@ -18,7 +18,6 @@
 
 namespace ProxyManager\Factory;
 
-use ProxyManager\Configuration;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 
@@ -31,32 +30,17 @@ use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 class RemoteObjectFactory extends AbstractBaseFactory
 {
     /**
-     * @var AdapterInterface 
-     */
-    protected $adapter;
-    
-    /**
-     * @param AdapterInterface            $adapter
-     * @param \ProxyManager\Configuration $configuration
-     * 
-     */
-    public function __construct(AdapterInterface $adapter, Configuration $configuration = null)
-    {
-        parent::__construct($configuration);
-        $this->adapter = $adapter;
-    }
-    
-    /**
-     * @param string            $instanceOrClassName 
+     * @param string            $instanceOrClassName   
+     * @param AdapterInterface  $adapter   
      * 
      * @return \ProxyManager\Proxy\RemoteObjectInterface
      */
-    public function createProxy($instanceOrClassName)
+    public function createProxy($instanceOrClassName, AdapterInterface $adapter)
     {
         $className = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
         $proxyClassName = $this->generateProxy($className);
         
-        return new $proxyClassName($this->adapter);
+        return new $proxyClassName($adapter);
     }
     
     /**

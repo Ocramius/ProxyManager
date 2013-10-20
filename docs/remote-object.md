@@ -61,12 +61,12 @@ class XmlRpcAdapter implements AdapterInterface
     }
 }
 
+$factory = new \ProxyManager\Factory\RemoteObjectFactory();
 $adapter = new XmlRpcAdapter(
     'https://example.org/xmlrpc.php'
 );
-$factory = new \ProxyManager\Factory\RemoteObjectFactory($adapter);
 
-$proxy = $factory->createProxy('FooServiceInterface');
+$proxy = $factory->createProxy('FooServiceInterface', $adapter);
 
 var_dump($proxy->foo()); // "bar remote"
 ```
