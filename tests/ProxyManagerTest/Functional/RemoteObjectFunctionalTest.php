@@ -42,15 +42,24 @@ use Zend\Json\Server\Client as JsonRpcClient;
 class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @return \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc
+     * @param mixed  $expectedValue
+     * @param string $method
+     * @param array  $params
+     *
+     * @return XmlRpcAdapter
      */
-    protected function getXmlRpcAdapter()
+    protected function getXmlRpcAdapter($expectedValue, $method, array $params)
     {
         $client = $this
-            ->getMockBuilder('Zend\XmlRpc\Client')
+            ->getMockBuilder('Zend\Server\Client')
             ->setMethods(array('call'))
-            ->disableOriginalConstructor()
             ->getMock();
+
+        $client
+            ->expects($this->any())
+            ->method('call')
+            ->with($this->stringEndsWith($method), $params)
+            ->will($this->returnValue($expectedValue));
 
         $adapter = new XmlRpcAdapter(
             $client,
@@ -62,17 +71,35 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         
         return $adapter;
     }
-    
+
     /**
-     * @return \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc
+     * @param mixed  $expectedValue
+     * @param string $method
+     * @param array  $params
+     *
+     * @return JsonRpcAdapter
      */
-    protected function getJsonRpcAdapter()
+    protected function getJsonRpcAdapter($expectedValue, $method, array $params)
     {
+        $client = $this
+            ->getMockBuilder('Zend\Server\Client')
+            ->setMethods(array('call'))
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $client
+            ->expects($this->any())
+            ->method('call')
+            ->with($this->stringEndsWith($method), $params)
+            ->will($this->returnValue($expectedValue));
+
         $adapter = new JsonRpcAdapter(
-            new JsonRpcClient('http://127.0.0.1:8080/jsonrpc.php'),
-            array('ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo')
+            $client,
+            array(
+                 'ProxyManagerTestAsset\RemoteProxy\Foo.foo'
+                    => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo'
+            )
         );
-        $adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../../ProxyManagerTestAsset/RemoteProxy/ServerSide/jsonrpc.php', 'json-rpc'));
         
         return $adapter;
     }
@@ -82,11 +109,10 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testXmlRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
     {
-        
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName($this->getXmlRpcAdapter());
+        $proxy     = new $proxyName($this->getXmlRpcAdapter($expectedValue, $method, $params));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
@@ -99,7 +125,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($instanceOrClassname);
         
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName($this->getJsonRpcAdapter());
+        $proxy     = new $proxyName($this->getJsonRpcAdapter($expectedValue, $method, $params));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
@@ -112,7 +138,9 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName($this->getJsonRpcAdapter());
+        $proxy     = new $proxyName(
+            $this->getJsonRpcAdapter($propertyValue, '__get', array($publicProperty))
+        );
         
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
