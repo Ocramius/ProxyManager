@@ -61,21 +61,6 @@ interface FooServiceInterface
     public function foo();
 }
 
-class XmlRpcAdapter implements AdapterInterface
-{
-    public function __construct($webservice)
-    {
-        $this->webservice = $webservice;
-    }
-
-    public function call($wrappedClass, $method, array $params = array())
-    {
-        $serviceName = wrappedClass . '.' . method;
-        $client = new \Zend\XmlRpc\Client($this->webservice);
-        return $client->call($serviceName, $params);
-    }
-}
-
 $factory = new \ProxyManager\Factory\RemoteObjectFactory(
     new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
         new \Zend\XmlRpc\Client('https://localhost/xmlrpc.php')
