@@ -1,20 +1,20 @@
 <?php
 
-class FooServerSide
+use Zend\XmlRpc\Server;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+class Foo
 {
     public function bar()
     {
-        return 'bar remote !';
+        return 'bar remote!';
     }
 }
 
-$alias = array('FooClientSide' => 'FooServerSide');
+$server = new Server();
 
-// extract infos from service name called
-list($className, $methodName) = explode('.', $serviceName);
+$server->setClass(new Foo(), 'Foo');
+$server->setReturnResponse(false);
 
-if (isset($alias[$className])) {
-    $className = $alias[$className];
-}
-
-$result = call_user_func_array(array(new $className, $methodName), $params);
+$server->handle();
