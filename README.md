@@ -157,7 +157,7 @@ This feature [yet to be planned](https://github.com/Ocramius/ProxyManager/issues
 A remote object proxy is an object that is located on a different system, but is used as if it was available locally.
 There's various possible remote proxy implementations, which could be based on xmlrpc/jsonrpc/soap/dnode/etc.
 
-Remote object adapters must implement ProxyManager\Factory\RemoteObject\AdapterInterface.
+This example uses the XML-RPC client of Zend Framework 2:
 
 ```php
 interface FooServiceInterface
@@ -165,25 +165,16 @@ interface FooServiceInterface
     public function foo();
 }
 
-class CustomAdapter implements AdapterInterface
-{
-    public function call($wrappedClass, $method, array $params = array())
-    {
-        // build your service name
-        $serviceName = $wrappedClass . '.' . $method;
-        
-        // do your server request here ...
-        
-        // return server result
-        return $result;
-    }
-}
-
-$factory = new \ProxyManager\Factory\RemoteObjectFactory();
-$adapter = new CustomAdapter();
+$factory = new \ProxyManager\Factory\RemoteObjectFactory(
+    new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
+        new \Zend\XmlRpc\Client('https://example.com/rpc-endpoint')
+    )
+);
 
 // proxy is your remote implementation
-$proxy = $factory->createProxy('FooServiceInterface', $adapter);
+$proxy = $factory->createProxy('FooServiceInterface');
+
+var_dump($proxy->foo());
 ```
 
 See the [complete documentation about remote objects](https://github.com/Ocramius/ProxyManager/tree/master/docs/remote-object.md)
