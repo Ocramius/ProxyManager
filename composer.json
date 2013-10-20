@@ -27,10 +27,7 @@
         "phpunit/phpunit":           ">=3.7",
         "phpmd/phpmd":               "1.4.*",
         "squizlabs/php_codesniffer": "1.4.*",
-        "satooshi/php-coveralls":    "~0.6",
-        "zendframework/zend-xmlrpc": "2.*",
-        "zendframework/zend-json": "2.*",
-        "zendframework/zend-soap": "2.*"
+        "satooshi/php-coveralls":    "~0.6"
     },
     "suggest": {
         "zendframework/zend-stdlib":   "To use the hydrator proxy",
