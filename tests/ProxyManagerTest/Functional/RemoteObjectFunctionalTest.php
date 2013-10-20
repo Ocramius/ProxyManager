@@ -46,11 +46,19 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     protected function getXmlRpcAdapter()
     {
+        $client = $this
+            ->getMockBuilder('Zend\XmlRpc\Client')
+            ->setMethods(array('call'))
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $adapter = new XmlRpcAdapter(
-            new XmlRpcClient('http://127.0.0.1:8080/xmlrpc.php'),
-            array('ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo')
+            $client,
+            array(
+                 'ProxyManagerTestAsset\RemoteProxy\Foo.foo'
+                     => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo'
+            )
         );
-        $adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../../ProxyManagerTestAsset/RemoteProxy/ServerSide/xmlrpc.php', 'xml-rpc'));
         
         return $adapter;
     }

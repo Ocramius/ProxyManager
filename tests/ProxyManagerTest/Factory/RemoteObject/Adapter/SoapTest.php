@@ -35,24 +35,21 @@ class SoapTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::__construct
      */
-    public function testCannotBuiltSoapWithoutUri()
+    public function testCanBuildAdapterWithSoapRpcClient()
     {
-        $this->setExpectedException('ProxyManager\Proxy\Exception\RemoteObjectException');
-        $adapter = new Soap();
-        $adapter->getClient();
-    }
-    
-    /**
-     * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::__construct
-     * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::getClient
-     */
-    public function testCanBuiltSoapWithUri()
-    {
-        $xmlRpc = new Soap(new Client('http://localhost/webservices.php'));
-        $client = $xmlRpc->getClient();
-        
-        $this->assertTrue($client instanceof \Zend\Soap\Client);
+        $client = $this
+            ->getMockBuilder('Zend\Server\Client')
+            ->setMethods(array('call'))
+            ->getMock();
+
+        $adapter = new Soap($client);
+
+        $client
+            ->expects($this->once())
+            ->method('call')
+            ->with('bar', array('tab' => 'taz'))
+            ->will($this->returnValue('baz'));
+
+        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
     }
 }

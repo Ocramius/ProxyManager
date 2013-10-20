@@ -35,24 +35,21 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc::__construct
      */
-    public function testCannotBuiltXmlRpcWithoutUri()
+    public function testCanBuildAdapterWithXmlRpcClient()
     {
-        $this->setExpectedException('ProxyManager\Proxy\Exception\RemoteObjectException');
-        $adapter = new XmlRpc();
-        $adapter->getClient();
-    }
-    
-    /**
-     * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc::__construct
-     * @covers \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc::getClient
-     */
-    public function testCanBuiltXmlRpcWithUri()
-    {
-        $xmlRpc = new XmlRpc(new Client('http://localhost/webservices.php'));
-        $client = $xmlRpc->getClient();
-        
-        $this->assertTrue($client instanceof \Zend\XmlRpc\Client);
+        $client = $this
+            ->getMockBuilder('Zend\Server\Client')
+            ->setMethods(array('call'))
+            ->getMock();
+
+        $adapter = new XmlRpc($client);
+
+        $client
+            ->expects($this->once())
+            ->method('call')
+            ->with('foo.bar', array('tab' => 'taz'))
+            ->will($this->returnValue('baz'));
+
+        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
     }
 }

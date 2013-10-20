@@ -41,21 +41,17 @@ abstract class BaseAdapter implements AdapterInterface
      * @var array
      */
     protected $map = array();
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param Client $client
+     * @param array  $map    map of service names to their aliases
      */
-    public function __construct(Client $client = null, array $map = array())
+    public function __construct(Client $client, array $map = array())
     {
-        if ($client) {
-            $this->setClient($client);
-        }
-        
-        if ($map) {
-            $this->map = $map;
-        }
+        $this->client = $client;
+        $this->map    = $map;
     }
     
     /**
@@ -63,18 +59,17 @@ abstract class BaseAdapter implements AdapterInterface
      */
     public function call($wrappedClass, $method, array $params = array())
     {
-        $client      = $this->getClient();
         $serviceName = $this->getServiceName($wrappedClass, $method);
         
         if (isset($this->map[$serviceName])) {
             $serviceName = $this->map[$serviceName];
         }
         
-        return $client->call($serviceName, $params);
+        return $this->client->call($serviceName, $params);
     }
 
     /**
-     *Get the service name will be used by the adapter
+     * Get the service name will be used by the adapter
      *
      * @param string $wrappedClass
      * @param string $method
@@ -82,27 +77,4 @@ abstract class BaseAdapter implements AdapterInterface
      * @return string Service name
      */
     abstract protected function getServiceName($wrappedClass, $method);
-    
-    /**
-     * Get adapter client
-     *
-     * @return \Zend\Server\Client
-     */
-    public function getClient()
-    {
-        if (null === $this->client) {
-            throw new RemoteObjectException('You must defined an adapter client');
-        }
-        return $this->client;
-    }
-    
-    /**
-     * Set adapter client
-     *
-     * @return \Zend\Server\Client
-     */
-    public function setClient(Client $client)
-    {
-        $this->client = $client;
-    }
 }

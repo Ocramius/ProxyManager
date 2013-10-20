@@ -35,24 +35,21 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::__construct
      */
-    public function testCannotBuiltJsonRpcWithoutUri()
+    public function testCanBuildAdapterWithJsonRpcClient()
     {
-        $this->setExpectedException('ProxyManager\Proxy\Exception\RemoteObjectException');
-        $adapter = new JsonRpc();
-        $adapter->getClient();
-    }
-    
-    /**
-     * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::__construct
-     * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::getClient
-     */
-    public function testCanBuiltJsonRpcWithUri()
-    {
-        $xmlRpc = new JsonRpc(new Client('http://localhost/webservices.php'));
-        $client = $xmlRpc->getClient();
-        
-        $this->assertTrue($client instanceof \Zend\Json\Server\Client);
+        $client = $this
+            ->getMockBuilder('Zend\Server\Client')
+            ->setMethods(array('call'))
+            ->getMock();
+
+        $adapter = new JsonRpc($client);
+
+        $client
+            ->expects($this->once())
+            ->method('call')
+            ->with('foo.bar', array('tab' => 'taz'))
+            ->will($this->returnValue('baz'));
+
+        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
     }
 }
