@@ -45,7 +45,7 @@ class Foo implements FooServiceInterface, BazServiceInterface
     }
 
     /**
-     * @param string $param
+     * @param string $name
      *
      * @return string
      */

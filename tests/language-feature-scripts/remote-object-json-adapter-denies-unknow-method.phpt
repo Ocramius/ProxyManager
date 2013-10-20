@@ -6,7 +6,6 @@ Verifies that generated remote object can call public property
 require_once __DIR__ . '/init.php';
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use ProxyManagerTestAsset\RemoteProxy\Client\LocalHttp;
 use Zend\Json\Server\Client;
 
 interface FooServiceInterface

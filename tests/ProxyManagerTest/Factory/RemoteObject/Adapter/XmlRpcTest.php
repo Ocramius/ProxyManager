@@ -20,7 +20,6 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc;
-use Zend\XmlRpc\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc}
