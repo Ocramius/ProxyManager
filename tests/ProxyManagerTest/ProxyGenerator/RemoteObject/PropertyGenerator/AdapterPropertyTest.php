@@ -16,38 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\RemoteObject\PropertyGenerator;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
+use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
 
 /**
- * Method decorator for null objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty}
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class AdapterPropertyTest extends AbstractUniquePropertyNameTest
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * {@inheritDoc}
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    protected function createProperty()
     {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
-
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
-
-        return $method;
+        return new AdapterProperty();
     }
 }

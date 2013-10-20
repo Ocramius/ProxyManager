@@ -16,38 +16,39 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc;
 
 /**
- * Method decorator for null objects
+ * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc}
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class JsonRpcTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
+     * {@inheritDoc}
      *
-     * @return NullObjectMethodInterceptor|static
+     * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::__construct
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public function testCanBuildAdapterWithJsonRpcClient()
     {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
+        $client = $this
+            ->getMockBuilder('Zend\Server\Client')
+            ->setMethods(array('call'))
+            ->getMock();
 
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
+        $adapter = new JsonRpc($client);
 
-        return $method;
+        $client
+            ->expects($this->once())
+            ->method('call')
+            ->with('foo.bar', array('tab' => 'taz'))
+            ->will($this->returnValue('baz'));
+
+        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
     }
 }

@@ -16,38 +16,22 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
-
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+namespace ProxyManager\Factory\RemoteObject;
 
 /**
- * Method decorator for null objects
+ * Remote Object adapter interface
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+interface AdapterInterface
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * Call remote object
+     * 
+     * @param string $wrappedClass
+     * @param string $method
+     * @param array $params
      */
-    public static function generateMethod(MethodReflection $originalMethod)
-    {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
-
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
-
-        return $method;
-    }
+    public function call($wrappedClass, $method, array $params = array());
 }

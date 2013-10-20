@@ -18,8 +18,6 @@
 
 namespace ProxyManager\Factory;
 
-use ProxyManager\Generator\ClassGenerator;
-use ReflectionClass;
 use Closure;
 
 /**

@@ -16,38 +16,16 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManager\Proxy\Exception;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use RuntimeException;
 
 /**
- * Method decorator for null objects
+ * Remote object exception
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class RemoteObjectException extends RuntimeException
 {
-    /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
-     */
-    public static function generateMethod(MethodReflection $originalMethod)
-    {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
-
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
-
-        return $method;
-    }
 }

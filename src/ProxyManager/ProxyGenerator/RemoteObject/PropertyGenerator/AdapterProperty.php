@@ -16,38 +16,27 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator;
 
-use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Reflection\MethodReflection;
 
 /**
- * Method decorator for null objects
+ * Property that contains the remote object adapter
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class AdapterProperty extends PropertyGenerator
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     *
-     * @return NullObjectMethodInterceptor|static
+     * Constructor
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public function __construct()
     {
-        /* @var $method self */
-        $method = static::fromReflection($originalMethod);
-        
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('adapter'));
 
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
-        }
-
-        return $method;
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setDocblock('@var \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface Remote web service adapter');
     }
 }

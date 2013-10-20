@@ -16,37 +16,46 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use ReflectionClass;
 
 /**
- * Method decorator for null objects
+ * Method decorator for remote objects
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMethodInterceptor extends MethodGenerator
+class RemoteObjectMethod extends MethodGenerator
 {
     /**
      * @param \Zend\Code\Reflection\MethodReflection $originalMethod
+     * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
+     * @param \ReflectionClass                       $originalClass
      *
-     * @return NullObjectMethodInterceptor|static
+     * @return RemoteObjectMethod|static
      */
-    public static function generateMethod(MethodReflection $originalMethod)
-    {
+    public static function generateMethod(
+        MethodReflection $originalMethod,
+        PropertyGenerator $adapterProperty,
+        ReflectionClass $originalClass
+    ) {
         /* @var $method self */
-        $method = static::fromReflection($originalMethod);
+        $method        = static::fromReflection($originalMethod);
+        $parameters    = $originalMethod->getParameters();
+        $list          = array();
         
-        if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
-
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
-        } else {
-            $method->setBody('');
+        foreach ($parameters as $parameter) {
+            $list[] = '$' . $parameter->getName();
         }
+
+        $method->setBody(
+            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+            . ', ' . var_export($originalMethod->getName(), true) . ', array('. implode(', ', $list) .'));'
+        );
 
         return $method;
     }

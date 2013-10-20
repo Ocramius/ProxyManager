@@ -19,17 +19,17 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Factory\LazyLoadingGhostFactory;
+use ProxyManager\Factory\RemoteObjectFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
- * Tests for {@see \ProxyManager\Factory\LazyLoadingGhostFactory}
+ * Tests for {@see \ProxyManager\Factory\RemoteObjectFactory}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
+class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -54,60 +54,42 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->method('getClassNameInflector')
             ->will($this->returnValue($this->inflector));
     }
-    
-    /**
-     * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
-     */
-    public function testWithOptionalFactory()
-    {
-        $factory = new LazyLoadingGhostFactory();
-        $this->assertAttributeNotEmpty('configuration', $factory);
-        $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
-    }
 
     /**
      * {@inheritDoc}
      *
-     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
-     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::createProxy
+     * @covers \ProxyManager\Factory\RemoteObjectFactory::__construct
+     * @covers \ProxyManager\Factory\RemoteObjectFactory::createProxy
      */
     public function testWillSkipAutoGeneration()
     {
-        $className = UniqueIdentifierGenerator::getIdentifier('foo');
-
         $this
             ->inflector
             ->expects($this->once())
             ->method('getProxyClassName')
-            ->with($className)
-            ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
+            ->with('ProxyManagerTestAsset\\BaseInterface')
+            ->will($this->returnValue('StdClass'));
 
-        $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = function () {
-        };
-        /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
-        $proxy       = $factory->createProxy($className, $initializer);
+        $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        $factory = new RemoteObjectFactory($adapter, $this->config);
+        /* @var $proxy \stdClass */
+        $proxy   = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\LazyLoadingMock', $proxy);
-        $this->assertSame($initializer, $proxy->initializer);
+        $this->assertInstanceOf('stdClass', $proxy);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
-     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::createProxy
-     * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::getGenerator
+     * @covers \ProxyManager\Factory\RemoteObjectFactory::__construct
+     * @covers \ProxyManager\Factory\RemoteObjectFactory::createProxy
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
     public function testWillTryAutoGeneration()
     {
-        $className      = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
-        $generator      = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
+        $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
 
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
@@ -132,7 +114,10 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function () use ($proxyClassName) {
-                        eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
+                        eval(
+                            'class ' . $proxyClassName
+                            . ' extends stdClass {}'
+                        );
                     }
                 )
             );
@@ -141,23 +126,21 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->inflector
             ->expects($this->once())
             ->method('getProxyClassName')
-            ->with($className)
+            ->with('ProxyManagerTestAsset\\BaseInterface')
             ->will($this->returnValue($proxyClassName));
 
         $this
             ->inflector
             ->expects($this->once())
             ->method('getUserClassName')
-            ->with($className)
-            ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
+            ->with('ProxyManagerTestAsset\\BaseInterface')
+            ->will($this->returnValue('stdClass'));
 
-        $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = function () {
-        };
-        /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
-        $proxy       = $factory->createProxy($className, $initializer);
+        $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        $factory = new RemoteObjectFactory($adapter, $this->config);
+        /* @var $proxy \stdClass */
+        $proxy   = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
 
         $this->assertInstanceOf($proxyClassName, $proxy);
-        $this->assertSame($initializer, $proxy->initializer);
     }
 }
