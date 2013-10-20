@@ -34,7 +34,7 @@ class RemoteObjectMethod extends MethodGenerator
     /**
      * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
-     * @param \ReflectionClass;                      $originalClass
+     * @param \ReflectionClass                       $originalClass
      *
      * @return RemoteObjectMethod|static
      */

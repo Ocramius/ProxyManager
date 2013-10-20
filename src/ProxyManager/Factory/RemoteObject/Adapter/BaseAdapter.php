@@ -31,13 +31,15 @@ abstract class BaseAdapter implements AdapterInterface
 {
     /**
      * Adapter client
+     *
      * @var \Zend\Server\Client
      */
     protected $client;
     
     /**
      * Service name mapping
-     * @var array
+     *
+     * @var string[]
      */
     protected $map = array();
 

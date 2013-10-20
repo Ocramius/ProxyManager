@@ -49,7 +49,7 @@ class RemoteObjectFactory extends AbstractBaseFactory
     }
 
     /**
-     * @param string            $instanceOrClassName
+     * @param string|object $instanceOrClassName
      * 
      * @return \ProxyManager\Proxy\RemoteObjectInterface
      */

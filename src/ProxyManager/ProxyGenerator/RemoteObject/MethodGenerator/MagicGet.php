@@ -42,7 +42,7 @@ class MagicGet extends MagicMethodGenerator
 
         $this->setDocblock('@param string $name');
         $this->setBody(
-              'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
             . ', \'__get\', array($name));'
         );
     }

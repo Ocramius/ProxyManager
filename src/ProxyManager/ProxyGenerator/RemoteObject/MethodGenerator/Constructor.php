@@ -35,7 +35,7 @@ class Constructor extends MethodGenerator
      * Constructor
      * 
      * @param ReflectionClass   $originalClass  Reflection of the class to proxy
-     * @param PropertyGenerator $adapter		Adapater property
+     * @param PropertyGenerator $adapter		Adapter property
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapter)
     {
@@ -46,7 +46,7 @@ class Constructor extends MethodGenerator
         $this->setParameter(new ParameterGenerator($adapterName, 'ProxyManager\Factory\RemoteObject\AdapterInterface'));
 
         $this->setDocblock(
-              '@override constructor for remote object control\n\n'
+            '@override constructor for remote object control\n\n'
             . '@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter'
         );
 
