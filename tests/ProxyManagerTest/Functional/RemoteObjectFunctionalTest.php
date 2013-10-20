@@ -19,17 +19,14 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
+use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ReflectionClass;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManagerTestAsset\RemoteProxy\Client\LocalHttp;
-use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
-use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
-use Zend\XmlRpc\Client as XmlRpcClient;
-use Zend\Json\Server\Client as JsonRpcClient;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObjectGenerator} produced objects
@@ -84,7 +81,6 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
             ->setMethods(array('call'))
-            ->disableOriginalConstructor()
             ->getMock();
 
         $client

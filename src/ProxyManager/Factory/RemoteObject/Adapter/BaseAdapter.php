@@ -19,7 +19,6 @@
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use ProxyManager\Proxy\Exception\RemoteObjectException;
 use Zend\Server\Client;
 
 /**
@@ -32,7 +31,7 @@ abstract class BaseAdapter implements AdapterInterface
 {
     /**
      * Adapter client
-     * @var \Zend\Json\Server\Client
+     * @var \Zend\Server\Client
      */
     protected $client;
     

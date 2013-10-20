@@ -20,7 +20,6 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc;
-use Zend\Json\Server\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc}
