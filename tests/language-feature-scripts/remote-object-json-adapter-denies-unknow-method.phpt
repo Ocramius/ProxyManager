@@ -5,6 +5,7 @@ Verifies that generated remote object can call public property
 
 require_once __DIR__ . '/init.php';
 
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManagerTestAsset\RemoteProxy\Client\LocalHttp;
 use Zend\Json\Server\Client;
 
@@ -23,20 +24,21 @@ class Foo implements FooServiceInterface
     }
 }
 
-$factory = new \ProxyManager\Factory\RemoteObjectFactory($configuration);
-$adapter = new \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc(
-    new Client('http://127.0.0.1:8080/jsonrpc.php')
-);
+class CustomAdapter implements AdapterInterface
+{
+    public function call($wrappedClass, $method, array $params = array())
+    {
+        return 'baz';
+    }
+}
 
-/**
- * Only for local tests
- * Don't include this line in your code
- */
-$adapter->getClient()->setHttpClient(new LocalHttp(__DIR__ . '/../ProxyManagerTestAsset/RemoteProxy/ServerSide/jsonrpc.php', 'json-rpc')); 
+$factory = new \ProxyManager\Factory\RemoteObjectFactory(new CustomAdapter(), $configuration);
+$proxy   = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\FooServiceInterface');
 
-$proxy = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\FooServiceInterface', $adapter);
-
-var_dump($proxy->unknow());
+var_dump($proxy->foo());
+var_dump($proxy->unknown());
 ?>
 --EXPECTF--
-Fatal error: Call to undefined method %s::unknow() in %s on line %d
+string(3) "baz"
+
+Fatal error: Call to undefined method %s::unknown() in %s on line %d
