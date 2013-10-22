@@ -67,7 +67,7 @@ $factory = new \ProxyManager\Factory\RemoteObjectFactory(
     )
 );
 
-$proxy = $factory->createProxy('FooServiceInterface', $adapter);
+$proxy = $factory->createProxy('FooServiceInterface');
 
 var_dump($proxy->foo()); // "bar remote"
 ```
