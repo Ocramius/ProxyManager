@@ -85,6 +85,8 @@ interface AdapterInterface
      * @param string $wrappedClass
      * @param string $method
      * @param array $params
+     *
+     * @return mixed
      */
     public function call($wrappedClass, $method, array $params = array());
 }
