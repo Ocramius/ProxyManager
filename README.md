@@ -2,6 +2,8 @@
 
 This library aims at providing abstraction for generating various kinds of [proxy classes](http://marco-pivetta.com/proxy-pattern-in-php/).
 
+![ProxyManager](proxy-manager.svg)
+
 [![Build Status](https://travis-ci.org/Ocramius/ProxyManager.png?branch=master)](https://travis-ci.org/Ocramius/ProxyManager)
 [![Coverage Status](https://coveralls.io/repos/Ocramius/ProxyManager/badge.png?branch=master)](https://coveralls.io/r/Ocramius/ProxyManager)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/Ocramius/ProxyManager/badges/quality-score.png?s=eaa858f876137ed281141b1d1e98acfa739729ed)](https://scrutinizer-ci.com/g/Ocramius/ProxyManager/)
