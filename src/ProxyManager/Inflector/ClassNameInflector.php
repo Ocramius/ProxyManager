@@ -64,6 +64,8 @@ class ClassNameInflector implements ClassNameInflectorInterface
      */
     public function getUserClassName($className)
     {
+        $className = ltrim($className, '\\');
+
         if (false === $position = strrpos($className, $this->proxyMarker)) {
             return $className;
         }
