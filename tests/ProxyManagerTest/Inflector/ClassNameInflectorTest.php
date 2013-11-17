@@ -94,6 +94,19 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
+     */
+    public function testGeneratesCorrectClassNameWhenGivenLeadingBackslash()
+    {
+        $inflector = new ClassNameInflector('ProxyNS');
+
+        $this->assertSame(
+            $inflector->getProxyClassName('\\Foo\\Bar', array('tab' => 'baz')),
+            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz'))
+        );
+    }
+
+    /**
      * @return array
      */
     public function getClassNames()
