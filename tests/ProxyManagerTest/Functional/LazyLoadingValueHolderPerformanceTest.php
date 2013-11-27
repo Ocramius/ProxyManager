@@ -32,6 +32,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @group Performance
+ * @coversNothing
  */
 class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTest
 {

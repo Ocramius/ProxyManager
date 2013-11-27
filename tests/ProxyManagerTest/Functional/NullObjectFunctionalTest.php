@@ -33,6 +33,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  * @license MIT
  *
  * @group Functional
+ * @coversNothing
  */
 class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
 {

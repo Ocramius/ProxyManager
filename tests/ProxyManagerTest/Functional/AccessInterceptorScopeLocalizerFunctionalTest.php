@@ -38,6 +38,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  * @license MIT
  *
  * @group Functional
+ * @coversNothing
  */
 class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_TestCase
 {

@@ -35,6 +35,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @group Functional
+ * @coversNothing
  */
 class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 {
