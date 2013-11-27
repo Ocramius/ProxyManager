@@ -35,6 +35,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 
+use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
@@ -65,25 +66,9 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
 
-        $excluded = array(
-            '__get'    => true,
-            '__set'    => true,
-            '__isset'  => true,
-            '__unset'  => true,
-            '__clone'  => true,
-            '__sleep'  => true,
-        );
-
-        $methods = array_filter(
-            $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($excluded) {
-                return ! (
-                    $method->isConstructor()
-                    || isset($excluded[strtolower($method->getName())])
-                    || $method->isFinal()
-                    || $method->isStatic()
-                );
-            }
+        $methods = ProxiedMethodsFilter::getProxiedMethods(
+            $originalClass,
+            array('__get', '__set', '__isset', '__unset', '__clone', '__sleep')
         );
 
         /* @var $methods \ReflectionMethod[] */

@@ -26,6 +26,7 @@ use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicUnset;
 
+use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
@@ -57,26 +58,11 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
         $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($adapter = new AdapterProperty());
 
-        $excluded = array(
-            '__get'    => true,
-            '__set'    => true,
-            '__isset'  => true,
-            '__unset'  => true,
+        $methods = ProxiedMethodsFilter::getProxiedMethods(
+            $originalClass,
+            array('__get', '__set', '__isset', '__unset')
         );
-        
-        /* @var $methods \ReflectionMethod[] */
-        $methods = array_filter(
-            $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($excluded) {
-                return ! (
-                    $method->isConstructor()
-                    || isset($excluded[strtolower($method->getName())])
-                    || $method->isFinal()
-                    || $method->isStatic()
-                );
-            }
-        );
-        
+
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
                 RemoteObjectMethod::generateMethod(

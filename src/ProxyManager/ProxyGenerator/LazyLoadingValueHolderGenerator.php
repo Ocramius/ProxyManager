@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
@@ -73,30 +74,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
-        $excluded = array(
-            '__get'    => true,
-            '__set'    => true,
-            '__isset'  => true,
-            '__unset'  => true,
-            '__clone'  => true,
-            '__sleep'  => true,
-            '__wakeup' => true,
-        );
-
-        /* @var $methods \ReflectionMethod[] */
-        $methods = array_filter(
-            $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($excluded) {
-                return ! (
-                    $method->isConstructor()
-                    || isset($excluded[strtolower($method->getName())])
-                    || $method->isFinal()
-                    || $method->isStatic()
-                );
-            }
-        );
-
-        foreach ($methods as $method) {
+        foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
             $classGenerator->addMethodFromGenerator(
                 LazyLoadingMethodInterceptor::generateMethod(
                     new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),

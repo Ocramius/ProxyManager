@@ -33,6 +33,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Mag
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset;
 
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
@@ -77,30 +78,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodSuffixInterceptors());
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
-        $excluded = array(
-            '__get'    => true,
-            '__set'    => true,
-            '__isset'  => true,
-            '__unset'  => true,
-            '__clone'  => true,
-            '__sleep'  => true,
-            '__wakeup' => true,
-        );
-
-        $methods = array_filter(
-            $originalClass->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($excluded) {
-                return ! (
-                    $method->isConstructor()
-                    || isset($excluded[strtolower($method->getName())])
-                    || $method->isFinal()
-                    || $method->isStatic()
-                );
-            }
-        );
-
-        /* @var $methods \ReflectionMethod[] */
-        foreach ($methods as $method) {
+        foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
             $classGenerator->addMethodFromGenerator(
                 InterceptedMethod::generateMethod(
                     new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
