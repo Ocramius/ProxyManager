@@ -28,7 +28,10 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
+use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
@@ -202,6 +205,66 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+    }
+
+    /**
+     * Verifies that properties' default values are preserved
+     */
+    public function testPublicPropertyDefaultWillBePreserved()
+    {
+        $instance    = new ClassWithPublicProperties();
+        $className   = get_class($instance);
+        // Intentionally empty initializer
+        $initializer = function() {};
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithPublicProperties */
+        $proxy       = new $proxyName($initializer);
+
+        // Check property via reflection to make sure no proxy magic occurs
+        $reflectionProperty = new ReflectionProperty($instance, 'property0');
+        $reflectionProperty->setAccessible(true);
+
+        $this->assertSame('property0', $proxy->property0);
+    }
+
+    /**
+     * Verifies that protected properties' default values are preserved
+     */
+    public function testProtectedPropertyDefaultWillBePreserved()
+    {
+        $instance    = new ClassWithProtectedProperties();
+        $className   = get_class($instance);
+        // Intentionally empty initializer
+        $initializer = function() {};
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithProtectedProperties */
+        $proxy       = new $proxyName($initializer);
+
+        // Check protected property via reflection
+        $reflectionProperty = new ReflectionProperty($instance, 'property0');
+        $reflectionProperty->setAccessible(true);
+
+        $this->assertSame('property0', $reflectionProperty->getValue($proxy));
+    }
+
+    /**
+     * Verifies that private properties' default values are preserved
+     */
+    public function testPrivatePropertyDefaultWillBePreserved()
+    {
+        $instance    = new ClassWithPrivateProperties();
+        $className   = get_class($instance);
+        // Intentionally empty initializer
+        $initializer = function() {};
+        $proxyName   = $this->generateProxy($className);
+        /* @var $proxy ClassWithPrivateProperties */
+        $proxy       = new $proxyName($initializer);
+
+        // Check protected property via reflection
+        $reflectionProperty = new ReflectionProperty($instance, 'property0');
+        $reflectionProperty->setAccessible(true);
+
+        $this->assertSame('property0', $reflectionProperty->getValue($proxy));
     }
 
     /**
