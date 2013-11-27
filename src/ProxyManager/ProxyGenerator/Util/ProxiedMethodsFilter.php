@@ -30,8 +30,8 @@ use ReflectionMethod;
 class ProxiedMethodsFilter
 {
     /**
-     * @param ReflectionClass  $class    reflection class from which methods should be extracted
-     * @param string[]          $excluded methods to be ignored
+     * @param ReflectionClass $class    reflection class from which methods should be extracted
+     * @param string[]        $excluded methods to be ignored
      *
      * @return ReflectionMethod[]
      */
