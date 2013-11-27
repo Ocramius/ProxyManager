@@ -23,6 +23,7 @@ use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\ParameterGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -34,13 +35,15 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicSet extends MagicMethodGenerator
 {
     /**
-     * @param \ReflectionClass                                                   $originalClass
-     * @param \Zend\Code\Generator\PropertyGenerator                             $initializerProperty
+     * @param \ReflectionClass $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
+     * @param \Zend\Code\Generator\MethodGenerator $callInitializer
      * @param \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap $publicProperties
      */
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
+        MethodGenerator $callInitializer,
         PublicPropertiesMap $publicProperties
     ) {
         parent::__construct(
@@ -49,9 +52,8 @@ class MagicSet extends MagicMethodGenerator
             array(new ParameterGenerator('name'), new ParameterGenerator('value'))
         );
 
-        $override    = $originalClass->hasMethod('__set');
-        $initializer = $initializerProperty->getName();
-        $callParent  = '';
+        $override   = $originalClass->hasMethod('__set');
+        $callParent = '';
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
@@ -72,9 +74,8 @@ class MagicSet extends MagicMethodGenerator
         }
 
         $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, \'__set\', array(\'name\' => $name, \'value\' => $value), $this->'
-            . $initializer . ');' . "\n\n" . $callParent
+            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
+            . '(\'__set\', array(\'name\' => $name, \'value\' => $value));' . "\n\n" . $callParent
         );
     }
 }
