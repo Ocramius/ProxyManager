@@ -37,16 +37,17 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
     {
         $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
         $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initCall    = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $magicClone = new MagicClone($reflection, $initializer);
+        $magicClone = new MagicClone($reflection, $initializer, $initCall);
 
         $this->assertSame('__clone', $magicClone->getName());
         $this->assertCount(0, $magicClone->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, "
-            . "'__clone', array(), \$this->foo);",
+            "\$this->foo && \$this->bar('__clone', array());",
             $magicClone->getBody()
         );
     }
