@@ -39,7 +39,7 @@ class ProxiedMethodsFilter
         ReflectionClass $class,
         array $excluded = array('__get', '__set', '__isset', '__unset', '__clone', '__sleep', '__wakeup')
     ) {
-        $ignored = array_flip($excluded);
+        $ignored = array_flip(array_map('strtolower', $excluded));
 
         return array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
