@@ -38,7 +38,6 @@ use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
-use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 

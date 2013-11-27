@@ -40,7 +40,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHo
 
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ReflectionClass;
-use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
