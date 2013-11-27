@@ -71,7 +71,7 @@ class MagicUnset extends MagicMethodGenerator
 
         $this->setBody(
             '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '->__invoke(\'__unset\', array(\'name\' => $name));'
+            . '(\'__unset\', array(\'name\' => $name));'
             . "\n\n" . $callParent
         );
     }
