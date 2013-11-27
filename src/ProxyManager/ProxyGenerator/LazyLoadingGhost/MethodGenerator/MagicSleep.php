@@ -39,7 +39,7 @@ class MagicSleep extends MagicMethodGenerator
         PropertyGenerator $initializerProperty,
         MethodGenerator $callInitializer
     ) {
-        parent::__construct($originalClass, '__sleep');;
+        parent::__construct($originalClass, '__sleep');
 
         $this->setBody(
             '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()

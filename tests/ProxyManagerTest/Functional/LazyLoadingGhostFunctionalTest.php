@@ -213,12 +213,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     public function testPublicPropertyDefaultWillBePreserved()
     {
         $instance    = new ClassWithPublicProperties();
-        $className   = get_class($instance);
-        // Intentionally empty initializer
-        $initializer = function () {};
-        $proxyName   = $this->generateProxy($className);
+        $proxyName   = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = new $proxyName(function () {
+        });
 
         // Check property via reflection to make sure no proxy magic occurs
         $reflectionProperty = new ReflectionProperty($instance, 'property0');
@@ -233,12 +231,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     public function testProtectedPropertyDefaultWillBePreserved()
     {
         $instance    = new ClassWithProtectedProperties();
-        $className   = get_class($instance);
-        // Intentionally empty initializer
-        $initializer = function () {};
-        $proxyName   = $this->generateProxy($className);
+        $proxyName   = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithProtectedProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = new $proxyName(function () {
+        });
 
         // Check protected property via reflection
         $reflectionProperty = new ReflectionProperty($instance, 'property0');
@@ -252,13 +248,11 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPrivatePropertyDefaultWillBePreserved()
     {
-        $instance    = new ClassWithPrivateProperties();
-        $className   = get_class($instance);
-        // Intentionally empty initializer
-        $initializer = function () {};
-        $proxyName   = $this->generateProxy($className);
+        $instance  = new ClassWithPrivateProperties();
+        $proxyName = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithPrivateProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy     = new $proxyName(function () {
+        });
 
         // Check protected property via reflection
         $reflectionProperty = new ReflectionProperty($instance, 'property0');
