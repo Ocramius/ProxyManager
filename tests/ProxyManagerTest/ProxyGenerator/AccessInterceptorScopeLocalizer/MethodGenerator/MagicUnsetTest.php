@@ -52,7 +52,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertStringMatchesFormat('%a$returnValue = $accessor();%a', $magicGet->getBody());
     }
-    
+
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicUnset::__construct
      */

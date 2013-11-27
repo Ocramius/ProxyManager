@@ -36,12 +36,12 @@ class PublicScopeSimulator
     const OPERATION_UNSET = 'unset';
 
     /**
-     * @param string            $operationType      operation to execute: one of 'get', 'set', 'isset' or 'unset'
-     * @param string            $nameParameter      name of the `name` parameter of the magic method
-     * @param string|null       $valueParameter     name of the `value` parameter of the magic method
-     * @param PropertyGenerator $valueHolder        name of the property containing the target object from which
+     * @param string            $operationType  operation to execute: one of 'get', 'set', 'isset' or 'unset'
+     * @param string            $nameParameter  name of the `name` parameter of the magic method
+     * @param string|null       $valueParameter name of the `value` parameter of the magic method
+     * @param PropertyGenerator $valueHolder    name of the property containing the target object from which
      *                                              to read the property. `$this` if none provided
-     * @param string|null       $returnPropertyName name of the property to which we want to assign the result of
+     * @param string|null $returnPropertyName name of the property to which we want to assign the result of
      *                                              the operation. Return directly if none provided
      *
      * @return string

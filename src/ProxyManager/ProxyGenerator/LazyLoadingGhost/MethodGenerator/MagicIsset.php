@@ -35,9 +35,9 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicIsset extends MagicMethodGenerator
 {
     /**
-     * @param \ReflectionClass $originalClass
-     * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
-     * @param \Zend\Code\Generator\MethodGenerator $callInitializer
+     * @param \ReflectionClass                                                   $originalClass
+     * @param \Zend\Code\Generator\PropertyGenerator                             $initializerProperty
+     * @param \Zend\Code\Generator\MethodGenerator                               $callInitializer
      * @param \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap $publicProperties
      */
     public function __construct(

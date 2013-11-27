@@ -54,7 +54,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->method('getClassNameInflector')
             ->will($this->returnValue($this->inflector));
     }
-    
+
     /**
      * {@inheritDoc}
      *

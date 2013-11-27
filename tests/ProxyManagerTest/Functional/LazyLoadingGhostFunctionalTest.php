@@ -215,7 +215,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
         // Intentionally empty initializer
-        $initializer = function() {};
+        $initializer = function () {};
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
         $proxy       = new $proxyName($initializer);
@@ -235,7 +235,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $instance    = new ClassWithProtectedProperties();
         $className   = get_class($instance);
         // Intentionally empty initializer
-        $initializer = function() {};
+        $initializer = function () {};
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithProtectedProperties */
         $proxy       = new $proxyName($initializer);
@@ -255,7 +255,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $instance    = new ClassWithPrivateProperties();
         $className   = get_class($instance);
         // Intentionally empty initializer
-        $initializer = function() {};
+        $initializer = function () {};
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPrivateProperties */
         $proxy       = new $proxyName($initializer);

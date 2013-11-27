@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;

@@ -28,7 +28,6 @@ use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicUnset;
 
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
-use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -75,7 +74,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
                 )
             );
         }
-        
+
         $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $adapter));
         $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $adapter));
         $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $adapter));

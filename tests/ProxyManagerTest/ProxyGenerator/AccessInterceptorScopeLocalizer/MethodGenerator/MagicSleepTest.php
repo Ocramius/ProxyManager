@@ -52,7 +52,7 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($magicGet->getParameters());
         $this->assertStringMatchesFormat('%a$returnValue = array_keys((array) $this);%a', $magicGet->getBody());
     }
-    
+
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSleep::__construct
      */

@@ -46,7 +46,7 @@ abstract class AbstractBaseFactory
      * @var string[]
      */
     protected $generatedClasses = array();
-    
+
     /**
      * @var \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator
      */
@@ -61,10 +61,10 @@ abstract class AbstractBaseFactory
         // localizing some properties for performance
         $this->inflector     = $this->configuration->getClassNameInflector();
     }
-    
+
     /**
      * Generate a proxy from a class name
-     * @param string $className
+     * @param  string $className
      * @return string proxy class name
      */
     protected function generateProxy($className)
@@ -86,10 +86,10 @@ abstract class AbstractBaseFactory
             $this->configuration->getGeneratorStrategy()->generate($phpClass);
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
-        
+
         return $proxyClassName;
     }
-    
+
     /**
      * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
      */

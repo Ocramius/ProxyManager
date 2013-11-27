@@ -56,7 +56,7 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
         $this->assertCount(0, $method->getParameters());
         $this->assertSame("", $method->getBody());
     }
-    
+
     /**
      * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor
      */

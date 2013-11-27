@@ -67,13 +67,13 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
         foreach ($this->getExpectedImplementedInterfaces() as $interface) {
             $this->assertTrue($generatedReflection->implementsInterface($interface));
         }
-        
+
         $proxyGenerated = new $generatedClassName();
-        
+
         foreach ($generatedReflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->assertNull($proxyGenerated->$property);
         }
-        
+
         /** @var \ReflectionMethod $method */
         foreach ($generatedReflection->getMethods(ReflectionProperty::IS_PUBLIC) as $method) {
             if ($method->getNumberOfParameters() == 0) {
@@ -81,7 +81,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -99,7 +99,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
             'ProxyManager\\Proxy\\NullObjectInterface',
         );
     }
-    
+
     /**
      * @return array
      */

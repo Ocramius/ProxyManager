@@ -29,7 +29,7 @@ use ProxyManager\ProxyGenerator\NullObjectGenerator;
 class NullObjectFactory extends AbstractBaseFactory
 {
     /**
-     * @param object     $instanceOrClassName   the object to be wrapped or interface to transform to null object
+     * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
      *
      * @return \ProxyManager\Proxy\NullobjectInterface
      */
@@ -40,7 +40,7 @@ class NullObjectFactory extends AbstractBaseFactory
 
         return new $proxyClassName();
     }
-    
+
     /**
      * {@inheritDoc}
      */

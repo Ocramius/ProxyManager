@@ -20,7 +20,6 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
-use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\ParameterGenerator;
@@ -35,9 +34,9 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicUnset extends MagicMethodGenerator
 {
     /**
-     * @param ReflectionClass     $originalClass
-     * @param PropertyGenerator   $prefixInterceptors
-     * @param PropertyGenerator   $suffixInterceptors
+     * @param ReflectionClass   $originalClass
+     * @param PropertyGenerator $prefixInterceptors
+     * @param PropertyGenerator $suffixInterceptors
      */
     public function __construct(
         ReflectionClass $originalClass,
