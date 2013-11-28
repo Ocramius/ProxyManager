@@ -32,6 +32,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
 
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
@@ -68,9 +69,13 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $classGenerator->setImplementedInterfaces($interfaces);
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
+        $classGenerator->addPropertyFromGenerator($initializationTracker = new InitializationTracker());
         $classGenerator->addPropertyFromGenerator($publicProperties);
         $classGenerator->addPropertyFromGenerator($publicPropertiesDefaults);
-        $classGenerator->addMethodFromGenerator($init = new CallInitializer($initializer, $publicPropertiesDefaults));
+
+        $init = new CallInitializer($initializer, $publicPropertiesDefaults, $initializationTracker);
+
+        $classGenerator->addMethodFromGenerator($init);
 
         foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
             $classGenerator->addMethodFromGenerator(
