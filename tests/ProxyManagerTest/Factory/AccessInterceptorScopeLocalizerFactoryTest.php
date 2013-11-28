@@ -68,7 +68,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
         $this->assertAttributeNotEmpty('configuration', $factory);
         $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
     }
-    
+
     /**
      * {@inheritDoc}
      *
