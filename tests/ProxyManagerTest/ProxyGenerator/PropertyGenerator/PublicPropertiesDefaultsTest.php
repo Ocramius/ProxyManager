@@ -20,7 +20,6 @@ namespace ProxyManagerTest\ProxyGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
-use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ReflectionClass;
 
 /**
