@@ -33,6 +33,7 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
      * {@inheritDoc}
      *
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc::__construct
+     * @covers \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc::getServiceName
      */
     public function testCanBuildAdapterWithXmlRpcClient()
     {

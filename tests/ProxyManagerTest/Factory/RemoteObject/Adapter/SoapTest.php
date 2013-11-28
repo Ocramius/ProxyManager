@@ -33,6 +33,7 @@ class SoapTest extends PHPUnit_Framework_TestCase
      * {@inheritDoc}
      *
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::__construct
+     * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::getServiceName
      */
     public function testCanBuildAdapterWithSoapRpcClient()
     {
