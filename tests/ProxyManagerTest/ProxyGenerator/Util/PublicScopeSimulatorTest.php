@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}
@@ -93,6 +94,22 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             null,
             null,
             'bar'
+        );
+    }
+
+    public function testDelegatesToValueHolderWhenAvailable()
+    {
+        $code = PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_SET,
+            'foo',
+            'baz',
+            new PropertyGenerator('valueHolder'),
+            'bar'
+        );
+
+        $this->assertStringMatchesFormat(
+            '%A$targetObject = $this->valueHolder;%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;',
+            $code
         );
     }
 
