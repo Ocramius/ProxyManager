@@ -67,15 +67,7 @@ class ParameterGenerator extends ZendParameterGenerator
      */
     public function generate()
     {
-        $output = '';
-
-        if ($this->type && !in_array($this->type, static::$simple)) {
-            if ('array' === $this->type || 'callable' === $this->type) {
-                $output .= $this->type . ' ';
-            } else {
-                $output .= '\\' . trim($this->type, '\\') . ' ';
-            }
-        }
+        $output = $this->getGeneratedType();
 
         if (true === $this->passedByReference) {
             $output .= '&';
@@ -83,18 +75,36 @@ class ParameterGenerator extends ZendParameterGenerator
 
         $output .= '$' . $this->name;
 
-        if ($this->defaultValue !== null) {
-            $output .= ' = ';
-            if (is_string($this->defaultValue)) {
-                $output .= ValueGenerator::escape($this->defaultValue);
-            } elseif ($this->defaultValue instanceof ValueGenerator) {
-                $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
-                $output .= $this->defaultValue;
-            } else {
-                $output .= $this->defaultValue;
-            }
+        if (null === $this->defaultValue) {
+            return $output;
         }
 
-        return $output;
+        if (is_string($this->defaultValue)) {
+            return $output . ' = ' . ValueGenerator::escape($this->defaultValue);
+        }
+
+        if ($this->defaultValue instanceof ValueGenerator) {
+            $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
+        }
+
+        return $output . ' = ' . $this->defaultValue;
+    }
+
+    /**
+     * Retrieves the generated parameter type
+     *
+     * @return string
+     */
+    private function getGeneratedType()
+    {
+        if (! $this->type || in_array($this->type, static::$simple)) {
+            return '';
+        }
+
+        if ('array' === $this->type || 'callable' === $this->type) {
+            return $this->type . ' ';
+        }
+
+        return '\\' . trim($this->type, '\\') . ' ';
     }
 }

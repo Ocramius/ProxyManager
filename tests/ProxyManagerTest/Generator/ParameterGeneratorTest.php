@@ -32,6 +32,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers \ProxyManager\Generator\ParameterGenerator::generate
+     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
      */
     public function testGeneratesProperTypeHint()
     {
@@ -49,6 +50,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers \ProxyManager\Generator\ParameterGenerator::generate
+     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
      */
     public function testGeneratesMethodWithCallableType()
     {
@@ -86,6 +88,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Generator\ParameterGenerator::fromReflection
      * @covers \ProxyManager\Generator\ParameterGenerator::generate
+     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
      */
     public function testReadsParameterDefaults()
     {
@@ -109,6 +112,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Generator\ParameterGenerator::fromReflection
      * @covers \ProxyManager\Generator\ParameterGenerator::generate
+     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
      */
     public function testReadsParameterTypeHint()
     {
