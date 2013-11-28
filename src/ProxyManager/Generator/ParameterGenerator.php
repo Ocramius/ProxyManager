@@ -39,27 +39,47 @@ class ParameterGenerator extends ZendParameterGenerator
     {
         /* @var $param self */
         $param = new static();
+
         $param->setName($reflectionParameter->getName());
-
-        if ($reflectionParameter->isArray()) {
-            $param->setType('array');
-        } elseif (method_exists($reflectionParameter, 'isCallable') && $reflectionParameter->isCallable()) {
-            $param->setType('callable');
-        } else {
-            $typeClass = $reflectionParameter->getClass();
-            if ($typeClass) {
-                $param->setType($typeClass->getName());
-            }
-        }
-
         $param->setPosition($reflectionParameter->getPosition());
+
+        $type = static::extractParameterType($reflectionParameter);
+
+        if (null !== $type) {
+            $param->setType($type);
+        }
 
         if ($reflectionParameter->isOptional()) {
             $param->setDefaultValue($reflectionParameter->getDefaultValue());
         }
+
         $param->setPassedByReference($reflectionParameter->isPassedByReference());
 
         return $param;
+    }
+
+    /**
+     * Retrieves the type of a reflection parameter (null if none is found)
+     *
+     * @param ParameterReflection $reflectionParameter
+     *
+     * @return string|null
+     */
+    private static function extractParameterType(ParameterReflection $reflectionParameter)
+    {
+        if ($reflectionParameter->isArray()) {
+            return 'array';
+        }
+
+        if (method_exists($reflectionParameter, 'isCallable') && $reflectionParameter->isCallable()) {
+            return 'callable';
+        }
+
+        if ($typeClass = $reflectionParameter->getClass()) {
+            return $typeClass->getName();
+        }
+
+        return null;
     }
 
     /**

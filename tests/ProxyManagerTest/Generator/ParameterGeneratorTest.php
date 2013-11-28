@@ -27,13 +27,11 @@ use Zend\Code\Reflection\ParameterReflection;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\Generator\ParameterGenerator
  */
 class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\Generator\ParameterGenerator::generate
-     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
-     */
     public function testGeneratesProperTypeHint()
     {
         $generator = new ParameterGenerator('foo');
@@ -48,10 +46,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('\\fooClass $foo', $generator->generate());
     }
 
-    /**
-     * @covers \ProxyManager\Generator\ParameterGenerator::generate
-     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
-     */
     public function testGeneratesMethodWithCallableType()
     {
         if (PHP_VERSION_ID < 50400) {
@@ -66,9 +60,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('callable $foo', $generator->generate());
     }
 
-    /**
-     * @covers \ProxyManager\Generator\ParameterGenerator::fromReflection
-     */
     public function testVisitMethodWithCallable()
     {
         if (PHP_VERSION_ID < 50400) {
@@ -85,11 +76,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('callable', $generator->getType());
     }
 
-    /**
-     * @covers \ProxyManager\Generator\ParameterGenerator::fromReflection
-     * @covers \ProxyManager\Generator\ParameterGenerator::generate
-     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
-     */
     public function testReadsParameterDefaults()
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
@@ -109,11 +95,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertStringMatchesFormat('array%a$parameter%a=%aarray(\'foo\')', $parameter->generate());
     }
 
-    /**
-     * @covers \ProxyManager\Generator\ParameterGenerator::fromReflection
-     * @covers \ProxyManager\Generator\ParameterGenerator::generate
-     * @covers \ProxyManager\Generator\ParameterGenerator::getGeneratedType
-     */
     public function testReadsParameterTypeHint()
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
