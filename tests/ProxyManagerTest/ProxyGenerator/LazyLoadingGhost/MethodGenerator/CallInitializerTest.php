@@ -45,7 +45,7 @@ class CallInitializerTest extends PHPUnit_Framework_TestCase
         $callInitializer = new CallInitializer($initializer, $propertiesDefaults, $initializationTracker);
 
         $this->assertStringMatchesFormat(
-            '%Aif ($this->track) {%areturn;%a}%a'
+            '%Aif ($this->track || ! $this->init) {%areturn;%a}%a'
             . '$this->track = true;%a'
             . 'foreach (self::$props as $key => $default) {%a'
             . '$this->$key = $default;%a'

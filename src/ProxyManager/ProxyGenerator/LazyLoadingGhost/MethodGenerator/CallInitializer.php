@@ -54,7 +54,7 @@ class CallInitializer extends MethodGenerator
         $initialization = $initializationTracker->getName();
 
         $this->setBody(
-            'if ($this->' . $initialization . ') {' . "\n    return;\n}\n\n"
+            'if ($this->' . $initialization . ' || ! $this->' . $initializer . ') {' . "\n    return;\n}\n\n"
             . "\$this->" . $initialization . " = true;\n\n"
             . "foreach (self::\$" . $publicPropertiesDefaults->getName() . " as \$key => \$default) {\n"
             . "    \$this->\$key = \$default;\n"

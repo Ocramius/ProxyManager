@@ -207,9 +207,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame('foo', $proxy->property0);
     }
 
-    /**
-     * Verifies that properties' default values are preserved
-     */
     public function testKeepsInitializerWhenNotOverwitten()
     {
         $instance    = new BaseClass();
@@ -222,6 +219,30 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy->initializeProxy();
 
         $this->assertSame($initializer, $proxy->getProxyInitializer());
+    }
+
+    /**
+     * Verifies that public properties are not being initialized multiple times
+     */
+    public function testKeepsInitializedPublicProperties()
+    {
+        $instance    = new BaseClass();
+        $proxyName   = $this->generateProxy(get_class($instance));
+        $initializer = function (BaseClass $proxy, $method, $parameters, & $initializer) {
+            $initializer           = null;
+            $proxy->publicProperty = 'newValue';
+        };
+        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
+        $proxy       = new $proxyName($initializer);
+
+        $proxy->initializeProxy();
+        $this->assertSame('newValue', $proxy->publicProperty);
+
+        $proxy->publicProperty = 'otherValue';
+
+        $proxy->initializeProxy();
+
+        $this->assertSame('otherValue', $proxy->publicProperty);
     }
 
     /**
