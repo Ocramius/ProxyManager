@@ -109,10 +109,6 @@ class PublicScopeSimulator
      */
     private static function getOperation($operationType, $nameParameter, $valueParameter)
     {
-        if (! $nameParameter) {
-            throw new \InvalidArgumentException('Parameter $nameParameter not provided');
-        }
-
         switch ($operationType) {
             case static::OPERATION_GET:
                 return 'return $targetObject->$' . $nameParameter;
