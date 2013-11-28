@@ -21,7 +21,6 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -38,7 +37,7 @@ class CallInitializer extends MethodGenerator
      */
     public function __construct(
         PropertyGenerator $initializerProperty,
-        PublicPropertiesDefaults $publicPropertiesDefaults,
+        PropertyGenerator $publicPropertiesDefaults,
         PropertyGenerator $initializationTracker
     ) {
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('callInitializer'));
