@@ -69,14 +69,7 @@ class MethodGenerator extends ZendMethodGenerator
         }
 
         $method->setFinal($reflectionMethod->isFinal());
-
-        if ($reflectionMethod->isPrivate()) {
-            $method->setVisibility(self::VISIBILITY_PRIVATE);
-        } elseif ($reflectionMethod->isProtected()) {
-            $method->setVisibility(self::VISIBILITY_PROTECTED);
-        } else {
-            $method->setVisibility(self::VISIBILITY_PUBLIC);
-        }
+        $method->setVisibility(self::extractVisibility($reflectionMethod));
 
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $method->setParameter(ParameterGenerator::fromReflection($reflectionParameter));
@@ -88,6 +81,26 @@ class MethodGenerator extends ZendMethodGenerator
         $method->setReturnsReference($reflectionMethod->returnsReference());
 
         return $method;
+    }
+
+    /**
+     * Retrieves the visibility for the given method reflection
+     *
+     * @param MethodReflection $reflectionMethod
+     *
+     * @return string
+     */
+    private static function extractVisibility(MethodReflection $reflectionMethod)
+    {
+        if ($reflectionMethod->isPrivate()) {
+            return static::VISIBILITY_PRIVATE;
+        }
+
+        if ($reflectionMethod->isProtected()) {
+            return static::VISIBILITY_PROTECTED;
+        }
+
+        return static::VISIBILITY_PUBLIC;
     }
 
     /**
