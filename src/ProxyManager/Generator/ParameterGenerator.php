@@ -87,27 +87,30 @@ class ParameterGenerator extends ZendParameterGenerator
      */
     public function generate()
     {
-        $output = $this->getGeneratedType();
+        return $this->getGeneratedType()
+            . (true === $this->passedByReference ? '&' : '')
+            . '$' . $this->name
+            . $this->generateDefaultValue();
+    }
 
-        if (true === $this->passedByReference) {
-            $output .= '&';
-        }
-
-        $output .= '$' . $this->name;
-
+    /**
+     * @return string
+     */
+    private function generateDefaultValue()
+    {
         if (null === $this->defaultValue) {
-            return $output;
+            return '';
         }
 
         if (is_string($this->defaultValue)) {
-            return $output . ' = ' . ValueGenerator::escape($this->defaultValue);
+            return ' = ' . ValueGenerator::escape($this->defaultValue);
         }
 
         if ($this->defaultValue instanceof ValueGenerator) {
             $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
         }
 
-        return $output . ' = ' . $this->defaultValue;
+        return ' = ' . $this->defaultValue;
     }
 
     /**
