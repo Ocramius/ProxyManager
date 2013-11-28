@@ -39,27 +39,47 @@ class ParameterGenerator extends ZendParameterGenerator
     {
         /* @var $param self */
         $param = new static();
+
         $param->setName($reflectionParameter->getName());
-
-        if ($reflectionParameter->isArray()) {
-            $param->setType('array');
-        } elseif (method_exists($reflectionParameter, 'isCallable') && $reflectionParameter->isCallable()) {
-            $param->setType('callable');
-        } else {
-            $typeClass = $reflectionParameter->getClass();
-            if ($typeClass) {
-                $param->setType($typeClass->getName());
-            }
-        }
-
         $param->setPosition($reflectionParameter->getPosition());
+
+        $type = static::extractParameterType($reflectionParameter);
+
+        if (null !== $type) {
+            $param->setType($type);
+        }
 
         if ($reflectionParameter->isOptional()) {
             $param->setDefaultValue($reflectionParameter->getDefaultValue());
         }
+
         $param->setPassedByReference($reflectionParameter->isPassedByReference());
 
         return $param;
+    }
+
+    /**
+     * Retrieves the type of a reflection parameter (null if none is found)
+     *
+     * @param ParameterReflection $reflectionParameter
+     *
+     * @return string|null
+     */
+    private static function extractParameterType(ParameterReflection $reflectionParameter)
+    {
+        if ($reflectionParameter->isArray()) {
+            return 'array';
+        }
+
+        if (method_exists($reflectionParameter, 'isCallable') && $reflectionParameter->isCallable()) {
+            return 'callable';
+        }
+
+        if ($typeClass = $reflectionParameter->getClass()) {
+            return $typeClass->getName();
+        }
+
+        return null;
     }
 
     /**
@@ -67,34 +87,47 @@ class ParameterGenerator extends ZendParameterGenerator
      */
     public function generate()
     {
-        $output = '';
+        return $this->getGeneratedType()
+            . (true === $this->passedByReference ? '&' : '')
+            . '$' . $this->name
+            . $this->generateDefaultValue();
+    }
 
-        if ($this->type && !in_array($this->type, static::$simple)) {
-            if ('array' === $this->type || 'callable' === $this->type) {
-                $output .= $this->type . ' ';
-            } else {
-                $output .= '\\' . trim($this->type, '\\') . ' ';
-            }
+    /**
+     * @return string
+     */
+    private function generateDefaultValue()
+    {
+        if (null === $this->defaultValue) {
+            return '';
         }
 
-        if (true === $this->passedByReference) {
-            $output .= '&';
+        if (is_string($this->defaultValue)) {
+            return ' = ' . ValueGenerator::escape($this->defaultValue);
         }
 
-        $output .= '$' . $this->name;
-
-        if ($this->defaultValue !== null) {
-            $output .= ' = ';
-            if (is_string($this->defaultValue)) {
-                $output .= ValueGenerator::escape($this->defaultValue);
-            } elseif ($this->defaultValue instanceof ValueGenerator) {
-                $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
-                $output .= $this->defaultValue;
-            } else {
-                $output .= $this->defaultValue;
-            }
+        if ($this->defaultValue instanceof ValueGenerator) {
+            $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
         }
 
-        return $output;
+        return ' = ' . $this->defaultValue;
+    }
+
+    /**
+     * Retrieves the generated parameter type
+     *
+     * @return string
+     */
+    private function getGeneratedType()
+    {
+        if (! $this->type || in_array($this->type, static::$simple)) {
+            return '';
+        }
+
+        if ('array' === $this->type || 'callable' === $this->type) {
+            return $this->type . ' ';
+        }
+
+        return '\\' . trim($this->type, '\\') . ' ';
     }
 }

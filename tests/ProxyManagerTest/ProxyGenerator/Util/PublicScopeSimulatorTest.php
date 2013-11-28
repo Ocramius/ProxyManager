@@ -120,13 +120,6 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
         PublicScopeSimulator::getPublicAccessSimulationCode('invalid', 'foo');
     }
 
-    public function testSetRequiresValidNameParameter()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-
-        PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_GET, false);
-    }
-
     public function testWillReturnDirectlyWithNoReturnParam()
     {
         $code = PublicScopeSimulator::getPublicAccessSimulationCode(

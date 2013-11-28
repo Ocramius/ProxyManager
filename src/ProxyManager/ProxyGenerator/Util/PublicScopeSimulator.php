@@ -109,10 +109,6 @@ class PublicScopeSimulator
      */
     private static function getOperation($operationType, $nameParameter, $valueParameter)
     {
-        if (! $nameParameter) {
-            throw new \InvalidArgumentException('Parameter $nameParameter not provided');
-        }
-
         switch ($operationType) {
             case static::OPERATION_GET:
                 return 'return $targetObject->$' . $nameParameter;
@@ -126,9 +122,9 @@ class PublicScopeSimulator
                 return 'return isset($targetObject->$' . $nameParameter . ')';
             case static::OPERATION_UNSET:
                 return 'unset($targetObject->$' . $nameParameter . ')';
-            default:
-                throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
         }
+
+        throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
     }
 
     /**
