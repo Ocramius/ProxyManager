@@ -37,6 +37,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @group Functional
+ * @coversNothing
  */
 class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 {

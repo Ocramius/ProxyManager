@@ -19,18 +19,19 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Factory\NullObjectFactory;
+use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
+use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use stdClass;
 
 /**
- * Tests for {@see \ProxyManager\Factory\NullObjectFactory}
+ * Tests for {@see \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
+ * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
+class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -59,9 +60,21 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritDoc}
      *
-     * @covers \ProxyManager\Factory\NullObjectFactory::__construct
-     * @covers \ProxyManager\Factory\NullObjectFactory::createProxy
-     * @covers \ProxyManager\Factory\NullObjectFactory::getGenerator
+     * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::__construct
+     */
+    public function testWithOptionalFactory()
+    {
+        $factory = new AccessInterceptorValueHolderFactory();
+        $this->assertAttributeNotEmpty('configuration', $factory);
+        $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
+    }
+    
+    /**
+     * {@inheritDoc}
+     *
+     * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::__construct
+     * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::createProxy
+     * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::getGenerator
      */
     public function testWillSkipAutoGeneration()
     {
@@ -72,21 +85,24 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue('ProxyManagerTestAsset\\NullObjectMock'));
+            ->will($this->returnValue('ProxyManagerTestAsset\\AccessInterceptorValueHolderMock'));
 
-        $factory    = new NullObjectFactory($this->config);
-        /* @var $proxy \ProxyManagerTestAsset\NullObjectMock */
-        $proxy      = $factory->createProxy($instance);
+        $factory     = new AccessInterceptorScopeLocalizerFactory($this->config);
+        /* @var $proxy \ProxyManagerTestAsset\AccessInterceptorValueHolderMock */
+        $proxy       = $factory->createProxy($instance, array('foo'), array('bar'));
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\NullObjectMock', $proxy);
+        $this->assertInstanceOf('ProxyManagerTestAsset\\AccessInterceptorValueHolderMock', $proxy);
+        $this->assertSame($instance, $proxy->instance);
+        $this->assertSame(array('foo'), $proxy->prefixInterceptors);
+        $this->assertSame(array('bar'), $proxy->suffixInterceptors);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @covers \ProxyManager\Factory\NullObjectFactory::__construct
-     * @covers \ProxyManager\Factory\NullObjectFactory::createProxy
-     * @covers \ProxyManager\Factory\NullObjectFactory::getGenerator
+     * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::__construct
+     * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::createProxy
+     * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::getGenerator
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
@@ -121,7 +137,7 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
                     function () use ($proxyClassName) {
                         eval(
                             'class ' . $proxyClassName
-                            . ' extends \\ProxyManagerTestAsset\\NullObjectMock {}'
+                            . ' extends \\ProxyManagerTestAsset\\AccessInterceptorValueHolderMock {}'
                         );
                     }
                 )
@@ -139,12 +155,15 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will($this->returnValue('ProxyManagerTestAsset\\NullObjectMock'));
+            ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
 
-        $factory    = new NullObjectFactory($this->config);
-        /* @var $proxy \ProxyManagerTestAsset\NullObjectMock */
-        $proxy      = $factory->createProxy($instance);
+        $factory     = new AccessInterceptorScopeLocalizerFactory($this->config);
+        /* @var $proxy \ProxyManagerTestAsset\AccessInterceptorValueHolderMock */
+        $proxy       = $factory->createProxy($instance, array('foo'), array('bar'));
 
         $this->assertInstanceOf($proxyClassName, $proxy);
+        $this->assertSame($instance, $proxy->instance);
+        $this->assertSame(array('foo'), $proxy->prefixInterceptors);
+        $this->assertSame(array('bar'), $proxy->suffixInterceptors);
     }
 }

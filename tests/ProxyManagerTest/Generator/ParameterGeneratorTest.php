@@ -82,4 +82,50 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('callable', $generator->getType());
     }
+
+    /**
+     * @covers \ProxyManager\Generator\ParameterGenerator::fromReflection
+     * @covers \ProxyManager\Generator\ParameterGenerator::generate
+     */
+    public function testReadsParameterDefaults()
+    {
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            array(
+                'ProxyManagerTestAsset\\ClassWithMethodWithDefaultParameters',
+                'publicMethodWithDefaults'
+            ),
+            'parameter'
+        ));
+
+        /* @var $defaultValue \Zend\Code\Generator\ValueGenerator */
+        $defaultValue = $parameter->getDefaultValue();
+
+        $this->assertInstanceOf('Zend\\Code\\Generator\\ValueGenerator', $defaultValue);
+        $this->assertSame(array('foo'), $defaultValue->getValue());
+
+        $this->assertStringMatchesFormat('array%a$parameter%a=%aarray(\'foo\')', $parameter->generate());
+    }
+
+    /**
+     * @covers \ProxyManager\Generator\ParameterGenerator::fromReflection
+     * @covers \ProxyManager\Generator\ParameterGenerator::generate
+     */
+    public function testReadsParameterTypeHint()
+    {
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            array('ProxyManagerTestAsset\\BaseClass', 'publicTypeHintedMethod'),
+            'param'
+        ));
+
+        $this->assertSame('stdClass', $parameter->getType());
+    }
+
+    public function testGeneratesParameterPassedByReference()
+    {
+        $parameter = new ParameterGenerator('foo');
+
+        $parameter->setPassedByReference(true);
+
+        $this->assertStringMatchesFormat('&%A$foo', $parameter->generate());
+    }
 }

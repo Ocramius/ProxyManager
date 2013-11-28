@@ -33,6 +33,7 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
      * {@inheritDoc}
      *
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::__construct
+     * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::getServiceName
      */
     public function testCanBuildAdapterWithJsonRpcClient()
     {

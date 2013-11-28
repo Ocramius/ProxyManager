@@ -35,6 +35,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  * @license MIT
  *
  * @group Functional
+ * @coversNothing
  */
 class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 {

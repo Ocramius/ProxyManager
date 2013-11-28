@@ -60,6 +60,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\RemoteObjectFactory::__construct
      * @covers \ProxyManager\Factory\RemoteObjectFactory::createProxy
+     * @covers \ProxyManager\Factory\RemoteObjectFactory::getGenerator
      */
     public function testWillSkipAutoGeneration()
     {
@@ -83,6 +84,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\RemoteObjectFactory::__construct
      * @covers \ProxyManager\Factory\RemoteObjectFactory::createProxy
+     * @covers \ProxyManager\Factory\RemoteObjectFactory::getGenerator
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */

@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Generator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\Generator\MethodGenerator}
@@ -39,11 +40,37 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         $methodGenerator->setName('methodName');
         $methodGenerator->setVisibility('protected');
         $methodGenerator->setBody('/* body */');
+        $methodGenerator->setDocBlock('docBlock');
 
         $this->assertSame(true, $methodGenerator->returnsReference());
         $this->assertStringMatchesFormat(
-            '%aprotected function & methodName()%a{%a/* body */%a}',
+            '%a/**%adocBlock%a*/%aprotected function & methodName()%a{%a/* body */%a}',
             $methodGenerator->generate()
         );
+    }
+
+    /**
+     * Verify that building from reflection works
+     */
+    public function testGenerateFromReflection()
+    {
+        $method = MethodGenerator::fromReflection(new MethodReflection(__CLASS__, __FUNCTION__));
+
+        $this->assertSame(__FUNCTION__, $method->getName());
+        $this->assertSame(MethodGenerator::VISIBILITY_PUBLIC, $method->getVisibility());
+        $this->assertFalse($method->isStatic());
+        $this->assertSame('Verify that building from reflection works', $method->getDocBlock()->getShortDescription());
+
+        $method = MethodGenerator::fromReflection(
+            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'protectedMethod')
+        );
+
+        $this->assertSame(MethodGenerator::VISIBILITY_PROTECTED, $method->getVisibility());
+
+        $method = MethodGenerator::fromReflection(
+            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'privateMethod')
+        );
+
+        $this->assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
 }

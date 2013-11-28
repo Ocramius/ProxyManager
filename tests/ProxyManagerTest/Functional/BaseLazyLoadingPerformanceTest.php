@@ -25,6 +25,7 @@ namespace ProxyManagerTest\Functional;
  * @license MIT
  *
  * @group Performance
+ * @coversNothing
  */
 abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
 {

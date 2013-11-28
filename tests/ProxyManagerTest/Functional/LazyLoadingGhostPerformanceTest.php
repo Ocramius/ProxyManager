@@ -32,6 +32,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @group Performance
+ * @coversNothing
  */
 class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
 {

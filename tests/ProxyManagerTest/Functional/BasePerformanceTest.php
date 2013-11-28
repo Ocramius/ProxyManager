@@ -27,6 +27,7 @@ use PHPUnit_Framework_TestCase;
  * @license MIT
  *
  * @group Performance
+ * @coversNothing
  */
 abstract class BasePerformanceTest extends PHPUnit_Framework_TestCase
 {

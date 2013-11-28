@@ -33,8 +33,11 @@ use ReflectionProperty;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
+ * @link https://github.com/Ocramius/ProxyManager/issues/10
+ *
  * @group Functional
  * @group issue-10
+ * @coversNothing
  */
 class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
 {
