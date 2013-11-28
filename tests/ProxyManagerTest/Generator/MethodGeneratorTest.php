@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Generator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -41,10 +42,11 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         $methodGenerator->setVisibility('protected');
         $methodGenerator->setBody('/* body */');
         $methodGenerator->setDocBlock('docBlock');
+        $methodGenerator->setParameter(new ParameterGenerator('foo'));
 
         $this->assertSame(true, $methodGenerator->returnsReference());
         $this->assertStringMatchesFormat(
-            '%a/**%adocBlock%a*/%aprotected function & methodName()%a{%a/* body */%a}',
+            '%a/**%adocBlock%a*/%aprotected function & methodName($foo)%a{%a/* body */%a}',
             $methodGenerator->generate()
         );
     }
