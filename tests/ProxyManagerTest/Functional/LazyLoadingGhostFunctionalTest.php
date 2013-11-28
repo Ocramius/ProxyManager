@@ -210,6 +210,23 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that properties' default values are preserved
      */
+    public function testKeepsInitializerWhenNotOverwitten()
+    {
+        $instance    = new BaseClass();
+        $proxyName   = $this->generateProxy(get_class($instance));
+        $initializer = function () {
+        };
+        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface */
+        $proxy       = new $proxyName($initializer);
+
+        $proxy->initializeProxy();
+
+        $this->assertSame($initializer, $proxy->getProxyInitializer());
+    }
+
+    /**
+     * Verifies that properties' default values are preserved
+     */
     public function testPublicPropertyDefaultWillBePreserved()
     {
         $instance    = new ClassWithPublicProperties();
@@ -217,10 +234,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy ClassWithPublicProperties */
         $proxy       = new $proxyName(function () {
         });
-
-        // Check property via reflection to make sure no proxy magic occurs
-        $reflectionProperty = new ReflectionProperty($instance, 'property0');
-        $reflectionProperty->setAccessible(true);
 
         $this->assertSame('property0', $proxy->property0);
     }
