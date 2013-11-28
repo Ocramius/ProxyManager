@@ -122,9 +122,9 @@ class PublicScopeSimulator
                 return 'return isset($targetObject->$' . $nameParameter . ')';
             case static::OPERATION_UNSET:
                 return 'unset($targetObject->$' . $nameParameter . ')';
-            default:
-                throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
         }
+
+        throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
     }
 
     /**
