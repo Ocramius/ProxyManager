@@ -129,4 +129,4 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(class_exists($generatedClass, false));
         $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, 'stdClass'));
     }
-} 
+}

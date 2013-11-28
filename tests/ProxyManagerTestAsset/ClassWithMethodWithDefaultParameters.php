@@ -35,4 +35,4 @@ class ClassWithMethodWithDefaultParameters
     {
         return 'defaultValue';
     }
-} 
+}

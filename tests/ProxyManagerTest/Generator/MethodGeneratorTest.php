@@ -62,8 +62,8 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('Verify that building from reflection works', $method->getDocBlock()->getShortDescription());
 
         $method = MethodGenerator::fromReflection(
-            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'protectedMethod'
-        ));
+            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'protectedMethod')
+        );
 
         $this->assertSame(MethodGenerator::VISIBILITY_PROTECTED, $method->getVisibility());
 
