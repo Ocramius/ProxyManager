@@ -73,6 +73,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::__construct
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::createProxy
+     * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::getGenerator
      */
     public function testWillSkipAutoGeneration()
     {
@@ -100,6 +101,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::__construct
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::createProxy
+     * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::getGenerator
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
