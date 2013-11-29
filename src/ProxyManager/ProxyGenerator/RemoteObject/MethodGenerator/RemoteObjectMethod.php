@@ -47,7 +47,7 @@ class RemoteObjectMethod extends MethodGenerator
         $method        = static::fromReflection($originalMethod);
         $parameters    = $originalMethod->getParameters();
         $list          = array();
-        
+
         foreach ($parameters as $parameter) {
             $list[] = '$' . $parameter->getName();
         }

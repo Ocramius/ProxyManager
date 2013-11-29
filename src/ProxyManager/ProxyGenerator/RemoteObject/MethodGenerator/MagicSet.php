@@ -43,7 +43,7 @@ class MagicSet extends MagicMethodGenerator
             '__set',
             array(new ParameterGenerator('name'), new ParameterGenerator('value'))
         );
-        
+
         $this->setDocblock('@param string \$name\n@param mixed \$value');
         $this->setBody(
             'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)

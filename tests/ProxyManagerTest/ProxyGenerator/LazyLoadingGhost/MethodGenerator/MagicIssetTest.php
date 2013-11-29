@@ -36,6 +36,11 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
     protected $initializer;
 
     /**
+     * @var \Zend\Code\Generator\MethodGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $initMethod;
+
+    /**
      * @var \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $publicProperties;
@@ -46,12 +51,14 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $this->initMethod       = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
         $this->publicProperties = $this
             ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
         $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
     }
@@ -62,13 +69,12 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $reflection = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->publicProperties);
+        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__isset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
         $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__isset', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && \$this->baz('__isset', array('name' => \$name));\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return isset(\$this->\$name);\n}\n\n"
             . "%areturn %s;",
             $magicIsset->getBody()
@@ -83,13 +89,12 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
         $reflection = new ReflectionClass(
             'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
         );
-        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->publicProperties);
+        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__isset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
         $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__isset', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && \$this->baz('__isset', array('name' => \$name));\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return isset(\$this->\$name);\n}\n\n"
             . "%areturn %s;",
             $magicIsset->getBody()
@@ -102,13 +107,12 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithOverriddenMagicGet()
     {
         $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
-        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->publicProperties);
+        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__isset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__isset', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && \$this->baz('__isset', array('name' => \$name));\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return isset(\$this->\$name);\n}\n\n"
             . "return parent::__isset(\$name);",
             $magicIsset->getBody()

@@ -36,17 +36,19 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initCall    = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
         $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
-        $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer);
+        $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer, $initCall);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, 'publicByReferenceParameterMethod', "
-            . "array('param' => \$param, 'byRefParam' => \$byRefParam), \$this->foo);\n\n"
+            "\$this->foo && \$this->bar('publicByReferenceParameterMethod', "
+            . "array('param' => \$param, 'byRefParam' => \$byRefParam));\n\n"
             . "return parent::publicByReferenceParameterMethod(\$param, \$byRefParam);",
             $method->getBody()
         );
@@ -59,16 +61,17 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     {
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
         $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initCall         = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $method = LazyLoadingMethodInterceptor::generateMethod($reflectionMethod, $initializer);
+        $method = LazyLoadingMethodInterceptor::generateMethod($reflectionMethod, $initializer, $initCall);
 
         $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
         $this->assertCount(0, $method->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, "
-            . "'testBodyStructureWithoutParameters', array(), \$this->foo);\n\n"
+            "\$this->foo && \$this->bar('testBodyStructureWithoutParameters', array());\n\n"
             . "return parent::testBodyStructureWithoutParameters();",
             $method->getBody()
         );

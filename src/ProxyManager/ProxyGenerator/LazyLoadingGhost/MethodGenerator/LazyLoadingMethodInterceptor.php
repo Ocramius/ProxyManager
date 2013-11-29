@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -33,14 +34,17 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
     /**
      * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
+     * @param \Zend\Code\Generator\MethodGenerator   $callInitializer
      *
      * @return LazyLoadingMethodInterceptor|static
      */
-    public static function generateMethod(MethodReflection $originalMethod, PropertyGenerator $initializerProperty)
-    {
+    public static function generateMethod(
+        MethodReflection $originalMethod,
+        PropertyGenerator $initializerProperty,
+        ZendMethodGenerator $callInitializer
+    ) {
         /* @var $method self */
         $method            = static::fromReflection($originalMethod);
-        $initializerName   = $initializerProperty->getName();
         $parameters        = $originalMethod->getParameters();
         $methodName        = $originalMethod->getName();
         $initializerParams = array();
@@ -53,10 +57,10 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
         }
 
         $method->setBody(
-            '$this->' . $initializerName
-            . ' && $this->' . $initializerName
-            . '->__invoke($this, ' . var_export($methodName, true)
-            . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ");\n\n"
+            '$this->' . $initializerProperty->getName()
+            . ' && $this->' . $callInitializer->getName()
+            . '(' . var_export($methodName, true)
+            . ', array(' . implode(', ', $initializerParams) .  "));\n\n"
             . 'return parent::'
             . $methodName . '(' . implode(', ', $forwardedParams) . ');'
         );

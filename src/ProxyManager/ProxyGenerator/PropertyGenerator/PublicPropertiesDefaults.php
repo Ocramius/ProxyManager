@@ -16,40 +16,43 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\PropertyGenerator;
 
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 use ReflectionClass;
 use ReflectionProperty;
-use ProxyManager\Generator\MethodGenerator;
 
 /**
- * The `__construct` implementation for null object proxies
+ * Map of public properties that exist in the class being proxied
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
+ * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class Constructor extends MethodGenerator
+class PublicPropertiesDefaults extends PropertyGenerator
 {
     /**
-     * Constructor
-     *
-     * @param ReflectionClass $originalClass Reflection of the class to proxy
+     * @var bool[]
+     */
+    private $publicProperties = array();
+
+    /**
+     * @param \ReflectionClass $originalClass
      */
     public function __construct(ReflectionClass $originalClass)
     {
-        parent::__construct('__construct');
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('publicPropertiesDefaults'));
 
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $nullableProperties  = array();
+        $defaults = $originalClass->getDefaultProperties();
 
-        foreach ($publicProperties as $publicProperty) {
-            $nullableProperties[] = '$this->' . $publicProperty->getName() . ' = null;';
+        foreach ($originalClass->getProperties(ReflectionProperty::IS_PUBLIC) as $publicProperty) {
+            $name                          = $publicProperty->getName();
+            $this->publicProperties[$name] = $defaults[$name];
         }
 
-        $this->setDocblock("@override constructor for null object initialization");
-        if ($nullableProperties) {
-                $this->setBody(implode("\n", $nullableProperties));
-        }
+        $this->setDefaultValue($this->publicProperties);
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setStatic(true);
+        $this->setDocblock('@var mixed[] map of default property values of the parent class');
     }
 }

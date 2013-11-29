@@ -16,36 +16,28 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Factory;
+namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
-use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use Zend\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
- * Factory responsible of producing proxy objects
+ * Property that contains the initializer for a lazy object
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
+ * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class NullObjectFactory extends AbstractBaseFactory
+class InitializationTracker extends PropertyGenerator
 {
     /**
-     * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
-     *
-     * @return \ProxyManager\Proxy\NullobjectInterface
+     * Constructor
      */
-    public function createProxy($instanceOrClassName)
+    public function __construct()
     {
-        $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
-        $proxyClassName = $this->generateProxy($className);
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('initializationTracker'));
 
-        return new $proxyClassName();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getGenerator()
-    {
-        return $this->generator ?: $this->generator = new NullObjectGenerator();
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setDocblock('@var bool tracks initialization status - true while the object is initializing');
+        $this->setDefaultValue(false);
     }
 }

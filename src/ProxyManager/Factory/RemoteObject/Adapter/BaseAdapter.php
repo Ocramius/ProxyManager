@@ -35,7 +35,7 @@ abstract class BaseAdapter implements AdapterInterface
      * @var \Zend\Server\Client
      */
     protected $client;
-    
+
     /**
      * Service name mapping
      *
@@ -54,18 +54,18 @@ abstract class BaseAdapter implements AdapterInterface
         $this->client = $client;
         $this->map    = $map;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function call($wrappedClass, $method, array $params = array())
     {
         $serviceName = $this->getServiceName($wrappedClass, $method);
-        
+
         if (isset($this->map[$serviceName])) {
             $serviceName = $this->map[$serviceName];
         }
-        
+
         return $this->client->call($serviceName, $params);
     }
 

@@ -16,36 +16,26 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Factory;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
-use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
+use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
 
 /**
- * Factory responsible of producing proxy objects
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
+ * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker
  */
-class NullObjectFactory extends AbstractBaseFactory
+class InitializationTrackerTest extends AbstractUniquePropertyNameTest
 {
-    /**
-     * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
-     *
-     * @return \ProxyManager\Proxy\NullobjectInterface
-     */
-    public function createProxy($instanceOrClassName)
-    {
-        $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
-        $proxyClassName = $this->generateProxy($className);
-
-        return new $proxyClassName();
-    }
-
     /**
      * {@inheritDoc}
      */
-    protected function getGenerator()
+    protected function createProperty()
     {
-        return $this->generator ?: $this->generator = new NullObjectGenerator();
+        return new InitializationTracker();
     }
 }

@@ -58,7 +58,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
             $method->getBody()
         );
     }
-    
+
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
@@ -66,7 +66,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     {
         $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
-        
+
         $reflectionMethod = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicArrayHintedMethod');
 
         $method = RemoteObjectMethod::generateMethod(
@@ -83,7 +83,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
             $method->getBody()
         );
     }
-    
+
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
@@ -91,7 +91,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     {
         $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
-        
+
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
 
         $method = RemoteObjectMethod::generateMethod(

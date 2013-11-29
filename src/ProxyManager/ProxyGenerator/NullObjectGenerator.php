@@ -54,7 +54,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
         }
 
         $classGenerator->setImplementedInterfaces($interfaces);
-        
+
         /* @var $methods \ReflectionMethod[] */
         foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
             $classGenerator->addMethodFromGenerator(
@@ -63,7 +63,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
                 )
             );
         }
-        
+
         $classGenerator->addMethodFromGenerator(new Constructor($originalClass));
     }
 }

@@ -75,7 +75,7 @@ abstract class BasePerformanceTest extends PHPUnit_Framework_TestCase
         if (gc_enable()) {
             gc_collect_cycles();
         }
-        
+
         echo sprintf($messageTemplate, $time, $memory / 1024) . "\n";
 
         return array(

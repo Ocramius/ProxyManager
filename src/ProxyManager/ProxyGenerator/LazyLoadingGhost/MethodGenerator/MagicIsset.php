@@ -23,6 +23,7 @@ use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ProxyManager\Generator\ParameterGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -36,18 +37,19 @@ class MagicIsset extends MagicMethodGenerator
     /**
      * @param \ReflectionClass                                                   $originalClass
      * @param \Zend\Code\Generator\PropertyGenerator                             $initializerProperty
+     * @param \Zend\Code\Generator\MethodGenerator                               $callInitializer
      * @param \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap $publicProperties
      */
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
+        MethodGenerator $callInitializer,
         PublicPropertiesMap $publicProperties
     ) {
         parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
 
-        $override    = $originalClass->hasMethod('__isset');
-        $initializer = $initializerProperty->getName();
-        $callParent  = '';
+        $override   = $originalClass->hasMethod('__isset');
+        $callParent = '';
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
@@ -67,8 +69,8 @@ class MagicIsset extends MagicMethodGenerator
         }
 
         $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, \'__isset\', array(\'name\' => $name), $this->' . $initializer . ');'
+            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
+            . '(\'__isset\', array(\'name\' => $name));'
             . "\n\n" . $callParent
         );
     }

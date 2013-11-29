@@ -66,7 +66,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
                      => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo'
             )
         );
-        
+
         return $adapter;
     }
 
@@ -97,10 +97,10 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
                     => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo'
             )
         );
-        
+
         return $adapter;
     }
-    
+
     /**
      * @dataProvider getProxyMethods
      */
@@ -113,20 +113,20 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
-    
+
     /**
      * @dataProvider getProxyMethods
      */
     public function testJsonRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($instanceOrClassname);
-        
+
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = new $proxyName($this->getJsonRpcAdapter($expectedValue, $method, $params));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
-    
+
     /**
      * @dataProvider getPropertyAccessProxies
      */
@@ -138,15 +138,15 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy     = new $proxyName(
             $this->getJsonRpcAdapter($propertyValue, '__get', array($publicProperty))
         );
-        
+
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
     }
-    
+
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
-     * @param string           $parentClassName
+     * @param string $parentClassName
      *
      * @return string
      */
@@ -197,7 +197,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
             ),
         );
     }
-    
+
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
      *

@@ -67,7 +67,7 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
             $this->assertTrue($generatedReflection->implementsInterface($interface));
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -85,7 +85,7 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
             'ProxyManager\\Proxy\\RemoteObjectInterface',
         );
     }
-    
+
     /**
      * @return array
      */

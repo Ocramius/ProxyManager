@@ -20,7 +20,6 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
-use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 use ReflectionMethod;
 

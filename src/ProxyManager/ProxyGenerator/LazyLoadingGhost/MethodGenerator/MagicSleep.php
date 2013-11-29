@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -33,18 +34,17 @@ class MagicSleep extends MagicMethodGenerator
     /**
      * Constructor
      */
-    public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
-    {
+    public function __construct(
+        ReflectionClass $originalClass,
+        PropertyGenerator $initializerProperty,
+        MethodGenerator $callInitializer
+    ) {
         parent::__construct($originalClass, '__sleep');
 
-        $override    = $originalClass->hasMethod('__sleep');
-        $initializer = $initializerProperty->getName();
-
         $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, \'__sleep\', array(), $this->'
-            . $initializer . ');' . "\n\n"
-            . ($override ? 'return parent::__sleep();' : 'return array_keys((array) $this);')
+            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
+            . '(\'__sleep\', array());' . "\n\n"
+            . ($originalClass->hasMethod('__sleep') ? 'return parent::__sleep();' : 'return array_keys((array) $this);')
         );
     }
 }

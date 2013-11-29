@@ -36,6 +36,11 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     protected $initializer;
 
     /**
+     * @var \Zend\Code\Generator\MethodGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $initMethod;
+
+    /**
      * @var \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $publicProperties;
@@ -46,12 +51,14 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $this->initMethod       = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
         $this->publicProperties = $this
             ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
         $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
     }
@@ -62,13 +69,12 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $reflection = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $magicGet   = new MagicGet($reflection, $this->initializer, $this->publicProperties);
+        $magicGet   = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && \$this->baz('__get', array('name' => \$name));\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return \$this->\$name;\n}\n\n"
             . "%a",
             $magicGet->getBody()
@@ -84,13 +90,12 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
             'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
         );
 
-        $magicGet = new MagicGet($reflection, $this->initializer, $this->publicProperties);
+        $magicGet = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && \$this->baz('__get', array('name' => \$name));\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return \$this->\$name;\n}\n\n"
             . "%a",
             $magicGet->getBody()
@@ -103,13 +108,12 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithOverriddenMagicGet()
     {
         $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
-        $magicGet   = new MagicGet($reflection, $this->initializer, $this->publicProperties);
+        $magicGet   = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this, '__get', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && \$this->baz('__get', array('name' => \$name));\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return \$this->\$name;\n}\n\n"
             . "return parent::__get(\$name);",
             $magicGet->getBody()

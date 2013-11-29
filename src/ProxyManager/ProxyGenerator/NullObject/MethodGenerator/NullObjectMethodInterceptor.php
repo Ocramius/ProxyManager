@@ -39,7 +39,7 @@ class NullObjectMethodInterceptor extends MethodGenerator
     {
         /* @var $method self */
         $method = static::fromReflection($originalMethod);
-        
+
         if ($originalMethod->returnsReference()) {
             $reference = UniqueIdentifierGenerator::getIdentifier('ref');
 

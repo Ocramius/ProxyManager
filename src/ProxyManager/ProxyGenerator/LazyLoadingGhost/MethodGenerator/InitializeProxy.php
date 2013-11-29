@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
 
 /**
  * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::initializeProxy}
@@ -33,16 +34,14 @@ class InitializeProxy extends MethodGenerator
     /**
      * Constructor
      */
-    public function __construct(PropertyGenerator $initializerProperty)
+    public function __construct(PropertyGenerator $initializerProperty, ZendMethodGenerator $callInitializer)
     {
         parent::__construct('initializeProxy');
         $this->setDocblock('{@inheritDoc}');
 
-        $initializer = $initializerProperty->getName();
-
         $this->setBody(
-            'return $this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this, \'initializeProxy\', array(), $this->' . $initializer . ');'
+            'return $this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
+            . '(\'initializeProxy\', array());'
         );
     }
 }
