@@ -58,14 +58,24 @@ class PublicScopeSimulator
         $byRef  = self::getByRefReturnValue($operationType);
         $value  = static::OPERATION_SET === $operationType ? ', $value' : '';
         $target = '$this';
+        $notice = '';
 
         if ($valueHolder) {
             $target = '$this->' . $valueHolder->getName();
         }
 
-        return '$realInstance = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
-            . 'if (! $realInstance->hasProperty($' . $nameParameter . ')) {'   . "\n"
+        if (static::OPERATION_GET === $operationType) {
+            $notice = '    $backtrace = debug_backtrace(false);' . "\n"
+                . '    trigger_error(\'Undefined property: \' . get_parent_class($this) . \'::$\' . $'
+                . $nameParameter
+                . ' . \' in \' . $backtrace[0][\'file\'] . \' on line \' . $backtrace[0][\'line\'], \E_USER_NOTICE);'
+                . "\n";
+        }
+
+        return '$realInstanceReflection = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
+            . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {'   . "\n"
             . '    $targetObject = ' . $target . ';' . "\n"
+            . $notice
             . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ";\n"
             . "    return;\n"
             . '}' . "\n\n"
@@ -151,7 +161,7 @@ class PublicScopeSimulator
             // @codeCoverageIgnoreEnd
         }
 
-        return '    $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT);' . "\n"
+        return '    $backtrace = debug_backtrace(true);' . "\n"
             . '    $scopeObject = isset($backtrace[1][\'object\'])'
             . ' ? $backtrace[1][\'object\'] : new \stdClass();' . "\n"
             . '    $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));' . "\n";
