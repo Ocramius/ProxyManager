@@ -55,15 +55,26 @@ class PublicScopeSimulator
         PropertyGenerator $valueHolder = null,
         $returnPropertyName = null
     ) {
-        $byRef = self::getByRefReturnValue($operationType);
-        $value = static::OPERATION_SET === $operationType ? ', $value' : '';
+        $byRef  = self::getByRefReturnValue($operationType);
+        $value  = static::OPERATION_SET === $operationType ? ', $value' : '';
+        $target = '$this';
 
-        return '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
-            . '    $accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
-            . '        ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ';' . "\n"
-            . "    };\n"
+        if ($valueHolder) {
+            $target = '$this->' . $valueHolder->getName();
+        }
+
+        return '$realInstance = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
+            . 'if (! $realInstance->hasProperty($' . $nameParameter . ')) {'   . "\n"
+            . '    $targetObject = ' . $target . ';' . "\n"
+            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ";\n"
+            . "    return;\n"
+            . '}' . "\n\n"
+            . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
+            . '$accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
+            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ';' . "\n"
+            . "};\n"
             . self::getScopeReBind()
-            . '    ' . ($returnPropertyName ? '$' . $returnPropertyName . ' =' : 'return') . ' $accessor();';
+            . ($returnPropertyName ? '$' . $returnPropertyName . ' =' : 'return') . ' $accessor();';
     }
 
     /**
@@ -95,7 +106,7 @@ class PublicScopeSimulator
             return '$this->' . $valueHolder->getName();
         }
 
-        return 'unserialize(sprintf(\'O:%d:"%s":0:{}\', strlen(get_parent_class($this)), get_parent_class($this)));';
+        return 'unserialize(sprintf(\'O:%d:"%s":0:{}\', strlen(get_parent_class($this)), get_parent_class($this)))';
     }
 
     /**
