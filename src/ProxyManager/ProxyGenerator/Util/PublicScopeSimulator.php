@@ -153,16 +153,15 @@ class PublicScopeSimulator
     {
         switch ($operationType) {
             case static::OPERATION_GET:
-                return '$return = $targetObject->$' . $nameParameter . ";\n\nreturn \$return;";
+                return 'return $targetObject->$' . $nameParameter . ";";
             case static::OPERATION_SET:
                 if (! $valueParameter) {
                     throw new \InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
-                return '$return = $targetObject->$' . $nameParameter . ' = $' . $valueParameter
-                    . ";\n\nreturn \$return;";
+                return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter . ';';
             case static::OPERATION_ISSET:
-                return '$return = isset($targetObject->$' . $nameParameter . ');';
+                return 'return isset($targetObject->$' . $nameParameter . ');';
             case static::OPERATION_UNSET:
                 return 'unset($targetObject->$' . $nameParameter . ');';
         }
