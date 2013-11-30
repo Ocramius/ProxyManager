@@ -38,6 +38,8 @@ class MagicMethodGenerator extends MethodGenerator
             $originalClass->hasMethod($name) ? '{@inheritDoc}' : null
         );
 
+        $this->setReturnsReference(strtolower($name) === '__get');
+
         if ($originalClass->hasMethod($name)) {
             $this->setReturnsReference($originalClass->getMethod($name)->returnsReference());
         }

@@ -42,8 +42,9 @@ class MagicIsset extends MagicMethodGenerator
 
         $this->setDocblock('@param string $name');
         $this->setBody(
-            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
-            . ', \'__isset\', array($name));'
+            '$return = $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+            . ', \'__isset\', array($name));' . "\n\n"
+            . 'return $return;'
         );
     }
 }

@@ -48,7 +48,6 @@ class MagicGet extends MagicMethodGenerator
         $override = $originalClass->hasMethod('__get');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-        $this->setReturnsReference(true);
 
         if ($override) {
             $callParent = '$returnValue = & parent::__get($name);';

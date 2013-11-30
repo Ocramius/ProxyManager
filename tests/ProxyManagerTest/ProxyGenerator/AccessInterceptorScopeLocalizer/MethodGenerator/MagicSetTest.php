@@ -50,7 +50,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('__set', $magicGet->getName());
         $this->assertCount(2, $magicGet->getParameters());
-        $this->assertStringMatchesFormat('%a$returnValue = $accessor();%a', $magicGet->getBody());
+        $this->assertStringMatchesFormat('%a$returnValue = & $accessor();%a', $magicGet->getBody());
     }
 
     /**

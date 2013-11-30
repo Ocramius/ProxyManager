@@ -52,7 +52,6 @@ class MagicSet extends MagicMethodGenerator
         $override = $originalClass->hasMethod('__set');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-        $this->setReturnsReference(true);
 
         if ($override) {
             $callParent = '$returnValue = & parent::__set($name, $value);';

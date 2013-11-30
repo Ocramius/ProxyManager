@@ -48,7 +48,6 @@ class MagicUnset extends MagicMethodGenerator
         $override = $originalClass->hasMethod('__unset');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-        $this->setReturnsReference(true);
 
         if ($override) {
             $callParent = '$returnValue = & parent::__unset($name);';

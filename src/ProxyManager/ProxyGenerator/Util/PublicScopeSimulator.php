@@ -36,6 +36,10 @@ class PublicScopeSimulator
     const OPERATION_UNSET = 'unset';
 
     /**
+     * Generates code for simulating access to a property from the scope that is accessing a proxy.
+     * This is done by introspecting `debug_backtrace()` and then binding a closure to the scope
+     * of the parent caller.
+     *
      * @param string            $operationType  operation to execute: one of 'get', 'set', 'isset' or 'unset'
      * @param string            $nameParameter  name of the `name` parameter of the magic method
      * @param string|null       $valueParameter name of the `value` parameter of the magic method
@@ -55,15 +59,53 @@ class PublicScopeSimulator
         PropertyGenerator $valueHolder = null,
         $returnPropertyName = null
     ) {
-        $byRef = self::getByRefReturnValue($operationType);
-        $value = static::OPERATION_SET === $operationType ? ', $value' : '';
+        $byRef  = self::getByRefReturnValue($operationType);
+        $value  = static::OPERATION_SET === $operationType ? ', $value' : '';
+        $target = '$this';
 
-        return '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
-            . '    $accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
-            . '        ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ';' . "\n"
-            . "    };\n"
+        if ($valueHolder) {
+            $target = '$this->' . $valueHolder->getName();
+        }
+
+        return '$realInstanceReflection = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
+            . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {'   . "\n"
+            . '    $targetObject = ' . $target . ';' . "\n\n"
+            . self::getUndefinedPropertyNotice($operationType, $nameParameter)
+            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ";\n"
+            . "    return;\n"
+            . '}' . "\n\n"
+            . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
+            . '$accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
+            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
+            . "};\n"
             . self::getScopeReBind()
-            . '    ' . ($returnPropertyName ? '$' . $returnPropertyName . ' =' : 'return') . ' $accessor();';
+            . (
+                $returnPropertyName
+                    ? '$' . $returnPropertyName . ' = ' . $byRef . '$accessor();'
+                    : '$returnValue = ' . $byRef . '$accessor();' . "\n\n" . 'return $returnValue;'
+            );
+    }
+
+    /**
+     * This will generate code that triggers a notice if access is attempted on a non-existing property
+     *
+     * @param string $operationType
+     * @param string $nameParameter
+     *
+     * @return string
+     */
+    private static function getUndefinedPropertyNotice($operationType, $nameParameter)
+    {
+        if (static::OPERATION_GET !== $operationType) {
+            return '';
+        }
+
+        //
+        return '    $backtrace = debug_backtrace(false);' . "\n"
+            . '    trigger_error(\'Undefined property: \' . get_parent_class($this) . \'::$\' . $'
+            . $nameParameter
+            . ' . \' in \' . $backtrace[0][\'file\'] . \' on line \' . $backtrace[0][\'line\'], \E_USER_NOTICE);'
+            . "\n";
     }
 
     /**
@@ -95,7 +137,7 @@ class PublicScopeSimulator
             return '$this->' . $valueHolder->getName();
         }
 
-        return 'unserialize(sprintf(\'O:%d:"%s":0:{}\', strlen(get_parent_class($this)), get_parent_class($this)));';
+        return 'unserialize(sprintf(\'O:%d:"%s":0:{}\', strlen(get_parent_class($this)), get_parent_class($this)))';
     }
 
     /**
@@ -111,17 +153,17 @@ class PublicScopeSimulator
     {
         switch ($operationType) {
             case static::OPERATION_GET:
-                return 'return $targetObject->$' . $nameParameter;
+                return 'return $targetObject->$' . $nameParameter . ";";
             case static::OPERATION_SET:
                 if (! $valueParameter) {
                     throw new \InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
-                return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter;
+                return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter . ';';
             case static::OPERATION_ISSET:
-                return 'return isset($targetObject->$' . $nameParameter . ')';
+                return 'return isset($targetObject->$' . $nameParameter . ');';
             case static::OPERATION_UNSET:
-                return 'unset($targetObject->$' . $nameParameter . ')';
+                return 'unset($targetObject->$' . $nameParameter . ');';
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
@@ -140,7 +182,7 @@ class PublicScopeSimulator
             // @codeCoverageIgnoreEnd
         }
 
-        return '    $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT);' . "\n"
+        return '    $backtrace = debug_backtrace(true);' . "\n"
             . '    $scopeObject = isset($backtrace[1][\'object\'])'
             . ' ? $backtrace[1][\'object\'] : new \stdClass();' . "\n"
             . '    $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));' . "\n";

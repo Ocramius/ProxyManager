@@ -44,7 +44,8 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__set', $magicGet->getName());
         $this->assertCount(2, $magicGet->getParameters());
         $this->assertStringMatchesFormat(
-            'return $this->foo->call(\'ProxyManagerTestAsset\\\EmptyClass\', \'__set\', array($name, $value));',
+            '$return = $this->foo->call(\'ProxyManagerTestAsset\\\EmptyClass\', \'__set\', array($name, $value));'
+            . "\n\nreturn \$return;",
             $magicGet->getBody()
         );
     }
