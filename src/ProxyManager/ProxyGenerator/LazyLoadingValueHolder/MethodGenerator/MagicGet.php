@@ -45,7 +45,6 @@ class MagicGet extends MagicMethodGenerator
         parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
 
         $this->setDocblock(($originalClass->hasMethod('__get') ? "{@inheritDoc}\n" : '') . '@param string $name');
-        $this->setReturnsReference(true);
 
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();

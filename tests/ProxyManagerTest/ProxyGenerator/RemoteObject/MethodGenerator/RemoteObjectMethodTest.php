@@ -53,8 +53,9 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());
         $this->assertSame(
-            'return $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicByReferenceParameterMethod\', array($param, $byRefParam));',
+            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            . '\'publicByReferenceParameterMethod\', array($param, $byRefParam));'
+            . "\n\nreturn \$return;",
             $method->getBody()
         );
     }
@@ -78,8 +79,9 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame('publicArrayHintedMethod', $method->getName());
         $this->assertCount(1, $method->getParameters());
         $this->assertSame(
-            'return $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicArrayHintedMethod\', array($param));',
+            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            . '\'publicArrayHintedMethod\', array($param));'
+            . "\n\nreturn \$return;",
             $method->getBody()
         );
     }
@@ -103,8 +105,9 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
         $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
         $this->assertCount(0, $method->getParameters());
         $this->assertSame(
-            'return $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'testBodyStructureWithoutParameters\', array());',
+            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            . '\'testBodyStructureWithoutParameters\', array());'
+            . "\n\nreturn \$return;",
             $method->getBody()
         );
     }

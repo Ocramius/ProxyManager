@@ -48,7 +48,6 @@ class MagicIsset extends MagicMethodGenerator
         $override = $originalClass->hasMethod('__isset');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-        $this->setReturnsReference(true);
 
         if ($override) {
             $callParent = '$returnValue = & parent::__isset($name);';

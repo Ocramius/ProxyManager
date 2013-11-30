@@ -50,7 +50,6 @@ class MagicGet extends MagicMethodGenerator
         $valueHolderName = $valueHolder->getName();
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-        $this->setReturnsReference(true);
 
         $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_GET,

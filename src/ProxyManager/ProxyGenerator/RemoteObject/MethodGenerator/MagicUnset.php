@@ -43,8 +43,9 @@ class MagicUnset extends MagicMethodGenerator
 
         $this->setDocblock('@param string $name');
         $this->setBody(
-            'return $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
-            . ', \'__unset\', array($name));'
+            '$return = $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
+            . ', \'__unset\', array($name));' . "\n\n"
+            . 'return $return;'
         );
     }
 }
