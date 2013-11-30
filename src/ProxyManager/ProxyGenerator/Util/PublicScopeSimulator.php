@@ -76,13 +76,13 @@ class PublicScopeSimulator
             . '}' . "\n\n"
             . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
             . '$accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
-            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ';' . "\n"
+            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
             . "};\n"
             . self::getScopeReBind()
             . (
                 $returnPropertyName
-                    ? '$' . $returnPropertyName . ' = & $accessor();'
-                    : '$returnValue = & $accessor();' . "\n\n" . 'return $returnValue;'
+                    ? '$' . $returnPropertyName . ' = ' . $byRef . '$accessor();'
+                    : '$returnValue = ' . $byRef . '$accessor();' . "\n\n" . 'return $returnValue;'
             );
     }
 
@@ -153,17 +153,18 @@ class PublicScopeSimulator
     {
         switch ($operationType) {
             case static::OPERATION_GET:
-                return 'return $targetObject->$' . $nameParameter;
+                return '$return = $targetObject->$' . $nameParameter . ";\n\nreturn \$return;";
             case static::OPERATION_SET:
                 if (! $valueParameter) {
                     throw new \InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
-                return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter;
+                return '$return = $targetObject->$' . $nameParameter . ' = $' . $valueParameter
+                    . ";\n\nreturn \$return;";
             case static::OPERATION_ISSET:
-                return 'return isset($targetObject->$' . $nameParameter . ')';
+                return '$return = isset($targetObject->$' . $nameParameter . ');';
             case static::OPERATION_UNSET:
-                return 'unset($targetObject->$' . $nameParameter . ')';
+                return 'unset($targetObject->$' . $nameParameter . ');';
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
