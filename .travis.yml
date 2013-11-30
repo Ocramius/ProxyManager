@@ -14,6 +14,7 @@ script:
   - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --exclude-group Performance
   - ./vendor/bin/phpunit ./tests/language-feature-scripts/
   - php -n ./vendor/bin/phpunit --group=Performance
+  - time php -n ./vendor/bin/athletic -p ./tests/ProxyManagerPerformance/ -b ./tests/Bootstrap.php -f GroupedFormatter
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 
 after_script:

@@ -35,5 +35,6 @@ if (! isset($loader)) {
 /* @var $loader \Composer\Autoload\ClassLoader */
 $loader->add('ProxyManagerTest\\', __DIR__);
 $loader->add('ProxyManagerTestAsset\\', __DIR__);
+$loader->add('ProxyManagerPerformance\\', __DIR__);
 
 unset($files, $file, $loader);
