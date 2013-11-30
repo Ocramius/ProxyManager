@@ -4,6 +4,15 @@ This is a list of backwards compatibility (BC) breaks introduced in ProxyManager
 
  * The Generated Hydrator has been removed - it is now available as a separate project
    at [Ocramius/GeneratedHydrator](https://github.com/Ocramius/GeneratedHydrator) [#65](https://github.com/Ocramius/ProxyManager/pull/65)
+ * When having a `public function __get($name)` defined (by-val) and public properties, it won't be possible to get public
+   properties by-ref while initializing the object. Either drop `__get()` or implement
+   a by-ref `& __get()` [#126](https://github.com/Ocramius/ProxyManager/pull/126)
+ * Proxies are now being always auto-generated if they could not be autoloaded by a factory. The methods
+   [`ProxyManager\Configuration#setAutoGenerateProxies()`](https://github.com/Ocramius/ProxyManager/blob/0.5.0-BETA2/src/ProxyManager/Configuration.php#L67)
+   and [`ProxyManager\Configuration#doesAutoGenerateProxies()`](https://github.com/Ocramius/ProxyManager/blob/0.5.0-BETA2/src/ProxyManager/Configuration.php#L75)
+   are now no-op and deprecated, and will be removed in the next minor
+   version [#87](https://github.com/Ocramius/ProxyManager/pull/87) [#90](https://github.com/Ocramius/ProxyManager/pull/90)
+ * Proxy public properties defaults are now set before initialization [#116](https://github.com/Ocramius/ProxyManager/pull/116) [#122](https://github.com/Ocramius/ProxyManager/pull/122)
 
 # 0.4.0
 
