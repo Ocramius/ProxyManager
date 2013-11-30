@@ -36,6 +36,10 @@ class PublicScopeSimulator
     const OPERATION_UNSET = 'unset';
 
     /**
+     * Generates code for simulating access to a property from the scope that is accessing a proxy.
+     * This is done by introspecting `debug_backtrace()` and then binding a closure to the scope
+     * of the parent caller.
+     *
      * @param string            $operationType  operation to execute: one of 'get', 'set', 'isset' or 'unset'
      * @param string            $nameParameter  name of the `name` parameter of the magic method
      * @param string|null       $valueParameter name of the `value` parameter of the magic method
@@ -65,6 +69,7 @@ class PublicScopeSimulator
         }
 
         if (static::OPERATION_GET === $operationType) {
+            // This will just trigger a notice if `__get` is called against a non-existing property
             $notice = '    $backtrace = debug_backtrace(false);' . "\n"
                 . '    trigger_error(\'Undefined property: \' . get_parent_class($this) . \'::$\' . $'
                 . $nameParameter
@@ -74,7 +79,7 @@ class PublicScopeSimulator
 
         return '$realInstanceReflection = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {'   . "\n"
-            . '    $targetObject = ' . $target . ';' . "\n"
+            . '    $targetObject = ' . $target . ';' . "\n\n"
             . $notice
             . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ";\n"
             . "    return;\n"
@@ -84,7 +89,11 @@ class PublicScopeSimulator
             . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ';' . "\n"
             . "};\n"
             . self::getScopeReBind()
-            . ($returnPropertyName ? '$' . $returnPropertyName . ' =' : 'return') . ' $accessor();';
+            . (
+                $returnPropertyName
+                    ? '$' . $returnPropertyName . ' = & $accessor();'
+                    : '$returnValue = & $accessor();' . "\n\n" . 'return $returnValue;'
+            );
     }
 
     /**
