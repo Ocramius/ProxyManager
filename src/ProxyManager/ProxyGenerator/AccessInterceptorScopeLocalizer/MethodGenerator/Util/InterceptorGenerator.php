@@ -60,7 +60,6 @@ class InterceptorGenerator
 
         $paramsString = 'array(' . implode(', ', $params) . ')';
 
-        // @todo do we actually want to keep the value like in a value holder?
         return "if (isset(\$this->$prefixInterceptors" . "[$name])) {\n"
             . "    \$returnEarly       = false;\n"
             . "    \$prefixReturnValue = \$this->$prefixInterceptors" . "[$name]->__invoke("

@@ -36,7 +36,6 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\
 
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
-use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -70,7 +69,6 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
             array('__get', '__set', '__isset', '__unset', '__clone', '__sleep')
         );
 
-        /* @var $methods \ReflectionMethod[] */
         foreach ($methods as $method) {
             $classGenerator->addMethodFromGenerator(
                 InterceptedMethod::generateMethod(

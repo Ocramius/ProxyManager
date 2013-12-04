@@ -23,7 +23,6 @@ use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
-use ReflectionMethod;
 
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
@@ -55,7 +54,6 @@ class NullObjectGenerator implements ProxyGeneratorInterface
 
         $classGenerator->setImplementedInterfaces($interfaces);
 
-        /* @var $methods \ReflectionMethod[] */
         foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
             $classGenerator->addMethodFromGenerator(
                 NullObjectMethodInterceptor::generateMethod(
