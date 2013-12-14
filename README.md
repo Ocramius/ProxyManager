@@ -78,7 +78,7 @@ in the `docs/` directory.
 
 A Null Object proxy implements the [null object pattern](http://en.wikipedia.org/wiki/Null_Object_pattern).
 
-This kind of proxr allows you to have fallback logic in case loading of the wrapped value failed.
+This kind of proxy allows you to have fallback logic in case loading of the wrapped value failed.
 
 ```php
 $factory = new \ProxyManager\Factory\NullObjectFactory();
