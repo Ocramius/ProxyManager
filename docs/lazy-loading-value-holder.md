@@ -59,12 +59,14 @@ namespace MyApp;
 
 class HeavyComplexObject
 {
-    public function doFoo()
+    public function __construct()
     {
-        // ... do foo
-        echo 'OK!';
         // just write your business logic
-        // don't worry about how heavy this object will be!
+        // don't worry about how heavy initialization of this will be!
+    }
+
+    public function doFoo() {
+        echo "OK!"
     }
 }
 ```
