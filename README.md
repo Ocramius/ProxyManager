@@ -140,8 +140,6 @@ $proxy->doFoo();
 See the [complete documentation about lazy loading ghost objects](/docs/lazy-loading-ghost-object.md)
 in the `docs/` directory.
 
-This feature is [planned](https://github.com/Ocramius/ProxyManager/issues/6).
-
 ## Lazy References
 
 A lazy reference proxy is actually a proxy backed by some kind of reference holder (usually a registry) that can fetch
