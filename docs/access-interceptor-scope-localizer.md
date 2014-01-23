@@ -65,7 +65,7 @@ would break an [access interceptor value holder](access-interceptor-value-holder
 
 ## Example
 
-Here's an example of how you can create and use an access interceptor value holder:
+Here's an example of how you can create and use an access interceptor scope localizer :
 
 ```php
 <?php
