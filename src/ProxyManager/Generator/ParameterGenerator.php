@@ -43,7 +43,7 @@ class ParameterGenerator extends ZendParameterGenerator
         $param->setName($reflectionParameter->getName());
         $param->setPosition($reflectionParameter->getPosition());
 
-        $type = static::extractParameterType($reflectionParameter);
+        $type = self::extractParameterType($reflectionParameter);
 
         if (null !== $type) {
             $param->setType($type);
