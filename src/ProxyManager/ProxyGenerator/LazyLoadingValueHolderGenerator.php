@@ -24,7 +24,8 @@ use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolde
 
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\Constructor;
+use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
+
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\IsProxyInitialized;

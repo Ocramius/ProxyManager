@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
+namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use ReflectionClass;
 use ReflectionProperty;
@@ -34,9 +34,6 @@ class Constructor extends MethodGenerator
 {
     /**
      * Constructor
-     *
-     * @param ReflectionClass   $originalClass       Reflection of the class to proxy
-     * @param PropertyGenerator $initializerProperty Initializer property
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {
