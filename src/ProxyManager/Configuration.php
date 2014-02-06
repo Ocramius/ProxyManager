@@ -70,6 +70,7 @@ class Configuration
 
     /**
      * @return bool
+     *
      * @deprecated deprecated since version 0.5
      */
     public function doesAutoGenerateProxies()
