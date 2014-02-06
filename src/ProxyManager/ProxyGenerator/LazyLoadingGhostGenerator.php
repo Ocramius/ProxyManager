@@ -18,8 +18,9 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
+
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;

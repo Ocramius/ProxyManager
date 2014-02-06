@@ -16,14 +16,14 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\LazyLoading\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\Constructor;
 use ReflectionClass;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor}
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\Constructor}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
@@ -31,7 +31,7 @@ use ReflectionClass;
 class ConstructorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\Constructor::__construct
      */
     public function testBodyStructure()
     {
@@ -50,7 +50,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\Constructor::__construct
      */
     public function testBodyStructureWithoutPublicProperties()
     {
