@@ -92,8 +92,9 @@ abstract class BasePerformanceTest extends PHPUnit_Framework_TestCase
      */
     protected function compareProfile(array $baseProfile, array $proxyProfile)
     {
+        $baseMemory     = max(1, $baseProfile['memory']);
         $timeOverhead   = (($proxyProfile['time'] / $baseProfile['time']) - 1) * 100;
-        $memoryOverhead = (($proxyProfile['memory'] / $baseProfile['memory']) - 1) * 100;
+        $memoryOverhead = (($proxyProfile['memory'] / $baseMemory) - 1) * 100;
 
         echo sprintf('Comparison time / memory: %.2f%% / %.2f%%', $timeOverhead, $memoryOverhead) . "\n\n";
     }
