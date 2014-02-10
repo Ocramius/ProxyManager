@@ -27,6 +27,8 @@ tools:
         excluded_dirs: ["build", "docs", "examples", "tests", "vendor"]
     php_mess_detector:
         enabled: true
+        config:
+            design_rules: { eval_expression: false }
         filter:
             paths: ["src/*"]
     php_pdepend:
