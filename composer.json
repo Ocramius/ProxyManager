@@ -25,7 +25,6 @@
     },
     "require-dev": {
         "phpunit/phpunit":             "~3.7",
-        "phpmd/phpmd":                 "1.5.*",
         "squizlabs/php_codesniffer":   "1.5.*"
     },
     "suggest": {
