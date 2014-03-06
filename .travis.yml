@@ -18,9 +18,6 @@ script:
   - php -n ./vendor/bin/phpunit --group=Performance
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 
-after_script:
-  - php vendor/bin/coveralls -v
-
 matrix:
   allow_failures:
     - php: hhvm
