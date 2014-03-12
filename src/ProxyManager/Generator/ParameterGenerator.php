@@ -18,6 +18,7 @@
 
 namespace ProxyManager\Generator;
 
+use ReflectionException;
 use Zend\Code\Generator\ParameterGenerator as ZendParameterGenerator;
 use Zend\Code\Generator\ValueGenerator;
 use Zend\Code\Reflection\ParameterReflection;
@@ -50,7 +51,11 @@ class ParameterGenerator extends ZendParameterGenerator
         }
 
         if ($reflectionParameter->isOptional()) {
-            $param->setDefaultValue($reflectionParameter->getDefaultValue());
+            try {
+                $param->setDefaultValue($reflectionParameter->getDefaultValue());
+            } catch (ReflectionException $e) {
+                $param->setDefaultValue(null);
+            }
         }
 
         $param->setPassedByReference($reflectionParameter->isPassedByReference());
