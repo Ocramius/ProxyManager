@@ -5,13 +5,26 @@ Verifies that lazy loading value holder factory can generate proxy for PHP core 
 
 require_once __DIR__ . '/init.php';
 
+class PharMock extends Phar
+{
+    public function __construct()
+    {
+    }
+
+    public function compress($message)
+    {
+        echo $message;
+    }
+}
+
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($configuration);
 
 $factory
-    ->createProxy('PDO', function () {
-        die('Lazy Loaded!');
+    ->createProxy('Phar', function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
+        $initializer = null;
+        $wrapped     = new PharMock();
     })
-    ->quote();
+    ->compress('Lazy Loaded!');
 
 ?>
 --EXPECT--
