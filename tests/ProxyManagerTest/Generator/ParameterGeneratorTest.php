@@ -113,4 +113,17 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertStringMatchesFormat('&%A$foo', $parameter->generate());
     }
+
+    public function testGeneratesDefaultParameterForInternalPhpClasses()
+    {
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            array(
+                'Phar',
+                'compress'
+            ),
+            1
+        ));
+
+        $this->assertNull($parameter->getDefaultValue()->getValue());
+    }
 }
