@@ -50,13 +50,7 @@ class ParameterGenerator extends ZendParameterGenerator
             $param->setType($type);
         }
 
-        if ($reflectionParameter->isOptional()) {
-            try {
-                $param->setDefaultValue($reflectionParameter->getDefaultValue());
-            } catch (ReflectionException $e) {
-                $param->setDefaultValue(null);
-            }
-        }
+        self::setOptionalParameter($param, $reflectionParameter);
 
         $param->setPassedByReference($reflectionParameter->isPassedByReference());
 
@@ -134,5 +128,24 @@ class ParameterGenerator extends ZendParameterGenerator
         }
 
         return '\\' . trim($this->type, '\\') . ' ';
+    }
+
+    /**
+     * Set the default value for a parameter (if it is optional)
+     *
+     * @param ZendParameterGenerator $parameterGenerator
+     * @param ParameterReflection    $reflectionParameter
+     */
+    private static function setOptionalParameter(
+        ZendParameterGenerator $parameterGenerator,
+        ParameterReflection $reflectionParameter
+    ) {
+        if ($reflectionParameter->isOptional()) {
+            try {
+                $parameterGenerator->setDefaultValue($reflectionParameter->getDefaultValue());
+            } catch (ReflectionException $e) {
+                $parameterGenerator->setDefaultValue(null);
+            }
+        }
     }
 }
