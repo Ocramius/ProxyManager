@@ -1,5 +1,4 @@
-if [ '$TRAVIS_PHP_VERSION' = 'hhvm' ]
-then 
+if [ "$TRAVIS_PHP_VERSION" = 'hhvm' ]; then 
     sudo apt-get remove hhvm
     sudo add-apt-repository -y ppa:mapnik/boost
     sudo apt-get update
