@@ -9,8 +9,7 @@ php:
   - hhvm
 
 before_script:
-  - composer self-update
-  - composer update --prefer-source; composer install --dev --prefer-source;
+  - ./.travis.install.sh
 
 script:
   - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --exclude-group Performance
