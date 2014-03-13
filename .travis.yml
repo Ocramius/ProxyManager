@@ -9,10 +9,7 @@ php:
   - hhvm
 
 before_script:
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' = 'hhvm' ]; then sudo apt-get remove hhvm; sudo add-apt-repository -y ppa:mapnik/boost; sudo apt-get update; sudo apt-get install hhvm-nightly; fi"
-  - composer self-update
-  - composer update --prefer-source; composer install --dev --prefer-source;
-  - php --version
+  - ./.travis.install.sh
 
 script:
   - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --exclude-group Performance
