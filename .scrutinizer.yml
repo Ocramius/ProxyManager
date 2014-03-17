@@ -4,7 +4,7 @@ before_commands:
 tools:
     php_code_coverage:
         enabled: true
-        test_command: phpunit -c phpunit.xml.dist --exclude-group Functional,Performance
+        test_command: phpunit -c phpunit.xml.dist --exclude-group Functional,Performance tests/ProxyManagerTest
     php_code_sniffer:
         enabled: true
         config:
