@@ -40,4 +40,4 @@ var_dump($proxy->unknown());
 --EXPECTF--
 string(3) "baz"
 
-Fatal error: Call to undefined method %s::unknown() in %s on line %d
+%SFatal error: Call to undefined method %s::unknown%S in %s on line %d

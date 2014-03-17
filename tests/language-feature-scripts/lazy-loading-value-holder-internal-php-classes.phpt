@@ -11,9 +11,9 @@ class PharMock extends Phar
     {
     }
 
-    public function compress($message)
+    public function compress($compression_type, $file_ext = null)
     {
-        echo $message;
+        echo $compression_type;
     }
 }
 

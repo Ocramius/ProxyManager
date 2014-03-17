@@ -124,6 +124,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
             1
         ));
 
-        $this->assertNull($parameter->getDefaultValue()->getValue());
+        $this->assertSame('null', strtolower((string) $parameter->getDefaultValue()));
     }
 }
