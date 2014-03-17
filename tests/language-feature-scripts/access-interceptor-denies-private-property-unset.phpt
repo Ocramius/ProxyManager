@@ -17,4 +17,4 @@ $proxy = $factory->createProxy(new Kitchen());
 unset($proxy->sweets);
 ?>
 --EXPECTF--
-Fatal error: Cannot access private property %s::$sweets in %s on line %d
+%SFatal error: Cannot %s property %s in %s on line %d
