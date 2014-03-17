@@ -14,6 +14,9 @@
     <testsuite name="ProxyManager tests">
         <directory>./tests/ProxyManagerTest</directory>
     </testsuite>
+    <testsuite name="ProxyManager language integration tests">
+        <directory suffix=".phpt">./tests/language-feature-scripts</directory>
+    </testsuite>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
