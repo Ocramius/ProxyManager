@@ -7,7 +7,8 @@ if [ "$TRAVIS_PHP_VERSION" = 'hhvm' ]; then
     sudo apt-get install -q -y hhvm-nightly
     hhvm --version
 
-    curl -sS https://getcomposer.org/installer | hhvm
+    curl -sS https://getcomposer.org/installer > composer-installer.php
+    hhvm composer-installer.php
     hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 composer.phar self-update
     hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 composer.phar update --prefer-source
     hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 composer.phar install --dev --prefer-source
