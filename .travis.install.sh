@@ -1,7 +1,7 @@
 set -x
 if [ "$TRAVIS_PHP_VERSION" = 'hhvm' ]; then
     export DEBIAN_FRONTEND=noninteractive
-    sudo apt-get remove -q -y hhvm
+    sudo apt-get purge -q -y hhvm
     sudo add-apt-repository -y ppa:mapnik/boost
     sudo apt-get update -q -y
     sudo apt-get install -q -y hhvm-nightly
