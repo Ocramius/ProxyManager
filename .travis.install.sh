@@ -1,9 +1,9 @@
 set -x
 if [ "$TRAVIS_PHP_VERSION" = 'hhvm' ]; then
-    sudo apt-get remove hhvm
+    sudo apt-get remove -y hhvm
     sudo add-apt-repository -y ppa:mapnik/boost
-    sudo apt-get update
-    sudo apt-get install hhvm-nightly
+    sudo apt-get update -y
+    sudo apt-get install -y hhvm-nightly
     hhvm --version
 
     curl -sS https://getcomposer.org/installer | hhvm
