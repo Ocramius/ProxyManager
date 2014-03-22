@@ -75,4 +75,22 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
+
+    public function testGeneratedParametersFromReflection()
+    {
+        $method = MethodGenerator::fromReflection(new MethodReflection(
+            'ProxyManagerTestAsset\\BaseClass',
+            'publicTypeHintedMethod'
+        ));
+
+        $this->assertSame('publicTypeHintedMethod', $method->getName());
+
+        $parameters = $method->getParameters();
+
+        $this->assertCount(1, $parameters);
+
+        $param = $parameters['param'];
+
+        $this->assertSame('stdClass', $param->getType());
+    }
 }
