@@ -63,6 +63,7 @@ class Configuration
 
     /**
      * @deprecated deprecated since version 0.5
+     * @codeCoverageIgnore
      */
     public function setAutoGenerateProxies()
     {
@@ -72,6 +73,7 @@ class Configuration
      * @return bool
      *
      * @deprecated deprecated since version 0.5
+     * @codeCoverageIgnore
      */
     public function doesAutoGenerateProxies()
     {
