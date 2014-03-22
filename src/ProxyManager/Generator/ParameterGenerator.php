@@ -101,15 +101,13 @@ class ParameterGenerator extends ZendParameterGenerator
             return '';
         }
 
-        if (is_string($this->defaultValue)) {
-            return ' = ' . ValueGenerator::escape($this->defaultValue);
-        }
+        $defaultValue = $this->defaultValue instanceof ValueGenerator
+            ? $this->defaultValue
+            : new ValueGenerator($this->defaultValue);
 
-        if ($this->defaultValue instanceof ValueGenerator) {
-            $this->defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
-        }
+        $defaultValue->setOutputMode(ValueGenerator::OUTPUT_SINGLE_LINE);
 
-        return ' = ' . $this->defaultValue;
+        return ' = ' . $defaultValue;
     }
 
     /**

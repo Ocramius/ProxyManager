@@ -126,4 +126,14 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('null', strtolower((string) $parameter->getDefaultValue()));
     }
+
+    public function testGeneratedParametersAreProperlyEscaped()
+    {
+        $parameter = new ParameterGenerator();
+
+        $parameter->setName('foo');
+        $parameter->setDefaultValue('\'bar\\baz');
+
+        $this->assertSame('$foo = \'\\\'bar\\baz\'', $parameter->generate());
+    }
 }
