@@ -37,8 +37,8 @@ class CallInitializer extends MethodGenerator
      */
     public function __construct(
         PropertyGenerator $initializerProperty,
-        PropertyGenerator $publicPropertiesDefaults,
-        PropertyGenerator $initializationTracker
+        PropertyGenerator $publicPropsDefaults,
+        PropertyGenerator $initTracker
     ) {
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('callInitializer'));
         $this->setDocblock("Triggers initialization logic for this ghost object");
@@ -51,12 +51,12 @@ class CallInitializer extends MethodGenerator
         $this->setVisibility(static::VISIBILITY_PRIVATE);
 
         $initializer    = $initializerProperty->getName();
-        $initialization = $initializationTracker->getName();
+        $initialization = $initTracker->getName();
 
         $this->setBody(
             'if ($this->' . $initialization . ' || ! $this->' . $initializer . ') {' . "\n    return;\n}\n\n"
             . "\$this->" . $initialization . " = true;\n\n"
-            . "foreach (self::\$" . $publicPropertiesDefaults->getName() . " as \$key => \$default) {\n"
+            . "foreach (self::\$" . $publicPropsDefaults->getName() . " as \$key => \$default) {\n"
             . "    \$this->\$key = \$default;\n"
             . "}\n\n"
             . '$this->' . $initializer . '->__invoke'
