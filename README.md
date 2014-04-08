@@ -142,17 +142,6 @@ $proxy->doFoo();
 See the [complete documentation about lazy loading ghost objects](/docs/lazy-loading-ghost-object.md)
 in the `docs/` directory.
 
-## Lazy References
-
-A lazy reference proxy is actually a proxy backed by some kind of reference holder (usually a registry) that can fetch
-existing instances of a particular object.
-
-A lazy reference is usually necessary when multiple instances of the same object can be avoided, or when the instances
-are not hard links (like with [Weakref](http://php.net/manual/en/book.weakref.php)), and could be garbage-collected to
-save memory in long time running processes.
-
-This feature [yet to be planned](https://github.com/Ocramius/ProxyManager/issues/8).
-
 ## Remote Object
 
 A remote object proxy is an object that is located on a different system, but is used as if it was available locally.
