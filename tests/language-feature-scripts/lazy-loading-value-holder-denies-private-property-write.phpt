@@ -20,4 +20,4 @@ $proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method,
 $proxy->sweets = 'stolen';
 ?>
 --EXPECTF--
-%SFatal error: Cannot access private property %s::$sweets in %s on line %d
+%SFatal error: Cannot access %s property %s on line %d
