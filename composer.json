@@ -39,6 +39,12 @@
             "ProxyManager\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-0": {
+            "ProxyManagerTest\\": "tests",
+            "ProxyManagerTestAsset\\": "tests"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.6.x-dev"

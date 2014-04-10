@@ -22,18 +22,11 @@ $files = array(__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoloa
 
 foreach ($files as $file) {
     if (file_exists($file)) {
-        $loader = require $file;
+        require $file;
 
-        break;
+        unset($files, $file);
+        return;
     }
 }
 
-if (! isset($loader)) {
-    throw new RuntimeException('vendor/autoload.php could not be found. Did you run `php composer.phar install`?');
-}
-
-/* @var $loader \Composer\Autoload\ClassLoader */
-$loader->add('ProxyManagerTest\\', __DIR__);
-$loader->add('ProxyManagerTestAsset\\', __DIR__);
-
-unset($files, $file, $loader);
+throw new RuntimeException('vendor/autoload.php could not be found. Did you run `php composer.phar install`?');
