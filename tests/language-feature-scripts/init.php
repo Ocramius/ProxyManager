@@ -3,7 +3,7 @@
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 
-require_once __DIR__ . '/../Bootstrap.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $configuration = new Configuration();
 
