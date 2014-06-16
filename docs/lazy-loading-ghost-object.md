@@ -189,7 +189,7 @@ unset($proxy->someProperty);
 clone $proxy;
 
 // serializing the proxy
-$unserialized = serialize(unserialize($proxy));
+$unserialized = unserialize(serialize($proxy));
 ```
 
 Remember to call `$proxy->setProxyInitializer(null);` to disable initialization of your proxy, or it will happen more
