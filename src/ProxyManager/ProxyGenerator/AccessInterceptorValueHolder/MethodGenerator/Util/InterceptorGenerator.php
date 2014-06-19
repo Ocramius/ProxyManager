@@ -80,6 +80,9 @@ class InterceptorGenerator
             . "        return \$suffixReturnValue;\n"
             . "    }\n"
             . "}\n\n"
+            . "if (\$returnValue === \$this->getWrappedValueHolderValue()) {\n"
+            . "    return \$this;\n"
+            . "}\n\n"
             . "return \$returnValue;";
     }
 }
