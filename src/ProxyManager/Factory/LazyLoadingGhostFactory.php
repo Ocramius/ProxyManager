@@ -18,10 +18,7 @@
 
 namespace ProxyManager\Factory;
 
-use Closure;
-use ReflectionClass;
-use ProxyManager\Version;
-use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 
 /**
@@ -29,6 +26,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @method GhostObjectInterface createProxy($className, \Closure $initializer)
  */
 class LazyLoadingGhostFactory extends AbstractLazyFactory
 {
