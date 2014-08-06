@@ -96,7 +96,7 @@ A Null Object Proxy can be created from an object, a class name or an interface 
 ```php
 $factory = new \ProxyManager\Factory\NullObjectFactory();
 
-$proxy = $factory->createProxy('My\EntityObjectInterface'); // created from interface name
+$proxy = $factory->createProxy('My\EntityObjectInterface');
 $proxy->getName(); // empty return
 
 $proxy = $factory->createProxy($entity); // created from object
