@@ -47,7 +47,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      */
     public static function setUpBeforeClass()
     {
-        if (PHP_VERSION_ID < 50400 || defined('HHVM_VERSION')) {
+        if (PHP_VERSION_ID < 50400) {
             throw new PHPUnit_Framework_SkippedTestError(
                 'PHP 5.3 doesn\'t support scope localization of private properties'
             );

@@ -146,7 +146,7 @@ $this->post = $suffixInterceptors;',
      */
     public function testBodyStructureWithPrivateProperties()
     {
-        if (PHP_VERSION_ID < 50400 || defined('HHVM_VERSION')) {
+        if (PHP_VERSION_ID < 50400) {
             $this->setExpectedException('ProxyManager\Exception\UnsupportedProxiedClassException');
         }
 

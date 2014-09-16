@@ -48,7 +48,7 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
             return parent::testGeneratesValidCode($className);
         }
 
-        if ((PHP_VERSION_ID < 50400 || defined('HHVM_VERSION'))
+        if ((PHP_VERSION_ID < 50400)
             && $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)
         ) {
             $this->setExpectedException('ProxyManager\Exception\UnsupportedProxiedClassException');
