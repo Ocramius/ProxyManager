@@ -20,4 +20,4 @@ $proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method,
 unset($proxy->sweets);
 ?>
 --EXPECTF--
-%SFatal error: Cannot access protected property %s::$sweets in %s on line %d
+%SFatal error: Cannot %s property%sin %s on line %d
