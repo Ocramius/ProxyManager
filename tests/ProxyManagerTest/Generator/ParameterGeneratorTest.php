@@ -134,6 +134,12 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $parameter->setName('foo');
         $parameter->setDefaultValue('\'bar\\baz');
 
-        $this->assertSame('$foo = \'\\\'bar\\baz\'', $parameter->generate());
+        $this->assertThat(
+            $parameter->generate(),
+            $this->logicalOr(
+                $this->equalTo('$foo = \'\\\'bar\\baz\''),
+                $this->equalTo('$foo = \'\\\'bar\\\\baz\'')
+            )
+        );
     }
 }
