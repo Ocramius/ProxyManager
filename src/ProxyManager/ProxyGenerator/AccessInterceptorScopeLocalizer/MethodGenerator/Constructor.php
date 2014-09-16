@@ -59,7 +59,7 @@ class Constructor extends MethodGenerator
         $localizedProperties = array();
 
         foreach ($originalClass->getProperties() as $originalProperty) {
-            if ((PHP_VERSION_ID < 50400 || (defined('HHVM_VERSION'))) && $originalProperty->isPrivate()) {
+            if (PHP_VERSION_ID < 50400 && $originalProperty->isPrivate()) {
                 // @codeCoverageIgnoreStart
                 throw UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty($originalProperty);
                 // @codeCoverageIgnoreEnd

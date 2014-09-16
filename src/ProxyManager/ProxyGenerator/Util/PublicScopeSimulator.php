@@ -176,7 +176,7 @@ class PublicScopeSimulator
      */
     private static function getScopeReBind()
     {
-        if (PHP_VERSION_ID < 50400 || defined('HHVM_VERSION')) {
+        if (PHP_VERSION_ID < 50400) {
             // @codeCoverageIgnoreStart
             return '';
             // @codeCoverageIgnoreEnd
