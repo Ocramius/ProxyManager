@@ -160,4 +160,22 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->configuration->setSignatureChecker($signatureChecker);
         $this->assertSame($signatureChecker, $this->configuration->getSignatureChecker());
     }
+
+    /**
+     * @covers \ProxyManager\Configuration::getClassSignatureGenerator
+     * @covers \ProxyManager\Configuration::setClassSignatureGenerator
+     */
+    public function testSetGetClassSignatureGenerator()
+    {
+        $this->assertInstanceOf(
+            'ProxyManager\\Signature\\ClassSignatureGeneratorInterface',
+            $this->configuration->getClassSignatureGenerator()
+        );
+
+        /* @var $classSignatureGenerator \ProxyManager\Signature\ClassSignatureGeneratorInterface */
+        $classSignatureGenerator = $this->getMock('ProxyManager\\Signature\\ClassSignatureGeneratorInterface');
+
+        $this->configuration->setClassSignatureGenerator($classSignatureGenerator);
+        $this->assertSame($classSignatureGenerator, $this->configuration->getClassSignatureGenerator());
+    }
 }
