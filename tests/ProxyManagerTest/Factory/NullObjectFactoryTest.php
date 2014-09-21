@@ -43,6 +43,11 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
     protected $signatureChecker;
 
     /**
+     * @var \ProxyManager\Signature\ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $classSignatureGenerator;
+
+    /**
      * @var \ProxyManager\Configuration|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $config;
@@ -52,9 +57,10 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->config    = $this->getMock('ProxyManager\\Configuration');
-        $this->inflector = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
-        $this->signatureChecker = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
+        $this->config                  = $this->getMock('ProxyManager\\Configuration');
+        $this->inflector               = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
+        $this->signatureChecker        = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
+        $this->classSignatureGenerator = $this->getMock('ProxyManager\\Signature\\ClassSignatureGeneratorInterface');
 
         $this
             ->config
@@ -67,6 +73,12 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getSignatureChecker')
             ->will($this->returnValue($this->signatureChecker));
+
+        $this
+            ->config
+            ->expects($this->any())
+            ->method('getClassSignatureGenerator')
+            ->will($this->returnValue($this->classSignatureGenerator));
     }
 
     /**
@@ -153,6 +165,9 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->method('getUserClassName')
             ->with('stdClass')
             ->will($this->returnValue('ProxyManagerTestAsset\\NullObjectMock'));
+
+        $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
+        $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
 
         $factory    = new NullObjectFactory($this->config);
         /* @var $proxy \ProxyManagerTestAsset\NullObjectMock */

@@ -63,16 +63,22 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
     private $signatureChecker;
 
     /**
+     * @var \ProxyManager\Signature\ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $classSignatureGenerator;
+
+    /**
      * {@inheritDoc}
      */
     public function setUp()
     {
-        $configuration            = $this->getMock('ProxyManager\\Configuration');
-        $this->generator          = $this->getMock('ProxyManager\\ProxyGenerator\\ProxyGeneratorInterface');
-        $this->classNameInflector = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
-        $this->generatorStrategy  = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
-        $this->proxyAutoloader    = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
-        $this->signatureChecker   = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
+        $configuration                 = $this->getMock('ProxyManager\\Configuration');
+        $this->generator               = $this->getMock('ProxyManager\\ProxyGenerator\\ProxyGeneratorInterface');
+        $this->classNameInflector      = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
+        $this->generatorStrategy       = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
+        $this->proxyAutoloader         = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
+        $this->signatureChecker        = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
+        $this->classSignatureGenerator = $this->getMock('ProxyManager\\Signature\\ClassSignatureGeneratorInterface');
 
         $configuration
             ->expects($this->any())
@@ -93,6 +99,11 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getSignatureChecker')
             ->will($this->returnValue($this->signatureChecker));
+
+        $configuration
+            ->expects($this->any())
+            ->method('getClassSignatureGenerator')
+            ->will($this->returnValue($this->classSignatureGenerator));
 
         $this
             ->classNameInflector
@@ -135,6 +146,9 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($className) {
                 eval('class ' . $className . ' {}');
             }));
+
+        $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
+        $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
 
         $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, 'stdClass'));
         $this->assertTrue(class_exists($generatedClass, false));
