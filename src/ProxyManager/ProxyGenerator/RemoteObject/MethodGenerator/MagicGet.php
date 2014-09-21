@@ -19,8 +19,8 @@
 namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
-use ReflectionClass;
 use ProxyManager\Generator\ParameterGenerator;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**

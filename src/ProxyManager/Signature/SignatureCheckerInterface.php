@@ -18,7 +18,6 @@
 
 namespace ProxyManager\Signature;
 
-use ProxyManager\Inflector\Util\ParameterEncoder;
 use ReflectionClass;
 
 /**

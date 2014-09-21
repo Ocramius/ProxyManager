@@ -18,12 +18,10 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
-
+use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
-
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;
 

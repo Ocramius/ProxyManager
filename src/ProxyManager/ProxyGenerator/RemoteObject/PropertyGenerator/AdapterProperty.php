@@ -18,8 +18,8 @@
 
 namespace ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator;
 
-use Zend\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the remote object adapter

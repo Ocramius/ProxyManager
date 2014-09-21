@@ -18,14 +18,8 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
-use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
-use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
-
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
-
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
-
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\IsProxyInitialized;
@@ -37,10 +31,11 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer;
-
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
-
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
+use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\MethodReflection;

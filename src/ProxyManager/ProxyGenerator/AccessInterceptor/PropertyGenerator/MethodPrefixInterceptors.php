@@ -18,8 +18,8 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator;
 
-use Zend\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the interceptor for operations to be executed before method execution

@@ -18,8 +18,6 @@
 
 namespace ProxyManager\Signature;
 
-use ProxyManager\Inflector\Util\ParameterEncoder;
-
 /**
  * Generator for signatures to be used to check the validity of generated code
  *

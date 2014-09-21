@@ -19,10 +19,10 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
-use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**

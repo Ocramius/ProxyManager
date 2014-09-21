@@ -19,8 +19,8 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**

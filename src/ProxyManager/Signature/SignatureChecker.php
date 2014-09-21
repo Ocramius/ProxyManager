@@ -18,7 +18,6 @@
 
 namespace ProxyManager\Signature;
 
-use ProxyManager\Inflector\Util\ParameterEncoder;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ReflectionClass;
