@@ -22,7 +22,7 @@ use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Signature\SignatureGenerator;
 use ProxyManager\Signature\ClassSignatureGenerator;
-use ProxyManager\Signature\SignatureChecker;
+use ProxyManager\Version;
 use ReflectionClass;
 
 /**
@@ -64,7 +64,11 @@ abstract class AbstractBaseFactory
             return $this->checkedClasses[$className];
         }
 
-        $proxyParameters = array('className' => $className, 'factory' => get_class($this));
+        $proxyParameters = array(
+            'className'           => $className,
+            'factory'             => get_class($this),
+            'proxyManagerVersion' => Version::VERSION
+        );
         $proxyClassName  = $this
             ->configuration
             ->getClassNameInflector()
