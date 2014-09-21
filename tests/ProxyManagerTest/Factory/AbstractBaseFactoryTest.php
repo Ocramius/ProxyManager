@@ -58,6 +58,11 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
     private $proxyAutoloader;
 
     /**
+     * @var \ProxyManager\Signature\SignatureCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $signatureChecker;
+
+    /**
      * {@inheritDoc}
      */
     public function setUp()
@@ -67,6 +72,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
         $this->classNameInflector = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
         $this->generatorStrategy  = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
         $this->proxyAutoloader    = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
+        $this->signatureChecker   = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
 
         $configuration
             ->expects($this->any())
@@ -82,6 +88,11 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getProxyAutoloader')
             ->will($this->returnValue($this->proxyAutoloader));
+
+        $configuration
+            ->expects($this->any())
+            ->method('getSignatureChecker')
+            ->will($this->returnValue($this->signatureChecker));
 
         $this
             ->classNameInflector

@@ -39,6 +39,11 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
     protected $inflector;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $signatureChecker;
+
+    /**
      * @var \ProxyManager\Configuration|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $config;
@@ -48,13 +53,21 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
      */
     public function setUp()
     {
-        $this->config    = $this->getMock('ProxyManager\\Configuration');
-        $this->inflector = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
+        $this->config           = $this->getMock('ProxyManager\\Configuration');
+        $this->inflector        = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
+        $this->signatureChecker = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
+
         $this
             ->config
             ->expects($this->any())
             ->method('getClassNameInflector')
             ->will($this->returnValue($this->inflector));
+
+        $this
+            ->config
+            ->expects($this->any())
+            ->method('getSignatureChecker')
+            ->will($this->returnValue($this->signatureChecker));
     }
 
     /**
