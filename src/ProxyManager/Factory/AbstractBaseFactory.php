@@ -20,8 +20,6 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Signature\SignatureGenerator;
-use ProxyManager\Signature\ClassSignatureGenerator;
 use ProxyManager\Version;
 use ReflectionClass;
 
