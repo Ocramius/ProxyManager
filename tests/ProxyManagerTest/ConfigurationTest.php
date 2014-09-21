@@ -69,6 +69,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
             $this->configuration->getClassNameInflector()
         );
 
+        /* @var $inflector \ProxyManager\Inflector\ClassNameInflectorInterface */
         $inflector = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
 
         $this->configuration->setClassNameInflector($inflector);
@@ -87,6 +88,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
             $this->configuration->getGeneratorStrategy()
         );
 
+        /* @var $strategy \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface */
         $strategy = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
 
         $this->configuration->setGeneratorStrategy($strategy);
@@ -116,6 +118,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
             $this->configuration->getProxyAutoloader()
         );
 
+        /* @var $autoloader \ProxyManager\Autoloader\AutoloaderInterface */
         $autoloader = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
 
         $this->configuration->setProxyAutoloader($autoloader);
@@ -133,6 +136,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
             $this->configuration->getSignatureGenerator()
         );
 
+        /* @var $signatureGenerator \ProxyManager\Signature\SignatureGeneratorInterface */
         $signatureGenerator = $this->getMock('ProxyManager\\Signature\\SignatureGeneratorInterface');
 
         $this->configuration->setSignatureGenerator($signatureGenerator);
