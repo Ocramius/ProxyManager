@@ -38,6 +38,7 @@ interface SignatureCheckerInterface
      * @return void
      *
      * @throws \ProxyManager\Signature\Exception\InvalidSignatureException
+     * @throws \ProxyManager\Signature\Exception\MissingSignatureException
      */
     public function checkSignature(ReflectionClass $class, array $parameters);
 }
