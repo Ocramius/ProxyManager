@@ -18,7 +18,7 @@
 
 namespace ProxyManager\Inflector;
 
-use ProxyManager\Inflector\Util\ParameterEncoder;
+use ProxyManager\Inflector\Util\ParameterHasher;
 
 /**
  * {@inheritDoc}
@@ -26,7 +26,7 @@ use ProxyManager\Inflector\Util\ParameterEncoder;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassNameInflector implements ClassNameInflectorInterface
+final class ClassNameInflector implements ClassNameInflectorInterface
 {
     /**
      * @var string
@@ -44,9 +44,9 @@ class ClassNameInflector implements ClassNameInflectorInterface
     private $proxyMarker;
 
     /**
-     * @var \ProxyManager\Inflector\Util\ParameterEncoder
+     * @var \ProxyManager\Inflector\Util\ParameterHasher
      */
-    private $parameterEncoder;
+    private $parameterHasher;
 
     /**
      * @param string $proxyNamespace
@@ -56,7 +56,7 @@ class ClassNameInflector implements ClassNameInflectorInterface
         $this->proxyNamespace    = (string) $proxyNamespace;
         $this->proxyMarker       = '\\' . static::PROXY_MARKER . '\\';
         $this->proxyMarkerLength = strlen($this->proxyMarker);
-        $this->parameterEncoder  = new ParameterEncoder();
+        $this->parameterHasher   = new ParameterHasher();
     }
 
     /**
@@ -85,7 +85,7 @@ class ClassNameInflector implements ClassNameInflectorInterface
         return $this->proxyNamespace
             . $this->proxyMarker
             . $this->getUserClassName($className)
-            . '\\' . $this->parameterEncoder->encodeParameters($options);
+            . '\\Generated' . $this->parameterHasher->hashParameters($options);
     }
 
     /**
