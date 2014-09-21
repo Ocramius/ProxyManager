@@ -25,6 +25,8 @@ use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflector;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
+use ProxyManager\Signature\ClassSignatureGenerator;
+use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureChecker;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManager\Signature\SignatureGenerator;
@@ -74,6 +76,11 @@ class Configuration
      * @var SignatureCheckerInterface|null
      */
     protected $signatureChecker;
+
+    /**
+     * @var ClassSignatureGeneratorInterface|null
+     */
+    protected $classSignatureGenerator;
 
     /**
      * @deprecated deprecated since version 0.5
@@ -213,5 +220,22 @@ class Configuration
     {
         return $this->signatureChecker
             ?: $this->signatureChecker = new SignatureChecker($this->getSignatureGenerator());
+    }
+
+    /**
+     * @param ClassSignatureGeneratorInterface $classSignatureGenerator
+     */
+    public function setClassSignatureGenerator(ClassSignatureGeneratorInterface $classSignatureGenerator)
+    {
+        $this->classSignatureGenerator = $classSignatureGenerator;
+    }
+
+    /**
+     * @return ClassSignatureGeneratorInterface
+     */
+    public function getClassSignatureGenerator()
+    {
+        return $this->classSignatureGenerator
+            ?: new ClassSignatureGenerator($this->getSignatureGenerator());
     }
 }
