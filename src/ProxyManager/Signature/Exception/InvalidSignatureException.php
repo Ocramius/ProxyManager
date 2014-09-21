@@ -22,30 +22,13 @@ use ReflectionClass;
 use UnexpectedValueException;
 
 /**
- * Generator for signatures to be used to check the validity of generated code
+ * Exception for invalid provided signatures
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
 class InvalidSignatureException extends UnexpectedValueException implements ExceptionInterface
 {
-    /**
-     * @param ReflectionClass $class
-     * @param array           $parameters
-     * @param string          $expected
-     *
-     * @return self
-     */
-    public static function fromMissingSignature(ReflectionClass $class, array $parameters, $expected)
-    {
-        return new self(sprintf(
-            'No signature found for class "%s", expected signature "%s" for %d parameters',
-            $class->getName(),
-            $expected,
-            count($parameters)
-        ));
-    }
-
     /**
      * @param ReflectionClass $class
      * @param array           $parameters
