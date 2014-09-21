@@ -31,6 +31,11 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 class LazyLoadingGhostFactory extends AbstractLazyFactory
 {
     /**
+     * @var \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator|null
+     */
+    private $generator;
+
+    /**
      * {@inheritDoc}
      */
     protected function getGenerator()

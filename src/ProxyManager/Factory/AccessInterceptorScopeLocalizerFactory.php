@@ -29,6 +29,11 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
 {
     /**
+     * @var \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator|null
+     */
+    private $generator;
+
+    /**
      * @param object     $instance           the object to be localized within the access interceptor
      * @param \Closure[] $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       before method logic is executed

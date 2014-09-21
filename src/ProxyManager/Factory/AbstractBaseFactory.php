@@ -20,6 +20,9 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Signature\SignatureGenerator;
+use ProxyManager\Signature\ClassSignatureGenerator;
+use ProxyManager\Signature\SignatureChecker;
 use ReflectionClass;
 
 /**
@@ -41,16 +44,11 @@ abstract class AbstractBaseFactory
     protected $inflector;
 
     /**
-     * Cached generated class names
+     * Cached checked class names
      *
      * @var string[]
      */
-    protected $generatedClasses = array();
-
-    /**
-     * @var \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator
-     */
-    protected $generator;
+    private $checkedClasses = array();
 
     /**
      * @param \ProxyManager\Configuration $configuration
@@ -69,25 +67,46 @@ abstract class AbstractBaseFactory
      */
     protected function generateProxy($className)
     {
-        if (! isset($this->generatedClasses[$className])) {
-            $this->generatedClasses[$className] = $this->inflector->getProxyClassName(
-                $className,
-                array('factory' => get_class($this))
-            );
+        if (isset($this->checkedClasses[$className])) {
+            return $this->checkedClasses[$className];
         }
 
-        $proxyClassName = $this->generatedClasses[$className];
+        $proxyParameters = array(
+            'className' => $className,
+            'factory'   => get_class($this),
+        );
+        $proxyClassName = $this->inflector->getProxyClassName($className, $proxyParameters);
 
         if (! class_exists($proxyClassName)) {
             $className = $this->inflector->getUserClassName($className);
             $phpClass  = new ClassGenerator($proxyClassName);
 
             $this->getGenerator()->generate(new ReflectionClass($className), $phpClass);
+
+            $signatureApplier = new ClassSignatureGenerator(new SignatureGenerator());
+
+            $phpClass = $signatureApplier->addSignature($phpClass, $proxyParameters);
+
             $this->configuration->getGeneratorStrategy()->generate($phpClass);
             $this->configuration->getProxyAutoloader()->__invoke($proxyClassName);
         }
 
+        $this->checkSignature($proxyClassName, $proxyParameters);
+
+        $this->checkedClasses[] = $proxyClassName;
+
         return $proxyClassName;
+    }
+
+    /**
+     * @param string $proxyClassName
+     * @param array  $proxyParameters
+     */
+    private function checkSignature($proxyClassName, array $proxyParameters)
+    {
+        $signatureChecker = new SignatureChecker(new SignatureGenerator());
+
+        $signatureChecker->checkSignature(new ReflectionClass($proxyClassName), $proxyParameters);
     }
 
     /**
