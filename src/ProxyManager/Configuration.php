@@ -18,13 +18,15 @@
 
 namespace ProxyManager;
 
-use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Autoloader\Autoloader;
+use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
-use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Inflector\ClassNameInflector;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
+use ProxyManager\Signature\SignatureGenerator;
+use ProxyManager\Signature\SignatureGeneratorInterface;
 
 /**
  * Base configuration class for the proxy manager - serves as micro disposable DIC/facade
@@ -47,7 +49,7 @@ class Configuration
     protected $proxiesNamespace = self::DEFAULT_PROXY_NAMESPACE;
 
     /**
-     * @var \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface|null
+     * @var GeneratorStrategyInterface|null
      */
     protected $generatorStrategy;
 
@@ -57,9 +59,14 @@ class Configuration
     protected $proxyAutoloader;
 
     /**
-     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|null
+     * @var ClassNameInflectorInterface|null
      */
     protected $classNameInflector;
+
+    /**
+     * @var ClassNameInflectorInterface|null
+     */
+    protected $signatureGenerator;
 
     /**
      * @deprecated deprecated since version 0.5
@@ -81,7 +88,7 @@ class Configuration
     }
 
     /**
-     * @param \ProxyManager\Autoloader\AutoloaderInterface $proxyAutoloader
+     * @param AutoloaderInterface $proxyAutoloader
      */
     public function setProxyAutoloader(AutoloaderInterface $proxyAutoloader)
     {
@@ -89,18 +96,15 @@ class Configuration
     }
 
     /**
-     * @return \ProxyManager\Autoloader\AutoloaderInterface
+     * @return AutoloaderInterface
      */
     public function getProxyAutoloader()
     {
-        if (null === $this->proxyAutoloader) {
-            $this->proxyAutoloader = new Autoloader(
+        return $this->proxyAutoloader
+            ?: $this->proxyAutoloader = new Autoloader(
                 new FileLocator($this->getProxiesTargetDir()),
                 $this->getClassNameInflector()
             );
-        }
-
-        return $this->proxyAutoloader;
     }
 
     /**
@@ -132,15 +136,11 @@ class Configuration
      */
     public function getProxiesTargetDir()
     {
-        if (null === $this->proxiesTargetDir) {
-            $this->proxiesTargetDir = sys_get_temp_dir();
-        }
-
-        return $this->proxiesTargetDir;
+        return $this->proxiesTargetDir ?: $this->proxiesTargetDir = sys_get_temp_dir();
     }
 
     /**
-     * @param \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface $generatorStrategy
+     * @param GeneratorStrategyInterface $generatorStrategy
      */
     public function setGeneratorStrategy(GeneratorStrategyInterface $generatorStrategy)
     {
@@ -148,19 +148,18 @@ class Configuration
     }
 
     /**
-     * @return \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface
+     * @return GeneratorStrategyInterface
      */
     public function getGeneratorStrategy()
     {
-        if (null === $this->generatorStrategy) {
-            $this->generatorStrategy = new FileWriterGeneratorStrategy(new FileLocator($this->getProxiesTargetDir()));
-        }
-
-        return $this->generatorStrategy;
+        return $this->generatorStrategy
+            ?: $this->generatorStrategy = new FileWriterGeneratorStrategy(
+                new FileLocator($this->getProxiesTargetDir())
+            );
     }
 
     /**
-     * @param \ProxyManager\Inflector\ClassNameInflectorInterface $classNameInflector
+     * @param ClassNameInflectorInterface $classNameInflector
      */
     public function setClassNameInflector(ClassNameInflectorInterface $classNameInflector)
     {
@@ -168,14 +167,27 @@ class Configuration
     }
 
     /**
-     * @return \ProxyManager\Inflector\ClassNameInflectorInterface
+     * @return ClassNameInflectorInterface
      */
     public function getClassNameInflector()
     {
-        if (null === $this->classNameInflector) {
-            $this->classNameInflector = new ClassNameInflector($this->getProxiesNamespace());
-        }
+        return $this->classNameInflector
+            ?: $this->classNameInflector = new ClassNameInflector($this->getProxiesNamespace());
+    }
 
-        return $this->classNameInflector;
+    /**
+     * @param SignatureGeneratorInterface $signatureGenerator
+     */
+    public function setSignatureGenerator(SignatureGeneratorInterface $signatureGenerator)
+    {
+        $this->signatureGenerator = $signatureGenerator;
+    }
+
+    /**
+     * @return SignatureGeneratorInterface
+     */
+    public function getSignatureGenerator()
+    {
+        return $this->signatureGenerator ?: $this->signatureGenerator = new SignatureGenerator();
     }
 }
