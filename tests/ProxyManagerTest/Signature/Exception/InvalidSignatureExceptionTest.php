@@ -32,11 +32,12 @@ use ReflectionClass;
  */
 class InvalidSignatureExceptionTest extends PHPUnit_Framework_TestCase
 {
-    public function testFromMissingSignature()
+    public function testFromInvalidSignature()
     {
-        $exception = InvalidSignatureException::fromMissingSignature(
+        $exception = InvalidSignatureException::fromInvalidSignature(
             new ReflectionClass(__CLASS__),
             array('foo' => 'bar', 'baz' => 'tab'),
+            'blah',
             'expected-signature'
         );
 
@@ -46,9 +47,9 @@ class InvalidSignatureExceptionTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            'No signature found for class "'
+            'Found signature "blah" for class "'
             . __CLASS__
-            . '", expected signature "expected-signature" for 2 parameters',
+            . '" does not correspond to expected signature "expected-signature" for 2 parameters',
             $exception->getMessage()
         );
     }
