@@ -41,13 +41,13 @@ This allows to create a mirror copy of the real instance, where any change in th
 instance is reflected in both objects.
 
 The main advantage of this approach is that the proxy is now safe against fluent interfaces, which
-would break an [access interceptor value holder](access-interceptor-value-holder.md) instead.
+would break an [access interceptor value holder](access-interceptor-value-holder.html) instead.
 
-## Differences with [access interceptor value holder](access-interceptor-value-holder.md):
+## Differences with [access interceptor value holder](access-interceptor-value-holder.html):
 
  * It does **NOT** implement the `ProxyManager\Proxy\ValueHolderInterface`, since the proxy itself
    does not keep a reference to the original object being proxied
- * In all interceptor methods (see [access interceptor value holder](access-interceptor-value-holder.md)),
+ * In all interceptor methods (see [access interceptor value holder](access-interceptor-value-holder.html)),
    the `$instance` passed in is the proxy itself. There is no way  to gather a reference to the
    original object right now, and that's mainly to protect from misuse.
 
@@ -102,4 +102,4 @@ PostFoo!
 ```
 
 This is pretty much the same logic that you can find
-in [access interceptor value holder](access-interceptor-value-holder.md).
+in [access interceptor value holder](access-interceptor-value-holder.html).
