@@ -128,7 +128,7 @@ class Configuration
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function getProxiesTargetDir()
     {
