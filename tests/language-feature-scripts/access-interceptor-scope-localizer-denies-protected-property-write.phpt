@@ -17,4 +17,4 @@ $proxy = $factory->createProxy(new Kitchen());
 $proxy->sweets = 'stolen';
 ?>
 --EXPECTF--
-%SFatal error: Cannot access protected property %s::$sweets in %s on line %d
+%SFatal error: Cannot %s property%sin %s on line %d

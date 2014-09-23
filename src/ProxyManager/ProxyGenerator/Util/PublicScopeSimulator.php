@@ -170,13 +170,13 @@ class PublicScopeSimulator
     }
 
     /**
-     * Generates code to bind operations to the parent scope if supported by the current PHP version
+     * Generates code to bind operations to the parent scope if supported by the current PHP implementation
      *
      * @return string
      */
     private static function getScopeReBind()
     {
-        if (PHP_VERSION_ID < 50400 || defined('HHVM_VERSION')) {
+        if (! method_exists('Closure', 'bind')) {
             // @codeCoverageIgnoreStart
             return '';
             // @codeCoverageIgnoreEnd

@@ -2,7 +2,7 @@
 Verifies that generated access interceptors disallow private property direct write
 --SKIPIF--
 <?php
-if (PHP_VERSION_ID < 50400 || defined('HHVM_VERSION')) {
+if (! method_exists('Closure', 'bind')) {
     echo 'skip PHP 5.4+ is needed to localize private properties';
 }
 ?>
@@ -23,4 +23,4 @@ $proxy = $factory->createProxy(new Kitchen());
 $proxy->sweets = 'stolen';
 ?>
 --EXPECTF--
-%SFatal error: Cannot access private property %s::$sweets in %s on line %d
+%SFatal error: Cannot %s property%sin %s on line %d
