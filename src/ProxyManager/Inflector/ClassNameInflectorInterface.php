@@ -46,7 +46,7 @@ interface ClassNameInflectorInterface
      * @param string $className
      * @param array  $options   arbitrary options to be used for the generated class name
      *
-     * @return mixed
+     * @return string
      */
     public function getProxyClassName($className, array $options = array());
 
