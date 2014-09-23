@@ -58,7 +58,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
 
         $reflectionClass = new ReflectionClass($className);
 
-        if (PHP_VERSION_ID < 50400 && $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)) {
+        if ((! method_exists('Closure', 'bind')) && $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)) {
             $skipScopeLocalizerTests = true;
         }
 

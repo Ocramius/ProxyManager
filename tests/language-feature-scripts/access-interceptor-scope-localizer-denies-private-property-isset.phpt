@@ -2,7 +2,7 @@
 Verifies that generated access interceptors disallow private property direct isset check
 --SKIPIF--
 <?php
-if (PHP_VERSION_ID < 50400) {
+if (! method_exists('Closure', 'bind')) {
     echo 'skip PHP 5.4+ is needed to localize private properties';
 }
 ?>
