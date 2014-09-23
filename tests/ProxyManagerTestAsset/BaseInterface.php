@@ -27,7 +27,7 @@ namespace ProxyManagerTestAsset;
 interface BaseInterface
 {
     /**
-     * @return mixed
+     * @return string
      */
     public function publicMethod();
 }
