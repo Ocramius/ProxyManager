@@ -27,7 +27,7 @@ namespace ProxyManagerTestAsset\RemoteProxy;
 interface FooServiceInterface
 {
     /**
-     * @return mixed
+     * @return string
      */
     public function foo();
 }
