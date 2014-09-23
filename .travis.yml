@@ -10,7 +10,7 @@ php:
   - hhvm-nightly
 
 before_script:
-  - ./.travis.install.sh
+  - sh .travis.install.sh
 
 script:
   - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --exclude-group Performance
