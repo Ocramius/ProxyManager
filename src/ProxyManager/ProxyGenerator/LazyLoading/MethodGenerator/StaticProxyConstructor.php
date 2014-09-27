@@ -37,7 +37,7 @@ class StaticProxyConstructor extends MethodGenerator
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {
-        parent::__construct('staticProxyConstructor');
+        parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $this->setParameter(new ParameterGenerator('initializer'));
 
