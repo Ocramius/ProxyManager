@@ -81,7 +81,7 @@ class StaticProxyConstructor extends MethodGenerator
         }
 
         $this->setDocblock(
-            "@override constructor to setup interceptors\n\n"
+            "Constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
             . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
