@@ -16,32 +16,23 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTestAsset;
+namespace ProxyManagerTestAsset\RemoteProxy;
+
+use ProxyManager\Proxy\RemoteObjectInterface;
 
 /**
- * Base test class to catch instantiations of lazy loading objects
+ * Simple remote object mock implementation
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingMock
+class RemoteObjectMock implements RemoteObjectInterface
 {
     /**
-     * @var callable
-     */
-    public $initializer;
-
-    /**
-     * @param callable $initializer
-     *
      * @return static
      */
-    public static function staticProxyConstructor($initializer)
+    public static function staticProxyConstructor()
     {
-        $instance = new static();
-
-        $instance->initializer = $initializer;
-
-        return $instance;
+        return new static();
     }
 }
