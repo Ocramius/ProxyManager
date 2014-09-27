@@ -145,7 +145,9 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
                     function () use ($proxyClassName) {
                         eval(
                             'class ' . $proxyClassName
-                            . ' extends stdClass {}'
+                            . ' extends stdClass {'
+                            . 'public static function staticProxyConstructor() { return new static(); }'
+                            . '}'
                         );
                     }
                 )
