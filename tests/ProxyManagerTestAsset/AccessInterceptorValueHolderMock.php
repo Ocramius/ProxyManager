@@ -45,6 +45,8 @@ class AccessInterceptorValueHolderMock
      * @param object     $instance
      * @param callable[] $prefixInterceptors
      * @param callable[] $suffixInterceptors
+     *
+     * @return self
      */
     public static function staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors)
     {
