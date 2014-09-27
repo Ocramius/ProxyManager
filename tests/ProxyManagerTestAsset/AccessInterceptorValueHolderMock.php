@@ -53,5 +53,7 @@ class AccessInterceptorValueHolderMock
         $selfInstance->instance           = $instance;
         $selfInstance->prefixInterceptors = $prefixInterceptors;
         $selfInstance->suffixInterceptors = $suffixInterceptors;
+
+        return $selfInstance;
     }
 }
