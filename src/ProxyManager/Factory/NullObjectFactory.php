@@ -43,7 +43,7 @@ class NullObjectFactory extends AbstractBaseFactory
         $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
         $proxyClassName = $this->generateProxy($className);
 
-        return new $proxyClassName();
+        return $proxyClassName::staticProxyConstructor();
     }
 
     /**

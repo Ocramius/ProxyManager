@@ -41,6 +41,6 @@ abstract class AbstractLazyFactory extends AbstractBaseFactory
     {
         $proxyClassName = $this->generateProxy($className);
 
-        return new $proxyClassName($initializer);
+        return $proxyClassName::staticProxyConstructor($initializer);
     }
 }
