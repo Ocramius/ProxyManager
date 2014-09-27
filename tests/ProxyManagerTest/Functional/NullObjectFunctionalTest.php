@@ -208,13 +208,13 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 $instance1,
-                new $proxyName1($instance1),
+                $proxyName1::staticProxyConstructor($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
             array(
                 $instance2,
-                unserialize(serialize(new $proxyName2($instance2))),
+                unserialize(serialize($proxyName2::staticProxyConstructor($instance2))),
                 'publicProperty',
                 'publicPropertyDefault',
             ),

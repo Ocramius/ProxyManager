@@ -369,15 +369,17 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 $instance1,
-                new $proxyName1($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance1)),
+                $proxyName1::staticProxyConstructor(
+                    $this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance1)
+                ),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
             array(
                 $instance2,
-                unserialize(
-                    serialize(new $proxyName2($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance2)))
-                ),
+                unserialize(serialize($proxyName2::staticProxyConstructor(
+                    $this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance2)
+                ))),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
