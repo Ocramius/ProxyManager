@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
+use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
@@ -61,5 +62,10 @@ class NullObjectGenerator implements ProxyGeneratorInterface
         }
 
         ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new Constructor($originalClass));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new StaticProxyConstructor($originalClass)
+        );
     }
 }
