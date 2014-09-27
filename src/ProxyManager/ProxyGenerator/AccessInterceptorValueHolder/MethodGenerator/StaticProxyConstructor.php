@@ -77,7 +77,7 @@ class StaticProxyConstructor extends MethodGenerator
             . '$instance->' . $valueHolder->getName() . " = \$wrappedObject;\n"
             . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
             . '$instance->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;\n\n"
-            . 'return $instance'
+            . 'return $instance;'
         );
     }
 }
