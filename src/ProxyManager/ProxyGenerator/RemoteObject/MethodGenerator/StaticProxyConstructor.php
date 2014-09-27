@@ -64,6 +64,6 @@ class StaticProxyConstructor extends MethodGenerator
             }
         }
 
-        $this->setBody($body);
+        $this->setBody($body . "\n\nreturn \$instance;");
     }
 }
