@@ -61,7 +61,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
             & $initializer
         ) use ($className) {
             $initializer = null;
-            $valueHolder = new $className();
+            $valueHolder = $className::staticProxyConstructor();
 
             return true;
         };
@@ -69,7 +69,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
         $this->startCapturing();
 
         for ($i = 0; $i < $iterations; $i += 1) {
-            $instances[] = new $className();
+            $instances[] = $className::staticProxyConstructor();
         }
 
         $baseProfile = $this->endCapturing(
@@ -78,7 +78,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
         $this->startCapturing();
 
         for ($i = 0; $i < $iterations; $i += 1) {
-            $proxies[] = new $proxyName($initializer);
+            $proxies[] = $proxyName::staticProxyConstructor($initializer);
         }
 
         $proxyProfile = $this->endCapturing(

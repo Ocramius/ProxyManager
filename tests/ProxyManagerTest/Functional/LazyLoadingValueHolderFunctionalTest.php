@@ -50,7 +50,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\VirtualProxyInterface|BaseClass */
-        $proxy = new $proxyName($this->createInitializer($className, $instance));
+        $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -66,7 +66,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\VirtualProxyInterface|BaseClass */
-        $proxy = unserialize(serialize(new $proxyName($this->createInitializer($className, $instance))));
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor($this->createInitializer($className, $instance))));
 
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -81,7 +81,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\VirtualProxyInterface|BaseClass */
-        $proxy  = new $proxyName($this->createInitializer($className, $instance));
+        $proxy  = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
         $cloned = clone $proxy;
 
         $this->assertTrue($cloned->isProxyInitialized());
@@ -163,7 +163,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicArrayProperty */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -184,7 +184,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -204,7 +204,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = & $proxy->property0;
 
         $this->assertSame('property0', $variable);

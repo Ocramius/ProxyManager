@@ -66,7 +66,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
             $this->assertTrue($generatedReflection->implementsInterface($interface));
         }
 
-        $proxyGenerated = new $generatedClassName();
+        $proxyGenerated = $generatedClassName::staticProxyConstructor();
 
         foreach ($generatedReflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->assertNull($proxyGenerated->$property);

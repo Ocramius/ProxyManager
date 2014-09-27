@@ -63,7 +63,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
 
         $this->assertProxySynchronized($instance, $proxy);
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -106,7 +106,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
         $listener  = $this->getMock('stdClass', array('__invoke'));
         $listener
             ->expects($this->once())
@@ -144,7 +144,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = unserialize(serialize(new $proxyName($instance)));
+        $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
         $this->assertProxySynchronized($instance, $proxy);
@@ -158,7 +158,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
         $cloned    = clone $proxy;
 
         $this->assertProxySynchronized($instance, $proxy);
@@ -247,7 +247,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($instance);
+        $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = $proxy->property0;
 
         $this->assertSame('property0', $variable);
