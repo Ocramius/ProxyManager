@@ -25,12 +25,12 @@ use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * The `staticProxyConstructor` implementation for an access interceptor scope localizer proxy
+ * The `bindProxyProperties` method implementation for access interceptor scope localizers
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class StaticProxyConstructor extends MethodGenerator
+class BindProxyProperties extends MethodGenerator
 {
     /**
      * Constructor
@@ -40,7 +40,7 @@ class StaticProxyConstructor extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
+        parent::__construct('bindProxyProperties', array(), static::FLAG_PRIVATE);
 
         $localizedObject = new ParameterGenerator('localizedObject');
         $prefix          = new ParameterGenerator('prefixInterceptors');
@@ -57,8 +57,6 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($suffix);
 
         $localizedProperties = array();
-        $instanceGenerator   = '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();'
-            . "\n\n";
 
         foreach ($originalClass->getProperties() as $originalProperty) {
             if ((PHP_VERSION_ID < 50400 || (defined('HHVM_VERSION'))) && $originalProperty->isPrivate()) {
@@ -70,13 +68,12 @@ class StaticProxyConstructor extends MethodGenerator
             $propertyName = $originalProperty->getName();
 
             if ($originalProperty->isPrivate()) {
-                $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject, \$instance) {\n    "
-                    . '$instance->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
-                    . '}, $instance, ' . var_export($originalProperty->getDeclaringClass()->getName(), true)
+                $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
+                    . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
+                    . '}, $this, ' . var_export($originalProperty->getDeclaringClass()->getName(), true)
                     . ')->__invoke();';
             } else {
-                $localizedProperties[] = '$instance->' . $propertyName
-                    . ' = & $localizedObject->' . $propertyName . ";";
+                $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
             }
         }
 
@@ -84,13 +81,12 @@ class StaticProxyConstructor extends MethodGenerator
             "@override constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
-            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
-            . "@return self"
+            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
         );
         $this->setBody(
-            $instanceGenerator
-            . '$instance->bindProxyProperties($localizedObject, $prefixInterceptors, $suffixInterceptors);' . "\n\n"
-            . 'return $instance;'
+            (empty($localizedProperties) ? '' : implode("\n\n", $localizedProperties) . "\n\n")
+            . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
+            . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
         );
     }
 }
