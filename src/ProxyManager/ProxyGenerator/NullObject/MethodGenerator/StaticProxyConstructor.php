@@ -44,7 +44,7 @@ class StaticProxyConstructor extends MethodGenerator
         $nullableProperties  = array();
 
         foreach ($publicProperties as $publicProperty) {
-            $nullableProperties[] = '$body->' . $publicProperty->getName() . ' = null;';
+            $nullableProperties[] = '$instance->' . $publicProperty->getName() . ' = null;';
         }
 
         $this->setDocblock("Constructor for null object initialization");
