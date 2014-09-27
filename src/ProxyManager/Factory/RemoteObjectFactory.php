@@ -60,10 +60,11 @@ class RemoteObjectFactory extends AbstractBaseFactory
      */
     public function createProxy($instanceOrClassName)
     {
-        $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
-        $proxyClassName = $this->generateProxy($className);
+        $proxyClassName = $this->generateProxy(
+            is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName
+        );
 
-        return new $proxyClassName($this->adapter);
+        return $proxyClassName::staticProxyConstructor($this->adapter);
     }
 
     /**
