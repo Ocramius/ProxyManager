@@ -41,7 +41,7 @@ class StaticProxyConstructor extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('__construct');
+        parent::__construct('staticProxyConstructor');
 
         $prefix = new ParameterGenerator('prefixInterceptors');
         $suffix = new ParameterGenerator('suffixInterceptors');
