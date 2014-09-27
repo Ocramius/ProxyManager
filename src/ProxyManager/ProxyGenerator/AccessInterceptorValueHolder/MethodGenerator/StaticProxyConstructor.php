@@ -73,8 +73,8 @@ class StaticProxyConstructor extends MethodGenerator
             . "@return self"
         );
         $this->setBody(
-            $instanceGenerator,
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
+            $instanceGenerator
+            . ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
             . '$instance->' . $valueHolder->getName() . " = \$wrappedObject;\n"
             . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
             . '$instance->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;\n\n"
