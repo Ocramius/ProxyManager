@@ -89,8 +89,8 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setBody(
             $instanceGenerator
             . (empty($localizedProperties) ? '' : implode("\n\n", $localizedProperties) . "\n\n")
-            . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
-            . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
+            . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
+            . '$instance->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
         );
     }
 }
