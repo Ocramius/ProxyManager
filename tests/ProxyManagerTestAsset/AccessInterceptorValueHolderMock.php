@@ -48,10 +48,10 @@ class AccessInterceptorValueHolderMock
      */
     public static function staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors)
     {
-        $instance = new self();
+        $selfInstance = new self();
 
-        $instance->instance           = $instance;
-        $instance->prefixInterceptors = $prefixInterceptors;
-        $instance->suffixInterceptors = $suffixInterceptors;
+        $selfInstance->instance           = $instance;
+        $selfInstance->prefixInterceptors = $prefixInterceptors;
+        $selfInstance->suffixInterceptors = $suffixInterceptors;
     }
 }
