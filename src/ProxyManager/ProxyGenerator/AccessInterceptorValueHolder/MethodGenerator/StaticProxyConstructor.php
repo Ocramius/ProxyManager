@@ -69,7 +69,8 @@ class StaticProxyConstructor extends MethodGenerator
             "@override constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$wrappedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
-            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
+            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
+            . "@return self"
         );
         $this->setBody(
             $instanceGenerator,
