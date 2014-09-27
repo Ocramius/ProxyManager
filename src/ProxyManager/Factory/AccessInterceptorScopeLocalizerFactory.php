@@ -46,7 +46,7 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
     {
         $proxyClassName = $this->generateProxy(get_class($instance));
 
-        return new $proxyClassName($instance, $prefixInterceptors, $suffixInterceptors);
+        return $proxyClassName::staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors);
     }
 
     /**
