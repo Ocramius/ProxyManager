@@ -61,7 +61,6 @@ class NullObjectGenerator implements ProxyGeneratorInterface
             );
         }
 
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new Constructor($originalClass));
         ClassGeneratorUtils::addMethodIfNotFinal(
             $originalClass,
             $classGenerator,

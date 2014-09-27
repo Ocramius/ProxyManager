@@ -95,7 +95,6 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
                 array(
-                    new Constructor($originalClass, $initializer),
                     new StaticProxyConstructor($originalClass, $initializer),
                     new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties),
                     new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties),

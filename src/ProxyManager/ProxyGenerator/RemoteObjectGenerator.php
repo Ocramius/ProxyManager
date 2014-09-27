@@ -18,7 +18,6 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
@@ -83,7 +82,6 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
                     )
                 ),
                 array(
-                    new Constructor($originalClass, $adapter),
                     new StaticProxyConstructor($originalClass, $adapter),
                     new MagicGet($originalClass, $adapter),
                     new MagicSet($originalClass, $adapter),
