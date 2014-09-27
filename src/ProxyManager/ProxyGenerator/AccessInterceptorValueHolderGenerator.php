@@ -97,7 +97,6 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
                 array(
-                    new Constructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new StaticProxyConstructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new GetWrappedValueHolderValue($valueHolder),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
