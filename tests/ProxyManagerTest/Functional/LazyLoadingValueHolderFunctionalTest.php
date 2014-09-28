@@ -225,15 +225,15 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = function (& $wrappedInstance) use (& $counter) {
             $wrappedInstance = new BaseClass();
 
-            $wrappedInstance->publicProperty = ($counter += 1);
+            $wrappedInstance->publicProperty = (string) ($counter += 1);
         };
 
         /* @var $proxy BaseClass */
         $proxy = new $proxyClass($initializer);
 
-        $this->assertSame(1, $proxy->publicProperty);
-        $this->assertSame(2, $proxy->publicProperty);
-        $this->assertSame(3, $proxy->publicProperty);
+        $this->assertSame('1', $proxy->publicProperty);
+        $this->assertSame('2', $proxy->publicProperty);
+        $this->assertSame('3', $proxy->publicProperty);
     }
 
     /**
