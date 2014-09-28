@@ -20,7 +20,6 @@ namespace ProxyManagerTest\Signature;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Signature\SignatureGenerator;
-use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\Signature\SignatureGenerator}
