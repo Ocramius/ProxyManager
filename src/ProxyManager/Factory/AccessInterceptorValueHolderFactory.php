@@ -29,6 +29,11 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
 {
     /**
+     * @var \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator|null
+     */
+    private $generator;
+
+    /**
      * @param object     $instance           the object to be wrapped within the value holder
      * @param \Closure[] $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       before method logic is executed
@@ -39,8 +44,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      */
     public function createProxy($instance, array $prefixInterceptors = array(), array $suffixInterceptors = array())
     {
-        $className      = get_class($instance);
-        $proxyClassName = $this->generateProxy($className);
+        $proxyClassName = $this->generateProxy(get_class($instance));
 
         return new $proxyClassName($instance, $prefixInterceptors, $suffixInterceptors);
     }

@@ -19,7 +19,6 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
-
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
@@ -32,10 +31,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
-
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
-
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;

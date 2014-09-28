@@ -19,9 +19,9 @@
 namespace ProxyManager\ProxyGenerator\PropertyGenerator;
 
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use Zend\Code\Generator\PropertyGenerator;
 use ReflectionClass;
 use ReflectionProperty;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Map of public properties that exist in the class being proxied

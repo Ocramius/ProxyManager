@@ -37,6 +37,8 @@ interface ProxyGeneratorInterface
      * @param \Zend\Code\Generator\ClassGenerator $classGenerator
      *
      * @return void
+     *
+     * @todo should not return void, but the instance. Should probably also use immutable state.
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator);
 }

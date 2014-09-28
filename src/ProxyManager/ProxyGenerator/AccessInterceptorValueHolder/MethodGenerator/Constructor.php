@@ -18,10 +18,10 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
-use ReflectionClass;
-use ReflectionProperty;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ReflectionClass;
+use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**

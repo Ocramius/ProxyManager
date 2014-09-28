@@ -36,6 +36,11 @@ class RemoteObjectFactory extends AbstractBaseFactory
     protected $adapter;
 
     /**
+     * @var \ProxyManager\ProxyGenerator\RemoteObjectGenerator|null
+     */
+    private $generator;
+
+    /**
      * {@inheritDoc}
      *
      * @param AdapterInterface $adapter

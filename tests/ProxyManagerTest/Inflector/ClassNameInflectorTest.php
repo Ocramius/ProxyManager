@@ -107,13 +107,53 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
+     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
+     *
+     * @dataProvider getClassAndParametersCombinations
+     *
+     * @param string $className
+     * @param array  $parameters
+     */
+    public function testClassNameIsValidClassIdentifier($className, array $parameters)
+    {
+        $inflector = new ClassNameInflector('ProxyNS');
+
+        $this->assertRegExp(
+            '/([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+)(\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+)*/',
+            $inflector->getProxyClassName($className, $parameters),
+            'Class name string is a valid class identifier'
+        );
+    }
+
+    /**
+     * Data provider.
+     *
+     * @return array[]
      */
     public function getClassNames()
     {
         return array(
             array('Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\%s'),
             array('Foo\\Bar', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\Bar\\%s'),
+        );
+    }
+
+    /**
+     * Data provider.
+     *
+     * @return array[]
+     */
+    public function getClassAndParametersCombinations()
+    {
+        return array(
+            array('Foo', array()),
+            array('Foo\\Bar', array()),
+            array('Foo', array(null)),
+            array('Foo\\Bar', array(null)),
+            array('Foo', array('foo' => 'bar')),
+            array('Foo\\Bar', array('foo' => 'bar')),
+            array('Foo', array("\0" => "very \0 bad")),
+            array('Foo\\Bar', array("\0" => "very \0 bad")),
         );
     }
 }

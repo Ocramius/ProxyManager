@@ -29,6 +29,11 @@ use ProxyManager\ProxyGenerator\NullObjectGenerator;
 class NullObjectFactory extends AbstractBaseFactory
 {
     /**
+     * @var \ProxyManager\ProxyGenerator\NullObjectGenerator|null
+     */
+    private $generator;
+
+    /**
      * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
      *
      * @return \ProxyManager\Proxy\NullobjectInterface

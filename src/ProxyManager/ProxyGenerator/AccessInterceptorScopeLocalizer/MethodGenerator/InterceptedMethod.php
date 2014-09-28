@@ -18,8 +18,8 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 

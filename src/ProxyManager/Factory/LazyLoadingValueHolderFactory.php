@@ -31,6 +31,11 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 class LazyLoadingValueHolderFactory extends AbstractLazyFactory
 {
     /**
+     * @var \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator|null
+     */
+    private $generator;
+
+    /**
      * {@inheritDoc}
      */
     protected function getGenerator()
