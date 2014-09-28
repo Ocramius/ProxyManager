@@ -214,6 +214,29 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group 16
+     *
+     * Verifies that initialization of a value holder proxy may happen multiple times
+     */
+    public function testWillAllowMultipleProxyInitialization()
+    {
+        $proxyClass  = $this->generateProxy('ProxyManagerTestAsset\\BaseClass');
+        $counter     = 0;
+        $initializer = function (& $wrappedInstance) use (& $counter) {
+            $wrappedInstance = new BaseClass();
+
+            $wrappedInstance->publicProperty = (string) ($counter += 1);
+        };
+
+        /* @var $proxy BaseClass */
+        $proxy = new $proxyClass($initializer);
+
+        $this->assertSame('1', $proxy->publicProperty);
+        $this->assertSame('2', $proxy->publicProperty);
+        $this->assertSame('3', $proxy->publicProperty);
+    }
+
+    /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
      * @param string $parentClassName
