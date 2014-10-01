@@ -28,6 +28,8 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
 {

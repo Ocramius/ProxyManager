@@ -29,6 +29,8 @@ use stdClass;
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
 {

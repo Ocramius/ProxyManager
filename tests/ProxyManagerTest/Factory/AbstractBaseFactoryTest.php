@@ -29,6 +29,7 @@ use ReflectionMethod;
  * @license MIT
  *
  * @covers \ProxyManager\Factory\AbstractBaseFactory
+ * @group Coverage
  */
 class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
 {
