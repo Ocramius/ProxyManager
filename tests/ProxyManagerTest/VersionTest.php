@@ -28,6 +28,7 @@ use ProxyManager\Version;
  * @license MIT
  *
  * @covers \ProxyManager\Version
+ * @group Coverage
  */
 class VersionTest extends PHPUnit_Framework_TestCase
 {
