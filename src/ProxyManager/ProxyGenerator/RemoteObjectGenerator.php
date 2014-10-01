@@ -27,7 +27,6 @@ use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicUnset;
-use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
