@@ -26,6 +26,8 @@ use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolde
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
 {
