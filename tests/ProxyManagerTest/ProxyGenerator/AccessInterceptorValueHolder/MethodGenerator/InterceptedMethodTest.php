@@ -29,12 +29,10 @@ use Zend\Code\Reflection\MethodReflection;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod::generateMethod
+ * @group Coverage
  */
 class InterceptedMethodTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     *
-     */
     public function testBodyStructure()
     {
         $valueHolder        = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
