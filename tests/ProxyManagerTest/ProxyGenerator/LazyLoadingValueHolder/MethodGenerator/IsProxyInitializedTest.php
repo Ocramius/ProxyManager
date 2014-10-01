@@ -26,6 +26,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\IsProxyIn
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
 {

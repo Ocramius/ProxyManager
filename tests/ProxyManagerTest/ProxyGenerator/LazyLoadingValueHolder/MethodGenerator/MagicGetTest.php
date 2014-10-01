@@ -27,6 +27,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicGetTest extends PHPUnit_Framework_TestCase
 {
