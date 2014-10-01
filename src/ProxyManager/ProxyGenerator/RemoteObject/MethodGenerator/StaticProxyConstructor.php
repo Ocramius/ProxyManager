@@ -55,7 +55,9 @@ class StaticProxyConstructor extends MethodGenerator
             . '@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter'
         );
 
-        $body = '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
+        $body = 'static $reflection;' . "\n\n"
+            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
             . '$instance->' . $adapterName . ' = $' . $adapterName . ';';
 
         foreach ($originalClass->getProperties() as $property) {
