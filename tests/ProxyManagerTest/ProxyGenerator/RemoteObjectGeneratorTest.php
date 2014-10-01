@@ -32,6 +32,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\RemoteObjectGenerator
+ * @group Coverage
  */
 class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
 {

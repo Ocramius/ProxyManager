@@ -29,6 +29,7 @@ use ReflectionProperty;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator
+ * @group Coverage
  */
 class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
 {

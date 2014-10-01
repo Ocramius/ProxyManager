@@ -27,6 +27,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator
+ * @group Coverage
  */
 class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
 {
