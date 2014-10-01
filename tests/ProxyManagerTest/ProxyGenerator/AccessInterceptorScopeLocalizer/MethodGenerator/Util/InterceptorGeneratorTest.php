@@ -26,6 +26,8 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
 {

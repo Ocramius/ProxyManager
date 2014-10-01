@@ -29,6 +29,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @covers \ProxyManager\Signature\SignatureChecker
+ * @group Coverage
  */
 class SignatureCheckerTest extends PHPUnit_Framework_TestCase
 {
@@ -60,13 +61,13 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
     {
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects($this->atLeastOnce())
             ->method('generateSignatureKey')
             ->with(array('foo' => 'bar'))
             ->will($this->returnValue('Example'));
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects($this->atLeastOnce())
             ->method('generateSignature')
             ->with(array('foo' => 'bar'))
             ->will($this->returnValue('valid-signature'));

@@ -26,6 +26,8 @@ use ProxyManager\Configuration;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class ConfigurationTest extends PHPUnit_Framework_TestCase
 {

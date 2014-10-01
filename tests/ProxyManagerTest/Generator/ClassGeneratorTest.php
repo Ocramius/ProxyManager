@@ -26,6 +26,8 @@ use ProxyManager\Generator\ClassGenerator;
  *
  * @author Gordon Stratton <gordon.stratton@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class ClassGeneratorTest extends PHPUnit_Framework_TestCase
 {

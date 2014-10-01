@@ -29,6 +29,7 @@ use Zend\Code\Reflection\ParameterReflection;
  * @license MIT
  *
  * @covers \ProxyManager\Generator\ParameterGenerator
+ * @group Coverage
  */
 class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 {

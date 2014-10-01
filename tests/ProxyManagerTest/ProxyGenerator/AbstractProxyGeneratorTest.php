@@ -29,6 +29,8 @@ use ReflectionClass;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
 {

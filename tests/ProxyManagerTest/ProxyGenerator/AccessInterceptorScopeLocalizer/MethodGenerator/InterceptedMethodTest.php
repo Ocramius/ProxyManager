@@ -29,6 +29,7 @@ use Zend\Code\Reflection\MethodReflection;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod
+ * @group Coverage
  */
 class InterceptedMethodTest extends PHPUnit_Framework_TestCase
 {

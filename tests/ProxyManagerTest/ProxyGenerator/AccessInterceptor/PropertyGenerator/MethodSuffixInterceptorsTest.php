@@ -28,6 +28,7 @@ use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyName
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodSuffixInterceptors
+ * @group Coverage
  */
 class MethodSuffixInterceptorsTest extends AbstractUniquePropertyNameTest
 {

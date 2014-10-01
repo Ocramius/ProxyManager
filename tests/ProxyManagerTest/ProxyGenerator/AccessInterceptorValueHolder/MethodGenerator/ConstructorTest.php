@@ -27,6 +27,8 @@ use ReflectionClass;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class ConstructorTest extends PHPUnit_Framework_TestCase
 {

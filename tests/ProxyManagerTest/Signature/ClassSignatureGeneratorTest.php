@@ -29,6 +29,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @license MIT
  *
  * @covers \ProxyManager\Signature\ClassSignatureGenerator
+ * @group Coverage
  */
 class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
 {

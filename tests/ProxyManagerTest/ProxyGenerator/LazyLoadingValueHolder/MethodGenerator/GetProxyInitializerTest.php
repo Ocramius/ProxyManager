@@ -26,6 +26,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\GetProxyI
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class GetProxyInitializerTest extends PHPUnit_Framework_TestCase
 {

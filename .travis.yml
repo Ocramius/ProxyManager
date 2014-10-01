@@ -13,7 +13,8 @@ before_script:
   - sh .travis.install.sh
 
 script:
-  - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --exclude-group Performance
+  - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./build/logs/clover.xml --group=Coverage
+  - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --strict --exclude-group=Performance,Coverage
   - php -n ./vendor/bin/phpunit --group=Performance
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 

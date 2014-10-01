@@ -27,6 +27,9 @@ use ReflectionProperty;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\Exception\UnsupportedProxiedClassException
+ * @group Coverage
  */
 class UnsupportedProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {

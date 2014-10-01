@@ -30,6 +30,7 @@ use ReflectionMethod;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter
+ * @group Coverage
  */
 class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
 {

@@ -27,6 +27,8 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Mag
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicCloneTest extends PHPUnit_Framework_TestCase
 {

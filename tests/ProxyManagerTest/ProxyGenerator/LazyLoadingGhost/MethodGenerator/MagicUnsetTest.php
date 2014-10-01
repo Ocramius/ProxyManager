@@ -27,6 +27,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicUnsetTest extends PHPUnit_Framework_TestCase
 {

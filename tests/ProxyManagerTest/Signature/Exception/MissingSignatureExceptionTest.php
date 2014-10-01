@@ -29,6 +29,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @covers \ProxyManager\Signature\Exception\MissingSignatureException
+ * @group Coverage
  */
 class MissingSignatureExceptionTest extends PHPUnit_Framework_TestCase
 {

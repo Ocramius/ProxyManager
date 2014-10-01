@@ -26,6 +26,8 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
 {

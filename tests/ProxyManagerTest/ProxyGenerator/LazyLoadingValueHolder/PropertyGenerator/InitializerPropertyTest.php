@@ -28,6 +28,7 @@ use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyName
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty
+ * @group Coverage
  */
 class InitializerPropertyTest extends AbstractUniquePropertyNameTest
 {

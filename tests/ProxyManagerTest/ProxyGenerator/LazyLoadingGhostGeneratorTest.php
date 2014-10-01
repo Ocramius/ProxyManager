@@ -27,6 +27,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator
+ * @group Coverage
  */
 class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
 {

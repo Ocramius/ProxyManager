@@ -27,6 +27,8 @@ use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet;
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicSetTest extends PHPUnit_Framework_TestCase
 {

@@ -25,6 +25,8 @@ use PHPUnit_Framework_TestCase;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
 {

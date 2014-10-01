@@ -27,6 +27,9 @@ use ReflectionClass;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\Exception\InvalidProxiedClassException
+ * @group Coverage
  */
 class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {

@@ -33,6 +33,7 @@ use ReflectionProperty;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\NullObjectGenerator
+ * @group Coverage
  */
 class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
 {

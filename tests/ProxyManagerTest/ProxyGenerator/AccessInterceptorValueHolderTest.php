@@ -27,6 +27,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator
+ * @group Coverage
  */
 class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
 {

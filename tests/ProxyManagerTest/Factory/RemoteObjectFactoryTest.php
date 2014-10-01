@@ -28,6 +28,8 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
 {
