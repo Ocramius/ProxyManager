@@ -29,6 +29,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults
+ * @group Coverage
  */
 class PublicPropertiesDefaultsTest extends PHPUnit_Framework_TestCase
 {
