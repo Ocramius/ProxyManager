@@ -288,7 +288,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
 
-        $instance->__construct(5);
+        $instance->__construct(3);
 
         $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
 
