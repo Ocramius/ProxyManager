@@ -26,6 +26,8 @@ use ProxyManager\Inflector\Util\ParameterEncoder;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class ParameterEncoderTest extends PHPUnit_Framework_TestCase
 {

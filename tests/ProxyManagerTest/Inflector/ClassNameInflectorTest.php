@@ -27,6 +27,8 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
 {
