@@ -26,6 +26,8 @@ use PHPUnit_Framework_TestCase;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class SetMethodSuffixInterceptorTest extends PHPUnit_Framework_TestCase
 {
