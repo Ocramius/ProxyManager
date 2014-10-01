@@ -29,6 +29,7 @@ use ReflectionClass;
  * @license MIT
  *
  * @covers \ProxyManager\Signature\SignatureChecker
+ * @group Coverage
  */
 class SignatureCheckerTest extends PHPUnit_Framework_TestCase
 {

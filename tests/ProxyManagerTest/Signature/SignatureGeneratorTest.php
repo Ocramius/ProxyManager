@@ -28,6 +28,7 @@ use ProxyManager\Signature\SignatureGenerator;
  * @license MIT
  *
  * @covers \ProxyManager\Signature\SignatureGenerator
+ * @group Coverage
  */
 class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
 {
