@@ -16,19 +16,19 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
+namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor;
+use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor;
 use ReflectionClass;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor}
+ * Tests for {@see \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
- * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor
+ * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor
  * @group Coverage
  */
 class ConstructorTest extends PHPUnit_Framework_TestCase
