@@ -26,6 +26,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class CallInitializerTest extends PHPUnit_Framework_TestCase
 {

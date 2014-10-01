@@ -26,6 +26,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class InitializeProxyTest extends PHPUnit_Framework_TestCase
 {

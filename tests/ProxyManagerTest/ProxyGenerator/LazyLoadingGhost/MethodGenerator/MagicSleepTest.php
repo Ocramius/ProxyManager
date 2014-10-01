@@ -27,6 +27,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicSleepTest extends PHPUnit_Framework_TestCase
 {

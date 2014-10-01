@@ -27,6 +27,8 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSet;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicSetTest extends PHPUnit_Framework_TestCase
 {
