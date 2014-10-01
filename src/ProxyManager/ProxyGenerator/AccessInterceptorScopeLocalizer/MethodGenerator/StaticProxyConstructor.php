@@ -18,11 +18,9 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for an access interceptor scope localizer proxy
