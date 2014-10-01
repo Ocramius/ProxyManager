@@ -27,6 +27,8 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\Autoloader\Autoloader
  */
 class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
