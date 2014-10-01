@@ -68,7 +68,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy = unserialize(serialize($proxyName::staticProxyConstructor($this->createInitializer($className, $instance))));
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
+            $this->createInitializer($className, $instance)
+        )));
 
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
