@@ -25,6 +25,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -264,8 +265,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     public function testWillModifyByRefRetrievedPublicProperties()
     {
         $instance    = new ClassWithPublicProperties();
-        $className   = get_class($instance);
-        $proxyName   = $this->generateProxy($className);
+        $proxyName   = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithPublicProperties */
         $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = & $proxy->property0;
@@ -276,6 +276,28 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $this->assertSame('foo', $proxy->property0);
         $this->assertProxySynchronized($instance, $proxy);
+    }
+
+    /**
+     * @group 115
+     * @group 175
+     */
+    public function testWillBehaveLikeObjectWithNormalConstructor()
+    {
+        $instance = new ClassWithCounterConstructor(10);
+
+        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy ClassWithCounterConstructor */
+        $proxy = new $proxyName(15);
+
+        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+
+        $proxy->__construct(5);
+
+        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
     }
 
     /**
