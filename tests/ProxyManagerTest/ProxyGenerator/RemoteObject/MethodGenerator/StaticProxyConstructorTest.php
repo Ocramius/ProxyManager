@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor;
 use ReflectionClass;
 
@@ -34,9 +33,6 @@ use ReflectionClass;
  */
 class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor::__construct
-     */
     public function testBodyStructure()
     {
         /* @var $adapter \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
