@@ -26,6 +26,8 @@ use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc;
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class XmlRpcTest extends PHPUnit_Framework_TestCase
 {

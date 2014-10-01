@@ -26,6 +26,8 @@ use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc;
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class JsonRpcTest extends PHPUnit_Framework_TestCase
 {
