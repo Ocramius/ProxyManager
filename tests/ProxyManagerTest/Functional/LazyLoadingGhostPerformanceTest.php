@@ -58,7 +58,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
         $instances    = array();
         /* @var $proxies \ProxyManager\Proxy\GhostObjectInterface[] */
         $proxies      = array();
-        $realInstance = $className::staticProxyConstructor();
+        $realInstance = new $className();
         $initializer  = function (
             GhostObjectInterface $proxy,
             $method,
@@ -80,7 +80,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
         $this->startCapturing();
 
         for ($i = 0; $i < $iterations; $i += 1) {
-            $instances[] = $className::staticProxyConstructor();
+            $instances[] = new $className();
         }
 
         $baseProfile = $this->endCapturing(
