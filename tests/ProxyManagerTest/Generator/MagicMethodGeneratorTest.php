@@ -27,6 +27,8 @@ use ProxyManager\Generator\MagicMethodGenerator;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
 {

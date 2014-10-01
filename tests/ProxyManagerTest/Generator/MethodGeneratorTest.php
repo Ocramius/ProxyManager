@@ -30,6 +30,7 @@ use Zend\Code\Reflection\MethodReflection;
  * @license MIT
  *
  * @covers \ProxyManager\Generator\MethodGenerator
+ * @group Coverage
  */
 class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 {
