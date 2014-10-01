@@ -287,10 +287,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $instance = new ClassWithCounterConstructor(10);
 
         $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
-
+        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
         $instance->__construct(3);
-
         $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
         $proxyName = $this->generateProxy(get_class($instance));
 
@@ -298,10 +298,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxy = new $proxyName(15);
 
         $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-
+        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
         $proxy->__construct(5);
-
         $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     /**
