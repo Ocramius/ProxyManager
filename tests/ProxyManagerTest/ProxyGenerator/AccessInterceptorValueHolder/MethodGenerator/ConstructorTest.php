@@ -28,13 +28,11 @@ use ReflectionClass;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
+ * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor
  * @group Coverage
  */
 class ConstructorTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor
-     */
     public function testBodyStructure()
     {
         /* @var $valueHolder \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -68,9 +66,6 @@ $this->foo->__construct();',
         );
     }
 
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor
-     */
     public function testBodyStructureWithoutPublicProperties()
     {
         /* @var $valueHolder \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -98,9 +93,6 @@ $this->foo->__construct();',
         );
     }
 
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor
-     */
     public function testBodyStructureWithPhp4StyleConstructor()
     {
         $className = uniqid('ClassWithPhp4Constructor');
