@@ -27,6 +27,8 @@ use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
+ *
+ * @group Coverage
  */
 class MagicGetTest extends PHPUnit_Framework_TestCase
 {
