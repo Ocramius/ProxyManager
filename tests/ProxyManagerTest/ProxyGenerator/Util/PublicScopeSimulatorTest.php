@@ -29,6 +29,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator
+ * @group Coverage
  */
 class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
 {
