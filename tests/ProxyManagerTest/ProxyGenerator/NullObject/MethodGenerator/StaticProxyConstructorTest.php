@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ReflectionClass;
 
