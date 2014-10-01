@@ -23,6 +23,7 @@ use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
 use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Reflection\MethodReflection;
 
 /**
  * The `__construct` implementation for lazy loading proxies
@@ -37,48 +38,85 @@ class Constructor extends MethodGenerator
      *
      * @param ReflectionClass   $originalClass
      * @param PropertyGenerator $valueHolder
-     * @param PropertyGenerator $prefixInterceptors
-     * @param PropertyGenerator $suffixInterceptors
+     *
+     * @return MethodGenerator
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $valueHolder,
-        PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
-    ) {
-        parent::__construct('__construct');
+    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder)
+    {
+        $originalConstructor = self::getConstructor($originalClass);
 
-        $prefix = new ParameterGenerator('prefixInterceptors');
-        $suffix = new ParameterGenerator('suffixInterceptors');
+        $constructor = $originalConstructor
+            ? self::fromReflection($originalConstructor)
+            : new self('__construct');
 
-        $prefix->setDefaultValue(array());
-        $suffix->setDefaultValue(array());
-        $prefix->setType('array');
-        $suffix->setType('array');
-
-        $this->setParameter(new ParameterGenerator('wrappedObject'));
-        $this->setParameter($prefix);
-        $this->setParameter($suffix);
-
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
-
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
-        }
-
-        $this->setDocblock(
-            "@override constructor to setup interceptors\n\n"
-            . "@param \\" . $originalClass->getName() . " \$wrappedObject\n"
-            . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
-            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
+        $constructor->setDocblock('{@inheritDoc}');
+        $constructor->setBody(
+            'static $reflection;' . "\n\n"
+            . 'if (! $this->' . $valueHolder->getName() . ') {' . "\n"
+            . '    $reflection = $reflection ?: new \ReflectionClass('
+            . var_export($originalClass->getName(), true)
+            . ");\n"
+            . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"
+            . self::getUnsetPropertiesString($originalClass)
+            . "}\n\n"
+            . '$this->' . $valueHolder->getName() . '->' . $constructor->getName() . '('
+            . implode(
+                ', ',
+                array_map(
+                    function (ParameterGenerator $parameter) {
+                        return '$' . $parameter->getName();
+                    },
+                    $constructor->getParameters()
+                )
+            )
+            . ');'
         );
-        $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
-            . '$this->' . $valueHolder->getName() . " = \$wrappedObject;\n"
-            . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
-            . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
+
+        return $constructor;
+    }
+
+    /**
+     * @param ReflectionClass $class
+     *
+     * @return string
+     */
+    private static function getUnsetPropertiesString(ReflectionClass $class)
+    {
+        $unsetProperties = implode(
+            "\n    ",
+            array_map(
+                function (ReflectionProperty $unsetProperty) {
+                    return 'unset($this->' . $unsetProperty->getName() . ');';
+                },
+                $class->getProperties(ReflectionProperty::IS_PUBLIC)
+            )
         );
+
+        return $unsetProperties ? "\n    " . $unsetProperties . "\n" : '';
+    }
+
+    /**
+     * @param ReflectionClass $class
+     *
+     * @return MethodReflection|null
+     */
+    private static function getConstructor(ReflectionClass $class)
+    {
+        $constructors = array_map(
+            function (\ReflectionMethod $method) {
+                return new MethodReflection(
+                    $method->getDeclaringClass()->getName(),
+                    $method->getName()
+                );
+            },
+            array_filter(
+                $class->getMethods(),
+                function (\ReflectionMethod $method) {
+                    return $method->isConstructor();
+                }
+            )
+        );
+
+        return reset($constructors) ?: null;
     }
 }
