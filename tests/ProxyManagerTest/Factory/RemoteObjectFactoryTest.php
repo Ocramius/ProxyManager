@@ -144,8 +144,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function () use ($proxyClassName) {
                         eval(
-                            'class ' . $proxyClassName
-                            . ' extends stdClass {'
+                            'class ' . $proxyClassName . ' {'
                             . 'public static function staticProxyConstructor() { return new static(); }'
                             . '}'
                         );
@@ -172,7 +171,6 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
 
         $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
         $factory = new RemoteObjectFactory($adapter, $this->config);
-        /* @var $proxy \stdClass */
         $proxy   = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
 
         $this->assertInstanceOf($proxyClassName, $proxy);
