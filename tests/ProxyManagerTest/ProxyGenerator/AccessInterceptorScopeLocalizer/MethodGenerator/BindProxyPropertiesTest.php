@@ -20,7 +20,6 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\Method
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\BindProxyProperties;
-use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Constructor;
 use ReflectionClass;
 
 /**
