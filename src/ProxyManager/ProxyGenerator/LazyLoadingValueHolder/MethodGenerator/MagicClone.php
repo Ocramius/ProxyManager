@@ -33,7 +33,7 @@ class MagicClone extends MagicMethodGenerator
     /**
      * Constructor
      *
-     * @param ReflectionClass $originalClass
+     * @param ReflectionClass   $originalClass
      * @param PropertyGenerator $initializerProperty
      * @param PropertyGenerator $valueHolderProperty
      */
