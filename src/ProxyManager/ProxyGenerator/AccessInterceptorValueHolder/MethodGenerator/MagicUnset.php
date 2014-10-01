@@ -36,6 +36,11 @@ class MagicUnset extends MagicMethodGenerator
 {
     /**
      * Constructor
+     * @param ReflectionClass     $originalClass
+     * @param PropertyGenerator   $valueHolder
+     * @param PropertyGenerator  $prefixInterceptors
+     * @param PropertyGenerator   $suffixInterceptors
+     * @param PublicPropertiesMap $publicProperties
      */
     public function __construct(
         ReflectionClass $originalClass,

@@ -34,6 +34,9 @@ class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param ReflectionClass   $originalClass
+     * @param PropertyGenerator $initializerProperty
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {

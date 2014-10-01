@@ -33,6 +33,8 @@ class SetMethodSuffixInterceptor extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param PropertyGenerator $suffixInterceptor
      */
     public function __construct(PropertyGenerator $suffixInterceptor)
     {

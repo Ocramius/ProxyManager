@@ -33,6 +33,8 @@ class SetMethodPrefixInterceptor extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param PropertyGenerator $prefixInterceptor
      */
     public function __construct(PropertyGenerator $prefixInterceptor)
     {

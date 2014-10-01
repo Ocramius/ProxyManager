@@ -32,6 +32,8 @@ class IsProxyInitialized extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param PropertyGenerator $valueHolderProperty
      */
     public function __construct(PropertyGenerator $valueHolderProperty)
     {
