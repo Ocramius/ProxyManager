@@ -223,14 +223,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyClass  = $this->generateProxy('ProxyManagerTestAsset\\BaseClass');
         $counter     = 0;
-        $initializer = function (& $wrappedInstance) use (& $counter) {
+
+        /* @var $proxy BaseClass */
+        $proxy = $proxyClass::staticProxyConstructor(function (& $wrappedInstance) use (& $counter) {
             $wrappedInstance = new BaseClass();
 
             $wrappedInstance->publicProperty = (string) ($counter += 1);
-        };
-
-        /* @var $proxy BaseClass */
-        $proxy = $proxyClass::staticProxyConstructor($initializer);
+        });
 
         $this->assertSame('1', $proxy->publicProperty);
         $this->assertSame('2', $proxy->publicProperty);
