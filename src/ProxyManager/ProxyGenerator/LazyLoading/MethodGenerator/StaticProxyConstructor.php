@@ -54,7 +54,9 @@ class StaticProxyConstructor extends MethodGenerator
 
         $this->setDocblock("Constructor for lazy initialization\n\n@param \\Closure|null \$initializer");
         $this->setBody(
-            '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
+            'static $reflection;' . "\n\n"
+            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
             . ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
             . '$instance->' . $initializerProperty->getName() . ' = $initializer;' . "\n\n"
             . 'return $instance;'
