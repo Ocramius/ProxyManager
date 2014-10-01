@@ -39,4 +39,12 @@ class ClassWithCounterConstructor
     {
         $this->amount += $increment;
     }
+
+    /**
+     * @return int
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
 }
