@@ -29,6 +29,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  * @license MIT
  *
  * @covers \ProxyManager\Autoloader\Autoloader
+ * @group Coverage
  */
 class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
