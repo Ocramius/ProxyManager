@@ -61,10 +61,8 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($suffix);
 
         /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties  = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties   = array();
-        $instanceGenerator = '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();'
-            . "\n\n";
+        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $unsetProperties  = array();
 
         foreach ($publicProperties as $publicProperty) {
             $unsetProperties[] = '$instance->' . $publicProperty->getName();
@@ -78,7 +76,9 @@ class StaticProxyConstructor extends MethodGenerator
             . "@return self"
         );
         $this->setBody(
-            $instanceGenerator
+            'static $reflection;' . "\n\n"
+            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
             . ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
             . '$instance->' . $valueHolder->getName() . " = \$wrappedObject;\n"
             . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
