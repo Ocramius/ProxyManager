@@ -26,6 +26,9 @@ use ProxyManager\Exception\DisabledMethodException;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * @covers \ProxyManager\Exception\DisabledMethodException
+ * @group Coverage
  */
 class DisabledMethodExceptionTest extends PHPUnit_Framework_TestCase
 {
