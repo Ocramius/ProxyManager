@@ -34,12 +34,11 @@ class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param ReflectionClass $originalClass
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
-    ) {
+    public function __construct(ReflectionClass $originalClass)
+    {
         parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $localizedObject = new ParameterGenerator('localizedObject');
@@ -56,30 +55,6 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
-        $localizedProperties = array();
-        $instanceGenerator   = '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();'
-            . "\n\n";
-
-        foreach ($originalClass->getProperties() as $originalProperty) {
-            if ((PHP_VERSION_ID < 50400 || (defined('HHVM_VERSION'))) && $originalProperty->isPrivate()) {
-                // @codeCoverageIgnoreStart
-                throw UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty($originalProperty);
-                // @codeCoverageIgnoreEnd
-            }
-
-            $propertyName = $originalProperty->getName();
-
-            if ($originalProperty->isPrivate()) {
-                $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject, \$instance) {\n    "
-                    . '$instance->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
-                    . '}, $instance, ' . var_export($originalProperty->getDeclaringClass()->getName(), true)
-                    . ')->__invoke();';
-            } else {
-                $localizedProperties[] = '$instance->' . $propertyName
-                    . ' = & $localizedObject->' . $propertyName . ";";
-            }
-        }
-
         $this->setDocblock(
             "Constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
@@ -88,7 +63,7 @@ class StaticProxyConstructor extends MethodGenerator
             . "@return self"
         );
         $this->setBody(
-            $instanceGenerator
+            '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
             . '$instance->bindProxyProperties($localizedObject, $prefixInterceptors, $suffixInterceptors);' . "\n\n"
             . 'return $instance;'
         );
