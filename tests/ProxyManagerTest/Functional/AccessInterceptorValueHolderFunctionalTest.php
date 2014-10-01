@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -254,6 +255,32 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+    }
+
+    /**
+     * @group 115
+     * @group 175
+     */
+    public function testWillBehaveLikeObjectWithNormalConstructor()
+    {
+        $instance = new ClassWithCounterConstructor(10);
+
+        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        $instance->__construct(3);
+        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy ClassWithCounterConstructor */
+        $proxy = new $proxyName(15);
+
+        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        $proxy->__construct(5);
+        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     /**
