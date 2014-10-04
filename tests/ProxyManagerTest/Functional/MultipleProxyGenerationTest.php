@@ -109,6 +109,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             array('ProxyManagerTestAsset\\ClassWithPublicProperties'),
             array('ProxyManagerTestAsset\\EmptyClass'),
             array('ProxyManagerTestAsset\\HydratedObject'),
+            array('ProxyManagerTestAsset\\ClassWithSelfHint'),
         );
     }
 }
