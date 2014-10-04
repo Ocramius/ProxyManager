@@ -30,6 +30,7 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -368,6 +369,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getProxyMethods()
     {
+        $selfHintParam = new ClassWithSelfHint();
+
         return array(
             array(
                 'ProxyManagerTestAsset\\BaseClass',
@@ -389,6 +392,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicByReferenceMethod',
                 array(),
                 'publicByReferenceMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                new ClassWithSelfHint(),
+                'selfHintMethod',
+                array('parameter' => $selfHintParam),
+                $selfHintParam
             ),
         );
     }
