@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -145,6 +146,8 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getProxyMethods()
     {
+        $selfHintParam = new ClassWithSelfHint();
+
         return array(
             array(
                 'ProxyManagerTestAsset\\BaseClass',
@@ -173,6 +176,13 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicMethod',
                 array(),
                 'publicMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                new ClassWithSelfHint(),
+                'selfHintMethod',
+                array('parameter' => $selfHintParam),
+                $selfHintParam
             ),
         );
     }
