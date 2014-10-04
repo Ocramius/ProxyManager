@@ -27,6 +27,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -306,6 +307,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      */
     public function getProxyMethods()
     {
+        $selfHintParam = new ClassWithSelfHint();
+
         return array(
             array(
                 'ProxyManagerTestAsset\\BaseClass',
@@ -327,6 +330,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
                 'publicByReferenceMethod',
                 array(),
                 'publicByReferenceMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                new ClassWithSelfHint(),
+                'selfHintMethod',
+                array('parameter' => $selfHintParam),
+                $selfHintParam
             ),
         );
     }
