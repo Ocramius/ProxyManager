@@ -24,6 +24,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -282,6 +283,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function getProxyMethods()
     {
+        $selfHintParam = new ClassWithSelfHint();
+
         return array(
             array(
                 'ProxyManagerTestAsset\\BaseClass',
@@ -310,6 +313,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 'publicMethod',
                 array(),
                 'publicMethodDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                new ClassWithSelfHint(),
+                'selfHintMethod',
+                array('parameter' => $selfHintParam),
+                $selfHintParam
             ),
         );
     }
