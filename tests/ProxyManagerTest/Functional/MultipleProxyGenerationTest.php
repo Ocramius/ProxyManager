@@ -99,7 +99,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      */
     public function getTestedClasses()
     {
-        return array(
+        $data = array(
             array('ProxyManagerTestAsset\\BaseClass'),
             array('ProxyManagerTestAsset\\ClassWithMagicMethods'),
             array('ProxyManagerTestAsset\\ClassWithByRefMagicMethods'),
@@ -109,7 +109,13 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             array('ProxyManagerTestAsset\\ClassWithPublicProperties'),
             array('ProxyManagerTestAsset\\EmptyClass'),
             array('ProxyManagerTestAsset\\HydratedObject'),
-            array('ProxyManagerTestAsset\\ClassWithSelfHint'),
         );
+
+        if (PHP_VERSION_ID >= 50401) {
+            // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
+            $data[] = array('ProxyManagerTestAsset\\ClassWithSelfHint');
+        }
+
+        return $data;
     }
 }
