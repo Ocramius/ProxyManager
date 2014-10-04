@@ -25,6 +25,7 @@ use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
+use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ReflectionClass;
 
@@ -170,7 +171,9 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getProxyMethods()
     {
-        return array(
+        $selfHintParam = new ClassWithSelfHint();
+
+        $data = array(
             array(
                 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface',
                 'foo',
@@ -196,6 +199,18 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 'baz remote'
             ),
         );
+
+        if (PHP_VERSION_ID >= 50401) {
+            // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
+            $data[] = array(
+                new ClassWithSelfHint(),
+                'selfHintMethod',
+                array($selfHintParam),
+                $selfHintParam
+            );
+        }
+
+        return $data;
     }
 
     /**
