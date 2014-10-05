@@ -71,7 +71,7 @@
 <div class="content">
     <div class="bcms-clearfix"></div>
     <h3 class="section-title">Installation</h3>
-    <p>The suggested installation method is via <a href="#">composer</a>.</p>
+    <p>The suggested installation method is via <a href="https://getcomposer.org/" target="_blank">composer</a>.</p>
     <pre>php composer.phar require ocramius/proxy-manager:0.5.*</pre>
 <hr />
 
@@ -100,7 +100,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
     </pre>
 
-    <p>See the <a href="#">complete documentation about lazy loading value holders</a>.</p>
+    <p>See the <a href="virtual-proxy.html">complete documentation about lazy loading value holders</a>.</p>
 <hr />
 
     <h3 class="section-title">Access Interceptor Value Holder</h3>
@@ -122,7 +122,7 @@ $proxy = $factory->createProxy(
 $proxy->query(); // produces "Query being executed!\nQuery completed!\n"
     </pre>
 
-    <p>See the <a href="">complete documentation about access interceptor value holders</a>.</p>
+    <p>See the <a href="virtual-proxy.html">complete documentation about access interceptor value holders</a>.</p>
 <hr />
 
     <h3 class="section-title">Access Interceptor Scope Localizer</h3>
@@ -158,7 +158,7 @@ $proxy = $factory->createProxy($entity); // created from object
 $proxy->getName(); // empty return
 </pre>
 
-    <p>See the <a href="">complete documentation about null object proxy</a>.</p>
+    <p>See the <a href="null-object.html">complete documentation about null object proxy</a>.</p>
 
 <hr />
 
@@ -198,7 +198,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
     </pre>
 
-    <p>See the <a>complete documentation about lazy loading ghost objects</a>.</p>
+    <p>See the <a href="ghost-object.html">complete documentation about lazy loading ghost objects</a>.</p>
 
 <hr />
 
@@ -228,7 +228,7 @@ $proxy = $factory->createProxy('FooServiceInterface');
 var_dump($proxy->foo());
     </pre>
 
-    <p>See the <a href="#">complete documentation about remote objects</a>.</p>
+    <p>See the <a href="remote-object.html">complete documentation about remote objects</a>.</p>
 <hr />
 
 
