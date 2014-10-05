@@ -7,7 +7,7 @@
     <title>ProxyManager - Null object</title>
 
     <meta name="description" content="A proxyManager write in php" />
-    <meta name="keywords" content="ProxyManager, proxy, manager, ocramius, Marco Pivetta, php, null object" />
+    <meta name="keywords" content="ProxyManager, proxy, manager, ocramius, Marco Pivetta, php, ghost object" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
@@ -74,88 +74,104 @@
 
 <div class="content">
     <div class="bcms-clearfix"></div>
-    <h3 class="section-title">Null Object Proxy</h3>
-    <p>A Null Object proxy is a <a href="http://en.wikipedia.org/wiki/Null_Object_pattern" target="_blank">null object pattern</a> implementation. The proxy factory creates a new object with defined neutral behavior based on an other object, class name or interface.</p>
+    <h3 class="section-title">Remote Object Proxy</h3>
+
+    <p>The remote object implementation is a mechanism that enables an local object to control an other object on an other server. Each call method on the local object will do a network call to get information or execute operations on the remote object.</p>
 <hr />
 
-    <h3 class="section-title">What is null object proxy ?</h3>
+    <h3 class="section-title">What is remote object proxy ?</h3>
 
-    <p>In your application, when you can't return the object related to the request, the consumer of the model must check for the return value and handle the failing condition gracefully, thus generating an explosion of conditionals throughout your code. Fortunately, this seemingly-tangled situation can be sorted out simply by creating a polymorphic implementation of the domain object, which would implement the same interface as the one of the object in question, only that its methods wouldn’t do anything, therefore offloading client code from doing repetitive checks for ugly null values when the operation is executed.</p>
+    <p>A remote object is based on an interface. The remote interface defines the API that a consumer can call. This interface must be implemented both by the client and the RPC server.</p>
+<hr />
+
+    <h3 class="section-title">Adapters</h3>
+
+    <p>ZendFramework's RPC components (XmlRpc, JsonRpc &amp; Soap) can be used easily with the remote object. You will need to require the one you need via composer, though:</p>
+    
+    <pre>
+$ php composer.phar require zendframework/zend-xmlrpc:2.*
+$ php composer.phar require zendframework/zend-json:2.*
+$ php composer.phar require zendframework/zend-soap:2.*
+    </pre>
+
+    <p>ProxyManager comes with 3 adapters:</p>
+
+    <ul>
+        <li><code>ProxyManager\Factory\RemoteObject\Adapter\XmlRpc</code></li>
+        <li><code>ProxyManager\Factory\RemoteObject\Adapter\JsonRpc</code></li>
+        <li><code>ProxyManager\Factory\RemoteObject\Adapter\Soap</code></li>
+    </ul>
 
 <hr />
 
     <h3 class="section-title">Usage examples</h3>
 
-    <pre>
-class UserMapper
-{   
-    private $adapter;
-
-    public function __construct(DatabaseAdapterInterface $adapter) {
-        $this->adapter = $adapter;
-    }
-
-    public function fetchById($id) {
-        $this->adapter->select("users", array("id" => $id));
-        if (!$row = $this->adapter->fetch()) {
-            return null;
-        }
-        return $this->createUser($row);
-    }
-
-    private function createUser(array $row) {
-        $user = new Entity\User($row["name"], $row["email"]);
-        $user->setId($row["id"]);
-        return $user;
-    }
-}
-    </pre>
-
-    <p>If you want to remove conditionals from client code, you need to have a version of the entity conforming to the corresponding interface. With the Null Object Proxy, you can build this object :</p>
-
-        <pre>
-$factory = new \ProxyManager\Factory\NullObjectFactory();
-
-$nullUser = $factory->createProxy('Entity\User');
-
-var_dump($nullUser->getName()); // empty return
-    </pre>
-
-    <p>You can now return a valid entity :</p>
+    <p>RPC server side code (<code>xmlrpc.php</code> in your local webroot):</p>
 
     <pre>
-class UserMapper
-{   
-    private $adapter;
+interface FooServiceInterface
+{
+    public function foo();
+}
 
-    public function __construct(DatabaseAdapterInterface $adapter) {
-        $this->adapter = $adapter;
-    }
-
-    public function fetchById($id) {
-        $this->adapter->select("users", array("id" => $id));
-        return $this->createUser($this->adapter->fetch());
-    }
-
-    private function createUser($row) {
-        if (!$row) {
-            $factory = new \ProxyManager\Factory\NullObjectFactory();
-
-            return $factory->createProxy('Entity\User');
-        }
-        $user = new Entity\User($row["name"], $row["email"]);
-        $user->setId($row["id"]);
-        return $user; 
+class Foo implements FooServiceInterface
+{
+    /**
+     * Foo function
+     * @return string
+     */
+    public function foo()
+    {
+        return 'bar remote';
     }
 }
+
+$server = new Zend\XmlRpc\Server();
+$server->setClass('Foo', 'FooServiceInterface');  // my FooServiceInterface implementation
+$server->handle();
     </pre>
-    
-    
+
+    <p>Client side code (proxy) :</p>
+
+    <pre>
+interface FooServiceInterface
+{
+    public function foo();
+}
+
+$factory = new \ProxyManager\Factory\RemoteObjectFactory(
+    new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
+        new \Zend\XmlRpc\Client('https://localhost/xmlrpc.php')
+    )
+);
+
+$proxy = $factory->createProxy('FooServiceInterface');
+
+var_dump($proxy->foo()); // "bar remote"
+    </pre>
 <hr />
 
-    <h3 class="section-title">Proxying interfaces</h3>
+    <h3 class="section-title">Implementing custom adapters</h3>
 
-    <p>You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the methods defined by the interface itself, and like with the object, the methods are empty.</p>
+    <p>Your adapters must implement <code>ProxyManager\Factory\RemoteObject\AdapterInterface</code> :</p>
+
+    <pre>
+interface AdapterInterface
+{
+    /**
+     * Call remote object
+     *
+     * @param string $wrappedClass
+     * @param string $method
+     * @param array $params
+     *
+     * @return mixed
+     */
+    public function call($wrappedClass, $method, array $params = array());
+}
+    </pre>
+
+    <p>It is very easy to create your own implementation (for RESTful web services, for example). Simply pass your own adapter instance to your factory at construction time</p>
 
     <p>Tuning performance for production</p>
 
