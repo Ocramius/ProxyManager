@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" id="top"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" id="top"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" id="top"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" id="top"> <!--<![endif]-->
+<head>
+    <title>ProxyManager - Null object</title>
+
+    <meta name="description" content="A proxyManager write in php" />
+    <meta name="keywords" content="ProxyManager, proxy, manager, ocramius, Marco Pivetta, php, null object" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
+    <link href="css/styles.css" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body>
+
+<header class="site-header">
+<div class="container">
+<h1><a href="index.html"><img alt="ProxyManager" src="img/block.png" /></a></h1>
+
+<nav class="main-nav" role="navigation">
+<ul>
+    <li><a href="https://github.com/Ocramius/proxymanager" target="_blank">Github</a>
+    <div class="bcms-clearfix"></div>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+<main role="main">
+<section class="component-content"><div class="page-title-wrapper">
+<div class="container">
+    <img src="https://github.com/Ocramius/ProxyManager/raw/master/proxy-manager.png">
+    <h2 class="page-title">Proxy Manager</h2>
+</div>
+</div>
+
+<div class="component-demo" id="live-demo">
+    <div class="container">
+            <div class="main-wrapper" style="text-align: right">
+                <iframe src="http://ghbtns.com/github-btn.html?user=ocramius&amp;repo=ProxyManager&amp;type=fork&amp;count=true&amp;size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="310" height="40"></iframe>
+
+                <iframe src="http://ghbtns.com/github-btn.html?user=ocramius&amp;repo=ProxyManager&amp;type=watch&amp;count=true&amp;size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200" height="40"></iframe>
+
+            </div>
+        <div class="bcms-clearfix bcms-clearfix"></div>
+    </div>
+</div>
+<div class="component-info">
+<div class="container">
+<aside class="sidebar">
+    <nav class="spy-nav">
+        <ul>
+            <li><a href="index.html">Intro</a></li>
+            <li><a href="virtual-proxy.html">Virtual Proxy</a></li>
+            <li><a href="null-object.html">Null Objects</a></li>
+            <li><a href="#">Ghost Objects</a></li>
+            <li><a href="#">Remote Object</a></li>
+            <li><a href="#">Contributing</a></li>
+            <li><a href="#">Credits</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Copyright</a></li>
+        </ul>
+    </nav>
+<div class="bcms-clearfix bcms-clearfix"></div>
+<a class="btn btn-action btn-full download-component"
+    href="#">Download</a>
+    <div class="bcms-clearfix"></div>
+</aside>
+
+<div class="content">
+    <div class="bcms-clearfix"></div>
+    <h3 class="section-title">Null Object Proxy</h3>
+    <p>A Null Object proxy is a <a href="http://en.wikipedia.org/wiki/Null_Object_pattern" target="_blank">null object pattern</a> implementation. The proxy factory creates a new object with defined neutral behavior based on an other object, class name or interface.</p>
+<hr />
+
+    <h3 class="section-title">What is null object proxy ?</h3>
+
+    <p>In your application, when you can't return the object related to the request, the consumer of the model must check for the return value and handle the failing condition gracefully, thus generating an explosion of conditionals throughout your code. Fortunately, this seemingly-tangled situation can be sorted out simply by creating a polymorphic implementation of the domain object, which would implement the same interface as the one of the object in question, only that its methods wouldn’t do anything, therefore offloading client code from doing repetitive checks for ugly null values when the operation is executed.</p>
+
+<hr />
+
+    <h3 class="section-title">Usage examples</h3>
+
+    <pre>
+class UserMapper
+{   
+    private $adapter;
+
+    public function __construct(DatabaseAdapterInterface $adapter) {
+        $this->adapter = $adapter;
+    }
+
+    public function fetchById($id) {
+        $this->adapter->select("users", array("id" => $id));
+        if (!$row = $this->adapter->fetch()) {
+            return null;
+        }
+        return $this->createUser($row);
+    }
+
+    private function createUser(array $row) {
+        $user = new Entity\User($row["name"], $row["email"]);
+        $user->setId($row["id"]);
+        return $user;
+    }
+}
+    </pre>
+
+    <p>If you want to remove conditionals from client code, you need to have a version of the entity conforming to the corresponding interface. With the Null Object Proxy, you can build this object :</p>
+
+        <pre>
+$factory = new \ProxyManager\Factory\NullObjectFactory();
+
+$nullUser = $factory->createProxy('Entity\User');
+
+var_dump($nullUser->getName()); // empty return
+    </pre>
+
+    <p>You can now return a valid entity :</p>
+
+    <pre>
+class UserMapper
+{   
+    private $adapter;
+
+    public function __construct(DatabaseAdapterInterface $adapter) {
+        $this->adapter = $adapter;
+    }
+
+    public function fetchById($id) {
+        $this->adapter->select("users", array("id" => $id));
+        return $this->createUser($this->adapter->fetch());
+    }
+
+    private function createUser($row) {
+        if (!$row) {
+            $factory = new \ProxyManager\Factory\NullObjectFactory();
+
+            return $factory->createProxy('Entity\User');
+        }
+        $user = new Entity\User($row["name"], $row["email"]);
+        $user->setId($row["id"]);
+        return $user; 
+    }
+}
+    </pre>
+    
+    
+<hr />
+
+    <h3 class="section-title">Proxying interfaces</h3>
+
+    <p>You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the methods defined by the interface itself, and like with the object, the methods are empty.</p>
+
+    <p>Tuning performance for production</p>
+
+    <p>See <a href="#">Tuning ProxyManager for Production.</a></p>
+
+</main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-logos">
+                <a href="#">&copy; Marco Pivetta</a>
+            </div>
+        </div>
+
+        <div class="bcms-clearfix"></div>
+    </footer>
+    <div class="bcms-clearfix"></div>
+    </body>
+</html>
