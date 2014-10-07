@@ -64,6 +64,12 @@ legend span { position: absolute; top: 0; right: 0; left: 0; display: block; pad
 .btn.btn-default:hover, .spy-nav a:hover { background: #2F611C; color: #fff; }
 .btn.btn-text, .spy-nav a.btn-text { color: #18324f; font-weight: 600; }
 .btn.btn-full, .spy-nav a { display: block; }
+@media only screen and (max-width: 480px) { 
+	.site-header{ position: fixed !important; top: 0; z-index: 999999}
+	.page-title-wrapper{ margin-top: 70px;}
+	.main-wrapper iframe{ width: 42% !important; float: left; margin-left: 8%;}
+	.content iframe{width: 100%; height: 100%;}
+}
 
 .btn-top { position: relative; display: inline-block; float: right; margin: 20px 0 0; padding: 0 30px 0 50px; height: 57px; border: 2px solid ##31811D; color: #31811D; vertical-align: top; text-align: center; text-transform: uppercase; font-weight: 600; font-size: 1.125em; line-height: 53px; transition: all .2s; }
 .btn-top:before { background-position: 0 -140px; width: 52px; height: 52px; position: absolute; top: 0; left: 0; content: ''; }
@@ -179,7 +185,7 @@ main { overflow: hidden; }
 .spy-nav ul { list-style: none; }
 .spy-nav a { padding-top: 9px; padding-bottom: 10px; height: auto; border-bottom: 1px solid #4B8B20; text-align: left; text-transform: none; font-size: 1.375em; line-height: normal; }
 .spy-nav .active a { border-bottom-color: #fff; background: #fff; color: #17324f; }
-@media only screen and (max-width: 768px) { .spy-nav { display: none; } }
+@media only screen and (max-width: 768px) { /*.spy-nav { display: none; } */}
 
 .main-wrapper { margin: 44px auto 44px; max-width: 600px; }
 .main-wrapper label { display: block; margin-bottom: .75em; color: #3f4e5e; font-size: 1.25em; }
