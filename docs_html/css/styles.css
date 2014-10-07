@@ -130,7 +130,7 @@ main { overflow: hidden; }
 @media only screen and (max-width: 768px) { .page-title-wrapper { font-size: 0.8em; } }
 @media only screen and (max-width: 480px) { .page-title-wrapper { font-size: 0.65em; } }
 
-.site-footer { padding-top: 50px; padding-bottom: 50px; background: #18324f; color: #7c8ea3; text-align: center; }
+.site-footer { margin-top: 20px; padding-top: 50px; padding-bottom: 50px; background: #18324f; color: #7c8ea3; text-align: center; }
 .site-footer .container { position: relative; }
 .site-footer + .bcms-clearfix:after { content: ""; }
 .about + .site-footer .main { padding-top: 150px; }
