@@ -21,7 +21,7 @@ This library aims at providing abstraction for generating various kinds of [prox
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require ocramius/proxy-manager:0.5.*
+php composer.phar require ocramius/proxy-manager:1.0.*
 ```
 
 ## Lazy Loading Value Holders (Virtual Proxy)
