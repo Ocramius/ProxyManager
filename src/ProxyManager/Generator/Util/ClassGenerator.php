@@ -16,38 +16,39 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\Factory;
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+namespace ProxyManager\Generator\Util;
+
+use ReflectionClass;
+use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Generator\ClassGenerator as GeneratorClass;
 
 /**
- * Tests for {@see \ProxyManager\Factory\AbstractLazyFactory}
+ * Util class to help to generate code
  *
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
- *
- * @covers \ProxyManager\Factory\AbstractLazyFactory
- * @group Coverage
  */
-class AbstractLazyFactoryTest extends \PHPUnit_Framework_TestCase
+class ClassGenerator
 {
-
     /**
-     * @var LazyLoadingValueHolderFactory
+     * @param ReflectionClass  $originalClass
+     * @param GeneratorClass   $classGenerator
+     * @param MethodGenerator  $generatedMethod
      */
-    private $factory;
+    public static function addMethodIfNotFinal(
+        ReflectionClass $originalClass,
+        GeneratorClass $classGenerator,
+        MethodGenerator $generatedMethod
+    ) {
+        if (! $originalClass->hasMethod($generatedMethod->getName())) {
+            return;
+        }
 
-    public function setUp()
-    {
-        $this->factory = new LazyLoadingValueHolderFactory();
-    }
+        $method = $originalClass->getMethod($generatedMethod->getName());
+        if ($method->isFinal()) {
+            return;
+        }
 
-    public function testFinalMagicMethodWakeupCantBeReplaced()
-    {
-        $this->factory->createProxy(
-            'PDO',
-            function () {}
-        );
-
-        $this->assertTrue(true);
+        $classGenerator->addMethodFromGenerator($generatedMethod);
     }
 }
