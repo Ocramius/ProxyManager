@@ -94,8 +94,16 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
             new MagicUnset($originalClass, $initializer, $valueHolder, $publicProperties)
         );
         $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new MagicWakeup($originalClass));
+
+        $sleep = $originalClass->getMethod('__sleep');
+        if (! $sleep->isFinal()) {
+            $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer, $valueHolder));
+        }
+
+        $wakeup = $originalClass->getMethod('__wakeup');
+        if (! $wakeup->isFinal()) {
+            $classGenerator->addMethodFromGenerator(new MagicWakeup($originalClass));
+        }
 
         $classGenerator->addMethodFromGenerator(new SetProxyInitializer($initializer));
         $classGenerator->addMethodFromGenerator(new GetProxyInitializer($initializer));
