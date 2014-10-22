@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Exception\InvalidProxiedClassException;
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
@@ -75,27 +76,49 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
             );
         }
 
-        $classGenerator->addMethodFromGenerator(
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
             new Constructor($originalClass, $prefixInterceptors, $suffixInterceptors)
         );
-        $classGenerator->addMethodFromGenerator(new SetMethodPrefixInterceptor($prefixInterceptors));
-        $classGenerator->addMethodFromGenerator(new SetMethodSuffixInterceptor($suffixInterceptors));
-        $classGenerator->addMethodFromGenerator(
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new SetMethodPrefixInterceptor($prefixInterceptors)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new SetMethodSuffixInterceptor($suffixInterceptors)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
             new MagicGet($originalClass, $prefixInterceptors, $suffixInterceptors)
         );
-        $classGenerator->addMethodFromGenerator(
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
             new MagicSet($originalClass, $prefixInterceptors, $suffixInterceptors)
         );
-        $classGenerator->addMethodFromGenerator(
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
             new MagicIsset($originalClass, $prefixInterceptors, $suffixInterceptors)
         );
-        $classGenerator->addMethodFromGenerator(
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
             new MagicUnset($originalClass, $prefixInterceptors, $suffixInterceptors)
         );
-        $classGenerator->addMethodFromGenerator(
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
             new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors)
         );
-        $classGenerator->addMethodFromGenerator(
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
             new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors)
         );
     }

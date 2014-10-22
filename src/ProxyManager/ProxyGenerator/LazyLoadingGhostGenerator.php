@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
@@ -73,7 +74,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $init = new CallInitializer($initializer, $publicPropsDefaults, $initializationTracker);
 
-        $classGenerator->addMethodFromGenerator($init);
+        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $init);
 
         foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
             $classGenerator->addMethodFromGenerator(
@@ -85,18 +86,62 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
             );
         }
 
-        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $initializer));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new Constructor($originalClass, $initializer)
+        );
 
-        $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer, $init));
-        $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer, $init));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicGet($originalClass, $initializer, $init, $publicProperties)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicSet($originalClass, $initializer, $init, $publicProperties)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicIsset($originalClass, $initializer, $init, $publicProperties)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicUnset($originalClass, $initializer, $init, $publicProperties)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicClone($originalClass, $initializer, $init)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicSleep($originalClass, $initializer, $init)
+        );
 
-        $classGenerator->addMethodFromGenerator(new SetProxyInitializer($initializer));
-        $classGenerator->addMethodFromGenerator(new GetProxyInitializer($initializer));
-        $classGenerator->addMethodFromGenerator(new InitializeProxy($initializer, $init));
-        $classGenerator->addMethodFromGenerator(new IsProxyInitialized($initializer));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new SetProxyInitializer($initializer)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new GetProxyInitializer($initializer)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new InitializeProxy($initializer, $init)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new IsProxyInitialized($initializer)
+        );
     }
 }

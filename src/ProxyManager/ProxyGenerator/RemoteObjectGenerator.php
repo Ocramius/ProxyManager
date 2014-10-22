@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
@@ -74,10 +75,30 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
             );
         }
 
-        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $adapter));
-        $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $adapter));
-        $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $adapter));
-        $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $adapter));
-        $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $adapter));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new Constructor($originalClass, $adapter)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicGet($originalClass, $adapter)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicSet($originalClass, $adapter)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicIsset($originalClass, $adapter)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicUnset($originalClass, $adapter)
+        );
     }
 }

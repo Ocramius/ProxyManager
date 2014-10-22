@@ -16,30 +16,66 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManagerTest\Generator\Util;
-
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+namespace ProxyManagerTestAsset;
 
 /**
- * Tests for {@see \ProxyManager\Generator\Util\ClassGeneratorUtils}
+ * Base test class to play around with final pre-existing magic methods
  *
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
- *
- * @covers \ProxyManager\Generator\Util\ClassGeneratorUtils
- * @group Coverage
  */
-class ClassGeneratorUtilsTest extends \PHPUnit_Framework_TestCase
+class ClassWithFinalMagicMethods
 {
-    public function testClassCanCreateAInstanceWithFinalMethods()
+    /**
+     * {@inheritDoc}
+     */
+    final public function __set($name, $value)
     {
-        $factory = new LazyLoadingValueHolderFactory();
-        $object = $factory->createProxy(
-            'ProxyManagerTestAsset\\BaseClass',
-            function () {
-            }
-        );
+        return array($name => $value);
+    }
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\BaseClass', $object);
+    /**
+     * {@inheritDoc}
+     */
+    final public function __get($name)
+    {
+        return $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    final public function __isset($name)
+    {
+        return (bool) $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    final public function __unset($name)
+    {
+        return (bool) $name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    final public function __sleep()
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    final public function __wakeup()
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    final public function __clone()
+    {
     }
 }
