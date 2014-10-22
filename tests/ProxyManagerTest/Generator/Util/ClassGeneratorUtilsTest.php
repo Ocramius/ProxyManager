@@ -34,12 +34,12 @@ class ClassGeneratorUtilsTest extends \PHPUnit_Framework_TestCase
     public function testClassCanCreateAInstanceWithFinalMethods()
     {
         $factory = new LazyLoadingValueHolderFactory();
-        $PDO = $factory->createProxy(
-            'PDO',
+        $object = $factory->createProxy(
+            'ProxyManagerTestAsset\\BaseClass',
             function () {
             }
         );
 
-        $this->assertInstanceOf('PDO', $PDO);
+        $this->assertInstanceOf('ProxyManagerTestAsset\\BaseClass', $object);
     }
 }
