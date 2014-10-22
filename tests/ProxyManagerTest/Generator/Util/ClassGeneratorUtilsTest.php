@@ -29,7 +29,7 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
  * @covers \ProxyManager\Generator\Util\ClassGenerator
  * @group Coverage
  */
-class ClassGeneratorTest extends \PHPUnit_Framework_TestCase
+class ClassGeneratorUtilsTest extends \PHPUnit_Framework_TestCase
 {
     public function testClassCanCreateAInstanceWithFinalMethods()
     {

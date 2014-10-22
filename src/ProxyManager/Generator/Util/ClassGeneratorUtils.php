@@ -28,12 +28,14 @@ use Zend\Code\Generator\ClassGenerator as GeneratorClass;
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
  */
-class ClassGenerator
+final class ClassGeneratorUtils
 {
     /**
      * @param ReflectionClass  $originalClass
      * @param GeneratorClass   $classGenerator
      * @param MethodGenerator  $generatedMethod
+     *
+     * @return void
      */
     public static function addMethodIfNotFinal(
         ReflectionClass $originalClass,
@@ -44,8 +46,7 @@ class ClassGenerator
             return;
         }
 
-        $method = $originalClass->getMethod($generatedMethod->getName());
-        if ($method->isFinal()) {
+        if ($originalClass->getMethod($generatedMethod->getName())->isFinal()) {
             return;
         }
 
