@@ -80,23 +80,74 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
             );
         }
 
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new Constructor($originalClass, $initializer));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new Constructor($originalClass, $initializer)
+        );
 
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicIsset($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicUnset($originalClass, $initializer, $valueHolder, $publicProperties)
+        );
 
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties));
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new MagicIsset($originalClass, $initializer, $valueHolder, $publicProperties));
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new MagicUnset($originalClass, $initializer, $valueHolder, $publicProperties));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicClone($originalClass, $initializer, $valueHolder)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicSleep($originalClass, $initializer, $valueHolder)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new MagicWakeup($originalClass)
+        );
 
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new MagicClone($originalClass, $initializer, $valueHolder));
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new MagicSleep($originalClass, $initializer, $valueHolder));
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new MagicWakeup($originalClass));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new SetProxyInitializer($initializer)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new GetProxyInitializer($initializer)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new InitializeProxy($initializer, $valueHolder)
+        );
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new IsProxyInitialized($valueHolder)
+        );
 
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new SetProxyInitializer($initializer));
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new GetProxyInitializer($initializer));
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new InitializeProxy($initializer, $valueHolder));
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new IsProxyInitialized($valueHolder));
-
-        ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new GetWrappedValueHolderValue($valueHolder));
+        ClassGeneratorUtils::addMethodIfNotFinal(
+            $originalClass,
+            $classGenerator,
+            new GetWrappedValueHolderValue($valueHolder)
+        );
     }
 }

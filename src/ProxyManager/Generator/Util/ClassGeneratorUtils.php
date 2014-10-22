@@ -42,10 +42,10 @@ final class ClassGeneratorUtils
         GeneratorClass $classGenerator,
         MethodGenerator $generatedMethod
     ) {
+        $methodName = $generatedMethod->getName();
 
-        if ($originalClass->hasMethod($generatedMethod->getName())
-            and $originalClass->getMethod($generatedMethod->getName())->isFinal()
-        ) {
+        if ($originalClass->hasMethod($methodName)
+            and $originalClass->getMethod($methodName)->isFinal()) {
             return;
         }
 

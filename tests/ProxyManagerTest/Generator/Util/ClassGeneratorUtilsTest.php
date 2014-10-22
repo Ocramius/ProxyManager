@@ -36,7 +36,8 @@ class ClassGeneratorUtilsTest extends \PHPUnit_Framework_TestCase
         $factory = new LazyLoadingValueHolderFactory();
         $PDO = $factory->createProxy(
             'PDO',
-            function () {}
+            function () {
+            }
         );
 
         $this->assertInstanceOf('PDO', $PDO);
