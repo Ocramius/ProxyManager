@@ -21,12 +21,12 @@ namespace ProxyManagerTest\Generator\Util;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
 /**
- * Tests for {@see \ProxyManager\Generator\Util\ClassGenerator}
+ * Tests for {@see \ProxyManager\Generator\Util\ClassGeneratorUtils}
  *
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
  *
- * @covers \ProxyManager\Generator\Util\ClassGenerator
+ * @covers \ProxyManager\Generator\Util\ClassGeneratorUtils
  * @group Coverage
  */
 class ClassGeneratorUtilsTest extends \PHPUnit_Framework_TestCase
