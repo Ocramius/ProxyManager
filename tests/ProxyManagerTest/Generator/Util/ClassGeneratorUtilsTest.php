@@ -34,18 +34,39 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 {
     public function testCantAddAFinalMethod()
     {
-        $classGenerator = $this->getMock('Zend\\Code\\Generator\\ClassGenerator');
+        $classGenerator  = $this->getMock('Zend\\Code\\Generator\\ClassGenerator');
         $methodGenerator = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
 
         $methodGenerator
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
 
+        $classGenerator
+            ->expects($this->never())
+            ->method('addMethodFromGenerator');
+
         $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithFinalMethods');
 
-        $this->assertFalse(
-            ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator)
-        );
+        ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
+    }
+
+    public function testCanAddANotFinalMethod()
+    {
+        $classGenerator  = $this->getMock('Zend\\Code\\Generator\\ClassGenerator');
+        $methodGenerator = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+
+        $methodGenerator
+            ->expects($this->once())
+            ->method('getName')
+            ->willReturn('publicMethod');
+
+        $classGenerator
+            ->expects($this->once())
+            ->method('addMethodFromGenerator');
+
+        $reflection = new ReflectionClass('ProxyManagerTestAsset\\BaseClass');
+
+        ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
     }
 }
