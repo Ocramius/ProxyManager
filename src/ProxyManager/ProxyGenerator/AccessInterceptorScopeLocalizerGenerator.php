@@ -33,6 +33,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
@@ -68,7 +69,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
             },
             array_merge(
                 array_map(
-                    function (\ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors) {
+                    function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors) {
                         return InterceptedMethod::generateMethod(
                             new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                             $prefixInterceptors,
