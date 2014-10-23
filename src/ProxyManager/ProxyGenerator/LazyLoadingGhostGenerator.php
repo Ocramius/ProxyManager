@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
@@ -37,7 +38,9 @@ use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -73,30 +76,36 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $init = new CallInitializer($initializer, $publicPropsDefaults, $initializationTracker);
 
-        $classGenerator->addMethodFromGenerator($init);
-
-        foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
-            $classGenerator->addMethodFromGenerator(
-                LazyLoadingMethodInterceptor::generateMethod(
-                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                    $initializer,
-                    $init
+        array_map(
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
+                ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
+            },
+            array_merge(
+                array_map(
+                    function (ReflectionMethod $method) use ($initializer, $init) {
+                        return LazyLoadingMethodInterceptor::generateMethod(
+                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                            $initializer,
+                            $init
+                        );
+                    },
+                    ProxiedMethodsFilter::getProxiedMethods($originalClass)
+                ),
+                array(
+                    $init,
+                    new Constructor($originalClass, $initializer),
+                    new MagicGet($originalClass, $initializer, $init, $publicProperties),
+                    new MagicSet($originalClass, $initializer, $init, $publicProperties),
+                    new MagicIsset($originalClass, $initializer, $init, $publicProperties),
+                    new MagicUnset($originalClass, $initializer, $init, $publicProperties),
+                    new MagicClone($originalClass, $initializer, $init, $publicProperties),
+                    new MagicSleep($originalClass, $initializer, $init, $publicProperties),
+                    new SetProxyInitializer($initializer),
+                    new GetProxyInitializer($initializer),
+                    new InitializeProxy($initializer, $init),
+                    new IsProxyInitialized($initializer),
                 )
-            );
-        }
-
-        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $initializer));
-
-        $classGenerator->addMethodFromGenerator(new MagicGet($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicSet($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicIsset($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicUnset($originalClass, $initializer, $init, $publicProperties));
-        $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer, $init));
-        $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer, $init));
-
-        $classGenerator->addMethodFromGenerator(new SetProxyInitializer($initializer));
-        $classGenerator->addMethodFromGenerator(new GetProxyInitializer($initializer));
-        $classGenerator->addMethodFromGenerator(new InitializeProxy($initializer, $init));
-        $classGenerator->addMethodFromGenerator(new IsProxyInitialized($initializer));
+            )
+        );
     }
 }

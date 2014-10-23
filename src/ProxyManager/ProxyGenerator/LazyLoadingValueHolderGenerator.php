@@ -36,8 +36,11 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHo
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -69,39 +72,37 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
-        foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
-            $classGenerator->addMethodFromGenerator(
-                LazyLoadingMethodInterceptor::generateMethod(
-                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                    $initializer,
-                    $valueHolder
+        array_map(
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
+                ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
+            },
+            array_merge(
+                array_map(
+                    function (ReflectionMethod $method) use ($initializer, $valueHolder) {
+                        return LazyLoadingMethodInterceptor::generateMethod(
+                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                            $initializer,
+                            $valueHolder
+                        );
+                    },
+                    ProxiedMethodsFilter::getProxiedMethods($originalClass)
+                ),
+                array(
+                    new Constructor($originalClass, $initializer),
+                    new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties),
+                    new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties),
+                    new MagicIsset($originalClass, $initializer, $valueHolder, $publicProperties),
+                    new MagicUnset($originalClass, $initializer, $valueHolder, $publicProperties),
+                    new MagicClone($originalClass, $initializer, $valueHolder),
+                    new MagicSleep($originalClass, $initializer, $valueHolder),
+                    new MagicWakeup($originalClass),
+                    new SetProxyInitializer($initializer),
+                    new GetProxyInitializer($initializer),
+                    new InitializeProxy($initializer, $valueHolder),
+                    new IsProxyInitialized($valueHolder),
+                    new GetWrappedValueHolderValue($valueHolder),
                 )
-            );
-        }
-
-        $classGenerator->addMethodFromGenerator(new Constructor($originalClass, $initializer));
-
-        $classGenerator->addMethodFromGenerator(
-            new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties)
+            )
         );
-        $classGenerator->addMethodFromGenerator(
-            new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicIsset($originalClass, $initializer, $valueHolder, $publicProperties)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicUnset($originalClass, $initializer, $valueHolder, $publicProperties)
-        );
-        $classGenerator->addMethodFromGenerator(new MagicClone($originalClass, $initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new MagicSleep($originalClass, $initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new MagicWakeup($originalClass));
-
-        $classGenerator->addMethodFromGenerator(new SetProxyInitializer($initializer));
-        $classGenerator->addMethodFromGenerator(new GetProxyInitializer($initializer));
-        $classGenerator->addMethodFromGenerator(new InitializeProxy($initializer, $valueHolder));
-        $classGenerator->addMethodFromGenerator(new IsProxyInitialized($valueHolder));
-
-        $classGenerator->addMethodFromGenerator(new GetWrappedValueHolderValue($valueHolder));
     }
 }

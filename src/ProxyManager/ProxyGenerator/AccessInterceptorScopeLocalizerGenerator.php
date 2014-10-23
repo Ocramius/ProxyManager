@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Exception\InvalidProxiedClassException;
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
@@ -32,7 +33,9 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -60,43 +63,36 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
 
-        $methods = ProxiedMethodsFilter::getProxiedMethods(
-            $originalClass,
-            array('__get', '__set', '__isset', '__unset', '__clone', '__sleep')
-        );
-
-        foreach ($methods as $method) {
-            $classGenerator->addMethodFromGenerator(
-                InterceptedMethod::generateMethod(
-                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                    $prefixInterceptors,
-                    $suffixInterceptors
+        array_map(
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
+                ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
+            },
+            array_merge(
+                array_map(
+                    function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors) {
+                        return InterceptedMethod::generateMethod(
+                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                            $prefixInterceptors,
+                            $suffixInterceptors
+                        );
+                    },
+                    ProxiedMethodsFilter::getProxiedMethods(
+                        $originalClass,
+                        array('__get', '__set', '__isset', '__unset', '__clone', '__sleep')
+                    )
+                ),
+                array(
+                    new Constructor($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new SetMethodPrefixInterceptor($prefixInterceptors),
+                    new SetMethodSuffixInterceptor($suffixInterceptors),
+                    new MagicGet($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new MagicSet($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new MagicIsset($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new MagicUnset($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors),
                 )
-            );
-        }
-
-        $classGenerator->addMethodFromGenerator(
-            new Constructor($originalClass, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(new SetMethodPrefixInterceptor($prefixInterceptors));
-        $classGenerator->addMethodFromGenerator(new SetMethodSuffixInterceptor($suffixInterceptors));
-        $classGenerator->addMethodFromGenerator(
-            new MagicGet($originalClass, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicSet($originalClass, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicIsset($originalClass, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicUnset($originalClass, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors)
-        );
-        $classGenerator->addMethodFromGenerator(
-            new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors)
+            )
         );
     }
 }

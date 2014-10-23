@@ -102,6 +102,8 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         $data = array(
             array('ProxyManagerTestAsset\\BaseClass'),
             array('ProxyManagerTestAsset\\ClassWithMagicMethods'),
+            array('ProxyManagerTestAsset\\ClassWithFinalMethods'),
+            array('ProxyManagerTestAsset\\ClassWithFinalMagicMethods'),
             array('ProxyManagerTestAsset\\ClassWithByRefMagicMethods'),
             array('ProxyManagerTestAsset\\ClassWithMixedProperties'),
             array('ProxyManagerTestAsset\\ClassWithPrivateProperties'),
