@@ -48,7 +48,7 @@ echo 'SUCCESS: ' . %s;
 PHP;
 
     /**
-     * Verifies that lazy loading ghost will work with all given classes
+     * Verifies that lazy loading ghost creation will work with all given classes
      *
      * @param string $className a valid (existing/autoloadable) class name
      *
