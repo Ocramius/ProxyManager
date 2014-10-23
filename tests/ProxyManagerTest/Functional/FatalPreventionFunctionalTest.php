@@ -97,29 +97,25 @@ PHP;
      */
     public function getTestedClasses()
     {
-        $generators = array(
-            'ProxyManager\\ProxyGenerator\\AccessInterceptorScopeLocalizerGenerator',
-            'ProxyManager\\ProxyGenerator\\AccessInterceptorValueHolderGenerator',
-            'ProxyManager\\ProxyGenerator\\LazyLoadingGhostGenerator',
-            'ProxyManager\\ProxyGenerator\\LazyLoadingValueHolderGenerator',
-            'ProxyManager\\ProxyGenerator\\NullObjectGenerator',
-            'ProxyManager\\ProxyGenerator\\RemoteObjectGenerator',
-        );
-
-        $classes = array_slice(get_declared_classes(), 0, 5);
-
         return call_user_func_array(
             'array_merge',
             array_map(
-                function ($generator) use ($classes) {
+                function ($generator) {
                     return array_map(
                         function ($class) use ($generator) {
                             return array($generator, $class);
                         },
-                        $classes
+                        get_declared_classes()
                     );
                 },
-                $generators
+                array(
+                    'ProxyManager\\ProxyGenerator\\AccessInterceptorScopeLocalizerGenerator',
+                    'ProxyManager\\ProxyGenerator\\AccessInterceptorValueHolderGenerator',
+                    'ProxyManager\\ProxyGenerator\\LazyLoadingGhostGenerator',
+                    'ProxyManager\\ProxyGenerator\\LazyLoadingValueHolderGenerator',
+                    'ProxyManager\\ProxyGenerator\\NullObjectGenerator',
+                    'ProxyManager\\ProxyGenerator\\RemoteObjectGenerator',
+                )
             )
         );
     }
