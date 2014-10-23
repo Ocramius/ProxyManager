@@ -37,7 +37,9 @@ use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -74,76 +76,60 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodSuffixInterceptors());
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
-        foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
-            $classGenerator->addMethodFromGenerator(
-                InterceptedMethod::generateMethod(
-                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                    $valueHolder,
-                    $prefixInterceptors,
-                    $suffixInterceptors
+        array_map(
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator, $valueHolder) {
+                ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
+            },
+            array_merge(
+                array_map(
+                    function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors, $valueHolder) {
+                        return InterceptedMethod::generateMethod(
+                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                            $valueHolder,
+                            $prefixInterceptors,
+                            $suffixInterceptors
+                        );
+                    },
+                    ProxiedMethodsFilter::getProxiedMethods($originalClass)
+                ),
+                array(
+                    new Constructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
+                    new GetWrappedValueHolderValue($valueHolder),
+                    new SetMethodPrefixInterceptor($prefixInterceptors),
+                    new SetMethodSuffixInterceptor($suffixInterceptors),
+                    new MagicGet(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicSet(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicIsset(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicUnset(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
+                    new MagicSleep($originalClass, $valueHolder),
+                    new MagicWakeup($originalClass, $valueHolder),
                 )
-            );
-        }
-
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new Constructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
-        );
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new GetWrappedValueHolderValue($valueHolder)
-        );
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new SetMethodPrefixInterceptor($prefixInterceptors)
-        );
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new SetMethodSuffixInterceptor($suffixInterceptors)
-        );
-
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new MagicGet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
-        );
-
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new MagicSet($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
-        );
-
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new MagicIsset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
-        );
-
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new MagicUnset($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors, $publicProperties)
-        );
-
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors)
-        );
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new MagicSleep($originalClass, $valueHolder)
-        );
-        ClassGeneratorUtils::addMethodIfNotFinal(
-            $originalClass,
-            $classGenerator,
-            new MagicWakeup($originalClass, $valueHolder)
+            )
         );
     }
 }

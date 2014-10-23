@@ -19,7 +19,7 @@
 namespace ProxyManager\Generator\Util;
 
 use ReflectionClass;
-use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ClassGenerator as GeneratorClass;
 
 /**
