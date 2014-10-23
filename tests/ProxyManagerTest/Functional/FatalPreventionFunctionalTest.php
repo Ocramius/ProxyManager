@@ -82,6 +82,40 @@ PHP;
     }
 
     /**
+     * Verifies that lazy loading value holder creation will work with all given classes
+     *
+     * @param string $className a valid (existing/autoloadable) class name
+     *
+     * @dataProvider getTestedClasses
+     */
+    public function testLazyLoadingValueHolder($className)
+    {
+        $runner = PHPUnit_Util_PHP::factory();
+
+        $code = sprintf(
+            $this->template,
+            var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
+            'ProxyManager\\Factory\\LazyLoadingValueHolderFactory',
+            var_export($className, true),
+            var_export($className, true)
+        );
+
+        $result = $runner->runJob($code);
+
+        if (('SUCCESS: ' . $className) !== $result['stdout']) {
+            $this->fail(sprintf(
+                "Crashed with class '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
+                $className,
+                $result['stdout'],
+                $result['stderr'],
+                $code
+            ));
+        }
+
+        $this->assertSame('SUCCESS: ' . $className, $result['stdout']);
+    }
+
+    /**
      * @return string[][]
      */
     public function getTestedClasses()
