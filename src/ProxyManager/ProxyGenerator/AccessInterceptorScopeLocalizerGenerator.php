@@ -58,6 +58,10 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
             throw InvalidProxiedClassException::interfaceNotSupported($originalClass);
         }
 
+        if ($originalClass->isFinal()) {
+            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
+        }
+
         $classGenerator->setExtendedClass($originalClass->getName());
         $classGenerator->setImplementedInterfaces(array('ProxyManager\\Proxy\\AccessInterceptorInterface'));
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());

@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
@@ -41,6 +42,10 @@ class NullObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
+        if ($originalClass->isFinal()) {
+            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
+        }
+
         $interfaces = array('ProxyManager\\Proxy\\NullObjectInterface');
 
         if ($originalClass->isInterface()) {

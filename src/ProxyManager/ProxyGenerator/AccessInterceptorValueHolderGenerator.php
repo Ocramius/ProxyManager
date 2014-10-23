@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
@@ -58,6 +59,10 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
+        if ($originalClass->isFinal()) {
+            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
+        }
+
         $publicProperties    = new PublicPropertiesMap($originalClass);
         $interfaces          = array(
             'ProxyManager\\Proxy\\AccessInterceptorInterface',

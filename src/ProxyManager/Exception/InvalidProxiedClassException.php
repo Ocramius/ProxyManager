@@ -38,4 +38,14 @@ class InvalidProxiedClassException extends InvalidArgumentException implements E
     {
         return new self(sprintf('Provided interface "%s" cannot be proxied', $reflection->getName()));
     }
+
+    /**
+     * @param ReflectionClass $reflection
+     *
+     * @return self
+     */
+    public static function finalClassNotSupported(ReflectionClass $reflection)
+    {
+        return new self(sprintf('Provided class "%s" is final and cannot be proxied', $reflection->getName()));
+    }
 }

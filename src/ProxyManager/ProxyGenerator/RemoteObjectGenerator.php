@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
@@ -48,6 +49,10 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
+        if ($originalClass->isFinal()) {
+            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
+        }
+
         $interfaces = array('ProxyManager\\Proxy\\RemoteObjectInterface');
 
         if ($originalClass->isInterface()) {
