@@ -37,10 +37,18 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
 
 require_once %s;
 
-$factory = new %s;
+$className               = %s;
+$generatedClass          = new ProxyManager\Generator\ClassGenerator(uniqid('generated'));
+$generatorStrategy       = new ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy();
+$classGenerator          = new %s;
+$classSignatureGenerator = new ProxyManager\Signature\ClassSignatureGenerator(
+    new ProxyManager\Signature\SignatureGenerator()
+);
 
 try {
-    $factory->createProxy(%s);
+    $classGenerator->generate(new ReflectionClass($className), $generatedClass);
+    $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
+    $generatorStrategy->generate($generatedClass);
 } catch (\ProxyManager\Exception\ExceptionInterface $e) {
 }
 
@@ -61,8 +69,8 @@ PHP;
         $code = sprintf(
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
-            'ProxyManager\\Factory\\LazyLoadingGhostFactory',
-            var_export($className, true) . ', function() {}',
+            var_export($className, true),
+            'ProxyManager\\ProxyGenerator\\LazyLoadingGhostGenerator',
             var_export($className, true)
         );
 
@@ -95,8 +103,8 @@ PHP;
         $code = sprintf(
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
-            'ProxyManager\\Factory\\LazyLoadingValueHolderFactory',
-            var_export($className, true) . ', function() {}',
+            var_export($className, true),
+            'ProxyManager\\ProxyGenerator\\LazyLoadingValueHolderGenerator',
             var_export($className, true)
         );
 
@@ -129,8 +137,8 @@ PHP;
         $code = sprintf(
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
-            'ProxyManager\\Factory\\NullObjectFactory',
             var_export($className, true),
+            'ProxyManager\\ProxyGenerator\\NullObjectGenerator',
             var_export($className, true)
         );
 
