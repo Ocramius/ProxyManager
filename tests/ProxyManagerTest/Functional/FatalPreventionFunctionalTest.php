@@ -56,13 +56,15 @@ echo 'SUCCESS: ' . %s;
 PHP;
 
     /**
-     * Verifies that lazy loading ghost creation will work with all given classes
+     * Verifies that code generation and evaluation will not cause fatals with any given class
      *
-     * @param string $className a valid (existing/autoloadable) class name
+     * @param string $generatorClass an instantiable class (no arguments) implementing
+     *                               the {@see \ProxyManager\ProxyGenerator\ProxyGeneratorInterface}
+     * @param string $className      a valid (existing/autoloadable) class name
      *
      * @dataProvider getTestedClasses
      */
-    public function testLazyLoadingGhost($className)
+    public function testCodeGeneration($generatorClass, $className)
     {
         $runner = PHPUnit_Util_PHP::factory();
 
@@ -70,7 +72,7 @@ PHP;
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
             var_export($className, true),
-            'ProxyManager\\ProxyGenerator\\LazyLoadingGhostGenerator',
+            $generatorClass,
             var_export($className, true)
         );
 
@@ -78,75 +80,8 @@ PHP;
 
         if (('SUCCESS: ' . $className) !== $result['stdout']) {
             $this->fail(sprintf(
-                "Crashed with class '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
-                $className,
-                $result['stdout'],
-                $result['stderr'],
-                $code
-            ));
-        }
-
-        $this->assertSame('SUCCESS: ' . $className, $result['stdout']);
-    }
-
-    /**
-     * Verifies that lazy loading value holder creation will work with all given classes
-     *
-     * @param string $className a valid (existing/autoloadable) class name
-     *
-     * @dataProvider getTestedClasses
-     */
-    public function testLazyLoadingValueHolder($className)
-    {
-        $runner = PHPUnit_Util_PHP::factory();
-
-        $code = sprintf(
-            $this->template,
-            var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
-            var_export($className, true),
-            'ProxyManager\\ProxyGenerator\\LazyLoadingValueHolderGenerator',
-            var_export($className, true)
-        );
-
-        $result = $runner->runJob($code);
-
-        if (('SUCCESS: ' . $className) !== $result['stdout']) {
-            $this->fail(sprintf(
-                "Crashed with class '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
-                $className,
-                $result['stdout'],
-                $result['stderr'],
-                $code
-            ));
-        }
-
-        $this->assertSame('SUCCESS: ' . $className, $result['stdout']);
-    }
-
-    /**
-     * Verifies that null object creation will work with all given classes
-     *
-     * @param string $className a valid (existing/autoloadable) class name
-     *
-     * @dataProvider getTestedClasses
-     */
-    public function testNullObjectFactory($className)
-    {
-        $runner = PHPUnit_Util_PHP::factory();
-
-        $code = sprintf(
-            $this->template,
-            var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
-            var_export($className, true),
-            'ProxyManager\\ProxyGenerator\\NullObjectGenerator',
-            var_export($className, true)
-        );
-
-        $result = $runner->runJob($code);
-
-        if (('SUCCESS: ' . $className) !== $result['stdout']) {
-            $this->fail(sprintf(
-                "Crashed with class '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
+                "Crashed with class '%s' and generator '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
+                $generatorClass,
                 $className,
                 $result['stdout'],
                 $result['stderr'],
@@ -162,11 +97,30 @@ PHP;
      */
     public function getTestedClasses()
     {
-        return array_slice(array_map(
-            function ($className) {
-                return array($className);
-            },
-            get_declared_classes()
-        ), 0, 10);
+        $generators = array(
+            'ProxyManager\\ProxyGenerator\\AccessInterceptorScopeLocalizerGenerator',
+            'ProxyManager\\ProxyGenerator\\AccessInterceptorValueHolderGenerator',
+            'ProxyManager\\ProxyGenerator\\LazyLoadingGhostGenerator',
+            'ProxyManager\\ProxyGenerator\\LazyLoadingValueHolderGenerator',
+            'ProxyManager\\ProxyGenerator\\NullObjectGenerator',
+            'ProxyManager\\ProxyGenerator\\RemoteObjectGenerator',
+        );
+
+        $classes = array_slice(get_declared_classes(), 0, 5);
+
+        return call_user_func_array(
+            'array_merge',
+            array_map(
+                function ($generator) use ($classes) {
+                    return array_map(
+                        function ($class) use ($generator) {
+                            return array($generator, $class);
+                        },
+                        $classes
+                    );
+                },
+                $generators
+            )
+        );
     }
 }
