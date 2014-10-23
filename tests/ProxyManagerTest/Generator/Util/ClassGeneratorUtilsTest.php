@@ -16,38 +16,36 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Generator\Util;
+namespace ProxyManagerTest\Generator\Util;
 
 use ReflectionClass;
-use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\ClassGenerator as GeneratorClass;
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 
 /**
- * Util class to help to generate code
+ * Test to {@see ProxyManager\Generator\Util\ClassGeneratorUtils}
  *
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
+ *
+ * @covers ProxyManager\Generator\Util\ClassGeneratorUtils
  */
-final class ClassGeneratorUtils
+class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @param ReflectionClass  $originalClass
-     * @param GeneratorClass   $classGenerator
-     * @param MethodGenerator  $generatedMethod
-     *
-     * @return void|false
-     */
-    public static function addMethodIfNotFinal(
-        ReflectionClass $originalClass,
-        GeneratorClass $classGenerator,
-        MethodGenerator $generatedMethod
-    ) {
-        $methodName = $generatedMethod->getName();
+    public function testCantAddAFinalMethod()
+    {
+        $classGenerator = $this->getMock('Zend\\Code\\Generator\\ClassGenerator');
+        $methodGenerator = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
 
-        if ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal()) {
-            return false;
-        }
+        $methodGenerator
+            ->expects($this->any())
+            ->method('getName')
+            ->willReturn('foo');
 
-        $classGenerator->addMethodFromGenerator($generatedMethod);
+        $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithFinalMethods');
+
+        $this->assertFalse(
+            ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator)
+        );
     }
 }
