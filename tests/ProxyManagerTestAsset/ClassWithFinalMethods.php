@@ -28,15 +28,15 @@ use PHPUnit_Framework_TestCase;
  */
 class ClassWithFinalMethods extends PHPUnit_Framework_TestCase
 {
-    final public function __construct()
+    final public function foo()
     {
     }
 
-    final private function foo()
+    final private function bar()
     {
     }
 
-    final protected function bar()
+    final protected function baz()
     {
     }
 }
