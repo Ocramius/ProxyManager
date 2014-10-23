@@ -40,7 +40,7 @@ require_once %s;
 $factory = new %s;
 
 try {
-    $factory->createProxy(%s, function () {});
+    $factory->createProxy(%s);
 } catch (\ProxyManager\Exception\ExceptionInterface $e) {
 }
 
@@ -62,7 +62,7 @@ PHP;
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
             'ProxyManager\\Factory\\LazyLoadingGhostFactory',
-            var_export($className, true),
+            var_export($className, true) . ', function() {}',
             var_export($className, true)
         );
 
@@ -96,6 +96,40 @@ PHP;
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
             'ProxyManager\\Factory\\LazyLoadingValueHolderFactory',
+            var_export($className, true) . ', function() {}',
+            var_export($className, true)
+        );
+
+        $result = $runner->runJob($code);
+
+        if (('SUCCESS: ' . $className) !== $result['stdout']) {
+            $this->fail(sprintf(
+                "Crashed with class '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
+                $className,
+                $result['stdout'],
+                $result['stderr'],
+                $code
+            ));
+        }
+
+        $this->assertSame('SUCCESS: ' . $className, $result['stdout']);
+    }
+
+    /**
+     * Verifies that null object creation will work with all given classes
+     *
+     * @param string $className a valid (existing/autoloadable) class name
+     *
+     * @dataProvider getTestedClasses
+     */
+    public function testNullObjectFactory($className)
+    {
+        $runner = PHPUnit_Util_PHP::factory();
+
+        $code = sprintf(
+            $this->template,
+            var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
+            'ProxyManager\\Factory\\NullObjectFactory',
             var_export($className, true),
             var_export($className, true)
         );
@@ -120,11 +154,11 @@ PHP;
      */
     public function getTestedClasses()
     {
-        return array_map(
+        return array_slice(array_map(
             function ($className) {
                 return array($className);
             },
             get_declared_classes()
-        );
+        ), 0, 10);
     }
 }
