@@ -48,8 +48,9 @@ echo 'SUCCESS: ' . %s;
 PHP;
 
     /**
-     * Verifies that proxies generated from different factories will retain their specific implementation
-     * and won't conflict
+     * Verifies that lazy loading ghost will work with all given classes
+     *
+     * @param string $className a valid (existing/autoloadable) class name
      *
      * @dataProvider getTestedClasses
      */
