@@ -18,13 +18,15 @@
 
 namespace ProxyManagerTestAsset;
 
+use PHPUnit_Framework_TestCase;
+
 /**
  * Base test class to play around with final pre-existing methods
  *
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
  */
-class ClassWithFinalMethods extends \PHPUnit_Framework_TestCase
+class ClassWithFinalMethods extends PHPUnit_Framework_TestCase
 {
     final public function __construct()
     {
