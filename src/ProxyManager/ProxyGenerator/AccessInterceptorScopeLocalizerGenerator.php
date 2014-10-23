@@ -62,11 +62,6 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
 
-        $methods = ProxiedMethodsFilter::getProxiedMethods(
-            $originalClass,
-            array('__get', '__set', '__isset', '__unset', '__clone', '__sleep')
-        );
-
         array_map(
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
@@ -80,7 +75,10 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                             $suffixInterceptors
                         );
                     },
-                    $methods
+                    ProxiedMethodsFilter::getProxiedMethods(
+                        $originalClass,
+                        array('__get', '__set', '__isset', '__unset', '__clone', '__sleep')
+                    )
                 ),
                 array(
                     new Constructor($originalClass, $prefixInterceptors, $suffixInterceptors),
