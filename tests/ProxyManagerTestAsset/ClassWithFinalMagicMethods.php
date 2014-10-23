@@ -29,6 +29,13 @@ class ClassWithFinalMagicMethods
     /**
      * {@inheritDoc}
      */
+    final public function __construct()
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     final public function __set($name, $value)
     {
         return array($name => $value);
