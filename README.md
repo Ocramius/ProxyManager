@@ -31,30 +31,19 @@ php composer.phar require ocramius/proxy-manager:1.0.*
 
 ## Proxy example
 
-### Ghost Objects
+Here's how you build a lazy loadable object with ProxyManager:
 
-The difference between a value holder and a ghost object is that the ghost object does not contain a real instance of
-the required object, but handles lazy loading by initializing its own inherited properties.
-
-ProxyManager can generate [lazy loading ghost objects](http://www.martinfowler.com/eaaCatalog/lazyLoad.html),
-which are proxies used to save performance and memory for large datasets and graphs representing relational data.
-Ghost objects are particularly useful when building data-mappers.
-
-Additionally, the overhead introduced by ghost objects is very low when compared to the memory and performance overhead
-caused by virtual proxies.
+##### Example using *Lazy Loading Value Holders*
 
 ```php
-$factory = new \ProxyManager\Factory\LazyLoadingGhostFactory();
+$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
 
 $proxy = $factory->createProxy(
     'MyApp\HeavyComplexObject',
-    function ($proxy, $method, $parameters, & $initializer) {
+    function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
+        $wrappedObject = new HeavyComplexObject(); // instantiation logic here
         $initializer   = null; // turning off further lazy initialization
-
-        // modify the proxy instance
-        $proxy->setFoo('foo');
-        $proxy->setBar('bar');
-
+    
         return true;
     }
 );
