@@ -33,9 +33,6 @@ php composer.phar require ocramius/proxy-manager:1.0.*
 
 ### Ghost Objects
 
-
-Similar to value holder, a ghost object is usually created to handle lazy loading.
-
 The difference between a value holder and a ghost object is that the ghost object does not contain a real instance of
 the required object, but handles lazy loading by initializing its own inherited properties.
 
@@ -65,7 +62,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-See the [online documentation](http://ocramius.github.io/ProxyManager) for more proxies type and examples. 
+See the [online documentation](http://ocramius.github.io/ProxyManager) for more supported proxy types and examples. 
 
 
 ## Contributing
