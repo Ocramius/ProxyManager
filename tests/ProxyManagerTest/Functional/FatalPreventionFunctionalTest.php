@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
+use ReflectionClass;
 
 /**
  * Verifies that proxy-manager will not attempt to `eval()` code that will cause fatal errors
@@ -49,7 +50,8 @@ try {
     $classGenerator->generate(new ReflectionClass($className), $generatedClass);
     $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
     $generatorStrategy->generate($generatedClass);
-} catch (\ProxyManager\Exception\ExceptionInterface $e) {
+} catch (ProxyManager\Exception\ExceptionInterface $e) {
+} catch (ReflectionException $e) {
 }
 
 echo 'SUCCESS: ' . %s;
@@ -76,7 +78,7 @@ PHP;
             var_export($className, true)
         );
 
-        $result = $runner->runJob($code);
+        $result = $runner->runJob($code, array('n'));
 
         if (('SUCCESS: ' . $className) !== $result['stdout']) {
             $this->fail(sprintf(
@@ -97,15 +99,17 @@ PHP;
      */
     public function getTestedClasses()
     {
+        $that = $this;
+
         return call_user_func_array(
             'array_merge',
             array_map(
-                function ($generator) {
+                function ($generator) use ($that) {
                     return array_map(
                         function ($class) use ($generator) {
                             return array($generator, $class);
                         },
-                        get_declared_classes()
+                        $that->getProxyTestedClasses()
                     );
                 },
                 array(
@@ -117,6 +121,43 @@ PHP;
                     'ProxyManager\\ProxyGenerator\\RemoteObjectGenerator',
                 )
             )
+        );
+    }
+
+    /**
+     * @private (public only for PHP 5.3 compatibility)
+     *
+     * @return string[]
+     */
+    public function getProxyTestedClasses()
+    {
+        $skippedPaths = array(
+            realpath(__DIR__ . '/../../src'),
+            realpath(__DIR__ . '/../../vendor'),
+            realpath(__DIR__ . '/../../tests/ProxyManagerTest'),
+        );
+
+        return array_filter(
+            get_declared_classes(),
+            function ($className) use ($skippedPaths) {
+                $reflectionClass = new ReflectionClass($className);
+                $fileName        = $reflectionClass->getFileName();
+
+                if (! $fileName) {
+                    return false;
+                }
+
+                $realPath = realpath($fileName);
+
+                foreach ($skippedPaths as $skippedPath) {
+                    if (0 === strpos($realPath, $skippedPath)) {
+                        // skip classes defined within ProxyManager, vendor or the test suite
+                        return false;
+                    }
+                }
+
+                return true;
+            }
         );
     }
 }
