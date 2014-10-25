@@ -19,7 +19,7 @@ This library aims at providing abstraction for generating various kinds of [prox
 
 ## Documentation
 
-You can learn about proxy pattern and how use **ProxyManager** on [online documentation](http://ocramius.github.io/ProxyManager).
+You can learn about proxy pattern and how use **ProxyManager** on the [online documentation](http://ocramius.github.io/ProxyManager).
 
 ## Installation
 
@@ -33,7 +33,7 @@ php composer.phar require ocramius/proxy-manager:1.0.*
 
 Here's how you build a lazy loadable object with ProxyManager:
 
-##### Example using *Lazy Loading Value Holders*
+##### Example using a *Virtual Proxy*
 
 ```php
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
