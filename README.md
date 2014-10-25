@@ -16,9 +16,57 @@ This library aims at providing abstraction for generating various kinds of [prox
 [![Latest Stable Version](https://poser.pugx.org/ocramius/proxy-manager/v/stable.png)](https://packagist.org/packages/ocramius/proxy-manager)
 [![Latest Unstable Version](https://poser.pugx.org/ocramius/proxy-manager/v/unstable.png)](https://packagist.org/packages/ocramius/proxy-manager)
 
+
 ## Documentation
 
-You can learn about proxy pattern and how use this library on [online documentation](http://ocramius.github.io/ProxyManager).
+You can learn about proxy pattern and how use **ProxyManager** on [online documentation](http://ocramius.github.io/ProxyManager).
+
+## Installation
+
+The suggested installation method is via [composer](https://getcomposer.org/):
+
+```sh
+php composer.phar require ocramius/proxy-manager:1.0.*
+```
+
+## Proxy example
+
+### Ghost Objects
+
+
+Similar to value holder, a ghost object is usually created to handle lazy loading.
+
+The difference between a value holder and a ghost object is that the ghost object does not contain a real instance of
+the required object, but handles lazy loading by initializing its own inherited properties.
+
+ProxyManager can generate [lazy loading ghost objects](http://www.martinfowler.com/eaaCatalog/lazyLoad.html),
+which are proxies used to save performance and memory for large datasets and graphs representing relational data.
+Ghost objects are particularly useful when building data-mappers.
+
+Additionally, the overhead introduced by ghost objects is very low when compared to the memory and performance overhead
+caused by virtual proxies.
+
+```php
+$factory = new \ProxyManager\Factory\LazyLoadingGhostFactory();
+
+$proxy = $factory->createProxy(
+    'MyApp\HeavyComplexObject',
+    function ($proxy, $method, $parameters, & $initializer) {
+        $initializer   = null; // turning off further lazy initialization
+
+        // modify the proxy instance
+        $proxy->setFoo('foo');
+        $proxy->setBar('bar');
+
+        return true;
+    }
+);
+
+$proxy->doFoo();
+```
+
+See the [online documentation](http://ocramius.github.io/ProxyManager) for more proxies type and examples. 
+
 
 ## Contributing
 
@@ -29,4 +77,3 @@ wish to help out!
 
 The idea was originated by a [talk about Proxies in PHP OOP](http://marco-pivetta.com/proxy-pattern-in-php/) that I gave
 at the [@phpugffm](https://twitter.com/phpugffm) in January 2013.
-
