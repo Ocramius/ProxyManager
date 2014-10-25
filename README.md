@@ -31,9 +31,7 @@ php composer.phar require ocramius/proxy-manager:1.0.*
 
 ## Proxy example
 
-Here's how you build a lazy loadable object with ProxyManager:
-
-##### Example using a *Virtual Proxy*
+Here's how you build a lazy loadable object with ProxyManager using a *Virtual Proxy*
 
 ```php
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
