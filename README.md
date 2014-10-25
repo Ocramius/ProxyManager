@@ -50,14 +50,3 @@ $proxy->doFoo();
 ```
 
 See the [online documentation](http://ocramius.github.io/ProxyManager) for more supported proxy types and examples. 
-
-
-## Contributing
-
-Please read the [CONTRIBUTING.md](https://github.com/Ocramius/ProxyManager/blob/master/CONTRIBUTING.md) contents if you
-wish to help out!
-
-## Credits
-
-The idea was originated by a [talk about Proxies in PHP OOP](http://marco-pivetta.com/proxy-pattern-in-php/) that I gave
-at the [@phpugffm](https://twitter.com/phpugffm) in January 2013.
