@@ -78,7 +78,7 @@ PHP;
             var_export($className, true)
         );
 
-        $result = $runner->runJob($code, array('n'));
+        $result = $runner->runJob($code, array('-n'));
 
         if (('SUCCESS: ' . $className) !== $result['stdout']) {
             $this->fail(sprintf(
