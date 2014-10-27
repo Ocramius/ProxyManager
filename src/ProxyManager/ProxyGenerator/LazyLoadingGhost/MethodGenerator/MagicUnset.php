@@ -53,12 +53,12 @@ class MagicUnset extends MagicMethodGenerator
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if (! $publicProperties->isEmpty()) {
-            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+        //if (! $publicProperties->isEmpty()) {
+            $callParent = '' //'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
                 . '    unset($this->$name);'
-                . "\n\n    return;"
-                . "\n}\n\n";
-        }
+                . "\n\n    return;";
+                //. "\n}\n\n";
+        //}
 
         if ($override) {
             $callParent .= "return parent::__unset(\$name);";

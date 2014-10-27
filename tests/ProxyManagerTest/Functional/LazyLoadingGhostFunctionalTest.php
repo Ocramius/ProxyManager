@@ -47,9 +47,9 @@ use ReflectionProperty;
 class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider getProxyMethods
+     * @dataProvider getProxyInitializingMethods
      */
-    public function testMethodCalls($className, $instance, $method, $params, $expectedValue)
+    public function testMethodCallsThatLazyLoadTheObject($className, $instance, $method, $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($className);
 
@@ -59,6 +59,24 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
         $this->assertTrue($proxy->isProxyInitialized());
+    }
+
+    /**
+     * @dataProvider getProxyNonInitializingMethods
+     */
+    public function testMethodCallsThatDoNotLazyLoadTheObject($className, $instance, $method, $params, $expectedValue)
+    {
+        $proxyName         = $this->generateProxy($className);
+        $initializeMatcher = $this->getMock('stdClass', ['__invoke']);
+
+        $initializeMatcher->expects($this->never())->method('__invoke'); // should not initialize the proxy
+
+        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
+        $proxy = new $proxyName($this->createInitializer($className, $instance, $initializeMatcher));
+
+        $this->assertFalse($proxy->isProxyInitialized());
+        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertFalse($proxy->isProxyInitialized());
     }
 
     /**
@@ -433,6 +451,53 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 $selfHintParam
             ],
         ];
+    }
+
+    /**
+     * Generates a list of object | invoked method | parameters | expected result for methods that cause lazy-loading
+     * of a ghost object
+     *
+     * @return array
+     */
+    public function getProxyInitializingMethods()
+    {
+        $selfHintParam = new ClassWithSelfHint();
+
+        $data = array(
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'publicPropertyGetter',
+                array(),
+                'publicPropertyDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'protectedPropertyGetter',
+                array(),
+                'protectedPropertyDefault'
+            ),
+            array(
+                'ProxyManagerTestAsset\\BaseClass',
+                new BaseClass(),
+                'privatePropertyGetter',
+                array(),
+                'privatePropertyDefault'
+            ),
+        );
+
+        return $data;
+    }
+
+    /**
+     * Generates a list of object | invoked method | parameters | expected result for methods DON'T cause lazy-loading
+     *
+     * @return array
+     */
+    public function getProxyNonInitializingMethods()
+    {
+        return $this->getProxyMethods();
     }
 
     /**

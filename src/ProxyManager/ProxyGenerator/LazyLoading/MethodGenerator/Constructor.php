@@ -44,18 +44,42 @@ class Constructor extends MethodGenerator
 
         $this->setParameter(new ParameterGenerator('initializer'));
 
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = [];
+        /* @var $allProperties \ReflectionProperty[] */
+        $allProperties = [];
+        $class         = $originalClass;
 
-        foreach ($publicProperties as $publicProperty) {
+        do {
+            foreach ($class->getProperties() as $property) {
+                $allProperties[$property->getDeclaringClass()->getName() . '#' . $property->getName()] = $property;
+            }
+        } while ($class = $class->getParentClass());
+
+        $unsetProperties  = array();
+
+        foreach ($allProperties as $publicProperty) {
             $unsetProperties[] = '$this->' . $publicProperty->getName();
         }
 
         $this->setDocblock("@override constructor for lazy initialization\n\n@param \\Closure|null \$initializer");
         $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
+            implode("\n", array_map([$this, 'getUnsetPropertyCode'], $allProperties))
             . '$this->' . $initializerProperty->getName() . ' = $initializer;'
         );
+    }
+
+    /**
+     * @param ReflectionProperty $property
+     *
+     * @return string
+     */
+    private function getUnsetPropertyCode(ReflectionProperty $property)
+    {
+        if (! $property->isPrivate()) {
+            return 'unset($this->' . $property->getName() . ");\n";
+        }
+
+        return "\\Closure::bind(function () {\n"
+            . '    unset($this->' . $property->getName() . ");\n"
+            . '}, $this, ' . var_export($property->getDeclaringClass()->getName(), true) . ")->__invoke();\n";
     }
 }

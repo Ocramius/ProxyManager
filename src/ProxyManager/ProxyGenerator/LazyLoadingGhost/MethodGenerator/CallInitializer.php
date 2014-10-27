@@ -61,6 +61,7 @@ class CallInitializer extends MethodGenerator
             'if ($this->' . $initialization . ' || ! $this->' . $initializer . ') {' . "\n    return;\n}\n\n"
             . "\$this->" . $initialization . " = true;\n\n"
             . "foreach (self::\$" . $publicPropsDefaults->getName() . " as \$key => \$default) {\n"
+            // @todo should use closures for private properties here
             . "    \$this->\$key = \$default;\n"
             . "}\n\n"
             . '$this->' . $initializer . '->__invoke'

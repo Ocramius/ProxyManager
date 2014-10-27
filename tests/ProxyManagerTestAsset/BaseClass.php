@@ -52,6 +52,30 @@ class BaseClass implements BaseInterface
     /**
      * @return string
      */
+    public function publicPropertyGetter()
+    {
+        return $this->publicProperty;
+    }
+
+    /**
+     * @return string
+     */
+    public function protectedPropertyGetter()
+    {
+        return $this->protectedProperty;
+    }
+
+    /**
+     * @return string
+     */
+    public function privatePropertyGetter()
+    {
+        return $this->privateProperty;
+    }
+
+    /**
+     * @return string
+     */
     protected function protectedMethod()
     {
         return 'protectedMethodDefault';

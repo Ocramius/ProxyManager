@@ -53,11 +53,11 @@ class MagicGet extends MagicMethodGenerator
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if (! $publicProperties->isEmpty()) {
-            $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
-                . '    return $this->$name;'
-                . "\n}\n\n";
-        }
+        //if (! $publicProperties->isEmpty()) {
+            $callParent = '' //'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
+                . '    return $this->$name;';
+                //. "\n}\n\n";
+        //}
 
         if ($override) {
             $callParent .= 'return parent::__get($name);';
