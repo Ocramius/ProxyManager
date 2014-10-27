@@ -18,12 +18,8 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
-use ReflectionMethod;
 use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Generator\PropertyGenerator;
-use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Create methods to be compliance with abstracts methods on
