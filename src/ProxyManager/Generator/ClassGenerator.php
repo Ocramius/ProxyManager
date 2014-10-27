@@ -45,7 +45,7 @@ class ClassGenerator extends ZendClassGenerator
      */
     public function setImplementedInterfaces(array $interfaces)
     {
-        $interfaces = array_diff($interfaces, $this->getImplementedInterfaces());
+        $interfaces = array_diff(array_unique($interfaces), $this->getImplementedInterfaces());
 
         foreach ($interfaces as & $interface) {
             $interface = '\\' . trim($interface, '\\');
