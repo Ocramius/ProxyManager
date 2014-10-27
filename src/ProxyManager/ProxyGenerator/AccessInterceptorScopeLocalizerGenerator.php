@@ -23,6 +23,7 @@ use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicClone;
@@ -87,6 +88,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                 ),
                 array(
                     new Constructor($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new AbstractMethod($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
                     new SetMethodSuffixInterceptor($suffixInterceptors),
                     new MagicGet($originalClass, $prefixInterceptors, $suffixInterceptors),
