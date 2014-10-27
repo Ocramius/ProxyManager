@@ -48,9 +48,7 @@ class AbstractMethod extends MethodGenerator
         foreach ($methods as $methodName) {
             $methodCollection[] = new self($originalClass, $methodName);
         }
-        if ('PHPUnit_Runner_BaseTestRunner' == $originalClass->getName()) {
-           //print_r($methodCollection);
-        }
+        
         return $methodCollection;
     }
 }
