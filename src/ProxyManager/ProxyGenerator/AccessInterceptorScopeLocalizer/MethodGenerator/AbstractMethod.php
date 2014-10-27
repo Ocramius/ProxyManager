@@ -34,20 +34,27 @@ use Zend\Code\Reflection\MethodReflection;
  */
 class AbstractMethod extends MethodGenerator
 {
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
-    ) {
-        $abstractMethods = $originalClass->getMethods(ReflectionMethod::IS_ABSTRACT);
+    public function __construct(ReflectionClass $originalClass, $name)
+    {
+        parent::__construct($name);
+        $method = $originalClass->getMethod($name);
 
-        foreach($abstractMethods as $method)
-        {
-            parent::__construct($method->getName());
-
-            foreach ($method->getParameters() as $parameter) {
-                $this->setParameter($parameter->getName());
-            }
+        foreach ($method->getParameters() as $param) {
+            $this->setParameter($param->getName());
         }
+
+        $this->setBody('');
+    }
+
+    public static function createCollection(ReflectionClass $originalClass, array $methods)
+    {
+        $methodCollection = array();
+        foreach ($methods as $methodName) {
+            $methodCollection[] = new self($originalClass, $methodName);
+        }
+        if ('PHPUnit_Runner_BaseTestRunner' == $originalClass->getName()) {
+           //print_r($methodCollection);
+        }
+        return $methodCollection;
     }
 }

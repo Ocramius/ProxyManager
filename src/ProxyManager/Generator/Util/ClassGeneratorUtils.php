@@ -19,6 +19,7 @@
 namespace ProxyManager\Generator\Util;
 
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ClassGenerator as GeneratorClass;
 
@@ -44,10 +45,22 @@ final class ClassGeneratorUtils
     ) {
         $methodName = $generatedMethod->getName();
 
-        if ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal()) {
+        if ($classGenerator->hasMethod($methodName)
+            || ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal())) {
             return false;
         }
 
         $classGenerator->addMethodFromGenerator($generatedMethod);
+    }
+
+    public static function getAbstractMethods($originalClass)
+    {
+        $methodList = array();
+        $abstractMethods = $originalClass->getMethods(ReflectionMethod::IS_ABSTRACT);
+        foreach ($abstractMethods as $method) {
+            $methodList[] = $method->getName();
+        }
+
+        return $methodList;
     }
 }

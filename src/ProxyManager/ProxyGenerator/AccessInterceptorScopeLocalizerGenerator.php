@@ -88,7 +88,6 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                 ),
                 array(
                     new Constructor($originalClass, $prefixInterceptors, $suffixInterceptors),
-                    new AbstractMethod($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
                     new SetMethodSuffixInterceptor($suffixInterceptors),
                     new MagicGet($originalClass, $prefixInterceptors, $suffixInterceptors),
@@ -97,6 +96,10 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                     new MagicUnset($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors),
+                ),
+                AbstractMethod::createCollection(
+                    $originalClass,
+                    ClassGeneratorUtils::getAbstractMethods($originalClass)
                 )
             )
         );
