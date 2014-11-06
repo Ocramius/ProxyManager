@@ -18,8 +18,6 @@
 
 namespace ProxyManagerTest\Functional;
 
-error_reporting(E_ALL & ~E_STRICT);
-
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
 use ReflectionClass;
@@ -58,6 +56,11 @@ try {
 
 echo 'SUCCESS: ' . %s;
 PHP;
+
+    public function setUp()
+    {
+        error_reporting(E_ALL & ~E_STRICT);
+    }
 
     /**
      * Verifies that code generation and evaluation will not cause fatals with any given class
