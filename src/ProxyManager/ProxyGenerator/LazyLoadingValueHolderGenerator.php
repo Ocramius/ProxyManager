@@ -108,7 +108,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                     new IsProxyInitialized($valueHolder),
                     new GetWrappedValueHolderValue($valueHolder),
                 ),
-                AbstractMethod::createCollection(
+                AbstractMethod::buildConcreteMethodsFromOriginalClass(
                     $originalClass,
                     ClassGeneratorUtils::getAbstractMethods($originalClass)
                 )

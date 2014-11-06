@@ -54,7 +54,7 @@ class AbstractMethod extends MethodGenerator
      *
      * @return AbstractMethod[]
      */
-    public static function createCollection(ReflectionClass $originalClass, array $methods)
+    public static function buildConcreteMethodsFromOriginalClass(ReflectionClass $originalClass, array $methods)
     {
         $methodCollection = array();
         foreach ($methods as $methodName) {
