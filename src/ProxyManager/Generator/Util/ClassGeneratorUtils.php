@@ -52,23 +52,4 @@ final class ClassGeneratorUtils
 
         $classGenerator->addMethodFromGenerator($generatedMethod);
     }
-
-    /**
-     * Return the abstract methods name from a given `ReflectionClass` instance.
-     *
-     * @param $originalClass
-     *
-     * @return array
-     */
-    public static function getAbstractMethods(ReflectionClass $originalClass)
-    {
-        $methodList = array();
-        $abstractMethods = $originalClass->getMethods(ReflectionMethod::IS_ABSTRACT);
-
-        array_map(function($method) use(& $methodList) {
-            $methodList[] = $method->getName();
-        }, $abstractMethods);
-
-        return $methodList;
-    }
 }

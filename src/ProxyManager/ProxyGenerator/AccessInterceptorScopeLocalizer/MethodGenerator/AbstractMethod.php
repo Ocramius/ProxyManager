@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\MethodGenerator;
 
 /**
@@ -33,13 +34,11 @@ class AbstractMethod extends MethodGenerator
     /**
      * Constructor.
      *
-     * @param ReflectionClass $originalClass
-     * @param string          $name
+     * @param ReflectionMethod $method
      */
-    public function __construct(ReflectionClass $originalClass, $name)
+    public function __construct(ReflectionMethod $method)
     {
-        parent::__construct($name);
-        $method = $originalClass->getMethod($name);
+        parent::__construct($method->getName());
 
         foreach ($method->getParameters() as $param) {
             $this->setParameter($param->getName());
@@ -50,17 +49,16 @@ class AbstractMethod extends MethodGenerator
      * Return a collection of abstractMethods objects.
      *
      * @param ReflectionClass $originalClass
-     * @param array           $methods
      *
      * @return AbstractMethod[]
      */
-    public static function buildConcreteMethodsFromOriginalClass(ReflectionClass $originalClass, array $methods)
+    public static function buildConcreteMethodsFromOriginalClass(ReflectionClass $originalClass)
     {
         $methodCollection = array();
 
-        array_map(function($methodName) use (& $methodCollection, $originalClass) {
-            $methodCollection[] = new self($originalClass, $methodName);
-        }, $methods);
+        array_map(function(ReflectionMethod $methodName) use (& $methodCollection, $originalClass) {
+            $methodCollection[] = new self($methodName);
+        }, $originalClass->getMethods(ReflectionMethod::IS_ABSTRACT));
 
         return $methodCollection;
     }
