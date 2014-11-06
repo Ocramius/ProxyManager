@@ -111,10 +111,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     new InitializeProxy($initializer, $init),
                     new IsProxyInitialized($initializer),
                 ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass(
-                    $originalClass,
-                    ClassGeneratorUtils::getAbstractMethods($originalClass)
-                )
+                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
             )
         );
     }

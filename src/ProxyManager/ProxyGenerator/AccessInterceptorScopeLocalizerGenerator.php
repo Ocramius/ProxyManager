@@ -97,10 +97,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                     new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors),
                 ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass(
-                    $originalClass,
-                    ClassGeneratorUtils::getAbstractMethods($originalClass)
-                )
+                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
             )
         );
     }

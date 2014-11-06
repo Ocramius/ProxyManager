@@ -68,10 +68,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
-            AbstractMethod::buildConcreteMethodsFromOriginalClass(
-                $originalClass,
-                ClassGeneratorUtils::getAbstractMethods($originalClass)
-            )
+            AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
         );
 
         ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new Constructor($originalClass));

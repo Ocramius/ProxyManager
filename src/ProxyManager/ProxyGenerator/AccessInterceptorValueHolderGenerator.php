@@ -135,10 +135,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     new MagicSleep($originalClass, $valueHolder),
                     new MagicWakeup($originalClass, $valueHolder),
                 ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass(
-                    $originalClass,
-                    ClassGeneratorUtils::getAbstractMethods($originalClass)
-                )
+                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
             )
         );
     }

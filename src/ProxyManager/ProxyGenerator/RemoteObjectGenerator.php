@@ -90,10 +90,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
                     new MagicIsset($originalClass, $adapter),
                     new MagicUnset($originalClass, $adapter),
                 ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass(
-                    $originalClass,
-                    ClassGeneratorUtils::getAbstractMethods($originalClass)
-                )
+                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
             )
         );
     }
