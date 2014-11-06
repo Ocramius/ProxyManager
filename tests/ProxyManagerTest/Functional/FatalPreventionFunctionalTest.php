@@ -18,6 +18,8 @@
 
 namespace ProxyManagerTest\Functional;
 
+error_reporting(E_ALL & ~E_STRICT);
+
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
 use ReflectionClass;
