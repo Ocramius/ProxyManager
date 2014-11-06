@@ -57,11 +57,6 @@ try {
 echo 'SUCCESS: ' . %s;
 PHP;
 
-    public function setUp()
-    {
-        error_reporting(E_ALL & ~E_STRICT);
-    }
-
     /**
      * Verifies that code generation and evaluation will not cause fatals with any given class
      *
@@ -73,6 +68,7 @@ PHP;
      */
     public function testCodeGeneration($generatorClass, $className)
     {
+        error_reporting(E_ALL & ~E_STRICT);
         $runner = PHPUnit_Util_PHP::factory();
 
         $code = sprintf(
