@@ -65,9 +65,9 @@ final class ClassGeneratorUtils
         $methodList = array();
         $abstractMethods = $originalClass->getMethods(ReflectionMethod::IS_ABSTRACT);
 
-        foreach ($abstractMethods as $method) {
+        array_map(function($method) use(& $methodList) {
             $methodList[] = $method->getName();
-        }
+        }, $abstractMethods);
 
         return $methodList;
     }
