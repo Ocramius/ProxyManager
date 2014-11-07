@@ -68,7 +68,6 @@ PHP;
      */
     public function testCodeGeneration($generatorClass, $className)
     {
-        error_reporting(E_ALL & ~E_STRICT);
         $runner = PHPUnit_Util_PHP::factory();
 
         $code = sprintf(
