@@ -25,6 +25,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefi
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodSuffixInterceptors;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicClone;
@@ -133,7 +134,8 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $valueHolder),
                     new MagicWakeup($originalClass, $valueHolder),
-                )
+                ),
+                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
             )
         );
     }

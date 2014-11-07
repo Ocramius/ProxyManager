@@ -16,40 +16,53 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Generator\Util;
+namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use ReflectionClass;
 use ReflectionMethod;
-use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\MethodGenerator;
 
 /**
- * Util class to help to generate code
+ * Create methods to be compliance with abstracts methods on
+ * Proxied classes.
  *
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
  */
-final class ClassGeneratorUtils
+class AbstractMethod extends MethodGenerator
 {
     /**
-     * @param ReflectionClass  $originalClass
-     * @param ClassGenerator   $classGenerator
-     * @param MethodGenerator  $generatedMethod
+     * Constructor.
      *
-     * @return void|false
+     * @param ReflectionMethod $method
      */
-    public static function addMethodIfNotFinal(
-        ReflectionClass $originalClass,
-        ClassGenerator $classGenerator,
-        MethodGenerator $generatedMethod
-    ) {
-        $methodName = $generatedMethod->getName();
+    public function __construct(ReflectionMethod $method)
+    {
+        parent::__construct($method->getName());
 
-        if ($classGenerator->hasMethod($methodName)
-            || ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal())) {
-            return false;
+        foreach ($method->getParameters() as $param) {
+            $this->setParameter($param->getName());
         }
+    }
 
-        $classGenerator->addMethodFromGenerator($generatedMethod);
+    /**
+     * Return a collection of abstractMethods objects.
+     *
+     * @param ReflectionClass $originalClass
+     *
+     * @return self[]
+     */
+    public static function buildConcreteMethodsFromOriginalClass(ReflectionClass $originalClass)
+    {
+        $methodCollection = array();
+
+        array_map(function (ReflectionMethod $methodName) use (
+            & $methodCollection,
+            $originalClass
+        ) {
+            $methodCollection[] = new AbstractMethod($methodName);
+        }, $originalClass->getMethods(ReflectionMethod::IS_ABSTRACT));
+
+        return $methodCollection;
     }
 }

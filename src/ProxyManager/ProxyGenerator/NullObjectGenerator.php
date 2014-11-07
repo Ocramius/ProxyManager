@@ -20,11 +20,13 @@ namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -50,10 +52,6 @@ class NullObjectGenerator implements ProxyGeneratorInterface
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
-        } else {
-            foreach ($originalClass->getInterfaceNames() as $name) {
-                $interfaces[] = $name;
-            }
         }
 
         $classGenerator->setImplementedInterfaces($interfaces);
@@ -65,6 +63,13 @@ class NullObjectGenerator implements ProxyGeneratorInterface
                 )
             );
         }
+
+        array_map(
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
+                ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
+            },
+            AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
+        );
 
         ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new Constructor($originalClass));
     }
