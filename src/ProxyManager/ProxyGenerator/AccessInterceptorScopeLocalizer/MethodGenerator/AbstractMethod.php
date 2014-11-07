@@ -50,7 +50,7 @@ class AbstractMethod extends MethodGenerator
      *
      * @param ReflectionClass $originalClass
      *
-     * @return AbstractMethod[]
+     * @return self[]
      */
     public static function buildConcreteMethodsFromOriginalClass(ReflectionClass $originalClass)
     {
