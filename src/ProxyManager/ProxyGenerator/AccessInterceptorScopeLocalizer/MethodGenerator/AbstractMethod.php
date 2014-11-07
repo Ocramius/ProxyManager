@@ -54,11 +54,13 @@ class AbstractMethod extends MethodGenerator
      */
     public static function buildConcreteMethodsFromOriginalClass(ReflectionClass $originalClass)
     {
-        $class = __CLASS__;
         $methodCollection = array();
 
-        array_map(function (ReflectionMethod $methodName) use (& $methodCollection, $originalClass, $class) {
-            $methodCollection[] = new $class($methodName);
+        array_map(function (ReflectionMethod $methodName) use (
+            & $methodCollection,
+            $originalClass
+        ) {
+            $methodCollection[] = new AbstractMethod($methodName);
         }, $originalClass->getMethods(ReflectionMethod::IS_ABSTRACT));
 
         return $methodCollection;

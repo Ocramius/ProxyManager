@@ -131,6 +131,10 @@ PHP;
      */
     public function getProxyTestedClasses()
     {
+        if (PHP_VERSION_ID < 50401) {
+            $this->markTestSkipped('Can\'t ');
+        }
+
         $skippedPaths = array(
             realpath(__DIR__ . '/../../src'),
             realpath(__DIR__ . '/../../vendor'),
