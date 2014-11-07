@@ -132,7 +132,7 @@ PHP;
     public function getProxyTestedClasses()
     {
         if (PHP_VERSION_ID < 50401) {
-            $this->markTestSkipped('Can\'t ');
+            $this->markTestSkipped('Can\'t run this Test Suit on php 5.3 above');
         }
 
         $skippedPaths = array(
