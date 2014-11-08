@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\Assertion;
 
+use BadMethodCallException;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ReflectionClass;
 use ReflectionMethod;
@@ -31,10 +32,13 @@ use ReflectionMethod;
 final class CanProxyAssertion
 {
     /**
-     * Private constructor: not meant to be instantiated
+     * Disabled constructor: not meant to be instantiated
+     *
+     * @throws BadMethodCallException
      */
-    private function __construct()
+    public function __construct()
     {
+        throw new BadMethodCallException('Unsupported constructor.');
     }
 
     /**
