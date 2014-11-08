@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
+use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
@@ -60,9 +61,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        if ($originalClass->isFinal()) {
-            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
-        }
+        CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $interfaces          = array('ProxyManager\\Proxy\\GhostObjectInterface');
         $publicProperties    = new PublicPropertiesMap($originalClass);
@@ -110,8 +109,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     new GetProxyInitializer($initializer),
                     new InitializeProxy($initializer, $init),
                     new IsProxyInitialized($initializer),
-                ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
+                )
             )
         );
     }

@@ -33,6 +33,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Mag
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicIsset;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset;
+use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
@@ -60,9 +61,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        if ($originalClass->isFinal()) {
-            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
-        }
+        CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $publicProperties    = new PublicPropertiesMap($originalClass);
         $interfaces          = array(
@@ -134,8 +133,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $valueHolder),
                     new MagicWakeup($originalClass, $valueHolder),
-                ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
+                )
             )
         );
     }

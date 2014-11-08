@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
+use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
@@ -44,9 +45,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        if ($originalClass->isFinal()) {
-            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
-        }
+        CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $interfaces = array('ProxyManager\\Proxy\\NullObjectInterface');
 
@@ -63,13 +62,6 @@ class NullObjectGenerator implements ProxyGeneratorInterface
                 )
             );
         }
-
-        array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
-                ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
-            },
-            AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
-        );
 
         ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, new Constructor($originalClass));
     }

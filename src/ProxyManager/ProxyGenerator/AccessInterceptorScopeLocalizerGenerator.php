@@ -32,6 +32,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSleep;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicUnset;
+use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
@@ -55,13 +56,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        if ($originalClass->isInterface()) {
-            throw InvalidProxiedClassException::interfaceNotSupported($originalClass);
-        }
-
-        if ($originalClass->isFinal()) {
-            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
-        }
+        CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
         $classGenerator->setExtendedClass($originalClass->getName());
         $classGenerator->setImplementedInterfaces(array('ProxyManager\\Proxy\\AccessInterceptorInterface'));
@@ -96,8 +91,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                     new MagicUnset($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors),
-                ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
+                )
             )
         );
     }

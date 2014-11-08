@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
+use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\InitializeProxy;
@@ -60,9 +61,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        if ($originalClass->isFinal()) {
-            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
-        }
+        CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $interfaces          = array('ProxyManager\\Proxy\\VirtualProxyInterface');
         $publicProperties    = new PublicPropertiesMap($originalClass);
@@ -107,8 +106,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                     new InitializeProxy($initializer, $valueHolder),
                     new IsProxyInitialized($valueHolder),
                     new GetWrappedValueHolderValue($valueHolder),
-                ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
+                )
             )
         );
     }

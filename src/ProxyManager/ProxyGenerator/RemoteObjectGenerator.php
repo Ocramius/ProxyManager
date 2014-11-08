@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
+use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
@@ -50,9 +51,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
-        if ($originalClass->isFinal()) {
-            throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
-        }
+        CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $interfaces = array('ProxyManager\\Proxy\\RemoteObjectInterface');
 
@@ -89,8 +88,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
                     new MagicSet($originalClass, $adapter),
                     new MagicIsset($originalClass, $adapter),
                     new MagicUnset($originalClass, $adapter),
-                ),
-                AbstractMethod::buildConcreteMethodsFromOriginalClass($originalClass)
+                )
             )
         );
     }
