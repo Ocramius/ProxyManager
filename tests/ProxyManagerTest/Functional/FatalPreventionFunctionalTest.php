@@ -72,6 +72,10 @@ PHP;
             $this->markTestSkipped('HHVM is just too slow for this kind of test right now.');
         }
 
+        if (PHP_VERSION_ID < 50401) {
+            $this->markTestSkipped('Can\'t run this Test Suit on php 5.3 above');
+        }
+
         $runner = PHPUnit_Util_PHP::factory();
 
         $code = sprintf(
@@ -135,10 +139,6 @@ PHP;
      */
     public function getProxyTestedClasses()
     {
-        if (PHP_VERSION_ID < 50401) {
-            $this->markTestSkipped('Can\'t run this Test Suit on php 5.3 above');
-        }
-
         $skippedPaths = array(
             realpath(__DIR__ . '/../../src'),
             realpath(__DIR__ . '/../../vendor'),
