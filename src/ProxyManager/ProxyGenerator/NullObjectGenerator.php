@@ -19,6 +19,8 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
+use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
@@ -41,14 +43,12 @@ class NullObjectGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
+        CanProxyAssertion::assertClassCanBeProxied($originalClass);
+
         $interfaces = array('ProxyManager\\Proxy\\NullObjectInterface');
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
-        } else {
-            foreach ($originalClass->getInterfaceNames() as $name) {
-                $interfaces[] = $name;
-            }
         }
 
         $classGenerator->setImplementedInterfaces($interfaces);

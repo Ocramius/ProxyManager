@@ -16,39 +16,18 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Generator\Util;
-
-use ReflectionClass;
-use ReflectionMethod;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\MethodGenerator;
+namespace ProxyManagerTestAsset;
 
 /**
- * Util class to help to generate code
+ * Class with one abstract protected method
  *
- * @author Jefersson Nathan <malukenho@phpse.net>
+ * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-final class ClassGeneratorUtils
+abstract class ClassWithAbstractProtectedMethod
 {
     /**
-     * @param ReflectionClass  $originalClass
-     * @param ClassGenerator   $classGenerator
-     * @param MethodGenerator  $generatedMethod
-     *
-     * @return void|false
+     * @return void
      */
-    public static function addMethodIfNotFinal(
-        ReflectionClass $originalClass,
-        ClassGenerator $classGenerator,
-        MethodGenerator $generatedMethod
-    ) {
-        $methodName = $generatedMethod->getName();
-
-        if ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal()) {
-            return false;
-        }
-
-        $classGenerator->addMethodFromGenerator($generatedMethod);
-    }
+    abstract protected function protectedAbstractMethod();
 }
