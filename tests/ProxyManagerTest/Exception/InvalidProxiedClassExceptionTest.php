@@ -33,15 +33,22 @@ use ReflectionClass;
  */
 class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\Exception\InvalidProxiedClassException::interfaceNotSupported
-     */
     public function testInterfaceNotSupported()
     {
         $this->assertSame(
             'Provided interface "ProxyManagerTestAsset\BaseInterface" cannot be proxied',
             InvalidProxiedClassException::interfaceNotSupported(
                 new ReflectionClass('ProxyManagerTestAsset\BaseInterface')
+            )->getMessage()
+        );
+    }
+
+    public function testFinalClassNotSupported()
+    {
+        $this->assertSame(
+            'Provided class "ProxyManagerTestAsset\FinalClass" is final and cannot be proxied',
+            InvalidProxiedClassException::finalClassNotSupported(
+                new ReflectionClass('ProxyManagerTestAsset\FinalClass')
             )->getMessage()
         );
     }
