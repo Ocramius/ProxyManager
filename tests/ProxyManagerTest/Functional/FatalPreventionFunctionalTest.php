@@ -68,6 +68,10 @@ PHP;
      */
     public function testCodeGeneration($generatorClass, $className)
     {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('HHVM is just too slow for this kind of test right now.');
+        }
+
         $runner = PHPUnit_Util_PHP::factory();
 
         $code = sprintf(
