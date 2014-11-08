@@ -28,7 +28,7 @@ namespace ProxyManager;
  */
 final class Version
 {
-    const VERSION = '1.0.0-beta3';
+    const VERSION = '1.0.0-dev';
 
     /**
      * Private constructor - this class is not meant to be instantiated
