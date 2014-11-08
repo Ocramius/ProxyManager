@@ -73,7 +73,7 @@ PHP;
         }
 
         if (PHP_VERSION_ID < 50401) {
-            $this->markTestSkipped('Can\'t run this Test Suit on php 5.3 above');
+            $this->markTestSkipped('Can\'t run this test suite on php < 5.4.1');
         }
 
         $runner = PHPUnit_Util_PHP::factory();
