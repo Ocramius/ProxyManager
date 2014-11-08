@@ -76,12 +76,14 @@ final class CanProxyAssertion
      */
     private static function hasNoAbstractProtectedMethods(ReflectionClass $originalClass)
     {
-        if (array_filter(
+        $protectedAbstract = array_filter(
             $originalClass->getMethods(),
             function (ReflectionMethod $method) {
                 return $method->isAbstract() && $method->isProtected();
             }
-        )) {
+        );
+
+        if ($protectedAbstract) {
             throw InvalidProxiedClassException::abstractProtectedMethodsNotSupported($originalClass);
         }
     }
