@@ -52,4 +52,16 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
             )->getMessage()
         );
     }
+
+    public function testAbstractProtectedMethodsNotSupported()
+    {
+        $this->assertSame(
+            'Provided class "ProxyManagerTestAsset\ClassWithAbstractProtectedMethod" has following protected abstract'
+            . ' methods, and therefore cannot be proxied:' . "\n"
+            . 'ProxyManagerTestAsset\ClassWithAbstractProtectedMethod::protectedAbstractMethod',
+            InvalidProxiedClassException::abstractProtectedMethodsNotSupported(
+                new ReflectionClass('ProxyManagerTestAsset\ClassWithAbstractProtectedMethod')
+            )->getMessage()
+        );
+    }
 }
