@@ -77,6 +77,16 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
+    public function testDisallowsConstructor()
+    {
+        $this->setExpectedException('BadMethodCallException');
+
+        new CanProxyAssertion();
+    }
+
+    /**
+     * @return string[][]
+     */
     public function validClasses()
     {
         return array(
