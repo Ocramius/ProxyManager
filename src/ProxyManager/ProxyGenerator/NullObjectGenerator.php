@@ -18,7 +18,6 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
@@ -27,7 +26,6 @@ use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInter
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**

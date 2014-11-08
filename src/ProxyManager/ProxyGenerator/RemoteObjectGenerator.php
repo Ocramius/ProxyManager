@@ -18,7 +18,6 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;

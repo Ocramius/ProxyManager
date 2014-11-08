@@ -18,7 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\Exception\InvalidProxiedClassException;
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\AbstractMethod;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
@@ -39,7 +39,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHo
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
-use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
