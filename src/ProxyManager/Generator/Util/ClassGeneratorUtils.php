@@ -45,8 +45,7 @@ final class ClassGeneratorUtils
     ) {
         $methodName = $generatedMethod->getName();
 
-        if ($classGenerator->hasMethod($methodName)
-            || ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal())) {
+        if ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal()) {
             return false;
         }
 
