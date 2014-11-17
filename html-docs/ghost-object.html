@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
@@ -75,6 +77,7 @@
     <p>In pseudo-code, in userland, <a href="http://www.martinfowler.com/eaaCatalog/lazyLoad.html" target="_blank">lazy loading</a> in a ghost object looks like following:</p>
 
     <pre>
+        <code class="php">
 class MyObjectProxy
 {
     private $initialized = false;
@@ -100,6 +103,7 @@ class MyObjectProxy
         }
     }
 }
+        </code>
     </pre>
 
     <p>Ghost objects work similarly to virtual proxies, but since they don't wrap around a "real" instance of the proxied subject, they are better suited for representing dataset rows.</p>
@@ -126,6 +130,7 @@ class MyObjectProxy
     <p>First of all, define your object's logic without taking care of lazy loading:</p>
     
     <pre>
+        <code class="php">
 namespace MyApp;
 
 class Customer
@@ -141,11 +146,13 @@ class Customer
     public function getSurname() { return $this->surname; }
     public function setSurname($surname) { $this->surname = (string) $surname; }
 }
+        </code>
     </pre>
 
     <p>Then use the proxy manager to create a ghost object of it. You will be responsible of setting its state during lazy loading:</p>
     
     <pre>
+        <code class="php">
 namespace MyApp;
 
 use ProxyManager\Factory\LazyLoadingGhostFactory;
@@ -164,14 +171,17 @@ $initializer = function (LazyLoadingInterface $proxy, $method, array $parameters
     return true; // confirm that initialization occurred correctly
 };
 
-$instance = $factory->createProxy('MyApp\Customer', $initializer);        
+$instance = $factory->createProxy('MyApp\Customer', $initializer);
+        </code>
     </pre>
 
     <p>You can now simply use your object as before:</p>
 
     <pre>
+        <code class="php">
 // this will just work as before
 echo $proxy->getName() . ' ' . $proxy->getSurname(); // Agent Smith
+        </code>
     </pre>
 <hr />
 
@@ -180,6 +190,7 @@ echo $proxy->getName() . ' ' . $proxy->getSurname(); // Agent Smith
     <p>As you can see, we use a closure to handle lazy initialization of the proxy instance at runtime. The initializer closure signature for ghost objects should be as following:</p>
 
     <pre>
+        <code class="php">
 /**
  * @var object  $proxy         the instance the ghost object proxy that is being initialized
  * @var string  $method        the name of the method that triggered lazy initialization
@@ -191,20 +202,23 @@ echo $proxy->getName() . ' ' . $proxy->getSurname(); // Agent Smith
  * @return bool true on success
  */
 $initializer = function ($proxy, $method, $parameters, &amp; $initializer) {};
+        </code>
     </pre>
 
     <p>The initializer closure should usually be coded like following:</p>
 
     <pre>
-    $initializer = function ($proxy, $method, $parameters, & $initializer) {
-        $initializer = null; // disable initializer for this proxy instance
+        <code class="php">
+$initializer = function ($proxy, $method, $parameters, & $initializer) {
+    $initializer = null; // disable initializer for this proxy instance
 
-        // modify the object with loaded data
-        $proxy->setFoo(/* ... */);
-        $proxy->setBar(/* ... */);
+    // modify the object with loaded data
+    $proxy->setFoo(/* ... */);
+    $proxy->setBar(/* ... */);
 
-        return true; // report success
-    };
+    return true; // report success
+};
+        </code>
     </pre>
 
     <p>The <code>ProxyManager\Factory\LazyLoadingGhostFactory</code> produces proxies that implement both the <code>ProxyManager\Proxy\GhostObjectInterface</code> and the <code>ProxyManager\Proxy\LazyLoadingInterface</code>.</p>
@@ -212,19 +226,25 @@ $initializer = function ($proxy, $method, $parameters, &amp; $initializer) {};
     <p>At any point in time, you can set a new initializer for the proxy:</p>
 
     <pre>
+        <code class="php">
 $proxy->setProxyInitializer($initializer);
+        </code>
     </pre>
 
     <p>In your initializer, you <strong>MUST</strong> turn off any further initialization:</p>
 
     <pre>
+        <code class="php">
 $proxy->setProxyInitializer(null);
+        </code>
     </pre>
 
     <p>or</p>
 
     <pre>
+        <code class="php">
 $initializer = null; // if you use the initializer passed by reference to the closure
+        </code>
     </pre>
 <hr />
 
@@ -233,6 +253,7 @@ $initializer = null; // if you use the initializer passed by reference to the cl
     <p>A lazy loading ghost object is initialized whenever you access any property or method of it. Any of the following interactions would trigger lazy initialization:</p>
 
     <pre>
+        <code class="php">
 // calling a method
 $proxy->someMethod();
 
@@ -253,6 +274,7 @@ clone $proxy;
 
 // serializing the proxy
 $unserialized = unserialize(serialize($proxy));
+        </code>
     </pre>
 
     <p>Remember to call <code>$proxy->setProxyInitializer(null);</code> to disable initialization of your proxy, or it will happen more than once.</p>
