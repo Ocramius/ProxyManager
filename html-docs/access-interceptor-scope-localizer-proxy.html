@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
@@ -74,6 +76,7 @@
     <p>The working concept of an access interceptor scope localizer is to localize scope of a proxied object:</p>
    
     <pre>
+        <code class="php">
 class Example
 {
     protected $foo;
@@ -100,6 +103,7 @@ class ExampleProxy extends Example
         return parent::doFoo();
     }
 }
+        </code>
     </pre>
 
     <p>This allows to create a mirror copy of the real instance, where any change in the proxy or in the real instance is reflected in both objects.</p>
@@ -129,6 +133,7 @@ class ExampleProxy extends Example
     <p>Here's an example of how you can create and use an access interceptor scope localizer :</p>
 
     <pre>
+        <code class="php">
 &lt;?php
 
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory as Factory;
@@ -152,14 +157,17 @@ $proxy = $factory->createProxy(
 );
 
 $proxy->doFoo();
+        </code>
     </pre>
 
     <p>This send something like following to your output:</p>
 
     <pre>
+        <code class="php">
 PreFoo!
 Foo!
 PostFoo!
+        </code>
     </pre>
 
     <p>This is pretty much the same logic that you can find in <a href="access-interceptor-value-holder-proxy.html">access interceptor value holder</a>.</p>

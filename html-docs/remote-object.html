@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
@@ -78,11 +80,13 @@
     <h3 class="section-title">Adapters</h3>
 
     <p>ZendFramework's RPC components (XmlRpc, JsonRpc &amp; Soap) can be used easily with the remote object. You will need to require the one you need via composer, though:</p>
-    
+
     <pre>
+        <code class="sh">
 $ php composer.phar require zendframework/zend-xmlrpc:2.*
 $ php composer.phar require zendframework/zend-json:2.*
 $ php composer.phar require zendframework/zend-soap:2.*
+        </code>
     </pre>
 
     <p>ProxyManager comes with 3 adapters:</p>
@@ -100,6 +104,7 @@ $ php composer.phar require zendframework/zend-soap:2.*
     <p>RPC server side code (<code>xmlrpc.php</code> in your local webroot):</p>
 
     <pre>
+        <code class="php">
 interface FooServiceInterface
 {
     public function foo();
@@ -120,11 +125,13 @@ class Foo implements FooServiceInterface
 $server = new Zend\XmlRpc\Server();
 $server->setClass('Foo', 'FooServiceInterface');  // my FooServiceInterface implementation
 $server->handle();
+        </code>
     </pre>
 
     <p>Client side code (proxy) :</p>
 
     <pre>
+        <code class="php">
 interface FooServiceInterface
 {
     public function foo();
@@ -139,6 +146,7 @@ $factory = new \ProxyManager\Factory\RemoteObjectFactory(
 $proxy = $factory->createProxy('FooServiceInterface');
 
 var_dump($proxy->foo()); // "bar remote"
+        </code>
     </pre>
 <hr />
 
@@ -147,6 +155,7 @@ var_dump($proxy->foo()); // "bar remote"
     <p>Your adapters must implement <code>ProxyManager\Factory\RemoteObject\AdapterInterface</code> :</p>
 
     <pre>
+        <code class="php">
 interface AdapterInterface
 {
     /**
@@ -160,13 +169,14 @@ interface AdapterInterface
      */
     public function call($wrappedClass, $method, array $params = array());
 }
+        </code>
     </pre>
 
     <p>It is very easy to create your own implementation (for RESTful web services, for example). Simply pass your own adapter instance to your factory at construction time</p>
 
     <p>Tuning performance for production</p>
 
-    <p>See <a href="#">Tuning ProxyManager for Production.</a></p>
+    <p>See <a href="production.html">Tuning ProxyManager for Production.</a></p>
 
 </main>
 

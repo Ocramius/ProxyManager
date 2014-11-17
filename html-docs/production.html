@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
@@ -74,11 +76,13 @@
     <p>You can configure ProxyManager so that it will try autoloading the proxies first. Generating them "bulk" is not yet implemented:</p>
 
     <pre>
+        <code class="php">
 $config = new \ProxyManager\Configuration();
 $config->setProxiesTargetDir(__DIR__ . '/my/generated/classes/cache/dir');
 
 // then register the autoloader
 spl_autoload_register($config->getProxyAutoloader());
+        </code>
     </pre>
 
     <p>Generating a classmap with all your proxy classes in it will also work perfectly.</p>

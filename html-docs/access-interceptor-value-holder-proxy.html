@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
@@ -84,6 +86,7 @@
     <p>Here's an example of how you can create and use an access interceptor value holder:</p>
 
     <pre>
+        <code class="php">
 &lt;?php
 
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory as Factory;
@@ -107,15 +110,19 @@ $proxy = $factory->createProxy(
 );
 
 $proxy->doFoo();
+        </code>
     </pre>
 
     <p>This send something like following to your output:</p>
 
     <pre>
+        <code class="php">
 PreFoo!
 Foo!
 PostFoo!
+        </code>
     </pre>
+
 <hr />
     <h3>Implementing pre- and post- access interceptors</h3>
 
@@ -125,8 +132,10 @@ PostFoo!
     <p>Therefore, you can set an access interceptor callback by calling:</p>
 
     <pre>
+        <code class="php">
 $proxy->setMethodPrefixInterceptor('methodName', function () { echo 'pre'; });
 $proxy->setMethodSuffixInterceptor('methodName', function () { echo 'post'; });
+        </code>
     </pre>
 
     <p>You can also listen to public properties access by attaching interceptors to <code>__get</code>, <code>__set</code>, <code>__isset</code> and <code>__unset</code>.</p>
@@ -134,6 +143,7 @@ $proxy->setMethodSuffixInterceptor('methodName', function () { echo 'post'; });
     <p>A prefix interceptor (executed before method logic) should have following signature:</p>
 
     <pre>
+        <code class="php">
 /**
  * @var object $proxy       the proxy that intercepted the method call
  * @var object $instance    the wrapped instance within the proxy
@@ -146,11 +156,13 @@ $proxy->setMethodSuffixInterceptor('methodName', function () { echo 'post'; });
  * @return mixed
  */
 $prefixInterceptor = function ($proxy, $instance, $method, $params, &amp; $returnEarly) {};
+        </code>
     </pre>
 
     A suffix interceptor (executed after method logic) should have following signature:
 
     <pre>
+        <code class="php">
 /**
  * @var object $proxy       the proxy that intercepted the method call
  * @var object $instance    the wrapped instance within the proxy
@@ -164,7 +176,9 @@ $prefixInterceptor = function ($proxy, $instance, $method, $params, &amp; $retur
  * @return mixed
  */
 $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) {};
+        </code>
     </pre>
+
 <hr />
     <h3>Tuning performance for production</h3>
 

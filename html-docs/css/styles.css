@@ -46,9 +46,8 @@ h3 { margin-bottom: 1em; color: #17324f; font-weight: 400; font-size: 3em; }
 h4 { margin-bottom: 1em; font-weight: 400; font-size: 1.375em; }
 p { margin-bottom: 1.5em; font-size: 1.125em; }
 hr { margin: 2.5em 0; padding: 0; width: 100%; height: 3px; border: 0; background: #e6eaef; }
-pre { padding: 20px; border: 1px solid #EBEBEB; background: #F5F5F5; color: #08468a; font-weight: 200; font-size: .875em; }
-pre code { border: 0; font-size: 1em; background: transparent; }
-code { border: 1px solid #EBEBEB; background: #F5F5F5; color: #08468a; font-size: .875em; }
+pre code { padding: 20px; border: 1px solid #EBEBEB; background: #F5F5F5; color: #08468a; font-weight: 200; font-size: .875em; }
+code { background: transparent; color: #08468a; font-size: .875em; }
 form { margin: 0; }
 label { display: block; color: #18324f; font-weight: 400; font-size: 1.5em; margin-bottom: 2em; }
 legend { position: static; margin: 0; padding: 0; font-weight: normal; }

@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
@@ -78,6 +80,7 @@
     <h3 class="section-title">Usage examples</h3>
 
     <pre>
+        <code class="php">
 class UserMapper
 {   
     private $adapter;
@@ -100,21 +103,25 @@ class UserMapper
         return $user;
     }
 }
+        </code>
     </pre>
 
     <p>If you want to remove conditionals from client code, you need to have a version of the entity conforming to the corresponding interface. With the Null Object Proxy, you can build this object :</p>
 
-        <pre>
+    <pre>
+        <code class="php">
 $factory = new \ProxyManager\Factory\NullObjectFactory();
 
 $nullUser = $factory->createProxy('Entity\User');
 
 var_dump($nullUser->getName()); // empty return
+        </code>
     </pre>
 
     <p>You can now return a valid entity :</p>
 
     <pre>
+        <code class="php">
 class UserMapper
 {   
     private $adapter;
@@ -139,6 +146,7 @@ class UserMapper
         return $user; 
     }
 }
+        </code>
     </pre>
     
     
@@ -150,7 +158,7 @@ class UserMapper
 
     <p>Tuning performance for production</p>
 
-    <p>See <a href="#">Tuning ProxyManager for Production.</a></p>
+    <p>See <a href="production.html">Tuning ProxyManager for Production.</a></p>
 
 </main>
 
