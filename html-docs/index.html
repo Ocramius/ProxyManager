@@ -91,21 +91,7 @@
         particularly useful when you may not always need the object,
         but are constructing it anyways.</p>
 
-    <pre>
-$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
-
-$proxy = $factory->createProxy(
-    'MyApp\HeavyComplexObject',
-    function (&amp; $wrappedObject, $proxy, $method, $parameters, &amp; $initializer) {
-        $wrappedObject = new HeavyComplexObject(); // instantiation logic here
-        $initializer   = null; // turning off further lazy initialization
-
-        return true;
-    }
-);
-
-$proxy->doFoo();
-    </pre>
+    <script src="https://gist.github.com/malukenho/339112fd8b7bfff14b3e.js"></script>
 
     <p>See the <a href="virtual-proxy.html">complete documentation about lazy loading value holders</a>.</p>
 <hr />
@@ -117,17 +103,7 @@ $proxy->doFoo();
      accessed, and it allows to manipulate parameters and return values depending on
      your needs.</p>
 
-    <pre>
-$factory = new \ProxyManager\Factory\AccessInterceptorValueHolderFactory();
-
-$proxy = $factory->createProxy(
-    new \My\Db\Connection(),
-    array('query' => function () { echo "Query being executed!\n"; }),
-    array('query' => function () { echo "Query completed!\n"; })
-);
-
-$proxy->query(); // produces "Query being executed!\nQuery completed!\n"
-    </pre>
+    <script src="https://gist.github.com/malukenho/ca42e24d7079e5b6346e.js"></script>
 
     <p>See the <a href="access-interceptor-value-holder-proxy.html">complete documentation about access interceptor value holders</a>.</p>
 <hr />
@@ -146,24 +122,12 @@ $proxy->query(); // produces "Query being executed!\nQuery completed!\n"
     <p>A Null Object proxy implements the null object pattern.</p>
 
     <p>This kind of proxy allows you to have fallback logic in case loading of the wrapped value failed.</p>
-<pre>
-$factory = new \ProxyManager\Factory\NullObjectFactory();
 
-$proxy = $factory->createProxy('My\EntityObject');
-
-$proxy->getName(); // empty return
-</pre>
+    <script src="https://gist.github.com/malukenho/cd2d4cfb5783735fa62f.js"></script>
 
     <p>A Null Object Proxy can be created from an object, a class name or an interface name:</p>
-<pre>
-$factory = new \ProxyManager\Factory\NullObjectFactory();
 
-$proxy = $factory->createProxy('My\EntityObjectInterface');
-$proxy->getName(); // empty return
-
-$proxy = $factory->createProxy($entity); // created from object
-$proxy->getName(); // empty return
-</pre>
+    <script src="https://gist.github.com/malukenho/4f6df93d87609cc76f5e.js"></script>
 
     <p>See the <a href="null-object.html">complete documentation about null object proxy</a>.</p>
 
@@ -186,24 +150,7 @@ $proxy->getName(); // empty return
     <p>Additionally, the overhead introduced by ghost objects is very low when
         compared to the memory and performance overhead caused by virtual proxies.</p>
 
-    <pre>
-$factory = new \ProxyManager\Factory\LazyLoadingGhostFactory();
-
-$proxy = $factory->createProxy(
-    'MyApp\HeavyComplexObject',
-    function ($proxy, $method, $parameters, & $initializer) {
-        $initializer   = null; // turning off further lazy initialization
-
-        // modify the proxy instance
-        $proxy->setFoo('foo');
-        $proxy->setBar('bar');
-
-        return true;
-    }
-);
-
-$proxy->doFoo();
-    </pre>
+    <script src="https://gist.github.com/malukenho/d3cb4d5fb5ed09a6cdc6.js"></script>
 
     <p>See the <a href="ghost-object.html">complete documentation about lazy loading ghost objects</a>.</p>
 
@@ -217,23 +164,7 @@ $proxy->doFoo();
 
     <p>This example uses the XML-RPC client of Zend Framework 2:</p>
 
-    <pre>
-interface FooServiceInterface
-{
-    public function foo();
-}
-
-$factory = new \ProxyManager\Factory\RemoteObjectFactory(
-    new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
-        new \Zend\XmlRpc\Client('https://example.com/rpc-endpoint')
-    )
-);
-
-// proxy is your remote implementation
-$proxy = $factory->createProxy('FooServiceInterface');
-
-var_dump($proxy->foo());
-    </pre>
+    <script src="https://gist.github.com/malukenho/981408d8c505bdeccee0.js"></script>
 
     <p>See the <a href="remote-object.html">complete documentation about remote objects</a>.</p>
 <hr />
