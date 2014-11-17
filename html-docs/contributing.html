@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
@@ -83,15 +85,19 @@
     <p>To install the project and run the tests, you need to clone it first:</p>
 
     <pre>
+        <code class="sh">
 $ git clone git://github.com/Ocramius/ProxyManager.git
+            </code>
     </pre>
 
     <p>You will then need to run a composer installation:</p>
 
     <pre>
+        <code class="sh">
 $ cd ProxyManager
 $ curl -s https://getcomposer.org/installer | php
 $ php composer.phar update
+        </code>
     </pre>
 
 <hr />
@@ -101,7 +107,9 @@ $ php composer.phar update
     <p>The PHPUnit version to be used is the one installed as a dev- dependency via composer:</p>
     
     <pre>
+        <code class="sh">
 $ ./vendor/bin/phpunit
+        </code>
     </pre>
 
     <p>Accepted coverage for new contributions is 80%. Any contribution not satisfying this requirement won't be merged.</p>
