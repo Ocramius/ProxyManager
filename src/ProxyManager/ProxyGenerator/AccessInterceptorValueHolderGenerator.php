@@ -81,7 +81,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator, $valueHolder) {
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
