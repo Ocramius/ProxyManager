@@ -83,25 +83,6 @@ class Configuration
     protected $classSignatureGenerator;
 
     /**
-     * @deprecated deprecated since version 0.5
-     * @codeCoverageIgnore
-     */
-    public function setAutoGenerateProxies()
-    {
-    }
-
-    /**
-     * @return bool
-     *
-     * @deprecated deprecated since version 0.5
-     * @codeCoverageIgnore
-     */
-    public function doesAutoGenerateProxies()
-    {
-        return true;
-    }
-
-    /**
      * @param AutoloaderInterface $proxyAutoloader
      */
     public function setProxyAutoloader(AutoloaderInterface $proxyAutoloader)
