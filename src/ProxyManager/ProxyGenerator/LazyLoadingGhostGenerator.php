@@ -84,7 +84,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
-            /*array_merge(
+            array_merge(
                 array_map(
                     function (ReflectionMethod $method) use ($initializer, $init) {
                         return LazyLoadingMethodInterceptor::generateMethod(
@@ -93,8 +93,8 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                             $init
                         );
                     },
-                    ProxiedMethodsFilter::getProxiedMethods($originalClass)
-                ),*/
+                    ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
+                ),
                 [
                     $init,
                     new StaticProxyConstructor($originalClass, $initializer),
@@ -109,7 +109,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     new InitializeProxy($initializer, $init),
                     new IsProxyInitialized($initializer),
                 ]
-            //)
+            )
         );
     }
 }
