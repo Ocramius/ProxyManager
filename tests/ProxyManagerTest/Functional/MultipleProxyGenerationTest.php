@@ -36,6 +36,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ReflectionClass;
@@ -118,7 +119,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
 
         if (PHP_VERSION_ID >= 50401) {
             // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
-            $data[] = array(\ProxyManagerTestAsset\ClassWithSelfHint::class);
+            $data[] = array(ClassWithSelfHint::class);
         }
 
         return $data;

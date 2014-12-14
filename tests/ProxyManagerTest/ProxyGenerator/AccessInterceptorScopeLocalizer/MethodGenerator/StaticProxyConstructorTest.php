@@ -20,7 +20,10 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\Method
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\StaticProxyConstructor;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\StaticProxyConstructor}
@@ -37,8 +40,8 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
     private $suffixInterceptors;
     public function setUp()
     {
-        $this->prefixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
-        $this->suffixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $this->prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $this->suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $this->prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $this->suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
@@ -47,7 +50,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
     public function testSignature()
     {
         $method = new StaticProxyConstructor(
-            new ReflectionClass(\ProxyManagerTestAsset\ClassWithProtectedProperties::class),
+            new ReflectionClass(ClassWithProtectedProperties::class),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
@@ -58,7 +61,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertCount(3, $parameters);
 
         $this->assertSame(
-            \ProxyManagerTestAsset\ClassWithProtectedProperties::class,
+            ClassWithProtectedProperties::class,
             $parameters['localizedObject']->getType()
         );
         $this->assertSame('array', $parameters['prefixInterceptors']->getType());
@@ -68,7 +71,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $method = new StaticProxyConstructor(
-            new ReflectionClass(\ProxyManagerTestAsset\ClassWithPublicProperties::class),
+            new ReflectionClass(ClassWithPublicProperties::class),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );

@@ -20,6 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 
 /**
@@ -36,7 +38,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $constructor = new StaticProxyConstructor(
-            new ReflectionClass(\ProxyManagerTestAsset\ClassWithMixedProperties::class)
+            new ReflectionClass(ClassWithMixedProperties::class)
         );
 
         $this->assertSame('staticProxyConstructor', $constructor->getName());
@@ -59,7 +61,7 @@ return $instance;',
     public function testBodyStructureWithoutPublicProperties()
     {
         $constructor = new StaticProxyConstructor(
-            new ReflectionClass(\ProxyManagerTestAsset\ClassWithPrivateProperties::class)
+            new ReflectionClass(ClassWithPrivateProperties::class)
         );
 
         $this->assertSame('staticProxyConstructor', $constructor->getName());

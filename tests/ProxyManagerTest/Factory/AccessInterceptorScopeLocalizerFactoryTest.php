@@ -19,11 +19,17 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
+use ProxyManager\Signature\ClassSignatureGeneratorInterface;
+use ProxyManager\Signature\SignatureCheckerInterface;
+use ProxyManagerTestAsset\AccessInterceptorValueHolderMock;
+use ProxyManagerTestAsset\LazyLoadingMock;
 use stdClass;
 
 /**
@@ -47,12 +53,12 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
     protected $signatureChecker;
 
     /**
-     * @var \ProxyManager\Signature\ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $classSignatureGenerator;
 
     /**
-     * @var \ProxyManager\Configuration|\PHPUnit_Framework_MockObject_MockObject
+     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $config;
 
@@ -61,10 +67,10 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
      */
     public function setUp()
     {
-        $this->config                  = $this->getMock(\ProxyManager\Configuration::class);
-        $this->inflector               = $this->getMock(\ProxyManager\Inflector\ClassNameInflectorInterface::class);
-        $this->signatureChecker        = $this->getMock(\ProxyManager\Signature\SignatureCheckerInterface::class);
-        $this->classSignatureGenerator = $this->getMock(\ProxyManager\Signature\ClassSignatureGeneratorInterface::class);
+        $this->config                  = $this->getMock(Configuration::class);
+        $this->inflector               = $this->getMock(ClassNameInflectorInterface::class);
+        $this->signatureChecker        = $this->getMock(SignatureCheckerInterface::class);
+        $this->classSignatureGenerator = $this->getMock(ClassSignatureGeneratorInterface::class);
 
         $this
             ->config
@@ -113,13 +119,13 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
             ->expects($this->once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue(\ProxyManagerTestAsset\AccessInterceptorValueHolderMock::class));
+            ->will($this->returnValue(AccessInterceptorValueHolderMock::class));
 
         $factory     = new AccessInterceptorScopeLocalizerFactory($this->config);
-        /* @var $proxy \ProxyManagerTestAsset\AccessInterceptorValueHolderMock */
+        /* @var $proxy AccessInterceptorValueHolderMock */
         $proxy       = $factory->createProxy($instance, array('foo'), array('bar'));
 
-        $this->assertInstanceOf(\ProxyManagerTestAsset\AccessInterceptorValueHolderMock::class, $proxy);
+        $this->assertInstanceOf(AccessInterceptorValueHolderMock::class, $proxy);
         $this->assertSame($instance, $proxy->instance);
         $this->assertSame(array('foo'), $proxy->prefixInterceptors);
         $this->assertSame(array('bar'), $proxy->suffixInterceptors);
@@ -139,7 +145,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
         $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
-        $autoloader     = $this->getMock(\ProxyManager\Autoloader\AutoloaderInterface::class);
+        $autoloader     = $this->getMock(AutoloaderInterface::class);
 
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
         $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
@@ -183,13 +189,13 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
             ->expects($this->once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will($this->returnValue(\ProxyManagerTestAsset\LazyLoadingMock::class));
+            ->will($this->returnValue(LazyLoadingMock::class));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
 
         $factory     = new AccessInterceptorScopeLocalizerFactory($this->config);
-        /* @var $proxy \ProxyManagerTestAsset\AccessInterceptorValueHolderMock */
+        /* @var $proxy AccessInterceptorValueHolderMock */
         $proxy       = $factory->createProxy($instance, array('foo'), array('bar'));
 
         $this->assertInstanceOf($proxyClassName, $proxy);

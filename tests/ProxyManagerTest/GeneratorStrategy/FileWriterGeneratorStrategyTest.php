@@ -19,6 +19,7 @@
 namespace ProxyManagerTest\GeneratorStrategy;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -39,7 +40,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
      */
     public function testGenerate()
     {
-        $locator   = $this->getMock(\ProxyManager\FileLocator\FileLocatorInterface::class);
+        $locator   = $this->getMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = sys_get_temp_dir() . '/FileWriterGeneratorStrategyTest' . uniqid() . '.php';
         $namespace = 'Foo';

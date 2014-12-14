@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
+use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 
 /**
@@ -44,6 +45,6 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array(\ProxyManager\Proxy\GhostObjectInterface::class);
+        return array(GhostObjectInterface::class);
     }
 }

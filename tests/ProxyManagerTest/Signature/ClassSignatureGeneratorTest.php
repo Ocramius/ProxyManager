@@ -20,6 +20,8 @@ namespace ProxyManagerTest\Signature;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Signature\ClassSignatureGenerator;
+use ProxyManager\Signature\SignatureGeneratorInterface;
+use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -34,7 +36,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ProxyManager\Signature\SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $signatureGenerator;
 
@@ -48,14 +50,14 @@ class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->signatureGenerator      = $this->getMock(\ProxyManager\Signature\SignatureGeneratorInterface::class);
+        $this->signatureGenerator      = $this->getMock(SignatureGeneratorInterface::class);
         $this->classSignatureGenerator = new ClassSignatureGenerator($this->signatureGenerator);
     }
 
     public function testAddSignature()
     {
-        /* @var $classGenerator \PHPUnit_Framework_MockObject_MockObject|\Zend\Code\Generator\ClassGenerator */
-        $classGenerator = $this->getMock(\Zend\Code\Generator\ClassGenerator::class);
+        /* @var $classGenerator \PHPUnit_Framework_MockObject_MockObject|ClassGenerator */
+        $classGenerator = $this->getMock(ClassGenerator::class);
 
         $classGenerator
             ->expects($this->once())

@@ -20,7 +20,10 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor}
@@ -37,9 +40,9 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $initializer = $this->getMock(PropertyGenerator::class);
         $reflection  = new ReflectionClass(
-            \ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties::class
+            ClassWithTwoPublicProperties::class
         );
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
@@ -56,11 +59,11 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithoutPublicProperties()
     {
-        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $initializer = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
-        $constructor = new Constructor(new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class), $initializer);
+        $constructor = new Constructor(new ReflectionClass(EmptyClass::class), $initializer);
 
         $this->assertSame('__construct', $constructor->getName());
         $this->assertCount(1, $constructor->getParameters());

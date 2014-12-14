@@ -18,9 +18,11 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
+use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicSleep;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicSleep}
@@ -37,9 +39,9 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class);
-        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
-        $valueHolder = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $reflection  = new ReflectionClass(EmptyClass::class);
+        $initializer = $this->getMock(PropertyGenerator::class);
+        $valueHolder = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));

@@ -20,6 +20,10 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\HydratedObject;
+use ProxyManagerTestAsset\LazyLoadingMock;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -69,7 +73,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new ReflectionClass(\ProxyManagerTestAsset\BaseClass::class),
+                new ReflectionClass(BaseClass::class),
                 null,
                 array(
                     'publicArrayHintedMethod',
@@ -80,32 +84,32 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class),
+                new ReflectionClass(EmptyClass::class),
                 null,
                 array(),
             ),
             array(
-                new ReflectionClass(\ProxyManagerTestAsset\LazyLoadingMock::class),
+                new ReflectionClass(LazyLoadingMock::class),
                 null,
                 array(),
             ),
             array(
-                new ReflectionClass(\ProxyManagerTestAsset\LazyLoadingMock::class),
+                new ReflectionClass(LazyLoadingMock::class),
                 array(),
                 array(),
             ),
             array(
-                new ReflectionClass(\ProxyManagerTestAsset\HydratedObject::class),
+                new ReflectionClass(HydratedObject::class),
                 array('doFoo'),
                 array('__get'),
             ),
             array(
-                new ReflectionClass(\ProxyManagerTestAsset\HydratedObject::class),
+                new ReflectionClass(HydratedObject::class),
                 array('Dofoo'),
                 array('__get'),
             ),
             array(
-                new ReflectionClass(\ProxyManagerTestAsset\HydratedObject::class),
+                new ReflectionClass(HydratedObject::class),
                 array(),
                 array('doFoo', '__get'),
             ),

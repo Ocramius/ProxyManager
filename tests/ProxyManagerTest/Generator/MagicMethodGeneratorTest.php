@@ -18,6 +18,8 @@
 
 namespace ProxyManagerTest\Generator;
 
+use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MagicMethodGenerator;
@@ -37,7 +39,7 @@ class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGeneratesCorrectByRefReturnValue()
     {
-        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\ClassWithByRefMagicMethods::class);
+        $reflection  = new ReflectionClass(ClassWithByRefMagicMethods::class);
         $magicMethod = new MagicMethodGenerator($reflection, '__get', array('name'));
 
         $this->assertTrue($magicMethod->returnsReference());
@@ -48,7 +50,7 @@ class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGeneratesCorrectByValReturnValue()
     {
-        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\ClassWithMagicMethods::class);
+        $reflection  = new ReflectionClass(ClassWithMagicMethods::class);
         $magicMethod = new MagicMethodGenerator($reflection, '__get', array('name'));
 
         $this->assertFalse($magicMethod->returnsReference());

@@ -18,6 +18,8 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
+use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 
 /**
@@ -45,8 +47,8 @@ class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
     protected function getExpectedImplementedInterfaces()
     {
         return array(
-            \ProxyManager\Proxy\AccessInterceptorInterface::class,
-            \ProxyManager\Proxy\ValueHolderInterface::class,
+            AccessInterceptorInterface::class,
+            ValueHolderInterface::class,
         );
     }
 }

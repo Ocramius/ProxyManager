@@ -18,9 +18,13 @@
 
 namespace ProxyManagerTest\Generator\Util;
 
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\MethodGenerator;
 
 /**
  * Test to {@see ProxyManager\Generator\Util\ClassGeneratorUtils}
@@ -36,8 +40,8 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 {
     public function testCantAddAFinalMethod()
     {
-        $classGenerator  = $this->getMock(\Zend\Code\Generator\ClassGenerator::class);
-        $methodGenerator = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
+        $classGenerator  = $this->getMock(ClassGenerator::class);
+        $methodGenerator = $this->getMock(MethodGenerator::class);
 
         $methodGenerator
             ->expects($this->once())
@@ -48,15 +52,15 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('addMethodFromGenerator');
 
-        $reflection = new ReflectionClass(\ProxyManagerTestAsset\ClassWithFinalMethods::class);
+        $reflection = new ReflectionClass(ClassWithFinalMethods::class);
 
         ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
     }
 
     public function testCanAddANotFinalMethod()
     {
-        $classGenerator  = $this->getMock(\Zend\Code\Generator\ClassGenerator::class);
-        $methodGenerator = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
+        $classGenerator  = $this->getMock(ClassGenerator::class);
+        $methodGenerator = $this->getMock(MethodGenerator::class);
 
         $methodGenerator
             ->expects($this->once())
@@ -67,7 +71,7 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('addMethodFromGenerator');
 
-        $reflection = new ReflectionClass(\ProxyManagerTestAsset\BaseClass::class);
+        $reflection = new ReflectionClass(BaseClass::class);
 
         ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
     }

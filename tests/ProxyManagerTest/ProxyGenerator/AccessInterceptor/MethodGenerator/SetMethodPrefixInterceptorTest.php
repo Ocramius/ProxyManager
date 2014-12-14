@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use PHPUnit_Framework_TestCase;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor}
@@ -36,7 +37,7 @@ class SetMethodPrefixInterceptorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $suffix = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $suffix = $this->getMock(PropertyGenerator::class);
 
         $suffix->expects($this->once())->method('getName')->will($this->returnValue('foo'));
 

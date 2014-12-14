@@ -18,9 +18,12 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicUnset;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicUnset}
@@ -37,11 +40,11 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection       = new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class);
-        $initializer      = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
-        $valueHolder      = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $reflection       = new ReflectionClass(EmptyClass::class);
+        $initializer      = $this->getMock(PropertyGenerator::class);
+        $valueHolder      = $this->getMock(PropertyGenerator::class);
         $publicProperties = $this
-            ->getMockBuilder(\ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap::class)
+            ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
 

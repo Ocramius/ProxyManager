@@ -20,7 +20,9 @@ namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor}
@@ -37,10 +39,10 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $adapter = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $adapter = $this->getMock(PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
 
-        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\ClassWithMixedProperties::class);
+        $reflection  = new ReflectionClass(ClassWithMixedProperties::class);
         $constructor = new Constructor($reflection, $adapter);
 
         $this->assertSame('__construct', $constructor->getName());

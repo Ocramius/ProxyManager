@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
+use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ReflectionClass;
 use ReflectionProperty;
@@ -67,6 +68,6 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array(\ProxyManager\Proxy\AccessInterceptorInterface::class);
+        return array(AccessInterceptorInterface::class);
     }
 }

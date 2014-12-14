@@ -19,7 +19,10 @@
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}
@@ -36,11 +39,11 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testInterceptorGenerator()
     {
-        $method             = $this->getMock(\ProxyManager\Generator\MethodGenerator::class);
-        $bar                = $this->getMock(\ProxyManager\Generator\ParameterGenerator::class);
-        $baz                = $this->getMock(\ProxyManager\Generator\ParameterGenerator::class);
-        $prefixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
-        $suffixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $method             = $this->getMock(MethodGenerator::class);
+        $bar                = $this->getMock(ParameterGenerator::class);
+        $baz                = $this->getMock(ParameterGenerator::class);
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $bar->expects($this->any())->method('getName')->will($this->returnValue('bar'));
         $baz->expects($this->any())->method('getName')->will($this->returnValue('baz'));

@@ -23,7 +23,9 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\CallableTypeHintClass;
+use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
 use stdClass;
+use Zend\Code\Generator\ValueGenerator;
 use Zend\Code\Reflection\ParameterReflection;
 
 /**
@@ -85,16 +87,16 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
             array(
-                \ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters::class,
+                ClassWithMethodWithDefaultParameters::class,
                 'publicMethodWithDefaults'
             ),
             'parameter'
         ));
 
-        /* @var $defaultValue \Zend\Code\Generator\ValueGenerator */
+        /* @var $defaultValue ValueGenerator */
         $defaultValue = $parameter->getDefaultValue();
 
-        $this->assertInstanceOf(\Zend\Code\Generator\ValueGenerator::class, $defaultValue);
+        $this->assertInstanceOf(ValueGenerator::class, $defaultValue);
         $this->assertSame(array('foo'), $defaultValue->getValue());
 
         $this->assertStringMatchesFormat('array%a$parameter%a=%aarray(\'foo\')', $parameter->generate());

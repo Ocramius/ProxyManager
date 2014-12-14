@@ -20,6 +20,12 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
+use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ReflectionClass;
 
 /**
@@ -121,12 +127,12 @@ PHP;
                     );
                 },
                 array(
-                    \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator::class,
-                    \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator::class,
-                    \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator::class,
-                    \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator::class,
-                    \ProxyManager\ProxyGenerator\NullObjectGenerator::class,
-                    \ProxyManager\ProxyGenerator\RemoteObjectGenerator::class,
+                    AccessInterceptorScopeLocalizerGenerator::class,
+                    AccessInterceptorValueHolderGenerator::class,
+                    LazyLoadingGhostGenerator::class,
+                    LazyLoadingValueHolderGenerator::class,
+                    NullObjectGenerator::class,
+                    RemoteObjectGenerator::class,
                 )
             )
         );

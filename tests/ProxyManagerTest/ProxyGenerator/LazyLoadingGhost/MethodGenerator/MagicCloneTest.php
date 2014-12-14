@@ -18,9 +18,12 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone}
@@ -37,9 +40,9 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class);
-        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
-        $initCall    = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
+        $reflection  = new ReflectionClass(EmptyClass::class);
+        $initializer = $this->getMock(PropertyGenerator::class);
+        $initCall    = $this->getMock(MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
