@@ -18,7 +18,7 @@ $configuration->setGeneratorStrategy(
 
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($configuration);
 
-$proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
+$proxy = $factory->createProxy(Kitchen::class, function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
     $initializer = null;
     $wrapped     = new Kitchen();
 });
@@ -26,7 +26,7 @@ $proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method,
 $filename = $fileLocator->getProxyFileName(get_class($proxy));
 var_dump(file_exists($filename));
 
-$proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
+$proxy = $factory->createProxy(Kitchen::class, function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
     $initializer = null;
     $wrapped     = new Kitchen();
 });

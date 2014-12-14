@@ -12,7 +12,7 @@ class Kitchen
 
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($configuration);
 
-$proxy = $factory->createProxy('Kitchen', function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
+$proxy = $factory->createProxy(Kitchen::class, function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
     $initializer = null;
     $wrapped     = new Kitchen();
 });
