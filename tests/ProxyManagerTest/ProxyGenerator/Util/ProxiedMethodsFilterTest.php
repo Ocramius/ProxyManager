@@ -21,6 +21,7 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\EmptyClass;
@@ -206,6 +207,24 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 new ReflectionClass(ClassWithAbstractPublicMethod::class),
                 ['publicAbstractMethod'],
                 [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                [],
+                [
+                    '__clone',
+                    '__get',
+                    '__isset',
+                    '__set',
+                    '__sleep',
+                    '__unset',
+                    '__wakeup',
+                ],
             ],
         ];
     }
