@@ -29,6 +29,8 @@ use ProxyManager\Generator\Util\ClassGeneratorUtils;
  * @license MIT
  *
  * @covers ProxyManager\Generator\Util\ClassGeneratorUtils
+ *
+ * @group Coverage
  */
 class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 {

@@ -26,4 +26,11 @@ namespace ProxyManagerTestAsset;
  */
 class NullObjectMock
 {
+    /**
+     * @return static
+     */
+    public static function staticProxyConstructor()
+    {
+        return new static();
+    }
 }

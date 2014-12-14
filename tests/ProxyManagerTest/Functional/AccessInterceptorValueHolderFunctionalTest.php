@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -48,7 +49,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
 
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -90,7 +91,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
         $listener  = $this->getMock('stdClass', array('__invoke'));
         $listener
             ->expects($this->once())
@@ -127,7 +128,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
-        $proxy     = unserialize(serialize(new $proxyName($instance)));
+        $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
@@ -141,7 +142,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
         $cloned    = clone $proxy;
 
         $this->assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
@@ -207,7 +208,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicArrayProperty */
-        $proxy       = new $proxyName($instance);
+        $proxy       = $proxyName::staticProxyConstructor($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -227,7 +228,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($instance);
+        $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -246,7 +247,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($instance);
+        $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = & $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -254,6 +255,32 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+    }
+
+    /**
+     * @group 115
+     * @group 175
+     */
+    public function testWillBehaveLikeObjectWithNormalConstructor()
+    {
+        $instance = new ClassWithCounterConstructor(10);
+
+        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        $instance->__construct(3);
+        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy ClassWithCounterConstructor */
+        $proxy = new $proxyName(15);
+
+        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        $proxy->__construct(5);
+        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     /**
@@ -345,13 +372,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         return array(
             array(
                 $instance1,
-                new $proxyName1($instance1),
+                $proxyName1::staticProxyConstructor($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
             array(
                 $instance2,
-                unserialize(serialize(new $proxyName2($instance2))),
+                unserialize(serialize($proxyName2::staticProxyConstructor($instance2))),
                 'publicProperty',
                 'publicPropertyDefault',
             ),

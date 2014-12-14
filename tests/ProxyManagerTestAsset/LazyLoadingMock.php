@@ -27,15 +27,21 @@ namespace ProxyManagerTestAsset;
 class LazyLoadingMock
 {
     /**
-     * @var mixed
+     * @var callable
      */
     public $initializer;
 
     /**
-     * @param mixed $initializer
+     * @param callable $initializer
+     *
+     * @return static
      */
-    public function __construct($initializer)
+    public static function staticProxyConstructor($initializer)
     {
-        $this->initializer = $initializer;
+        $instance = new static();
+
+        $instance->initializer = $initializer;
+
+        return $instance;
     }
 }

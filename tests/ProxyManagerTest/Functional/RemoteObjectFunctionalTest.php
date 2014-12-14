@@ -110,7 +110,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName($this->getXmlRpcAdapter($expectedValue, $method, $params));
+        $proxy     = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
@@ -123,7 +123,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName($this->getJsonRpcAdapter($expectedValue, $method, $params));
+        $proxy     = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
     }
@@ -136,7 +136,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($instanceOrClassname);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
-        $proxy     = new $proxyName(
+        $proxy     = $proxyName::staticProxyConstructor(
             $this->getJsonRpcAdapter($propertyValue, '__get', array($publicProperty))
         );
 

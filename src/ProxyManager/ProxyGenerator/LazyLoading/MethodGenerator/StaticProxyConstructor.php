@@ -18,19 +18,19 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
 use ReflectionProperty;
+use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * The `__construct` implementation for lazy loading proxies
+ * The `staticProxyConstructor` implementation for lazy loading proxies
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class Constructor extends MethodGenerator
+class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
@@ -40,7 +40,7 @@ class Constructor extends MethodGenerator
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {
-        parent::__construct('__construct');
+        parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $this->setParameter(new ParameterGenerator('initializer'));
 
@@ -49,13 +49,17 @@ class Constructor extends MethodGenerator
         $unsetProperties  = array();
 
         foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
+            $unsetProperties[] = '$instance->' . $publicProperty->getName();
         }
 
-        $this->setDocblock("@override constructor for lazy initialization\n\n@param \\Closure|null \$initializer");
+        $this->setDocblock("Constructor for lazy initialization\n\n@param \\Closure|null \$initializer");
         $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
-            . '$this->' . $initializerProperty->getName() . ' = $initializer;'
+            'static $reflection;' . "\n\n"
+            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
+            . ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
+            . '$instance->' . $initializerProperty->getName() . ' = $initializer;' . "\n\n"
+            . 'return $instance;'
         );
     }
 }

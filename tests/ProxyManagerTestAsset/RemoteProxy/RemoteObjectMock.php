@@ -16,37 +16,23 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
+namespace ProxyManagerTestAsset\RemoteProxy;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use ProxyManager\Proxy\RemoteObjectInterface;
 
 /**
- * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodSuffixInterceptor}
- * for access interceptor objects
+ * Simple remote object mock implementation
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class SetMethodSuffixInterceptor extends MethodGenerator
+class RemoteObjectMock implements RemoteObjectInterface
 {
     /**
-     * Constructor
-     *
-     * @param PropertyGenerator $suffixInterceptor
+     * @return static
      */
-    public function __construct(PropertyGenerator $suffixInterceptor)
+    public static function staticProxyConstructor()
     {
-        parent::__construct('setMethodSuffixInterceptor');
-
-        $interceptor = new ParameterGenerator('suffixInterceptor');
-
-        $interceptor->setType('Closure');
-        $interceptor->setDefaultValue(null);
-        $this->setParameter(new ParameterGenerator('methodName'));
-        $this->setParameter($interceptor);
-        $this->setDocblock('{@inheritDoc}');
-        $this->setBody('$this->' . $suffixInterceptor->getName() . '[$methodName] = $suffixInterceptor;');
+        return new static();
     }
 }

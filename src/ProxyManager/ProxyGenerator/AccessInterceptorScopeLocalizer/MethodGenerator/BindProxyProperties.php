@@ -25,12 +25,12 @@ use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * The `__construct` implementation for lazy loading proxies
+ * The `bindProxyProperties` method implementation for access interceptor scope localizers
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class Constructor extends MethodGenerator
+class BindProxyProperties extends MethodGenerator
 {
     /**
      * Constructor
@@ -44,7 +44,7 @@ class Constructor extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('__construct');
+        parent::__construct('bindProxyProperties', array(), static::FLAG_PRIVATE);
 
         $localizedObject = new ParameterGenerator('localizedObject');
         $prefix          = new ParameterGenerator('prefixInterceptors');

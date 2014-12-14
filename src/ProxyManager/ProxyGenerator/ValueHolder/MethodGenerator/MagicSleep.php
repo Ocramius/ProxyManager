@@ -32,6 +32,9 @@ class MagicSleep extends MagicMethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param ReflectionClass   $originalClass
+     * @param PropertyGenerator $valueHolderProperty
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $valueHolderProperty)
     {

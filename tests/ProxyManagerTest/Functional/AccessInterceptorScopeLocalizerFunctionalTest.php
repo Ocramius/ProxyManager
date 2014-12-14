@@ -25,6 +25,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -63,7 +64,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
 
         $this->assertProxySynchronized($instance, $proxy);
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -106,7 +107,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
         $listener  = $this->getMock('stdClass', array('__invoke'));
         $listener
             ->expects($this->once())
@@ -144,7 +145,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = unserialize(serialize(new $proxyName($instance)));
+        $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
         $this->assertProxySynchronized($instance, $proxy);
@@ -158,7 +159,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
-        $proxy     = new $proxyName($instance);
+        $proxy     = $proxyName::staticProxyConstructor($instance);
         $cloned    = clone $proxy;
 
         $this->assertProxySynchronized($instance, $proxy);
@@ -226,7 +227,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicArrayProperty */
-        $proxy       = new $proxyName($instance);
+        $proxy       = $proxyName::staticProxyConstructor($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -247,7 +248,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($instance);
+        $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -264,10 +265,9 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     public function testWillModifyByRefRetrievedPublicProperties()
     {
         $instance    = new ClassWithPublicProperties();
-        $className   = get_class($instance);
-        $proxyName   = $this->generateProxy($className);
+        $proxyName   = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($instance);
+        $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = & $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -276,6 +276,32 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $this->assertSame('foo', $proxy->property0);
         $this->assertProxySynchronized($instance, $proxy);
+    }
+
+    /**
+     * @group 115
+     * @group 175
+     */
+    public function testWillBehaveLikeObjectWithNormalConstructor()
+    {
+        $instance = new ClassWithCounterConstructor(10);
+
+        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        $instance->__construct(3);
+        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy ClassWithCounterConstructor */
+        $proxy = new $proxyName(15);
+
+        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        $proxy->__construct(5);
+        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     /**
@@ -360,7 +386,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         return array(
             array(
                 $instance1,
-                new $proxyName1($instance1),
+                $proxyName1::staticProxyConstructor($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ),

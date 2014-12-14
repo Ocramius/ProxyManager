@@ -81,7 +81,6 @@ class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
             ->with(array('foo' => 'bar'))
             ->will($this->returnValue('PropertyName'));
 
-
         $this->classSignatureGenerator->addSignature($classGenerator, array('foo' => 'bar'));
     }
 }

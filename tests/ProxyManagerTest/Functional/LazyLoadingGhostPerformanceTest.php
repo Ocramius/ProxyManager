@@ -89,7 +89,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
         $this->startCapturing();
 
         for ($i = 0; $i < $iterations; $i += 1) {
-            $proxies[] = new $proxyName($initializer);
+            $proxies[] = $proxyName::staticProxyConstructor($initializer);
         }
 
         $proxyProfile = $this->endCapturing(

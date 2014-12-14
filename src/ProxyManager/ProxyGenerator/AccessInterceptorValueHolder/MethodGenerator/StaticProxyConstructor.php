@@ -18,22 +18,27 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
 use ReflectionProperty;
+use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * The `__construct` implementation for lazy loading proxies
+ * The `staticProxyConstructor` implementation for access interceptor value holders
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class Constructor extends MethodGenerator
+class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param ReflectionClass   $originalClass
+     * @param PropertyGenerator $valueHolder
+     * @param PropertyGenerator $prefixInterceptors
+     * @param PropertyGenerator $suffixInterceptors
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -41,7 +46,7 @@ class Constructor extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('__construct');
+        parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $prefix = new ParameterGenerator('prefixInterceptors');
         $suffix = new ParameterGenerator('suffixInterceptors');
@@ -60,20 +65,25 @@ class Constructor extends MethodGenerator
         $unsetProperties  = array();
 
         foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
+            $unsetProperties[] = '$instance->' . $publicProperty->getName();
         }
 
         $this->setDocblock(
-            "@override constructor to setup interceptors\n\n"
+            "Constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$wrappedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
-            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
+            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
+            . "@return self"
         );
         $this->setBody(
-            ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
-            . '$this->' . $valueHolder->getName() . " = \$wrappedObject;\n"
-            . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
-            . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
+            'static $reflection;' . "\n\n"
+            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
+            . ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
+            . '$instance->' . $valueHolder->getName() . " = \$wrappedObject;\n"
+            . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
+            . '$instance->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;\n\n"
+            . 'return $instance;'
         );
     }
 }

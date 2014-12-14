@@ -33,6 +33,8 @@ class SetProxyInitializer extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param PropertyGenerator $initializerProperty
      */
     public function __construct(PropertyGenerator $initializerProperty)
     {

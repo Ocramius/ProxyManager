@@ -46,7 +46,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
-        $proxy     = new $proxyName();
+        $proxy     = $proxyName::staticProxyConstructor();
 
         $this->assertSame(null, call_user_func_array(array($proxy, $method), $params));
     }
@@ -58,7 +58,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
-        $proxy     = unserialize(serialize(new $proxyName()));
+        $proxy     = unserialize(serialize($proxyName::staticProxyConstructor()));
 
         $this->assertSame(null, call_user_func_array(array($proxy, $method), $params));
     }
@@ -71,7 +71,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
-        $proxy     = new $proxyName();
+        $proxy     = $proxyName::staticProxyConstructor();
         $cloned    = clone $proxy;
 
         $this->assertSame(null, call_user_func_array(array($cloned, $method), $params));
@@ -208,13 +208,13 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 $instance1,
-                new $proxyName1($instance1),
+                $proxyName1::staticProxyConstructor($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
             array(
                 $instance2,
-                unserialize(serialize(new $proxyName2($instance2))),
+                unserialize(serialize($proxyName2::staticProxyConstructor($instance2))),
                 'publicProperty',
                 'publicPropertyDefault',
             ),

@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
+use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
@@ -96,7 +97,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                 ),
                 array(
                     $init,
-                    new Constructor($originalClass, $initializer),
+                    new StaticProxyConstructor($originalClass, $initializer),
                     new MagicGet($originalClass, $initializer, $init, $publicProperties),
                     new MagicSet($originalClass, $initializer, $init, $publicProperties),
                     new MagicIsset($originalClass, $initializer, $init, $publicProperties),

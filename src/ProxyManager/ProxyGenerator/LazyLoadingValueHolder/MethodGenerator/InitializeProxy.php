@@ -32,6 +32,9 @@ class InitializeProxy extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param PropertyGenerator $initializerProperty
+     * @param PropertyGenerator $valueHolderProperty
      */
     public function __construct(PropertyGenerator $initializerProperty, PropertyGenerator $valueHolderProperty)
     {

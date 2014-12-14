@@ -32,6 +32,8 @@ class MagicWakeup extends MagicMethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param ReflectionClass $originalClass
      */
     public function __construct(ReflectionClass $originalClass)
     {

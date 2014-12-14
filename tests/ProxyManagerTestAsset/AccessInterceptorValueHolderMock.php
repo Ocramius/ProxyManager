@@ -27,29 +27,35 @@ namespace ProxyManagerTestAsset;
 class AccessInterceptorValueHolderMock
 {
     /**
-     * @var mixed
+     * @var object
      */
     public $instance;
 
     /**
-     * @var mixed
+     * @var callable[]
      */
     public $prefixInterceptors;
 
     /**
-     * @var mixed
+     * @var callable[]
      */
     public $suffixInterceptors;
 
     /**
-     * @param mixed $instance
-     * @param mixed $prefixInterceptors
-     * @param mixed $suffixInterceptors
+     * @param object     $instance
+     * @param callable[] $prefixInterceptors
+     * @param callable[] $suffixInterceptors
+     *
+     * @return self
      */
-    public function __construct($instance, $prefixInterceptors, $suffixInterceptors)
+    public static function staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors)
     {
-        $this->instance           = $instance;
-        $this->prefixInterceptors = $prefixInterceptors;
-        $this->suffixInterceptors = $suffixInterceptors;
+        $selfInstance = new static(); // note: static because on-the-fly generated classes in tests extend this one.
+
+        $selfInstance->instance           = $instance;
+        $selfInstance->prefixInterceptors = $prefixInterceptors;
+        $selfInstance->suffixInterceptors = $suffixInterceptors;
+
+        return $selfInstance;
     }
 }

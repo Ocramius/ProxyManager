@@ -18,33 +18,26 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * The `__construct` implementation for lazy loading proxies
+ * The `staticProxyConstructor` implementation for an access interceptor scope localizer proxy
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class Constructor extends MethodGenerator
+class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
      *
-     * @param ReflectionClass   $originalClass
-     * @param PropertyGenerator $prefixInterceptors
-     * @param PropertyGenerator $suffixInterceptors
+     * @param ReflectionClass $originalClass
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
-    ) {
-        parent::__construct('__construct');
+    public function __construct(ReflectionClass $originalClass)
+    {
+        parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $localizedObject = new ParameterGenerator('localizedObject');
         $prefix          = new ParameterGenerator('prefixInterceptors');
@@ -60,37 +53,19 @@ class Constructor extends MethodGenerator
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
-        $localizedProperties = array();
-
-        foreach ($originalClass->getProperties() as $originalProperty) {
-            if ((! method_exists('Closure', 'bind')) && $originalProperty->isPrivate()) {
-                // @codeCoverageIgnoreStart
-                throw UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty($originalProperty);
-                // @codeCoverageIgnoreEnd
-            }
-
-            $propertyName = $originalProperty->getName();
-
-            if ($originalProperty->isPrivate()) {
-                $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
-                    . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
-                    . '}, $this, ' . var_export($originalProperty->getDeclaringClass()->getName(), true)
-                    . ')->__invoke();';
-            } else {
-                $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
-            }
-        }
-
         $this->setDocblock(
-            "@override constructor to setup interceptors\n\n"
+            "Constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
-            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
+            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
+            . "@return self"
         );
         $this->setBody(
-            (empty($localizedProperties) ? '' : implode("\n\n", $localizedProperties) . "\n\n")
-            . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
-            . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
+            'static $reflection;' . "\n\n"
+            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$instance   = $reflection->newInstanceWithoutConstructor();' . "\n\n"
+            . '$instance->bindProxyProperties($localizedObject, $prefixInterceptors, $suffixInterceptors);' . "\n\n"
+            . 'return $instance;'
         );
     }
 }

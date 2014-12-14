@@ -26,6 +26,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
@@ -53,7 +54,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy = new $proxyName($this->createInitializer($className, $instance));
+        $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -68,7 +69,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy = unserialize(serialize(new $proxyName($this->createInitializer($className, $instance))));
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
+            $this->createInitializer($className, $instance)
+        )));
 
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
@@ -82,7 +85,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy  = new $proxyName($this->createInitializer($className, $instance));
+        $proxy  = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
         $cloned = clone $proxy;
 
         $this->assertTrue($cloned->isProxyInitialized());
@@ -157,7 +160,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicArrayProperty */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -178,7 +181,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -198,7 +201,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = $this->createInitializer($className, $instance);
         $proxyName   = $this->generateProxy($className);
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = & $proxy->property0;
 
         $this->assertSame('property0', $variable);
@@ -215,7 +218,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $initializer = function () {
         };
         /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
 
         $proxy->initializeProxy();
 
@@ -234,7 +237,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $proxy->publicProperty = 'newValue';
         };
         /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy       = new $proxyName($initializer);
+        $proxy       = $proxyName::staticProxyConstructor($initializer);
 
         $proxy->initializeProxy();
         $this->assertSame('newValue', $proxy->publicProperty);
@@ -254,7 +257,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $instance    = new ClassWithPublicProperties();
         $proxyName   = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithPublicProperties */
-        $proxy       = new $proxyName(function () {
+        $proxy       = $proxyName::staticProxyConstructor(function () {
         });
 
         $this->assertSame('property0', $proxy->property0);
@@ -268,7 +271,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $instance    = new ClassWithProtectedProperties();
         $proxyName   = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithProtectedProperties */
-        $proxy       = new $proxyName(function () {
+        $proxy       = $proxyName::staticProxyConstructor(function () {
         });
 
         // Check protected property via reflection
@@ -286,7 +289,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $instance  = new ClassWithPrivateProperties();
         $proxyName = $this->generateProxy(get_class($instance));
         /* @var $proxy ClassWithPrivateProperties */
-        $proxy     = new $proxyName(function () {
+        $proxy     = $proxyName::staticProxyConstructor(function () {
         });
 
         // Check protected property via reflection
@@ -294,6 +297,32 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $reflectionProperty->setAccessible(true);
 
         $this->assertSame('property0', $reflectionProperty->getValue($proxy));
+    }
+
+    /**
+     * @group 115
+     * @group 175
+     */
+    public function testWillBehaveLikeObjectWithNormalConstructor()
+    {
+        $instance = new ClassWithCounterConstructor(10);
+
+        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        $instance->__construct(3);
+        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+
+        $proxyName = $this->generateProxy(get_class($instance));
+
+        /* @var $proxy ClassWithCounterConstructor */
+        $proxy = new $proxyName(15);
+
+        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        $proxy->__construct(5);
+        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     /**

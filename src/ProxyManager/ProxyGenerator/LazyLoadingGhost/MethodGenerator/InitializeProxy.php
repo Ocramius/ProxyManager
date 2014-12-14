@@ -33,6 +33,9 @@ class InitializeProxy extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param PropertyGenerator   $initializerProperty
+     * @param ZendMethodGenerator $callInitializer
      */
     public function __construct(PropertyGenerator $initializerProperty, ZendMethodGenerator $callInitializer)
     {

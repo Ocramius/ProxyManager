@@ -16,41 +16,35 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Factory;
-
-use ProxyManager\ProxyGenerator\NullObjectGenerator;
+namespace ProxyManagerTestAsset;
 
 /**
- * Factory responsible of producing proxy objects
+ * Class with a constructor that implements an internal counter: used to verify if proxies
+ * behave like normal objects when instantiated manually
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
+ * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class NullObjectFactory extends AbstractBaseFactory
+class ClassWithCounterConstructor
 {
     /**
-     * @var \ProxyManager\ProxyGenerator\NullObjectGenerator|null
+     * @var int
      */
-    private $generator;
+    public $amount = 0;
 
     /**
-     * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
-     *
-     * @return \ProxyManager\Proxy\NullobjectInterface
+     * @param int $increment
      */
-    public function createProxy($instanceOrClassName)
+    public function __construct($increment)
     {
-        $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
-        $proxyClassName = $this->generateProxy($className);
-
-        return $proxyClassName::staticProxyConstructor();
+        $this->amount += $increment;
     }
 
     /**
-     * {@inheritDoc}
+     * @return int
      */
-    protected function getGenerator()
+    public function getAmount()
     {
-        return $this->generator ?: $this->generator = new NullObjectGenerator();
+        return $this->amount;
     }
 }

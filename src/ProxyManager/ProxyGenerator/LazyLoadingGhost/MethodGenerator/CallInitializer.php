@@ -34,6 +34,10 @@ class CallInitializer extends MethodGenerator
 {
     /**
      * Constructor
+     *
+     * @param PropertyGenerator $initializerProperty
+     * @param PropertyGenerator $publicPropsDefaults
+     * @param PropertyGenerator $initTracker
      */
     public function __construct(
         PropertyGenerator $initializerProperty,
