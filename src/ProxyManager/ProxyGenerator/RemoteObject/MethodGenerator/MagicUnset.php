@@ -39,7 +39,7 @@ class MagicUnset extends MagicMethodGenerator
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapterProperty)
     {
-        parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
 
         $this->setDocblock('@param string $name');
         $this->setBody(

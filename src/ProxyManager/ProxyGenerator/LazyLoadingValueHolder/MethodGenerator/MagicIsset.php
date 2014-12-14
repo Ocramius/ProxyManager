@@ -47,7 +47,7 @@ class MagicIsset extends MagicMethodGenerator
         PropertyGenerator $valueHolderProperty,
         PublicPropertiesMap $publicProperties
     ) {
-        parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__isset', [new ParameterGenerator('name')]);
 
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();

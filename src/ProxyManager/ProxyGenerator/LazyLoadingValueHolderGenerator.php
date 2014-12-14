@@ -63,7 +63,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces          = array(VirtualProxyInterface::class);
+        $interfaces          = [VirtualProxyInterface::class];
         $publicProperties    = new PublicPropertiesMap($originalClass);
 
         if ($originalClass->isInterface()) {
@@ -92,7 +92,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                     },
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
-                array(
+                [
                     new StaticProxyConstructor($originalClass, $initializer),
                     Constructor::generateMethod($originalClass, $valueHolder),
                     new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties),
@@ -107,7 +107,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                     new InitializeProxy($initializer, $valueHolder),
                     new IsProxyInitialized($valueHolder),
                     new GetWrappedValueHolderValue($valueHolder),
-                )
+                ]
             )
         );
     }

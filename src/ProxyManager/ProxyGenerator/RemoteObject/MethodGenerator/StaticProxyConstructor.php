@@ -43,7 +43,7 @@ class StaticProxyConstructor extends MethodGenerator
     {
         parent::__construct(
             'staticProxyConstructor',
-            array(),
+            [],
             MethodGenerator::FLAG_PUBLIC | MethodGenerator::FLAG_STATIC
         );
 

@@ -41,7 +41,7 @@ abstract class AbstractBaseFactory
      *
      * @var string[]
      */
-    private $checkedClasses = array();
+    private $checkedClasses = [];
 
     /**
      * @param \ProxyManager\Configuration $configuration
@@ -62,11 +62,11 @@ abstract class AbstractBaseFactory
             return $this->checkedClasses[$className];
         }
 
-        $proxyParameters = array(
+        $proxyParameters = [
             'className'           => $className,
             'factory'             => get_class($this),
             'proxyManagerVersion' => Version::VERSION
-        );
+        ];
         $proxyClassName  = $this
             ->configuration
             ->getClassNameInflector()

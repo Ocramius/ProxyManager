@@ -33,5 +33,5 @@ interface AdapterInterface
      * @param string $method
      * @param array  $params
      */
-    public function call($wrappedClass, $method, array $params = array());
+    public function call($wrappedClass, $method, array $params = []);
 }

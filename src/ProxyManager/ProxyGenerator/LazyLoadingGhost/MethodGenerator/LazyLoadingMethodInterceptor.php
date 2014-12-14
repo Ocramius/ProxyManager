@@ -47,8 +47,8 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
         $method            = static::fromReflection($originalMethod);
         $parameters        = $originalMethod->getParameters();
         $methodName        = $originalMethod->getName();
-        $initializerParams = array();
-        $forwardedParams   = array();
+        $initializerParams = [];
+        $forwardedParams   = [];
 
         foreach ($parameters as $parameter) {
             $parameterName       = $parameter->getName();

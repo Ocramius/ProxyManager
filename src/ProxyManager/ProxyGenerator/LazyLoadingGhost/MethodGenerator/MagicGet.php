@@ -46,7 +46,7 @@ class MagicGet extends MagicMethodGenerator
         MethodGenerator $callInitializer,
         PublicPropertiesMap $publicProperties
     ) {
-        parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
         $override   = $originalClass->hasMethod('__get');
         $callParent = '';

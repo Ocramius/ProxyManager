@@ -65,7 +65,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $publicProperties = new PublicPropertiesMap($originalClass);
-        $interfaces       = array(AccessInterceptorInterface::class, ValueHolderInterface::class);
+        $interfaces       = [AccessInterceptorInterface::class, ValueHolderInterface::class];
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -95,7 +95,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     },
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
-                array(
+                [
                     Constructor::generateMethod($originalClass, $valueHolder),
                     new StaticProxyConstructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new GetWrappedValueHolderValue($valueHolder),
@@ -132,7 +132,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $valueHolder),
                     new MagicWakeup($originalClass, $valueHolder),
-                )
+                ]
             )
         );
     }

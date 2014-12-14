@@ -46,7 +46,7 @@ class Constructor extends MethodGenerator
 
         /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
+        $unsetProperties  = [];
 
         foreach ($publicProperties as $publicProperty) {
             $unsetProperties[] = '$this->' . $publicProperty->getName();

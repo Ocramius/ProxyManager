@@ -42,7 +42,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *
      * @return \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface
      */
-    public function createProxy($instance, array $prefixInterceptors = array(), array $suffixInterceptors = array())
+    public function createProxy($instance, array $prefixInterceptors = [], array $suffixInterceptors = [])
     {
         $proxyClassName = $this->generateProxy(get_class($instance));
 

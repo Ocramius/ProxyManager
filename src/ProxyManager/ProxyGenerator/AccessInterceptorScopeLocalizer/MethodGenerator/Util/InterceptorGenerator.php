@@ -51,7 +51,7 @@ class InterceptorGenerator
         $name               = var_export($method->getName(), true);
         $prefixInterceptors = $prefixInterceptors->getName();
         $suffixInterceptors = $suffixInterceptors->getName();
-        $params             = array();
+        $params             = [];
 
         foreach ($method->getParameters() as $parameter) {
             $parameterName = $parameter->getName();

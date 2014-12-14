@@ -59,7 +59,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
         $classGenerator->setExtendedClass($originalClass->getName());
-        $classGenerator->setImplementedInterfaces(array(AccessInterceptorInterface::class));
+        $classGenerator->setImplementedInterfaces([AccessInterceptorInterface::class]);
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
 
@@ -78,10 +78,10 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                     },
                     ProxiedMethodsFilter::getProxiedMethods(
                         $originalClass,
-                        array('__get', '__set', '__isset', '__unset', '__clone', '__sleep')
+                        ['__get', '__set', '__isset', '__unset', '__clone', '__sleep']
                     )
                 ),
-                array(
+                [
                     new StaticProxyConstructor($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new BindProxyProperties($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
@@ -92,7 +92,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                     new MagicUnset($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new MagicClone($originalClass, $prefixInterceptors, $suffixInterceptors),
-                )
+                ]
             )
         );
     }

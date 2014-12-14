@@ -63,7 +63,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces          = array(GhostObjectInterface::class);
+        $interfaces          = [GhostObjectInterface::class];
         $publicProperties    = new PublicPropertiesMap($originalClass);
         $publicPropsDefaults = new PublicPropertiesDefaults($originalClass);
 
@@ -96,7 +96,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     },
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
-                array(
+                [
                     $init,
                     new StaticProxyConstructor($originalClass, $initializer),
                     new MagicGet($originalClass, $initializer, $init, $publicProperties),
@@ -109,7 +109,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     new GetProxyInitializer($initializer),
                     new InitializeProxy($initializer, $init),
                     new IsProxyInitialized($initializer),
-                )
+                ]
             )
         );
     }

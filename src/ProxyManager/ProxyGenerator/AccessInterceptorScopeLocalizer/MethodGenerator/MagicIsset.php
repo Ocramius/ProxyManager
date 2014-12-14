@@ -43,7 +43,7 @@ class MagicIsset extends MagicMethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__isset', [new ParameterGenerator('name')]);
 
         $override = $originalClass->hasMethod('__isset');
 

@@ -38,7 +38,7 @@ class MagicIsset extends MagicMethodGenerator
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapterProperty)
     {
-        parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__isset', [new ParameterGenerator('name')]);
 
         $this->setDocblock('@param string $name');
         $this->setBody(

@@ -46,7 +46,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces = array(NullObjectInterface::class);
+        $interfaces = [NullObjectInterface::class];
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();

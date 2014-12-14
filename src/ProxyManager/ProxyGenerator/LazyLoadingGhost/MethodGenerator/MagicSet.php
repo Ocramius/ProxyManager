@@ -49,7 +49,7 @@ class MagicSet extends MagicMethodGenerator
         parent::__construct(
             $originalClass,
             '__set',
-            array(new ParameterGenerator('name'), new ParameterGenerator('value'))
+            [new ParameterGenerator('name'), new ParameterGenerator('value')]
         );
 
         $override   = $originalClass->hasMethod('__set');

@@ -80,7 +80,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * {@inheritDoc}
      */
-    public function getProxyClassName($className, array $options = array())
+    public function getProxyClassName($className, array $options = [])
     {
         return $this->proxyNamespace
             . $this->proxyMarker

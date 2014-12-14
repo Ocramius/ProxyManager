@@ -46,7 +46,7 @@ class MagicIsset extends MagicMethodGenerator
         MethodGenerator $callInitializer,
         PublicPropertiesMap $publicProperties
     ) {
-        parent::__construct($originalClass, '__isset', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__isset', [new ParameterGenerator('name')]);
 
         $override   = $originalClass->hasMethod('__isset');
         $callParent = '';

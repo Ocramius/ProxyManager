@@ -44,15 +44,15 @@ class BindProxyProperties extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('bindProxyProperties', array(), static::FLAG_PRIVATE);
+        parent::__construct('bindProxyProperties', [], static::FLAG_PRIVATE);
 
         $localizedObject = new ParameterGenerator('localizedObject');
         $prefix          = new ParameterGenerator('prefixInterceptors');
         $suffix          = new ParameterGenerator('suffixInterceptors');
 
         $localizedObject->setType($originalClass->getName());
-        $prefix->setDefaultValue(array());
-        $suffix->setDefaultValue(array());
+        $prefix->setDefaultValue([]);
+        $suffix->setDefaultValue([]);
         $prefix->setType('array');
         $suffix->setType('array');
 
@@ -60,7 +60,7 @@ class BindProxyProperties extends MethodGenerator
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
-        $localizedProperties = array();
+        $localizedProperties = [];
 
         foreach ($originalClass->getProperties() as $originalProperty) {
             $propertyName = $originalProperty->getName();

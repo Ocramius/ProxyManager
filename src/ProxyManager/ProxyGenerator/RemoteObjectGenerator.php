@@ -52,7 +52,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces = array(RemoteObjectInterface::class);
+        $interfaces = [RemoteObjectInterface::class];
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -78,16 +78,16 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
                     },
                     ProxiedMethodsFilter::getProxiedMethods(
                         $originalClass,
-                        array('__get', '__set', '__isset', '__unset')
+                        ['__get', '__set', '__isset', '__unset']
                     )
                 ),
-                array(
+                [
                     new StaticProxyConstructor($originalClass, $adapter),
                     new MagicGet($originalClass, $adapter),
                     new MagicSet($originalClass, $adapter),
                     new MagicIsset($originalClass, $adapter),
                     new MagicUnset($originalClass, $adapter),
-                )
+                ]
             )
         );
     }

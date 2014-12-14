@@ -141,7 +141,7 @@ class MethodGenerator extends ZendMethodGenerator
             . (($this->returnsReference()) ? '& ' : '')
             . $this->getName() . '(';
 
-        $parameterOutput = array();
+        $parameterOutput = [];
 
         foreach ($this->getParameters() as $parameter) {
             $parameterOutput[] = $parameter->generate();
