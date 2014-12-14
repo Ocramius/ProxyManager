@@ -52,20 +52,7 @@ final class ProxiedMethodsFilter
         ReflectionClass $class,
         array $excluded = null
     ) {
-        $excluded = (null === $excluded) ? self::$defaultExcluded : $excluded;
-        $ignored  = array_flip(array_map('strtolower', $excluded));
-
-        return array_filter(
-            $class->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($ignored) {
-                return ! (
-                    $method->isConstructor()
-                    || isset($ignored[strtolower($method->getName())])
-                    || $method->isFinal()
-                    || $method->isStatic()
-                );
-            }
-        );
+        return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded);
     }
 
     /**
@@ -80,13 +67,24 @@ final class ProxiedMethodsFilter
         ReflectionClass $class,
         array $excluded = null
     ) {
-        $excluded = (null === $excluded) ? self::$defaultExcluded : $excluded;
-        $ignored  = array_flip(array_map('strtolower', $excluded));
+        return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded, true);
+    }
+
+    /**
+     * @param ReflectionClass $class
+     * @param array           $excluded
+     * @param bool            $requireAbstract
+     *
+     * @return ReflectionMethod[]
+     */
+    private static function doFilter(ReflectionClass $class, array $excluded, $requireAbstract = false)
+    {
+        $ignored = array_flip(array_map('strtolower', $excluded));
 
         return array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($ignored) {
-                return $method->isAbstract() && ! (
+            function (ReflectionMethod $method) use ($ignored, $requireAbstract) {
+                return (! $requireAbstract || $method->isAbstract()) && ! (
                     $method->isConstructor()
                     || isset($ignored[strtolower($method->getName())])
                     || $method->isFinal()
