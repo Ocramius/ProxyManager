@@ -56,7 +56,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
         $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        $listener  = $this->getMock(stdClass::class, ['__invoke']);
+        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $listener = $this->getMock(stdClass::class, ['__invoke']);
         $listener
             ->expects($this->once())
             ->method('__invoke')
@@ -65,7 +66,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy->setMethodPrefixInterceptor(
             $method,
             function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
-                $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
+                $listener($proxy, $instance, $method, $params, $returnEarly);
             }
         );
 
@@ -93,8 +94,9 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
-        $proxy     = $proxyName::staticProxyConstructor($instance);
-        $listener  = $this->getMock(stdClass::class, ['__invoke']);
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $listener = $this->getMock(stdClass::class, ['__invoke']);
         $listener
             ->expects($this->once())
             ->method('__invoke')
@@ -103,7 +105,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy->setMethodSuffixInterceptor(
             $method,
             function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) {
-                $listener->__invoke($proxy, $instance, $method, $params, $returnValue, $returnEarly);
+                $listener($proxy, $instance, $method, $params, $returnValue, $returnEarly);
             }
         );
 

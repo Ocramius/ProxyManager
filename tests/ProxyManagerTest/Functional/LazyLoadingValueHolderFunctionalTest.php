@@ -311,6 +311,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 );
         }
 
+        /* @var $initializerMatcher callable */
         $initializerMatcher = $initializerMatcher ?: $this->getMock(stdClass::class, ['__invoke']);
 
         return function (
@@ -326,7 +327,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
             $initializer   = null;
             $wrappedObject = $realInstance;
 
-            $initializerMatcher->__invoke($proxy, $wrappedObject, $method, $params);
+            $initializerMatcher($proxy, $wrappedObject, $method, $params);
         };
     }
 

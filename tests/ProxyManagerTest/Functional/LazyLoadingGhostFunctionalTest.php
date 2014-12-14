@@ -368,6 +368,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 );
         }
 
+        /* @var $initializerMatcher callable */
         $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', ['__invoke']);
 
         return function (
@@ -387,7 +388,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 $property->setValue($proxy, $property->getValue($realInstance));
             }
 
-            $initializerMatcher->__invoke($proxy, $method, $params);
+            $initializerMatcher($proxy, $method, $params);
         };
     }
 
