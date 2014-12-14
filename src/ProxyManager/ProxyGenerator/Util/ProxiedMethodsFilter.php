@@ -48,10 +48,8 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getProxiedMethods(
-        ReflectionClass $class,
-        array $excluded = null
-    ) {
+    public static function getProxiedMethods(ReflectionClass $class, array $excluded = null)
+    {
         return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded);
     }
 
@@ -63,10 +61,8 @@ final class ProxiedMethodsFilter
      *
      * @todo to be refactored due to code duplication
      */
-    public static function getAbstractProxiedMethods(
-        ReflectionClass $class,
-        array $excluded = null
-    ) {
+    public static function getAbstractProxiedMethods(ReflectionClass $class, array $excluded = null)
+    {
         return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded, true);
     }
 
