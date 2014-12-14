@@ -55,10 +55,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGeneratesMethodWithCallableType()
     {
-        if (PHP_VERSION_ID < 50400) {
-            $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
-        }
-
         $generator = new ParameterGenerator();
 
         $generator->setType('callable');
@@ -69,10 +65,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testVisitMethodWithCallable()
     {
-        if (PHP_VERSION_ID < 50400) {
-            $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
-        }
-
         $parameter = new ParameterReflection(
             [CallableTypeHintClass::class, 'callableTypeHintMethod'],
             'parameter'
