@@ -240,6 +240,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $variable = 'foo';
 
         $this->assertSame('property0', $proxy->property0);
+        $this->assertSame('foo', $variable);
     }
 
     /**
@@ -259,6 +260,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+        $this->assertSame('foo', $variable);
     }
 
     /**

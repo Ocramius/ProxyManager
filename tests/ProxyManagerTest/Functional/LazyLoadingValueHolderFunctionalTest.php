@@ -197,6 +197,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $variable = 'foo';
 
         $this->assertSame('property0', $proxy->property0);
+        $this->assertSame('foo', $variable);
     }
 
     /**
@@ -217,6 +218,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $variable = 'foo';
 
         $this->assertSame('foo', $proxy->property0);
+        $this->assertSame('foo', $variable);
     }
 
     /**
