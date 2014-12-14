@@ -47,7 +47,7 @@ class MagicSleep extends MagicMethodGenerator
 
         $this->setBody(
             '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__sleep\', array());' . "\n\n"
+            . '(\'__sleep\', []);' . "\n\n"
             . ($originalClass->hasMethod('__sleep') ? 'return parent::__sleep();' : 'return array_keys((array) $this);')
         );
     }

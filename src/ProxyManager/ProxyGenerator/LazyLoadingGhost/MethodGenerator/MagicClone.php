@@ -47,7 +47,7 @@ class MagicClone extends MagicMethodGenerator
 
         $this->setBody(
             '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__clone\', array());'
+            . '(\'__clone\', []);'
             . ($originalClass->hasMethod('__clone') ? "\n\nparent::__clone();" : '')
         );
     }
