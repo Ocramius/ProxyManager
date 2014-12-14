@@ -24,6 +24,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\LazyLoadingMock;
@@ -224,6 +225,11 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
             [
                 new ReflectionClass(ClassWithAbstractPublicMethod::class),
                 ['publicAbstractMethod'],
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithMagicMethods::class),
+                [],
                 [],
             ],
             [
