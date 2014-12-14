@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ReflectionClass;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
@@ -48,7 +49,7 @@ class StaticProxyConstructor extends MethodGenerator
 
         $adapterName = $adapter->getName();
 
-        $this->setParameter(new ParameterGenerator($adapterName, 'ProxyManager\Factory\RemoteObject\AdapterInterface'));
+        $this->setParameter(new ParameterGenerator($adapterName, AdapterInterface::class));
 
         $this->setDocblock(
             'Constructor for remote object control\n\n'
