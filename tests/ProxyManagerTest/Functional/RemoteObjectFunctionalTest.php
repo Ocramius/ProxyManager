@@ -173,7 +173,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        $data = [
+        return [
             [
                 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface',
                 'foo',
@@ -198,19 +198,13 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 ['baz'],
                 'baz remote'
             ],
-        ];
-
-        if (PHP_VERSION_ID >= 50401) {
-            // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
-            $data[] = [
+            [
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 [$selfHintParam],
                 $selfHintParam
-            ];
-        }
-
-        return $data;
+            ],
+        ];
     }
 
     /**
