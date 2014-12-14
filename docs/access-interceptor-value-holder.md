@@ -35,8 +35,8 @@ $factory = new Factory();
 
 $proxy = $factory->createProxy(
     new Foo(),
-    array('doFoo' => function () { echo "PreFoo!\n"; }),
-    array('doFoo' => function () { echo "PostFoo!\n"; })
+    ['doFoo' => function () { echo "PreFoo!\n"; }],
+    ['doFoo' => function () { echo "PostFoo!\n"; }]
 );
 
 $proxy->doFoo();
