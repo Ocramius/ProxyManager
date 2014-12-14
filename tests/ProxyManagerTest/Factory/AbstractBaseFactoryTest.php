@@ -21,6 +21,7 @@ namespace ProxyManagerTest\Factory;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ReflectionMethod;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\Factory\AbstractBaseFactory}
@@ -151,8 +152,8 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
 
-        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, 'stdClass'));
+        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, stdClass::class));
         $this->assertTrue(class_exists($generatedClass, false));
-        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, 'stdClass'));
+        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, stdClass::class));
     }
 }

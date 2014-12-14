@@ -19,6 +19,7 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -92,7 +93,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
     {
         $factory = new AccessInterceptorValueHolderFactory();
         $this->assertAttributeNotEmpty('configuration', $factory);
-        $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
+        $this->assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
     }
 
     /**

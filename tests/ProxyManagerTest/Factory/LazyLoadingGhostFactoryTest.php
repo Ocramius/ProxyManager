@@ -19,6 +19,7 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -91,7 +92,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     {
         $factory = new LazyLoadingGhostFactory();
         $this->assertAttributeNotEmpty('configuration', $factory);
-        $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
+        $this->assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
     }
 
     /**
