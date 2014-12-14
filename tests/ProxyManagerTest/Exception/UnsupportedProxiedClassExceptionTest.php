@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Exception;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionProperty;
 
 /**
@@ -39,10 +40,10 @@ class UnsupportedProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
     public function testUnsupportedLocalizedReflectionProperty()
     {
         $this->assertSame(
-            'Provided reflection property "property0" of class "ProxyManagerTestAsset\ClassWithPrivateProperties" '
-            . 'is private and cannot be localized in PHP 5.3',
+            'Provided reflection property "property0" of class "' . ClassWithPrivateProperties::class
+            . '" is private and cannot be localized in PHP 5.3',
             UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty(
-                new ReflectionProperty('ProxyManagerTestAsset\ClassWithPrivateProperties', 'property0')
+                new ReflectionProperty(ClassWithPrivateProperties::class, 'property0')
             )->getMessage()
         );
     }
