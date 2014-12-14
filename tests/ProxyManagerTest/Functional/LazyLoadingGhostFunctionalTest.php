@@ -72,7 +72,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $initializeMatcher->expects($this->never())->method('__invoke'); // should not initialize the proxy
 
         /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
-        $proxy = new $proxyName($this->createInitializer($className, $instance, $initializeMatcher));
+        $proxy = $proxyName::staticProxyConstructor(
+            $this->createInitializer($className, $instance, $initializeMatcher)
+        );
 
         $this->assertFalse($proxy->isProxyInitialized());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
