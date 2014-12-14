@@ -32,6 +32,7 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator} produced objects
@@ -44,18 +45,6 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  */
 class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * {@inheritDoc}
-     */
-    public static function setUpBeforeClass()
-    {
-        if (! method_exists('Closure', 'bind')) {
-            throw new PHPUnit_Framework_SkippedTestError(
-                'PHP 5.3 doesn\'t support scope localization of private properties'
-            );
-        }
-    }
-
     /**
      * @dataProvider getProxyMethods
      */
@@ -108,7 +97,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
         $proxy     = $proxyName::staticProxyConstructor($instance);
-        $listener  = $this->getMock('stdClass', array('__invoke'));
+        $listener  = $this->getMock(stdClass::class, array('__invoke'));
         $listener
             ->expects($this->once())
             ->method('__invoke')
@@ -347,7 +336,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
                 'ProxyManagerTestAsset\\BaseClass',
                 new BaseClass(),
                 'publicTypeHintedMethod',
-                array('param' => new \stdClass()),
+                array('param' => new stdClass()),
                 'publicTypeHintedMethodDefault'
             ),
             array(

@@ -31,6 +31,7 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
@@ -295,7 +296,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     private function createInitializer($className, $realInstance, Mock $initializerMatcher = null)
     {
         if (null === $initializerMatcher) {
-            $initializerMatcher = $this->getMock('stdClass', array('__invoke'));
+            $initializerMatcher = $this->getMock(stdClass::class, array('__invoke'));
 
             $initializerMatcher
                 ->expects($this->once())
@@ -309,7 +310,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 );
         }
 
-        $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', array('__invoke'));
+        $initializerMatcher = $initializerMatcher ?: $this->getMock(stdClass::class, array('__invoke'));
 
         return function (
             & $wrappedObject,
@@ -349,7 +350,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 'ProxyManagerTestAsset\\BaseClass',
                 new BaseClass(),
                 'publicTypeHintedMethod',
-                array(new \stdClass()),
+                array(new stdClass()),
                 'publicTypeHintedMethodDefault'
             ),
             array(

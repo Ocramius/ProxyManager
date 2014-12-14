@@ -29,6 +29,7 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
@@ -54,7 +55,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
         $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
 
-        $listener  = $this->getMock('stdClass', array('__invoke'));
+        $listener  = $this->getMock(stdClass::class, array('__invoke'));
         $listener
             ->expects($this->once())
             ->method('__invoke')
@@ -92,7 +93,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $proxy     = $proxyName::staticProxyConstructor($instance);
-        $listener  = $this->getMock('stdClass', array('__invoke'));
+        $listener  = $this->getMock(stdClass::class, array('__invoke'));
         $listener
             ->expects($this->once())
             ->method('__invoke')
@@ -324,7 +325,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 'ProxyManagerTestAsset\\BaseClass',
                 new BaseClass(),
                 'publicTypeHintedMethod',
-                array('param' => new \stdClass()),
+                array('param' => new stdClass()),
                 'publicTypeHintedMethodDefault'
             ),
             array(

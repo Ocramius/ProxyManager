@@ -23,6 +23,21 @@ use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\GhostObjectInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
+use ProxyManager\Proxy\VirtualProxyInterface;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
+use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
+use ProxyManagerTestAsset\ClassWithFinalMethods;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\HydratedObject;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -48,7 +63,6 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      */
     public function testCanGenerateMultipleDifferentProxiesForSameClass($className)
     {
-        $skipScopeLocalizerTests                = false;
         $ghostProxyFactory                      = new LazyLoadingGhostFactory();
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
@@ -57,20 +71,12 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         };
 
         $reflectionClass = new ReflectionClass($className);
-
-        if ((! method_exists('Closure', 'bind')) && $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)) {
-            $skipScopeLocalizerTests = true;
-        }
-
-        $generated = array(
+        $generated       = array(
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
+            $accessInterceptorScopeLocalizerFactory->createProxy(new $className()),
         );
-
-        if (! $skipScopeLocalizerTests) {
-            $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy(new $className());
-        }
 
         foreach ($generated as $key => $proxy) {
             $this->assertInstanceOf($className, $proxy);
@@ -84,14 +90,11 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             }
         }
 
-        $this->assertInstanceOf('ProxyManager\Proxy\GhostObjectInterface', $generated[0]);
-        $this->assertInstanceOf('ProxyManager\Proxy\VirtualProxyInterface', $generated[1]);
-        $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[2]);
-        $this->assertInstanceOf('ProxyManager\Proxy\ValueHolderInterface', $generated[2]);
-
-        if (! $skipScopeLocalizerTests) {
-            $this->assertInstanceOf('ProxyManager\Proxy\AccessInterceptorInterface', $generated[3]);
-        }
+        $this->assertInstanceOf(GhostObjectInterface::class, $generated[0]);
+        $this->assertInstanceOf(VirtualProxyInterface::class, $generated[1]);
+        $this->assertInstanceOf(AccessInterceptorInterface::class, $generated[2]);
+        $this->assertInstanceOf(ValueHolderInterface::class, $generated[2]);
+        $this->assertInstanceOf(AccessInterceptorInterface::class, $generated[3]);
     }
 
     /**
@@ -100,17 +103,17 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
     public function getTestedClasses()
     {
         $data = array(
-            array('ProxyManagerTestAsset\\BaseClass'),
-            array('ProxyManagerTestAsset\\ClassWithMagicMethods'),
-            array('ProxyManagerTestAsset\\ClassWithFinalMethods'),
-            array('ProxyManagerTestAsset\\ClassWithFinalMagicMethods'),
-            array('ProxyManagerTestAsset\\ClassWithByRefMagicMethods'),
-            array('ProxyManagerTestAsset\\ClassWithMixedProperties'),
-            array('ProxyManagerTestAsset\\ClassWithPrivateProperties'),
-            array('ProxyManagerTestAsset\\ClassWithProtectedProperties'),
-            array('ProxyManagerTestAsset\\ClassWithPublicProperties'),
-            array('ProxyManagerTestAsset\\EmptyClass'),
-            array('ProxyManagerTestAsset\\HydratedObject'),
+            array(BaseClass::class),
+            array(ClassWithMagicMethods::class),
+            array(ClassWithFinalMethods::class),
+            array(ClassWithFinalMagicMethods::class),
+            array(ClassWithByRefMagicMethods::class),
+            array(ClassWithMixedProperties::class),
+            array(ClassWithPrivateProperties::class),
+            array(ClassWithProtectedProperties::class),
+            array(ClassWithPublicProperties::class),
+            array(EmptyClass::class),
+            array(HydratedObject::class),
         );
 
         if (PHP_VERSION_ID >= 50401) {

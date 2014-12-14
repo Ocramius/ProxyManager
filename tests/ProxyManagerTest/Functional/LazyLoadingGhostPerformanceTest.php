@@ -23,7 +23,9 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
@@ -122,8 +124,8 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
     public function getTestedClasses()
     {
         $testedClasses = array(
-            array('stdClass', array(), array()),
-            array('ProxyManagerTestAsset\\BaseClass', array('publicMethod' => array()), array('publicProperty')),
+            array(stdClass::class, array(), array()),
+            array(BaseClass::class, array('publicMethod' => array()), array('publicProperty')),
         );
 
         foreach ($testedClasses as $key => $testedClass) {
