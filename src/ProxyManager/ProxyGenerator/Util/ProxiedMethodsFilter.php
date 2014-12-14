@@ -30,6 +30,19 @@ use ReflectionMethod;
 final class ProxiedMethodsFilter
 {
     /**
+     * @var string[]
+     */
+    private static $defaultExcluded = [
+        '__get',
+        '__set',
+        '__isset',
+        '__unset',
+        '__clone',
+        '__sleep',
+        '__wakeup',
+    ];
+
+    /**
      * @param ReflectionClass $class    reflection class from which methods should be extracted
      * @param string[]        $excluded methods to be ignored
      *
@@ -37,9 +50,10 @@ final class ProxiedMethodsFilter
      */
     public static function getProxiedMethods(
         ReflectionClass $class,
-        array $excluded = ['__get', '__set', '__isset', '__unset', '__clone', '__sleep', '__wakeup']
+        array $excluded = null
     ) {
-        $ignored = array_flip(array_map('strtolower', $excluded));
+        $excluded = (null === $excluded) ? self::$defaultExcluded : $excluded;
+        $ignored  = array_flip(array_map('strtolower', $excluded));
 
         return array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
@@ -64,9 +78,10 @@ final class ProxiedMethodsFilter
      */
     public static function getAbstractProxiedMethods(
         ReflectionClass $class,
-        array $excluded = ['__get', '__set', '__isset', '__unset', '__clone', '__sleep', '__wakeup']
+        array $excluded = null
     ) {
-        $ignored = array_flip(array_map('strtolower', $excluded));
+        $excluded = (null === $excluded) ? self::$defaultExcluded : $excluded;
+        $ignored  = array_flip(array_map('strtolower', $excluded));
 
         return array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
