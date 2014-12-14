@@ -1,0 +1,15 @@
+/examples export-ignore
+/html-docs export-ignore
+/tests export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.scrutinizer.yml export-ignore
+.travis.coverage.sh export-ignore
+.travis.install.sh export-ignore
+.travis.yml export-ignore
+CONTRIBUTING.md export-ignore
+index.html export-ignore
+phpdox.xml.dist export-ignore
+phpmd.xml.dist export-ignore
+phpunit.xml.dist export-ignore
+proxy-manager.png export-ignore
