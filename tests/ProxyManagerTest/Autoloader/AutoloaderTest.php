@@ -20,7 +20,9 @@ namespace ProxyManagerTest\Autoloader;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\Autoloader;
+use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
 
 /**
  * Tests for {@see \ProxyManager\Autoloader\Autoloader}
@@ -53,8 +55,8 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->fileLocator        = $this->getMock('ProxyManager\\FileLocator\\FileLocatorInterface');
-        $this->classNameInflector = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
+        $this->fileLocator        = $this->getMock(FileLocatorInterface::class);
+        $this->classNameInflector = $this->getMock(ClassNameInflectorInterface::class);
         $this->autoloader         = new Autoloader($this->fileLocator, $this->classNameInflector);
     }
 
