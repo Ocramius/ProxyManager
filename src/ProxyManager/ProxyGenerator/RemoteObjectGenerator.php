@@ -18,15 +18,15 @@
 
 namespace ProxyManager\ProxyGenerator;
 
-use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor;
-use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
-use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicUnset;
+use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
+use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor;
+use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
