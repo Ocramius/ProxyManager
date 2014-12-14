@@ -149,7 +149,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        $data = [
+        return [
             [
                 BaseClass::class,
                 new BaseClass(),
@@ -178,20 +178,14 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 [],
                 'publicMethodDefault'
             ],
-        ];
-
-        if (PHP_VERSION_ID >= 50401) {
-            // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
-            $data[] = [
+            [
                 ClassWithSelfHint::class,
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
                 $selfHintParam
-            ];
-        }
-
-        return $data;
+            ],
+        ];
     }
 
     /**
