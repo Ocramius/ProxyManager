@@ -170,18 +170,12 @@ class PublicScopeSimulator
     }
 
     /**
-     * Generates code to bind operations to the parent scope if supported by the current PHP implementation
+     * Generates code to bind operations to the parent scope
      *
      * @return string
      */
     private static function getScopeReBind()
     {
-        if (! method_exists('Closure', 'bind')) {
-            // @codeCoverageIgnoreStart
-            return '';
-            // @codeCoverageIgnoreEnd
-        }
-
         return '    $backtrace = debug_backtrace(true);' . "\n"
             . '    $scopeObject = isset($backtrace[1][\'object\'])'
             . ' ? $backtrace[1][\'object\'] : new \stdClass();' . "\n"
