@@ -63,12 +63,6 @@ class Constructor extends MethodGenerator
         $localizedProperties = array();
 
         foreach ($originalClass->getProperties() as $originalProperty) {
-            if ((! method_exists('Closure', 'bind')) && $originalProperty->isPrivate()) {
-                // @codeCoverageIgnoreStart
-                throw UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty($originalProperty);
-                // @codeCoverageIgnoreEnd
-            }
-
             $propertyName = $originalProperty->getName();
 
             if ($originalProperty->isPrivate()) {
