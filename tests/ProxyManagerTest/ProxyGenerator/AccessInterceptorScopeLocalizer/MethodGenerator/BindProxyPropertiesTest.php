@@ -150,10 +150,6 @@ $this->post = $suffixInterceptors;',
 
     public function testBodyStructureWithPrivateProperties()
     {
-        if (! method_exists('Closure', 'bind')) {
-            $this->setExpectedException('ProxyManager\Exception\UnsupportedProxiedClassException');
-        }
-
         $method = new BindProxyProperties(
             new ReflectionClass('ProxyManagerTestAsset\\ClassWithPrivateProperties'),
             $this->prefixInterceptors,
