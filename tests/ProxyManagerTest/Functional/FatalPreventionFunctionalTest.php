@@ -121,12 +121,12 @@ PHP;
                     );
                 },
                 array(
-                    'ProxyManager\\ProxyGenerator\\AccessInterceptorScopeLocalizerGenerator',
-                    'ProxyManager\\ProxyGenerator\\AccessInterceptorValueHolderGenerator',
-                    'ProxyManager\\ProxyGenerator\\LazyLoadingGhostGenerator',
-                    'ProxyManager\\ProxyGenerator\\LazyLoadingValueHolderGenerator',
-                    'ProxyManager\\ProxyGenerator\\NullObjectGenerator',
-                    'ProxyManager\\ProxyGenerator\\RemoteObjectGenerator',
+                    \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator::class,
+                    \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator::class,
+                    \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator::class,
+                    \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator::class,
+                    \ProxyManager\ProxyGenerator\NullObjectGenerator::class,
+                    \ProxyManager\ProxyGenerator\RemoteObjectGenerator::class,
                 )
             )
         );

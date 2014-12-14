@@ -36,9 +36,9 @@ class CallInitializerTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $initializer           = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $propertiesDefaults    = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $initializationTracker = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initializer           = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $propertiesDefaults    = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $initializationTracker = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('init'));
         $propertiesDefaults->expects($this->any())->method('getName')->will($this->returnValue('props'));

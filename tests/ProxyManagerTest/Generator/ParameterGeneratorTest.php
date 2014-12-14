@@ -85,7 +85,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
             array(
-                'ProxyManagerTestAsset\\ClassWithMethodWithDefaultParameters',
+                \ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters::class,
                 'publicMethodWithDefaults'
             ),
             'parameter'
@@ -94,7 +94,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         /* @var $defaultValue \Zend\Code\Generator\ValueGenerator */
         $defaultValue = $parameter->getDefaultValue();
 
-        $this->assertInstanceOf('Zend\\Code\\Generator\\ValueGenerator', $defaultValue);
+        $this->assertInstanceOf(\Zend\Code\Generator\ValueGenerator::class, $defaultValue);
         $this->assertSame(array('foo'), $defaultValue->getValue());
 
         $this->assertStringMatchesFormat('array%a$parameter%a=%aarray(\'foo\')', $parameter->generate());

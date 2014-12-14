@@ -44,6 +44,6 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array('ProxyManager\\Proxy\\GhostObjectInterface');
+        return array(\ProxyManager\Proxy\GhostObjectInterface::class);
     }
 }

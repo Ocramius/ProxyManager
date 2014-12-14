@@ -46,7 +46,7 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $adapter = $this->getMockForAbstractClass(
-            'ProxyManager\\Factory\\RemoteObject\\Adapter\\BaseAdapter',
+            \ProxyManager\Factory\RemoteObject\Adapter\BaseAdapter::class,
             array($client)
         );
 
@@ -80,7 +80,7 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $adapter = $this->getMockForAbstractClass(
-            'ProxyManager\\Factory\\RemoteObject\\Adapter\\BaseAdapter',
+            \ProxyManager\Factory\RemoteObject\Adapter\BaseAdapter::class,
             array($client, array('foobarbaz' => 'mapped'))
         );
 

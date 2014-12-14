@@ -69,7 +69,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new ReflectionClass('ProxyManagerTestAsset\\BaseClass'),
+                new ReflectionClass(\ProxyManagerTestAsset\BaseClass::class),
                 null,
                 array(
                     'publicArrayHintedMethod',
@@ -80,32 +80,32 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'),
+                new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class),
                 null,
                 array(),
             ),
             array(
-                new ReflectionClass('ProxyManagerTestAsset\\LazyLoadingMock'),
+                new ReflectionClass(\ProxyManagerTestAsset\LazyLoadingMock::class),
                 null,
                 array(),
             ),
             array(
-                new ReflectionClass('ProxyManagerTestAsset\\LazyLoadingMock'),
+                new ReflectionClass(\ProxyManagerTestAsset\LazyLoadingMock::class),
                 array(),
                 array(),
             ),
             array(
-                new ReflectionClass('ProxyManagerTestAsset\\HydratedObject'),
+                new ReflectionClass(\ProxyManagerTestAsset\HydratedObject::class),
                 array('doFoo'),
                 array('__get'),
             ),
             array(
-                new ReflectionClass('ProxyManagerTestAsset\\HydratedObject'),
+                new ReflectionClass(\ProxyManagerTestAsset\HydratedObject::class),
                 array('Dofoo'),
                 array('__get'),
             ),
             array(
-                new ReflectionClass('ProxyManagerTestAsset\\HydratedObject'),
+                new ReflectionClass(\ProxyManagerTestAsset\HydratedObject::class),
                 array(),
                 array('doFoo', '__get'),
             ),

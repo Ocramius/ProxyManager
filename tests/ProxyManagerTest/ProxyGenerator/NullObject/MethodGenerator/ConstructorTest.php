@@ -37,7 +37,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMixedProperties');
+        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\ClassWithMixedProperties::class);
         $constructor = new Constructor($reflection);
 
         $this->assertSame('__construct', $constructor->getName());
@@ -53,7 +53,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithoutPublicProperties()
     {
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithPrivateProperties');
+        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\ClassWithPrivateProperties::class);
         $constructor = new Constructor($reflection);
 
         $this->assertSame('__construct', $constructor->getName());

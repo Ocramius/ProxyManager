@@ -36,13 +36,13 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $valueHolder \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $valueHolder = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $constructor = Constructor::generateMethod(
             new ReflectionClass(
-                'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+                \ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties::class
             ),
             $valueHolder
         );
@@ -69,12 +69,12 @@ $this->foo->__construct();',
     public function testBodyStructureWithoutPublicProperties()
     {
         /* @var $valueHolder \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $valueHolder = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $constructor = Constructor::generateMethod(
-            new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'),
+            new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class),
             $valueHolder
         );
 
@@ -100,7 +100,7 @@ $this->foo->__construct();',
         eval('class ' . $className . '{ public function ' . $className . '($first, $second, $third) {}}');
 
         /* @var $valueHolder \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $valueHolder = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 

@@ -60,10 +60,10 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->config                  = $this->getMock('ProxyManager\\Configuration');
-        $this->inflector               = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
-        $this->signatureChecker        = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
-        $this->classSignatureGenerator = $this->getMock('ProxyManager\\Signature\\ClassSignatureGeneratorInterface');
+        $this->config                  = $this->getMock(\ProxyManager\Configuration::class);
+        $this->inflector               = $this->getMock(\ProxyManager\Inflector\ClassNameInflectorInterface::class);
+        $this->signatureChecker        = $this->getMock(\ProxyManager\Signature\SignatureCheckerInterface::class);
+        $this->classSignatureGenerator = $this->getMock(\ProxyManager\Signature\ClassSignatureGeneratorInterface::class);
 
         $this
             ->config
@@ -112,13 +112,13 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue('ProxyManagerTestAsset\\AccessInterceptorValueHolderMock'));
+            ->will($this->returnValue(\ProxyManagerTestAsset\AccessInterceptorValueHolderMock::class));
 
         $factory     = new AccessInterceptorValueHolderFactory($this->config);
         /* @var $proxy \ProxyManagerTestAsset\AccessInterceptorValueHolderMock */
         $proxy       = $factory->createProxy($instance, array('foo'), array('bar'));
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\AccessInterceptorValueHolderMock', $proxy);
+        $this->assertInstanceOf(\ProxyManagerTestAsset\AccessInterceptorValueHolderMock::class, $proxy);
         $this->assertSame($instance, $proxy->instance);
         $this->assertSame(array('foo'), $proxy->prefixInterceptors);
         $this->assertSame(array('bar'), $proxy->suffixInterceptors);
@@ -138,7 +138,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
         $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
-        $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
+        $autoloader     = $this->getMock(\ProxyManager\Autoloader\AutoloaderInterface::class);
 
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
         $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
@@ -182,7 +182,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
+            ->will($this->returnValue(\ProxyManagerTestAsset\LazyLoadingMock::class));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));

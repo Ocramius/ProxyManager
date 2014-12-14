@@ -36,12 +36,12 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $adapter \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $adapter = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
 
         $constructor = new StaticProxyConstructor(
-            new ReflectionClass('ProxyManagerTestAsset\\ClassWithMixedProperties'),
+            new ReflectionClass(\ProxyManagerTestAsset\ClassWithMixedProperties::class),
             $adapter
         );
 

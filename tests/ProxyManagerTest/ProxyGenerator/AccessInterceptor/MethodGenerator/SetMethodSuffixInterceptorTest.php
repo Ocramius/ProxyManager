@@ -36,7 +36,7 @@ class SetMethodSuffixInterceptorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $suffix = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $suffix = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $suffix->expects($this->once())->method('getName')->will($this->returnValue('foo'));
 

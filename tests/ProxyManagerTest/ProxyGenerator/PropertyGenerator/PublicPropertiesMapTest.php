@@ -35,7 +35,7 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
 {
     public function testEmptyClass()
     {
-        $publicProperties = new PublicPropertiesMap(new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'));
+        $publicProperties = new PublicPropertiesMap(new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class));
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
         $this->assertEmpty($publicProperties->getDefaultValue()->getValue());
@@ -47,7 +47,7 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
     public function testClassWithPublicProperties()
     {
         $publicProperties = new PublicPropertiesMap(
-            new ReflectionClass('ProxyManagerTestAsset\\ClassWithPublicProperties')
+            new ReflectionClass(\ProxyManagerTestAsset\ClassWithPublicProperties::class)
         );
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());

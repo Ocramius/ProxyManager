@@ -315,28 +315,28 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         $data = array(
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                \ProxyManagerTestAsset\BaseClass::class,
                 new BaseClass(),
                 'publicMethod',
                 array(),
                 'publicMethodDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                \ProxyManagerTestAsset\BaseClass::class,
                 new BaseClass(),
                 'publicTypeHintedMethod',
                 array('param' => new stdClass()),
                 'publicTypeHintedMethodDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                \ProxyManagerTestAsset\BaseClass::class,
                 new BaseClass(),
                 'publicByReferenceMethod',
                 array(),
                 'publicByReferenceMethodDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\BaseInterface',
+                \ProxyManagerTestAsset\BaseInterface::class,
                 new BaseClass(),
                 'publicMethod',
                 array(),
@@ -347,7 +347,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         if (PHP_VERSION_ID >= 50401) {
             // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
             $data[] = array(
-                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                \ProxyManagerTestAsset\ClassWithSelfHint::class,
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 array('parameter' => $selfHintParam),

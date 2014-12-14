@@ -37,7 +37,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
 
-        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass('ProxyManagerTestAsset\\FinalClass'));
+        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(\ProxyManagerTestAsset\FinalClass::class));
     }
 
     public function testDeniesClassesWithAbstractProtectedMethods()
@@ -45,14 +45,14 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
-            'ProxyManagerTestAsset\\ClassWithAbstractProtectedMethod'
+            \ProxyManagerTestAsset\ClassWithAbstractProtectedMethod::class
         ));
     }
 
     public function testAllowsInterfaceByDefault()
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
-            'ProxyManagerTestAsset\\BaseInterface'
+            \ProxyManagerTestAsset\BaseInterface::class
         ));
 
         $this->assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
@@ -62,7 +62,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
 
-        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass('ProxyManagerTestAsset\\BaseInterface'), false);
+        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(\ProxyManagerTestAsset\BaseInterface::class), false);
     }
 
     /**

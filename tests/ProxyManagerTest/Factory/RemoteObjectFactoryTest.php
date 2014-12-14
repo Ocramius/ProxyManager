@@ -58,10 +58,10 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->config                  = $this->getMock('ProxyManager\\Configuration');
-        $this->inflector               = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
-        $this->signatureChecker        = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
-        $this->classSignatureGenerator = $this->getMock('ProxyManager\\Signature\\ClassSignatureGeneratorInterface');
+        $this->config                  = $this->getMock(\ProxyManager\Configuration::class);
+        $this->inflector               = $this->getMock(\ProxyManager\Inflector\ClassNameInflectorInterface::class);
+        $this->signatureChecker        = $this->getMock(\ProxyManager\Signature\SignatureCheckerInterface::class);
+        $this->classSignatureGenerator = $this->getMock(\ProxyManager\Signature\ClassSignatureGeneratorInterface::class);
 
         $this
             ->config
@@ -95,15 +95,15 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->inflector
             ->expects($this->once())
             ->method('getProxyClassName')
-            ->with('ProxyManagerTestAsset\\BaseInterface')
-            ->will($this->returnValue('ProxyManagerTestAsset\\RemoteProxy\\RemoteObjectMock'));
+            ->with(\ProxyManagerTestAsset\BaseInterface::class)
+            ->will($this->returnValue(\ProxyManagerTestAsset\RemoteProxy\RemoteObjectMock::class));
 
         $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /* @var $proxy \stdClass */
-        $proxy   = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
+        $proxy   = $factory->createProxy(\ProxyManagerTestAsset\BaseInterface::class, $adapter);
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\RemoteProxy\\RemoteObjectMock', $proxy);
+        $this->assertInstanceOf(\ProxyManagerTestAsset\RemoteProxy\RemoteObjectMock::class, $proxy);
     }
 
     /**
@@ -119,7 +119,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
     {
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
-        $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
+        $autoloader     = $this->getMock(\ProxyManager\Autoloader\AutoloaderInterface::class);
 
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
         $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
@@ -156,14 +156,14 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->inflector
             ->expects($this->once())
             ->method('getProxyClassName')
-            ->with('ProxyManagerTestAsset\\BaseInterface')
+            ->with(\ProxyManagerTestAsset\BaseInterface::class)
             ->will($this->returnValue($proxyClassName));
 
         $this
             ->inflector
             ->expects($this->once())
             ->method('getUserClassName')
-            ->with('ProxyManagerTestAsset\\BaseInterface')
+            ->with(\ProxyManagerTestAsset\BaseInterface::class)
             ->will($this->returnValue('stdClass'));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
@@ -171,7 +171,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
 
         $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
         $factory = new RemoteObjectFactory($adapter, $this->config);
-        $proxy   = $factory->createProxy('ProxyManagerTestAsset\\BaseInterface', $adapter);
+        $proxy   = $factory->createProxy(\ProxyManagerTestAsset\BaseInterface::class, $adapter);
 
         $this->assertInstanceOf($proxyClassName, $proxy);
     }

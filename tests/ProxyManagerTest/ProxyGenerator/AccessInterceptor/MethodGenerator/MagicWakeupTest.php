@@ -38,7 +38,7 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $reflection  = new ReflectionClass(
-            'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+            \ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties::class
         );
 
         $magicWakeup = new MagicWakeup($reflection);
@@ -53,7 +53,7 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithoutPublicProperties()
     {
-        $magicWakeup = new MagicWakeup(new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'));
+        $magicWakeup = new MagicWakeup(new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class));
 
         $this->assertSame('__wakeup', $magicWakeup->getName());
         $this->assertCount(0, $magicWakeup->getParameters());

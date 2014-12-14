@@ -36,8 +36,8 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
     private $suffixInterceptors;
     public function setUp()
     {
-        $this->prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $this->suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $this->prefixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $this->suffixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $this->prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $this->suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
@@ -49,7 +49,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
     public function testSignature()
     {
         $constructor = new Constructor(
-            new ReflectionClass('ProxyManagerTestAsset\\ClassWithProtectedProperties'),
+            new ReflectionClass(\ProxyManagerTestAsset\ClassWithProtectedProperties::class),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
@@ -60,7 +60,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertCount(3, $parameters);
 
         $this->assertSame(
-            'ProxyManagerTestAsset\\ClassWithProtectedProperties',
+            \ProxyManagerTestAsset\ClassWithProtectedProperties::class,
             $parameters['localizedObject']->getType()
         );
         $this->assertSame('array', $parameters['prefixInterceptors']->getType());
@@ -73,7 +73,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $constructor = new Constructor(
-            new ReflectionClass('ProxyManagerTestAsset\\ClassWithPublicProperties'),
+            new ReflectionClass(\ProxyManagerTestAsset\ClassWithPublicProperties::class),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
@@ -111,7 +111,7 @@ $this->post = $suffixInterceptors;',
     public function testBodyStructureWithProtectedProperties()
     {
         $constructor = new Constructor(
-            new ReflectionClass('ProxyManagerTestAsset\\ClassWithProtectedProperties'),
+            new ReflectionClass(\ProxyManagerTestAsset\ClassWithProtectedProperties::class),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
@@ -149,7 +149,7 @@ $this->post = $suffixInterceptors;',
     public function testBodyStructureWithPrivateProperties()
     {
         $constructor = new Constructor(
-            new ReflectionClass('ProxyManagerTestAsset\\ClassWithPrivateProperties'),
+            new ReflectionClass(\ProxyManagerTestAsset\ClassWithPrivateProperties::class),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );

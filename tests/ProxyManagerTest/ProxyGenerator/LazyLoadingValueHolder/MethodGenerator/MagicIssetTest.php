@@ -37,11 +37,11 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection       = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection       = new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class);
+        $initializer      = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $valueHolder      = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
         $publicProperties = $this
-            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->getMockBuilder(\ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
 

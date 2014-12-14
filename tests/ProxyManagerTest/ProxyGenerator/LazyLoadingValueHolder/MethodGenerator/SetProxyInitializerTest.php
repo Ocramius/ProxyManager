@@ -36,7 +36,7 @@ class SetProxyInitializerTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
@@ -49,7 +49,7 @@ class SetProxyInitializerTest extends PHPUnit_Framework_TestCase
         /* @var $initializer \ProxyManager\Generator\ParameterGenerator */
         $initializer = array_shift($parameters);
 
-        $this->assertInstanceOf('ProxyManager\\Generator\\ParameterGenerator', $initializer);
+        $this->assertInstanceOf(\ProxyManager\Generator\ParameterGenerator::class, $initializer);
         $this->assertSame('initializer', $initializer->getName());
         $this->assertSame('$this->foo = $initializer;', $setter->getBody());
     }

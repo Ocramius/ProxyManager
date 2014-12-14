@@ -362,7 +362,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 ->method('__invoke')
                 ->with(
                     $this->logicalAnd(
-                        $this->isInstanceOf('ProxyManager\\Proxy\\GhostObjectInterface'),
+                        $this->isInstanceOf(\ProxyManager\Proxy\GhostObjectInterface::class),
                         $this->isInstanceOf($className)
                     )
                 );
@@ -402,21 +402,21 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $data = array(
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                \ProxyManagerTestAsset\BaseClass::class,
                 new BaseClass(),
                 'publicMethod',
                 array(),
                 'publicMethodDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                \ProxyManagerTestAsset\BaseClass::class,
                 new BaseClass(),
                 'publicTypeHintedMethod',
                 array(new \stdClass()),
                 'publicTypeHintedMethodDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                \ProxyManagerTestAsset\BaseClass::class,
                 new BaseClass(),
                 'publicByReferenceMethod',
                 array(),
@@ -427,7 +427,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         if (PHP_VERSION_ID >= 50401) {
             // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
             $data[] = array(
-                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                \ProxyManagerTestAsset\ClassWithSelfHint::class,
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 array('parameter' => $selfHintParam),
@@ -453,14 +453,14 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 $instance1,
-                new $proxyName1($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance1)),
+                new $proxyName1($this->createInitializer(\ProxyManagerTestAsset\BaseClass::class, $instance1)),
                 'publicProperty',
                 'publicPropertyDefault',
             ),
             array(
                 $instance2,
                 unserialize(
-                    serialize(new $proxyName2($this->createInitializer('ProxyManagerTestAsset\\BaseClass', $instance2)))
+                    serialize(new $proxyName2($this->createInitializer(\ProxyManagerTestAsset\BaseClass::class, $instance2)))
                 ),
                 'publicProperty',
                 'publicPropertyDefault',

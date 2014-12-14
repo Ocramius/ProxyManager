@@ -36,7 +36,7 @@ class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $valueHolder = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 

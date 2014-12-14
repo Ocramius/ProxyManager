@@ -78,7 +78,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
     public function testGeneratedParametersFromReflection()
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(
-            'ProxyManagerTestAsset\\BaseClass',
+            \ProxyManagerTestAsset\BaseClass::class,
             'publicTypeHintedMethod'
         ));
 

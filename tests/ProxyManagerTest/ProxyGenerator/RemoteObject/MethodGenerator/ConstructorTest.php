@@ -37,10 +37,10 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $adapter = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
 
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMixedProperties');
+        $reflection  = new ReflectionClass(\ProxyManagerTestAsset\ClassWithMixedProperties::class);
         $constructor = new Constructor($reflection, $adapter);
 
         $this->assertSame('__construct', $constructor->getName());

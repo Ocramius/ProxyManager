@@ -45,8 +45,8 @@ class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
     protected function getExpectedImplementedInterfaces()
     {
         return array(
-            'ProxyManager\\Proxy\\AccessInterceptorInterface',
-            'ProxyManager\\Proxy\\ValueHolderInterface',
+            \ProxyManager\Proxy\AccessInterceptorInterface::class,
+            \ProxyManager\Proxy\ValueHolderInterface::class,
         );
     }
 }

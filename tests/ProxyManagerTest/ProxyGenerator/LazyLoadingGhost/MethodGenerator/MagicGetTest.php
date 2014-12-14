@@ -52,10 +52,10 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $this->initMethod       = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $this->initializer      = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $this->initMethod       = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
         $this->publicProperties = $this
-            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->getMockBuilder(\ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -70,7 +70,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $reflection = new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class);
         $magicGet   = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__get', $magicGet->getName());
@@ -89,7 +89,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithPublicProperties()
     {
         $reflection = new ReflectionClass(
-            'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+            \ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties::class
         );
 
         $magicGet = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
@@ -109,7 +109,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithOverriddenMagicGet()
     {
-        $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
+        $reflection = new ReflectionClass(\ProxyManagerTestAsset\ClassWithMagicMethods::class);
         $magicGet   = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__get', $magicGet->getName());

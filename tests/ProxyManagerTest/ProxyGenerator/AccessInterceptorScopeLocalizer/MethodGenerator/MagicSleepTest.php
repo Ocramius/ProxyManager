@@ -37,9 +37,9 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection         = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection         = new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class);
+        $prefixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
@@ -60,9 +60,9 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithInheritedMethod()
     {
-        $reflection         = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection         = new ReflectionClass(\ProxyManagerTestAsset\ClassWithMagicMethods::class);
+        $prefixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));

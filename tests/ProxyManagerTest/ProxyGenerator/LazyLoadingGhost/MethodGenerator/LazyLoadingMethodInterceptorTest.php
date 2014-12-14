@@ -37,13 +37,13 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $initCall    = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $initCall    = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
+        $reflection = new MethodReflection(\ProxyManagerTestAsset\BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer, $initCall);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
@@ -62,8 +62,8 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithoutParameters()
     {
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
-        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $initCall         = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $initializer      = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
+        $initCall         = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));

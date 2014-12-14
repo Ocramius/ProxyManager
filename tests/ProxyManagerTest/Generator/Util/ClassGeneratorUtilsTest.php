@@ -36,8 +36,8 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 {
     public function testCantAddAFinalMethod()
     {
-        $classGenerator  = $this->getMock('Zend\\Code\\Generator\\ClassGenerator');
-        $methodGenerator = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $classGenerator  = $this->getMock(\Zend\Code\Generator\ClassGenerator::class);
+        $methodGenerator = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
 
         $methodGenerator
             ->expects($this->once())
@@ -48,15 +48,15 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('addMethodFromGenerator');
 
-        $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithFinalMethods');
+        $reflection = new ReflectionClass(\ProxyManagerTestAsset\ClassWithFinalMethods::class);
 
         ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
     }
 
     public function testCanAddANotFinalMethod()
     {
-        $classGenerator  = $this->getMock('Zend\\Code\\Generator\\ClassGenerator');
-        $methodGenerator = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $classGenerator  = $this->getMock(\Zend\Code\Generator\ClassGenerator::class);
+        $methodGenerator = $this->getMock(\Zend\Code\Generator\MethodGenerator::class);
 
         $methodGenerator
             ->expects($this->once())
@@ -67,7 +67,7 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('addMethodFromGenerator');
 
-        $reflection = new ReflectionClass('ProxyManagerTestAsset\\BaseClass');
+        $reflection = new ReflectionClass(\ProxyManagerTestAsset\BaseClass::class);
 
         ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
     }

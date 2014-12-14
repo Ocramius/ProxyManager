@@ -67,6 +67,6 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array('ProxyManager\\Proxy\\AccessInterceptorInterface');
+        return array(\ProxyManager\Proxy\AccessInterceptorInterface::class);
     }
 }

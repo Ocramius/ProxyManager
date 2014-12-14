@@ -37,13 +37,13 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $initializer \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(
-                'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+                \ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties::class
             ),
             $initializer
         );
@@ -71,12 +71,12 @@ return $instance;',
     public function testBodyStructureWithoutPublicProperties()
     {
         /* @var $initializer \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initializer = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $constructor = new StaticProxyConstructor(
-            new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'),
+            new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class),
             $initializer
         );
 

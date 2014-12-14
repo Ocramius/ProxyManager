@@ -37,8 +37,8 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection   = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $adapter      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection   = new ReflectionClass(\ProxyManagerTestAsset\EmptyClass::class);
+        $adapter      = $this->getMock(\Zend\Code\Generator\PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $magicGet     = new MagicUnset($reflection, $adapter);

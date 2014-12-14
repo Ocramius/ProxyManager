@@ -83,7 +83,7 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
     protected function getExpectedImplementedInterfaces()
     {
         return array(
-            'ProxyManager\\Proxy\\RemoteObjectInterface',
+            \ProxyManager\Proxy\RemoteObjectInterface::class,
         );
     }
 
@@ -93,11 +93,11 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
     public function getTestedImplementations()
     {
         return array(
-            array('ProxyManagerTestAsset\\BaseClass'),
-            array('ProxyManagerTestAsset\\ClassWithMagicMethods'),
-            array('ProxyManagerTestAsset\\ClassWithByRefMagicMethods'),
-            array('ProxyManagerTestAsset\\ClassWithMixedProperties'),
-            array('ProxyManagerTestAsset\\BaseInterface'),
+            array(\ProxyManagerTestAsset\BaseClass::class),
+            array(\ProxyManagerTestAsset\ClassWithMagicMethods::class),
+            array(\ProxyManagerTestAsset\ClassWithByRefMagicMethods::class),
+            array(\ProxyManagerTestAsset\ClassWithMixedProperties::class),
+            array(\ProxyManagerTestAsset\BaseInterface::class),
         );
     }
 }
