@@ -465,28 +465,28 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         return array(
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                BaseClass::class,
                 new BaseClass(),
                 'publicPropertyGetter',
                 array(),
                 'publicPropertyDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                BaseClass::class,
                 new BaseClass(),
                 'protectedPropertyGetter',
                 array(),
                 'protectedPropertyDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\BaseClass',
+                BaseClass::class,
                 new BaseClass(),
                 'privatePropertyGetter',
                 array(),
                 'privatePropertyDefault'
             ),
             array(
-                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                ClassWithSelfHint::class,
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 array('parameter' => $selfHintParam),
