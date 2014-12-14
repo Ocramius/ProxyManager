@@ -172,6 +172,24 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 ['publicAbstractMethod'],
                 [],
             ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                [],
+                [
+                    '__clone',
+                    '__get',
+                    '__isset',
+                    '__set',
+                    '__sleep',
+                    '__unset',
+                    '__wakeup',
+                ],
+            ],
         ];
     }
 
