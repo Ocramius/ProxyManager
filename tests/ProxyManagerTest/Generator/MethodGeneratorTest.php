@@ -21,6 +21,8 @@ namespace ProxyManagerTest\Generator;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManagerTestAsset\BaseClass;
+use stdClass;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -64,15 +66,11 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($method->isStatic());
         $this->assertSame('Verify that building from reflection works', $method->getDocBlock()->getShortDescription());
 
-        $method = MethodGenerator::fromReflection(
-            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'protectedMethod')
-        );
+        $method = MethodGenerator::fromReflection(new MethodReflection(BaseClass::class, 'protectedMethod'));
 
         $this->assertSame(MethodGenerator::VISIBILITY_PROTECTED, $method->getVisibility());
 
-        $method = MethodGenerator::fromReflection(
-            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'privateMethod')
-        );
+        $method = MethodGenerator::fromReflection(new MethodReflection(BaseClass::class, 'privateMethod'));
 
         $this->assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
@@ -92,6 +90,6 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
         $param = $parameters['param'];
 
-        $this->assertSame('stdClass', $param->getType());
+        $this->assertSame(stdClass::class, $param->getType());
     }
 }

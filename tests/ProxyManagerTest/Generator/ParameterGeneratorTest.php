@@ -18,8 +18,12 @@
 
 namespace ProxyManagerTest\Generator;
 
+use Phar;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\CallableTypeHintClass;
+use stdClass;
 use Zend\Code\Reflection\ParameterReflection;
 
 /**
@@ -68,7 +72,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         }
 
         $parameter = new ParameterReflection(
-            array('ProxyManagerTestAsset\\CallableTypeHintClass', 'callableTypeHintMethod'),
+            array(CallableTypeHintClass::class, 'callableTypeHintMethod'),
             'parameter'
         );
 
@@ -99,11 +103,11 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     public function testReadsParameterTypeHint()
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            array('ProxyManagerTestAsset\\BaseClass', 'publicTypeHintedMethod'),
+            array(BaseClass::class, 'publicTypeHintedMethod'),
             'param'
         ));
 
-        $this->assertSame('stdClass', $parameter->getType());
+        $this->assertSame(stdClass::class, $parameter->getType());
     }
 
     public function testGeneratesParameterPassedByReference()
@@ -117,13 +121,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGeneratesDefaultParameterForInternalPhpClasses()
     {
-        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            array(
-                'Phar',
-                'compress'
-            ),
-            1
-        ));
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(array(Phar::class, 'compress'), 1));
 
         $this->assertSame('null', strtolower((string) $parameter->getDefaultValue()));
     }
