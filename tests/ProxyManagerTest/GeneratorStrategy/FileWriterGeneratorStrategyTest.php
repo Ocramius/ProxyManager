@@ -20,9 +20,9 @@ namespace ProxyManagerTest\GeneratorStrategy;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\FileLocator\FileLocatorInterface;
-use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}

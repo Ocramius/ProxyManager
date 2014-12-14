@@ -18,11 +18,11 @@
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup}

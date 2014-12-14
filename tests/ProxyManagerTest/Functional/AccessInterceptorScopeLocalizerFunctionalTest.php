@@ -18,9 +18,10 @@
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_SkippedTestError;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
@@ -30,8 +31,6 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use stdClass;
 
 /**

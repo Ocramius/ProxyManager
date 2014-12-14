@@ -18,7 +18,6 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;

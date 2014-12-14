@@ -18,8 +18,8 @@
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
+use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;

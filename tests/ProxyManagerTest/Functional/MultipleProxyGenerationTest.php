@@ -40,7 +40,6 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ReflectionClass;
-use ReflectionProperty;
 
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies

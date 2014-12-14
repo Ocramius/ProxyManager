@@ -18,10 +18,10 @@
 
 namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
-use ProxyManagerTestAsset\EmptyClass;
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**

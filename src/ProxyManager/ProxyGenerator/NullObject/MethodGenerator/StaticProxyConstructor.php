@@ -18,9 +18,9 @@
 
 namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
+use ProxyManager\Generator\MethodGenerator;
 use ReflectionClass;
 use ReflectionProperty;
-use ProxyManager\Generator\MethodGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for null object proxies

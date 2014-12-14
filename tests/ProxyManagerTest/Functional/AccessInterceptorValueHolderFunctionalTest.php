@@ -19,6 +19,8 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -28,8 +30,6 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use stdClass;
 
 /**

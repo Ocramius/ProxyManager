@@ -21,9 +21,9 @@ namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManagerTestAsset\BaseClass;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
-use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod}

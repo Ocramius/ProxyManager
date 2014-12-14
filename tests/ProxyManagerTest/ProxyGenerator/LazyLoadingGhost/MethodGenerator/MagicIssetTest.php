@@ -18,13 +18,13 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 

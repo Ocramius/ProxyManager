@@ -18,8 +18,8 @@
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
+use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -27,10 +27,10 @@ use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
-use ProxyManagerTestAsset\ClassWithProtectedProperties;
-use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ReflectionProperty;

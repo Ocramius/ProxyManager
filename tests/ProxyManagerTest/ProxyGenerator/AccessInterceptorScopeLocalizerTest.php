@@ -21,7 +21,6 @@ namespace ProxyManagerTest\ProxyGenerator;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ReflectionClass;
-use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator}

@@ -18,8 +18,8 @@
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
-use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**

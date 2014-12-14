@@ -19,14 +19,14 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator} produced objects

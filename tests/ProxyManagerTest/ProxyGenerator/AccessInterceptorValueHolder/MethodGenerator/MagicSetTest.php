@@ -18,11 +18,11 @@
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
+use PHPUnit_Framework_TestCase;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
-use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**

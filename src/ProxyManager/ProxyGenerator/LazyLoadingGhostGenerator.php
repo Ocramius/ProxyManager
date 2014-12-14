@@ -21,7 +21,6 @@ namespace ProxyManager\ProxyGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
-use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;

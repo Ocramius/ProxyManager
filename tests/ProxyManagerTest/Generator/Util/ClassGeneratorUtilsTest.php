@@ -18,11 +18,11 @@
 
 namespace ProxyManagerTest\Generator\Util;
 
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ReflectionClass;
-use PHPUnit_Framework_TestCase;
-use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\MethodGenerator;
 

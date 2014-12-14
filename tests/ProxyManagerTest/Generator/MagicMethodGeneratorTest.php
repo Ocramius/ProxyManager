@@ -18,11 +18,11 @@
 
 namespace ProxyManagerTest\Generator;
 
+use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ReflectionClass;
-use PHPUnit_Framework_TestCase;
-use ProxyManager\Generator\MagicMethodGenerator;
 
 /**
  * Tests for {@see \ProxyManager\Generator\MagicMethodGenerator}

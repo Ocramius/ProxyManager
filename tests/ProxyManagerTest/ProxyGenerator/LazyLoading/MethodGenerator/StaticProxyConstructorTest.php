@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;

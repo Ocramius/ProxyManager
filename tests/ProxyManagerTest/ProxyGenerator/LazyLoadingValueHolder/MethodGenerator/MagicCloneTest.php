@@ -18,10 +18,10 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
-use ProxyManagerTestAsset\EmptyClass;
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicClone;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
