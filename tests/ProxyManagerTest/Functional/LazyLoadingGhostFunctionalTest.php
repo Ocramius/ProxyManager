@@ -461,6 +461,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getProxyInitializingMethods()
     {
+        $selfHintParam = new ClassWithSelfHint();
+
         return array(
             array(
                 'ProxyManagerTestAsset\\BaseClass',
