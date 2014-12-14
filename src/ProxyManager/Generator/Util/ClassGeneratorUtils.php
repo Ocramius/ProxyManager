@@ -35,7 +35,7 @@ final class ClassGeneratorUtils
      * @param ClassGenerator   $classGenerator
      * @param MethodGenerator  $generatedMethod
      *
-     * @return void|false
+     * @return bool
      */
     public static function addMethodIfNotFinal(
         ReflectionClass $originalClass,
@@ -49,5 +49,7 @@ final class ClassGeneratorUtils
         }
 
         $classGenerator->addMethodFromGenerator($generatedMethod);
+
+        return true;
     }
 }
