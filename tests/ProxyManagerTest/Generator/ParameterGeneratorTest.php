@@ -74,7 +74,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         }
 
         $parameter = new ParameterReflection(
-            array(CallableTypeHintClass::class, 'callableTypeHintMethod'),
+            [CallableTypeHintClass::class, 'callableTypeHintMethod'],
             'parameter'
         );
 
@@ -86,10 +86,10 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     public function testReadsParameterDefaults()
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            array(
+            [
                 ClassWithMethodWithDefaultParameters::class,
                 'publicMethodWithDefaults'
-            ),
+            ],
             'parameter'
         ));
 
@@ -97,7 +97,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $defaultValue = $parameter->getDefaultValue();
 
         $this->assertInstanceOf(ValueGenerator::class, $defaultValue);
-        $this->assertSame(array('foo'), $defaultValue->getValue());
+        $this->assertSame(['foo'], $defaultValue->getValue());
 
         $this->assertStringMatchesFormat('array%a$parameter%a=%aarray(\'foo\')', $parameter->generate());
     }
@@ -105,7 +105,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     public function testReadsParameterTypeHint()
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            array(BaseClass::class, 'publicTypeHintedMethod'),
+            [BaseClass::class, 'publicTypeHintedMethod'],
             'param'
         ));
 
@@ -123,7 +123,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGeneratesDefaultParameterForInternalPhpClasses()
     {
-        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(array(Phar::class, 'compress'), 1));
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection([Phar::class, 'compress'], 1));
 
         $this->assertSame('null', strtolower((string) $parameter->getDefaultValue()));
     }

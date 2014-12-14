@@ -64,14 +64,14 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function getBaseIdentifierNames()
     {
-        return array(
-            array(''),
-            array('1'),
-            array('foo'),
-            array('Foo'),
-            array('bar'),
-            array('Bar'),
-            array('foo_bar'),
-        );
+        return [
+            [''],
+            ['1'],
+            ['foo'],
+            ['Foo'],
+            ['bar'],
+            ['Bar'],
+            ['foo_bar'],
+        ];
     }
 }

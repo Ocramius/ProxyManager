@@ -27,5 +27,5 @@ namespace ProxyManagerTestAsset;
  */
 class ClassWithPublicArrayProperty
 {
-    public $arrayProperty = array();
+    public $arrayProperty = [];
 }

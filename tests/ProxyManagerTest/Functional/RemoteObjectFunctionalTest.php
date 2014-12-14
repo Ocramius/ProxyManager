@@ -51,7 +51,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMock();
 
         $client
@@ -62,10 +62,10 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
         $adapter = new XmlRpcAdapter(
             $client,
-            array(
+            [
                  'ProxyManagerTestAsset\RemoteProxy\Foo.foo'
                      => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo'
-            )
+            ]
         );
 
         return $adapter;
@@ -82,7 +82,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMock();
 
         $client
@@ -93,10 +93,10 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
         $adapter = new JsonRpcAdapter(
             $client,
-            array(
+            [
                  'ProxyManagerTestAsset\RemoteProxy\Foo.foo'
                     => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo'
-            )
+            ]
         );
 
         return $adapter;
@@ -112,7 +112,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
 
-        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -125,7 +125,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
 
-        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -137,7 +137,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor(
-            $this->getJsonRpcAdapter($propertyValue, '__get', array($publicProperty))
+            $this->getJsonRpcAdapter($propertyValue, '__get', [$publicProperty])
         );
 
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
@@ -173,41 +173,41 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        $data = array(
-            array(
+        $data = [
+            [
                 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface',
                 'foo',
-                array(),
+                [],
                 'bar remote'
-            ),
-            array(
+            ],
+            [
                 'ProxyManagerTestAsset\RemoteProxy\Foo',
                 'foo',
-                array(),
+                [],
                 'bar remote'
-            ),
-            array(
+            ],
+            [
                 new Foo(),
                 'foo',
-                array(),
+                [],
                 'bar remote'
-            ),
-            array(
+            ],
+            [
                 'ProxyManagerTestAsset\RemoteProxy\BazServiceInterface',
                 'baz',
-                array('baz'),
+                ['baz'],
                 'baz remote'
-            ),
-        );
+            ],
+        ];
 
         if (PHP_VERSION_ID >= 50401) {
             // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
-            $data[] = array(
+            $data[] = [
                 new ClassWithSelfHint(),
                 'selfHintMethod',
-                array($selfHintParam),
+                [$selfHintParam],
                 $selfHintParam
-            );
+            ];
         }
 
         return $data;
@@ -220,12 +220,12 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getPropertyAccessProxies()
     {
-        return array(
-            array(
+        return [
+            [
                 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface',
                 'publicProperty',
                 'publicProperty remote',
-            ),
-        );
+            ],
+        ];
     }
 }

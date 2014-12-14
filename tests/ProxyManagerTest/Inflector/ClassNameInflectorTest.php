@@ -61,12 +61,12 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($inflector->getProxyClassName('Foo\\Bar'), $inflector->getProxyClassName('Foo\\Bar'));
         $this->assertSame(
-            $inflector->getProxyClassName('Foo\\Bar', array('baz' => 'tab')),
-            $inflector->getProxyClassName('Foo\\Bar', array('baz' => 'tab'))
+            $inflector->getProxyClassName('Foo\\Bar', ['baz' => 'tab']),
+            $inflector->getProxyClassName('Foo\\Bar', ['baz' => 'tab'])
         );
         $this->assertSame(
-            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz')),
-            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz'))
+            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz']),
+            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz'])
         );
     }
 
@@ -79,19 +79,19 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotSame(
             $inflector->getProxyClassName('Foo\\Bar'),
-            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar'))
+            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar'])
         );
         $this->assertNotSame(
-            $inflector->getProxyClassName('Foo\\Bar', array('baz' => 'tab')),
-            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz'))
+            $inflector->getProxyClassName('Foo\\Bar', ['baz' => 'tab']),
+            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz'])
         );
         $this->assertNotSame(
-            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar', 'tab' => 'baz')),
-            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar'))
+            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar', 'tab' => 'baz']),
+            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar'])
         );
         $this->assertNotSame(
-            $inflector->getProxyClassName('Foo\\Bar', array('foo' => 'bar', 'tab' => 'baz')),
-            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz', 'foo' => 'bar'))
+            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar', 'tab' => 'baz']),
+            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz', 'foo' => 'bar'])
         );
     }
 
@@ -103,8 +103,8 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
         $inflector = new ClassNameInflector('ProxyNS');
 
         $this->assertSame(
-            $inflector->getProxyClassName('\\Foo\\Bar', array('tab' => 'baz')),
-            $inflector->getProxyClassName('Foo\\Bar', array('tab' => 'baz'))
+            $inflector->getProxyClassName('\\Foo\\Bar', ['tab' => 'baz']),
+            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz'])
         );
     }
 
@@ -134,10 +134,10 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      */
     public function getClassNames()
     {
-        return array(
-            array('Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\%s'),
-            array('Foo\\Bar', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\Bar\\%s'),
-        );
+        return [
+            ['Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\%s'],
+            ['Foo\\Bar', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\Bar\\%s'],
+        ];
     }
 
     /**
@@ -147,15 +147,15 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      */
     public function getClassAndParametersCombinations()
     {
-        return array(
-            array('Foo', array()),
-            array('Foo\\Bar', array()),
-            array('Foo', array(null)),
-            array('Foo\\Bar', array(null)),
-            array('Foo', array('foo' => 'bar')),
-            array('Foo\\Bar', array('foo' => 'bar')),
-            array('Foo', array("\0" => "very \0 bad")),
-            array('Foo\\Bar', array("\0" => "very \0 bad")),
-        );
+        return [
+            ['Foo', []],
+            ['Foo\\Bar', []],
+            ['Foo', [null]],
+            ['Foo\\Bar', [null]],
+            ['Foo', ['foo' => 'bar']],
+            ['Foo\\Bar', ['foo' => 'bar']],
+            ['Foo', ["\0" => "very \0 bad"]],
+            ['Foo\\Bar', ["\0" => "very \0 bad"]],
+        ];
     }
 }

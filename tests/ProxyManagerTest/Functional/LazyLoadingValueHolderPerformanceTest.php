@@ -52,9 +52,9 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
     {
         $proxyName   = $this->generateProxy($className);
         $iterations  = 20000;
-        $instances   = array();
+        $instances   = [];
         /* @var $proxies \ProxyManager\Proxy\VirtualProxyInterface[] */
-        $proxies     = array();
+        $proxies     = [];
         $initializer = function (
             & $valueHolder,
             VirtualProxyInterface $proxy,
@@ -112,10 +112,10 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
      */
     public function getTestedClasses()
     {
-        return array(
-            array(stdClass::class, array(), array()),
-            array(BaseClass::class, array('publicMethod' => array()), array('publicProperty')),
-        );
+        return [
+            [stdClass::class, [], []],
+            [BaseClass::class, ['publicMethod' => []], ['publicProperty']],
+        ];
     }
 
     /**

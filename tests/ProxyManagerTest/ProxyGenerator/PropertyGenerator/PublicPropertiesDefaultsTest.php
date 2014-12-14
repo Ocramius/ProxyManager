@@ -66,7 +66,7 @@ class PublicPropertiesDefaultsTest extends PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
         $this->assertSame(
-            array('publicProperty' => 'publicPropertyDefault'),
+            ['publicProperty' => 'publicPropertyDefault'],
             $publicProperties->getDefaultValue()->getValue()
         );
         $this->assertTrue($publicProperties->isStatic());

@@ -46,9 +46,9 @@ class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array(
+        return [
             AccessInterceptorInterface::class,
             ValueHolderInterface::class,
-        );
+        ];
     }
 }

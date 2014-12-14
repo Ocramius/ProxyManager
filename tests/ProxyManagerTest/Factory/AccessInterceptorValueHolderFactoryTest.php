@@ -122,12 +122,12 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
 
         $factory     = new AccessInterceptorValueHolderFactory($this->config);
         /* @var $proxy AccessInterceptorValueHolderMock */
-        $proxy       = $factory->createProxy($instance, array('foo'), array('bar'));
+        $proxy       = $factory->createProxy($instance, ['foo'], ['bar']);
 
         $this->assertInstanceOf(AccessInterceptorValueHolderMock::class, $proxy);
         $this->assertSame($instance, $proxy->instance);
-        $this->assertSame(array('foo'), $proxy->prefixInterceptors);
-        $this->assertSame(array('bar'), $proxy->suffixInterceptors);
+        $this->assertSame(['foo'], $proxy->prefixInterceptors);
+        $this->assertSame(['bar'], $proxy->suffixInterceptors);
     }
 
     /**
@@ -195,11 +195,11 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
 
         $factory     = new AccessInterceptorValueHolderFactory($this->config);
         /* @var $proxy AccessInterceptorValueHolderMock */
-        $proxy       = $factory->createProxy($instance, array('foo'), array('bar'));
+        $proxy       = $factory->createProxy($instance, ['foo'], ['bar']);
 
         $this->assertInstanceOf($proxyClassName, $proxy);
         $this->assertSame($instance, $proxy->instance);
-        $this->assertSame(array('foo'), $proxy->prefixInterceptors);
-        $this->assertSame(array('bar'), $proxy->suffixInterceptors);
+        $this->assertSame(['foo'], $proxy->prefixInterceptors);
+        $this->assertSame(['bar'], $proxy->suffixInterceptors);
     }
 }

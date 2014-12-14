@@ -45,6 +45,6 @@ class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array(VirtualProxyInterface::class);
+        return [VirtualProxyInterface::class];
     }
 }

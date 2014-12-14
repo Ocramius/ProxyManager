@@ -72,12 +72,12 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         };
 
         $reflectionClass = new ReflectionClass($className);
-        $generated       = array(
+        $generated       = [
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
             $accessInterceptorScopeLocalizerFactory->createProxy(new $className()),
-        );
+        ];
 
         foreach ($generated as $key => $proxy) {
             $this->assertInstanceOf($className, $proxy);
@@ -103,23 +103,23 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      */
     public function getTestedClasses()
     {
-        $data = array(
-            array(BaseClass::class),
-            array(ClassWithMagicMethods::class),
-            array(ClassWithFinalMethods::class),
-            array(ClassWithFinalMagicMethods::class),
-            array(ClassWithByRefMagicMethods::class),
-            array(ClassWithMixedProperties::class),
-            array(ClassWithPrivateProperties::class),
-            array(ClassWithProtectedProperties::class),
-            array(ClassWithPublicProperties::class),
-            array(EmptyClass::class),
-            array(HydratedObject::class),
-        );
+        $data = [
+            [BaseClass::class],
+            [ClassWithMagicMethods::class],
+            [ClassWithFinalMethods::class],
+            [ClassWithFinalMagicMethods::class],
+            [ClassWithByRefMagicMethods::class],
+            [ClassWithMixedProperties::class],
+            [ClassWithPrivateProperties::class],
+            [ClassWithProtectedProperties::class],
+            [ClassWithPublicProperties::class],
+            [EmptyClass::class],
+            [HydratedObject::class],
+        ];
 
         if (PHP_VERSION_ID >= 50401) {
             // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
-            $data[] = array(ClassWithSelfHint::class);
+            $data[] = [ClassWithSelfHint::class];
         }
 
         return $data;

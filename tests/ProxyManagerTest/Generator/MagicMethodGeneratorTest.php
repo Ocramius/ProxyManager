@@ -40,7 +40,7 @@ class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
     public function testGeneratesCorrectByRefReturnValue()
     {
         $reflection  = new ReflectionClass(ClassWithByRefMagicMethods::class);
-        $magicMethod = new MagicMethodGenerator($reflection, '__get', array('name'));
+        $magicMethod = new MagicMethodGenerator($reflection, '__get', ['name']);
 
         $this->assertTrue($magicMethod->returnsReference());
     }
@@ -51,7 +51,7 @@ class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
     public function testGeneratesCorrectByValReturnValue()
     {
         $reflection  = new ReflectionClass(ClassWithMagicMethods::class);
-        $magicMethod = new MagicMethodGenerator($reflection, '__get', array('name'));
+        $magicMethod = new MagicMethodGenerator($reflection, '__get', ['name']);
 
         $this->assertFalse($magicMethod->returnsReference());
     }

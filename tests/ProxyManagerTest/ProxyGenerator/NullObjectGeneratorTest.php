@@ -80,7 +80,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
 
         foreach ($generatedReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (! ($method->getNumberOfParameters() || $method->isStatic())) {
-                $this->assertNull(call_user_func(array($proxyGenerated, $method->getName())));
+                $this->assertNull(call_user_func([$proxyGenerated, $method->getName()]));
             }
         }
     }
@@ -98,9 +98,9 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array(
+        return [
             NullObjectInterface::class,
-        );
+        ];
     }
 
     /**
@@ -108,12 +108,12 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function getTestedImplementations()
     {
-        return array(
-            array(BaseClass::class),
-            array(ClassWithMagicMethods::class),
-            array(ClassWithByRefMagicMethods::class),
-            array(ClassWithMixedProperties::class),
-            array(BaseInterface::class),
-        );
+        return [
+            [BaseClass::class],
+            [ClassWithMagicMethods::class],
+            [ClassWithByRefMagicMethods::class],
+            [ClassWithMixedProperties::class],
+            [BaseInterface::class],
+        ];
     }
 }

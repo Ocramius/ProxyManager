@@ -122,7 +122,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->method('getUserClassName')
             ->will($this->returnValue('stdClass'));
 
-        $this->factory = $this->getMockForAbstractClass(AbstractBaseFactory::class, array($configuration));
+        $this->factory = $this->getMockForAbstractClass(AbstractBaseFactory::class, [$configuration]);
 
         $this->factory->expects($this->any())->method('getGenerator')->will($this->returnValue($this->generator));
     }

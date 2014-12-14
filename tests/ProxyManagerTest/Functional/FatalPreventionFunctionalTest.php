@@ -92,7 +92,7 @@ PHP;
             var_export($className, true)
         );
 
-        $result = $runner->runJob($code, array('-n'));
+        $result = $runner->runJob($code, ['-n']);
 
         if (('SUCCESS: ' . $className) !== $result['stdout']) {
             $this->fail(sprintf(
@@ -121,19 +121,19 @@ PHP;
                 function ($generator) use ($that) {
                     return array_map(
                         function ($class) use ($generator) {
-                            return array($generator, $class);
+                            return [$generator, $class];
                         },
                         $that->getProxyTestedClasses()
                     );
                 },
-                array(
+                [
                     AccessInterceptorScopeLocalizerGenerator::class,
                     AccessInterceptorValueHolderGenerator::class,
                     LazyLoadingGhostGenerator::class,
                     LazyLoadingValueHolderGenerator::class,
                     NullObjectGenerator::class,
                     RemoteObjectGenerator::class,
-                )
+                ]
             )
         );
     }
@@ -145,11 +145,11 @@ PHP;
      */
     public function getProxyTestedClasses()
     {
-        $skippedPaths = array(
+        $skippedPaths = [
             realpath(__DIR__ . '/../../src'),
             realpath(__DIR__ . '/../../vendor'),
             realpath(__DIR__ . '/../../tests/ProxyManagerTest'),
-        );
+        ];
 
         return array_filter(
             get_declared_classes(),

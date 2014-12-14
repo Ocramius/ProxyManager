@@ -43,18 +43,18 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
     {
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMock();
 
         $adapter = $this->getMockForAbstractClass(
             BaseAdapter::class,
-            array($client)
+            [$client]
         );
 
         $client
             ->expects($this->once())
             ->method('call')
-            ->with('foobarbaz', array('tab' => 'taz'))
+            ->with('foobarbaz', ['tab' => 'taz'])
             ->will($this->returnValue('baz'));
 
         $adapter
@@ -63,7 +63,7 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
             ->with('foo', 'bar')
             ->will($this->returnValue('foobarbaz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
+        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 
     /**
@@ -77,18 +77,18 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
     {
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMock();
 
         $adapter = $this->getMockForAbstractClass(
             BaseAdapter::class,
-            array($client, array('foobarbaz' => 'mapped'))
+            [$client, ['foobarbaz' => 'mapped']]
         );
 
         $client
             ->expects($this->once())
             ->method('call')
-            ->with('mapped', array('tab' => 'taz'))
+            ->with('mapped', ['tab' => 'taz'])
             ->will($this->returnValue('baz'));
 
         $adapter
@@ -97,6 +97,6 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
             ->with('foo', 'bar')
             ->will($this->returnValue('foobarbaz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
+        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 }

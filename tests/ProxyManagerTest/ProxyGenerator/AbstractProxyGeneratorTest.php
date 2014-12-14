@@ -89,12 +89,12 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function getTestedImplementations()
     {
-        return array(
-            array(BaseClass::class),
-            array(ClassWithMagicMethods::class),
-            array(ClassWithByRefMagicMethods::class),
-            array(ClassWithMixedProperties::class),
-            array(BaseInterface::class),
-        );
+        return [
+            [BaseClass::class],
+            [ClassWithMagicMethods::class],
+            [ClassWithByRefMagicMethods::class],
+            [ClassWithMixedProperties::class],
+            [BaseInterface::class],
+        ];
     }
 }

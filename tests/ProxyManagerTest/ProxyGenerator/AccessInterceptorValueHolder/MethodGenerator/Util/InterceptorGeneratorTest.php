@@ -49,7 +49,7 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
         $bar->expects($this->any())->method('getName')->will($this->returnValue('bar'));
         $baz->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $method->expects($this->any())->method('getName')->will($this->returnValue('fooMethod'));
-        $method->expects($this->any())->method('getParameters')->will($this->returnValue(array($bar, $baz)));
+        $method->expects($this->any())->method('getParameters')->will($this->returnValue([$bar, $baz]));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));

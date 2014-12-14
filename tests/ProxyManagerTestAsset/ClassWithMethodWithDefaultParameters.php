@@ -31,7 +31,7 @@ class ClassWithMethodWithDefaultParameters
      *
      * @return string
      */
-    public function publicMethodWithDefaults(array $parameter = array('foo'))
+    public function publicMethodWithDefaults(array $parameter = ['foo'])
     {
         return 'defaultValue';
     }

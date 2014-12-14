@@ -39,7 +39,7 @@ class ClassGeneratorTest extends PHPUnit_Framework_TestCase
     public function testExtendedClassesAreFQCNs()
     {
         $desiredFqcn     = '\\stdClass';
-        $classNameInputs = array(stdClass::class, '\\stdClass\\');
+        $classNameInputs = [stdClass::class, '\\stdClass\\'];
 
         foreach ($classNameInputs as $className) {
             $classGenerator = new ClassGenerator();
@@ -54,8 +54,8 @@ class ClassGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testImplementedInterfacesAreFQCNs()
     {
-        $desiredFqcns        = array('\\Countable');
-        $interfaceNameInputs = array(array(Countable::class), array('\\Countable\\'));
+        $desiredFqcns        = ['\\Countable'];
+        $interfaceNameInputs = [[Countable::class], ['\\Countable\\']];
 
         foreach ($interfaceNameInputs as $interfaceNames) {
             $classGenerator = new ClassGenerator();

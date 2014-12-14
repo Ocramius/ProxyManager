@@ -37,7 +37,7 @@ class MissingSignatureExceptionTest extends PHPUnit_Framework_TestCase
     {
         $exception = MissingSignatureException::fromMissingSignature(
             new ReflectionClass(__CLASS__),
-            array('foo' => 'bar', 'baz' => 'tab'),
+            ['foo' => 'bar', 'baz' => 'tab'],
             'expected-signature'
         );
 

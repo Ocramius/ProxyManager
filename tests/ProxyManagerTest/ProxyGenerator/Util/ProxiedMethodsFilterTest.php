@@ -71,48 +71,48 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      */
     public function expectedMethods()
     {
-        return array(
-            array(
+        return [
+            [
                 new ReflectionClass(BaseClass::class),
                 null,
-                array(
+                [
                     'publicArrayHintedMethod',
                     'publicByReferenceMethod',
                     'publicByReferenceParameterMethod',
                     'publicMethod',
                     'publicTypeHintedMethod',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 new ReflectionClass(EmptyClass::class),
                 null,
-                array(),
-            ),
-            array(
+                [],
+            ],
+            [
                 new ReflectionClass(LazyLoadingMock::class),
                 null,
-                array(),
-            ),
-            array(
+                [],
+            ],
+            [
                 new ReflectionClass(LazyLoadingMock::class),
-                array(),
-                array(),
-            ),
-            array(
+                [],
+                [],
+            ],
+            [
                 new ReflectionClass(HydratedObject::class),
-                array('doFoo'),
-                array('__get'),
-            ),
-            array(
+                ['doFoo'],
+                ['__get'],
+            ],
+            [
                 new ReflectionClass(HydratedObject::class),
-                array('Dofoo'),
-                array('__get'),
-            ),
-            array(
+                ['Dofoo'],
+                ['__get'],
+            ],
+            [
                 new ReflectionClass(HydratedObject::class),
-                array(),
-                array('doFoo', '__get'),
-            ),
-        );
+                [],
+                ['doFoo', '__get'],
+            ],
+        ];
     }
 }

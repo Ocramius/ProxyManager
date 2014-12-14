@@ -52,15 +52,15 @@ class ParameterEncoderTest extends PHPUnit_Framework_TestCase
      */
     public function getParameters()
     {
-        return array(
-            array(array()),
-            array(array('foo' => 'bar')),
-            array(array('bar' => 'baz')),
-            array(array(null)),
-            array(array(null, null)),
-            array(array('bar' => null)),
-            array(array('bar' => 12345)),
-            array(array('foo' => 'bar', 'bar' => 'baz')),
-        );
+        return [
+            [[]],
+            [['foo' => 'bar']],
+            [['bar' => 'baz']],
+            [[null]],
+            [[null, null]],
+            [['bar' => null]],
+            [['bar' => 12345]],
+            [['foo' => 'bar', 'bar' => 'baz']],
+        ];
     }
 }

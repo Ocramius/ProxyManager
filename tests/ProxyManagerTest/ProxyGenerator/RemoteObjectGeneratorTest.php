@@ -88,9 +88,9 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array(
+        return [
             RemoteObjectInterface::class,
-        );
+        ];
     }
 
     /**
@@ -98,12 +98,12 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function getTestedImplementations()
     {
-        return array(
-            array(BaseClass::class),
-            array(ClassWithMagicMethods::class),
-            array(ClassWithByRefMagicMethods::class),
-            array(ClassWithMixedProperties::class),
-            array(BaseInterface::class),
-        );
+        return [
+            [BaseClass::class],
+            [ClassWithMagicMethods::class],
+            [ClassWithByRefMagicMethods::class],
+            [ClassWithMixedProperties::class],
+            [BaseInterface::class],
+        ];
     }
 }

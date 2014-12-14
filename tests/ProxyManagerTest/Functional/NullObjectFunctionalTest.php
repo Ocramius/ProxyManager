@@ -49,7 +49,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor();
 
-        $this->assertSame(null, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame(null, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -61,7 +61,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor()));
 
-        $this->assertSame(null, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame(null, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -75,7 +75,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy     = $proxyName::staticProxyConstructor();
         $cloned    = clone $proxy;
 
-        $this->assertSame(null, call_user_func_array(array($cloned, $method), $params));
+        $this->assertSame(null, call_user_func_array([$cloned, $method], $params));
     }
 
     /**
@@ -149,46 +149,46 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        $data = array(
-            array(
+        $data = [
+            [
                 BaseClass::class,
                 new BaseClass(),
                 'publicMethod',
-                array(),
+                [],
                 'publicMethodDefault'
-            ),
-            array(
+            ],
+            [
                 BaseClass::class,
                 new BaseClass(),
                 'publicTypeHintedMethod',
-                array('param' => new \stdClass()),
+                ['param' => new \stdClass()],
                 'publicTypeHintedMethodDefault'
-            ),
-            array(
+            ],
+            [
                 BaseClass::class,
                 new BaseClass(),
                 'publicByReferenceMethod',
-                array(),
+                [],
                 'publicByReferenceMethodDefault'
-            ),
-            array(
+            ],
+            [
                 BaseInterface::class,
                 new BaseClass(),
                 'publicMethod',
-                array(),
+                [],
                 'publicMethodDefault'
-            ),
-        );
+            ],
+        ];
 
         if (PHP_VERSION_ID >= 50401) {
             // PHP < 5.4.1 misbehaves, throwing strict standards, see https://bugs.php.net/bug.php?id=60573
-            $data[] = array(
+            $data[] = [
                 ClassWithSelfHint::class,
                 new ClassWithSelfHint(),
                 'selfHintMethod',
-                array('parameter' => $selfHintParam),
+                ['parameter' => $selfHintParam],
                 $selfHintParam
-            );
+            ];
         }
 
         return $data;
@@ -206,19 +206,19 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $instance2  = new BaseClass();
         $proxyName2 = $this->generateProxy(get_class($instance2));
 
-        return array(
-            array(
+        return [
+            [
                 $instance1,
                 $proxyName1::staticProxyConstructor($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
-            ),
-            array(
+            ],
+            [
                 $instance2,
                 unserialize(serialize($proxyName2::staticProxyConstructor($instance2))),
                 'publicProperty',
                 'publicPropertyDefault',
-            ),
-        );
+            ],
+        ];
     }
 }
