@@ -54,7 +54,7 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 
         $reflection = new ReflectionClass(ClassWithFinalMethods::class);
 
-        ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
+        $this->assertFalse(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
     }
 
     public function testCanAddANotFinalMethod()
@@ -73,6 +73,6 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 
         $reflection = new ReflectionClass(BaseClass::class);
 
-        ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator);
+        $this->assertTrue(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
     }
 }
