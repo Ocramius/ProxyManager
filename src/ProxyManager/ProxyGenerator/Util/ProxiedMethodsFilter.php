@@ -53,4 +53,31 @@ final class ProxiedMethodsFilter
             }
         );
     }
+
+    /**
+     * @param ReflectionClass $class    reflection class from which methods should be extracted
+     * @param string[]        $excluded methods to be ignored
+     *
+     * @return ReflectionMethod[]
+     *
+     * @todo to be refactored due to code duplication
+     */
+    public static function getAbstractProxiedMethods(
+        ReflectionClass $class,
+        array $excluded = ['__get', '__set', '__isset', '__unset', '__clone', '__sleep', '__wakeup']
+    ) {
+        $ignored = array_flip(array_map('strtolower', $excluded));
+
+        return array_filter(
+            $class->getMethods(ReflectionMethod::IS_PUBLIC),
+            function (ReflectionMethod $method) use ($ignored) {
+                return $method->isAbstract() && ! (
+                    $method->isConstructor()
+                    || isset($ignored[strtolower($method->getName())])
+                    || $method->isFinal()
+                    || $method->isStatic()
+                );
+            }
+        );
+    }
 }
