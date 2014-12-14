@@ -86,6 +86,6 @@ class StaticProxyConstructor extends MethodGenerator
         }
         return "\\Closure::bind(function (\$instance) {\n"
         . ' unset($instance->' . $property->getName() . ");\n"
-        . '}, $this, ' . var_export($property->getDeclaringClass()->getName(), true) . ")->__invoke(\$instance);\n";
+        . '}, null, ' . var_export($property->getDeclaringClass()->getName(), true) . ")->__invoke(\$instance);\n";
     }
 }
