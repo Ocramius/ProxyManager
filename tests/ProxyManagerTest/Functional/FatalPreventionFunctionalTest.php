@@ -78,10 +78,6 @@ PHP;
             $this->markTestSkipped('HHVM is just too slow for this kind of test right now.');
         }
 
-        if (PHP_VERSION_ID < 50401) {
-            $this->markTestSkipped('Can\'t run this test suite on php < 5.4.1');
-        }
-
         $runner = PHPUnit_Util_PHP::factory();
 
         $code = sprintf(
