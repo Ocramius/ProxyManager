@@ -27,7 +27,7 @@ use ReflectionMethod;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ProxiedMethodsFilter
+final class ProxiedMethodsFilter
 {
     /**
      * @param ReflectionClass $class    reflection class from which methods should be extracted
