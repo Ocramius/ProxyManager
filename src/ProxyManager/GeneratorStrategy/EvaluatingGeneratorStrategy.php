@@ -55,6 +55,7 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
             $fileName = sys_get_temp_dir() . '/EvaluatingGeneratorStrategy.php.tmp.' . uniqid('', true);
 
             file_put_contents($fileName, "<?php\n" . $code);
+            /* @noinspection PhpIncludeInspection */
             require $fileName;
             unlink($fileName);
 

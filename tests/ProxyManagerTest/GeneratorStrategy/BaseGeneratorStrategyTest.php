@@ -19,9 +19,9 @@
 namespace ProxyManagerTest\GeneratorStrategy;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}

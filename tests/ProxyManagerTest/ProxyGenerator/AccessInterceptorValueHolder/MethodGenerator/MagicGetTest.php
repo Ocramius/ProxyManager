@@ -18,9 +18,12 @@
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicGet;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicGet}
@@ -37,12 +40,12 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection         = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $valueHolder        = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection         = new ReflectionClass(EmptyClass::class);
+        $valueHolder        = $this->getMock(PropertyGenerator::class);
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
         $publicProperties   = $this
-            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
 

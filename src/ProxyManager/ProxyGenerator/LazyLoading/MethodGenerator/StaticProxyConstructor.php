@@ -18,10 +18,10 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 
-use ReflectionClass;
-use ReflectionProperty;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ReflectionClass;
+use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -40,13 +40,13 @@ class StaticProxyConstructor extends MethodGenerator
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
     {
-        parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
+        parent::__construct('staticProxyConstructor', [], static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $this->setParameter(new ParameterGenerator('initializer'));
 
         /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
+        $unsetProperties  = [];
 
         foreach ($publicProperties as $publicProperty) {
             $unsetProperties[] = '$instance->' . $publicProperty->getName();

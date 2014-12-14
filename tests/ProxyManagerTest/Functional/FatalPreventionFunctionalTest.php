@@ -20,6 +20,12 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
+use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
+use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ReflectionClass;
 
 /**
@@ -72,10 +78,6 @@ PHP;
             $this->markTestSkipped('HHVM is just too slow for this kind of test right now.');
         }
 
-        if (PHP_VERSION_ID < 50401) {
-            $this->markTestSkipped('Can\'t run this test suite on php < 5.4.1');
-        }
-
         $runner = PHPUnit_Util_PHP::factory();
 
         $code = sprintf(
@@ -86,7 +88,7 @@ PHP;
             var_export($className, true)
         );
 
-        $result = $runner->runJob($code, array('-n'));
+        $result = $runner->runJob($code, ['-n']);
 
         if (('SUCCESS: ' . $className) !== $result['stdout']) {
             $this->fail(sprintf(
@@ -115,19 +117,19 @@ PHP;
                 function ($generator) use ($that) {
                     return array_map(
                         function ($class) use ($generator) {
-                            return array($generator, $class);
+                            return [$generator, $class];
                         },
                         $that->getProxyTestedClasses()
                     );
                 },
-                array(
-                    'ProxyManager\\ProxyGenerator\\AccessInterceptorScopeLocalizerGenerator',
-                    'ProxyManager\\ProxyGenerator\\AccessInterceptorValueHolderGenerator',
-                    'ProxyManager\\ProxyGenerator\\LazyLoadingGhostGenerator',
-                    'ProxyManager\\ProxyGenerator\\LazyLoadingValueHolderGenerator',
-                    'ProxyManager\\ProxyGenerator\\NullObjectGenerator',
-                    'ProxyManager\\ProxyGenerator\\RemoteObjectGenerator',
-                )
+                [
+                    AccessInterceptorScopeLocalizerGenerator::class,
+                    AccessInterceptorValueHolderGenerator::class,
+                    LazyLoadingGhostGenerator::class,
+                    LazyLoadingValueHolderGenerator::class,
+                    NullObjectGenerator::class,
+                    RemoteObjectGenerator::class,
+                ]
             )
         );
     }
@@ -139,11 +141,11 @@ PHP;
      */
     public function getProxyTestedClasses()
     {
-        $skippedPaths = array(
+        $skippedPaths = [
             realpath(__DIR__ . '/../../src'),
             realpath(__DIR__ . '/../../vendor'),
             realpath(__DIR__ . '/../../tests/ProxyManagerTest'),
-        );
+        ];
 
         return array_filter(
             get_declared_classes(),

@@ -48,8 +48,8 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
         $valueHolderName   = $valueHolderProperty->getName();
         $parameters        = $originalMethod->getParameters();
         $methodName        = $originalMethod->getName();
-        $initializerParams = array();
-        $forwardedParams   = array();
+        $initializerParams = [];
+        $forwardedParams   = [];
 
         foreach ($parameters as $parameter) {
             $parameterName       = $parameter->getName();

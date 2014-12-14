@@ -20,6 +20,10 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\HydratedObject;
+use ProxyManagerTestAsset\LazyLoadingMock;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -67,48 +71,48 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      */
     public function expectedMethods()
     {
-        return array(
-            array(
-                new ReflectionClass('ProxyManagerTestAsset\\BaseClass'),
+        return [
+            [
+                new ReflectionClass(BaseClass::class),
                 null,
-                array(
+                [
                     'publicArrayHintedMethod',
                     'publicByReferenceMethod',
                     'publicByReferenceParameterMethod',
                     'publicMethod',
                     'publicTypeHintedMethod',
-                ),
-            ),
-            array(
-                new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'),
+                ],
+            ],
+            [
+                new ReflectionClass(EmptyClass::class),
                 null,
-                array(),
-            ),
-            array(
-                new ReflectionClass('ProxyManagerTestAsset\\LazyLoadingMock'),
+                [],
+            ],
+            [
+                new ReflectionClass(LazyLoadingMock::class),
                 null,
-                array(),
-            ),
-            array(
-                new ReflectionClass('ProxyManagerTestAsset\\LazyLoadingMock'),
-                array(),
-                array(),
-            ),
-            array(
-                new ReflectionClass('ProxyManagerTestAsset\\HydratedObject'),
-                array('doFoo'),
-                array('__get'),
-            ),
-            array(
-                new ReflectionClass('ProxyManagerTestAsset\\HydratedObject'),
-                array('Dofoo'),
-                array('__get'),
-            ),
-            array(
-                new ReflectionClass('ProxyManagerTestAsset\\HydratedObject'),
-                array(),
-                array('doFoo', '__get'),
-            ),
-        );
+                [],
+            ],
+            [
+                new ReflectionClass(LazyLoadingMock::class),
+                [],
+                [],
+            ],
+            [
+                new ReflectionClass(HydratedObject::class),
+                ['doFoo'],
+                ['__get'],
+            ],
+            [
+                new ReflectionClass(HydratedObject::class),
+                ['Dofoo'],
+                ['__get'],
+            ],
+            [
+                new ReflectionClass(HydratedObject::class),
+                [],
+                ['doFoo', '__get'],
+            ],
+        ];
     }
 }

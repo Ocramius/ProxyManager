@@ -44,7 +44,7 @@ class InitializeProxy extends MethodGenerator
 
         $this->setBody(
             'return $this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'initializeProxy\', array());'
+            . '(\'initializeProxy\', []);'
         );
     }
 }

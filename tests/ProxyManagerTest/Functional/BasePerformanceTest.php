@@ -78,10 +78,10 @@ abstract class BasePerformanceTest extends PHPUnit_Framework_TestCase
 
         echo sprintf($messageTemplate, $time, $memory / 1024) . "\n";
 
-        return array(
+        return [
             'time'   => $time,
             'memory' => $memory
-        );
+        ];
     }
 
     /**

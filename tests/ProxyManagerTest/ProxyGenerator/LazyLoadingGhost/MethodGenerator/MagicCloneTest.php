@@ -18,9 +18,12 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone}
@@ -37,9 +40,9 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $initCall    = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $reflection  = new ReflectionClass(EmptyClass::class);
+        $initializer = $this->getMock(PropertyGenerator::class);
+        $initCall    = $this->getMock(MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
@@ -49,7 +52,7 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__clone', $magicClone->getName());
         $this->assertCount(0, $magicClone->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->bar('__clone', array());",
+            "\$this->foo && \$this->bar('__clone', []);",
             $magicClone->getBody()
         );
     }

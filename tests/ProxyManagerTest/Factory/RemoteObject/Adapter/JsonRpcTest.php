@@ -41,7 +41,7 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
     {
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMock();
 
         $adapter = new JsonRpc($client);
@@ -49,9 +49,9 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
         $client
             ->expects($this->once())
             ->method('call')
-            ->with('foo.bar', array('tab' => 'taz'))
+            ->with('foo.bar', ['tab' => 'taz'])
             ->will($this->returnValue('baz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
+        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 }

@@ -19,7 +19,7 @@
 namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Factory\RemoteObject\Adapter\Soap;
+use ProxyManager\Factory\RemoteObject\Adapter\BaseAdapter;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\Soap}
@@ -42,18 +42,18 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
     {
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMock();
 
         $adapter = $this->getMockForAbstractClass(
-            'ProxyManager\\Factory\\RemoteObject\\Adapter\\BaseAdapter',
-            array($client)
+            BaseAdapter::class,
+            [$client]
         );
 
         $client
             ->expects($this->once())
             ->method('call')
-            ->with('foobarbaz', array('tab' => 'taz'))
+            ->with('foobarbaz', ['tab' => 'taz'])
             ->will($this->returnValue('baz'));
 
         $adapter
@@ -62,7 +62,7 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
             ->with('foo', 'bar')
             ->will($this->returnValue('foobarbaz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
+        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 
     /**
@@ -76,18 +76,18 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
     {
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(array('call'))
+            ->setMethods(['call'])
             ->getMock();
 
         $adapter = $this->getMockForAbstractClass(
-            'ProxyManager\\Factory\\RemoteObject\\Adapter\\BaseAdapter',
-            array($client, array('foobarbaz' => 'mapped'))
+            BaseAdapter::class,
+            [$client, ['foobarbaz' => 'mapped']]
         );
 
         $client
             ->expects($this->once())
             ->method('call')
-            ->with('mapped', array('tab' => 'taz'))
+            ->with('mapped', ['tab' => 'taz'])
             ->will($this->returnValue('baz'));
 
         $adapter
@@ -96,6 +96,6 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
             ->with('foo', 'bar')
             ->will($this->returnValue('foobarbaz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', array('tab' => 'taz')));
+        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 }

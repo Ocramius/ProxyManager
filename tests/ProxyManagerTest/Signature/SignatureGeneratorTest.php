@@ -74,28 +74,28 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function signatures()
     {
-        return array(
-            array(
-                array(),
+        return [
+            [
+                [],
                 'YTowOnt9'
-            ),
-            array(
-                array('foo' => 'bar'),
+            ],
+            [
+                ['foo' => 'bar'],
                 'YToxOntzOjM6ImZvbyI7czozOiJiYXIiO30='
-            ),
-            array(
-                array('foo' => 'bar', 'baz' => 'tab'),
+            ],
+            [
+                ['foo' => 'bar', 'baz' => 'tab'],
                 'YToyOntzOjM6ImZvbyI7czozOiJiYXIiO3M6MzoiYmF6IjtzOjM6InRhYiI7fQ=='
-            ),
-            array(
-                array('bar'),
+            ],
+            [
+                ['bar'],
                 'YToxOntpOjA7czozOiJiYXIiO30='
-            ),
-            array(
-                array('bar', 'baz'),
+            ],
+            [
+                ['bar', 'baz'],
                 'YToyOntpOjA7czozOiJiYXIiO2k6MTtzOjM6ImJheiI7fQ=='
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -105,12 +105,12 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function signatureKeys()
     {
-        return array(
-            array(array(), '40cd750bba9870f18aada2478b24840a'),
-            array(array('foo' => 'bar'), '49a3696adf0fbfacc12383a2d7400d51'),
-            array(array('foo' => 'bar', 'baz' => 'tab'), '3f3cabbf33bae82b0711205c913a8fa0'),
-            array(array('bar'), '6fc5f617053f53f56b4734453ec86daa'),
-            array(array('bar', 'baz'), 'b9f31192ffbb4aa958cd1c5f88540c1e'),
-        );
+        return [
+            [[], '40cd750bba9870f18aada2478b24840a'],
+            [['foo' => 'bar'], '49a3696adf0fbfacc12383a2d7400d51'],
+            [['foo' => 'bar', 'baz' => 'tab'], '3f3cabbf33bae82b0711205c913a8fa0'],
+            [['bar'], '6fc5f617053f53f56b4734453ec86daa'],
+            [['bar', 'baz'], 'b9f31192ffbb4aa958cd1c5f88540c1e'],
+        ];
     }
 }

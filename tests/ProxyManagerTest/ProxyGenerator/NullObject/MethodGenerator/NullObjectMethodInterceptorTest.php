@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
+use ProxyManagerTestAsset\BaseClass;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -37,7 +38,7 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
+        $reflection = new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = NullObjectMethodInterceptor::generateMethod($reflection);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());

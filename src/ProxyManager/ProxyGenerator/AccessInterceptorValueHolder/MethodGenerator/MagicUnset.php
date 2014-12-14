@@ -49,7 +49,7 @@ class MagicUnset extends MagicMethodGenerator
         PropertyGenerator $suffixInterceptors,
         PublicPropertiesMap $publicProperties
     ) {
-        parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
 
         $override        = $originalClass->hasMethod('__unset');
         $valueHolderName = $valueHolder->getName();

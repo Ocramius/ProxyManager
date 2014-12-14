@@ -43,7 +43,7 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
         $this->startCapturing();
 
         foreach ($instances as $instance) {
-            call_user_func_array(array($instance, $methodName), $parameters);
+            call_user_func_array([$instance, $methodName], $parameters);
         }
 
         $baseProfile = $this->endCapturing(
@@ -52,7 +52,7 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
         $this->startCapturing();
 
         foreach ($proxies as $proxy) {
-            call_user_func_array(array($proxy, $methodName), $parameters);
+            call_user_func_array([$proxy, $methodName], $parameters);
         }
 
         $proxyProfile = $this->endCapturing(

@@ -37,7 +37,7 @@ class ProxiedMethodsFilter
      */
     public static function getProxiedMethods(
         ReflectionClass $class,
-        array $excluded = array('__get', '__set', '__isset', '__unset', '__clone', '__sleep', '__wakeup')
+        array $excluded = ['__get', '__set', '__isset', '__unset', '__clone', '__sleep', '__wakeup']
     ) {
         $ignored = array_flip(array_map('strtolower', $excluded));
 

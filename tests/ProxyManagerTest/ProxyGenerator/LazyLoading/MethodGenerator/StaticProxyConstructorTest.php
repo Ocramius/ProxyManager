@@ -19,9 +19,11 @@
 namespace ProxyManagerTest\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
-use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor}
@@ -36,14 +38,14 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 {
     public function testBodyStructure()
     {
-        /* @var $initializer \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $initializer = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(
-                'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+                ClassWithTwoPublicProperties::class
             ),
             $initializer
         );
@@ -70,13 +72,13 @@ return $instance;',
      */
     public function testBodyStructureWithoutPublicProperties()
     {
-        /* @var $initializer \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $initializer = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $constructor = new StaticProxyConstructor(
-            new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'),
+            new ReflectionClass(EmptyClass::class),
             $initializer
         );
 

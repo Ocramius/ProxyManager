@@ -122,8 +122,8 @@ $factory = new \ProxyManager\Factory\AccessInterceptorValueHolderFactory();
 
 $proxy = $factory->createProxy(
     new \My\Db\Connection(),
-    array('query' => function () { echo "Query being executed!\n"; }),
-    array('query' => function () { echo "Query completed!\n"; })
+    ['query' => function () { echo "Query being executed!\n"; }],
+    ['query' => function () { echo "Query completed!\n"; }]
 );
 
 $proxy->query(); // produces "Query being executed!\nQuery completed!\n"

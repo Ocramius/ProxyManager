@@ -18,7 +18,6 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ReflectionClass;
@@ -51,8 +50,8 @@ class Constructor extends MethodGenerator
         $suffix          = new ParameterGenerator('suffixInterceptors');
 
         $localizedObject->setType($originalClass->getName());
-        $prefix->setDefaultValue(array());
-        $suffix->setDefaultValue(array());
+        $prefix->setDefaultValue([]);
+        $suffix->setDefaultValue([]);
         $prefix->setType('array');
         $suffix->setType('array');
 
@@ -60,15 +59,9 @@ class Constructor extends MethodGenerator
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
-        $localizedProperties = array();
+        $localizedProperties = [];
 
         foreach ($originalClass->getProperties() as $originalProperty) {
-            if ((! method_exists('Closure', 'bind')) && $originalProperty->isPrivate()) {
-                // @codeCoverageIgnoreStart
-                throw UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty($originalProperty);
-                // @codeCoverageIgnoreEnd
-            }
-
             $propertyName = $originalProperty->getName();
 
             if ($originalProperty->isPrivate()) {

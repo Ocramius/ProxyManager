@@ -18,6 +18,7 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
+use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 
 /**
@@ -44,6 +45,6 @@ class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array('ProxyManager\\Proxy\\VirtualProxyInterface');
+        return [VirtualProxyInterface::class];
     }
 }

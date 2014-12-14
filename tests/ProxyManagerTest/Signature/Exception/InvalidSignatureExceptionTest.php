@@ -37,7 +37,7 @@ class InvalidSignatureExceptionTest extends PHPUnit_Framework_TestCase
     {
         $exception = InvalidSignatureException::fromInvalidSignature(
             new ReflectionClass(__CLASS__),
-            array('foo' => 'bar', 'baz' => 'tab'),
+            ['foo' => 'bar', 'baz' => 'tab'],
             'blah',
             'expected-signature'
         );

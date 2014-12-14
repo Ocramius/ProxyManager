@@ -36,7 +36,7 @@ class MethodPrefixInterceptors extends PropertyGenerator
     {
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('methodPrefixInterceptors'));
 
-        $this->setDefaultValue(array());
+        $this->setDefaultValue([]);
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setDocblock('@var \\Closure[] map of interceptors to be called per-method before execution');
     }

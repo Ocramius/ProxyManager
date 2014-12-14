@@ -1,11 +1,5 @@
 --TEST--
 Verifies that generated access interceptors disallow private property direct unset
---SKIPIF--
-<?php
-if (! method_exists('Closure', 'bind')) {
-    echo 'skip PHP 5.4+ is needed to localize private properties';
-}
-?>
 --FILE--
 <?php
 

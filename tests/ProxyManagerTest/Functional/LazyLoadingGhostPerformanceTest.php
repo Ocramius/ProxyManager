@@ -23,7 +23,9 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
@@ -55,9 +57,9 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
     ) {
         $proxyName    = $this->generateProxy($className);
         $iterations   = 20000;
-        $instances    = array();
+        $instances    = [];
         /* @var $proxies \ProxyManager\Proxy\GhostObjectInterface[] */
-        $proxies      = array();
+        $proxies      = [];
         $realInstance = new $className();
         $initializer  = function (
             GhostObjectInterface $proxy,
@@ -121,13 +123,13 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
      */
     public function getTestedClasses()
     {
-        $testedClasses = array(
-            array('stdClass', array(), array()),
-            array('ProxyManagerTestAsset\\BaseClass', array('publicMethod' => array()), array('publicProperty')),
-        );
+        $testedClasses = [
+            [stdClass::class, [], []],
+            [BaseClass::class, ['publicMethod' => []], ['publicProperty']],
+        ];
 
         foreach ($testedClasses as $key => $testedClass) {
-            $reflectionProperties = array();
+            $reflectionProperties = [];
             $reflectionClass      = new ReflectionClass($testedClass[0]);
 
             foreach ($reflectionClass->getProperties() as $property) {

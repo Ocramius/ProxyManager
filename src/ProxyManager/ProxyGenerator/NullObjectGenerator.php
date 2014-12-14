@@ -19,10 +19,10 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
-use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
-use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
+use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
@@ -45,7 +45,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces = array('ProxyManager\\Proxy\\NullObjectInterface');
+        $interfaces = [NullObjectInterface::class];
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();

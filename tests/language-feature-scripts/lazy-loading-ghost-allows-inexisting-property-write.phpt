@@ -12,7 +12,7 @@ class Kitchen
 
 $factory = new \ProxyManager\Factory\LazyLoadingGhostFactory($configuration);
 
-$proxy = $factory->createProxy('Kitchen', function () {});
+$proxy = $factory->createProxy(Kitchen::class, function () {});
 
 $proxy->nonExisting = 'I do not exist';
 echo $proxy->nonExisting;

@@ -47,7 +47,7 @@ class MagicUnset extends MagicMethodGenerator
         PropertyGenerator $valueHolderProperty,
         PublicPropertiesMap $publicProperties
     ) {
-        parent::__construct($originalClass, '__unset', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
 
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();

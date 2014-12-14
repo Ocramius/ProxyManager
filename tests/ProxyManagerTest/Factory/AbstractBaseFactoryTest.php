@@ -19,8 +19,18 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Autoloader\AutoloaderInterface;
+use ProxyManager\Configuration;
+use ProxyManager\Factory\AbstractBaseFactory;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManager\Signature\ClassSignatureGeneratorInterface;
+use ProxyManager\Signature\SignatureCheckerInterface;
 use ReflectionMethod;
+use stdClass;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\Factory\AbstractBaseFactory}
@@ -73,13 +83,13 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $configuration                 = $this->getMock('ProxyManager\\Configuration');
-        $this->generator               = $this->getMock('ProxyManager\\ProxyGenerator\\ProxyGeneratorInterface');
-        $this->classNameInflector      = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
-        $this->generatorStrategy       = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
-        $this->proxyAutoloader         = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
-        $this->signatureChecker        = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
-        $this->classSignatureGenerator = $this->getMock('ProxyManager\\Signature\\ClassSignatureGeneratorInterface');
+        $configuration                 = $this->getMock(Configuration::class);
+        $this->generator               = $this->getMock(ProxyGeneratorInterface::class);
+        $this->classNameInflector      = $this->getMock(ClassNameInflectorInterface::class);
+        $this->generatorStrategy       = $this->getMock(GeneratorStrategyInterface::class);
+        $this->proxyAutoloader         = $this->getMock(AutoloaderInterface::class);
+        $this->signatureChecker        = $this->getMock(SignatureCheckerInterface::class);
+        $this->classSignatureGenerator = $this->getMock(ClassSignatureGeneratorInterface::class);
 
         $configuration
             ->expects($this->any())
@@ -112,10 +122,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->method('getUserClassName')
             ->will($this->returnValue('stdClass'));
 
-        $this->factory = $this->getMockForAbstractClass(
-            'ProxyManager\\Factory\\AbstractBaseFactory',
-            array($configuration)
-        );
+        $this->factory = $this->getMockForAbstractClass(AbstractBaseFactory::class, [$configuration]);
 
         $this->factory->expects($this->any())->method('getGenerator')->will($this->returnValue($this->generator));
     }
@@ -138,7 +145,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->generatorStrategy
             ->expects($this->once())
             ->method('generate')
-            ->with($this->isInstanceOf('Zend\\Code\\Generator\\ClassGenerator'));
+            ->with($this->isInstanceOf(ClassGenerator::class));
         $this
             ->proxyAutoloader
             ->expects($this->once())
@@ -151,8 +158,8 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
 
-        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, 'stdClass'));
+        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, stdClass::class));
         $this->assertTrue(class_exists($generatedClass, false));
-        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, 'stdClass'));
+        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, stdClass::class));
     }
 }

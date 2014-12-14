@@ -38,7 +38,7 @@ class ClassWithFinalMagicMethods
      */
     final public function __set($name, $value)
     {
-        return array($name => $value);
+        return [$name => $value];
     }
 
     /**

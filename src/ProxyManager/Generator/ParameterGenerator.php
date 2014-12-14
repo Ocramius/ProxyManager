@@ -70,7 +70,7 @@ class ParameterGenerator extends ZendParameterGenerator
             return 'array';
         }
 
-        if (method_exists($reflectionParameter, 'isCallable') && $reflectionParameter->isCallable()) {
+        if ($reflectionParameter->isCallable()) {
             return 'callable';
         }
 

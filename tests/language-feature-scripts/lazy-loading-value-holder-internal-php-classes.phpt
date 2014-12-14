@@ -26,7 +26,7 @@ class PharMock extends Phar
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($configuration);
 
 $factory
-    ->createProxy('Phar', function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
+    ->createProxy(Phar::class, function (& $wrapped, $proxy, $method, array $parameters, & $initializer) {
         $initializer = null;
         $wrapped     = new PharMock();
     })

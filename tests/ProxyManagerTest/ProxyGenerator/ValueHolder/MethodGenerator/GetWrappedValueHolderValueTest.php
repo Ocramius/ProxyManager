@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue}
@@ -36,7 +37,7 @@ class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $valueHolder = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $valueHolder = $this->getMock(PropertyGenerator::class);
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 

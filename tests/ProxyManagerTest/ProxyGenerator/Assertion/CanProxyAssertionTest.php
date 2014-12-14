@@ -20,6 +20,9 @@ namespace ProxyManagerTest\ProxyGenerator\Assertion;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
+use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
+use ProxyManagerTestAsset\FinalClass;
 use ReflectionClass;
 
 /**
@@ -37,7 +40,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
 
-        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass('ProxyManagerTestAsset\\FinalClass'));
+        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(FinalClass::class));
     }
 
     public function testDeniesClassesWithAbstractProtectedMethods()
@@ -45,14 +48,14 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
-            'ProxyManagerTestAsset\\ClassWithAbstractProtectedMethod'
+            ClassWithAbstractProtectedMethod::class
         ));
     }
 
     public function testAllowsInterfaceByDefault()
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
-            'ProxyManagerTestAsset\\BaseInterface'
+            BaseInterface::class
         ));
 
         $this->assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
@@ -62,7 +65,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
 
-        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass('ProxyManagerTestAsset\\BaseInterface'), false);
+        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseInterface::class), false);
     }
 
     /**
@@ -89,25 +92,25 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
      */
     public function validClasses()
     {
-        return array(
-            array('ProxyManagerTestAsset\AccessInterceptorValueHolderMock'),
-            array('ProxyManagerTestAsset\BaseClass'),
-            array('ProxyManagerTestAsset\BaseInterface'),
-            array('ProxyManagerTestAsset\CallableTypeHintClass'),
-            array('ProxyManagerTestAsset\ClassWithByRefMagicMethods'),
-            array('ProxyManagerTestAsset\ClassWithFinalMagicMethods'),
-            array('ProxyManagerTestAsset\ClassWithFinalMethods'),
-            array('ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters'),
-            array('ProxyManagerTestAsset\ClassWithMixedProperties'),
-            array('ProxyManagerTestAsset\ClassWithPrivateProperties'),
-            array('ProxyManagerTestAsset\ClassWithProtectedProperties'),
-            array('ProxyManagerTestAsset\ClassWithPublicProperties'),
-            array('ProxyManagerTestAsset\ClassWithPublicArrayProperty'),
-            array('ProxyManagerTestAsset\ClassWithSelfHint'),
-            array('ProxyManagerTestAsset\EmptyClass'),
-            array('ProxyManagerTestAsset\HydratedObject'),
-            array('ProxyManagerTestAsset\LazyLoadingMock'),
-            array('ProxyManagerTestAsset\NullObjectMock'),
-        );
+        return [
+            ['ProxyManagerTestAsset\AccessInterceptorValueHolderMock'],
+            ['ProxyManagerTestAsset\BaseClass'],
+            ['ProxyManagerTestAsset\BaseInterface'],
+            ['ProxyManagerTestAsset\CallableTypeHintClass'],
+            ['ProxyManagerTestAsset\ClassWithByRefMagicMethods'],
+            ['ProxyManagerTestAsset\ClassWithFinalMagicMethods'],
+            ['ProxyManagerTestAsset\ClassWithFinalMethods'],
+            ['ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters'],
+            ['ProxyManagerTestAsset\ClassWithMixedProperties'],
+            ['ProxyManagerTestAsset\ClassWithPrivateProperties'],
+            ['ProxyManagerTestAsset\ClassWithProtectedProperties'],
+            ['ProxyManagerTestAsset\ClassWithPublicProperties'],
+            ['ProxyManagerTestAsset\ClassWithPublicArrayProperty'],
+            ['ProxyManagerTestAsset\ClassWithSelfHint'],
+            ['ProxyManagerTestAsset\EmptyClass'],
+            ['ProxyManagerTestAsset\HydratedObject'],
+            ['ProxyManagerTestAsset\LazyLoadingMock'],
+            ['ProxyManagerTestAsset\NullObjectMock'],
+        ];
     }
 }

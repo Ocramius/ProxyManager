@@ -18,9 +18,12 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep}
@@ -37,9 +40,9 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection  = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $initMethod  = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $reflection  = new ReflectionClass(EmptyClass::class);
+        $initializer = $this->getMock(PropertyGenerator::class);
+        $initMethod  = $this->getMock(MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $initMethod->expects($this->any())->method('getName')->will($this->returnValue('bar'));
@@ -49,7 +52,7 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__sleep', $magicSleep->getName());
         $this->assertCount(0, $magicSleep->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->bar('__sleep', array());"
+            "\$this->foo && \$this->bar('__sleep', []);"
             . "\n\nreturn array_keys((array) \$this);",
             $magicSleep->getBody()
         );

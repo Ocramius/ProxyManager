@@ -19,7 +19,10 @@
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod;
+use ProxyManagerTestAsset\BaseClass;
+use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -35,19 +38,19 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
 {
     public function testBodyStructure()
     {
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
 
         $method = InterceptedMethod::generateMethod(
-            new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod'),
+            new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod'),
             $prefixInterceptors,
             $suffixInterceptors
         );
 
-        $this->assertInstanceOf('ProxyManager\\Generator\\MethodGenerator', $method);
+        $this->assertInstanceOf(MethodGenerator::class, $method);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());

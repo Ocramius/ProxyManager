@@ -18,9 +18,12 @@
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSet;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSet}
@@ -37,9 +40,9 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection         = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection         = new ReflectionClass(EmptyClass::class);
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
@@ -60,9 +63,9 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithInheritedMethod()
     {
-        $reflection         = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));

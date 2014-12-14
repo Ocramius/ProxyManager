@@ -22,7 +22,13 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\RemoteObjectInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
 
 /**
@@ -82,9 +88,9 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array(
-            'ProxyManager\\Proxy\\RemoteObjectInterface',
-        );
+        return [
+            RemoteObjectInterface::class,
+        ];
     }
 
     /**
@@ -92,12 +98,12 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function getTestedImplementations()
     {
-        return array(
-            array('ProxyManagerTestAsset\\BaseClass'),
-            array('ProxyManagerTestAsset\\ClassWithMagicMethods'),
-            array('ProxyManagerTestAsset\\ClassWithByRefMagicMethods'),
-            array('ProxyManagerTestAsset\\ClassWithMixedProperties'),
-            array('ProxyManagerTestAsset\\BaseInterface'),
-        );
+        return [
+            [BaseClass::class],
+            [ClassWithMagicMethods::class],
+            [ClassWithByRefMagicMethods::class],
+            [ClassWithMixedProperties::class],
+            [BaseInterface::class],
+        ];
     }
 }

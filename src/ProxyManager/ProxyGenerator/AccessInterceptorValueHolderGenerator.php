@@ -19,6 +19,8 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
@@ -62,11 +64,8 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $publicProperties    = new PublicPropertiesMap($originalClass);
-        $interfaces          = array(
-            'ProxyManager\\Proxy\\AccessInterceptorInterface',
-            'ProxyManager\\Proxy\\ValueHolderInterface',
-        );
+        $publicProperties = new PublicPropertiesMap($originalClass);
+        $interfaces       = [AccessInterceptorInterface::class, ValueHolderInterface::class];
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -96,7 +95,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     },
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
-                array(
+                [
                     Constructor::generateMethod($originalClass, $valueHolder),
                     new StaticProxyConstructor($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new GetWrappedValueHolderValue($valueHolder),
@@ -133,7 +132,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $valueHolder),
                     new MagicWakeup($originalClass, $valueHolder),
-                )
+                ]
             )
         );
     }

@@ -20,8 +20,10 @@ namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
-use Zend\Code\Reflection\MethodReflection;
+use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod}
@@ -38,18 +40,18 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithParameters()
     {
-        $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $adapter = $this->getMock(PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(
-            'ProxyManagerTestAsset\\BaseClass',
+            BaseClass::class,
             'publicByReferenceParameterMethod'
         );
 
         $method = RemoteObjectMethod::generateMethod(
             $reflectionMethod,
             $adapter,
-            new ReflectionClass('Zend\\Code\\Generator\\PropertyGenerator')
+            new ReflectionClass(PropertyGenerator::class)
         );
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
@@ -67,15 +69,15 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithArrayParameter()
     {
-        $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $adapter = $this->getMock(PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
 
-        $reflectionMethod = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicArrayHintedMethod');
+        $reflectionMethod = new MethodReflection(BaseClass::class, 'publicArrayHintedMethod');
 
         $method = RemoteObjectMethod::generateMethod(
             $reflectionMethod,
             $adapter,
-            new ReflectionClass('Zend\\Code\\Generator\\PropertyGenerator')
+            new ReflectionClass(PropertyGenerator::class)
         );
 
         $this->assertSame('publicArrayHintedMethod', $method->getName());
@@ -93,7 +95,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithoutParameters()
     {
-        $adapter = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $adapter = $this->getMock(PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
@@ -101,7 +103,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
         $method = RemoteObjectMethod::generateMethod(
             $reflectionMethod,
             $adapter,
-            new ReflectionClass('Zend\\Code\\Generator\\PropertyGenerator')
+            new ReflectionClass(PropertyGenerator::class)
         );
 
         $this->assertSame('testBodyStructureWithoutParameters', $method->getName());

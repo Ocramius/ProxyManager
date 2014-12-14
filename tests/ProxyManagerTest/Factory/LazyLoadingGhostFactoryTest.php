@@ -19,9 +19,16 @@
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Autoloader\AutoloaderInterface;
+use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
+use ProxyManager\Inflector\ClassNameInflectorInterface;
+use ProxyManager\Signature\ClassSignatureGeneratorInterface;
+use ProxyManager\Signature\SignatureCheckerInterface;
+use ProxyManagerTestAsset\LazyLoadingMock;
 
 /**
  * Tests for {@see \ProxyManager\Factory\LazyLoadingGhostFactory}
@@ -44,12 +51,12 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     protected $signatureChecker;
 
     /**
-     * @var \ProxyManager\Signature\ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $classSignatureGenerator;
 
     /**
-     * @var \ProxyManager\Configuration|\PHPUnit_Framework_MockObject_MockObject
+     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $config;
 
@@ -58,10 +65,10 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->config                  = $this->getMock('ProxyManager\\Configuration');
-        $this->inflector               = $this->getMock('ProxyManager\\Inflector\\ClassNameInflectorInterface');
-        $this->signatureChecker        = $this->getMock('ProxyManager\\Signature\\SignatureCheckerInterface');
-        $this->classSignatureGenerator = $this->getMock('ProxyManager\\Signature\\ClassSignatureGeneratorInterface');
+        $this->config                  = $this->getMock(Configuration::class);
+        $this->inflector               = $this->getMock(ClassNameInflectorInterface::class);
+        $this->signatureChecker        = $this->getMock(SignatureCheckerInterface::class);
+        $this->classSignatureGenerator = $this->getMock(ClassSignatureGeneratorInterface::class);
 
         $this
             ->config
@@ -91,7 +98,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     {
         $factory = new LazyLoadingGhostFactory();
         $this->assertAttributeNotEmpty('configuration', $factory);
-        $this->assertAttributeInstanceOf('ProxyManager\Configuration', 'configuration', $factory);
+        $this->assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
     }
 
     /**
@@ -109,15 +116,15 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getProxyClassName')
             ->with($className)
-            ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
+            ->will($this->returnValue(LazyLoadingMock::class));
 
         $factory     = new LazyLoadingGhostFactory($this->config);
         $initializer = function () {
         };
-        /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
+        /* @var $proxy LazyLoadingMock */
         $proxy       = $factory->createProxy($className, $initializer);
 
-        $this->assertInstanceOf('ProxyManagerTestAsset\\LazyLoadingMock', $proxy);
+        $this->assertInstanceOf(LazyLoadingMock::class, $proxy);
         $this->assertSame($initializer, $proxy->initializer);
     }
 
@@ -134,8 +141,8 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     {
         $className      = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
-        $generator      = $this->getMock('ProxyManager\\GeneratorStrategy\\GeneratorStrategyInterface');
-        $autoloader     = $this->getMock('ProxyManager\\Autoloader\\AutoloaderInterface');
+        $generator      = $this->getMock(GeneratorStrategyInterface::class);
+        $autoloader     = $this->getMock(AutoloaderInterface::class);
 
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
         $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
@@ -176,7 +183,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getUserClassName')
             ->with($className)
-            ->will($this->returnValue('ProxyManagerTestAsset\\LazyLoadingMock'));
+            ->will($this->returnValue(LazyLoadingMock::class));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
@@ -184,7 +191,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
         $factory     = new LazyLoadingGhostFactory($this->config);
         $initializer = function () {
         };
-        /* @var $proxy \ProxyManagerTestAsset\LazyLoadingMock */
+        /* @var $proxy LazyLoadingMock */
         $proxy       = $factory->createProxy($className, $initializer);
 
         $this->assertInstanceOf($proxyClassName, $proxy);

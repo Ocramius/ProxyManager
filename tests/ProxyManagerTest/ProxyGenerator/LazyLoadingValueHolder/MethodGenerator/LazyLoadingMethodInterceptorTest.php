@@ -20,6 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor;
+use ProxyManagerTestAsset\BaseClass;
+use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -37,13 +39,13 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initializer      = $this->getMock(PropertyGenerator::class);
+        $valueHolder      = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
+        $reflection = new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer, $valueHolder);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
@@ -62,8 +64,8 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithoutParameters()
     {
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
-        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initializer      = $this->getMock(PropertyGenerator::class);
+        $valueHolder      = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));

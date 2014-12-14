@@ -38,7 +38,7 @@ class MagicGet extends MagicMethodGenerator
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapterProperty)
     {
-        parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
         $this->setDocblock('@param string $name');
         $this->setBody(

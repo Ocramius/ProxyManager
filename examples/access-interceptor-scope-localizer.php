@@ -28,8 +28,8 @@ $foo = new FluentCounter();
 /* @var $proxy FluentCounter */
 $proxy = $factory->createProxy(
     $foo,
-    array('fluentMethod' => function ($proxy) { echo "pre-fluentMethod #{$proxy->counter}!\n"; }),
-    array('fluentMethod' => function ($proxy) { echo "post-fluentMethod #{$proxy->counter}!\n"; })
+    ['fluentMethod' => function ($proxy) { echo "pre-fluentMethod #{$proxy->counter}!\n"; }],
+    ['fluentMethod' => function ($proxy) { echo "post-fluentMethod #{$proxy->counter}!\n"; }]
 );
 
 $proxy->fluentMethod()->fluentMethod()->fluentMethod()->fluentMethod();

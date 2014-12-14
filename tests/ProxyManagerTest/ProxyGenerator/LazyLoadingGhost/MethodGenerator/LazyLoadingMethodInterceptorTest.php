@@ -20,6 +20,9 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\LazyLoadingMethodInterceptor;
+use ProxyManagerTestAsset\BaseClass;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -37,13 +40,13 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $initCall    = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $initializer = $this->getMock(PropertyGenerator::class);
+        $initCall    = $this->getMock(MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
-        $reflection = new MethodReflection('ProxyManagerTestAsset\\BaseClass', 'publicByReferenceParameterMethod');
+        $reflection = new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer, $initCall);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
@@ -62,8 +65,8 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithoutParameters()
     {
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
-        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $initCall         = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $initializer      = $this->getMock(PropertyGenerator::class);
+        $initCall         = $this->getMock(MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));

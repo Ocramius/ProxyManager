@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
+use Closure;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -42,7 +43,7 @@ class SetMethodSuffixInterceptor extends MethodGenerator
 
         $interceptor = new ParameterGenerator('suffixInterceptor');
 
-        $interceptor->setType('Closure');
+        $interceptor->setType(Closure::class);
         $interceptor->setDefaultValue(null);
         $this->setParameter(new ParameterGenerator('methodName'));
         $this->setParameter($interceptor);

@@ -18,9 +18,9 @@
 
 namespace ProxyManagerTest\ProxyGenerator;
 
+use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ReflectionClass;
-use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator}
@@ -46,16 +46,12 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
             // @todo interfaces *may* be proxied by deferring property localization to the constructor (no hardcoding)
             $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
 
-            return parent::testGeneratesValidCode($className);
+            parent::testGeneratesValidCode($className);
+
+            return;
         }
 
-        if ((! method_exists('Closure', 'bind'))
-            && $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)
-        ) {
-            $this->setExpectedException('ProxyManager\Exception\UnsupportedProxiedClassException');
-        }
-
-        return parent::testGeneratesValidCode($className);
+        parent::testGeneratesValidCode($className);
     }
 
     /**
@@ -71,6 +67,6 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
      */
     protected function getExpectedImplementedInterfaces()
     {
-        return array('ProxyManager\\Proxy\\AccessInterceptorInterface');
+        return [AccessInterceptorInterface::class];
     }
 }

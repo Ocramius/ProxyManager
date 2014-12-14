@@ -47,7 +47,7 @@ class InterceptedMethod extends MethodGenerator
     ) {
         /* @var $method self */
         $method          = static::fromReflection($originalMethod);
-        $forwardedParams = array();
+        $forwardedParams = [];
 
         foreach ($originalMethod->getParameters() as $parameter) {
             $forwardedParams[]   = '$' . $parameter->getName();

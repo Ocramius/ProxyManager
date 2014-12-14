@@ -19,7 +19,9 @@
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer}
@@ -36,7 +38,7 @@ class SetProxyInitializerTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $initializer = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $initializer = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
@@ -46,10 +48,10 @@ class SetProxyInitializerTest extends PHPUnit_Framework_TestCase
         $this->assertSame('setProxyInitializer', $setter->getName());
         $this->assertCount(1, $parameters);
 
-        /* @var $initializer \ProxyManager\Generator\ParameterGenerator */
+        /* @var $initializer ParameterGenerator */
         $initializer = array_shift($parameters);
 
-        $this->assertInstanceOf('ProxyManager\\Generator\\ParameterGenerator', $initializer);
+        $this->assertInstanceOf(ParameterGenerator::class, $initializer);
         $this->assertSame('initializer', $initializer->getName());
         $this->assertSame('$this->foo = $initializer;', $setter->getBody());
     }

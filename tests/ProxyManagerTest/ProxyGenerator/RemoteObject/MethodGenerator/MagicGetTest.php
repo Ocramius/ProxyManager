@@ -18,9 +18,11 @@
 
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet}
@@ -37,8 +39,8 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection   = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $adapter      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection   = new ReflectionClass(EmptyClass::class);
+        $adapter      = $this->getMock(PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $magicGet     = new MagicGet($reflection, $adapter);

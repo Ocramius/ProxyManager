@@ -18,9 +18,12 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet}
@@ -37,11 +40,11 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection       = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
-        $initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $valueHolder      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $reflection       = new ReflectionClass(EmptyClass::class);
+        $initializer      = $this->getMock(PropertyGenerator::class);
+        $valueHolder      = $this->getMock(PropertyGenerator::class);
         $publicProperties = $this
-            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
 

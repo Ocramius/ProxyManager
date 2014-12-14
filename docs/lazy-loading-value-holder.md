@@ -66,7 +66,7 @@ class HeavyComplexObject
     }
 
     public function doFoo() {
-        echo "OK!"
+        echo 'OK!';
     }
 }
 ```

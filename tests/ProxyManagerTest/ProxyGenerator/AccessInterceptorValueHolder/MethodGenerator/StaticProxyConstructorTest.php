@@ -20,7 +20,10 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGen
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\StaticProxyConstructor;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\StaticProxyConstructor}
@@ -35,12 +38,12 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 {
     public function testBodyStructure()
     {
-        /* @var $valueHolder \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder        = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        /* @var $prefixInterceptors \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        /* @var $suffixInterceptors \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $valueHolder        = $this->getMock(PropertyGenerator::class);
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
@@ -48,7 +51,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(
-                'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+                ClassWithTwoPublicProperties::class
             ),
             $valueHolder,
             $prefixInterceptors,
@@ -76,19 +79,19 @@ return $instance;',
 
     public function testBodyStructureWithoutPublicProperties()
     {
-        /* @var $valueHolder \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder        = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        /* @var $prefixInterceptors \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        /* @var $suffixInterceptors \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $valueHolder        = $this->getMock(PropertyGenerator::class);
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
 
         $constructor = new StaticProxyConstructor(
-            new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'),
+            new ReflectionClass(EmptyClass::class),
             $valueHolder,
             $prefixInterceptors,
             $suffixInterceptors

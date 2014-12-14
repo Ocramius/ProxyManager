@@ -23,7 +23,9 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
+use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
@@ -50,9 +52,9 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
     {
         $proxyName   = $this->generateProxy($className);
         $iterations  = 20000;
-        $instances   = array();
+        $instances   = [];
         /* @var $proxies \ProxyManager\Proxy\VirtualProxyInterface[] */
-        $proxies     = array();
+        $proxies     = [];
         $initializer = function (
             & $valueHolder,
             VirtualProxyInterface $proxy,
@@ -110,10 +112,10 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
      */
     public function getTestedClasses()
     {
-        return array(
-            array('stdClass', array(), array()),
-            array('ProxyManagerTestAsset\\BaseClass', array('publicMethod' => array()), array('publicProperty')),
-        );
+        return [
+            [stdClass::class, [], []],
+            [BaseClass::class, ['publicMethod' => []], ['publicProperty']],
+        ];
     }
 
     /**

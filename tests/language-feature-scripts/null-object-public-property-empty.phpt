@@ -12,7 +12,7 @@ class Kitchen
 
 $factory = new \ProxyManager\Factory\NullObjectFactory($configuration);
 
-$proxy = $factory->createProxy('Kitchen');
+$proxy = $factory->createProxy(Kitchen::class);
 
 var_dump($proxy->foo);
 ?>

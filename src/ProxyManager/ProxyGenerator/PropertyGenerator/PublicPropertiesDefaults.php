@@ -34,7 +34,7 @@ class PublicPropertiesDefaults extends PropertyGenerator
     /**
      * @var bool[]
      */
-    private $publicProperties = array();
+    private $publicProperties = [];
 
     /**
      * @param \ReflectionClass $originalClass

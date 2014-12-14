@@ -43,7 +43,7 @@ class MagicGet extends MagicMethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct($originalClass, '__get', array(new ParameterGenerator('name')));
+        parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
         $override = $originalClass->hasMethod('__get');
 

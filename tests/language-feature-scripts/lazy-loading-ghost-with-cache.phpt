@@ -18,12 +18,12 @@ $configuration->setGeneratorStrategy(
 
 $factory = new \ProxyManager\Factory\LazyLoadingGhostFactory($configuration);
 
-$proxy = $factory->createProxy('Kitchen', function () {});
+$proxy = $factory->createProxy(Kitchen::class, function () {});
 
 $filename = $fileLocator->getProxyFileName(get_class($proxy));
 var_dump(file_exists($filename));
 
-$proxy = $factory->createProxy('Kitchen', function () {});
+$proxy = $factory->createProxy(Kitchen::class, function () {});
 
 var_dump(file_exists($filename));
 @unlink($filename);

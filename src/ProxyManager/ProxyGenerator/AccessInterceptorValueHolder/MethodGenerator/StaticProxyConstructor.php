@@ -18,10 +18,10 @@
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
-use ReflectionClass;
-use ReflectionProperty;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ReflectionClass;
+use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -46,13 +46,13 @@ class StaticProxyConstructor extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('staticProxyConstructor', array(), static::FLAG_PUBLIC | static::FLAG_STATIC);
+        parent::__construct('staticProxyConstructor', [], static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $prefix = new ParameterGenerator('prefixInterceptors');
         $suffix = new ParameterGenerator('suffixInterceptors');
 
-        $prefix->setDefaultValue(array());
-        $suffix->setDefaultValue(array());
+        $prefix->setDefaultValue([]);
+        $suffix->setDefaultValue([]);
         $prefix->setType('array');
         $suffix->setType('array');
 
@@ -62,7 +62,7 @@ class StaticProxyConstructor extends MethodGenerator
 
         /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = array();
+        $unsetProperties  = [];
 
         foreach ($publicProperties as $publicProperty) {
             $unsetProperties[] = '$instance->' . $publicProperty->getName();

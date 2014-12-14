@@ -47,10 +47,10 @@ class CallInitializer extends MethodGenerator
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('callInitializer'));
         $this->setDocblock("Triggers initialization logic for this ghost object");
 
-        $this->setParameters(array(
+        $this->setParameters([
             new ParameterGenerator('methodName'),
             new ParameterGenerator('parameters', 'array'),
-        ));
+        ]);
 
         $this->setVisibility(static::VISIBILITY_PRIVATE);
 

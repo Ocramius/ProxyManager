@@ -20,6 +20,9 @@ namespace ProxyManagerTest\ProxyGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 
 /**
@@ -35,7 +38,7 @@ class PublicPropertiesDefaultsTest extends PHPUnit_Framework_TestCase
 {
     public function testEmptyClass()
     {
-        $publicProperties = new PublicPropertiesDefaults(new ReflectionClass('ProxyManagerTestAsset\\EmptyClass'));
+        $publicProperties = new PublicPropertiesDefaults(new ReflectionClass(EmptyClass::class));
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
         $this->assertEmpty($publicProperties->getDefaultValue()->getValue());
@@ -46,7 +49,7 @@ class PublicPropertiesDefaultsTest extends PHPUnit_Framework_TestCase
     public function testClassWithPublicProperties()
     {
         $publicProperties = new PublicPropertiesDefaults(
-            new ReflectionClass('ProxyManagerTestAsset\\ClassWithPublicProperties')
+            new ReflectionClass(ClassWithPublicProperties::class)
         );
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
@@ -58,12 +61,12 @@ class PublicPropertiesDefaultsTest extends PHPUnit_Framework_TestCase
     public function testBaseClass()
     {
         $publicProperties = new PublicPropertiesDefaults(
-            new ReflectionClass('ProxyManagerTestAsset\\BaseClass')
+            new ReflectionClass(BaseClass::class)
         );
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
         $this->assertSame(
-            array('publicProperty' => 'publicPropertyDefault'),
+            ['publicProperty' => 'publicPropertyDefault'],
             $publicProperties->getDefaultValue()->getValue()
         );
         $this->assertTrue($publicProperties->isStatic());

@@ -18,8 +18,14 @@
 
 namespace ProxyManagerTest\Generator;
 
+use Phar;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\CallableTypeHintClass;
+use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
+use stdClass;
+use Zend\Code\Generator\ValueGenerator;
 use Zend\Code\Reflection\ParameterReflection;
 
 /**
@@ -49,10 +55,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGeneratesMethodWithCallableType()
     {
-        if (PHP_VERSION_ID < 50400) {
-            $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
-        }
-
         $generator = new ParameterGenerator();
 
         $generator->setType('callable');
@@ -63,12 +65,8 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testVisitMethodWithCallable()
     {
-        if (PHP_VERSION_ID < 50400) {
-            $this->markTestSkipped('`callable` is only supported in PHP >=5.4.0');
-        }
-
         $parameter = new ParameterReflection(
-            array('ProxyManagerTestAsset\\CallableTypeHintClass', 'callableTypeHintMethod'),
+            [CallableTypeHintClass::class, 'callableTypeHintMethod'],
             'parameter'
         );
 
@@ -80,18 +78,18 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     public function testReadsParameterDefaults()
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            array(
-                'ProxyManagerTestAsset\\ClassWithMethodWithDefaultParameters',
+            [
+                ClassWithMethodWithDefaultParameters::class,
                 'publicMethodWithDefaults'
-            ),
+            ],
             'parameter'
         ));
 
-        /* @var $defaultValue \Zend\Code\Generator\ValueGenerator */
+        /* @var $defaultValue ValueGenerator */
         $defaultValue = $parameter->getDefaultValue();
 
-        $this->assertInstanceOf('Zend\\Code\\Generator\\ValueGenerator', $defaultValue);
-        $this->assertSame(array('foo'), $defaultValue->getValue());
+        $this->assertInstanceOf(ValueGenerator::class, $defaultValue);
+        $this->assertSame(['foo'], $defaultValue->getValue());
 
         $this->assertStringMatchesFormat('array%a$parameter%a=%aarray(\'foo\')', $parameter->generate());
     }
@@ -99,11 +97,11 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
     public function testReadsParameterTypeHint()
     {
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            array('ProxyManagerTestAsset\\BaseClass', 'publicTypeHintedMethod'),
+            [BaseClass::class, 'publicTypeHintedMethod'],
             'param'
         ));
 
-        $this->assertSame('stdClass', $parameter->getType());
+        $this->assertSame(stdClass::class, $parameter->getType());
     }
 
     public function testGeneratesParameterPassedByReference()
@@ -117,13 +115,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGeneratesDefaultParameterForInternalPhpClasses()
     {
-        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            array(
-                'Phar',
-                'compress'
-            ),
-            1
-        ));
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection([Phar::class, 'compress'], 1));
 
         $this->assertSame('null', strtolower((string) $parameter->getDefaultValue()));
     }

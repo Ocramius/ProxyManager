@@ -18,9 +18,15 @@
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
-use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
+use ReflectionClass;
+use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset}
@@ -33,17 +39,17 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 class MagicUnsetTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Zend\Code\Generator\PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $initializer;
 
     /**
-     * @var \Zend\Code\Generator\MethodGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $initMethod;
 
     /**
-     * @var \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     * @var PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $publicProperties;
 
@@ -52,10 +58,10 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->initializer      = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $this->initMethod       = $this->getMock('Zend\\Code\\Generator\\MethodGenerator');
+        $this->initializer      = $this->getMock(PropertyGenerator::class);
+        $this->initMethod       = $this->getMock(MethodGenerator::class);
         $this->publicProperties = $this
-            ->getMockBuilder('ProxyManager\\ProxyGenerator\\PropertyGenerator\\PublicPropertiesMap')
+            ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -70,7 +76,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection = new ReflectionClass('ProxyManagerTestAsset\\EmptyClass');
+        $reflection = new ReflectionClass(EmptyClass::class);
         $magicIsset = new MagicUnset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__unset', $magicIsset->getName());
@@ -89,7 +95,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithPublicProperties()
     {
         $reflection = new ReflectionClass(
-            'ProxyManagerTestAsset\\ProxyGenerator\\LazyLoading\\MethodGenerator\\ClassWithTwoPublicProperties'
+            ClassWithTwoPublicProperties::class
         );
 
         $magicIsset = new MagicUnset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
@@ -109,7 +115,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithOverriddenMagicGet()
     {
-        $reflection = new ReflectionClass('ProxyManagerTestAsset\\ClassWithMagicMethods');
+        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
         $magicIsset = new MagicUnset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__unset', $magicIsset->getName());

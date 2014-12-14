@@ -41,7 +41,7 @@ class Constructor extends MethodGenerator
 
         /* @var $publicProperties \ReflectionProperty[] */
         $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $nullableProperties  = array();
+        $nullableProperties  = [];
 
         foreach ($publicProperties as $publicProperty) {
             $nullableProperties[] = '$this->' . $publicProperty->getName() . ' = null;';

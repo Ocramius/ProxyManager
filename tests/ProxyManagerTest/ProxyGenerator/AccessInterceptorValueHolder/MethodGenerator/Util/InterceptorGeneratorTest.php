@@ -19,7 +19,10 @@
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}
@@ -36,17 +39,17 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testInterceptorGenerator()
     {
-        $method             = $this->getMock('ProxyManager\\Generator\\MethodGenerator');
-        $bar                = $this->getMock('ProxyManager\\Generator\\ParameterGenerator');
-        $baz                = $this->getMock('ProxyManager\\Generator\\ParameterGenerator');
-        $valueHolder        = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $prefixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
-        $suffixInterceptors = $this->getMock('Zend\\Code\\Generator\\PropertyGenerator');
+        $method             = $this->getMock(MethodGenerator::class);
+        $bar                = $this->getMock(ParameterGenerator::class);
+        $baz                = $this->getMock(ParameterGenerator::class);
+        $valueHolder        = $this->getMock(PropertyGenerator::class);
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $bar->expects($this->any())->method('getName')->will($this->returnValue('bar'));
         $baz->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $method->expects($this->any())->method('getName')->will($this->returnValue('fooMethod'));
-        $method->expects($this->any())->method('getParameters')->will($this->returnValue(array($bar, $baz)));
+        $method->expects($this->any())->method('getParameters')->will($this->returnValue([$bar, $baz]));
         $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
