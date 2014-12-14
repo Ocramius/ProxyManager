@@ -58,8 +58,6 @@ final class ProxiedMethodsFilter
      * @param string[]        $excluded methods to be ignored
      *
      * @return ReflectionMethod[]
-     *
-     * @todo to be refactored due to code duplication
      */
     public static function getAbstractProxiedMethods(ReflectionClass $class, array $excluded = null)
     {
