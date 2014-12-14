@@ -51,11 +51,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      */
     public function testFiltering(ReflectionClass $reflectionClass, $excludes, array $expectedMethods)
     {
-        if (null === $excludes) {
-            $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass);
-        } else {
-            $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
-        }
+        $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
 
         foreach ($filtered as $method) {
             $this->assertInstanceOf(ReflectionMethod::class, $method);
@@ -83,11 +79,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      */
     public function testFilteringOfAbstractPublic(ReflectionClass $reflectionClass, $excludes, array $expectedMethods)
     {
-        if (null === $excludes) {
-            $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass);
-        } else {
-            $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
-        }
+        $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
 
         foreach ($filtered as $method) {
             $this->assertInstanceOf(ReflectionMethod::class, $method);
