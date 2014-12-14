@@ -461,9 +461,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getProxyInitializingMethods()
     {
-        $selfHintParam = new ClassWithSelfHint();
-
-        $data = array(
+        return array(
             array(
                 'ProxyManagerTestAsset\\BaseClass',
                 new BaseClass(),
@@ -485,9 +483,14 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 array(),
                 'privatePropertyDefault'
             ),
+            array(
+                'ProxyManagerTestAsset\\ClassWithSelfHint',
+                new ClassWithSelfHint(),
+                'selfHintMethod',
+                array('parameter' => $selfHintParam),
+                $selfHintParam
+            ),
         );
-
-        return $data;
     }
 
     /**
