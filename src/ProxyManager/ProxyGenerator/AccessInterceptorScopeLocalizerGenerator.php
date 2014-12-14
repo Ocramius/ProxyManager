@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
@@ -58,7 +59,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
         $classGenerator->setExtendedClass($originalClass->getName());
-        $classGenerator->setImplementedInterfaces(array('ProxyManager\\Proxy\\AccessInterceptorInterface'));
+        $classGenerator->setImplementedInterfaces(array(AccessInterceptorInterface::class));
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodPrefixInterceptors());
 

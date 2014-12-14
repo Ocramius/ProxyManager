@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
@@ -62,7 +63,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces          = array('ProxyManager\\Proxy\\GhostObjectInterface');
+        $interfaces          = array(GhostObjectInterface::class);
         $publicProperties    = new PublicPropertiesMap($originalClass);
         $publicPropsDefaults = new PublicPropertiesDefaults($originalClass);
 

@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
@@ -62,7 +63,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces          = array('ProxyManager\\Proxy\\VirtualProxyInterface');
+        $interfaces          = array(VirtualProxyInterface::class);
         $publicProperties    = new PublicPropertiesMap($originalClass);
 
         if ($originalClass->isInterface()) {

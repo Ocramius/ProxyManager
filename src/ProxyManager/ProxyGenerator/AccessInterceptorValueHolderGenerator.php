@@ -19,6 +19,8 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
@@ -62,11 +64,8 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $publicProperties    = new PublicPropertiesMap($originalClass);
-        $interfaces          = array(
-            'ProxyManager\\Proxy\\AccessInterceptorInterface',
-            'ProxyManager\\Proxy\\ValueHolderInterface',
-        );
+        $publicProperties = new PublicPropertiesMap($originalClass);
+        $interfaces       = array(AccessInterceptorInterface::class, ValueHolderInterface::class);
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();

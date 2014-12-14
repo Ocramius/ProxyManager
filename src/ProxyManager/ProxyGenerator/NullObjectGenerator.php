@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
@@ -45,7 +46,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces = array('ProxyManager\\Proxy\\NullObjectInterface');
+        $interfaces = array(NullObjectInterface::class);
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();

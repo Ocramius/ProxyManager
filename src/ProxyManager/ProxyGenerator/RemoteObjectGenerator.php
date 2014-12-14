@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
+use ProxyManager\Proxy\RemoteObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
@@ -51,7 +52,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces = array('ProxyManager\\Proxy\\RemoteObjectInterface');
+        $interfaces = array(RemoteObjectInterface::class);
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
