@@ -461,29 +461,29 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getProxyInitializingMethods()
     {
-        return array(
-            array(
+        return [
+            [
                 BaseClass::class,
                 new BaseClass(),
                 'publicPropertyGetter',
-                array(),
+                [],
                 'publicPropertyDefault'
-            ),
-            array(
+            ],
+            [
                 BaseClass::class,
                 new BaseClass(),
                 'protectedPropertyGetter',
-                array(),
+                [],
                 'protectedPropertyDefault'
-            ),
-            array(
+            ],
+            [
                 BaseClass::class,
                 new BaseClass(),
                 'privatePropertyGetter',
-                array(),
+                [],
                 'privatePropertyDefault'
-            ),
-        );
+            ],
+        ];
     }
 
     /**
