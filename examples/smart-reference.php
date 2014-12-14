@@ -16,8 +16,8 @@ $factory = new AccessInterceptorValueHolderFactory();
 
 $proxy = $factory->createProxy(
     new Foo(),
-    array('doFoo' => function () { echo "pre-foo!\n"; }),
-    array('doFoo' => function () { echo "post-foo!\n"; })
+    ['doFoo' => function () { echo "pre-foo!\n"; }],
+    ['doFoo' => function () { echo "post-foo!\n"; }]
 );
 
 $proxy->doFoo();
