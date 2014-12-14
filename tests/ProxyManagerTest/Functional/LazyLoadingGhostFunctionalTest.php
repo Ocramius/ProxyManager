@@ -355,12 +355,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     private function generateProxy($parentClassName)
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
-        $generator          = new LazyLoadingGhostGenerator();
         $generatedClass     = new ClassGenerator($generatedClassName);
-        $strategy           = new EvaluatingGeneratorStrategy();
 
-        $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
-        $strategy->generate($generatedClass);
+        (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($parentClassName), $generatedClass);
+        (new EvaluatingGeneratorStrategy())->generate($generatedClass);
 
         return $generatedClassName;
     }
