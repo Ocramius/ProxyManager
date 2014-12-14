@@ -25,15 +25,19 @@ class UserMapper
 
     public function fetchById($id) {
         $this->adapter->select('users', ['id' => $id]);
+        
         if (!$row = $this->adapter->fetch()) {
             return null;
         }
+        
         return $this->createUser($row);
     }
      
     private function createUser(array $row) {
         $user = new Entity\User($row['name'], $row['email']);
+        
         $user->setId($row['id']);
+        
         return $user;
     }
 }
@@ -63,6 +67,7 @@ class UserMapper
 
     public function fetchById($id) {
         $this->adapter->select('users', ['id' => $id]);
+        
         return $this->createUser($this->adapter->fetch());
     }
      
@@ -72,8 +77,11 @@ class UserMapper
 
             return $factory->createProxy('Entity\User');
         }
+        
         $user = new Entity\User($row['name'], $row['email']);
+        
         $user->setId($row['id']);
+        
         return $user; 
     }
 }
