@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -57,39 +58,12 @@ class PrivatePropertiesMap extends PropertyGenerator
     {
         $map = [];
 
-        foreach ($this->getProperties($originalClass) as $property) {
+        foreach (Properties::fromReflectionClass($originalClass)->getPrivateProperties() as $property) {
             $propertyKey = & $map[$property->getName()];
 
             $propertyKey[$property->getDeclaringClass()->getName()] = true;
         }
 
         return $map;
-    }
-
-    /**
-     * @param \ReflectionClass $originalClass
-     *
-     * @return \ReflectionProperty[]
-     */
-    private function getProperties(\ReflectionClass $originalClass)
-    {
-        $class      = $originalClass;
-        $properties = [];
-
-        do {
-            $properties = array_merge(
-                $properties,
-                array_values(array_filter(
-                    $class->getProperties(),
-                    function (\ReflectionProperty $property) use ($class) {
-                        return $property->getDeclaringClass()->getName() === $class->getName()
-                            && ! $property->isStatic()
-                            && $property->isPrivate();
-                    }
-                ))
-            );
-        } while ($class = $class->getParentClass());
-
-        return $properties;
     }
 }
