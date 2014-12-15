@@ -23,6 +23,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
@@ -154,6 +155,25 @@ PHP;
         $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
     }
 
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet
+     */
+    public function testBodyStructure()
+    {
+        $magicGet = new MagicGet(
+            new ReflectionClass(BaseClass::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
+
+        $this->assertSame('__get', $magicGet->getName());
+        $this->assertCount(1, $magicGet->getParameters());
+
+        $this->assertStringMatchesFormat($this->expectedCode, $magicGet->getBody());
+    }
 
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet
@@ -172,7 +192,6 @@ PHP;
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
 
-        $this->assertStringMatchesFormat($this->expectedCode, $magicGet->getBody());
         $this->assertStringMatchesFormat($this->expectedCode, $magicGet->getBody());
         $this->assertStringMatchesFormat('%Areturn parent::__get($name);', $magicGet->getBody());
     }
