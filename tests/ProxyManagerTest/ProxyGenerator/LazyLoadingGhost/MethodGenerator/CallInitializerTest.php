@@ -92,7 +92,7 @@ $properties = [
 static $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties;
 
 $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties '
-            . '= \Closure::bind(function ($instance, & $properties) {
+            . '= \Closure::bind(function ($instance, array & $properties) {
     $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty0\'] = '
             . '& $instance->privateProperty0;
     $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty1\'] = '
