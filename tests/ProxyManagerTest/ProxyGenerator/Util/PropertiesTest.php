@@ -62,4 +62,17 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $this->assertEmpty($properties->getPublicProperties());
     }
+
+    public function testGetProtectedProperties()
+    {
+        $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
+
+        $protectedProperties = $properties->getProtectedProperties();
+
+        $this->assertCount(3, $protectedProperties);
+
+        $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty0"]);
+        $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty1"]);
+        $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty2"]);
+    }
 }
