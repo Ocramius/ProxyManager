@@ -43,7 +43,7 @@ class PrivatePropertiesMap extends PropertyGenerator
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setStatic(true);
         $this->setDocblock(
-            '@var array[][] visibility and default value of defined properties, indexed by class name and property name'
+            '@var array[][] visibility and default value of defined properties, indexed by property name and class name'
         );
         $this->setDefaultValue($this->getMap($originalClass));
     }
@@ -58,9 +58,9 @@ class PrivatePropertiesMap extends PropertyGenerator
         $map = [];
 
         foreach ($this->getProperties($originalClass) as $property) {
-            $class = & $map[$property->getDeclaringClass()->getName()];
+            $propertyKey = & $map[$property->getName()];
 
-            $class[$property->getName()] = true;
+            $propertyKey[$property->getDeclaringClass()->getName()] = true;
         }
 
         return $map;
