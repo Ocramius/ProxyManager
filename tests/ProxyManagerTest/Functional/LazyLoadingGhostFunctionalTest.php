@@ -30,6 +30,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -363,6 +364,32 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('foo', $childProperty->getValue($proxy));
         $this->assertSame('bar', $parentProperty->getValue($proxy));
+    }
+
+    public function testByRefInitialization()
+    {
+        $proxyName = $this->generateProxy(ClassWithMixedProperties::class);
+        /* @var $proxy ClassWithPrivateProperties */
+        $proxy     = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) {
+                $initializer = null;
+                $properties["\0" . ClassWithMixedProperties::class . "\0privateProperty0"] = 'private0';
+                $properties["\0" . ClassWithMixedProperties::class . "\0privateProperty1"] = 'private1';
+                $properties["\0" . ClassWithMixedProperties::class . "\0privateProperty2"] = 'private2';
+                $properties["\0*\0protectedProperty0"] = 'protected0';
+                $properties["\0*\0protectedProperty1"] = 'protected1';
+                $properties["\0*\0protectedProperty2"] = 'protected2';
+                $properties["publicProperty0"] = 'public0';
+                $properties["publicProperty1"] = 'public1';
+                $properties["publicProperty2"] = 'public2';
+            }
+        );
+
+        foreach ((new ReflectionClass(ClassWithMixedProperties::class))->getProperties() as $property) {
+            $property->setAccessible(true);
+
+            $this->assertSame(str_replace('Property', '', $property->getName()), $property->getValue($proxy));
+        }
     }
 
     /**
