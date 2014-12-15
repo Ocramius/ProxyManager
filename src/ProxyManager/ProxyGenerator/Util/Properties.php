@@ -22,7 +22,8 @@ use ReflectionClass;
 use ReflectionProperty;
 
 /**
- * DTO containing the list of all non-static proxy properties
+ * DTO containing the list of all non-static proxy properties and utility methods to access them
+ * in various formats/collections
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
@@ -123,5 +124,21 @@ final class Properties
     public function getAccessibleProperties()
     {
         return array_merge($this->getPublicProperties(), $this->getProtectedProperties());
+    }
+
+    /**
+     * @return ReflectionProperty[][] indexed by class name and property name
+     */
+    public function getGroupedPrivateProperties()
+    {
+        $propertiesMap = [];
+
+        foreach ($this->getPrivateProperties() as $property) {
+            $class = & $propertiesMap[$property->getDeclaringClass()->getName()];
+
+            $class[$property->getName()] = $property;
+        }
+
+        return $propertiesMap;
     }
 }
