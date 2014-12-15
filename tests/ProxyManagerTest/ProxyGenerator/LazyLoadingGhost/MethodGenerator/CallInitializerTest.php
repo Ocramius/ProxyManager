@@ -54,7 +54,6 @@ class CallInitializerTest extends PHPUnit_Framework_TestCase
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
         );
 
-        // @todo cache also the by-ref stuff by class name.
         $expectedCode = 'if ($this->track || ! $this->init) {
     return;
 }
