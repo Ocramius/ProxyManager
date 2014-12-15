@@ -83,7 +83,7 @@ if (isset(self::$baz[$name])) {
     $expectedType = self::$baz[$name];
 
     if ($object instanceof $expectedType) {
-        return $this->$name;
+        return isset($this->$name);
     }
 
     $class = isset($caller['class']) ? $caller['class'] : '';
