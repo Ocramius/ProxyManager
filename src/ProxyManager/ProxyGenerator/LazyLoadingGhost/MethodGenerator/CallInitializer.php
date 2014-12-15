@@ -21,6 +21,11 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
+use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\Properties;
+use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -36,13 +41,13 @@ class CallInitializer extends MethodGenerator
      * Constructor
      *
      * @param PropertyGenerator $initializerProperty
-     * @param PropertyGenerator $publicPropsDefaults
      * @param PropertyGenerator $initTracker
+     * @param Properties        $properties
      */
     public function __construct(
         PropertyGenerator $initializerProperty,
-        PropertyGenerator $publicPropsDefaults,
-        PropertyGenerator $initTracker
+        PropertyGenerator $initTracker,
+        Properties $properties
     ) {
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('callInitializer'));
         $this->setDocblock("Triggers initialization logic for this ghost object");
@@ -60,13 +65,80 @@ class CallInitializer extends MethodGenerator
         $this->setBody(
             'if ($this->' . $initialization . ' || ! $this->' . $initializer . ') {' . "\n    return;\n}\n\n"
             . "\$this->" . $initialization . " = true;\n\n"
-            . "foreach (self::\$" . $publicPropsDefaults->getName() . " as \$key => \$default) {\n"
-            // @todo should use closures for private properties here
-            . "    \$this->\$key = \$default;\n"
-            . "}\n\n"
+            . $this->propertiesInitializationCode($properties)
+            . $this->propertiesReferenceArrayCode($properties)
             . '$this->' . $initializer . '->__invoke'
-            . '($this, $methodName, $parameters, $this->' . $initializer . ');' . "\n\n"
+            . '($this, $methodName, $parameters, $this->' . $initializer . ', $properties);' . "\n\n"
             . "\$this->" . $initialization . " = false;"
         );
+    }
+
+    /**
+     * @param Properties $properties
+     *
+     * @return string
+     */
+    private function propertiesInitializationCode(Properties $properties)
+    {
+        $assignments = [];
+
+        foreach ($properties->getAccessibleProperties() as $property) {
+            $assignments[] = '$this->'
+                . $property->getName()
+                . ' = ' . $this->getExportedPropertyDefaultValue($property)
+                . ';';
+        }
+
+        foreach ($properties->getPrivateProperties() as $property) {
+            $name           = $property->getName();
+            $assignments[]  = "\\Closure::bind(function (\$object) {\n"
+                . '    $object->' . $name . ' = ' . $this->getExportedPropertyDefaultValue($property) . ";\n"
+                . "}, null, " . var_export($property->getDeclaringClass()->getName(), true) . ")->__invoke(\$this)"
+                . ';';
+        }
+
+        return implode("\n", $assignments) . "\n\n";
+    }
+
+    /**
+     * @param Properties $properties
+     *
+     * @return string
+     */
+    private function propertiesReferenceArrayCode(Properties $properties)
+    {
+        $assignments = [];
+
+        foreach ($properties->getAccessibleProperties() as $propertyInternalName => $property) {
+            $assignments[] = '    '
+                . var_export($propertyInternalName, true) . ' => & $this->' . $property->getName()
+                . ',';
+        }
+
+        foreach ($properties->getPrivateProperties() as $propertyInternalName => $property) {
+            $name           = $property->getName();
+            $declaringClass = $property->getDeclaringClass()->getName();
+            $assignments[]  = '    '
+                . var_export($propertyInternalName, true)
+                . " => \\Closure::bind(function & (\$object) {\n"
+                . '        return $object->' . $name . ";\n"
+                . "    }, null, " . var_export($declaringClass, true) . ")->__invoke(\$this)"
+                . ',';
+        }
+
+        return "\$properties = [\n" . implode("\n", $assignments) . "\n];\n\n";
+    }
+
+    /**
+     * @param ReflectionProperty $property
+     *
+     * @return string
+     */
+    private function getExportedPropertyDefaultValue(ReflectionProperty $property)
+    {
+        $name     = $property->getName();
+        $defaults = $property->getDeclaringClass()->getDefaultProperties();
+
+        return var_export(isset($defaults[$name]) ? $defaults[$name] : null, true);
     }
 }

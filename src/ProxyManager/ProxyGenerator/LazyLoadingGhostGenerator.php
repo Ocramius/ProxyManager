@@ -41,6 +41,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
@@ -87,7 +88,11 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($privateProperties);
         $classGenerator->addPropertyFromGenerator($protectedProperties);
 
-        $init = new CallInitializer($initializer, $publicPropsDefaults, $initializationTracker);
+        $init = new CallInitializer(
+            $initializer,
+            $initializationTracker,
+            Properties::fromReflectionClass($originalClass)
+        );
 
         array_map(
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
