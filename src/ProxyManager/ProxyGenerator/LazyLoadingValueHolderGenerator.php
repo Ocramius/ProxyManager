@@ -37,6 +37,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyI
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
@@ -93,7 +94,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
                 [
-                    new StaticProxyConstructor($originalClass, $initializer),
+                    new StaticProxyConstructor($initializer, Properties::fromReflectionClass($originalClass)),
                     Constructor::generateMethod($originalClass, $valueHolder),
                     new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties),
                     new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties),
