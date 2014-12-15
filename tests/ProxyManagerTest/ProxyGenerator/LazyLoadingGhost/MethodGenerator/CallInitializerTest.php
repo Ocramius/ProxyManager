@@ -36,7 +36,7 @@ use Zend\Code\Generator\PropertyGenerator;
 class CallInitializerTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
      */
     public function testBodyStructure()
     {
