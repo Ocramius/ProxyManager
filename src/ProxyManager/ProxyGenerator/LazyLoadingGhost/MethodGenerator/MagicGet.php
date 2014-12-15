@@ -80,7 +80,7 @@ if (isset(self::$%s[$name])) {
     if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
         return $this->$name;
     }
-} else {
+} elseif (isset(self::$%s[$name])) {
     // check private property access via same class
     $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller  = isset($callers[1]) ? $callers[1] : [];
@@ -98,6 +98,7 @@ PHP;
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
+            $privateProperties->getName(),
             $privateProperties->getName()
         );
 
