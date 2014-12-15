@@ -68,7 +68,7 @@ class StaticProxyConstructor extends MethodGenerator
             $code .= $this->getUnsetPropertiesGroupCode($accessibleProperties) . "\n";
         }
 
-        foreach ($this->getGroupedPrivateProperties($properties) as $className => $privateProperties) {
+        foreach ($properties->getGroupedPrivateProperties() as $className => $privateProperties) {
             $cacheKey = 'cache' . str_replace('\\', '_', $className);
             $code    .= 'static $' . $cacheKey . ";\n\n"
                 . '$' . $cacheKey . ' ?: $' . $cacheKey . " = \\Closure::bind(function (\$instance) {\n"
@@ -78,24 +78,6 @@ class StaticProxyConstructor extends MethodGenerator
         }
 
         return $code;
-    }
-
-    /**
-     * @param Properties $properties
-     *
-     * @return ReflectionProperty[][] indexed by class name and property name
-     */
-    private function getGroupedPrivateProperties(Properties $properties)
-    {
-        $propertiesMap = [];
-
-        foreach ($properties->getPrivateProperties() as $property) {
-            $class = & $propertiesMap[$property->getDeclaringClass()->getName()];
-
-            $class[$property->getName()] = $property;
-        }
-
-        return $propertiesMap;
     }
 
     /**
