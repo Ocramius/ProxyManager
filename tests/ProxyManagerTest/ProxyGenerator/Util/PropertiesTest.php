@@ -75,4 +75,11 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty1"]);
         $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty2"]);
     }
+
+    public function testGetProtectedPropertiesSkipsAbstractMethods()
+    {
+        $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class));
+
+        $this->assertEmpty($properties->getProtectedProperties());
+    }
 }
