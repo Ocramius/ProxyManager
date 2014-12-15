@@ -25,8 +25,10 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
+use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\LazyLoadingMock;
@@ -96,5 +98,33 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty0']);
         $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty1']);
         $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty2']);
+    }
+
+    public function testGetPrivatePropertiesFromInheritance()
+    {
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
+        );
+
+        $privateProperties = $properties->getPrivateProperties();
+
+        $this->assertCount(11, $privateProperties);
+
+        $prefix = "\0" . ClassWithCollidingPrivateInheritedProperties::class . "\0";
+
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property0']);
+
+        $prefix = "\0" . ClassWithPrivateProperties::class . "\0";
+
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property0']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property1']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property2']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property3']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property4']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property5']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property6']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property7']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property8']);
+        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property9']);
     }
 }
