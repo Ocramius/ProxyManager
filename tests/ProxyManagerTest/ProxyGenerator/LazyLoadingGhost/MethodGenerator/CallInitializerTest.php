@@ -89,9 +89,9 @@ $properties = [
     \'\' . "\0" . \'*\' . "\0" . \'protectedProperty2\' => & $this->protectedProperty2,
 ];
 
-static $cacheProxyManagerTestAsset_ClassWithMixedProperties;
+static $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties;
 
-$cacheProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedProperties '
+$cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties '
             . '= \Closure::bind(function ($instance, & $properties) {
     $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty0\'] = '
             . '& $instance->privateProperty0;
@@ -101,7 +101,7 @@ $cacheProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheProxyManagerTestAs
             . '& $instance->privateProperty2;
 }, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
 
-$cacheProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
+$cacheFetchProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
 
 $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
 $this->track = false;';
