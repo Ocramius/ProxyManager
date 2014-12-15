@@ -83,14 +83,16 @@ if (isset(self::$%s[$name])) {
     if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
         return ($this->$name = $value);
     }
-} else {
+} elseif (isset(self::$%s[$name])) {
     // check private property access via same class
     $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === __CLASS__ || isset(self::$%s[$class][$name])) {
-        return ($this->$name = $value);
+    if ($class === __CLASS__ || $class === \ReflectionProperty::class || isset(self::$%s[$name][$class])) {
+        return \Closure::bind(function () use ($name, $value) {
+            return ($this->$name = $value);
+        }, $this, %s)->__invoke();
     }
 }
 
@@ -101,7 +103,9 @@ PHP;
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
-            $privateProperties->getName()
+            $privateProperties->getName(),
+            $privateProperties->getName(),
+            var_export($originalClass->getName(), true)
         );
 
         if ($override) {
