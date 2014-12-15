@@ -80,29 +80,43 @@ if (isset(self::$%s[$name])) {
 
     $class = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
+    if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
         unset($this->$name);
 
         return;
     }
-} else {
+} elseif (isset(self::$%s[$name])) {
     // check private property access via same class
     $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
+    static $accessorCache = [];
+
     if (isset(self::$%s[$name][$class])) {
-        return \Closure::bind(function () use ($name) {
-            unset($this->$name);
-        }, $this, $class)->__invoke($this, $name);
+        $cacheKey = $class . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance) use ($name) {
+                unset($instance->$name);
+            }, null, $class);
+
+        return $accessor($this);
     }
 
-    if ($class === 'ReflectionProperty') {
-        return \Closure::bind(function () use ($name) {
-            unset($this->$name);
-        }, $this, key(self::$%s[$name]))->__invoke($this, $name);
+    if ('ReflectionProperty' === $class) {
+        $tmpClass = key(self::$%s[$name]);
+        $cacheKey = $tmpClass . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance) use ($name) {
+                unset($instance->$name);
+            }, null, $tmpClass);
+
+        return $accessor($this);
     }
 }
+
 
 PHP;
 
