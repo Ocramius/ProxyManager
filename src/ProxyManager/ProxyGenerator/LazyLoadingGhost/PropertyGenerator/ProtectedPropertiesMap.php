@@ -23,7 +23,7 @@ use ProxyManager\ProxyGenerator\Util\Properties;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Property that contains the initializer for a lazy object
+ * Property that contains the protected instance lazy-loadable properties of an object
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
