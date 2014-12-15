@@ -91,10 +91,16 @@ if (isset(self::$%s[$name])) {
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === __CLASS__ || isset(self::$%s[$class][$name])) {
-        unset($this->$name);
+    if (isset(self::$%s[$name][$class])) {
+        return \Closure::bind(function () use ($name) {
+            unset($this->$name);
+        }, $this, $class)->__invoke($this, $name);
+    }
 
-        return;
+    if ($class === 'ReflectionProperty') {
+        return \Closure::bind(function () use ($name) {
+            unset($this->$name);
+        }, $this, key(self::$%s[$name]))->__invoke($this, $name);
     }
 }
 
@@ -105,6 +111,8 @@ PHP;
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
             $privateProperties->getName()
         );
 

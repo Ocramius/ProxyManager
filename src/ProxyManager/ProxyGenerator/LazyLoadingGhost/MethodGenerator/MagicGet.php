@@ -91,7 +91,7 @@ if (isset(self::$%s[$name])) {
         }, $this, $class)->__invoke($this, $name);
     }
 
-    if ($class === __CLASS__ || $class === 'ReflectionProperty') {
+    if ($class === 'ReflectionProperty') {
         return \Closure::bind(function & () use ($name) {
             return $this->$name;
         }, $this, key(self::$%s[$name]))->__invoke($this, $name);
