@@ -70,7 +70,6 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $publicProperties    = new PublicPropertiesMap($originalClass);
         $privateProperties   = new PrivatePropertiesMap($originalClass);
         $protectedProperties = new ProtectedPropertiesMap($originalClass);
-        $publicPropsDefaults = new PublicPropertiesDefaults($originalClass);
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -82,7 +81,6 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($initializationTracker = new InitializationTracker());
         $classGenerator->addPropertyFromGenerator($publicProperties);
-        $classGenerator->addPropertyFromGenerator($publicPropsDefaults);
         $classGenerator->addPropertyFromGenerator($privateProperties);
         $classGenerator->addPropertyFromGenerator($protectedProperties);
 
