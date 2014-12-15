@@ -49,31 +49,27 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
      *
      * @return void
      */
-    public function testProxyInstantiationPerformance(
-        $className,
-        array $methods,
-        array $properties,
-        array $reflectionProperties
-    ) {
+    public function testProxyInstantiationPerformance($className, array $methods, array $properties)
+    {
         $proxyName    = $this->generateProxy($className);
         $iterations   = 20000;
         $instances    = [];
         /* @var $proxies \ProxyManager\Proxy\GhostObjectInterface[] */
         $proxies      = [];
-        $realInstance = new $className();
+        $realInstance = (array) new $className();
         $initializer  = function (
             GhostObjectInterface $proxy,
             $method,
             $params,
-            & $initializer
+            & $initializer,
+            array $properties
         ) use (
-            $reflectionProperties,
             $realInstance
         ) {
             $initializer = null;
 
-            foreach ($reflectionProperties as $reflectionProperty) {
-                $reflectionProperty->setValue($proxy, $reflectionProperty->getValue($realInstance));
+            foreach ($realInstance as $name => $value) {
+                $properties[$name] = $value;
             }
 
             return true;
