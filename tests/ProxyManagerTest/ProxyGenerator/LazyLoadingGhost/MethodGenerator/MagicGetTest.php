@@ -200,6 +200,7 @@ if (isset(self::$baz[$name])) {
         }, $this, key(self::$tab[$name]))->__invoke($this, $name);
     }
 }
+
 return parent::__get($name);
 PHP;
 

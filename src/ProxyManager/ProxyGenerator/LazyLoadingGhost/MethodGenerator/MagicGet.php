@@ -98,6 +98,7 @@ if (isset(self::$%s[$name])) {
     }
 }
 
+
 PHP;
 
         $callParent = sprintf(
