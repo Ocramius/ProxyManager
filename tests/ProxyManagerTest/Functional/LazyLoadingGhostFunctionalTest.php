@@ -374,6 +374,48 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame('bar', $parentProperty->getValue($proxy));
     }
 
+    /**
+     * @group 159
+     * @group 192
+     *
+     * Test designed to verify that the cached logic does take into account the fact that
+     * proxies are different instances
+     */
+    public function testGetPropertyFromDifferentProxyInstances()
+    {
+        $class     = ClassWithCollidingPrivateInheritedProperties::class;
+        $proxyName = $this->generateProxy($class);
+
+        /* @var $proxy ClassWithPrivateProperties */
+        $proxy1    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+                $properties["\0" . $class . "\0property0"] = 'foo';
+                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
+            }
+        );
+        /* @var $proxy ClassWithPrivateProperties */
+        $proxy2    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+                $properties["\0" . $class . "\0property0"] = 'baz';
+                $properties["\0" . get_parent_class($class) . "\0property0"] = 'tab';
+            }
+        );
+
+        $childProperty  = new ReflectionProperty($class, 'property0');
+        $parentProperty = new ReflectionProperty(get_parent_class($class), 'property0');
+
+        $childProperty->setAccessible(true);
+        $parentProperty->setAccessible(true);
+
+        $this->assertSame('foo', $childProperty->getValue($proxy1));
+        $this->assertSame('bar', $parentProperty->getValue($proxy1));
+
+        $this->assertSame('baz', $childProperty->getValue($proxy1));
+        $this->assertSame('tab', $parentProperty->getValue($proxy1));
+    }
+
     public function testByRefInitialization()
     {
         $proxyName = $this->generateProxy(ClassWithMixedProperties::class);
