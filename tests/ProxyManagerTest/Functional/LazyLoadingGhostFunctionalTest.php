@@ -20,12 +20,15 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use PHPUnit_Framework_TestCase;
+use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
@@ -319,6 +322,24 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $reflectionProperty->setAccessible(true);
 
         $this->assertSame('property0', $reflectionProperty->getValue($proxy));
+    }
+
+    public function testMultiLevelPrivatePropertiesDefaultsWillBePreserved()
+    {
+        $instance  = new ClassWithCollidingPrivateInheritedProperties();
+        $proxyName = $this->generateProxy(ClassWithCollidingPrivateInheritedProperties::class);
+        /* @var $proxy ClassWithPrivateProperties */
+        $proxy     = $proxyName::staticProxyConstructor(function () {
+        });
+
+        $childProperty  = new ReflectionProperty($instance, 'property0');
+        $parentProperty = new ReflectionProperty(get_parent_class($instance), 'property0');
+
+        $childProperty->setAccessible(true);
+        $parentProperty->setAccessible(true);
+
+        $this->assertSame('childClassProperty0', $childProperty->getValue($proxy));
+        $this->assertSame('property0', $parentProperty->getValue($proxy));
     }
 
     /**
