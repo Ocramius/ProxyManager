@@ -91,11 +91,11 @@ if (isset(self::$%s[$name])) {
         $cacheKey = $class . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
-            : $accessorCache[$cacheKey] = \Closure::bind(function () use ($name) {
-                return isset($this->$name);
-            }, $this, $class);
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance) use ($name) {
+                return isset($instance->$name);
+            }, null, $class);
 
-        return $accessor($this, $name);
+        return $accessor($this);
     }
 
     if ('ReflectionProperty' === $class) {
@@ -103,11 +103,11 @@ if (isset(self::$%s[$name])) {
         $cacheKey = $tmpClass . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
-            : $accessorCache[$cacheKey] = \Closure::bind(function () use ($name) {
-                return isset($this->$name);
-            }, $this, $tmpClass);
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance) use ($name) {
+                return isset($instance->$name);
+            }, null, $tmpClass);
 
-        return $accessor($this, $name);
+        return $accessor($this);
     }
 }
 
