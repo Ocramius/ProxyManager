@@ -325,6 +325,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame('property0', $reflectionProperty->getValue($proxy));
     }
 
+    /**
+     * @group 159
+     * @group 192
+     */
     public function testMultiLevelPrivatePropertiesDefaultsWillBePreserved()
     {
         $instance  = new ClassWithCollidingPrivateInheritedProperties();
@@ -343,6 +347,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame('property0', $parentProperty->getValue($proxy));
     }
 
+    /**
+     * @group 159
+     * @group 192
+     */
     public function testMultiLevelPrivatePropertiesByRefInitialization()
     {
         $class     = ClassWithCollidingPrivateInheritedProperties::class;
