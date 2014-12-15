@@ -60,7 +60,9 @@ class MagicUnset extends MagicMethodGenerator
 
         $callParentTemplate = <<<'PHP'
 if (isset(self::$%s[$name])) {
-    return isset($this->$name);
+    unset($this->$name);
+
+    return;
 }
 
 if (isset(self::$%s[$name])) {
