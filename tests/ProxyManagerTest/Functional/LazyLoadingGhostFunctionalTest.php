@@ -31,6 +31,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedPropertiesAndAccessorMethods;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -386,7 +387,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $class     = ClassWithCollidingPrivateInheritedProperties::class;
         $proxyName = $this->generateProxy($class);
 
-        /* @var $proxy ClassWithPrivateProperties */
+        /* @var $proxy1 ClassWithPrivateProperties */
         $proxy1    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
@@ -394,7 +395,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
             }
         );
-        /* @var $proxy ClassWithPrivateProperties */
+        /* @var $proxy2 ClassWithPrivateProperties */
         $proxy2    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
@@ -414,6 +415,41 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('baz', $childProperty->getValue($proxy2));
         $this->assertSame('tab', $parentProperty->getValue($proxy2));
+    }
+
+    /**
+     * @group 159
+     * @group 192
+     *
+     * Test designed to verify that the cached logic does take into account the fact that
+     * proxies are different instances
+     */
+    public function testSetPrivatePropertyOnDifferentProxyInstances()
+    {
+        $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
+        $proxyName = $this->generateProxy($class);
+
+        /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
+        $proxy1    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+                $properties["\0" . $class . "\0property0"] = 'foo';
+                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
+            }
+        );
+        /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
+        $proxy2    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+                $properties["\0" . $class . "\0property0"] = 'foo';
+                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
+            }
+        );
+
+        $proxy1->set('privateProperty', 'private1');
+        $proxy2->set('privateProperty', 'private2');
+        $this->assertSame('private1', $proxy1->get('privateProperty'));
+        $this->assertSame('private2', $proxy2->get('privateProperty'));
     }
 
     public function testByRefInitialization()
