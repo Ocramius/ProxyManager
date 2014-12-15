@@ -116,7 +116,7 @@ if (isset(self::$baz[$name])) {
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
             : $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
-                return $instance->$name = $value;
+                return ($instance->$name = $value);
             }, null, $tmpClass);
 
         return $accessor($this, $value);
