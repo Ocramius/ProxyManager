@@ -127,4 +127,18 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property8']);
         $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property9']);
     }
+
+    public function testGetAccessibleMethods()
+    {
+        $properties           = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
+        $accessibleProperties = $properties->getAccessibleProperties();
+
+        $this->assertCount(6, $accessibleProperties);
+        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty0']);
+        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty1']);
+        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty2']);
+        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty0"]);
+        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty1"]);
+        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty2"]);
+    }
 }
