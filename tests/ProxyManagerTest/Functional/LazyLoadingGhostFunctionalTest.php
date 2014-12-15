@@ -433,6 +433,37 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy1    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
+            }
+        );
+        /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
+        $proxy2    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+            }
+        );
+
+        $proxy1->set('privateProperty', 'private1');
+        $proxy2->set('privateProperty', 'private2');
+        $this->assertSame('private1', $proxy1->get('privateProperty'));
+        $this->assertSame('private2', $proxy2->get('privateProperty'));
+    }
+
+    /**
+     * @group 159
+     * @group 192
+     *
+     * Test designed to verify that the cached logic does take into account the fact that
+     * proxies are different instances
+     */
+    public function testIssetPrivatePropertyOnDifferentProxyInstances()
+    {
+        $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
+        $proxyName = $this->generateProxy($class);
+
+        /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
+        $proxy1    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
                 $properties["\0" . $class . "\0property0"] = 'foo';
                 $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
             }
