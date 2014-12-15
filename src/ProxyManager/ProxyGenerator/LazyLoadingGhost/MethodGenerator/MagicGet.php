@@ -42,16 +42,16 @@ class MagicGet extends MagicMethodGenerator
      * @param PropertyGenerator      $initializerProperty
      * @param MethodGenerator        $callInitializer
      * @param PublicPropertiesMap    $publicProperties
-     * @param PrivatePropertiesMap   $privateProperties
      * @param ProtectedPropertiesMap $protectedProperties
+     * @param PrivatePropertiesMap   $privateProperties
      */
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
         MethodGenerator $callInitializer,
         PublicPropertiesMap $publicProperties,
-        PrivatePropertiesMap $privateProperties,
-        ProtectedPropertiesMap $protectedProperties
+        ProtectedPropertiesMap $protectedProperties,
+        PrivatePropertiesMap $privateProperties
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
