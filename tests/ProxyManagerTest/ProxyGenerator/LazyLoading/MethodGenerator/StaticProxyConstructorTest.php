@@ -20,6 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
+use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
@@ -44,51 +46,25 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 
         $constructor = new StaticProxyConstructor(
-            new ReflectionClass(
-                ClassWithTwoPublicProperties::class
-            ),
-            $initializer
+            $initializer,
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
         );
 
         $this->assertSame('staticProxyConstructor', $constructor->getName());
         $this->assertCount(1, $constructor->getParameters());
+
         $this->assertSame(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
 $instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();
 
-unset($instance->bar, $instance->baz);
+unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
+            . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
 
-$instance->foo = $initializer;
-
-return $instance;',
-            $constructor->getBody()
-        );
-    }
-
-    /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\Constructor::__construct
-     */
-    public function testBodyStructureWithoutPublicProperties()
-    {
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer = $this->getMock(PropertyGenerator::class);
-
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-
-        $constructor = new StaticProxyConstructor(
-            new ReflectionClass(EmptyClass::class),
-            $initializer
-        );
-
-        $this->assertSame('staticProxyConstructor', $constructor->getName());
-        $this->assertCount(1, $constructor->getParameters());
-        $this->assertSame(
-            'static $reflection;
-
-$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
-$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();
+\Closure::bind(function ($instance) {
+    unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);
+}, null, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($instance);
 
 $instance->foo = $initializer;
 
