@@ -63,7 +63,7 @@ class ClassWithMixedPropertiesAndAccessorMethods
 
     /**
      * @param string $name
-     * @param mixed  $name
+     * @param mixed  $value
      *
      * @return void
      */
