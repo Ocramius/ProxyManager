@@ -69,7 +69,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      * @var string
      */
     private $expectedCode = <<<'PHP'
-$this->foo && $this->baz('__isset', array('name' => $name));
+$this->foo && $this->baz('__unset', array('name' => $name));
 
 if (isset(self::$bar[$name])) {
     unset($this->$name);
