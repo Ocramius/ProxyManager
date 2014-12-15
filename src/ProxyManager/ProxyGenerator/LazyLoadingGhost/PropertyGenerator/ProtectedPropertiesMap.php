@@ -37,7 +37,7 @@ class ProtectedPropertiesMap extends PropertyGenerator
     public function __construct(\ReflectionClass $originalClass)
     {
         parent::__construct(
-            UniqueIdentifierGenerator::getIdentifier('privateProperties')
+            UniqueIdentifierGenerator::getIdentifier('protectedProperties')
         );
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
