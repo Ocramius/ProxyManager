@@ -107,7 +107,7 @@ if (isset(self::$baz[$name])) {
                 return isset($instance->$name);
             }, null, $class);
 
-        return $accessor($this, $name);
+        return $accessor($this);
     }
 
     if ('ReflectionProperty' === $class) {
@@ -119,7 +119,7 @@ if (isset(self::$baz[$name])) {
                 return isset($instance->$name);
             }, null, $tmpClass);
 
-        return $accessor($this, $name);
+        return $accessor($this);
     }
 }
 %A
