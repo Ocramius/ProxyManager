@@ -53,7 +53,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('staticProxyConstructor', $constructor->getName());
         $this->assertCount(1, $constructor->getParameters());
 
-        $this->assertSame(
+        $this->assertStringMatchesFormat(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
@@ -62,9 +62,13 @@ $instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor()
 unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
             . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
 
-\Closure::bind(function ($instance) {
+static $cache%a;
+
+$cache%s ?: $cache%s = \Closure::bind(function ($instance) {
     unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);
-}, null, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($instance);
+}, null, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
+
+$cache%s($instance);
 
 $instance->foo = $initializer;
 
