@@ -133,6 +133,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
+
         $this->assertStringMatchesFormat(
             "\$this->foo && \$this->baz('__get', array('name' => \$name));\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return \$this->\$name;\n}\n\n"
@@ -157,11 +158,51 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
-        $this->assertSame(
-            "\$this->foo && \$this->baz('__get', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    return \$this->\$name;\n}\n\n"
-            . "return parent::__get(\$name);",
-            $magicGet->getBody()
-        );
+
+        $expectedCode = <<<'PHP'
+$this->foo && $this->baz('__get', array('name' => $name));
+
+if (isset(self::$bar[$name])) {
+    return $this->$name;
+}
+
+if (isset(self::$baz[$name])) {
+    // check protected property access via compatible class
+    $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller       = isset($callers[1]) ? $callers[1] : [];
+    $object       = isset($caller['object']) ? $caller['object'] : '';
+    $expectedType = self::$baz[$name];
+
+    if ($object instanceof $expectedType) {
+        return $this->$name;
+    }
+
+    $class = isset($caller['class']) ? $caller['class'] : '';
+
+    if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
+        return $this->$name;
+    }
+} elseif (isset(self::$tab[$name])) {
+    // check private property access via same class
+    $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller  = isset($callers[1]) ? $callers[1] : [];
+    $class   = isset($caller['class']) ? $caller['class'] : '';
+
+    if (isset(self::$tab[$name][$class])) {
+        return \Closure::bind(function & () use ($name) {
+            return $this->$name;
+        }, $this, $class)->__invoke($this, $name);
+    }
+
+    if ($class === 'ReflectionProperty') {
+        return \Closure::bind(function & () use ($name) {
+            return $this->$name;
+        }, $this, key(self::$tab[$name]))->__invoke($this, $name);
+    }
+}
+return parent::__get($name);
+PHP;
+
+        $this->assertSame($expectedCode, $magicGet->getBody());
     }
 }
