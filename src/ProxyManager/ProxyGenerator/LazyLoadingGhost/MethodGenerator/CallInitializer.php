@@ -156,12 +156,15 @@ PHP;
 
         // must use assignments, as direct reference during array definition causes a fatal error (not sure why)
         foreach ($properties->getPrivateProperties() as $propertyInternalName => $property) {
-            $name           = $property->getName();
-            $declaringClass = $property->getDeclaringClass()->getName();
-            $code .= '$properties[' . var_export($propertyInternalName, true) . ']'
-                . " = & \\Closure::bind(function & () {\n"
-                . '    return $this->' . $name . ";\n"
-                . "}, \$this, " . var_export($declaringClass, true) . ")->__invoke(\$this);\n\n";
+            $name      = $property->getName();
+            $className = $property->getDeclaringClass()->getName();
+            $cacheKey  = 'cache' . str_replace('\\', '_', $className) . '_' . $name;
+
+            $code .= 'static $' . $cacheKey . ";\n\n"
+                . '$' . $cacheKey . ' ?: $' . $cacheKey . " = \\Closure::bind(function & (\$instance) {\n"
+                . '    return $instance->' . $name . ";\n"
+                . "}, \$this, " . var_export($className, true) . ");\n\n"
+                . '$properties[' . var_export($propertyInternalName, true) . '] = & $' . $cacheKey . "(\$this);\n\n";
         }
 
         return $code;
