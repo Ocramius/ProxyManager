@@ -20,6 +20,9 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
+use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -38,22 +41,75 @@ class CallInitializerTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $initializer           = $this->getMock(PropertyGenerator::class);
-        $propertiesDefaults    = $this->getMock(PropertyGenerator::class);
         $initializationTracker = $this->getMock(PropertyGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('init'));
-        $propertiesDefaults->expects($this->any())->method('getName')->will($this->returnValue('props'));
         $initializationTracker->expects($this->any())->method('getName')->will($this->returnValue('track'));
 
-        $callInitializer = new CallInitializer($initializer, $propertiesDefaults, $initializationTracker);
+        $callInitializer = new CallInitializer(
+            $initializer,
+            $initializationTracker,
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
+        );
 
-        $this->assertStringMatchesFormat(
-            '%Aif ($this->track || ! $this->init) {%areturn;%a}%a'
-            . '$this->track = true;%a'
-            . 'foreach (self::$props as $key => $default) {%a'
-            . '$this->$key = $default;%a'
-            . '$this->init->__invoke(%a);%a'
-            . '$this->track = false;',
+        $expectedCode = 'if ($this->track || ! $this->init) {
+    return;
+}
+
+$this->track = true;
+
+$this->publicProperty0 = \'publicProperty0\';
+$this->publicProperty1 = \'publicProperty1\';
+$this->publicProperty2 = \'publicProperty2\';
+$this->protectedProperty0 = \'protectedProperty0\';
+$this->protectedProperty1 = \'protectedProperty1\';
+$this->protectedProperty2 = \'protectedProperty2\';
+static $cacheProxyManagerTestAsset_ClassWithMixedProperties;
+
+$cacheProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedProperties = '
+        . '\Closure::bind(function ($instance) {
+    $instance->privateProperty0 = \'privateProperty0\';
+    $instance->privateProperty1 = \'privateProperty1\';
+    $instance->privateProperty2 = \'privateProperty2\';
+}, null, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
+
+$cacheProxyManagerTestAsset_ClassWithMixedProperties($this);
+
+
+
+
+$properties = [
+    \'publicProperty0\' => & $this->publicProperty0,
+    \'publicProperty1\' => & $this->publicProperty1,
+    \'publicProperty2\' => & $this->publicProperty2,
+    \'\' . "\0" . \'*\' . "\0" . \'protectedProperty0\' => & $this->protectedProperty0,
+    \'\' . "\0" . \'*\' . "\0" . \'protectedProperty1\' => & $this->protectedProperty1,
+    \'\' . "\0" . \'*\' . "\0" . \'protectedProperty2\' => & $this->protectedProperty2,
+];
+
+$properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty0\'] '
+            . '= & \Closure::bind(function & () {
+    return $this->privateProperty0;
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
+
+$properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty1\'] '
+            . '= & \Closure::bind(function & () {
+    return $this->privateProperty1;
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
+
+$properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty2\'] '
+            . '= & \Closure::bind(function & () {
+    return $this->privateProperty2;
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
+
+
+
+$this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
+$this->track = false;';
+
+
+        $this->assertSame(
+            $expectedCode,
             $callInitializer->getBody()
         );
     }
