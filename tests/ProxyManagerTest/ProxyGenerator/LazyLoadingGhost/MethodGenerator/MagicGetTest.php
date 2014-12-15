@@ -144,30 +144,6 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet::__construct
      */
-    public function testBodyStructure()
-    {
-        $magicGet = new MagicGet(
-            new ReflectionClass(EmptyClass::class),
-            $this->initializer,
-            $this->initMethod,
-            $this->publicProperties,
-            $this->protectedProperties,
-            $this->privateProperties
-        );
-
-        $this->assertSame('__get', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
-        $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->baz('__get', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    return \$this->\$name;\n}\n\n"
-            . "%a",
-            $magicGet->getBody()
-        );
-    }
-
-    /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet::__construct
-     */
     public function testBodyStructureWithPublicProperties()
     {
         $magicGet = new MagicGet(
