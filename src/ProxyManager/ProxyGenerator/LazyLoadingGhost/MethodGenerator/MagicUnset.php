@@ -71,13 +71,17 @@ if (isset(self::$%s[$name])) {
     $expectedType = self::$%s[$name];
 
     if ($object instanceof $expectedType) {
-        return $this->$name;
+        unset($this->$name);
+
+        return;
     }
 
     $class = isset($caller['object']) ? $caller['class'] : '';
 
     if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
-        return isset($this->$name);
+        unset($this->$name);
+
+        return;
     }
 } else {
     // check private property access via same class
@@ -86,7 +90,9 @@ if (isset(self::$%s[$name])) {
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
     if (isset(self::$%s[$class][$name])) {
-        return isset($this->$name);
+        unset($this->$name);
+
+        return;
     }
 }
 
