@@ -152,16 +152,33 @@ PHP;
         $code = "\$properties = [\n" . implode("\n", $assignments) . "\n];\n\n";
 
         // must use assignments, as direct reference during array definition causes a fatal error (not sure why)
-        foreach ($properties->getPrivateProperties() as $propertyInternalName => $property) {
-            $name      = $property->getName();
-            $className = $property->getDeclaringClass()->getName();
-            $cacheKey  = 'cache' . str_replace('\\', '_', $className) . '_' . $name;
+        foreach ($properties->getGroupedPrivateProperties() as $className => $classPrivateProperties) {
+            $cacheKey  = 'cache' . str_replace('\\', '_', $className);
 
             $code .= 'static $' . $cacheKey . ";\n\n"
-                . '$' . $cacheKey . ' ?: $' . $cacheKey . " = \\Closure::bind(function & (\$instance) {\n"
-                . '    return $instance->' . $name . ";\n"
+                . '$' . $cacheKey . ' ?: $' . $cacheKey
+                . " = \\Closure::bind(function (\$instance, & \$properties) {\n"
+                . $this->generatePrivatePropertiesAssignmentsCode($classPrivateProperties)
                 . "}, \$this, " . var_export($className, true) . ");\n\n"
-                . '$properties[' . var_export($propertyInternalName, true) . '] = & $' . $cacheKey . "(\$this);\n\n";
+                . '$' . $cacheKey . "(\$this, \$properties);";
+        }
+
+        return $code;
+    }
+
+    /**
+     * @param ReflectionProperty[] $properties indexed by internal name
+     *
+     * @return string
+     */
+    private function generatePrivatePropertiesAssignmentsCode(array $properties)
+    {
+        $code = '';
+
+        foreach ($properties as $property) {
+            $key   = "\0" . $property->getDeclaringClass()->getName() . "\0" . $property->getName();
+            $code .= '    $properties[' . var_export($key, true) . '] = '
+                . '& $instance->' . $property->getName() . ";\n";
         }
 
         return $code;
