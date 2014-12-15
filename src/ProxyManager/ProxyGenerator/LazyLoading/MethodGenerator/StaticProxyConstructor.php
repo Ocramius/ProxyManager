@@ -70,8 +70,8 @@ class StaticProxyConstructor extends MethodGenerator
 
         foreach ($this->getGroupedPrivateProperties($properties) as $className => $privateProperties) {
             $code .= "\\Closure::bind(function (\$instance) {\n"
-                . '    ' . $this->getUnsetPropertiesGroupCode($privateProperties) . ";\n"
-                . '}, null, ' . var_export($className, true) . ")->__invoke(\$instance);\n";
+                . '    ' . $this->getUnsetPropertiesGroupCode($privateProperties)
+                . '}, null, ' . var_export($className, true) . ")->__invoke(\$instance);\n\n";
         }
 
         return $code;
