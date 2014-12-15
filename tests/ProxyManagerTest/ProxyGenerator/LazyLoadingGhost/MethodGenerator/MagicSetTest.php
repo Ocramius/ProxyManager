@@ -69,7 +69,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      * @var string
      */
     private $expectedCode = <<<'PHP'
-$this->foo && $this->baz('__get', array('name' => $name));
+$this->foo && $this->baz('__get', array('name' => $name, 'value' => $value));
 
 if (isset(self::$bar[$name])) {
     return $this->$name;
