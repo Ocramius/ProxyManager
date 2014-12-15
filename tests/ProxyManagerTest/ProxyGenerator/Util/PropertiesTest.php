@@ -141,4 +141,21 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty1"]);
         $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty2"]);
     }
+
+    public function testGetGroupedPrivateProperties()
+    {
+        $properties     = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
+        $groupedPrivate = $properties->getGroupedPrivateProperties();
+
+        $this->assertCount(1, $groupedPrivate);
+
+        $group = $groupedPrivate[ClassWithMixedProperties::class];
+
+        $this->assertCount(3, $group);
+
+        $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty0']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty1']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty2']);
+
+    }
 }
