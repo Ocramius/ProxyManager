@@ -21,7 +21,6 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
@@ -77,7 +76,7 @@ if (isset(self::$%s[$name])) {
 
     $class = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
+    if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
         return $this->$name;
     }
 } elseif (isset(self::$%s[$name])) {
@@ -86,8 +85,16 @@ if (isset(self::$%s[$name])) {
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === __CLASS__ || isset(self::$%s[$class][$name])) {
-        return $this->$name;
+    if (isset(self::$%s[$name][$class])) {
+        return \Closure::bind(function & () use ($name) {
+            return $this->$name;
+        }, $this, $class)->__invoke($this, $name);
+    }
+
+    if ($class === __CLASS__ || $class === 'ReflectionProperty') {
+        return \Closure::bind(function & () use ($name) {
+            return $this->$name;
+        }, $this, key(self::$%s[$name]))->__invoke($this, $name);
     }
 }
 
@@ -98,6 +105,9 @@ PHP;
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
             $privateProperties->getName(),
             $privateProperties->getName()
         );
