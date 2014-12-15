@@ -62,15 +62,31 @@ class CallInitializer extends MethodGenerator
         $initializer    = $initializerProperty->getName();
         $initialization = $initTracker->getName();
 
-        $this->setBody(
-            'if ($this->' . $initialization . ' || ! $this->' . $initializer . ') {' . "\n    return;\n}\n\n"
-            . "\$this->" . $initialization . " = true;\n\n"
-            . $this->propertiesInitializationCode($properties)
-            . $this->propertiesReferenceArrayCode($properties)
-            . '$this->' . $initializer . '->__invoke'
-            . '($this, $methodName, $parameters, $this->' . $initializer . ', $properties);' . "\n\n"
-            . "\$this->" . $initialization . " = false;"
-        );
+        $bodyTemplate = <<<'PHP'
+if ($this->%s || ! $this->%s) {
+    return;
+}
+
+$this->%s = true;
+
+%s
+%s
+
+$this->%s->__invoke($this, $methodName, $parameters, $this->%s, $properties);
+$this->%s = false;
+PHP;
+
+        $this->setBody(sprintf(
+            $bodyTemplate,
+            $initialization,
+            $initializer,
+            $initialization,
+            $this->propertiesInitializationCode($properties),
+            $this->propertiesReferenceArrayCode($properties),
+            $initializer,
+            $initializer,
+            $initialization
+        ));
     }
 
     /**
@@ -115,18 +131,19 @@ class CallInitializer extends MethodGenerator
                 . ',';
         }
 
+        $code = "\$properties = [\n" . implode("\n", $assignments) . "\n];\n\n";
+
+        // must use assignments, as direct reference during array definition causes a fatal error (not sure why)
         foreach ($properties->getPrivateProperties() as $propertyInternalName => $property) {
             $name           = $property->getName();
             $declaringClass = $property->getDeclaringClass()->getName();
-            $assignments[]  = '    '
-                . var_export($propertyInternalName, true)
-                . " => \\Closure::bind(function & (\$object) {\n"
-                . '        return $object->' . $name . ";\n"
-                . "    }, null, " . var_export($declaringClass, true) . ")->__invoke(\$this)"
-                . ',';
+            $code .= '$properties[' . var_export($propertyInternalName, true) . ']'
+                . " = & \\Closure::bind(function & () {\n"
+                . '    return $this->' . $name . ";\n"
+                . "}, \$this, " . var_export($declaringClass, true) . ")->__invoke(\$this);\n\n";
         }
 
-        return "\$properties = [\n" . implode("\n", $assignments) . "\n];\n\n";
+        return $code;
     }
 
     /**
