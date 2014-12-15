@@ -46,8 +46,39 @@ class ClassWithMixedPropertiesAndAccessorMethods
      *
      * @return bool
      */
-    public function hasProperty($name)
+    public function has($name)
     {
         return isset($this->$name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function get($name)
+    {
+        return $this->$name;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $name
+     *
+     * @return void
+     */
+    public function set($name, $value)
+    {
+        $this->$name = $value;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return void
+     */
+    public function remove($name)
+    {
+        unset($this->$name);
     }
 }
