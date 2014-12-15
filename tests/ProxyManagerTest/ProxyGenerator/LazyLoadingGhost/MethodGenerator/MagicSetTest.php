@@ -69,10 +69,10 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      * @var string
      */
     private $expectedCode = <<<'PHP'
-$this->foo && $this->baz('__get', array('name' => $name, 'value' => $value));
+$this->foo && $this->baz('__set', array('name' => $name, 'value' => $value));
 
 if (isset(self::$bar[$name])) {
-    return $this->$name;
+    return ($this->$name = $value);
 }
 
 if (isset(self::$baz[$name])) {
@@ -83,13 +83,13 @@ if (isset(self::$baz[$name])) {
     $expectedType = self::$baz[$name];
 
     if ($object instanceof $expectedType) {
-        return $this->$name;
+        return ($this->$name = $value);
     }
 
     $class = isset($caller['class']) ? $caller['class'] : '';
 
     if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
-        return $this->$name;
+        return ($this->$name = $value);
     }
 } elseif (isset(self::$tab[$name])) {
     // check private property access via same class
@@ -150,6 +150,8 @@ PHP;
         $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
         $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
+        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
     }
 
     /**
