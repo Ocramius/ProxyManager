@@ -24,7 +24,7 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMixedPropertiesAndIssetCheck
+class ClassWithMixedPropertiesAndAccessorMethods
 {
     /**
      * @var mixed
