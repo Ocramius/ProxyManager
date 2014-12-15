@@ -69,7 +69,7 @@ if (isset(self::$%s[$name])) {
     // check protected property access via compatible class
     $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller       = isset($callers[1]) ? $callers[1] : [];
-    $object       = isset($caller['object']) ? $caller['class'] : '';
+    $object       = isset($caller['object']) ? $caller['object'] : '';
     $expectedType = self::$%s[$name];
 
     if ($object instanceof $expectedType) {
@@ -78,7 +78,7 @@ if (isset(self::$%s[$name])) {
         return;
     }
 
-    $class = isset($caller['object']) ? $caller['class'] : '';
+    $class = isset($caller['class']) ? $caller['class'] : '';
 
     if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
         unset($this->$name);
