@@ -412,8 +412,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame('foo', $childProperty->getValue($proxy1));
         $this->assertSame('bar', $parentProperty->getValue($proxy1));
 
-        $this->assertSame('baz', $childProperty->getValue($proxy1));
-        $this->assertSame('tab', $parentProperty->getValue($proxy1));
+        $this->assertSame('baz', $childProperty->getValue($proxy2));
+        $this->assertSame('tab', $parentProperty->getValue($proxy2));
     }
 
     public function testByRefInitialization()
