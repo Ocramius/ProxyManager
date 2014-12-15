@@ -105,15 +105,36 @@ PHP;
                 . ';';
         }
 
-        foreach ($properties->getPrivateProperties() as $property) {
-            $name           = $property->getName();
-            $assignments[]  = "\\Closure::bind(function (\$object) {\n"
-                . '    $object->' . $name . ' = ' . $this->getExportedPropertyDefaultValue($property) . ";\n"
-                . "}, null, " . var_export($property->getDeclaringClass()->getName(), true) . ")->__invoke(\$this)"
-                . ';';
+
+        foreach ($properties->getGroupedPrivateProperties() as $className => $privateProperties) {
+            $cacheKey      = 'cache' . str_replace('\\', '_', $className);
+            $assignments[] = 'static $' . $cacheKey . ";\n\n"
+                . '$' . $cacheKey . ' ?: $' . $cacheKey . " = \\Closure::bind(function (\$instance) {\n"
+                . $this->getPropertyDefaultsAssignments($privateProperties) . "\n"
+                . '}, null, ' . var_export($className, true) . ");\n\n"
+                . '$' . $cacheKey . "(\$this);\n\n";
         }
 
         return implode("\n", $assignments) . "\n\n";
+    }
+
+    /**
+     * @param ReflectionProperty[] $properties
+     *
+     * @return string
+     */
+    private function getPropertyDefaultsAssignments(array $properties)
+    {
+        return implode(
+            "\n",
+            array_map(
+                function (ReflectionProperty $property) {
+                    return '    $instance->' . $property->getName()
+                        . ' = ' . $this->getExportedPropertyDefaultValue($property) . ';';
+                },
+                $properties
+            )
+        );
     }
 
     /**
