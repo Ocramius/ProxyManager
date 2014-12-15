@@ -184,7 +184,8 @@ PHP;
             $this->initMethod,
             $this->publicProperties,
             $this->protectedProperties,
-            $this->privateProperties);
+            $this->privateProperties
+        );
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
