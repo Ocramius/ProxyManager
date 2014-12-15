@@ -342,6 +342,29 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame('property0', $parentProperty->getValue($proxy));
     }
 
+    public function testMultiLevelPrivatePropertiesByRefInitialization()
+    {
+        $class     = ClassWithCollidingPrivateInheritedProperties::class;
+        $proxyName = $this->generateProxy($class);
+        /* @var $proxy ClassWithPrivateProperties */
+        $proxy     = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+                $properties["\0" . $class . "\0property0"] = 'foo';
+                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
+            }
+        );
+
+        $childProperty  = new ReflectionProperty($class, 'property0');
+        $parentProperty = new ReflectionProperty(get_parent_class($class), 'property0');
+
+        $childProperty->setAccessible(true);
+        $parentProperty->setAccessible(true);
+
+        $this->assertSame('foo', $childProperty->getValue($proxy));
+        $this->assertSame('bar', $parentProperty->getValue($proxy));
+    }
+
     /**
      * @group 115
      * @group 175
