@@ -97,6 +97,8 @@ if (isset(self::$baz[$name])) {
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
+    static $accessorCache = [];
+
     if (isset(self::$tab[$name][$class])) {
         $cacheKey = $class . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
