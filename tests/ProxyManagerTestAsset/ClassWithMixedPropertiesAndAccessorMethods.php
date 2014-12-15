@@ -29,17 +29,17 @@ class ClassWithMixedPropertiesAndAccessorMethods
     /**
      * @var mixed
      */
-    public $publicProperty;
+    public $publicProperty = 'publicProperty';
 
     /**
      * @var mixed
      */
-    protected $protectedProperty;
+    protected $protectedProperty = 'protectedProperty';
 
     /**
      * @var mixed
      */
-    private $privateProperty;
+    private $privateProperty = 'privateProperty';
 
     /**
      * @param string $name
