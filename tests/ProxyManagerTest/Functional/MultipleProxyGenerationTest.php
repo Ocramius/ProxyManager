@@ -29,6 +29,7 @@ use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
+use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
@@ -115,6 +116,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             [EmptyClass::class],
             [HydratedObject::class],
             [ClassWithSelfHint::class],
+            [ClassWithCollidingPrivateInheritedProperties::class],
         ];
     }
 }
