@@ -59,7 +59,8 @@ final class Properties
                 array_values(array_filter(
                     $class->getProperties(),
                     function (ReflectionProperty $property) use ($class) {
-                        return $class->getName() === $property->getDeclaringClass()->getName();
+                        return $class->getName() === $property->getDeclaringClass()->getName()
+                            && ! $property->isStatic();
                     }
                 ))
             );
