@@ -85,16 +85,29 @@ if (isset(self::$%s[$name])) {
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
+    static $accessorCache = [];
+
     if (isset(self::$%s[$name][$class])) {
-        return \Closure::bind(function () use ($name) {
-            return isset($this->$name);
-        }, $this, $class)->__invoke($this, $name);
+        $cacheKey = $class . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function () use ($name) {
+                return isset($this->$name);
+            }, $this, $class);
+
+        return $accessor($this, $name);
     }
 
-    if ($class === 'ReflectionProperty') {
-        return \Closure::bind(function () use ($name) {
-            return isset($this->$name);
-        }, $this, key(self::$%s[$name]))->__invoke($this, $name);
+    if ('ReflectionProperty' === $class) {
+        $tmpClass = key(self::$%s[$name]);
+        $cacheKey = $tmpClass . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function () use ($name) {
+                return isset($this->$name);
+            }, $this, $tmpClass);
+
+        return $accessor($this, $name);
     }
 }
 
