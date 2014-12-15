@@ -102,7 +102,7 @@ $cacheProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheProxyManagerTestAs
             . '& $instance->privateProperty2;
 }, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
 
-cacheProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
+$cacheProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
 
 $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
 $this->track = false;';
