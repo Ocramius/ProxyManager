@@ -86,7 +86,7 @@ if (isset(self::$%s[$name])) {
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
-    if (isset(self::$%s[$class][$name])) {
+    if ($class === __CLASS__ || isset(self::$%s[$class][$name])) {
         return $this->$name;
     }
 }
