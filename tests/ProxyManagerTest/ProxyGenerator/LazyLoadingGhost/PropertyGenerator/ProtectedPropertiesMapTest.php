@@ -21,6 +21,7 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
+use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
 
@@ -55,5 +56,12 @@ class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
             ],
             $map->getDefaultValue()->getValue()
         );
+    }
+
+    public function testSkipsAbstractProtectedMethods()
+    {
+        $map = new ProtectedPropertiesMap(new ReflectionClass(ClassWithAbstractProtectedMethod::class));
+
+        $this->assertSame([], $map->getDefaultValue()->getValue());
     }
 }
