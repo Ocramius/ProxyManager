@@ -431,13 +431,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+            function ($proxy, $method, $params, & $initializer, array $properties) {
                 $initializer = null;
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+            function ($proxy, $method, $params, & $initializer, array $properties) {
                 $initializer = null;
             }
         );
@@ -462,25 +462,22 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+            function ($proxy, $method, $params, & $initializer, array $properties) {
                 $initializer = null;
-                $properties["\0" . $class . "\0property0"] = 'foo';
-                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
-                $properties["\0" . $class . "\0property0"] = 'foo';
-                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
+                $properties["\0" . $class . "\0" . "privateProperty"] = null;
             }
         );
 
-        $proxy1->set('privateProperty', 'private1');
-        $proxy2->set('privateProperty', 'private2');
-        $this->assertSame('private1', $proxy1->get('privateProperty'));
-        $this->assertSame('private2', $proxy2->get('privateProperty'));
+        $this->assertTrue($proxy1->has('privateProperty'));
+        $this->assertFalse($proxy2->has('privateProperty'));
+        $this->assertTrue($proxy1->has('privateProperty'));
+        $this->assertFalse($proxy2->has('privateProperty'));
     }
 
     public function testByRefInitialization()
