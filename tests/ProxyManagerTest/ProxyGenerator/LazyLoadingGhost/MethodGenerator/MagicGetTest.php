@@ -98,15 +98,26 @@ if (isset(self::$baz[$name])) {
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
     if (isset(self::$tab[$name][$class])) {
-        return \Closure::bind(function & () use ($name) {
-            return $this->$name;
-        }, $this, $class)->__invoke($this, $name);
+        $cacheKey = $class . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function & ($instance) use ($name) {
+                return $instance->$name;
+            }, null, $class);
+
+        return $accessor($this, $name);
     }
 
-    if ($class === 'ReflectionProperty') {
-        return \Closure::bind(function & () use ($name) {
-            return $this->$name;
-        }, $this, key(self::$tab[$name]))->__invoke($this, $name);
+    if ('ReflectionProperty' === $class) {
+        $tmpClass = key(self::$tab[$name]);
+        $cacheKey = $tmpClass . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function & ($instance) use ($name) {
+                return $instance->$name;
+            }, null, $tmpClass);
+
+        return $accessor($this, $name);
     }
 }
 
