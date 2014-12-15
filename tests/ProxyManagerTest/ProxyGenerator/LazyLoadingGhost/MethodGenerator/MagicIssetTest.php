@@ -65,6 +65,9 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
      */
     protected $privateProperties;
 
+    /**
+     * @var string
+     */
     private $expectedCode = <<<'PHP'
 $this->foo && $this->baz('__isset', array('name' => $name));
 
