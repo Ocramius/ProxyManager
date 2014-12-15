@@ -87,20 +87,38 @@ $properties = [
     \'\' . "\0" . \'*\' . "\0" . \'protectedProperty2\' => & $this->protectedProperty2,
 ];
 
-$properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty0\'] '
-            . '= & \Closure::bind(function & () {
-    return $this->privateProperty0;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
+static $cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty0;
+
+$cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty0 ?: '
+            . '$cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty0 '
+            . '= \Closure::bind(function & ($instance) {
+    return $instance->privateProperty0;
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
+
+$properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty0\']'
+            . ' = & $cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty0($this);
+
+static $cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty1;
+
+$cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty1 '
+            . '?: $cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty1 = '
+            . '\Closure::bind(function & ($instance) {
+    return $instance->privateProperty1;
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
 
 $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty1\'] '
-            . '= & \Closure::bind(function & () {
-    return $this->privateProperty1;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
+            . '= & $cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty1($this);
+
+static $cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty2;
+
+$cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty2 ?: '
+            . '$cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty2 = '
+            . '\Closure::bind(function & ($instance) {
+    return $instance->privateProperty2;
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
 
 $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty2\'] '
-            . '= & \Closure::bind(function & () {
-    return $this->privateProperty2;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
+            . '= & $cacheProxyManagerTestAsset_ClassWithMixedProperties_privateProperty2($this);
 
 
 
