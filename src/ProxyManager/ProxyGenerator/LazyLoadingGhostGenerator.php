@@ -36,6 +36,9 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
@@ -64,6 +67,9 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $interfaces          = [GhostObjectInterface::class];
         $publicProperties    = new PublicPropertiesMap($originalClass);
+        $allProperties       = new PropertiesMap($originalClass);
+        $privateProperties   = new PrivatePropertiesMap($originalClass);
+        $protectedProperties = new ProtectedPropertiesMap($originalClass);
         $publicPropsDefaults = new PublicPropertiesDefaults($originalClass);
 
         if ($originalClass->isInterface()) {
@@ -77,6 +83,9 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($initializationTracker = new InitializationTracker());
         $classGenerator->addPropertyFromGenerator($publicProperties);
         $classGenerator->addPropertyFromGenerator($publicPropsDefaults);
+        $classGenerator->addPropertyFromGenerator($allProperties);
+        $classGenerator->addPropertyFromGenerator($privateProperties);
+        $classGenerator->addPropertyFromGenerator($protectedProperties);
 
         $init = new CallInitializer($initializer, $publicPropsDefaults, $initializationTracker);
 
@@ -98,7 +107,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                 [
                     $init,
                     new StaticProxyConstructor($originalClass, $initializer),
-                    new MagicGet($originalClass, $initializer, $init, $publicProperties),
+                    new MagicGet($originalClass, $initializer, $init, $publicProperties, $privateProperties, $protectedProperties),
                     new MagicSet($originalClass, $initializer, $init, $publicProperties),
                     new MagicIsset($originalClass, $initializer, $init, $publicProperties),
                     new MagicUnset($originalClass, $initializer, $init, $publicProperties),

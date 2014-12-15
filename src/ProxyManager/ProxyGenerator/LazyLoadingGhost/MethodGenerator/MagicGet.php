@@ -20,6 +20,9 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
@@ -35,29 +38,68 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicGet extends MagicMethodGenerator
 {
     /**
-     * @param \ReflectionClass                                                   $originalClass
-     * @param \Zend\Code\Generator\PropertyGenerator                             $initializerProperty
-     * @param \Zend\Code\Generator\MethodGenerator                               $callInitializer
-     * @param \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap $publicProperties
+     * @param ReflectionClass        $originalClass
+     * @param PropertyGenerator      $initializerProperty
+     * @param MethodGenerator        $callInitializer
+     * @param PublicPropertiesMap    $publicProperties
+     * @param PrivatePropertiesMap   $privateProperties
+     * @param ProtectedPropertiesMap $protectedProperties
      */
     public function __construct(
         ReflectionClass $originalClass,
         PropertyGenerator $initializerProperty,
         MethodGenerator $callInitializer,
-        PublicPropertiesMap $publicProperties
+        PublicPropertiesMap $publicProperties,
+        PrivatePropertiesMap $privateProperties,
+        ProtectedPropertiesMap $protectedProperties
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
-        $override   = $originalClass->hasMethod('__get');
-        $callParent = '';
+        $override = $originalClass->hasMethod('__get');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        //if (! $publicProperties->isEmpty()) {
-            $callParent = '' //'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
-                . '    return $this->$name;';
-                //. "\n}\n\n";
-        //}
+        $callParentTemplate = <<<'PHP'
+if (isset(self::$%s[$name])) {
+    return $this->$name;
+}
+
+if (isset(self::$%s[$name])) {
+    // check protected property access via compatible class
+    $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller       = isset($callers[1]) ? $callers[1] : [];
+    $object       = isset($caller['object']) ? $caller['class'] : '';
+    $expectedType = self::$%s[$name];
+
+    if ($object instanceof $expectedType) {
+        return $this->$name;
+    }
+
+    $class = isset($caller['object']) ? $caller['class'] : '';
+
+    if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
+        return $this->$name;
+    }
+} else {
+    // check private property access via same class
+    $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller  = isset($callers[1]) ? $callers[1] : [];
+    $class   = isset($caller['class']) ? $caller['class'] : '';
+
+    if (isset(self::$%s[$class][$name])) {
+        return $this->$name;
+    }
+}
+
+PHP;
+
+        $callParent = sprintf(
+            $callParentTemplate,
+            $publicProperties->getName(),
+            $protectedProperties->getName(),
+            $protectedProperties->getName(),
+            $privateProperties->getName()
+        );
 
         if ($override) {
             $callParent .= 'return parent::__get($name);';
