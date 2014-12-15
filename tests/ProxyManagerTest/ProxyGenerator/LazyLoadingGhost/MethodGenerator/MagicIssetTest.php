@@ -65,52 +65,7 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
      */
     protected $privateProperties;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp()
-    {
-        $this->initializer      = $this->getMock(PropertyGenerator::class);
-        $this->initMethod       = $this->getMock(MethodGenerator::class);
-        $this->publicProperties = $this
-            ->getMockBuilder(PublicPropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->protectedProperties = $this
-            ->getMockBuilder(ProtectedPropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->privateProperties = $this
-            ->getMockBuilder(PrivatePropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-        $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
-        $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
-    }
-
-    /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset::__construct
-     */
-    public function testBodyStructureWithPublicProperties()
-    {
-        $magicIsset = new MagicIsset(
-            new ReflectionClass(ClassWithTwoPublicProperties::class),
-            $this->initializer,
-            $this->initMethod,
-            $this->publicProperties,
-            $this->protectedProperties,
-            $this->privateProperties
-        );
-
-        $this->assertSame('__isset', $magicIsset->getName());
-        $this->assertCount(1, $magicIsset->getParameters());
-
-        $expectedCode = <<<'PHP'
+    private $expectedCode = <<<'PHP'
 $this->foo && $this->baz('__isset', array('name' => $name));
 
 if (isset(self::$bar[$name])) {
@@ -167,6 +122,75 @@ if (isset(self::$baz[$name])) {
 %A
 PHP;
 
-        $this->assertStringMatchesFormat($expectedCode, $magicIsset->getBody());
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
+    {
+        $this->initializer      = $this->getMock(PropertyGenerator::class);
+        $this->initMethod       = $this->getMock(MethodGenerator::class);
+        $this->publicProperties = $this
+            ->getMockBuilder(PublicPropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->protectedProperties = $this
+            ->getMockBuilder(ProtectedPropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->privateProperties = $this
+            ->getMockBuilder(PrivatePropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
+        $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
+        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
+    }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset
+     */
+    public function testBodyStructureWithPublicProperties()
+    {
+        $magicIsset = new MagicIsset(
+            new ReflectionClass(ClassWithTwoPublicProperties::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
+
+        $this->assertSame('__isset', $magicIsset->getName());
+        $this->assertCount(1, $magicIsset->getParameters());
+
+        $this->assertStringMatchesFormat($this->expectedCode, $magicIsset->getBody());
+    }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset
+     */
+    public function testBodyStructureWithOverriddenMagicGet()
+    {
+        $magicIsset = new MagicIsset(
+            new ReflectionClass(ClassWithMagicMethods::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
+
+        $this->assertSame('__isset', $magicIsset->getName());
+        $this->assertCount(1, $magicIsset->getParameters());
+
+        $body = $magicIsset->getBody();
+
+        $this->assertStringMatchesFormat($this->expectedCode, $body);
+        $this->assertStringMatchesFormat('%Areturn parent::__isset($name);', $body);
     }
 }
