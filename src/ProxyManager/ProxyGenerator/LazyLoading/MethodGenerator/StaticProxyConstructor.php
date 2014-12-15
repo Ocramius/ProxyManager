@@ -107,7 +107,7 @@ class StaticProxyConstructor extends MethodGenerator
                 ', ',
                 array_map(
                     function (ReflectionProperty $property) {
-                        return '$this->' . $property->getName();
+                        return '$instance->' . $property->getName();
                     },
                     $properties
                 )
