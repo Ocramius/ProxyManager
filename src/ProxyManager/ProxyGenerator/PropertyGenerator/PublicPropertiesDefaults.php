@@ -45,7 +45,7 @@ class PublicPropertiesDefaults extends PropertyGenerator
 
         $defaults = $originalClass->getDefaultProperties();
 
-        foreach ($originalClass->getProperties() as $publicProperty) {
+        foreach ($originalClass->getProperties(ReflectionProperty::IS_PUBLIC) as $publicProperty) {
             $name                          = $publicProperty->getName();
             $this->publicProperties[$name] = $defaults[$name];
         }
