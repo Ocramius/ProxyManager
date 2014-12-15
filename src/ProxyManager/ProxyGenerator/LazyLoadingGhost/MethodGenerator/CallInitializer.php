@@ -153,11 +153,11 @@ PHP;
 
         // must use assignments, as direct reference during array definition causes a fatal error (not sure why)
         foreach ($properties->getGroupedPrivateProperties() as $className => $classPrivateProperties) {
-            $cacheKey  = 'cache' . str_replace('\\', '_', $className);
+            $cacheKey  = 'cacheFetch' . str_replace('\\', '_', $className);
 
             $code .= 'static $' . $cacheKey . ";\n\n"
                 . '$' . $cacheKey . ' ?: $' . $cacheKey
-                . " = \\Closure::bind(function (\$instance, & \$properties) {\n"
+                . " = \\Closure::bind(function (\$instance, array & \$properties) {\n"
                 . $this->generatePrivatePropertiesAssignmentsCode($classPrivateProperties)
                 . "}, \$this, " . var_export($className, true) . ");\n\n"
                 . '$' . $cacheKey . "(\$this, \$properties);";
