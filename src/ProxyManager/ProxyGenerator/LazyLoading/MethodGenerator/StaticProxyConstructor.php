@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
@@ -33,59 +34,85 @@ use Zend\Code\Generator\PropertyGenerator;
 class StaticProxyConstructor extends MethodGenerator
 {
     /**
-     * Constructor
+     * Static constructor
      *
-     * @param ReflectionClass   $originalClass
      * @param PropertyGenerator $initializerProperty
+     * @param Properties        $properties
      */
-    public function __construct(ReflectionClass $originalClass, PropertyGenerator $initializerProperty)
+    public function __construct(PropertyGenerator $initializerProperty, Properties $properties)
     {
         parent::__construct('staticProxyConstructor', [], static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $this->setParameter(new ParameterGenerator('initializer'));
-
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = [];
-
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$instance->' . $publicProperty->getName();
-        }
-
-        /* @var $allProperties \ReflectionProperty[] */
-        $allProperties = [];
-        $class         = $originalClass;
-
-        // @todo move this filter to a separate class
-        do {
-            foreach ($class->getProperties() as $property) {
-                $allProperties[$property->getDeclaringClass()->getName() . '#' . $property->getName()] = $property;
-            }
-        } while ($class = $class->getParentClass());
 
         $this->setDocblock("Constructor for lazy initialization\n\n@param \\Closure|null \$initializer");
         $this->setBody(
             'static $reflection;' . "\n\n"
             . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
-            . implode("\n", array_map([$this, 'getUnsetPropertyCode'], $allProperties))
+            . $this->generateUnsetPropertiesCode($properties)
             . '$instance->' . $initializerProperty->getName() . ' = $initializer;' . "\n\n"
             . 'return $instance;'
         );
     }
 
     /**
-     * @param ReflectionProperty $property
+     * @param Properties $properties
      *
      * @return string
      */
-    private function getUnsetPropertyCode(ReflectionProperty $property)
+    private function generateUnsetPropertiesCode(Properties $properties)
     {
-        if (! $property->isPrivate()) {
-            return 'unset($instance->' . $property->getName() . ");\n";
+        $code = '';
+
+        if ($accessibleProperties = $properties->getAccessibleProperties()) {
+            $code .= $this->getUnsetPropertiesGroupCode($accessibleProperties) . "\n";
         }
-        return "\\Closure::bind(function (\$instance) {\n"
-        . '    unset($instance->' . $property->getName() . ");\n"
-        . '}, null, ' . var_export($property->getDeclaringClass()->getName(), true) . ")->__invoke(\$instance);\n";
+
+        foreach ($this->getGroupedPrivateProperties($properties) as $className => $privateProperties) {
+            $code .= "\\Closure::bind(function (\$instance) {\n"
+                . '    ' . $this->getUnsetPropertiesGroupCode($privateProperties) . ";\n"
+                . '}, null, ' . var_export($className, true) . ")->__invoke(\$instance);\n";
+        }
+
+        return $code;
+    }
+
+    /**
+     * @param Properties $properties
+     *
+     * @return ReflectionProperty[][] indexed by class name and property name
+     */
+    private function getGroupedPrivateProperties(Properties $properties)
+    {
+        $propertiesMap = [];
+
+        foreach ($properties->getPrivateProperties() as $property) {
+            $class = & $propertiesMap[$property->getDeclaringClass()->getName()];
+
+            $class[$property->getName()] = $property;
+        }
+
+        return $propertiesMap;
+    }
+
+    /**
+     * @param ReflectionProperty[] $properties
+     *
+     * @return string
+     */
+    private function getUnsetPropertiesGroupCode(array $properties)
+    {
+        return 'unset('
+            . implode(
+                ', ',
+                array_map(
+                    function (ReflectionProperty $property) {
+                        return '$this->' . $property->getName();
+                    },
+                    $properties
+                )
+            )
+            . ");\n";
     }
 }
