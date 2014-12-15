@@ -27,12 +27,12 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMapTest}
+ * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
- * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMapTest
+ * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap
  * @group Coverage
  */
 class PrivatePropertiesMapTest extends AbstractUniquePropertyNameTest
