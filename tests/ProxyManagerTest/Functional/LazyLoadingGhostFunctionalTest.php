@@ -514,6 +514,46 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($proxy2->has('privateProperty'));
     }
 
+    /**
+     * @group 159
+     * @group 192
+     *
+     * Test designed to verify that the cached logic does take into account the fact that
+     * proxies are different instances
+     */
+    public function testIssetPrivateAndProtectedPropertiesDoesCheckAgainstBooleanFalse()
+    {
+        $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
+        $proxyName = $this->generateProxy($class);
+
+        /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
+        $proxy1    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+                $properties["publicProperty"] = false;
+                $properties["\0*\0" . "protectedProperty"] = false;
+                $properties["\0" . $class . "\0" . "privateProperty"] = false;
+            }
+        );
+        /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
+        $proxy2    = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
+                $initializer = null;
+                $properties["publicProperty"] = null;
+                $properties["\0*\0" . "protectedProperty"] = null;
+                $properties["\0" . $class . "\0" . "privateProperty"] = null;
+            }
+        );
+
+        $this->assertTrue($proxy1->has('protectedProperty'));
+        $this->assertTrue($proxy1->has('publicProperty'));
+        $this->assertTrue($proxy1->has('privateProperty'));
+
+        $this->assertFalse($proxy2->has('protectedProperty'));
+        $this->assertFalse($proxy2->has('publicProperty'));
+        $this->assertFalse($proxy2->has('privateProperty'));
+    }
+
     public function testByRefInitialization()
     {
         $proxyName = $this->generateProxy(ClassWithMixedProperties::class);
