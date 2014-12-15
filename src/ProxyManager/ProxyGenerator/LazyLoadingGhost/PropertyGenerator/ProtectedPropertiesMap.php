@@ -16,43 +16,52 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\PropertyGenerator;
+namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ReflectionClass;
-use ReflectionProperty;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Map of public properties that exist in the class being proxied
+ * Property that contains the protected instance lazy-loadable properties of an object
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class PublicPropertiesDefaults extends PropertyGenerator
+class ProtectedPropertiesMap extends PropertyGenerator
 {
+    const KEY_DEFAULT_VALUE = 'defaultValue';
+
     /**
-     * @var bool[]
+     * Constructor
      */
-    private $publicProperties = [];
+    public function __construct(\ReflectionClass $originalClass)
+    {
+        parent::__construct(
+            UniqueIdentifierGenerator::getIdentifier('protectedProperties')
+        );
+
+        $this->setVisibility(self::VISIBILITY_PRIVATE);
+        $this->setStatic(true);
+        $this->setDocblock(
+            '@var string[][] declaring class name of defined protected properties, indexed by property name'
+        );
+        $this->setDefaultValue($this->getMap($originalClass));
+    }
 
     /**
      * @param \ReflectionClass $originalClass
+     *
+     * @return int[][]|mixed[][]
      */
-    public function __construct(ReflectionClass $originalClass)
+    private function getMap(\ReflectionClass $originalClass)
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('publicPropertiesDefaults'));
+        $map = [];
 
-        $defaults = $originalClass->getDefaultProperties();
-
-        foreach ($originalClass->getProperties(ReflectionProperty::IS_PUBLIC) as $publicProperty) {
-            $name                          = $publicProperty->getName();
-            $this->publicProperties[$name] = $defaults[$name];
+        foreach (Properties::fromReflectionClass($originalClass)->getProtectedProperties() as $property) {
+            $map[$property->getName()] = $property->getDeclaringClass()->getName();
         }
 
-        $this->setDefaultValue($this->publicProperties);
-        $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setStatic(true);
-        $this->setDocblock('@var mixed[] map of default property values of the parent class');
+        return $map;
     }
 }

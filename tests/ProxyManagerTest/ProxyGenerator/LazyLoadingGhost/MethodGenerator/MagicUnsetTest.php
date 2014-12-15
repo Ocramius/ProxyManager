@@ -20,6 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
@@ -54,6 +56,82 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
     protected $publicProperties;
 
     /**
+     * @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $protectedProperties;
+
+    /**
+     * @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $privateProperties;
+
+    /**
+     * @var string
+     */
+    private $expectedCode = <<<'PHP'
+$this->foo && $this->baz('__unset', array('name' => $name));
+
+if (isset(self::$bar[$name])) {
+    unset($this->$name);
+
+    return;
+}
+
+if (isset(self::$baz[$name])) {
+    // check protected property access via compatible class
+    $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller       = isset($callers[1]) ? $callers[1] : [];
+    $object       = isset($caller['object']) ? $caller['object'] : '';
+    $expectedType = self::$baz[$name];
+
+    if ($object instanceof $expectedType) {
+        unset($this->$name);
+
+        return;
+    }
+
+    $class = isset($caller['class']) ? $caller['class'] : '';
+
+    if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
+        unset($this->$name);
+
+        return;
+    }
+} elseif (isset(self::$tab[$name])) {
+    // check private property access via same class
+    $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller  = isset($callers[1]) ? $callers[1] : [];
+    $class   = isset($caller['class']) ? $caller['class'] : '';
+
+    static $accessorCache = [];
+
+    if (isset(self::$tab[$name][$class])) {
+        $cacheKey = $class . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance) use ($name) {
+                unset($instance->$name);
+            }, null, $class);
+
+        return $accessor($this);
+    }
+
+    if ('ReflectionProperty' === $class) {
+        $tmpClass = key(self::$tab[$name]);
+        $cacheKey = $tmpClass . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance) use ($name) {
+                unset($instance->$name);
+            }, null, $tmpClass);
+
+        return $accessor($this);
+    }
+}
+%A
+PHP;
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -64,11 +142,21 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->protectedProperties = $this
+            ->getMockBuilder(ProtectedPropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->privateProperties = $this
+            ->getMockBuilder(PrivatePropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
         $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
+        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
     }
 
     /**
@@ -76,38 +164,18 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
-        $magicIsset = new MagicUnset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+        $magicIsset = new MagicUnset(
+            new ReflectionClass(ClassWithTwoPublicProperties::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
 
         $this->assertSame('__unset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->baz('__unset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->\$name);\n\n    return;\n}"
-            . "%areturn %s;",
-            $magicIsset->getBody()
-        );
-    }
-
-    /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset::__construct
-     */
-    public function testBodyStructureWithPublicProperties()
-    {
-        $reflection = new ReflectionClass(
-            ClassWithTwoPublicProperties::class
-        );
-
-        $magicIsset = new MagicUnset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
-
-        $this->assertSame('__unset', $magicIsset->getName());
-        $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->baz('__unset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->\$name);\n\n    return;\n}"
-            . "%areturn %s;",
-            $magicIsset->getBody()
-        );
+        $this->assertStringMatchesFormat($this->expectedCode, $magicIsset->getBody());
     }
 
     /**
@@ -115,16 +183,21 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithOverriddenMagicGet()
     {
-        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        $magicIsset = new MagicUnset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+        $magicIsset = new MagicUnset(
+            new ReflectionClass(ClassWithMagicMethods::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
 
         $this->assertSame('__unset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertSame(
-            "\$this->foo && \$this->baz('__unset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->\$name);\n\n    return;\n}\n\n"
-            . "return parent::__unset(\$name);",
-            $magicIsset->getBody()
-        );
+
+        $body = $magicIsset->getBody();
+
+        $this->assertStringMatchesFormat($this->expectedCode, $body);
+        $this->assertStringMatchesFormat('%Areturn parent::__unset($name);', $body);
     }
 }

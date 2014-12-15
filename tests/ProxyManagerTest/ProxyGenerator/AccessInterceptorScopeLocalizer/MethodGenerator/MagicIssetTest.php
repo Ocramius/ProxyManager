@@ -47,15 +47,15 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
 
-        $magicGet = new MagicIsset(
+        $magicIsset = new MagicIsset(
             $reflection,
             $prefixInterceptors,
             $suffixInterceptors
         );
 
-        $this->assertSame('__isset', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
-        $this->assertStringMatchesFormat('%a$returnValue = $accessor();%a', $magicGet->getBody());
+        $this->assertSame('__isset', $magicIsset->getName());
+        $this->assertCount(1, $magicIsset->getParameters());
+        $this->assertStringMatchesFormat('%a$returnValue = $accessor();%a', $magicIsset->getBody());
     }
 
     /**
@@ -70,14 +70,14 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
         $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
 
-        $magicGet = new MagicIsset(
+        $magicIsset = new MagicIsset(
             $reflection,
             $prefixInterceptors,
             $suffixInterceptors
         );
 
-        $this->assertSame('__isset', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
-        $this->assertStringMatchesFormat('%a$returnValue = & parent::__isset($name);%a', $magicGet->getBody());
+        $this->assertSame('__isset', $magicIsset->getName());
+        $this->assertCount(1, $magicIsset->getParameters());
+        $this->assertStringMatchesFormat('%a$returnValue = & parent::__isset($name);%a', $magicIsset->getBody());
     }
 }

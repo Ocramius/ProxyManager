@@ -21,6 +21,10 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
+use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
+use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\LazyLoadingMock;
@@ -40,17 +44,17 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider expectedMethods
+     *
+     * @param ReflectionClass $reflectionClass
+     * @param array|null      $excludes
+     * @param array           $expectedMethods
      */
     public function testFiltering(ReflectionClass $reflectionClass, $excludes, array $expectedMethods)
     {
-        if (is_array($excludes)) {
-            $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
-        } else {
-            $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass);
-        }
+        $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
 
         foreach ($filtered as $method) {
-            $this->assertInstanceOf('ReflectionMethod', $method);
+            $this->assertInstanceOf(ReflectionMethod::class, $method);
         }
 
         $keys = array_map(
@@ -67,6 +71,36 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider expectedAbstractPublicMethods
+     *
+     * @param ReflectionClass $reflectionClass
+     * @param array|null      $excludes
+     * @param array           $expectedMethods
+     */
+    public function testFilteringOfAbstractPublic(ReflectionClass $reflectionClass, $excludes, array $expectedMethods)
+    {
+        $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
+
+        foreach ($filtered as $method) {
+            $this->assertInstanceOf(ReflectionMethod::class, $method);
+        }
+
+        $keys = array_map(
+            function (ReflectionMethod $method) {
+                return $method->getName();
+            },
+            $filtered
+        );
+
+        sort($keys);
+        sort($expectedMethods);
+
+        $this->assertSame($keys, $expectedMethods);
+    }
+
+    /**
+     * Data provider
+     *
      * @return array[][]
      */
     public function expectedMethods()
@@ -76,10 +110,13 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 new ReflectionClass(BaseClass::class),
                 null,
                 [
+                    'privatePropertyGetter',
+                    'protectedPropertyGetter',
                     'publicArrayHintedMethod',
                     'publicByReferenceMethod',
                     'publicByReferenceParameterMethod',
                     'publicMethod',
+                    'publicPropertyGetter',
                     'publicTypeHintedMethod',
                 ],
             ],
@@ -112,6 +149,98 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 new ReflectionClass(HydratedObject::class),
                 [],
                 ['doFoo', '__get'],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractProtectedMethod::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractPublicMethod::class),
+                null,
+                ['publicAbstractMethod'],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractPublicMethod::class),
+                ['publicAbstractMethod'],
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                [],
+                [
+                    '__clone',
+                    '__get',
+                    '__isset',
+                    '__set',
+                    '__sleep',
+                    '__unset',
+                    '__wakeup',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Data provider
+     *
+     * @return array[][]
+     */
+    public function expectedAbstractPublicMethods()
+    {
+        return [
+            [
+                new ReflectionClass(BaseClass::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(EmptyClass::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractProtectedMethod::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractPublicMethod::class),
+                null,
+                ['publicAbstractMethod'],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractPublicMethod::class),
+                ['publicAbstractMethod'],
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithMagicMethods::class),
+                [],
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                null,
+                [],
+            ],
+            [
+                new ReflectionClass(ClassWithAbstractMagicMethods::class),
+                [],
+                [
+                    '__clone',
+                    '__get',
+                    '__isset',
+                    '__set',
+                    '__sleep',
+                    '__unset',
+                    '__wakeup',
+                ],
             ],
         ];
     }

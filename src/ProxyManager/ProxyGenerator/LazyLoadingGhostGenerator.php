@@ -36,8 +36,12 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
@@ -64,7 +68,8 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $interfaces          = [GhostObjectInterface::class];
         $publicProperties    = new PublicPropertiesMap($originalClass);
-        $publicPropsDefaults = new PublicPropertiesDefaults($originalClass);
+        $privateProperties   = new PrivatePropertiesMap($originalClass);
+        $protectedProperties = new ProtectedPropertiesMap($originalClass);
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -76,9 +81,14 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($initializationTracker = new InitializationTracker());
         $classGenerator->addPropertyFromGenerator($publicProperties);
-        $classGenerator->addPropertyFromGenerator($publicPropsDefaults);
+        $classGenerator->addPropertyFromGenerator($privateProperties);
+        $classGenerator->addPropertyFromGenerator($protectedProperties);
 
-        $init = new CallInitializer($initializer, $publicPropsDefaults, $initializationTracker);
+        $init = new CallInitializer(
+            $initializer,
+            $initializationTracker,
+            Properties::fromReflectionClass($originalClass)
+        );
 
         array_map(
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
@@ -93,15 +103,46 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                             $init
                         );
                     },
-                    ProxiedMethodsFilter::getProxiedMethods($originalClass)
+                    ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
                 ),
                 [
                     $init,
-                    new StaticProxyConstructor($originalClass, $initializer),
-                    new MagicGet($originalClass, $initializer, $init, $publicProperties),
-                    new MagicSet($originalClass, $initializer, $init, $publicProperties),
-                    new MagicIsset($originalClass, $initializer, $init, $publicProperties),
-                    new MagicUnset($originalClass, $initializer, $init, $publicProperties),
+                    new StaticProxyConstructor(
+                        $initializer,
+                        Properties::fromReflectionClass($originalClass)
+                    ),
+                    new MagicGet(
+                        $originalClass,
+                        $initializer,
+                        $init,
+                        $publicProperties,
+                        $protectedProperties,
+                        $privateProperties
+                    ),
+                    new MagicSet(
+                        $originalClass,
+                        $initializer,
+                        $init,
+                        $publicProperties,
+                        $protectedProperties,
+                        $privateProperties
+                    ),
+                    new MagicIsset(
+                        $originalClass,
+                        $initializer,
+                        $init,
+                        $publicProperties,
+                        $protectedProperties,
+                        $privateProperties
+                    ),
+                    new MagicUnset(
+                        $originalClass,
+                        $initializer,
+                        $init,
+                        $publicProperties,
+                        $protectedProperties,
+                        $privateProperties
+                    ),
                     new MagicClone($originalClass, $initializer, $init, $publicProperties),
                     new MagicSleep($originalClass, $initializer, $init, $publicProperties),
                     new SetProxyInitializer($initializer),
