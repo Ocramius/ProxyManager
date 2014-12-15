@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -35,7 +36,7 @@ class PrivatePropertiesMap extends PropertyGenerator
     /**
      * Constructor
      */
-    public function __construct(\ReflectionClass $originalClass)
+    public function __construct(ReflectionClass $originalClass)
     {
         parent::__construct(
             UniqueIdentifierGenerator::getIdentifier('privateProperties')
@@ -50,11 +51,11 @@ class PrivatePropertiesMap extends PropertyGenerator
     }
 
     /**
-     * @param \ReflectionClass $originalClass
+     * @param ReflectionClass $originalClass
      *
      * @return int[][]|mixed[][]
      */
-    private function getMap(\ReflectionClass $originalClass)
+    private function getMap(ReflectionClass $originalClass)
     {
         $map = [];
 
