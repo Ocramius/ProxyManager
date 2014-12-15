@@ -20,6 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSet;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
@@ -54,6 +56,16 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
     protected $publicProperties;
 
     /**
+     * @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $protectedProperties;
+
+    /**
+     * @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $privateProperties;
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -62,6 +74,14 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
         $this->initMethod       = $this->getMock(MethodGenerator::class);
         $this->publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->protectedProperties = $this
+            ->getMockBuilder(ProtectedPropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->privateProperties = $this
+            ->getMockBuilder(PrivatePropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -76,8 +96,14 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
-        $magicSet   = new MagicSet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+        $magicSet = new MagicSet(
+            new ReflectionClass(EmptyClass::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
@@ -94,11 +120,13 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithPublicProperties()
     {
-        $reflection = new ReflectionClass(
-            ClassWithTwoPublicProperties::class
-        );
-
-        $magicSet   = new MagicSet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+        $magicSet = new MagicSet(
+            new ReflectionClass(ClassWithTwoPublicProperties::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties);
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
@@ -115,8 +143,13 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithOverriddenMagicGet()
     {
-        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        $magicSet   = new MagicSet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+        $magicSet = new MagicSet(
+            new ReflectionClass(ClassWithMagicMethods::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties);
 
         $this->assertSame('__set', $magicSet->getName());
         $this->assertCount(2, $magicSet->getParameters());
