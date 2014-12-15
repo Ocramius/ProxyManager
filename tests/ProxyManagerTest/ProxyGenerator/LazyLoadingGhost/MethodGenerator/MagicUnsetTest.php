@@ -92,12 +92,12 @@ if (isset(self::$baz[$name])) {
 
     $class = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
+    if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
         unset($this->$name);
 
         return;
     }
-} else {
+} elseif (isset(self::$tab[$name])) {
     // check private property access via same class
     $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller  = isset($callers[1]) ? $callers[1] : [];
@@ -175,12 +175,7 @@ PHP;
 
         $this->assertSame('__unset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->baz('__unset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->\$name);\n\n    return;\n}"
-            . "%areturn %s;",
-            $magicIsset->getBody()
-        );
+        $this->assertStringMatchesFormat($this->expectedCode, $magicIsset->getBody());
     }
 
     /**
@@ -199,11 +194,10 @@ PHP;
 
         $this->assertSame('__unset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertSame(
-            "\$this->foo && \$this->baz('__unset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->\$name);\n\n    return;\n}\n\n"
-            . "return parent::__unset(\$name);",
-            $magicIsset->getBody()
-        );
+
+        $body = $magicIsset->getBody();
+
+        $this->assertStringMatchesFormat($this->expectedCode, $body);
+        $this->assertStringMatchesFormat('%Areturn parent::__unset($name);', $body);
     }
 }
