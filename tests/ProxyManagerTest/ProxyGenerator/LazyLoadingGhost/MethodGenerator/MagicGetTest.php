@@ -156,7 +156,7 @@ PHP;
 
 
     /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet::__construct
+     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet
      */
     public function testBodyStructureWithOverriddenMagicGet()
     {
