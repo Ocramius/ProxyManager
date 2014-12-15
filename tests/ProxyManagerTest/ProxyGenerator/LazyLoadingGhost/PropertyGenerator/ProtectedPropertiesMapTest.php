@@ -64,4 +64,12 @@ class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
 
         $this->assertSame([], $map->getDefaultValue()->getValue());
     }
+
+    public function testIsStaticPrivate()
+    {
+        $map = $this->createProperty();
+
+        $this->assertTrue($map->isStatic());
+        $this->assertSame(ProtectedPropertiesMap::VISIBILITY_PRIVATE, $map->getVisibility());
+    }
 }
