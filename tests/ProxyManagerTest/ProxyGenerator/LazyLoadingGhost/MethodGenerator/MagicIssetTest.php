@@ -20,6 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
@@ -54,6 +56,16 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
     protected $publicProperties;
 
     /**
+     * @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $protectedProperties;
+
+    /**
+     * @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $privateProperties;
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -64,29 +76,21 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->protectedProperties = $this
+            ->getMockBuilder(ProtectedPropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->privateProperties = $this
+            ->getMockBuilder(PrivatePropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
         $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-    }
-
-    /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset::__construct
-     */
-    public function testBodyStructure()
-    {
-        $reflection = new ReflectionClass(EmptyClass::class);
-        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
-
-        $this->assertSame('__isset', $magicIsset->getName());
-        $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->baz('__isset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    return isset(\$this->\$name);\n}\n\n"
-            . "%areturn %s;",
-            $magicIsset->getBody()
-        );
+        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
+        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
     }
 
     /**
@@ -94,36 +98,75 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithPublicProperties()
     {
-        $reflection = new ReflectionClass(
-            ClassWithTwoPublicProperties::class
+        $magicIsset = new MagicIsset(
+            new ReflectionClass(ClassWithTwoPublicProperties::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
         );
-        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__isset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->baz('__isset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    return isset(\$this->\$name);\n}\n\n"
-            . "%areturn %s;",
-            $magicIsset->getBody()
-        );
+
+        $expectedCode = <<<'PHP'
+$this->foo && $this->baz('__isset', array('name' => $name));
+
+if (isset(self::$bar[$name])) {
+    return isset($this->$name);
+}
+
+if (isset(self::$baz[$name])) {
+    // check protected property access via compatible class
+    $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller       = isset($callers[1]) ? $callers[1] : [];
+    $object       = isset($caller['object']) ? $caller['object'] : '';
+    $expectedType = self::$baz[$name];
+
+    if ($object instanceof $expectedType) {
+        return $this->$name;
     }
 
-    /**
-     * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset::__construct
-     */
-    public function testBodyStructureWithOverriddenMagicGet()
-    {
-        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        $magicIsset = new MagicIsset($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+    $class = isset($caller['class']) ? $caller['class'] : '';
 
-        $this->assertSame('__isset', $magicIsset->getName());
-        $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertSame(
-            "\$this->foo && \$this->baz('__isset', array('name' => \$name));\n\n"
-            . "if (isset(self::\$bar[\$name])) {\n    return isset(\$this->\$name);\n}\n\n"
-            . "return parent::__isset(\$name);",
-            $magicIsset->getBody()
-        );
+    if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
+        return isset($this->$name);
+    }
+} else {
+    // check private property access via same class
+    $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+    $caller  = isset($callers[1]) ? $callers[1] : [];
+    $class   = isset($caller['class']) ? $caller['class'] : '';
+
+    static $accessorCache = [];
+
+    if (isset(self::$tab[$name][$class])) {
+        $cacheKey = $class . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function () use ($name) {
+                return isset($this->$name);
+            }, $this, $class);
+
+        return $accessor($this, $name);
+    }
+
+    if ('ReflectionProperty' === $class) {
+        $tmpClass = key(self::$tab[$name]);
+        $cacheKey = $tmpClass . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function () use ($name) {
+                return isset($this->$name);
+            }, $this, $tmpClass);
+
+        return $accessor($this, $name);
+    }
+}
+%A
+PHP;
+
+        $this->assertStringMatchesFormat($expectedCode, $magicIsset->getBody());
     }
 }
