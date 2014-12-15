@@ -74,13 +74,13 @@ if (isset(self::$%s[$name])) {
     $object       = isset($caller['object']) ? $caller['object'] : '';
     $expectedType = self::$%s[$name];
 
-    if ($object === $this || $object instanceof $expectedType) {
+    if ($object instanceof $expectedType) {
         return ($this->$name = $value);
     }
 
     $class = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === $expectedType || is_subclass_of($class, $expectedType)) {
+    if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
         return ($this->$name = $value);
     }
 } elseif (isset(self::$%s[$name])) {
@@ -89,18 +89,32 @@ if (isset(self::$%s[$name])) {
     $caller  = isset($callers[1]) ? $callers[1] : [];
     $class   = isset($caller['class']) ? $caller['class'] : '';
 
+    static $accessorCache = [];
+
     if (isset(self::$%s[$name][$class])) {
-        return \Closure::bind(function () use ($name, $value) {
-            return ($this->$name = $value);
-        }, $this, $class)->__invoke($this, $name);
+        $cacheKey = $class . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
+                return ($instance->$name = $value);
+            }, null, $class);
+
+        return $accessor($this, $value);
     }
 
-    if ($class === 'ReflectionProperty') {
-        return \Closure::bind(function () use ($name, $value) {
-            return ($this->$name = $value);
-        }, $this, key(self::$%s[$name]))->__invoke($this, $name);
+    if ('ReflectionProperty' === $class) {
+        $tmpClass = key(self::$%s[$name]);
+        $cacheKey = $tmpClass . '#' . $name;
+        $accessor = isset($accessorCache[$cacheKey])
+            ? $accessorCache[$cacheKey]
+            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
+                return ($instance->$name = $value);
+            }, null, $tmpClass);
+
+        return $accessor($this, $value);
     }
 }
+
 
 PHP;
 
