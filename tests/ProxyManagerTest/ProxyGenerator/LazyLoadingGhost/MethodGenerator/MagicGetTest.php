@@ -20,6 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\EmptyClass;
@@ -54,6 +56,16 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     protected $publicProperties;
 
     /**
+     * @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $protectedProperties;
+
+    /**
+     * @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $privateProperties;
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -64,11 +76,21 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->protectedProperties = $this
+            ->getMockBuilder(ProtectedPropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->privateProperties = $this
+            ->getMockBuilder(PrivatePropertiesMap::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
         $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
+        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
     }
 
     /**
@@ -76,8 +98,14 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructure()
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
-        $magicGet   = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+        $magicGet = new MagicGet(
+            new ReflectionClass(EmptyClass::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
@@ -94,11 +122,14 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithPublicProperties()
     {
-        $reflection = new ReflectionClass(
-            ClassWithTwoPublicProperties::class
+        $magicGet = new MagicGet(
+            new ReflectionClass(ClassWithTwoPublicProperties::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
         );
-
-        $magicGet = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
@@ -115,8 +146,14 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithOverriddenMagicGet()
     {
-        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        $magicGet   = new MagicGet($reflection, $this->initializer, $this->initMethod, $this->publicProperties);
+        $magicGet = new MagicGet(
+            new ReflectionClass(ClassWithMagicMethods::class),
+            $this->initializer,
+            $this->initMethod,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
 
         $this->assertSame('__get', $magicGet->getName());
         $this->assertCount(1, $magicGet->getParameters());
