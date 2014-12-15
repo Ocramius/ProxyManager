@@ -116,7 +116,14 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                         $privateProperties
                     ),
                     new MagicSet($originalClass, $initializer, $init, $publicProperties),
-                    new MagicIsset($originalClass, $initializer, $init, $publicProperties),
+                    new MagicIsset(
+                        $originalClass,
+                        $initializer,
+                        $init,
+                        $publicProperties,
+                        $protectedProperties,
+                        $privateProperties
+                    ),
                     new MagicUnset($originalClass, $initializer, $init, $publicProperties),
                     new MagicClone($originalClass, $initializer, $init, $publicProperties),
                     new MagicSleep($originalClass, $initializer, $init, $publicProperties),
