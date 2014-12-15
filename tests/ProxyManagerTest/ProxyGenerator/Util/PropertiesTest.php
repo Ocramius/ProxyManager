@@ -156,6 +156,34 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty0']);
         $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty1']);
         $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty2']);
+    }
 
+    public function testGetGroupedPrivatePropertiesWithInheritedProperties()
+    {
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
+        );
+
+        $groupedPrivate = $properties->getGroupedPrivateProperties();
+
+        $this->assertCount(2, $groupedPrivate);
+
+        $group1 = $groupedPrivate[ClassWithCollidingPrivateInheritedProperties::class];
+        $group2 = $groupedPrivate[ClassWithPrivateProperties::class];
+
+        $this->assertCount(1, $group1);
+        $this->assertCount(10, $group2);
+
+        $this->assertInstanceOf(ReflectionProperty::class, $group1['property0']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property0']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property1']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property2']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property3']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property4']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property5']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property6']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property7']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property8']);
+        $this->assertInstanceOf(ReflectionProperty::class, $group2['property9']);
     }
 }
