@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
+use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
@@ -79,6 +80,14 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 
         $this->configuration->setClassNameInflector($inflector);
         $this->assertSame($inflector, $this->configuration->getClassNameInflector());
+    }
+
+    /**
+     * @covers \ProxyManager\Configuration::getGeneratorStrategy
+     */
+    public function testDefaultGeneratorStrategyNeedToBeAInstanceOfEvaluatingGeneratorStrategy()
+    {
+        $this->assertInstanceOf(EvaluatingGeneratorStrategy::class, $this->configuration->getGeneratorStrategy());
     }
 
     /**
