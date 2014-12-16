@@ -22,6 +22,7 @@ use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
+use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflector;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
@@ -148,9 +149,7 @@ class Configuration
     public function getGeneratorStrategy()
     {
         return $this->generatorStrategy
-            ?: $this->generatorStrategy = new FileWriterGeneratorStrategy(
-                new FileLocator($this->getProxiesTargetDir())
-            );
+            ?: $this->generatorStrategy = new EvaluatingGeneratorStrategy();
     }
 
     /**
