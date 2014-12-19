@@ -9,6 +9,7 @@
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
     <link href="{{ baseUrl }}/css/main.css" rel="stylesheet" />
     <link href="{{ baseUrl }}/css/highlight.dark.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <link rel="shortcut icon" href="favicon.ico">
@@ -54,6 +55,15 @@
 
 <aside class="sidebar">
     <nav class="spy-nav">
+
+        {% if versions is defined %}
+            <select class="select" id="versions">
+            {% for key, version in versions.items %}
+                <option value="{{ version.link|e }}">{{ version.name|e }}</option>
+            {% endfor %}
+            <select>
+        {% endif %}
+
         <ul>
             <li><a href="{{ baseUrl }}/index.html">Intro</a></li>
             <li><a href="{{ baseUrl }}/docs/lazy-loading-value-holder.html">Virtual Proxy</a></li>
@@ -100,5 +110,11 @@
         <div class="bcms-clearfix"></div>
     </footer>
     <div class="bcms-clearfix"></div>
+    <script type="text/javascript">
+    jQuery("#versions").on('change', function(){
+        var url = $(this).val();
+        window.location.href = '{{ baseUrl }}' + url;
+    });
+    </script>
     </body>
 </html>
