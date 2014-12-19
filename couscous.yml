@@ -3,3 +3,11 @@ title: ProxyManager
 template:
     directory: doc-template
 
+versions:
+    items:
+        v1: 
+            name: v1.0.0
+            link: /1.0.0
+        v2:
+            name: v2.0.0
+            link: /2.0.0
