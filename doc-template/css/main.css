@@ -155,6 +155,7 @@ main { overflow: hidden; }
 .spy-nav ul { list-style: none; }
 .spy-nav a { padding-top: 9px; padding-bottom: 10px; height: auto; border-bottom: 1px solid #4B8B20; text-align: left; text-transform: none; font-size: 1.375em; line-height: normal; }
 .spy-nav .active a { border-bottom-color: #fff; background: #fff; color: #17324f; }
+.spy-nav select{ width: 100%; margin-bottom: 10px}
 @media only screen and (max-width: 768px) { /*.spy-nav { display: none; } */}
 
 .main-wrapper { margin: 44px auto 44px; max-width: 600px; }
