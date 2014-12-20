@@ -21,6 +21,10 @@ This library aims at providing abstraction for generating various kinds of [prox
 
 You can learn about the proxy pattern and how to use the **ProxyManager** on the [online documentation](http://ocramius.github.io/ProxyManager).
 
+## Help/Support
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ocramius/ProxyManager?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 ## Installation
 
 The suggested installation method is via [composer](https://getcomposer.org/):
