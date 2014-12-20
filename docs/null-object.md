@@ -94,4 +94,4 @@ methods defined by the interface itself, and like with the object, the methods a
 
 ## Tuning performance for production
 
-See [Tuning ProxyManager for Production](tuning-for-production.html).
+See [Tuning ProxyManager for Production](tuning-for-production.md).
