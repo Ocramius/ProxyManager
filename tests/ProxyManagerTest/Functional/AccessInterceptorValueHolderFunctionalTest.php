@@ -94,6 +94,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testMethodCallsWithSuffixListener($className, $instance, $method, $params, $expectedValue)
     {
