@@ -111,12 +111,30 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
         $ghostObject  = $factory->createProxy(
             $className,
             function () {
-                throw new \RunTimeException('Teste Failing every time');
+                throw new \RunTimeException(
+                    sprintf('The property %s not nedded to be lazy loaded', $propertyName)
+                );
             },
             $properties
         );
 
         $ghostObject->$propertyName;
+    }
+
+    public function testSkipMultipleProperties()
+    {
+        $factory      = new LazyLoadingGhostFactory();
+        $ghostObject  = $factory->createProxy(
+            'ProxyManagerTestAsset\ClassWithMixedProperties',
+            function () {
+                throw new \RunTimeException('Failled to skip property to not be lazyloaded');
+            },
+            ['publicProperty0', 'protectedProperty0', 'privateProperty0']
+        );
+
+        $ghostObject->publicProperty0;
+        $ghostObject->protectedProperty0;
+        $ghostObject->privateProperty0;
     }
 
     public function skipPropertiesFixture()
