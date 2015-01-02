@@ -20,20 +20,12 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\Properties;
-use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
-use ProxyManagerTestAsset\BaseClass;
-use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
-use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
-use ProxyManagerTestAsset\EmptyClass;
-use ProxyManagerTestAsset\HydratedObject;
-use ProxyManagerTestAsset\LazyLoadingMock;
 use ReflectionClass;
-use ReflectionMethod;
 use ReflectionProperty;
 
 /**
