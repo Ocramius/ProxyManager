@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc;
+use Zend\Server\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc}
@@ -39,8 +40,9 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
      */
     public function testCanBuildAdapterWithJsonRpcClient()
     {
+        /* @var $client Client */
         $client = $this
-            ->getMockBuilder('Zend\Server\Client')
+            ->getMockBuilder(Client::class)
             ->setMethods(['call'])
             ->getMock();
 
