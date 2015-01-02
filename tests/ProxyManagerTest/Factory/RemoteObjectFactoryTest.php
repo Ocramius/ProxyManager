@@ -179,7 +179,8 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
 
-        $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        /* @var $adapter AdapterInterface */
+        $adapter = $this->getMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
 
