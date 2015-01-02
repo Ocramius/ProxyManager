@@ -258,7 +258,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $instance    = new ClassWithPublicArrayProperty();
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithPublicArrayProperty */
+        /* @var $proxy ClassWithPublicArrayProperty|AccessInterceptorInterface */
         $proxy       = $proxyName::staticProxyConstructor($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
@@ -279,7 +279,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithPublicProperties||AccessInterceptorInterface */
+        /* @var $proxy ClassWithPublicProperties|AccessInterceptorInterface */
         $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = $proxy->property0;
 
