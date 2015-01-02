@@ -73,6 +73,12 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getProxyNonInitializingMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testMethodCallsThatDoNotLazyLoadTheObject($className, $instance, $method, $params, $expectedValue)
     {
