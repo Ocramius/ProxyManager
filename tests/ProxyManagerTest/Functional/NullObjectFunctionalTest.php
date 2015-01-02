@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
@@ -50,7 +51,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
+        /* @var $proxy NullObjectInterface */
         $proxy = $proxyName::staticProxyConstructor();
 
         $this->assertSame(null, call_user_func_array([$proxy, $method], $params));
@@ -66,7 +67,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     public function testMethodCallsAfterUnSerialization($className, $method, $params)
     {
         $proxyName = $this->generateProxy($className);
-        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
+        /* @var $proxy NullObjectInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor()));
 
         $this->assertSame(null, call_user_func_array([$proxy, $method], $params));
@@ -83,7 +84,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
+        /* @var $proxy NullObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor();
         $cloned    = clone $proxy;
 
@@ -93,10 +94,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param \ProxyManager\Proxy\NullObjectInterface $proxy
-     * @param string                                  $publicProperty
+     * @param NullObjectInterface $proxy
+     * @param string              $publicProperty
      */
-    public function testPropertyReadAccess($proxy, $publicProperty)
+    public function testPropertyReadAccess(NullObjectInterface $proxy, $publicProperty)
     {
         $this->assertSame(null, $proxy->$publicProperty);
     }
@@ -104,10 +105,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param \ProxyManager\Proxy\NullObjectInterface $proxy
-     * @param string                                  $publicProperty
+     * @param NullObjectInterface $proxy
+     * @param string              $publicProperty
      */
-    public function testPropertyWriteAccess($proxy, $publicProperty)
+    public function testPropertyWriteAccess(NullObjectInterface $proxy, $publicProperty)
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -118,10 +119,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param \ProxyManager\Proxy\NullObjectInterface $proxy
-     * @param string                                  $publicProperty
+     * @param NullObjectInterface $proxy
+     * @param string              $publicProperty
      */
-    public function testPropertyExistence($proxy, $publicProperty)
+    public function testPropertyExistence(NullObjectInterface $proxy, $publicProperty)
     {
         $this->assertSame(null, $proxy->$publicProperty);
     }
@@ -129,10 +130,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param \ProxyManager\Proxy\NullObjectInterface $proxy
-     * @param string                                  $publicProperty
+     * @param NullObjectInterface $proxy
+     * @param string              $publicProperty
      */
-    public function testPropertyUnset($proxy, $publicProperty)
+    public function testPropertyUnset(NullObjectInterface $proxy, $publicProperty)
     {
         unset($proxy->$publicProperty);
 
