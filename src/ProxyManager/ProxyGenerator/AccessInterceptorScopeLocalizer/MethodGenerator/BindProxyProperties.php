@@ -73,8 +73,7 @@ class BindProxyProperties extends MethodGenerator
                 . ')->__invoke();';
         }
 
-        /* @var $property \ReflectionProperty */
-        foreach (array_merge($properties->getPublicProperties(), $properties->getProtectedProperties()) as $property) {
+        foreach ($properties->getAccessibleProperties() as $property) {
             $propertyName = $property->getName();
 
             $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
