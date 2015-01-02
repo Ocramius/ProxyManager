@@ -79,10 +79,8 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     protected function getJsonRpcAdapter($expectedValue, $method, array $params)
     {
-        $client = $this
-            ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(['call'])
-            ->getMock();
+        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        $client = $this->getMock(Client::class, ['call']);
 
         $client
             ->expects($this->any())
