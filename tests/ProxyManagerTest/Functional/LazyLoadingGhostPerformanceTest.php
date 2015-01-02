@@ -23,6 +23,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
 use stdClass;
@@ -128,7 +129,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
             $reflectionProperties = [];
             $reflectionClass      = new ReflectionClass($testedClass[0]);
 
-            foreach ($reflectionClass->getProperties() as $property) {
+            foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {
                 $property->setAccessible(true);
 
                 $reflectionProperties[$property->getName()] = $property;

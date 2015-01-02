@@ -665,7 +665,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $initializer     = null;
             $reflectionClass = new ReflectionClass($realInstance);
 
-            foreach ($reflectionClass->getProperties() as $property) {
+            foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {
                 $property->setAccessible(true);
                 $property->setValue($proxy, $property->getValue($realInstance));
             }

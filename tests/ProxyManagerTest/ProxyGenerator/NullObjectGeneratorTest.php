@@ -24,6 +24,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
@@ -74,7 +75,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
 
         $proxyGenerated = $generatedClassName::staticProxyConstructor();
 
-        foreach ($generatedReflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+        foreach (Properties::fromReflectionClass($generatedReflection)->getPublicProperties() as $property) {
             $this->assertNull($proxyGenerated->$property);
         }
 
