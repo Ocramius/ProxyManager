@@ -20,11 +20,9 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use PHPUnit_Framework_TestCase;
-use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
