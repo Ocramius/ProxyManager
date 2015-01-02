@@ -28,6 +28,7 @@ use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ReflectionClass;
+use Zend\Server\Client;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObjectGenerator} produced objects
@@ -49,10 +50,8 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     protected function getXmlRpcAdapter($expectedValue, $method, array $params)
     {
-        $client = $this
-            ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(['call'])
-            ->getMock();
+        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        $client = $this->getMock(Client::class, ['call']);
 
         $client
             ->expects($this->any())
