@@ -106,7 +106,6 @@ $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
 $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
 $this->track = false;';
 
-
         $this->assertSame(
             $expectedCode,
             $callInitializer->getBody()
