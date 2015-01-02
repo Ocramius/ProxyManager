@@ -36,6 +36,9 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class MagicSet extends MagicMethodGenerator
 {
+    /**
+     * @var string
+     */
     private $callParentTemplate = <<<'PHP'
 if (isset(self::$%s[$name])) {
     return ($this->$name = $value);
