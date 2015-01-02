@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
+use ProxyManager\Proxy\ProxyInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
@@ -40,8 +41,6 @@ use ReflectionClass;
 class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
 {
     private $template = <<<'PHP'
-<?php
-
 require_once %s;
 
 $className               = %s;
@@ -78,8 +77,6 @@ PHP;
             $this->markTestSkipped('HHVM is just too slow for this kind of test right now.');
         }
 
-        $runner = PHPUnit_Util_PHP::factory();
-
         $code = sprintf(
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
@@ -88,20 +85,21 @@ PHP;
             var_export($className, true)
         );
 
-        $result = $runner->runJob($code, ['-n']);
+        ob_start();
+        eval($code);
+        $result = ob_get_clean();
 
-        if (('SUCCESS: ' . $className) !== $result['stdout']) {
+        if (('SUCCESS: ' . $className) !== $result) {
             $this->fail(sprintf(
-                "Crashed with class '%s' and generator '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
+                "Crashed with class '%s' and generator '%s'.\n\nResult:\n%s\n\nGenerated code:\n%s'",
                 $generatorClass,
                 $className,
-                $result['stdout'],
-                $result['stderr'],
+                $result,
                 $code
             ));
         }
 
-        $this->assertSame('SUCCESS: ' . $className, $result['stdout']);
+        $this->assertSame('SUCCESS: ' . $className, $result);
     }
 
     /**
