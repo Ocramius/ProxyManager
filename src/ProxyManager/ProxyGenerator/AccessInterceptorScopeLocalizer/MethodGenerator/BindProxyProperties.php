@@ -44,21 +44,20 @@ class BindProxyProperties extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('bindProxyProperties', [], static::FLAG_PRIVATE);
-
-        $localizedObject = new ParameterGenerator('localizedObject');
-        $prefix          = new ParameterGenerator('prefixInterceptors');
-        $suffix          = new ParameterGenerator('suffixInterceptors');
-
-        $localizedObject->setType($originalClass->getName());
-        $prefix->setDefaultValue([]);
-        $suffix->setDefaultValue([]);
-        $prefix->setType('array');
-        $suffix->setType('array');
-
-        $this->setParameter($localizedObject);
-        $this->setParameter($prefix);
-        $this->setParameter($suffix);
+        parent::__construct(
+            'bindProxyProperties',
+            [
+                new ParameterGenerator('localizedObject', $originalClass->getName()),
+                new ParameterGenerator('prefixInterceptors', 'array', []),
+                new ParameterGenerator('suffixInterceptors', 'array', []),
+            ],
+            static::FLAG_PRIVATE,
+            null,
+            "@override constructor to setup interceptors\n\n"
+            . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
+            . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
+            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
+        );
 
         $localizedProperties = [];
 
@@ -79,12 +78,6 @@ class BindProxyProperties extends MethodGenerator
                 . ')->__invoke();';
         }
 
-        $this->setDocblock(
-            "@override constructor to setup interceptors\n\n"
-            . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
-            . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
-            . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
-        );
         $this->setBody(
             (empty($localizedProperties) ? '' : implode("\n\n", $localizedProperties) . "\n\n")
             . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
