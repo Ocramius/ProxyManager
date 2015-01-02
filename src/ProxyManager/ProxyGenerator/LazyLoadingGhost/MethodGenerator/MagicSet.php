@@ -36,33 +36,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class MagicSet extends MagicMethodGenerator
 {
-    /**
-     * @param ReflectionClass        $originalClass
-     * @param PropertyGenerator      $initializerProperty
-     * @param MethodGenerator        $callInitializer
-     * @param PublicPropertiesMap    $publicProperties
-     * @param ProtectedPropertiesMap $protectedProperties
-     * @param PrivatePropertiesMap   $privateProperties
-     */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        MethodGenerator $callInitializer,
-        PublicPropertiesMap $publicProperties,
-        ProtectedPropertiesMap $protectedProperties,
-        PrivatePropertiesMap $privateProperties
-    ) {
-        parent::__construct(
-            $originalClass,
-            '__set',
-            [new ParameterGenerator('name'), new ParameterGenerator('value')]
-        );
-
-        $override   = $originalClass->hasMethod('__set');
-
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-
-        $callParentTemplate = <<<'PHP'
+    private $callParentTemplate = <<<'PHP'
 if (isset(self::$%s[$name])) {
     return ($this->$name = $value);
 }
@@ -118,8 +92,34 @@ if (isset(self::$%s[$name])) {
 
 PHP;
 
+    /**
+     * @param ReflectionClass        $originalClass
+     * @param PropertyGenerator      $initializerProperty
+     * @param MethodGenerator        $callInitializer
+     * @param PublicPropertiesMap    $publicProperties
+     * @param ProtectedPropertiesMap $protectedProperties
+     * @param PrivatePropertiesMap   $privateProperties
+     */
+    public function __construct(
+        ReflectionClass $originalClass,
+        PropertyGenerator $initializerProperty,
+        MethodGenerator $callInitializer,
+        PublicPropertiesMap $publicProperties,
+        ProtectedPropertiesMap $protectedProperties,
+        PrivatePropertiesMap $privateProperties
+    ) {
+        parent::__construct(
+            $originalClass,
+            '__set',
+            [new ParameterGenerator('name'), new ParameterGenerator('value')]
+        );
+
+        $override   = $originalClass->hasMethod('__set');
+
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+
         $callParent = sprintf(
-            $callParentTemplate,
+            $this->callParentTemplate,
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
