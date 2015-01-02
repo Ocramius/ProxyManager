@@ -102,6 +102,33 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider skipPropertiesFixture
+     */
+    public function testSkipProperties($className, $properties)
+    {
+        $propertyName = $properties[0]; 
+        $factory      = new LazyLoadingGhostFactory();
+        $ghostObject  = $factory->createProxy(
+            $className,
+            function () {
+                throw new \RunTimeException('Teste Failing every time');
+            },
+            $properties
+        );
+
+        $ghostObject->$propertyName;
+    }
+
+    public function skipPropertiesFixture()
+    {
+        return [
+            ['ProxyManagerTestAsset\ClassWithPublicProperties', ['property9']],
+            ['ProxyManagerTestAsset\ClassWithProtectedProperties', ['property9']],
+            ['ProxyManagerTestAsset\ClassWithPrivateProperties', ['property9']],
+        ];
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
