@@ -76,7 +76,6 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @dataProvider getProxyMethods
      *
      * @param string  $className
-     * @param object  $instance
      * @param string  $method
      * @param mixed[] $params
      */
@@ -94,11 +93,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                  $instance
      * @param \ProxyManager\Proxy\NullObjectInterface $proxy
      * @param string                                  $publicProperty
      */
-    public function testPropertyReadAccess($instance, $proxy, $publicProperty)
+    public function testPropertyReadAccess($proxy, $publicProperty)
     {
         $this->assertSame(null, $proxy->$publicProperty);
     }
@@ -106,11 +104,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                  $instance
      * @param \ProxyManager\Proxy\NullObjectInterface $proxy
      * @param string                                  $publicProperty
      */
-    public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
+    public function testPropertyWriteAccess($proxy, $publicProperty)
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -121,11 +118,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                  $instance
      * @param \ProxyManager\Proxy\NullObjectInterface $proxy
      * @param string                                  $publicProperty
      */
-    public function testPropertyExistence($instance, $proxy, $publicProperty)
+    public function testPropertyExistence($proxy, $publicProperty)
     {
         $this->assertSame(null, $proxy->$publicProperty);
     }
@@ -133,15 +129,13 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                  $instance
      * @param \ProxyManager\Proxy\NullObjectInterface $proxy
      * @param string                                  $publicProperty
      */
-    public function testPropertyUnset($instance, $proxy, $publicProperty)
+    public function testPropertyUnset($proxy, $publicProperty)
     {
         unset($proxy->$publicProperty);
 
-        $this->assertTrue(isset($instance->$publicProperty));
         $this->assertFalse(isset($proxy->$publicProperty));
     }
 
@@ -215,21 +209,17 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getPropertyAccessProxies()
     {
-        $instance1  = new BaseClass();
-        $proxyName1 = $this->generateProxy(get_class($instance1));
-        $instance2  = new BaseClass();
-        $proxyName2 = $this->generateProxy(get_class($instance2));
+        $proxyName1 = $this->generateProxy(BaseClass::class);
+        $proxyName2 = $this->generateProxy(BaseClass::class);
 
         return [
             [
-                $instance1,
-                $proxyName1::staticProxyConstructor($instance1),
+                $proxyName1::staticProxyConstructor(),
                 'publicProperty',
                 'publicPropertyDefault',
             ],
             [
-                $instance2,
-                unserialize(serialize($proxyName2::staticProxyConstructor($instance2))),
+                unserialize(serialize($proxyName2::staticProxyConstructor())),
                 'publicProperty',
                 'publicPropertyDefault',
             ],
