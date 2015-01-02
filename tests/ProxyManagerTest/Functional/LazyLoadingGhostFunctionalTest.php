@@ -178,7 +178,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param object               $instance
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
-     * @param mixed                $propertyValue
      */
     public function testPropertyExistence($instance, $proxy, $publicProperty)
     {
