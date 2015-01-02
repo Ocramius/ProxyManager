@@ -67,7 +67,9 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
             $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
             $generatorStrategy->generate($generatedClass);
         } catch (ExceptionInterface $e) {
+            // empty catch: this is actually a supported failure
         } catch (ReflectionException $e) {
+            // empty catch: this is actually a supported failure
         }
 
         $this->assertTrue(true, 'Code generation succeeded: proxy is valid or couldn\'t be generated at all');
