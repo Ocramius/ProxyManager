@@ -186,4 +186,13 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ReflectionProperty::class, $group2['property8']);
         $this->assertInstanceOf(ReflectionProperty::class, $group2['property9']);
     }
+
+    public function testGetInstanceProperties()
+    {
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithMixedProperties::class)
+        );
+
+        $this->assertCount(9, $properties->getInstanceProperties());
+    }
 }
