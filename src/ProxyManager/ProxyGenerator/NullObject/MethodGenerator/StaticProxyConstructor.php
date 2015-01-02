@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -43,7 +44,7 @@ class StaticProxyConstructor extends MethodGenerator
             function (ReflectionProperty $publicProperty) {
                 return '$instance->' . $publicProperty->getName() . ' = null;';
             },
-            $this->getInstancePublicProperties($originalClass)
+            Properties::fromReflectionClass($originalClass)->getPublicProperties()
         );
 
         $this->setDocblock("Constructor for null object initialization");
@@ -53,21 +54,6 @@ class StaticProxyConstructor extends MethodGenerator
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
             . ($nullableProperties ? implode("\n", $nullableProperties) . "\n\n" : '')
             . 'return $instance;'
-        );
-    }
-
-    /**
-     * @param ReflectionClass $originalClass
-     *
-     * @return ReflectionProperty[]
-     */
-    private function getInstancePublicProperties(ReflectionClass $originalClass)
-    {
-        return array_filter(
-            $originalClass->getProperties(ReflectionProperty::IS_PUBLIC),
-            function (ReflectionProperty $property) {
-                return ! $property->isStatic();
-            }
         );
     }
 }
