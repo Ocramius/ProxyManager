@@ -60,6 +60,8 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      * and won't conflict
      *
      * @dataProvider getTestedClasses
+     *
+     * @param string $className
      */
     public function testCanGenerateMultipleDifferentProxiesForSameClass($className)
     {
