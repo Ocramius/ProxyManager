@@ -50,6 +50,8 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      * @dataProvider getBaseIdentifierNames
      *
      * @covers \ProxyManager\Generator\Util\UniqueIdentifierGenerator::getIdentifier
+     *
+     * @param string $name
      */
     public function testGeneratesValidIdentifiers($name)
     {
