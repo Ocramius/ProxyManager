@@ -85,21 +85,23 @@ PHP;
             var_export($className, true)
         );
 
-        ob_start();
-        eval($code);
-        $result = ob_get_clean();
+        $generatedClass          = new \ProxyManager\Generator\ClassGenerator(uniqid('generated'));
+        $generatorStrategy       = new \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy();
+        /* @var $classGenerator \ProxyManager\ProxyGenerator\ProxyGeneratorInterface */
+        $classGenerator          = new $generatorClass;
+        $classSignatureGenerator = new \ProxyManager\Signature\ClassSignatureGenerator(
+            new \ProxyManager\Signature\SignatureGenerator()
+        );
 
-        if (('SUCCESS: ' . $className) !== $result) {
-            $this->fail(sprintf(
-                "Crashed with class '%s' and generator '%s'.\n\nResult:\n%s\n\nGenerated code:\n%s'",
-                $generatorClass,
-                $className,
-                $result,
-                $code
-            ));
+        try {
+            $classGenerator->generate(new ReflectionClass($className), $generatedClass);
+            $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
+            $generatorStrategy->generate($generatedClass);
+        } catch (\ProxyManager\Exception\ExceptionInterface $e) {
+        } catch (\ReflectionException $e) {
         }
 
-        $this->assertSame('SUCCESS: ' . $className, $result);
+        $this->assertTrue(true, 'Code generation succeeded: proxy is valid or couldn\'t be generated at all');
     }
 
     /**
