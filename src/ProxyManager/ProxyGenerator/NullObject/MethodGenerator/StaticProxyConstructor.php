@@ -39,13 +39,12 @@ class StaticProxyConstructor extends MethodGenerator
     {
         parent::__construct('staticProxyConstructor', [], static::FLAG_PUBLIC | static::FLAG_STATIC);
 
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $nullableProperties  = [];
-
-        foreach ($publicProperties as $publicProperty) {
-            $nullableProperties[] = '$instance->' . $publicProperty->getName() . ' = null;';
-        }
+        $nullableProperties = array_map(
+            function (ReflectionProperty $publicProperty) {
+                return '$instance->' . $publicProperty->getName() . ' = null;';
+            },
+            $this->getInstancePublicProperties($originalClass)
+        );
 
         $this->setDocblock("Constructor for null object initialization");
         $this->setBody(
@@ -54,6 +53,21 @@ class StaticProxyConstructor extends MethodGenerator
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
             . ($nullableProperties ? implode("\n", $nullableProperties) . "\n\n" : '')
             . 'return $instance;'
+        );
+    }
+
+    /**
+     * @param ReflectionClass $originalClass
+     *
+     * @return ReflectionProperty[]
+     */
+    private function getInstancePublicProperties(ReflectionClass $originalClass)
+    {
+        return array_filter(
+            $originalClass->getProperties(ReflectionProperty::IS_PUBLIC),
+            function (ReflectionProperty $property) {
+                return ! $property->isStatic();
+            }
         );
     }
 }
