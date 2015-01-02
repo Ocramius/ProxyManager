@@ -39,6 +39,9 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Inflector\ClassNameInflector::getUserClassName
      * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
      * @covers \ProxyManager\Inflector\ClassNameInflector::isProxyClassName
+     *
+     * @param string $realClassName
+     * @param string $proxyClassName
      */
     public function testInflector($realClassName, $proxyClassName)
     {
