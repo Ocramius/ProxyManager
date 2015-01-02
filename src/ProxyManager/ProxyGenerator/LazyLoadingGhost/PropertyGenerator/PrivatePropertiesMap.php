@@ -35,6 +35,8 @@ class PrivatePropertiesMap extends PropertyGenerator
 
     /**
      * Constructor
+     *
+     * @param ReflectionClass $originalClass
      */
     public function __construct(ReflectionClass $originalClass)
     {
