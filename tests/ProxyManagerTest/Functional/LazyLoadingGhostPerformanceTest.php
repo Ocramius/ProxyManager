@@ -43,9 +43,9 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
      * @outputBuffering
      * @dataProvider getTestedClasses
      *
-     * @param string                $className
-     * @param array                 $methods
-     * @param array                 $properties
+     * @param string $className
+     * @param array  $methods
+     * @param array  $properties
      *
      * @return void
      */
