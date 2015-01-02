@@ -140,6 +140,10 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param string|object $instanceOrClassname
+     * @param string        $publicProperty
+     * @param string        $propertyValue
      */
     public function testJsonRpcPropertyReadAccess($instanceOrClassname, $publicProperty, $propertyValue)
     {
