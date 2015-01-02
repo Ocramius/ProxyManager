@@ -20,13 +20,20 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
+use ProxyManager\Exception\ExceptionInterface;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\ProxyInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
+use ProxyManager\Signature\ClassSignatureGenerator;
+use ProxyManager\Signature\SignatureGenerator;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Verifies that proxy-manager will not attempt to `eval()` code that will cause fatal errors
@@ -39,30 +46,6 @@ use ReflectionClass;
  */
 class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
 {
-    private $template = <<<'PHP'
-<?php
-
-require_once %s;
-
-$className               = %s;
-$generatedClass          = new ProxyManager\Generator\ClassGenerator(uniqid('generated'));
-$generatorStrategy       = new ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy();
-$classGenerator          = new %s;
-$classSignatureGenerator = new ProxyManager\Signature\ClassSignatureGenerator(
-    new ProxyManager\Signature\SignatureGenerator()
-);
-
-try {
-    $classGenerator->generate(new ReflectionClass($className), $generatedClass);
-    $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
-    $generatorStrategy->generate($generatedClass);
-} catch (ProxyManager\Exception\ExceptionInterface $e) {
-} catch (ReflectionException $e) {
-}
-
-echo 'SUCCESS: ' . %s;
-PHP;
-
     /**
      * Verifies that code generation and evaluation will not cause fatals with any given class
      *
@@ -74,34 +57,21 @@ PHP;
      */
     public function testCodeGeneration($generatorClass, $className)
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('HHVM is just too slow for this kind of test right now.');
+        $generatedClass          = new ClassGenerator(uniqid('generated'));
+        $generatorStrategy       = new EvaluatingGeneratorStrategy();
+        /* @var $classGenerator \ProxyManager\ProxyGenerator\ProxyGeneratorInterface */
+        $classGenerator          = new $generatorClass;
+        $classSignatureGenerator = new ClassSignatureGenerator(new SignatureGenerator());
+
+        try {
+            $classGenerator->generate(new ReflectionClass($className), $generatedClass);
+            $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
+            $generatorStrategy->generate($generatedClass);
+        } catch (ExceptionInterface $e) {
+        } catch (ReflectionException $e) {
         }
 
-        $runner = PHPUnit_Util_PHP::factory();
-
-        $code = sprintf(
-            $this->template,
-            var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
-            var_export($className, true),
-            $generatorClass,
-            var_export($className, true)
-        );
-
-        $result = $runner->runJob($code, ['-n']);
-
-        if (('SUCCESS: ' . $className) !== $result['stdout']) {
-            $this->fail(sprintf(
-                "Crashed with class '%s' and generator '%s'.\n\nStdout:\n%s\nStderr:\n%s\nGenerated code:\n%s'",
-                $generatorClass,
-                $className,
-                $result['stdout'],
-                $result['stderr'],
-                $code
-            ));
-        }
-
-        $this->assertSame('SUCCESS: ' . $className, $result['stdout']);
+        $this->assertTrue(true, 'Code generation succeeded: proxy is valid or couldn\'t be generated at all');
     }
 
     /**
@@ -154,6 +124,10 @@ PHP;
                 $fileName        = $reflectionClass->getFileName();
 
                 if (! $fileName) {
+                    return false;
+                }
+
+                if ($reflectionClass->implementsInterface(ProxyInterface::class)) {
                     return false;
                 }
 
