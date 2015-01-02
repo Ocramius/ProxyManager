@@ -105,14 +105,14 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string|object $instanceOrClassname
+     * @param string|object $instanceOrClassName
      * @param string        $method
      * @param mixed[]       $params
      * @param mixed         $expectedValue
      */
-    public function testXmlRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
+    public function testXmlRpcMethodCalls($instanceOrClassName, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy($instanceOrClassname);
+        $proxyName = $this->generateProxy($instanceOrClassName);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
@@ -123,14 +123,14 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string|object $instanceOrClassname
+     * @param string|object $instanceOrClassName
      * @param string        $method
      * @param mixed[]       $params
      * @param mixed         $expectedValue
      */
-    public function testJsonRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
+    public function testJsonRpcMethodCalls($instanceOrClassName, $method, $params, $expectedValue)
     {
-        $proxyName = $this->generateProxy($instanceOrClassname);
+        $proxyName = $this->generateProxy($instanceOrClassName);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
@@ -141,13 +141,13 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param string|object $instanceOrClassname
+     * @param string|object $instanceOrClassName
      * @param string        $publicProperty
      * @param string        $propertyValue
      */
-    public function testJsonRpcPropertyReadAccess($instanceOrClassname, $publicProperty, $propertyValue)
+    public function testJsonRpcPropertyReadAccess($instanceOrClassName, $publicProperty, $propertyValue)
     {
-        $proxyName = $this->generateProxy($instanceOrClassname);
+        $proxyName = $this->generateProxy($instanceOrClassName);
 
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor(
