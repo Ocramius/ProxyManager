@@ -188,7 +188,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
