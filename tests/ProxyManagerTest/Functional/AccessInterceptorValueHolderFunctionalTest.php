@@ -201,7 +201,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
