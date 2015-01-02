@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -61,21 +62,22 @@ class BindProxyProperties extends MethodGenerator
 
         $localizedProperties = [];
 
-        foreach ($originalClass->getProperties() as $originalProperty) {
-            $propertyName = $originalProperty->getName();
+        $properties = Properties::fromReflectionClass($originalClass);
 
-            if ($originalProperty->isStatic()) {
-                continue;
-            }
+        foreach ($properties->getPrivateProperties() as $property) {
+            $propertyName = $property->getName();
 
-            if ($originalProperty->isPrivate()) {
-                $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
-                    . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
-                    . '}, $this, ' . var_export($originalProperty->getDeclaringClass()->getName(), true)
-                    . ')->__invoke();';
-            } else {
-                $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
-            }
+            $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
+                . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
+                . '}, $this, ' . var_export($property->getDeclaringClass()->getName(), true)
+                . ')->__invoke();';
+        }
+
+        /* @var $property \ReflectionProperty */
+        foreach (array_merge($properties->getPublicProperties(), $properties->getProtectedProperties()) as $property) {
+            $propertyName = $property->getName();
+
+            $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
         }
 
         $this->setDocblock(
