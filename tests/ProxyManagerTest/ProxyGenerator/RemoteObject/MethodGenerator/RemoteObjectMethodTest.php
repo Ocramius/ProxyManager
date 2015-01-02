@@ -70,6 +70,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
      */
     public function testBodyStructureWithArrayParameter()
     {
+        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->getMock(PropertyGenerator::class);
         $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
 
