@@ -37,28 +37,9 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicUnset extends MagicMethodGenerator
 {
     /**
-     * @param ReflectionClass        $originalClass
-     * @param PropertyGenerator      $initializerProperty
-     * @param MethodGenerator        $callInitializer
-     * @param PublicPropertiesMap    $publicProperties
-     * @param ProtectedPropertiesMap $protectedProperties
-     * @param PrivatePropertiesMap   $privateProperties
+     * @var string
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        MethodGenerator $callInitializer,
-        PublicPropertiesMap $publicProperties,
-        ProtectedPropertiesMap $protectedProperties,
-        PrivatePropertiesMap $privateProperties
-    ) {
-        parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
-
-        $override = $originalClass->hasMethod('__unset');
-
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-
-        $callParentTemplate = <<<'PHP'
+    private $callParentTemplate = <<<'PHP'
 if (isset(self::$%s[$name])) {
     unset($this->$name);
 
@@ -120,8 +101,30 @@ if (isset(self::$%s[$name])) {
 
 PHP;
 
+    /**
+     * @param ReflectionClass        $originalClass
+     * @param PropertyGenerator      $initializerProperty
+     * @param MethodGenerator        $callInitializer
+     * @param PublicPropertiesMap    $publicProperties
+     * @param ProtectedPropertiesMap $protectedProperties
+     * @param PrivatePropertiesMap   $privateProperties
+     */
+    public function __construct(
+        ReflectionClass $originalClass,
+        PropertyGenerator $initializerProperty,
+        MethodGenerator $callInitializer,
+        PublicPropertiesMap $publicProperties,
+        ProtectedPropertiesMap $protectedProperties,
+        PrivatePropertiesMap $privateProperties
+    ) {
+        parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
+
+        $override = $originalClass->hasMethod('__unset');
+
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+
         $callParent = sprintf(
-            $callParentTemplate,
+            $this->callParentTemplate,
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
