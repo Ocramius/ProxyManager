@@ -69,6 +69,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params, $expectedValue)
     {
