@@ -22,7 +22,6 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
-use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
