@@ -205,7 +205,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
