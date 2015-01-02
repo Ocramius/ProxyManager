@@ -64,6 +64,10 @@ class BindProxyProperties extends MethodGenerator
         foreach ($originalClass->getProperties() as $originalProperty) {
             $propertyName = $originalProperty->getName();
 
+            if ($originalProperty->isStatic()) {
+                continue;
+            }
+
             if ($originalProperty->isPrivate()) {
                 $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
                     . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
