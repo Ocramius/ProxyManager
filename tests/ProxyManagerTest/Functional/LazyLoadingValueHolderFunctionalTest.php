@@ -148,6 +148,10 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                $instance
+     * @param VirtualProxyInterface $proxy
+     * @param string                $publicProperty
      */
     public function testPropertyExistence($instance, $proxy, $publicProperty)
     {
