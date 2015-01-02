@@ -164,7 +164,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy GhostObjectInterface */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
