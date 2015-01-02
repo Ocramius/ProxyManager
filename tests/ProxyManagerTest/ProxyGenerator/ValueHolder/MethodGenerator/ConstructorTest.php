@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
@@ -125,5 +126,35 @@ if (! $this->foo) {
 $this->foo->' . $className . '($first, $second, $third);',
             $constructor->getBody()
         );
+    }
+
+    public function testBodyStructureWithStaticProperties()
+    {
+        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $valueHolder = $this->getMock(PropertyGenerator::class);
+
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $constructor = Constructor::generateMethod(new ReflectionClass(ClassWithMixedProperties::class), $valueHolder);
+
+        $this->assertSame('__construct', $constructor->getName());
+        $this->assertCount(0, $constructor->getParameters());
+
+        $expectedCode = <<<'PHP'
+static $reflection;
+
+if (! $this->foo) {
+    $reflection = $reflection ?: new \ReflectionClass('ProxyManagerTestAsset\\ClassWithMixedProperties');
+    $this->foo = $reflection->newInstanceWithoutConstructor();
+
+    unset($this->publicProperty0);
+    unset($this->publicProperty1);
+    unset($this->publicProperty2);
+}
+
+$this->foo->__construct();
+PHP;
+
+        $this->assertSame($expectedCode, $constructor->getBody());
     }
 }
