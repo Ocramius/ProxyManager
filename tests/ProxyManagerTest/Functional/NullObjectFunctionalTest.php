@@ -43,11 +43,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @dataProvider getProxyMethods
      *
      * @param string  $className
-     * @param object  $instance
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCalls($className, $instance, $method, $params)
+    public function testMethodCalls($className, $method, $params)
     {
         $proxyName = $this->generateProxy($className);
 
@@ -61,11 +60,10 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @dataProvider getProxyMethods
      *
      * @param string  $className
-     * @param object  $instance
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params)
+    public function testMethodCallsAfterUnSerialization($className, $method, $params)
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
@@ -82,7 +80,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCallsAfterCloning($className, $instance, $method, $params)
+    public function testMethodCallsAfterCloning($className, $method, $params)
     {
         $proxyName = $this->generateProxy($className);
 
@@ -179,35 +177,30 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         return [
             [
                 BaseClass::class,
-                new BaseClass(),
                 'publicMethod',
                 [],
                 'publicMethodDefault'
             ],
             [
                 BaseClass::class,
-                new BaseClass(),
                 'publicTypeHintedMethod',
                 ['param' => new \stdClass()],
                 'publicTypeHintedMethodDefault'
             ],
             [
                 BaseClass::class,
-                new BaseClass(),
                 'publicByReferenceMethod',
                 [],
                 'publicByReferenceMethodDefault'
             ],
             [
                 BaseInterface::class,
-                new BaseClass(),
                 'publicMethod',
                 [],
                 'publicMethodDefault'
             ],
             [
                 ClassWithSelfHint::class,
-                new ClassWithSelfHint(),
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
                 $selfHintParam
