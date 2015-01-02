@@ -46,7 +46,6 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
      * @param string                $className
      * @param array                 $methods
      * @param array                 $properties
-     * @param \ReflectionProperty[] $reflectionProperties
      *
      * @return void
      */
