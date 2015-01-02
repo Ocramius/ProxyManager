@@ -137,7 +137,6 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
