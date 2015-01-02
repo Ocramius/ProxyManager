@@ -64,6 +64,12 @@ class BindProxyProperties extends MethodGenerator
 
         $properties = Properties::fromReflectionClass($originalClass);
 
+        foreach ($properties->getAccessibleProperties() as $property) {
+            $propertyName = $property->getName();
+
+            $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
+        }
+
         foreach ($properties->getPrivateProperties() as $property) {
             $propertyName = $property->getName();
 
@@ -71,12 +77,6 @@ class BindProxyProperties extends MethodGenerator
                 . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
                 . '}, $this, ' . var_export($property->getDeclaringClass()->getName(), true)
                 . ')->__invoke();';
-        }
-
-        foreach ($properties->getAccessibleProperties() as $property) {
-            $propertyName = $property->getName();
-
-            $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
         }
 
         $this->setDocblock(
