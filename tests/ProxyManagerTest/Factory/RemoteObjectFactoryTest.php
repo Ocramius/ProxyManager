@@ -21,6 +21,7 @@ namespace ProxyManagerTest\Factory;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Factory\RemoteObjectFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -105,7 +106,8 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->with(BaseInterface::class)
             ->will($this->returnValue(RemoteObjectMock::class));
 
-        $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $adapter = $this->getMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /* @var $proxy \stdClass */
         $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
