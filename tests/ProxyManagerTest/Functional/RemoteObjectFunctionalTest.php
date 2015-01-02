@@ -104,6 +104,11 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string|object $instanceOrClassname
+     * @param string        $method
+     * @param mixed[]       $params
+     * @param mixed         $expectedValue
      */
     public function testXmlRpcMethodCalls($instanceOrClassname, $method, $params, $expectedValue)
     {
