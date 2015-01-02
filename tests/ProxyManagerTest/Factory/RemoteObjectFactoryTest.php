@@ -21,9 +21,11 @@ namespace ProxyManagerTest\Factory;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Factory\RemoteObjectFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
@@ -105,7 +107,8 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->with(BaseInterface::class)
             ->will($this->returnValue(RemoteObjectMock::class));
 
-        $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $adapter = $this->getMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /* @var $proxy \stdClass */
         $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
@@ -125,7 +128,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
     public function testWillTryAutoGeneration()
     {
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
-        $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
+        $generator      = $this->getMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->getMock(AutoloaderInterface::class);
 
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
@@ -176,7 +179,8 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
 
-        $adapter = $this->getMock('ProxyManager\Factory\RemoteObject\AdapterInterface');
+        /* @var $adapter AdapterInterface */
+        $adapter = $this->getMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
 

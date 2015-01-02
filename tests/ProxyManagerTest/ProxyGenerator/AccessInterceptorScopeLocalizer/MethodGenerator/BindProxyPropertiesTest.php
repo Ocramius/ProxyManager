@@ -119,7 +119,6 @@ $this->pre = $prefixInterceptors;
 $this->post = $suffixInterceptors;
 PHP;
 
-
         $this->assertSame($expectedCode, $method->getBody());
     }
 

@@ -35,6 +35,9 @@ class ParameterHasherTest extends PHPUnit_Framework_TestCase
      * @dataProvider getParameters
      *
      * @covers \ProxyManager\Inflector\Util\ParameterHasher::hashParameters
+     *
+     * @param mixed[] $parameters
+     * @param string  $expectedHash
      */
     public function testGeneratesValidClassName(array $parameters, $expectedHash)
     {

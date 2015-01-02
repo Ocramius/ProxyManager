@@ -47,12 +47,18 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
-    public function testMethodCalls($className, $instance, $method, $params, $expectedValue)
+    public function testMethodCalls($className, $instance, $method, array $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy VirtualProxyInterface|BaseClass */
+        /* @var $proxy VirtualProxyInterface */
         $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
@@ -63,12 +69,18 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterUnSerialization($className, $instance, $method, array $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy VirtualProxyInterface|BaseClass */
+        /* @var $proxy VirtualProxyInterface */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
             $this->createInitializer($className, $instance)
         )));
@@ -80,12 +92,18 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterCloning($className, $instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterCloning($className, $instance, $method, array $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy VirtualProxyInterface|BaseClass */
+        /* @var $proxy VirtualProxyInterface */
         $proxy  = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
         $cloned = clone $proxy;
 
@@ -97,10 +115,14 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                $instance
+     * @param VirtualProxyInterface $proxy
+     * @param string                $publicProperty
+     * @param mixed                 $propertyValue
      */
-    public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
+    public function testPropertyReadAccess($instance, VirtualProxyInterface $proxy, $publicProperty, $propertyValue)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
@@ -108,10 +130,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                $instance
+     * @param VirtualProxyInterface $proxy
+     * @param string                $publicProperty
      */
-    public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
+    public function testPropertyWriteAccess($instance, VirtualProxyInterface $proxy, $publicProperty)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
@@ -122,10 +147,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                $instance
+     * @param VirtualProxyInterface $proxy
+     * @param string                $publicProperty
      */
-    public function testPropertyExistence($instance, $proxy, $publicProperty)
+    public function testPropertyExistence($instance, VirtualProxyInterface $proxy, $publicProperty)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
@@ -133,10 +161,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                $instance
+     * @param VirtualProxyInterface $proxy
+     * @param string                $publicProperty
      */
-    public function testPropertyAbsence($instance, $proxy, $publicProperty)
+    public function testPropertyAbsence($instance, VirtualProxyInterface $proxy, $publicProperty)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         $instance->$publicProperty = null;
         $this->assertFalse(isset($proxy->$publicProperty));
@@ -145,10 +176,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                $instance
+     * @param VirtualProxyInterface $proxy
+     * @param string                $publicProperty
      */
-    public function testPropertyUnset($instance, $proxy, $publicProperty)
+    public function testPropertyUnset($instance, VirtualProxyInterface $proxy, $publicProperty)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         unset($proxy->$publicProperty);
 

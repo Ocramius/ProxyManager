@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc;
+use Zend\Server\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc}
@@ -39,10 +40,8 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
      */
     public function testCanBuildAdapterWithXmlRpcClient()
     {
-        $client = $this
-            ->getMockBuilder('Zend\Server\Client')
-            ->setMethods(['call'])
-            ->getMock();
+        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        $client = $this->getMock(Client::class, ['call']);
 
         $adapter = new XmlRpc($client);
 

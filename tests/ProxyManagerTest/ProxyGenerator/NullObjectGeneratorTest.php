@@ -32,7 +32,6 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
 use ReflectionMethod;
-use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator}
@@ -49,6 +48,8 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
+     *
+     * @param string $className
      */
     public function testGeneratesValidCode($className)
     {

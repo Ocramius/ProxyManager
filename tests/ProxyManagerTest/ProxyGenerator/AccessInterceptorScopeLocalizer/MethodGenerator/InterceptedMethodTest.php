@@ -38,7 +38,9 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
 {
     public function testBodyStructure()
     {
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));

@@ -45,6 +45,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 {
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testMethodCalls($className, $instance, $method, $params, $expectedValue)
     {
@@ -88,6 +94,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testMethodCallsWithSuffixListener($className, $instance, $method, $params, $expectedValue)
     {
@@ -127,6 +139,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params, $expectedValue)
     {
@@ -140,6 +158,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getProxyMethods
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testMethodCallsAfterCloning($className, $instance, $method, $params, $expectedValue)
     {
@@ -156,20 +180,27 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                                                                                  $instance
+     * @param \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface $proxy
+     * @param string                                                                                  $publicProperty
+     * @param mixed                                                                                   $propertyValue
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                                                                                  $instance
+     * @param \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface $proxy
+     * @param string                                                                                  $publicProperty
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
@@ -179,10 +210,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                                                                                  $instance
+     * @param \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface $proxy
+     * @param string                                                                                  $publicProperty
      */
     public function testPropertyExistence($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
 
@@ -192,10 +226,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                                                                                  $instance
+     * @param \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface $proxy
+     * @param string                                                                                  $publicProperty
      */
     public function testPropertyUnset($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface */
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         unset($proxy->$publicProperty);
 

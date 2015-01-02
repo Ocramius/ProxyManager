@@ -39,11 +39,17 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testInterceptorGenerator()
     {
+        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $method             = $this->getMock(MethodGenerator::class);
+        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $bar                = $this->getMock(ParameterGenerator::class);
+        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $baz                = $this->getMock(ParameterGenerator::class);
+        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder        = $this->getMock(PropertyGenerator::class);
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
         $bar->expects($this->any())->method('getName')->will($this->returnValue('bar'));
