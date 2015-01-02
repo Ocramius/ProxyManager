@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
@@ -88,7 +89,7 @@ class Constructor extends MethodGenerator
                 function (ReflectionProperty $unsetProperty) {
                     return 'unset($this->' . $unsetProperty->getName() . ');';
                 },
-                $class->getProperties(ReflectionProperty::IS_PUBLIC)
+                Properties::fromReflectionClass($class)->getPublicProperties()
             )
         );
 
