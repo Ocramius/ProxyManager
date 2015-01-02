@@ -66,7 +66,7 @@ final class ProxiedMethodsFilter
 
     /**
      * @param ReflectionClass $class
-     * @param array           $excluded
+     * @param string[]        $excluded
      * @param bool            $requireAbstract
      *
      * @return ReflectionMethod[]
