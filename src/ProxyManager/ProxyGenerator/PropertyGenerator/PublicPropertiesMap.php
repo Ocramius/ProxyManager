@@ -21,7 +21,6 @@ namespace ProxyManager\ProxyGenerator\PropertyGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
-use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
