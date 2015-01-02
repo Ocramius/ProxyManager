@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
@@ -57,5 +58,14 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($publicProperties->isStatic());
         $this->assertSame('private', $publicProperties->getVisibility());
         $this->assertFalse($publicProperties->isEmpty());
+    }
+
+    public function testClassWithMixedProperties()
+    {
+        $publicProperties = new PublicPropertiesMap(
+            new ReflectionClass(ClassWithMixedProperties::class)
+        );
+
+        $this->assertCount(3, $publicProperties->getDefaultValue()->getValue());
     }
 }
