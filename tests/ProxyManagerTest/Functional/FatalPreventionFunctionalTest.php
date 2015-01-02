@@ -20,6 +20,9 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
 use PHPUnit_Util_PHP;
+use ProxyManager\Exception\ExceptionInterface;
+use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\ProxyInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
@@ -27,7 +30,10 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
+use ProxyManager\Signature\ClassSignatureGenerator;
+use ProxyManager\Signature\SignatureGenerator;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Verifies that proxy-manager will not attempt to `eval()` code that will cause fatal errors
@@ -51,20 +57,18 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testCodeGeneration($generatorClass, $className)
     {
-        $generatedClass          = new \ProxyManager\Generator\ClassGenerator(uniqid('generated'));
-        $generatorStrategy       = new \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy();
+        $generatedClass          = new ClassGenerator(uniqid('generated'));
+        $generatorStrategy       = new EvaluatingGeneratorStrategy();
         /* @var $classGenerator \ProxyManager\ProxyGenerator\ProxyGeneratorInterface */
         $classGenerator          = new $generatorClass;
-        $classSignatureGenerator = new \ProxyManager\Signature\ClassSignatureGenerator(
-            new \ProxyManager\Signature\SignatureGenerator()
-        );
+        $classSignatureGenerator = new ClassSignatureGenerator(new SignatureGenerator());
 
         try {
             $classGenerator->generate(new ReflectionClass($className), $generatedClass);
             $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
             $generatorStrategy->generate($generatedClass);
-        } catch (\ProxyManager\Exception\ExceptionInterface $e) {
-        } catch (\ReflectionException $e) {
+        } catch (ExceptionInterface $e) {
+        } catch (ReflectionException $e) {
         }
 
         $this->assertTrue(true, 'Code generation succeeded: proxy is valid or couldn\'t be generated at all');
