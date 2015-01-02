@@ -73,10 +73,6 @@ PHP;
      */
     public function testCodeGeneration($generatorClass, $className)
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('HHVM is just too slow for this kind of test right now.');
-        }
-
         $code = sprintf(
             $this->template,
             var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
