@@ -192,7 +192,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
     {
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertProxySynchronized($instance, $proxy);
     }
