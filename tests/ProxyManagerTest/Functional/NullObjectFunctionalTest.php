@@ -42,12 +42,12 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCalls($className, $instance, $method, $params, $expectedValue)
+    public function testMethodCalls($className, $instance, $method, $params)
     {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
-        $proxy     = $proxyName::staticProxyConstructor();
+        $proxy = $proxyName::staticProxyConstructor();
 
         $this->assertSame(null, call_user_func_array([$proxy, $method], $params));
     }
@@ -55,7 +55,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterUnSerialization($className, $instance, $method, $params)
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
@@ -67,7 +67,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProxyMethods
      */
-    public function testMethodCallsAfterCloning($className, $instance, $method, $params, $expectedValue)
+    public function testMethodCallsAfterCloning($className, $instance, $method, $params)
     {
         $proxyName = $this->generateProxy($className);
 
