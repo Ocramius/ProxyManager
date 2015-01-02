@@ -170,7 +170,6 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyAbsence($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         $instance->$publicProperty = null;
         $this->assertFalse(isset($proxy->$publicProperty));
