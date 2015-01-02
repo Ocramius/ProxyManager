@@ -129,7 +129,6 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyExistence($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $this->assertSame(null, $proxy->$publicProperty);
     }
 
@@ -142,7 +141,6 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyUnset($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         unset($proxy->$publicProperty);
 
         $this->assertTrue(isset($instance->$publicProperty));
