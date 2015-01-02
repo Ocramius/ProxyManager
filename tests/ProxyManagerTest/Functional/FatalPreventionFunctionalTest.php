@@ -19,7 +19,6 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
-use PHPUnit_Util_PHP;
 use ProxyManager\Exception\ExceptionInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
