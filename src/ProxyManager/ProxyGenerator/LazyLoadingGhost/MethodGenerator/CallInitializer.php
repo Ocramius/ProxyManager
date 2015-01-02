@@ -102,7 +102,6 @@ PHP;
                 . ';';
         }
 
-
         foreach ($properties->getGroupedPrivateProperties() as $className => $privateProperties) {
             $cacheKey      = 'cache' . str_replace('\\', '_', $className);
             $assignments[] = 'static $' . $cacheKey . ";\n\n"
