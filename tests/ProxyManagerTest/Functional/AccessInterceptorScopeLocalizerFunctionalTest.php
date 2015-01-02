@@ -231,6 +231,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                                         $instance
+     * @param \ProxyManager\Proxy\AccessInterceptorInterface $proxy
+     * @param string                                         $publicProperty
      */
     public function testPropertyUnset($instance, $proxy, $publicProperty)
     {
