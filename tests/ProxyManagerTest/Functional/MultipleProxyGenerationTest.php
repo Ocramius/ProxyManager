@@ -71,8 +71,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         $initializer                            = function () {
         };
 
-        $reflectionClass = new ReflectionClass($className);
-        $generated       = [
+        $generated = [
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
