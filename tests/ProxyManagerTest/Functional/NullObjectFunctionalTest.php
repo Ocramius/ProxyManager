@@ -114,7 +114,6 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyWriteAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
