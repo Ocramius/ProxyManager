@@ -25,6 +25,7 @@ use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Factory\RemoteObjectFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
@@ -127,7 +128,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
     public function testWillTryAutoGeneration()
     {
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
-        $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
+        $generator      = $this->getMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->getMock(AutoloaderInterface::class);
 
         $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
