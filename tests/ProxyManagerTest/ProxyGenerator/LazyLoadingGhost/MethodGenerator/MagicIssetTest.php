@@ -124,7 +124,6 @@ if (isset(self::$baz[$name])) {
 %A
 PHP;
 
-
     /**
      * {@inheritDoc}
      */
