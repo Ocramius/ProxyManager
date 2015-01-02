@@ -26,6 +26,12 @@ namespace ProxyManagerTestAsset;
  */
 class ClassWithMixedProperties
 {
+    public static $publicStaticProperty       = 'publicStaticProperty';
+
+    protected static $protectedStaticProperty = 'protectedStaticProperty';
+
+    private static $privateStaticProperty     = 'privateStaticProperty';
+
     public $publicProperty0       = 'publicProperty0';
 
     public $publicProperty1       = 'publicProperty1';

@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -43,43 +44,40 @@ class BindProxyProperties extends MethodGenerator
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
     ) {
-        parent::__construct('bindProxyProperties', [], static::FLAG_PRIVATE);
-
-        $localizedObject = new ParameterGenerator('localizedObject');
-        $prefix          = new ParameterGenerator('prefixInterceptors');
-        $suffix          = new ParameterGenerator('suffixInterceptors');
-
-        $localizedObject->setType($originalClass->getName());
-        $prefix->setDefaultValue([]);
-        $suffix->setDefaultValue([]);
-        $prefix->setType('array');
-        $suffix->setType('array');
-
-        $this->setParameter($localizedObject);
-        $this->setParameter($prefix);
-        $this->setParameter($suffix);
-
-        $localizedProperties = [];
-
-        foreach ($originalClass->getProperties() as $originalProperty) {
-            $propertyName = $originalProperty->getName();
-
-            if ($originalProperty->isPrivate()) {
-                $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
-                    . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
-                    . '}, $this, ' . var_export($originalProperty->getDeclaringClass()->getName(), true)
-                    . ')->__invoke();';
-            } else {
-                $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
-            }
-        }
-
-        $this->setDocblock(
+        parent::__construct(
+            'bindProxyProperties',
+            [
+                new ParameterGenerator('localizedObject', $originalClass->getName()),
+                new ParameterGenerator('prefixInterceptors', 'array', []),
+                new ParameterGenerator('suffixInterceptors', 'array', []),
+            ],
+            static::FLAG_PRIVATE,
+            null,
             "@override constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
             . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic"
         );
+
+        $localizedProperties = [];
+
+        $properties = Properties::fromReflectionClass($originalClass);
+
+        foreach ($properties->getAccessibleProperties() as $property) {
+            $propertyName = $property->getName();
+
+            $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
+        }
+
+        foreach ($properties->getPrivateProperties() as $property) {
+            $propertyName = $property->getName();
+
+            $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
+                . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
+                . '}, $this, ' . var_export($property->getDeclaringClass()->getName(), true)
+                . ')->__invoke();';
+        }
+
         $this->setBody(
             (empty($localizedProperties) ? '' : implode("\n\n", $localizedProperties) . "\n\n")
             . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"

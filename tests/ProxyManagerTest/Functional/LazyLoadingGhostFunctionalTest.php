@@ -27,6 +27,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
@@ -573,7 +574,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             }
         );
 
-        foreach ((new ReflectionClass(ClassWithMixedProperties::class))->getProperties() as $property) {
+        $reflectionClass = new ReflectionClass(ClassWithMixedProperties::class);
+
+        foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {
             $property->setAccessible(true);
 
             $this->assertSame(str_replace('Property', '', $property->getName()), $property->getValue($proxy));
@@ -662,7 +665,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $initializer     = null;
             $reflectionClass = new ReflectionClass($realInstance);
 
-            foreach ($reflectionClass->getProperties() as $property) {
+            foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {
                 $property->setAccessible(true);
                 $property->setValue($proxy, $property->getValue($realInstance));
             }

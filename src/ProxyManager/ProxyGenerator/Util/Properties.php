@@ -142,4 +142,12 @@ final class Properties
 
         return $propertiesMap;
     }
+
+    /**
+     * @return ReflectionProperty[] indexed by the property internal visibility-aware name (\0*\0propertyName)
+     */
+    public function getInstanceProperties()
+    {
+        return array_merge($this->getAccessibleProperties(), $this->getPrivateProperties());
+    }
 }

@@ -21,6 +21,7 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -41,17 +42,13 @@ class StaticProxyConstructor extends MethodGenerator
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapter)
     {
-        parent::__construct(
-            'staticProxyConstructor',
-            [],
-            MethodGenerator::FLAG_PUBLIC | MethodGenerator::FLAG_STATIC
-        );
-
         $adapterName = $adapter->getName();
 
-        $this->setParameter(new ParameterGenerator($adapterName, AdapterInterface::class));
-
-        $this->setDocblock(
+        parent::__construct(
+            'staticProxyConstructor',
+            [new ParameterGenerator($adapterName, AdapterInterface::class)],
+            MethodGenerator::FLAG_PUBLIC | MethodGenerator::FLAG_STATIC,
+            null,
             'Constructor for remote object control\n\n'
             . '@param \\ProxyManager\\Factory\\RemoteObject\\AdapterInterface \$adapter'
         );
@@ -61,10 +58,8 @@ class StaticProxyConstructor extends MethodGenerator
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
             . '$instance->' . $adapterName . ' = $' . $adapterName . ';';
 
-        foreach ($originalClass->getProperties() as $property) {
-            if ($property->isPublic() && ! $property->isStatic()) {
-                $body .= "\nunset(\$instance->" . $property->getName() . ');';
-            }
+        foreach (Properties::fromReflectionClass($originalClass)->getPublicProperties() as $property) {
+            $body .= "\nunset(\$instance->" . $property->getName() . ');';
         }
 
         $this->setBody($body . "\n\nreturn \$instance;");

@@ -20,9 +20,9 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\Method
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\BindProxyProperties;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
-use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -85,36 +85,42 @@ class BindProxyPropertiesTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $method = new BindProxyProperties(
-            new ReflectionClass(ClassWithPublicProperties::class),
+            new ReflectionClass(ClassWithMixedProperties::class),
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
 
-        $this->assertSame(
-            '$this->property0 = & $localizedObject->property0;
+        $expectedCode = <<<'PHP'
+$this->publicProperty0 = & $localizedObject->publicProperty0;
 
-$this->property1 = & $localizedObject->property1;
+$this->publicProperty1 = & $localizedObject->publicProperty1;
 
-$this->property2 = & $localizedObject->property2;
+$this->publicProperty2 = & $localizedObject->publicProperty2;
 
-$this->property3 = & $localizedObject->property3;
+$this->protectedProperty0 = & $localizedObject->protectedProperty0;
 
-$this->property4 = & $localizedObject->property4;
+$this->protectedProperty1 = & $localizedObject->protectedProperty1;
 
-$this->property5 = & $localizedObject->property5;
+$this->protectedProperty2 = & $localizedObject->protectedProperty2;
 
-$this->property6 = & $localizedObject->property6;
+\Closure::bind(function () use ($localizedObject) {
+    $this->privateProperty0 = & $localizedObject->privateProperty0;
+}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke();
 
-$this->property7 = & $localizedObject->property7;
+\Closure::bind(function () use ($localizedObject) {
+    $this->privateProperty1 = & $localizedObject->privateProperty1;
+}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke();
 
-$this->property8 = & $localizedObject->property8;
-
-$this->property9 = & $localizedObject->property9;
+\Closure::bind(function () use ($localizedObject) {
+    $this->privateProperty2 = & $localizedObject->privateProperty2;
+}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke();
 
 $this->pre = $prefixInterceptors;
-$this->post = $suffixInterceptors;',
-            $method->getBody()
-        );
+$this->post = $suffixInterceptors;
+PHP;
+
+
+        $this->assertSame($expectedCode, $method->getBody());
     }
 
     public function testBodyStructureWithProtectedProperties()

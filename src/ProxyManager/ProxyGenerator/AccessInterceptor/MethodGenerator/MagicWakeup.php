@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -39,13 +40,12 @@ class MagicWakeup extends MagicMethodGenerator
     {
         parent::__construct($originalClass, '__wakeup');
 
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
-        $unsetProperties  = [];
-
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$this->' . $publicProperty->getName();
-        }
+        $unsetProperties = array_map(
+            function (ReflectionProperty $property) {
+                return '$this->' . $property->getName();
+            },
+            Properties::fromReflectionClass($originalClass)->getPublicProperties()
+        );
 
         $this->setBody($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '');
     }

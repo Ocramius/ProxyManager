@@ -25,6 +25,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -387,7 +388,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     {
         $reflectionClass = new ReflectionClass($instance);
 
-        foreach ($reflectionClass->getProperties() as $property) {
+        foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {
             $property->setAccessible(true);
 
             $this->assertSame(
