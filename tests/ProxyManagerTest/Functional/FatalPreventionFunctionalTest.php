@@ -155,6 +155,10 @@ PHP;
                     return false;
                 }
 
+                if ($reflectionClass->implementsInterface(ProxyInterface::class)) {
+                    return false;
+                }
+
                 $realPath = realpath($fileName);
 
                 foreach ($skippedPaths as $skippedPath) {
