@@ -180,6 +180,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param string  $className
+     * @param object  $instance
+     * @param string  $method
+     * @param mixed[] $params
+     * @param mixed   $expectedValue
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
     {
