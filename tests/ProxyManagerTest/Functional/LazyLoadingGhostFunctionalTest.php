@@ -150,7 +150,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty, $propertyValue)
     {
-        /* @var $proxy GhostObjectInterface */
         $this->assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertTrue($proxy->isProxyInitialized());
     }
