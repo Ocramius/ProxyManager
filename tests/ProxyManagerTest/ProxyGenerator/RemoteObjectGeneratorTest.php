@@ -46,6 +46,8 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
+     *
+     * @param string $className
      */
     public function testGeneratesValidCode($className)
     {
