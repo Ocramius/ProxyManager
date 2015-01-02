@@ -40,7 +40,9 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 {
     public function testCantAddAFinalMethod()
     {
+        /* @var $classGenerator ClassGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $classGenerator  = $this->getMock(ClassGenerator::class);
+        /* @var $methodGenerator MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $methodGenerator = $this->getMock(MethodGenerator::class);
 
         $methodGenerator
