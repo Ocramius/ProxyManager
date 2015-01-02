@@ -40,28 +40,6 @@ use ReflectionClass;
  */
 class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
 {
-    private $template = <<<'PHP'
-require_once %s;
-
-$className               = %s;
-$generatedClass          = new ProxyManager\Generator\ClassGenerator(uniqid('generated'));
-$generatorStrategy       = new ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy();
-$classGenerator          = new %s;
-$classSignatureGenerator = new ProxyManager\Signature\ClassSignatureGenerator(
-    new ProxyManager\Signature\SignatureGenerator()
-);
-
-try {
-    $classGenerator->generate(new ReflectionClass($className), $generatedClass);
-    $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
-    $generatorStrategy->generate($generatedClass);
-} catch (ProxyManager\Exception\ExceptionInterface $e) {
-} catch (ReflectionException $e) {
-}
-
-echo 'SUCCESS: ' . %s;
-PHP;
-
     /**
      * Verifies that code generation and evaluation will not cause fatals with any given class
      *
