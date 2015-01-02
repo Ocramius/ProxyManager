@@ -73,14 +73,6 @@ PHP;
      */
     public function testCodeGeneration($generatorClass, $className)
     {
-        $code = sprintf(
-            $this->template,
-            var_export(realpath(__DIR__ . '/../../../vendor/autoload.php'), true),
-            var_export($className, true),
-            $generatorClass,
-            var_export($className, true)
-        );
-
         $generatedClass          = new \ProxyManager\Generator\ClassGenerator(uniqid('generated'));
         $generatorStrategy       = new \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy();
         /* @var $classGenerator \ProxyManager\ProxyGenerator\ProxyGeneratorInterface */
