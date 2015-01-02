@@ -155,7 +155,6 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyExistence($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy VirtualProxyInterface|BaseClass */
         $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
