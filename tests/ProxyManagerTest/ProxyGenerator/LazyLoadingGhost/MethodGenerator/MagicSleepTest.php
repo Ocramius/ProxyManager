@@ -41,7 +41,9 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         $reflection  = new ReflectionClass(EmptyClass::class);
+        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer = $this->getMock(PropertyGenerator::class);
+        /* @var $initMethod MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initMethod  = $this->getMock(MethodGenerator::class);
 
         $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
