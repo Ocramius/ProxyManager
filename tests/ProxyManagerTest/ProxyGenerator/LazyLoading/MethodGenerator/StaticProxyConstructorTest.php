@@ -22,8 +22,6 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
-use ProxyManagerTestAsset\EmptyClass;
-use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
