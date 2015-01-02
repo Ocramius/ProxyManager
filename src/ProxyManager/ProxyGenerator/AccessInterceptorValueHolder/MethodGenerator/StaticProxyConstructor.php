@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;
@@ -60,8 +61,7 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
-        /* @var $publicProperties \ReflectionProperty[] */
-        $publicProperties = $originalClass->getProperties(ReflectionProperty::IS_PUBLIC);
+        $publicProperties = Properties::fromReflectionClass($originalClass)->getPublicProperties();
         $unsetProperties  = [];
 
         foreach ($publicProperties as $publicProperty) {
