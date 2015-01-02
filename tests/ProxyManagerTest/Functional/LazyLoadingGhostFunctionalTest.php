@@ -63,7 +63,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy GhostObjectInterface|BaseClass */
+        /* @var $proxy GhostObjectInterface */
         $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
@@ -87,7 +87,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $initializeMatcher->expects($this->never())->method('__invoke'); // should not initialize the proxy
 
-        /* @var $proxy \ProxyManager\Proxy\GhostObjectInterface|BaseClass */
+        /* @var $proxy GhostObjectInterface */
         $proxy = $proxyName::staticProxyConstructor(
             $this->createInitializer($className, $instance, $initializeMatcher)
         );
@@ -110,7 +110,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy GhostObjectInterface|BaseClass */
+        /* @var $proxy GhostObjectInterface */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
             $this->createInitializer($className, $instance)
         )));
@@ -132,7 +132,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy GhostObjectInterface|BaseClass */
+        /* @var $proxy GhostObjectInterface */
         $proxy  = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
         $cloned = clone $proxy;
 
