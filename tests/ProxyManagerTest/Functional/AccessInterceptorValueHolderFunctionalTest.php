@@ -226,6 +226,10 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * @dataProvider getPropertyAccessProxies
+     *
+     * @param object                                                                                  $instance
+     * @param \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface $proxy
+     * @param string                                                                                  $publicProperty
      */
     public function testPropertyUnset($instance, $proxy, $publicProperty)
     {
