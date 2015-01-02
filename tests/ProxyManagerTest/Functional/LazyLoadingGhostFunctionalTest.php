@@ -195,7 +195,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyAbsence($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy GhostObjectInterface */
         $proxy->$publicProperty = null;
         $this->assertFalse(isset($proxy->$publicProperty));
         $this->assertTrue($proxy->isProxyInitialized());
