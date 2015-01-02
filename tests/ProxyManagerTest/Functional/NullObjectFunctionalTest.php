@@ -102,7 +102,6 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyReadAccess($instance, $proxy, $publicProperty)
     {
-        /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
         $this->assertSame(null, $proxy->$publicProperty);
     }
 
