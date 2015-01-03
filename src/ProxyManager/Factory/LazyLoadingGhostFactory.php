@@ -18,7 +18,7 @@
 
 namespace ProxyManager\Factory;
 
-use ProxyManager\Proxy\GhostObjectInterface;
+use Closure;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 
 /**
@@ -26,8 +26,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
- *
- * @method GhostObjectInterface createProxy($className, \Closure $initializer)
  */
 class LazyLoadingGhostFactory extends AbstractLazyFactory
 {
@@ -37,10 +35,23 @@ class LazyLoadingGhostFactory extends AbstractLazyFactory
     private $generator;
 
     /**
+     * @var array|null
+     */
+    private $keepIntactProperties;
+
+    public function createProxy($className, Closure $initializer, array $properties = null)
+    {
+        $this->keepIntactProperties = $properties;
+        $proxyClassName = $this->generateProxy($className);
+
+        return $proxyClassName::staticProxyConstructor($initializer);
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function getGenerator()
     {
-        return $this->generator ?: $this->generator = new LazyLoadingGhostGenerator();
+        return $this->generator ?: $this->generator = new LazyLoadingGhostGenerator($this->keepIntactProperties);
     }
 }
