@@ -110,7 +110,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
         $factory      = new LazyLoadingGhostFactory();
         $ghostObject  = $factory->createProxy(
             $className,
-            function () {
+            function () use ($propertyName) {
                 throw new \RunTimeException(
                     sprintf('The property %s not need to be lazy loaded', $propertyName)
                 );
@@ -118,7 +118,11 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             $properties
         );
 
-        $ghostObject->$propertyName;
+        $reflection = new \ReflectionClass($className);
+        $property   = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        $this->assertEquals($propertyName, $property->getValue($ghostObject));
     }
 
     public function testSkipMultipleProperties()
@@ -127,7 +131,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
         $ghostObject  = $factory->createProxy(
             'ProxyManagerTestAsset\ClassWithMixedProperties',
             function () {
-                throw new \RunTimeException('Failled to skip property to not be lazyloaded');
+                throw new \RunTimeException('Failed to skip property to not be lazy loaded');
             },
             ['publicProperty0', 'protectedProperty0', 'privateProperty0']
         );
