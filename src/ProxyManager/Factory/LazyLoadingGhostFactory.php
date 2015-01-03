@@ -47,11 +47,27 @@ class LazyLoadingGhostFactory extends AbstractLazyFactory
         return $proxyClassName::staticProxyConstructor($initializer);
     }
 
+    private function generateProxyClass($proxyClassName, $className, array $proxyParameters)
+    {
+        $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
+        $phpClass  = new ClassGenerator($proxyClassName);
+
+        $this->getGenerator()->generate(new ReflectionClass($className), $phpClass);
+
+        $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
+
+        $this->configuration->getGeneratorStrategy()->generate($phpClass, $this->keepIntactProperties);
+
+        $autoloader = $this->configuration->getProxyAutoloader();
+
+        $autoloader($proxyClassName);
+    }
+
     /**
      * {@inheritDoc}
      */
     protected function getGenerator()
     {
-        return $this->generator ?: $this->generator = new LazyLoadingGhostGenerator($this->keepIntactProperties);
+        return $this->generator ?: $this->generator = new LazyLoadingGhostGenerator();
     }
 }

@@ -112,7 +112,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             $className,
             function () {
                 throw new \RunTimeException(
-                    sprintf('The property %s not nedded to be lazy loaded', $propertyName)
+                    sprintf('The property %s not need to be lazy loaded', $propertyName)
                 );
             },
             $properties
