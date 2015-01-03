@@ -60,7 +60,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     /**
      * {@inheritDoc}
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $properties = null)
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $properties = [])
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
@@ -85,7 +85,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $init = new CallInitializer(
             $initializer,
             $initializationTracker,
-            Properties::fromReflectionClass($originalClass)
+            Properties::fromReflectionClass($originalClass, $properties)
         );
 
         array_map(

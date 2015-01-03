@@ -45,10 +45,11 @@ final class Properties
 
     /**
      * @param ReflectionClass $reflection
+     * @param array           $excludedProperties
      *
      * @return self
      */
-    public static function fromReflectionClass(ReflectionClass $reflection)
+    public static function fromReflectionClass(ReflectionClass $reflection, array $excludedProperties = [])
     {
         $class      = $reflection;
         $properties = [];
@@ -57,8 +58,8 @@ final class Properties
             $properties = array_merge(
                 $properties,
                 array_values(array_filter(
-                    $class->getProperties(),
-                    function (ReflectionProperty $property) use ($class) {
+                    array_diff($excludedProperties, $class->getProperties()),
+                    function (ReflectionProperty $property) use ($class, $excludedProperties) {
                         return $class->getName() === $property->getDeclaringClass()->getName()
                             && ! $property->isStatic();
                     }

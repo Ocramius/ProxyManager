@@ -19,6 +19,8 @@
 namespace ProxyManager\Factory;
 
 use Closure;
+use ReflectionClass;
+use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 
 /**
@@ -47,6 +49,9 @@ class LazyLoadingGhostFactory extends AbstractLazyFactory
         return $proxyClassName::staticProxyConstructor($initializer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     private function generateProxyClass($proxyClassName, $className, array $proxyParameters)
     {
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);

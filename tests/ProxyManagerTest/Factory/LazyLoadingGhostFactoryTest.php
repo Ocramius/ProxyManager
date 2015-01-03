@@ -103,6 +103,9 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider skipPropertiesFixture
+     *
+     * @param $className
+     * @param $properties
      */
     public function testSkipProperties($className, $properties)
     {
@@ -111,9 +114,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
         $ghostObject  = $factory->createProxy(
             $className,
             function () use ($propertyName) {
-                throw new \RunTimeException(
-                    sprintf('The property %s not need to be lazy loaded', $propertyName)
-                );
+                $this->fail(sprintf('The property %s not need to be lazy loaded', $propertyName));
             },
             $properties
         );
@@ -122,23 +123,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
 
-        $this->assertEquals($propertyName, $property->getValue($ghostObject));
-    }
-
-    public function testSkipMultipleProperties()
-    {
-        $factory      = new LazyLoadingGhostFactory();
-        $ghostObject  = $factory->createProxy(
-            'ProxyManagerTestAsset\ClassWithMixedProperties',
-            function () {
-                throw new \RunTimeException('Failed to skip property to not be lazy loaded');
-            },
-            ['publicProperty0', 'protectedProperty0', 'privateProperty0']
-        );
-
-        $ghostObject->publicProperty0;
-        $ghostObject->protectedProperty0;
-        $ghostObject->privateProperty0;
+        $this->assertSame($propertyName, $property->getValue($ghostObject));
     }
 
     public function skipPropertiesFixture()
