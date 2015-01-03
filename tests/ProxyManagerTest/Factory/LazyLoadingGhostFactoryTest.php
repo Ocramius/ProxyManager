@@ -129,9 +129,9 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     public function skipPropertiesFixture()
     {
         return [
-            ['ProxyManagerTestAsset\ClassWithPublicProperties', ['property9']],
-            ['ProxyManagerTestAsset\ClassWithProtectedProperties', ['property9']],
-            ['ProxyManagerTestAsset\ClassWithPrivateProperties', ['property9']],
+            ['ProxyManagerTestAsset\ClassWithPublicProperties', ['property1']],
+            ['ProxyManagerTestAsset\ClassWithProtectedProperties', ['property1']],
+            ['ProxyManagerTestAsset\ClassWithPrivateProperties', ['property1']],
         ];
     }
 

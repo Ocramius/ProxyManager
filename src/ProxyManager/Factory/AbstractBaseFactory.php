@@ -41,7 +41,7 @@ abstract class AbstractBaseFactory
      *
      * @var string[]
      */
-    private $checkedClasses = [];
+    protected $checkedClasses = [];
 
     /**
      * @param \ProxyManager\Configuration $configuration

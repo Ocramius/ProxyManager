@@ -58,9 +58,10 @@ final class Properties
             $properties = array_merge(
                 $properties,
                 array_values(array_filter(
-                    self::filterProperties($class->getProperties(), $excludedProperties),
+                    $class->getProperties(),
                     function (ReflectionProperty $property) use ($class, $excludedProperties) {
                         return $class->getName() === $property->getDeclaringClass()->getName()
+                            && ! in_array($property->getName(), $excludedProperties)
                             && ! $property->isStatic();
                     }
                 ))
@@ -126,18 +127,6 @@ final class Properties
     public function getAccessibleProperties()
     {
         return array_merge($this->getPublicProperties(), $this->getProtectedProperties());
-    }
-
-
-    /**
-     * @param array $properties
-     * @param array $disabledProperties
-     *
-     * @return array with disable properties removed
-     */
-    public static function filterProperties(array $properties, array $disabledProperties)
-    {
-        return array_diff($disabledProperties, $properties);
     }
 
     /**
