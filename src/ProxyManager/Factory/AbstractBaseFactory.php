@@ -41,7 +41,7 @@ abstract class AbstractBaseFactory
      *
      * @var string[]
      */
-    protected $checkedClasses = [];
+    private $checkedClasses = [];
 
     /**
      * @param \ProxyManager\Configuration $configuration
@@ -53,10 +53,13 @@ abstract class AbstractBaseFactory
 
     /**
      * Generate a proxy from a class name
-     * @param  string $className
+     *
+     * @param string $className
+     * @param array  $options
+     *
      * @return string proxy class name
      */
-    protected function generateProxy($className)
+    protected function generateProxy($className, array $options = [])
     {
         if (isset($this->checkedClasses[$className])) {
             return $this->checkedClasses[$className];
@@ -73,7 +76,7 @@ abstract class AbstractBaseFactory
             ->getProxyClassName($className, $proxyParameters);
 
         if (! class_exists($proxyClassName)) {
-            $this->generateProxyClass($proxyClassName, $className, $proxyParameters);
+            $this->generateProxyClass($proxyClassName, $className, $proxyParameters, $options);
         }
 
         $this
@@ -91,22 +94,24 @@ abstract class AbstractBaseFactory
 
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
-     * @param string $proxyClassName
-     * @param string $className
-     * @param array  $proxyParameters
+     *
+     * @param string  $proxyClassName
+     * @param string  $className
+     * @param array   $proxyParameters
+     * @param midex[] $options
      *
      * @return void
      */
-    private function generateProxyClass($proxyClassName, $className, array $proxyParameters)
+    private function generateProxyClass($proxyClassName, $className, array $proxyParameters, array $options = [])
     {
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 
-        $this->getGenerator()->generate(new ReflectionClass($className), $phpClass);
+        $this->getGenerator()->generate(new ReflectionClass($className), $phpClass, $options);
 
         $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
 
-        $this->configuration->getGeneratorStrategy()->generate($phpClass);
+        $this->configuration->getGeneratorStrategy()->generate($phpClass, $options);
 
         $autoloader = $this->configuration->getProxyAutoloader();
 

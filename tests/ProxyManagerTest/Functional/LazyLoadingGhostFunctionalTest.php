@@ -831,7 +831,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         ];
     }
 
-
     /**
      * @dataProvider skipPropertiesFixture
      *

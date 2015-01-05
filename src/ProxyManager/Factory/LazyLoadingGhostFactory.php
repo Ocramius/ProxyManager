@@ -47,56 +47,6 @@ class LazyLoadingGhostFactory extends AbstractLazyFactory
     /**
      * {@inheritDoc}
      */
-    protected function generateProxy($className, array $properties = [])
-    {
-        if (isset($this->checkedClasses[$className])) {
-            return $this->checkedClasses[$className];
-        }
-
-        $proxyParameters = [
-            'className'           => $className,
-            'factory'             => get_class($this),
-            'proxyManagerVersion' => Version::VERSION,
-        ];
-        $proxyClassName  = $this
-            ->configuration
-            ->getClassNameInflector()
-            ->getProxyClassName($className, $proxyParameters);
-
-        if (! class_exists($proxyClassName)) {
-            $this->generateProxyClass($proxyClassName, $className, $proxyParameters, $properties);
-        }
-
-        $this
-            ->configuration
-            ->getSignatureChecker()
-            ->checkSignature(new ReflectionClass($proxyClassName), $proxyParameters);
-
-        return $this->checkedClasses[$className] = $proxyClassName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    private function generateProxyClass($proxyClassName, $className, array $proxyParameters, array $properties = [])
-    {
-        $className  = $this->configuration->getClassNameInflector()->getUserClassName($className);
-        $phpClass   = new ClassGenerator($proxyClassName);
-
-        $this->getGenerator()->generate(new ReflectionClass($className), $phpClass, $properties);
-
-        $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
-
-        $this->configuration->getGeneratorStrategy()->generate($phpClass, $properties);
-
-        $autoloader = $this->configuration->getProxyAutoloader();
-
-        $autoloader($proxyClassName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     protected function getGenerator()
     {
         return $this->generator ?: $this->generator = new LazyLoadingGhostGenerator();
