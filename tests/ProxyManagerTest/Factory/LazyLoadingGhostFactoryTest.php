@@ -102,39 +102,6 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider skipPropertiesFixture
-     *
-     * @param $className
-     * @param $propertyName
-     * @param $properties
-     */
-    public function testSkipProperties($className, $propertyName, $properties)
-    {
-        $factory      = new LazyLoadingGhostFactory();
-        $ghostObject  = $factory->createProxy(
-            $className,
-            function () use ($propertyName) {
-                $this->fail(sprintf('The property %s not need to be lazy loaded', $propertyName));
-            },
-            $properties
-        );
-
-        $property = new \ReflectionProperty($className, $propertyName);
-        $property->setAccessible(true);
-
-        $this->assertSame($propertyName, $property->getValue($ghostObject));
-    }
-
-    public function skipPropertiesFixture()
-    {
-        return [
-            ['ProxyManagerTestAsset\ClassWithPublicProperties', 'property9', ["property9"]],
-            ['ProxyManagerTestAsset\ClassWithProtectedProperties', 'property9', ["\0*\0property9"]],
-            ['ProxyManagerTestAsset\ClassWithPrivateProperties', 'property9', ["\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"]],
-        ];
-    }
-
-    /**
      * {@inheritDoc}
      *
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct

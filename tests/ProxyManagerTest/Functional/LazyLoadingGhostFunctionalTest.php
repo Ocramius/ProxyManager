@@ -20,6 +20,7 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -827,6 +828,40 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicProperty',
                 'publicPropertyDefault',
             ],
+        ];
+    }
+
+
+    /**
+     * @dataProvider skipPropertiesFixture
+     *
+     * @param string   $className
+     * @param string   $propertyName
+     * @param string[] $properties
+     */
+    public function testSkipProperties($className, $propertyName, $properties)
+    {
+        $factory      = new LazyLoadingGhostFactory();
+        $ghostObject  = $factory->createProxy(
+            $className,
+            function () use ($propertyName) {
+                $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
+            },
+            $properties
+        );
+
+        $property = new \ReflectionProperty($className, $propertyName);
+        $property->setAccessible(true);
+
+        $this->assertSame($propertyName, $property->getValue($ghostObject));
+    }
+
+    public function skipPropertiesFixture()
+    {
+        return [
+            ['ProxyManagerTestAsset\ClassWithPublicProperties', 'property9', ["property9"]],
+            ['ProxyManagerTestAsset\ClassWithProtectedProperties', 'property9', ["\0*\0property9"]],
+            ['ProxyManagerTestAsset\ClassWithPrivateProperties', 'property9', ["\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"]],
         ];
     }
 }

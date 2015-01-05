@@ -40,7 +40,7 @@ final class Properties
      */
     private function __construct(array $properties)
     {
-        $this->properties         = $properties;
+        $this->properties = $properties;
     }
 
     /**
@@ -78,8 +78,7 @@ final class Properties
     {
         $properties = $this->getInstanceProperties();
 
-        foreach ($excludedProperties as $propertyName)
-        {
+        foreach ($excludedProperties as $propertyName) {
             unset($properties[$propertyName]);
         }
 
