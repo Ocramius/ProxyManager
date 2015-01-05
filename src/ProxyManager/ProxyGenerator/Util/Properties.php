@@ -40,16 +40,15 @@ final class Properties
      */
     private function __construct(array $properties)
     {
-        $this->properties = $properties;
+        $this->properties         = $properties;
     }
 
     /**
      * @param ReflectionClass $reflection
-     * @param array           $excludedProperties
      *
      * @return self
      */
-    public static function fromReflectionClass(ReflectionClass $reflection, array $excludedProperties = [])
+    public static function fromReflectionClass(ReflectionClass $reflection)
     {
         $class      = $reflection;
         $properties = [];
@@ -59,14 +58,30 @@ final class Properties
                 $properties,
                 array_values(array_filter(
                     $class->getProperties(),
-                    function (ReflectionProperty $property) use ($class, $excludedProperties) {
+                    function (ReflectionProperty $property) use ($class) {
                         return $class->getName() === $property->getDeclaringClass()->getName()
-                            && ! in_array($property->getName(), $excludedProperties)
                             && ! $property->isStatic();
                     }
                 ))
             );
         } while ($class = $class->getParentClass());
+
+        return new self($properties);
+    }
+
+    /**
+     * @param array $excludedProperties
+     *
+     * @return Properties
+     */
+    public function filter(array $excludedProperties)
+    {
+        $properties = $this->getInstanceProperties();
+
+        foreach ($excludedProperties as $propertyName)
+        {
+            unset($properties[$propertyName]);
+        }
 
         return new self($properties);
     }

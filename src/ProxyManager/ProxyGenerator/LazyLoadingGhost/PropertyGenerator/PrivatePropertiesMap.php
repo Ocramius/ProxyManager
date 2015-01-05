@@ -37,8 +37,9 @@ class PrivatePropertiesMap extends PropertyGenerator
      * Constructor
      *
      * @param ReflectionClass $originalClass
+     * @param array           $excludedProperties
      */
-    public function __construct(ReflectionClass $originalClass)
+    public function __construct(ReflectionClass $originalClass, array $excludedProperties = [])
     {
         parent::__construct(
             UniqueIdentifierGenerator::getIdentifier('privateProperties')
@@ -49,19 +50,21 @@ class PrivatePropertiesMap extends PropertyGenerator
         $this->setDocblock(
             '@var array[][] visibility and default value of defined properties, indexed by property name and class name'
         );
-        $this->setDefaultValue($this->getMap($originalClass));
+        $this->setDefaultValue($this->getMap($originalClass, $excludedProperties));
     }
 
     /**
      * @param ReflectionClass $originalClass
      *
+     * @param array           $excludedProperties
+     *
      * @return int[][]|mixed[][]
      */
-    private function getMap(ReflectionClass $originalClass)
+    private function getMap(ReflectionClass $originalClass, array $excludedProperties = [])
     {
         $map = [];
 
-        foreach (Properties::fromReflectionClass($originalClass)->getPrivateProperties() as $property) {
+        foreach (Properties::fromReflectionClass($originalClass)->filter($excludedProperties)->getPrivateProperties() as $property) {
             $propertyKey = & $map[$property->getName()];
 
             $propertyKey[$property->getDeclaringClass()->getName()] = true;

@@ -105,11 +105,11 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      * @dataProvider skipPropertiesFixture
      *
      * @param $className
+     * @param $propertyName
      * @param $properties
      */
-    public function testSkipProperties($className, $properties)
+    public function testSkipProperties($className, $propertyName, $properties)
     {
-        $propertyName = $properties[0]; 
         $factory      = new LazyLoadingGhostFactory();
         $ghostObject  = $factory->createProxy(
             $className,
@@ -119,8 +119,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             $properties
         );
 
-        $reflection = new \ReflectionClass($className);
-        $property   = $reflection->getProperty($propertyName);
+        $property = new \ReflectionProperty($className, $propertyName);
         $property->setAccessible(true);
 
         $this->assertSame($propertyName, $property->getValue($ghostObject));
@@ -129,9 +128,9 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
     public function skipPropertiesFixture()
     {
         return [
-            ['ProxyManagerTestAsset\ClassWithPublicProperties', ['property1']],
-            ['ProxyManagerTestAsset\ClassWithProtectedProperties', ['property1']],
-            ['ProxyManagerTestAsset\ClassWithPrivateProperties', ['property1']],
+            ['ProxyManagerTestAsset\ClassWithPublicProperties', 'property9', ["property9"]],
+            ['ProxyManagerTestAsset\ClassWithProtectedProperties', 'property9', ["\0*\0property9"]],
+            ['ProxyManagerTestAsset\ClassWithPrivateProperties', 'property9', ["\0ClassWithPrivateProperties\0property9"]],
         ];
     }
 

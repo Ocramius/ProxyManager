@@ -38,12 +38,13 @@ class PublicPropertiesMap extends PropertyGenerator
 
     /**
      * @param \ReflectionClass $originalClass
+     * @param array            $excludedProperties
      */
-    public function __construct(ReflectionClass $originalClass)
+    public function __construct(ReflectionClass $originalClass, array $excludedProperties = [])
     {
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('publicProperties'));
 
-        foreach (Properties::fromReflectionClass($originalClass)->getPublicProperties() as $publicProperty) {
+        foreach (Properties::fromReflectionClass($originalClass)->filter($excludedProperties)->getPublicProperties() as $publicProperty) {
             $this->publicProperties[$publicProperty->getName()] = true;
         }
 

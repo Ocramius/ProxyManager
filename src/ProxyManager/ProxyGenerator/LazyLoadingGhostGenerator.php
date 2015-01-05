@@ -65,8 +65,8 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $interfaces          = [GhostObjectInterface::class];
-        $publicProperties    = new PublicPropertiesMap($originalClass);
-        $privateProperties   = new PrivatePropertiesMap($originalClass);
+        $publicProperties    = new PublicPropertiesMap($originalClass, $properties);
+        $privateProperties   = new PrivatePropertiesMap($originalClass, $properties);
         $protectedProperties = new ProtectedPropertiesMap($originalClass);
 
         if ($originalClass->isInterface()) {
@@ -85,7 +85,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $init = new CallInitializer(
             $initializer,
             $initializationTracker,
-            Properties::fromReflectionClass($originalClass, $properties)
+            Properties::fromReflectionClass($originalClass)->filter($properties)
         );
 
         array_map(
