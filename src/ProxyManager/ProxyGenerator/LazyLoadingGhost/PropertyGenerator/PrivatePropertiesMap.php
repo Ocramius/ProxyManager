@@ -56,15 +56,13 @@ class PrivatePropertiesMap extends PropertyGenerator
     /**
      * @param ReflectionClass $originalClass
      *
-     * @param array           $excludedProperties
-     *
      * @return int[][]|mixed[][]
      */
-    private function getMap(ReflectionClass $originalClass, array $excludedProperties = [])
+    private function getMap(ReflectionClass $originalClass)
     {
         $map = [];
 
-        foreach (Properties::fromReflectionClass($originalClass)->filter($excludedProperties)->getPrivateProperties() as $property) {
+        foreach (Properties::fromReflectionClass($originalClass)->getPrivateProperties() as $property) {
             $propertyKey = & $map[$property->getName()];
 
             $propertyKey[$property->getDeclaringClass()->getName()] = true;
