@@ -130,7 +130,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
         return [
             ['ProxyManagerTestAsset\ClassWithPublicProperties', 'property9', ["property9"]],
             ['ProxyManagerTestAsset\ClassWithProtectedProperties', 'property9', ["\0*\0property9"]],
-            ['ProxyManagerTestAsset\ClassWithPrivateProperties', 'property9', ["\0ClassWithPrivateProperties\0property9"]],
+            ['ProxyManagerTestAsset\ClassWithPrivateProperties', 'property9', ["\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"]],
         ];
     }
 
