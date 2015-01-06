@@ -37,9 +37,8 @@ class PrivatePropertiesMap extends PropertyGenerator
      * Constructor
      *
      * @param ReflectionClass $originalClass
-     * @param array           $excludedProperties
      */
-    public function __construct(ReflectionClass $originalClass, array $excludedProperties = [])
+    public function __construct(ReflectionClass $originalClass)
     {
         parent::__construct(
             UniqueIdentifierGenerator::getIdentifier('privateProperties')
@@ -50,7 +49,7 @@ class PrivatePropertiesMap extends PropertyGenerator
         $this->setDocblock(
             '@var array[][] visibility and default value of defined properties, indexed by property name and class name'
         );
-        $this->setDefaultValue($this->getMap($originalClass, $excludedProperties));
+        $this->setDefaultValue($this->getMap($originalClass));
     }
 
     /**
