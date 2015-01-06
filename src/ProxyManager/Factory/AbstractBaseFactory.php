@@ -76,7 +76,12 @@ abstract class AbstractBaseFactory
             ->getProxyClassName($className, $proxyParameters);
 
         if (! class_exists($proxyClassName)) {
-            $this->generateProxyClass($proxyClassName, $className, $proxyParameters, $options);
+            $this->generateProxyClass(
+                $proxyClassName,
+                $className,
+                $proxyParameters,
+                isset($options['skippedProperties']) ? $options['skippedProperties'] : []
+            );
         }
 
         $this
