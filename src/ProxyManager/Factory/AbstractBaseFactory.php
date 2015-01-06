@@ -80,7 +80,7 @@ abstract class AbstractBaseFactory
                 $proxyClassName,
                 $className,
                 $proxyParameters,
-                isset($options['skippedProperties']) ? $options['skippedProperties'] : []
+                $options
             );
         }
 
@@ -103,7 +103,7 @@ abstract class AbstractBaseFactory
      * @param string  $proxyClassName
      * @param string  $className
      * @param array   $proxyParameters
-     * @param midex[] $options
+     * @param mixed[] $options
      *
      * @return void
      */
