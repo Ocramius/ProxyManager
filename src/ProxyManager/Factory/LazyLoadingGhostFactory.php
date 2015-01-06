@@ -37,13 +37,6 @@ class LazyLoadingGhostFactory extends AbstractLazyFactory
      */
     private $generator;
 
-    public function createProxy($className, Closure $initializer, array $properties = [])
-    {
-        $proxyClassName = $this->generateProxy($className, $properties);
-
-        return $proxyClassName::staticProxyConstructor($initializer);
-    }
-
     /**
      * {@inheritDoc}
      */

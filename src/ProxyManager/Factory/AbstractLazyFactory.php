@@ -34,12 +34,13 @@ abstract class AbstractLazyFactory extends AbstractBaseFactory
      *
      * @param string   $className   name of the class to be proxied
      * @param \Closure $initializer initializer to be passed to the proxy
+     * @param array    $options
      *
      * @return \ProxyManager\Proxy\LazyLoadingInterface
      */
-    public function createProxy($className, Closure $initializer)
+    public function createProxy($className, Closure $initializer, array $options = [])
     {
-        $proxyClassName = $this->generateProxy($className);
+        $proxyClassName = $this->generateProxy($className, $options);
 
         return $proxyClassName::staticProxyConstructor($initializer);
     }
