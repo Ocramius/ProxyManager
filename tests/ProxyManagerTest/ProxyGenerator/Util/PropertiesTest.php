@@ -187,4 +187,45 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $this->assertCount(9, $properties->getInstanceProperties());
     }
+
+    /**
+     * @dataProvider propertiesToSkipFixture
+     *
+     * @param $propertyName
+     * @param $methodToGetProperties
+     */
+    public function testSkipPropertiesByFiltering($propertyName, $methodToGetProperties)
+    {
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithMixedProperties::class)
+        );
+
+        $this->assertArrayHasKey($propertyName, $properties->$methodToGetProperties());
+        $filteredProperties =  $properties->filter([$propertyName]);
+
+        $this->assertArrayNotHasKey($propertyName, $filteredProperties->$methodToGetProperties());
+    }
+
+    public function propertiesToSkipFixture()
+    {
+        return [
+            ['publicProperty0', 'getPublicProperties'],
+            ["\0*\0protectedProperty0", 'getProtectedProperties'],
+            ["\0ProxyManagerTestAsset\\ClassWithMixedProperties\0privateProperty0", 'getPrivateProperties'],
+        ];
+    }
+
+    public function testPropertiesIsSkippedFromRelatedMethods()
+    {
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithMixedProperties::class)
+        );
+
+        $this->assertArrayHasKey("\0*\0protectedProperty0", $properties->getProtectedProperties());
+        $this->assertArrayHasKey("\0*\0protectedProperty0", $properties->getInstanceProperties());
+        $filteredProperties =  $properties->filter(["\0*\0protectedProperty0"]);
+
+        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getProtectedProperties());
+        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());;
+    }
 }
