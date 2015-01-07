@@ -34,7 +34,7 @@ abstract class AbstractLazyFactory extends AbstractBaseFactory
      *
      * @param string   $className   name of the class to be proxied
      * @param \Closure $initializer initializer to be passed to the proxy
-     * @param array    $options
+     * @param mixed[]  $options
      *
      * @return \ProxyManager\Proxy\LazyLoadingInterface
      */
