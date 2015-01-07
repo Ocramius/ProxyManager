@@ -20,7 +20,6 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_MockObject_MockObject as Mock;
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -39,7 +38,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ReflectionProperty;
-
+use ProxyManager\Factory\LazyLoadingGhostFactory;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
  *
@@ -836,12 +835,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @param string   $className
      * @param string   $propertyName
+     * @param string   $expected
      * @param string[] $properties
      */
-    public function testSkipProperties($className, $propertyName, $properties)
+    public function testSkipProperties($className, $propertyName, $expected, $properties)
     {
-        $factory      = new LazyLoadingGhostFactory();
-        $ghostObject  = $factory->createProxy(
+        $factory     = new LazyLoadingGhostFactory();
+        $ghostObject = $factory->createProxy(
             $className,
             function () use ($propertyName) {
                 $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
@@ -852,15 +852,44 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $property = new \ReflectionProperty($className, $propertyName);
         $property->setAccessible(true);
 
-        $this->assertSame($propertyName, $property->getValue($ghostObject));
+        $this->assertSame($expected, $property->getValue($ghostObject));
     }
 
     public function skipPropertiesFixture()
     {
         return [
-            ['ProxyManagerTestAsset\ClassWithPublicProperties', 'property9', ['skippedProperties' => ["property9"]]],
-            ['ProxyManagerTestAsset\ClassWithProtectedProperties', 'property9', ['skippedProperties' => ["\0*\0property9"]]],
-            ['ProxyManagerTestAsset\ClassWithPrivateProperties', 'property9', ['skippedProperties' => ["\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"]]],
+            [
+                ClassWithPublicProperties::class,
+                'property9',
+                'property9',
+                [
+                    'skippedProperties' => ["property9"]
+                ]
+            ],
+            [
+                ClassWithProtectedProperties::class,
+                'property9',
+                'property9',
+                [
+                    'skippedProperties' => ["\0*\0property9"]
+                ]
+            ],
+            [
+                ClassWithPrivateProperties::class,
+                'property9',
+                'property9',
+                [
+                    'skippedProperties' => ["\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"]
+                ]
+            ],
+            [
+                ClassWithCollidingPrivateInheritedProperties::class,
+                'property0',
+                'childClassProperty0',
+                [
+                    'skippedProperties' => ["\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0"]
+                ]
+            ],
         ];
     }
 }
