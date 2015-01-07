@@ -205,7 +205,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
-    public function testSkipPropertiesWithCollidingInheritedPropertyByFiltering()
+    public function testSkipOverwritedPropertyUsingInheritance()
     {
         $propertyName = "\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0";
 
