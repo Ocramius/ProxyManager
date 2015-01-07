@@ -191,8 +191,8 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider propertiesToSkipFixture
      *
-     * @param $propertyName
-     * @param $methodToGetProperties
+     * @param string $propertyName with property name
+     * @param string $methodToGetProperties name of method to acces the property
      */
     public function testSkipPropertiesByFiltering($propertyName, $methodToGetProperties)
     {
