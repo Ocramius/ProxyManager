@@ -192,18 +192,31 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
      * @dataProvider propertiesToSkipFixture
      *
      * @param string $propertyName with property name
-     * @param string $methodToGetProperties name of method to acces the property
      */
-    public function testSkipPropertiesByFiltering($propertyName, $methodToGetProperties)
+    public function testSkipPropertiesByFiltering($propertyName)
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithMixedProperties::class)
         );
 
-        $this->assertArrayHasKey($propertyName, $properties->$methodToGetProperties());
+        $this->assertArrayHasKey($propertyName, $properties->getInstanceProperties());
         $filteredProperties =  $properties->filter([$propertyName]);
 
-        $this->assertArrayNotHasKey($propertyName, $filteredProperties->$methodToGetProperties());
+        $this->assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
+    }
+
+    public function testSkipPropertiesWithCollidingInheritedPropertyByFiltering()
+    {
+        $propertyName = "\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0";
+
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
+        );
+
+        $this->assertArrayHasKey($propertyName, $properties->getInstanceProperties());
+        $filteredProperties =  $properties->filter([$propertyName]);
+
+        $this->assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
     public function testPropertiesIsSkippedFromRelatedMethods()
@@ -220,12 +233,14 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());;
     }
 
+
+
     public function propertiesToSkipFixture()
     {
         return [
-            ['publicProperty0', 'getPublicProperties'],
-            ["\0*\0protectedProperty0", 'getProtectedProperties'],
-            ["\0ProxyManagerTestAsset\\ClassWithMixedProperties\0privateProperty0", 'getPrivateProperties'],
+            ['publicProperty0'],
+            ["\0*\0protectedProperty0"],
+            ["\0ProxyManagerTestAsset\\ClassWithMixedProperties\0privateProperty0"],
         ];
     }
 }
