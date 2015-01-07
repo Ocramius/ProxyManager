@@ -206,15 +206,6 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey($propertyName, $filteredProperties->$methodToGetProperties());
     }
 
-    public function propertiesToSkipFixture()
-    {
-        return [
-            ['publicProperty0', 'getPublicProperties'],
-            ["\0*\0protectedProperty0", 'getProtectedProperties'],
-            ["\0ProxyManagerTestAsset\\ClassWithMixedProperties\0privateProperty0", 'getPrivateProperties'],
-        ];
-    }
-
     public function testPropertiesIsSkippedFromRelatedMethods()
     {
         $properties = Properties::fromReflectionClass(
@@ -227,5 +218,14 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getProtectedProperties());
         $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());;
+    }
+
+    public function propertiesToSkipFixture()
+    {
+        return [
+            ['publicProperty0', 'getPublicProperties'],
+            ["\0*\0protectedProperty0", 'getProtectedProperties'],
+            ["\0ProxyManagerTestAsset\\ClassWithMixedProperties\0privateProperty0", 'getPrivateProperties'],
+        ];
     }
 }
