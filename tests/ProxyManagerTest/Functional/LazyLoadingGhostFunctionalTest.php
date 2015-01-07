@@ -38,7 +38,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 use ReflectionProperty;
-use ProxyManager\Factory\LazyLoadingGhostFactory;
+
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
  *
@@ -840,9 +840,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testSkipProperties($className, $propertyName, $expected, $properties)
     {
-        $factory     = new LazyLoadingGhostFactory();
-        $ghostObject = $factory->createProxy(
-            $className,
+        $proxy = $this->generateProxy($className);
+        $ghostObject = new $proxy(
             function () use ($propertyName) {
                 $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
             },
@@ -879,7 +878,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'property9',
                 'property9',
                 [
-                    'skippedProperties' => ["\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"]
+                    'skippedProperties' => [
+                        "\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"
+                    ]
                 ]
             ],
             [
@@ -887,7 +888,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'property0',
                 'childClassProperty0',
                 [
-                    'skippedProperties' => ["\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0"]
+                    'skippedProperties' => [
+                        "\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0"
+                    ]
                 ]
             ],
         ];
