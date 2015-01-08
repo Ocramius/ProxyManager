@@ -37,28 +37,11 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicGet extends MagicMethodGenerator
 {
     /**
-     * @param ReflectionClass        $originalClass
-     * @param PropertyGenerator      $initializerProperty
-     * @param MethodGenerator        $callInitializer
-     * @param PublicPropertiesMap    $publicProperties
-     * @param ProtectedPropertiesMap $protectedProperties
-     * @param PrivatePropertiesMap   $privateProperties
+     * @var string
      */
-    public function __construct(
-        ReflectionClass $originalClass,
-        PropertyGenerator $initializerProperty,
-        MethodGenerator $callInitializer,
-        PublicPropertiesMap $publicProperties,
-        ProtectedPropertiesMap $protectedProperties,
-        PrivatePropertiesMap $privateProperties
-    ) {
-        parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
+    private $callParentTemplate =  <<<'PHP'
+%s
 
-        $override = $originalClass->hasMethod('__get');
-
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-
-        $callParentTemplate = <<<'PHP'
 if (isset(self::$%s[$name])) {
     return $this->$name;
 }
@@ -111,34 +94,51 @@ if (isset(self::$%s[$name])) {
     }
 }
 
-
+%s
 PHP;
 
-        $callParent = sprintf(
-            $callParentTemplate,
+    /**
+     * @param ReflectionClass        $originalClass
+     * @param PropertyGenerator      $initializerProperty
+     * @param MethodGenerator        $callInitializer
+     * @param PublicPropertiesMap    $publicProperties
+     * @param ProtectedPropertiesMap $protectedProperties
+     * @param PrivatePropertiesMap   $privateProperties
+     */
+    public function __construct(
+        ReflectionClass $originalClass,
+        PropertyGenerator $initializerProperty,
+        MethodGenerator $callInitializer,
+        PublicPropertiesMap $publicProperties,
+        ProtectedPropertiesMap $protectedProperties,
+        PrivatePropertiesMap $privateProperties
+    ) {
+        parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
+
+        $override = $originalClass->hasMethod('__get');
+
+        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+
+        if ($override) {
+            $parentAccess = 'return parent::__get($name);';
+        } else {
+            $parentAccess = PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_GET,
+                'name'
+            );
+        }
+
+        $this->setBody(sprintf(
+            $this->callParentTemplate,
+            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
+            . '(\'__get\', array(\'name\' => $name));',
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
             $privateProperties->getName(),
             $privateProperties->getName(),
             $privateProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName()
-        );
-
-        if ($override) {
-            $callParent .= 'return parent::__get($name);';
-        } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
-                PublicScopeSimulator::OPERATION_GET,
-                'name'
-            );
-        }
-
-        $this->setBody(
-            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__get\', array(\'name\' => $name));'
-            . "\n\n" . $callParent
-        );
+            $parentAccess
+        ));
     }
 }
