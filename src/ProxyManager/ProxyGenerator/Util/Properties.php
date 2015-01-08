@@ -70,6 +70,22 @@ final class Properties
     }
 
     /**
+     * @param array $excludedProperties
+     *
+     * @return Properties
+     */
+    public function filter(array $excludedProperties)
+    {
+        $properties = $this->getInstanceProperties();
+
+        foreach ($excludedProperties as $propertyName) {
+            unset($properties[$propertyName]);
+        }
+
+        return new self($properties);
+    }
+
+    /**
      * @return ReflectionProperty[] indexed by the property internal visibility-aware name
      */
     public function getPublicProperties()

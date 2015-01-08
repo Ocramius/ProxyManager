@@ -187,4 +187,58 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $this->assertCount(9, $properties->getInstanceProperties());
     }
+
+    /**
+     * @dataProvider propertiesToSkipFixture
+     *
+     * @param string $propertyName with property name
+     */
+    public function testSkipPropertiesByFiltering($propertyName)
+    {
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithMixedProperties::class)
+        );
+
+        $this->assertArrayHasKey($propertyName, $properties->getInstanceProperties());
+        $filteredProperties =  $properties->filter([$propertyName]);
+
+        $this->assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
+    }
+
+    public function testSkipOverwritedPropertyUsingInheritance()
+    {
+        $propertyName = "\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0";
+
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
+        );
+
+        $this->assertArrayHasKey($propertyName, $properties->getInstanceProperties());
+        $filteredProperties =  $properties->filter([$propertyName]);
+
+        $this->assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
+    }
+
+    public function testPropertiesIsSkippedFromRelatedMethods()
+    {
+        $properties = Properties::fromReflectionClass(
+            new ReflectionClass(ClassWithMixedProperties::class)
+        );
+
+        $this->assertArrayHasKey("\0*\0protectedProperty0", $properties->getProtectedProperties());
+        $this->assertArrayHasKey("\0*\0protectedProperty0", $properties->getInstanceProperties());
+        $filteredProperties =  $properties->filter(["\0*\0protectedProperty0"]);
+
+        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getProtectedProperties());
+        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());
+    }
+
+    public function propertiesToSkipFixture()
+    {
+        return [
+            ['publicProperty0'],
+            ["\0*\0protectedProperty0"],
+            ["\0ProxyManagerTestAsset\\ClassWithMixedProperties\0privateProperty0"],
+        ];
+    }
 }

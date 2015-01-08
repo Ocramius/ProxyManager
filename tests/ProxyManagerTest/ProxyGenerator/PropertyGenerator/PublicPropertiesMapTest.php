@@ -21,6 +21,7 @@ namespace ProxyManagerTest\ProxyGenerator;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
@@ -38,7 +39,9 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
 {
     public function testEmptyClass()
     {
-        $publicProperties = new PublicPropertiesMap(new ReflectionClass(EmptyClass::class));
+        $publicProperties = new PublicPropertiesMap(
+            Properties::fromReflectionClass(new ReflectionClass(EmptyClass::class))
+        );
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
         $this->assertEmpty($publicProperties->getDefaultValue()->getValue());
@@ -50,7 +53,7 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
     public function testClassWithPublicProperties()
     {
         $publicProperties = new PublicPropertiesMap(
-            new ReflectionClass(ClassWithPublicProperties::class)
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithPublicProperties::class))
         );
 
         $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
@@ -63,7 +66,7 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
     public function testClassWithMixedProperties()
     {
         $publicProperties = new PublicPropertiesMap(
-            new ReflectionClass(ClassWithMixedProperties::class)
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
         );
 
         $this->assertCount(3, $publicProperties->getDefaultValue()->getValue());

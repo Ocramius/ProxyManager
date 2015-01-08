@@ -46,15 +46,25 @@ class CallInitializer extends MethodGenerator
         PropertyGenerator $initTracker,
         Properties $properties
     ) {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('callInitializer'));
-        $this->setDocblock("Triggers initialization logic for this ghost object");
+        $docblock = <<<'DOCBLOCK'
+Triggers initialization logic for this ghost object
 
-        $this->setParameters([
-            new ParameterGenerator('methodName'),
-            new ParameterGenerator('parameters', 'array'),
-        ]);
+@param string  $methodName
+@param mixed[] $parameters
 
-        $this->setVisibility(static::VISIBILITY_PRIVATE);
+@return mixed
+DOCBLOCK;
+
+        parent::__construct(
+            UniqueIdentifierGenerator::getIdentifier('callInitializer'),
+            [
+                new ParameterGenerator('methodName'),
+                new ParameterGenerator('parameters', 'array'),
+            ],
+            static::VISIBILITY_PRIVATE,
+            null,
+            $docblock
+        );
 
         $initializer    = $initializerProperty->getName();
         $initialization = $initTracker->getName();
@@ -69,8 +79,10 @@ $this->%s = true;
 %s
 %s
 
-$this->%s->__invoke($this, $methodName, $parameters, $this->%s, $properties);
+$result = $this->%s->__invoke($this, $methodName, $parameters, $this->%s, $properties);
 $this->%s = false;
+
+return $result;
 PHP;
 
         $this->setBody(sprintf(
