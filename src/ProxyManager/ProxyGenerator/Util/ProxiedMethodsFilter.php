@@ -79,20 +79,20 @@ final class ProxiedMethodsFilter
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
             function (ReflectionMethod $method) use ($ignored, $requireAbstract) {
                 return (! $requireAbstract || $method->isAbstract())
-                    && ! (isset($ignored[strtolower($method->getName())]) || ! self::methodCanBeProxied($method));
+                    && ! (isset($ignored[strtolower($method->getName())]) || self::methodCannotBeProxied($method));
             }
         );
     }
 
     /**
-     * Checks whether the method can be proxied or not
+     * Checks whether the method cannot be proxied
      *
      * @param ReflectionMethod $method
      *
      * @return bool
      */
-    private static function methodCanBeProxied(ReflectionMethod $method)
+    private static function methodCannotBeProxied(ReflectionMethod $method)
     {
-        return ! ($method->isConstructor() || $method->isFinal() || $method->isStatic());
+        return $method->isConstructor() || $method->isFinal() || $method->isStatic();
     }
 }
