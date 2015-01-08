@@ -45,10 +45,6 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
         if ($reflectionClass->isInterface()) {
             // @todo interfaces *may* be proxied by deferring property localization to the constructor (no hardcoding)
             $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
-
-            parent::testGeneratesValidCode($className);
-
-            return;
         }
 
         parent::testGeneratesValidCode($className);
