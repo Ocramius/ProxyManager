@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator;
 
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator}
@@ -32,6 +33,27 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
  */
 class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
 {
+    /**
+     * @dataProvider getTestedImplementations
+     *
+     * {@inheritDoc}
+     */
+    public function testGeneratesValidCode($className)
+    {
+        $reflectionClass = new ReflectionClass($className);
+
+        if ($reflectionClass->isInterface()) {
+            // @todo interfaces *may* be proxied by deferring property localization to the constructor (no hardcoding)
+            $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
+
+            parent::testGeneratesValidCode($className);
+
+            return;
+        }
+
+        parent::testGeneratesValidCode($className);
+    }
+
     /**
      * {@inheritDoc}
      */
