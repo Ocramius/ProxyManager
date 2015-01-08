@@ -854,6 +854,45 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expected, $property->getValue($ghostObject));
     }
 
+    /**
+     * @dataProvider skipPropertiesFixture
+     *
+     * @param string   $className
+     * @param string   $propertyName
+     * @param string   $expected
+     * @param string[] $properties
+     */
+    public function testSkippedPropertiesAreNotOverwrittenOnInitialization(
+        $className,
+        $propertyName,
+        $expected,
+        $properties
+    ) {
+        $proxyName   = $this->generateProxy($className, ['skippedProperties' => $properties]);
+        /* @var $ghostObject GhostObjectInterface */
+        $ghostObject = $proxyName::staticProxyConstructor(function ($proxy, $method, $params, & $initializer) {
+            $initializer = null;
+
+            return true;
+        });
+
+        $property = new \ReflectionProperty($className, $propertyName);
+
+        $property->setAccessible(true);
+
+        $value = uniqid('', true);
+
+        $property->setValue($ghostObject, $value);
+
+        $this->assertTrue($ghostObject->initializeProxy());
+
+        $this->assertSame(
+            $value,
+            $property->getValue($ghostObject),
+            'Property should not be changed by proxy initialization'
+        );
+    }
+
     public function skipPropertiesFixture()
     {
         return [
