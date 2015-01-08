@@ -40,6 +40,8 @@ class MagicSet extends MagicMethodGenerator
      * @var string
      */
     private $callParentTemplate = <<<'PHP'
+%s
+
 if (isset(self::$%s[$name])) {
     return ($this->$name = $value);
 }
@@ -92,7 +94,7 @@ if (isset(self::$%s[$name])) {
     }
 }
 
-
+%s
 PHP;
 
     /**
@@ -117,34 +119,31 @@ PHP;
             [new ParameterGenerator('name'), new ParameterGenerator('value')]
         );
 
-        $override   = $originalClass->hasMethod('__set');
+        $override = $originalClass->hasMethod('__set');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        $callParent = sprintf(
-            $this->callParentTemplate,
-            $publicProperties->getName(),
-            $protectedProperties->getName(),
-            $protectedProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName()
-        );
+        $parentAccess = 'return parent::__set($name, $value);';
 
-        if ($override) {
-            $callParent .= 'return parent::__set($name, $value);';
-        } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+        if (! $override) {
+            $parentAccess = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_SET,
                 'name',
                 'value'
             );
         }
 
-        $this->setBody(
+        $this->setBody(sprintf(
+            $this->callParentTemplate,
             '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__set\', array(\'name\' => $name, \'value\' => $value));' . "\n\n" . $callParent
-        );
+            . '(\'__set\', array(\'name\' => $name, \'value\' => $value));',
+            $publicProperties->getName(),
+            $protectedProperties->getName(),
+            $protectedProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
+            $parentAccess
+        ));
     }
 }
