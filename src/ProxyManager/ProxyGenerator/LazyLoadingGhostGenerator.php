@@ -62,23 +62,17 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = [])
     {
-        CanProxyAssertion::assertClassCanBeProxied($originalClass);
+        CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
         $filteredProperties = Properties::fromReflectionClass($originalClass)
             ->filter(isset($proxyOptions['skippedProperties']) ? $proxyOptions['skippedProperties'] : []);
 
-        $interfaces          = [GhostObjectInterface::class];
         $publicProperties    = new PublicPropertiesMap($filteredProperties);
         $privateProperties   = new PrivatePropertiesMap($filteredProperties);
         $protectedProperties = new ProtectedPropertiesMap($filteredProperties);
 
-        if ($originalClass->isInterface()) {
-            $interfaces[] = $originalClass->getName();
-        } else {
-            $classGenerator->setExtendedClass($originalClass->getName());
-        }
-
-        $classGenerator->setImplementedInterfaces($interfaces);
+        $classGenerator->setExtendedClass($originalClass->getName());
+        $classGenerator->setImplementedInterfaces([GhostObjectInterface::class]);
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($initializationTracker = new InitializationTracker());
         $classGenerator->addPropertyFromGenerator($publicProperties);
