@@ -69,8 +69,10 @@ $this->%s = true;
 %s
 %s
 
-$this->%s->__invoke($this, $methodName, $parameters, $this->%s, $properties);
+$result = $this->%s->__invoke($this, $methodName, $parameters, $this->%s, $properties);
 $this->%s = false;
+
+return $result;
 PHP;
 
         $this->setBody(sprintf(
