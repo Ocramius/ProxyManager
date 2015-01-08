@@ -842,11 +842,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     public function testSkipProperties($className, $propertyName, $expected, $proxyOptions)
     {
         $proxy = $this->generateProxy($className, $proxyOptions);
-        $ghostObject = new $proxy(
+        $ghostObject = $proxy::staticProxyConstructor(
             function () use ($propertyName) {
                 $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
-            },
-            $proxyOptions
+            }
         );
 
         $property = new \ReflectionProperty($className, $propertyName);

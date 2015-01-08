@@ -230,7 +230,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $filteredProperties =  $properties->filter(["\0*\0protectedProperty0"]);
 
         $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getProtectedProperties());
-        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());;
+        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());
     }
 
     public function propertiesToSkipFixture()
