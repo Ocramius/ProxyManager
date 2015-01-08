@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Generator\MethodGenerator as ProxyManagerMethodGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
@@ -26,7 +27,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\LazyLoadingMethodInterceptor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset;
@@ -88,11 +88,13 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
             array_merge(
                 array_map(
                     function (ReflectionMethod $method) use ($initializer, $init) {
-                        return LazyLoadingMethodInterceptor::generateMethod(
-                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                            $initializer,
-                            $init
+                        $method = ProxyManagerMethodGenerator::fromReflection(
+                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
                         );
+
+                        $method->setAbstract(false);
+
+                        return $method;
                     },
                     ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
                 ),
