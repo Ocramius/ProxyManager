@@ -880,12 +880,14 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $property->setAccessible(true);
 
-        $property->setValue($ghostObject, __CLASS__);
+        $value = uniqid('', true);
+
+        $property->setValue($ghostObject, $value);
 
         $this->assertTrue($ghostObject->initializeProxy());
 
         $this->assertSame(
-            __CLASS__,
+            $value,
             $property->getValue($ghostObject),
             'Property should not be changed by proxy initialization'
         );
