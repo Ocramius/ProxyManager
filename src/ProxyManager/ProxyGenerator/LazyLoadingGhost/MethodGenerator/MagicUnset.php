@@ -40,6 +40,8 @@ class MagicUnset extends MagicMethodGenerator
      * @var string
      */
     private $callParentTemplate = <<<'PHP'
+%s
+
 if (isset(self::$%s[$name])) {
     unset($this->$name);
 
@@ -98,7 +100,7 @@ if (isset(self::$%s[$name])) {
     }
 }
 
-
+%s
 PHP;
 
     /**
@@ -123,29 +125,26 @@ PHP;
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        $callParent = sprintf(
-            $this->callParentTemplate,
-            $publicProperties->getName(),
-            $protectedProperties->getName(),
-            $protectedProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName()
-        );
+        $parentAccess = 'return parent::__unset($name);';
 
-        if ($override) {
-            $callParent .= "return parent::__unset(\$name);";
-        } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+        if (! $override) {
+            $parentAccess = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_UNSET,
                 'name'
             );
         }
 
-        $this->setBody(
+        $this->setBody(sprintf(
+            $this->callParentTemplate,
             '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__unset\', array(\'name\' => $name));'
-            . "\n\n" . $callParent
-        );
+            . '(\'__unset\', array(\'name\' => $name));',
+            $publicProperties->getName(),
+            $protectedProperties->getName(),
+            $protectedProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
+            $parentAccess
+        ));
     }
 }
