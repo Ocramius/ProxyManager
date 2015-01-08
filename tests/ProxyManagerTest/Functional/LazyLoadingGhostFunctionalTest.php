@@ -651,6 +651,21 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
+    public function testInitializeProxyWillReturnTrueOnSuccessfulInitialization()
+    {
+        $proxyName = $this->generateProxy(ClassWithMixedProperties::class);
+
+        /* @var $proxy GhostObjectInterface */
+        $proxy = $proxyName::staticProxyConstructor($this->createInitializer(
+            ClassWithMixedProperties::class,
+            new ClassWithMixedProperties()
+        ));
+
+        $this->assertTrue($proxy->initializeProxy());
+        $this->assertTrue($proxy->isProxyInitialized());
+        $this->assertFalse($proxy->initializeProxy());
+    }
+
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
@@ -714,6 +729,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             }
 
             $initializerMatcher($proxy, $method, $params);
+
+            return true;
         };
     }
 

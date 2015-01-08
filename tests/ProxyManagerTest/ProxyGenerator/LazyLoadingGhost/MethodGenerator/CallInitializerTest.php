@@ -103,8 +103,10 @@ $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheFetchProxyMan
 
 $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
 
-$this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
-$this->track = false;';
+$result = $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
+$this->track = false;
+
+return $result;';
 
         $this->assertSame(
             $expectedCode,
