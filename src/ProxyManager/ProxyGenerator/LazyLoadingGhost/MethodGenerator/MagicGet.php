@@ -119,9 +119,9 @@ PHP;
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if ($override) {
-            $parentAccess = 'return parent::__get($name);';
-        } else {
+        $parentAccess = 'return parent::__get($name);';
+
+        if (! $override) {
             $parentAccess = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_GET,
                 'name'
