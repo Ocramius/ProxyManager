@@ -86,18 +86,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
-                array_map(
-                    function (ReflectionMethod $method) use ($initializer, $init) {
-                        $method = ProxyManagerMethodGenerator::fromReflection(
-                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
-                        );
-
-                        $method->setAbstract(false);
-
-                        return $method;
-                    },
-                    ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
-                ),
+                $this->getAbstractProxiedMethods($originalClass),
                 [
                     $init,
                     new StaticProxyConstructor($initializer, $filteredProperties),
@@ -141,6 +130,29 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     new IsProxyInitialized($initializer),
                 ]
             )
+        );
+    }
+
+    /**
+     * Retrieves all abstract methods to be proxied
+     *
+     * @param ReflectionClass $originalClass
+     *
+     * @return MethodGenerator[]
+     */
+    private function getAbstractProxiedMethods(ReflectionClass $originalClass)
+    {
+        return array_map(
+            function (ReflectionMethod $method) {
+                $method = ProxyManagerMethodGenerator::fromReflection(
+                    new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
+                );
+
+                $method->setAbstract(false);
+
+                return $method;
+            },
+            ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
         );
     }
 }
