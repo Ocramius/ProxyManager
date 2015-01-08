@@ -117,15 +117,35 @@ class ParameterGenerator extends ZendParameterGenerator
      */
     private function getGeneratedType()
     {
-        if (! $this->type || in_array($this->type, static::$simple)) {
+        if ($this->isSimpleType()) {
             return '';
         }
 
-        if ('array' === $this->type || 'callable' === $this->type) {
+        if ($this->isInternalType()) {
             return $this->type . ' ';
         }
 
         return '\\' . trim($this->type, '\\') . ' ';
+    }
+
+    /**
+     * Checks whether the type of the parameter is a simple internal type (no type-hint required)
+     *
+     * @return bool
+     */
+    private function isSimpleType()
+    {
+        return ! $this->type || in_array($this->type, static::$simple);
+    }
+
+    /**
+     * Checks whether the type of the parameter is internal (currently `array` or `callable` supported)
+     *
+     * @return bool
+     */
+    private function isInternalType()
+    {
+        return 'array' === strtolower($this->type) || 'callable' === strtolower($this->type);
     }
 
     /**
