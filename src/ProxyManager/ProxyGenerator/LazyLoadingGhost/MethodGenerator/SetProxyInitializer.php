@@ -38,14 +38,12 @@ class SetProxyInitializer extends MethodGenerator
      */
     public function __construct(PropertyGenerator $initializerProperty)
     {
-        parent::__construct('setProxyInitializer');
-
-        $initializerParameter = new ParameterGenerator('initializer');
-
-        $initializerParameter->setType('Closure');
-        $initializerParameter->setDefaultValue(null);
-        $this->setParameter($initializerParameter);
-        $this->setDocblock('{@inheritDoc}');
-        $this->setBody('$this->' . $initializerProperty->getName() . ' = $initializer;');
+        parent::__construct(
+            'setProxyInitializer',
+            [(new ParameterGenerator('initializer', 'Closure'))->setDefaultValue(null)],
+            self::FLAG_PUBLIC,
+            '$this->' . $initializerProperty->getName() . ' = $initializer;',
+            '{@inheritDoc}'
+        );
     }
 }
