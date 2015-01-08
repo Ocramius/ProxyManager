@@ -98,10 +98,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                 ),
                 [
                     $init,
-                    new StaticProxyConstructor(
-                        $initializer,
-                        $filteredProperties
-                    ),
+                    new StaticProxyConstructor($initializer, $filteredProperties),
                     new MagicGet(
                         $originalClass,
                         $initializer,
