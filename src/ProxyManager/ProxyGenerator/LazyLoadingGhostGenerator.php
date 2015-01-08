@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Generator\MethodGenerator as ProxyManagerMethodGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
@@ -26,7 +27,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\LazyLoadingMethodInterceptor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset;
@@ -62,56 +62,34 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = [])
     {
-        CanProxyAssertion::assertClassCanBeProxied($originalClass);
+        CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
         $filteredProperties = Properties::fromReflectionClass($originalClass)
             ->filter(isset($proxyOptions['skippedProperties']) ? $proxyOptions['skippedProperties'] : []);
 
-        $interfaces          = [GhostObjectInterface::class];
         $publicProperties    = new PublicPropertiesMap($filteredProperties);
         $privateProperties   = new PrivatePropertiesMap($filteredProperties);
         $protectedProperties = new ProtectedPropertiesMap($filteredProperties);
 
-        if ($originalClass->isInterface()) {
-            $interfaces[] = $originalClass->getName();
-        } else {
-            $classGenerator->setExtendedClass($originalClass->getName());
-        }
-
-        $classGenerator->setImplementedInterfaces($interfaces);
+        $classGenerator->setExtendedClass($originalClass->getName());
+        $classGenerator->setImplementedInterfaces([GhostObjectInterface::class]);
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($initializationTracker = new InitializationTracker());
         $classGenerator->addPropertyFromGenerator($publicProperties);
         $classGenerator->addPropertyFromGenerator($privateProperties);
         $classGenerator->addPropertyFromGenerator($protectedProperties);
 
-        $init = new CallInitializer(
-            $initializer,
-            $initializationTracker,
-            $filteredProperties
-        );
+        $init = new CallInitializer($initializer, $initializationTracker, $filteredProperties);
 
         array_map(
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
-                array_map(
-                    function (ReflectionMethod $method) use ($initializer, $init) {
-                        return LazyLoadingMethodInterceptor::generateMethod(
-                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                            $initializer,
-                            $init
-                        );
-                    },
-                    ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
-                ),
+                $this->getAbstractProxiedMethods($originalClass),
                 [
                     $init,
-                    new StaticProxyConstructor(
-                        $initializer,
-                        $filteredProperties
-                    ),
+                    new StaticProxyConstructor($initializer, $filteredProperties),
                     new MagicGet(
                         $originalClass,
                         $initializer,
@@ -152,6 +130,25 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     new IsProxyInitialized($initializer),
                 ]
             )
+        );
+    }
+
+    /**
+     * Retrieves all abstract methods to be proxied
+     *
+     * @param ReflectionClass $originalClass
+     *
+     * @return MethodGenerator[]
+     */
+    private function getAbstractProxiedMethods(ReflectionClass $originalClass)
+    {
+        return array_map(
+            function (ReflectionMethod $method) {
+                return ProxyManagerMethodGenerator
+                    ::fromReflection(new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()))
+                    ->setAbstract(false);
+            },
+            ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
         );
     }
 }

@@ -27,6 +27,7 @@ use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
@@ -36,6 +37,7 @@ use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -771,6 +773,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
                 $selfHintParam
+            ],
+            [
+                ClassWithAbstractPublicMethod::class,
+                new EmptyClass(), // EmptyClass just used to not make reflection explode when synchronizing properties
+                'publicAbstractMethod',
+                [],
+                null
             ],
         ];
     }
