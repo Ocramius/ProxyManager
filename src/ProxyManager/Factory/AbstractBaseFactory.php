@@ -54,8 +54,8 @@ abstract class AbstractBaseFactory
     /**
      * Generate a proxy from a class name
      *
-     * @param string $className
-     * @param array  $proxyOptions
+     * @param string  $className
+     * @param mixed[] $proxyOptions
      *
      * @return string proxy class name
      */
