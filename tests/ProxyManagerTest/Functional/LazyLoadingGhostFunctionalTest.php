@@ -654,16 +654,17 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
-     * @param string $parentClassName
+     * @param string  $parentClassName
+     * @param mixed[] $proxyOptions
      *
      * @return string
      */
-    private function generateProxy($parentClassName)
+    private function generateProxy($parentClassName, array $proxyOptions = [])
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generatedClass     = new ClassGenerator($generatedClassName);
 
-        (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($parentClassName), $generatedClass);
+        (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($parentClassName), $generatedClass, $proxyOptions);
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);
 
         return $generatedClassName;
@@ -836,16 +837,16 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string   $className
      * @param string   $propertyName
      * @param string   $expected
-     * @param string[] $properties
+     * @param string[] $proxyOptions
      */
-    public function testSkipProperties($className, $propertyName, $expected, $properties)
+    public function testSkipProperties($className, $propertyName, $expected, $proxyOptions)
     {
-        $proxy = $this->generateProxy($className);
+        $proxy = $this->generateProxy($className, $proxyOptions);
         $ghostObject = new $proxy(
             function () use ($propertyName) {
                 $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
             },
-            $properties
+            $proxyOptions
         );
 
         $property = new \ReflectionProperty($className, $propertyName);
@@ -860,15 +861,15 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string   $className
      * @param string   $propertyName
      * @param string   $expected
-     * @param string[] $properties
+     * @param string[] $proxyOptions
      */
     public function testSkippedPropertiesAreNotOverwrittenOnInitialization(
         $className,
         $propertyName,
         $expected,
-        $properties
+        $proxyOptions
     ) {
-        $proxyName   = $this->generateProxy($className, ['skippedProperties' => $properties]);
+        $proxyName   = $this->generateProxy($className, $proxyOptions);
         /* @var $ghostObject GhostObjectInterface */
         $ghostObject = $proxyName::staticProxyConstructor(function ($proxy, $method, $params, & $initializer) {
             $initializer = null;
