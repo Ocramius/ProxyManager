@@ -79,11 +79,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($privateProperties);
         $classGenerator->addPropertyFromGenerator($protectedProperties);
 
-        $init = new CallInitializer(
-            $initializer,
-            $initializationTracker,
-            $filteredProperties
-        );
+        $init = new CallInitializer($initializer, $initializationTracker, $filteredProperties);
 
         array_map(
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
