@@ -40,6 +40,8 @@ class MagicIsset extends MagicMethodGenerator
      * @var string
      */
     private $callParentTemplate = <<<'PHP'
+%s
+
 if (isset(self::$%s[$name])) {
     return isset($this->$name);
 }
@@ -92,6 +94,7 @@ if (isset(self::$%s[$name])) {
     }
 }
 
+%s
 PHP;
 
     /**
@@ -112,33 +115,29 @@ PHP;
     ) {
         parent::__construct($originalClass, '__isset', [new ParameterGenerator('name')]);
 
-        $override   = $originalClass->hasMethod('__isset');
+        $override = $originalClass->hasMethod('__isset');
 
         $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        $callParent = sprintf(
-            $this->callParentTemplate,
-            $publicProperties->getName(),
-            $protectedProperties->getName(),
-            $protectedProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName()
-        );
+        $parentAccess = 'return parent::__isset($name);';
 
-        if ($override) {
-            $callParent .= 'return parent::__isset($name);';
-        } else {
-            $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+        if (! $override) {
+            $parentAccess = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_ISSET,
                 'name'
             );
         }
 
-        $this->setBody(
+        $this->setBody(sprintf(
+            $this->callParentTemplate,
             '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__isset\', array(\'name\' => $name));'
-            . "\n\n" . $callParent
-        );
+            . '(\'__isset\', array(\'name\' => $name));',
+            $publicProperties->getName(),
+            $protectedProperties->getName(),
+            $protectedProperties->getName(),
+            $privateProperties->getName(),
+            $privateProperties->getName(),
+            $parentAccess
+        ));
     }
 }
