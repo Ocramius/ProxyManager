@@ -18,11 +18,30 @@
 
 namespace ProxyManagerTest\ProxyGenerator\Assertion;
 
+use BadMethodCallException;
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
+use ProxyManagerTestAsset\AccessInterceptorValueHolderMock;
+use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\CallableTypeHintClass;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
+use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
+use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
+use ProxyManagerTestAsset\ClassWithFinalMethods;
+use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\FinalClass;
+use ProxyManagerTestAsset\HydratedObject;
+use ProxyManagerTestAsset\LazyLoadingMock;
+use ProxyManagerTestAsset\NullObjectMock;
 use ReflectionClass;
 
 /**
@@ -38,14 +57,14 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 {
     public function testDeniesFinalClasses()
     {
-        $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
+        $this->setExpectedException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(FinalClass::class));
     }
 
     public function testDeniesClassesWithAbstractProtectedMethods()
     {
-        $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
+        $this->setExpectedException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
             ClassWithAbstractProtectedMethod::class
@@ -63,7 +82,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 
     public function testDeniesInterfaceIfSpecified()
     {
-        $this->setExpectedException('ProxyManager\Exception\InvalidProxiedClassException');
+        $this->setExpectedException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseInterface::class), false);
     }
@@ -82,7 +101,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 
     public function testDisallowsConstructor()
     {
-        $this->setExpectedException('BadMethodCallException');
+        $this->setExpectedException(BadMethodCallException::class);
 
         new CanProxyAssertion();
     }
@@ -93,24 +112,24 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     public function validClasses()
     {
         return [
-            ['ProxyManagerTestAsset\AccessInterceptorValueHolderMock'],
-            ['ProxyManagerTestAsset\BaseClass'],
-            ['ProxyManagerTestAsset\BaseInterface'],
-            ['ProxyManagerTestAsset\CallableTypeHintClass'],
-            ['ProxyManagerTestAsset\ClassWithByRefMagicMethods'],
-            ['ProxyManagerTestAsset\ClassWithFinalMagicMethods'],
-            ['ProxyManagerTestAsset\ClassWithFinalMethods'],
-            ['ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters'],
-            ['ProxyManagerTestAsset\ClassWithMixedProperties'],
-            ['ProxyManagerTestAsset\ClassWithPrivateProperties'],
-            ['ProxyManagerTestAsset\ClassWithProtectedProperties'],
-            ['ProxyManagerTestAsset\ClassWithPublicProperties'],
-            ['ProxyManagerTestAsset\ClassWithPublicArrayProperty'],
-            ['ProxyManagerTestAsset\ClassWithSelfHint'],
-            ['ProxyManagerTestAsset\EmptyClass'],
-            ['ProxyManagerTestAsset\HydratedObject'],
-            ['ProxyManagerTestAsset\LazyLoadingMock'],
-            ['ProxyManagerTestAsset\NullObjectMock'],
+            [AccessInterceptorValueHolderMock::class],
+            [BaseClass::class],
+            [BaseInterface::class],
+            [CallableTypeHintClass::class],
+            [ClassWithByRefMagicMethods::class],
+            [ClassWithFinalMagicMethods::class],
+            [ClassWithFinalMethods::class],
+            [ClassWithMethodWithDefaultParameters::class],
+            [ClassWithMixedProperties::class],
+            [ClassWithPrivateProperties::class],
+            [ClassWithProtectedProperties::class],
+            [ClassWithPublicProperties::class],
+            [ClassWithPublicArrayProperty::class],
+            [ClassWithSelfHint::class],
+            [EmptyClass::class],
+            [HydratedObject::class],
+            [LazyLoadingMock::class],
+            [NullObjectMock::class],
         ];
     }
 }
