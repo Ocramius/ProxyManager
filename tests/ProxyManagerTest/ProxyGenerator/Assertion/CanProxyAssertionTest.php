@@ -82,6 +82,8 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 
     public function testDeniesInterfaceIfSpecified()
     {
+        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseClass::class), false);
+
         $this->setExpectedException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseInterface::class), false);
