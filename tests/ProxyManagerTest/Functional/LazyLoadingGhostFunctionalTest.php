@@ -853,19 +853,17 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @param string   $className
      * @param string   $propertyName
-     * @param string   $expected
+     * @param mixed    $expected
      * @param string[] $proxyOptions
      */
-    public function testSkipProperties($className, $propertyName, $expected, $proxyOptions)
+    public function testSkipProperties($className, $propertyName, $proxyOptions, $expected)
     {
-        $proxy = $this->generateProxy($className, $proxyOptions);
-        $ghostObject = $proxy::staticProxyConstructor(
-            function () use ($propertyName) {
-                $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
-            }
-        );
+        $proxy       = $this->generateProxy($className, $proxyOptions);
+        $ghostObject = $proxy::staticProxyConstructor(function () use ($propertyName) {
+            $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
+        });
 
-        $property = new \ReflectionProperty($className, $propertyName);
+        $property = new ReflectionProperty($className, $propertyName);
         $property->setAccessible(true);
 
         $this->assertSame($expected, $property->getValue($ghostObject));
@@ -876,13 +874,11 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @param string   $className
      * @param string   $propertyName
-     * @param string   $expected
      * @param string[] $proxyOptions
      */
     public function testSkippedPropertiesAreNotOverwrittenOnInitialization(
         $className,
         $propertyName,
-        $expected,
         $proxyOptions
     ) {
         $proxyName   = $this->generateProxy($className, $proxyOptions);
@@ -893,7 +889,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             return true;
         });
 
-        $property = new \ReflectionProperty($className, $propertyName);
+        $property = new ReflectionProperty($className, $propertyName);
 
         $property->setAccessible(true);
 
@@ -916,38 +912,38 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             [
                 ClassWithPublicProperties::class,
                 'property9',
-                'property9',
                 [
                     'skippedProperties' => ["property9"]
-                ]
+                ],
+                'property9',
             ],
             [
                 ClassWithProtectedProperties::class,
                 'property9',
-                'property9',
                 [
                     'skippedProperties' => ["\0*\0property9"]
-                ]
+                ],
+                'property9',
             ],
             [
                 ClassWithPrivateProperties::class,
-                'property9',
                 'property9',
                 [
                     'skippedProperties' => [
                         "\0ProxyManagerTestAsset\\ClassWithPrivateProperties\0property9"
                     ]
-                ]
+                ],
+                'property9',
             ],
             [
                 ClassWithCollidingPrivateInheritedProperties::class,
                 'property0',
-                'childClassProperty0',
                 [
                     'skippedProperties' => [
                         "\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0"
                     ]
-                ]
+                ],
+                'childClassProperty0',
             ],
         ];
     }
