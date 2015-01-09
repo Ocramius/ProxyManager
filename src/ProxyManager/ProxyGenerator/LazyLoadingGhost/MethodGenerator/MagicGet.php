@@ -48,13 +48,17 @@ if (isset(self::$%s[$name])) {
 }
 
 if (isset(self::$%s[$name])) {
+    if ($this->%s) {
+        return $this->$name;
+    }
+
     // check protected property access via compatible class
     $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller       = isset($callers[1]) ? $callers[1] : [];
     $object       = isset($caller['object']) ? $caller['object'] : '';
     $expectedType = self::$%s[$name];
 
-    if ($this->%s || $object instanceof $expectedType) {
+    if ($object instanceof $expectedType) {
         return $this->$name;
     }
 
@@ -137,8 +141,8 @@ PHP;
             . '(\'__get\', array(\'name\' => $name));',
             $publicProperties->getName(),
             $protectedProperties->getName(),
-            $protectedProperties->getName(),
             $initializationTracker->getName(),
+            $protectedProperties->getName(),
             $privateProperties->getName(),
             $privateProperties->getName(),
             $initializationTracker->getName(),

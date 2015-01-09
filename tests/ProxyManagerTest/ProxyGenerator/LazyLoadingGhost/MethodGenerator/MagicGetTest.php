@@ -81,13 +81,17 @@ if (isset(self::$bar[$name])) {
 }
 
 if (isset(self::$baz[$name])) {
+    if ($this->init) {
+        return $this->$name;
+    }
+
     // check protected property access via compatible class
     $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller       = isset($callers[1]) ? $callers[1] : [];
     $object       = isset($caller['object']) ? $caller['object'] : '';
     $expectedType = self::$baz[$name];
 
-    if ($this->init || $object instanceof $expectedType) {
+    if ($object instanceof $expectedType) {
         return $this->$name;
     }
 
