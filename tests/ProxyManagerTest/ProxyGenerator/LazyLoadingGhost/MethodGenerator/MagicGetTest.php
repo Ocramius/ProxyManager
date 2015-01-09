@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
@@ -65,16 +66,25 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     protected $privateProperties;
 
     /**
+     * @var InitializationTracker|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $initializationTracker;
+
+    /**
      * @var string
      */
     private $expectedCode = <<<'PHP'
-$this->foo && $this->baz('__get', array('name' => $name));
+$this->foo && ! $this->init && $this->baz('__get', array('name' => $name));
 
 if (isset(self::$bar[$name])) {
     return $this->$name;
 }
 
 if (isset(self::$baz[$name])) {
+    if ($this->init) {
+        return $this->$name;
+    }
+
     // check protected property access via compatible class
     $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller       = isset($callers[1]) ? $callers[1] : [];
@@ -109,7 +119,7 @@ if (isset(self::$baz[$name])) {
         return $accessor($this);
     }
 
-    if ('ReflectionProperty' === $class) {
+    if ($this->init || 'ReflectionProperty' === $class) {
         $tmpClass = key(self::$tab[$name]);
         $cacheKey = $tmpClass . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
@@ -144,6 +154,10 @@ PHP;
             ->getMockBuilder(PrivatePropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->initializationTracker = $this
+            ->getMockBuilder(InitializationTracker::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
         $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
@@ -151,6 +165,7 @@ PHP;
         $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
         $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
         $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
+        $this->initializationTracker->expects($this->any())->method('getName')->will($this->returnValue('init'));
     }
 
     /**
@@ -164,7 +179,8 @@ PHP;
             $this->initMethod,
             $this->publicProperties,
             $this->protectedProperties,
-            $this->privateProperties
+            $this->privateProperties,
+            $this->initializationTracker
         );
 
         $this->assertSame('__get', $magicGet->getName());
@@ -184,7 +200,8 @@ PHP;
             $this->initMethod,
             $this->publicProperties,
             $this->protectedProperties,
-            $this->privateProperties
+            $this->privateProperties,
+            $this->initializationTracker
         );
 
         $this->assertSame('__get', $magicGet->getName());

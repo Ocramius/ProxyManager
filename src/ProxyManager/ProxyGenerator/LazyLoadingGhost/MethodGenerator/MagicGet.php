@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
@@ -40,13 +41,17 @@ class MagicGet extends MagicMethodGenerator
      * @var string
      */
     private $callParentTemplate =  <<<'PHP'
-%s
+$this->%s && ! $this->%s && $this->%s('__get', array('name' => $name));
 
 if (isset(self::$%s[$name])) {
     return $this->$name;
 }
 
 if (isset(self::$%s[$name])) {
+    if ($this->%s) {
+        return $this->$name;
+    }
+
     // check protected property access via compatible class
     $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller       = isset($callers[1]) ? $callers[1] : [];
@@ -81,7 +86,7 @@ if (isset(self::$%s[$name])) {
         return $accessor($this);
     }
 
-    if ('ReflectionProperty' === $class) {
+    if ($this->%s || 'ReflectionProperty' === $class) {
         $tmpClass = key(self::$%s[$name]);
         $cacheKey = $tmpClass . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
@@ -104,6 +109,7 @@ PHP;
      * @param PublicPropertiesMap    $publicProperties
      * @param ProtectedPropertiesMap $protectedProperties
      * @param PrivatePropertiesMap   $privateProperties
+     * @param InitializationTracker  $initializationTracker
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -111,7 +117,8 @@ PHP;
         MethodGenerator $callInitializer,
         PublicPropertiesMap $publicProperties,
         ProtectedPropertiesMap $protectedProperties,
-        PrivatePropertiesMap $privateProperties
+        PrivatePropertiesMap $privateProperties,
+        InitializationTracker $initializationTracker
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
@@ -130,13 +137,16 @@ PHP;
 
         $this->setBody(sprintf(
             $this->callParentTemplate,
-            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__get\', array(\'name\' => $name));',
+            $initializerProperty->getName(),
+            $initializationTracker->getName(),
+            $callInitializer->getName(),
             $publicProperties->getName(),
             $protectedProperties->getName(),
+            $initializationTracker->getName(),
             $protectedProperties->getName(),
             $privateProperties->getName(),
             $privateProperties->getName(),
+            $initializationTracker->getName(),
             $privateProperties->getName(),
             $parentAccess
         ));
