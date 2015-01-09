@@ -20,6 +20,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
@@ -53,7 +54,7 @@ if (isset(self::$%s[$name])) {
     $object       = isset($caller['object']) ? $caller['object'] : '';
     $expectedType = self::$%s[$name];
 
-    if ($object instanceof $expectedType) {
+    if ($this->%s || $object instanceof $expectedType) {
         return $this->$name;
     }
 
@@ -81,7 +82,7 @@ if (isset(self::$%s[$name])) {
         return $accessor($this);
     }
 
-    if ('ReflectionProperty' === $class) {
+    if ($this->%s || 'ReflectionProperty' === $class) {
         $tmpClass = key(self::$%s[$name]);
         $cacheKey = $tmpClass . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
@@ -104,6 +105,7 @@ PHP;
      * @param PublicPropertiesMap    $publicProperties
      * @param ProtectedPropertiesMap $protectedProperties
      * @param PrivatePropertiesMap   $privateProperties
+     * @param InitializationTracker  $initializationTracker
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -111,7 +113,8 @@ PHP;
         MethodGenerator $callInitializer,
         PublicPropertiesMap $publicProperties,
         ProtectedPropertiesMap $protectedProperties,
-        PrivatePropertiesMap $privateProperties
+        PrivatePropertiesMap $privateProperties,
+        InitializationTracker $initializationTracker
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
@@ -135,8 +138,10 @@ PHP;
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $protectedProperties->getName(),
+            $initializationTracker->getName(),
             $privateProperties->getName(),
             $privateProperties->getName(),
+            $initializationTracker->getName(),
             $privateProperties->getName(),
             $parentAccess
         ));
