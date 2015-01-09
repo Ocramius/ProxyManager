@@ -41,7 +41,7 @@ class MagicGet extends MagicMethodGenerator
      * @var string
      */
     private $callParentTemplate =  <<<'PHP'
-%s
+$this->%s && ! $this->%s && $this->%s('__get', array('name' => $name));
 
 if (isset(self::$%s[$name])) {
     return $this->$name;
@@ -137,8 +137,9 @@ PHP;
 
         $this->setBody(sprintf(
             $this->callParentTemplate,
-            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__get\', array(\'name\' => $name));',
+            $initializerProperty->getName(),
+            $initializationTracker->getName(),
+            $callInitializer->getName(),
             $publicProperties->getName(),
             $protectedProperties->getName(),
             $initializationTracker->getName(),
