@@ -46,7 +46,6 @@ use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GeneratorContext;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
@@ -81,14 +80,6 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodSuffixInterceptors());
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
-        $factoryMethod = new GeneratorContext(
-            $originalClass,
-            $valueHolder,
-            $prefixInterceptors,
-            $suffixInterceptors,
-            $publicProperties
-        );
-
         array_map(
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
@@ -111,13 +102,37 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     new GetWrappedValueHolderValue($valueHolder),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
                     new SetMethodSuffixInterceptor($suffixInterceptors),
-                    $factoryMethod->getMagicGet(),
-                    $factoryMethod->getMagicSet(),
-                    $factoryMethod->getMagicIsset(),
-                    $factoryMethod->getMagicUnset(),
-                    $factoryMethod->getMagicClone(),
-                    $factoryMethod->getMagicSleep(),
-                    $factoryMethod->getMagicWakeup(),
+                    new MagicGet(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicSet(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicIsset(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicUnset(
+                        $originalClass,
+                        $valueHolder,
+                        $prefixInterceptors,
+                        $suffixInterceptors,
+                        $publicProperties
+                    ),
+                    new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
+                    new MagicSleep($originalClass, $valueHolder),
+                    new MagicWakeup($originalClass, $valueHolder),
                 ]
             )
         );
