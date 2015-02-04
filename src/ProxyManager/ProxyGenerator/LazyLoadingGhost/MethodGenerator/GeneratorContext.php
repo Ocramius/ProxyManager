@@ -100,7 +100,7 @@ class GeneratorContext
     /**
      * @return MagicGet
      */
-    public function magicGet()
+    public function getMagicGet()
     {
         return new MagicGet(
             $this->originalClass,
@@ -116,7 +116,7 @@ class GeneratorContext
     /**
      * @return MagicSet
      */
-    public function magicSet()
+    public function getMagicSet()
     {
         return new MagicSet(
             $this->originalClass,
@@ -131,7 +131,7 @@ class GeneratorContext
     /**
      * @return MagicIsset
      */
-    public function magicIsset()
+    public function getMagicIsset()
     {
         return new MagicIsset(
             $this->originalClass,
@@ -146,7 +146,7 @@ class GeneratorContext
     /**
      * @return MagicUnset
      */
-    public function magicUnset()
+    public function getMagicUnset()
     {
         return new MagicUnset(
             $this->originalClass,
@@ -161,7 +161,7 @@ class GeneratorContext
     /**
      * @return MagicClone
      */
-    public function magicClone()
+    public function getMagicClone()
     {
         return new MagicClone(
             $this->originalClass,
@@ -176,7 +176,7 @@ class GeneratorContext
     /**
      * @return MagicSleep
      */
-    public function magicSleep()
+    public function getMagicSleep()
     {
         return new MagicSleep(
             $this->originalClass,
@@ -186,5 +186,37 @@ class GeneratorContext
             $this->protectedProperties,
             $this->privateProperties
         );
+    }
+
+    /**
+     * @return SetProxyInitializer
+     */
+    public function getSetProxyInitializer()
+    {
+        return new SetProxyInitializer($this->initializer);
+    }
+
+    /**
+     * @return GetProxyInitializer
+     */
+    public function getGetProxyInitializer()
+    {
+        return new GetProxyInitializer($this->initializer);
+    }
+
+    /**
+     * @return InitializeProxy
+     */
+    public function getInitializeProxy()
+    {
+        return new InitializeProxy($this->initializer, $this->init);
+    }
+
+    /**
+     * @return IsProxyInitialized
+     */
+    public function getIsProxyInitialized()
+    {
+        return new IsProxyInitialized($this->initializer);
     }
 }
