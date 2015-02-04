@@ -22,6 +22,7 @@ use ReflectionClass;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 
 /**
@@ -63,6 +64,11 @@ class Factory
     private $publicProperties;
 
     /**
+     * @var InitializationTracker
+     */
+    private $initializationTracker;
+
+    /**
      * Constructor.
      *
      * @param ReflectionClass        $originalClass
@@ -71,6 +77,7 @@ class Factory
      * @param PublicPropertiesMap    $publicProperties
      * @param ProtectedPropertiesMap $protectedProperties
      * @param PrivatePropertiesMap   $privateProperties
+     * @param InitializationTracker  $initializationTracker
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -78,7 +85,8 @@ class Factory
         CallInitializer $callInitializer,
         PublicPropertiesMap $publicProperties,
         ProtectedPropertiesMap $protectedProperties,
-        PrivatePropertiesMap $privateProperties
+        PrivatePropertiesMap $privateProperties,
+        InitializationTracker $initializationTracker
     ) {
         $this->originalClass = $originalClass;
         $this->initializerProperty = $initializerProperty;
@@ -86,6 +94,7 @@ class Factory
         $this->publicProperties = $publicProperties;
         $this->protectedProperties = $protectedProperties;
         $this->privateProperties = $privateProperties;
+        $this->initializationTracker = $initializationTracker;
     }
 
     /**
@@ -99,7 +108,8 @@ class Factory
             $this->callInitializer,
             $this->publicProperties,
             $this->protectedProperties,
-            $this->privateProperties
+            $this->privateProperties,
+            $this->initializationTracker
         );
     }
 
