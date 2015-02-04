@@ -78,8 +78,6 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $init = new CallInitializer($initializer, $initializationTracker, $filteredProperties);
 
-        error_reporting(-1);
-        ini_set('display_errors', 1);
         $factoryMethod = new Factory(
             $originalClass,
             $initializer,
