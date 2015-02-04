@@ -74,13 +74,13 @@ class GeneratorContext
     /**
      * Constructor.
      *
-     * @param ReflectionClass        $originalClass
-     * @param InitializerProperty    $initializerProperty
-     * @param CallInitializer        $callInitializer
-     * @param PublicPropertiesMap    $publicProperties
-     * @param ProtectedPropertiesMap $protectedProperties
-     * @param PrivatePropertiesMap   $privateProperties
-     * @param InitializationTracker  $initializationTracker
+     * @param ReflectionClass       $originalClass
+     * @param PropertyGenerator     $initializerProperty
+     * @param GeneratorInterface    $callInitializer
+     * @param GeneratorInterface    $publicProperties
+     * @param GeneratorInterface    $protectedProperties
+     * @param PrivatePropertiesMap  $privateProperties
+     * @param InitializationTracker $initializationTracker
      */
     public function __construct(
         ReflectionClass $originalClass,
