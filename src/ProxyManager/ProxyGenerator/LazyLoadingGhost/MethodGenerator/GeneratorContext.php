@@ -193,7 +193,7 @@ class GeneratorContext
      */
     public function getSetProxyInitializer()
     {
-        return new SetProxyInitializer($this->initializer);
+        return new SetProxyInitializer($this->initializerProperty);
     }
 
     /**
@@ -201,7 +201,7 @@ class GeneratorContext
      */
     public function getGetProxyInitializer()
     {
-        return new GetProxyInitializer($this->initializer);
+        return new GetProxyInitializer($this->initializerProperty);
     }
 
     /**
@@ -209,7 +209,7 @@ class GeneratorContext
      */
     public function getInitializeProxy()
     {
-        return new InitializeProxy($this->initializer, $this->init);
+        return new InitializeProxy($this->initializerProperty, $this->callInitializer);
     }
 
     /**
@@ -217,6 +217,6 @@ class GeneratorContext
      */
     public function getIsProxyInitialized()
     {
-        return new IsProxyInitialized($this->initializer);
+        return new IsProxyInitialized($this->initializerProperty);
     }
 }
