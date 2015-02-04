@@ -111,37 +111,13 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     new GetWrappedValueHolderValue($valueHolder),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
                     new SetMethodSuffixInterceptor($suffixInterceptors),
-                    new MagicGet(
-                        $originalClass,
-                        $valueHolder,
-                        $prefixInterceptors,
-                        $suffixInterceptors,
-                        $publicProperties
-                    ),
-                    new MagicSet(
-                        $originalClass,
-                        $valueHolder,
-                        $prefixInterceptors,
-                        $suffixInterceptors,
-                        $publicProperties
-                    ),
-                    new MagicIsset(
-                        $originalClass,
-                        $valueHolder,
-                        $prefixInterceptors,
-                        $suffixInterceptors,
-                        $publicProperties
-                    ),
-                    new MagicUnset(
-                        $originalClass,
-                        $valueHolder,
-                        $prefixInterceptors,
-                        $suffixInterceptors,
-                        $publicProperties
-                    ),
-                    new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
-                    new MagicSleep($originalClass, $valueHolder),
-                    new MagicWakeup($originalClass, $valueHolder),
+                    $factoryMethod->getMagicGet(),
+                    $factoryMethod->getMagicSet(),
+                    $factoryMethod->getMagicIsset(),
+                    $factoryMethod->getMagicUnset(),
+                    $factoryMethod->getMagicClone(),
+                    $factoryMethod->getMagicSleep(),
+                    $factoryMethod->getMagicWakeup(),
                 ]
             )
         );
