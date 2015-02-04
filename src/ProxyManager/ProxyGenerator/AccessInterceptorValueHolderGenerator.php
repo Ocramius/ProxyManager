@@ -46,6 +46,7 @@ use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GeneratorContext;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\ValueHolderInterface}
@@ -79,6 +80,14 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($prefixInterceptors = new MethodPrefixInterceptors());
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodSuffixInterceptors());
         $classGenerator->addPropertyFromGenerator($publicProperties);
+
+        $factoryMethod = new GeneratorContext(
+            $originalClass,
+            $valueHolder,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $publicProperties
+        );
 
         array_map(
             function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
