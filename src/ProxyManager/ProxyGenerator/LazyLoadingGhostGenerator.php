@@ -25,16 +25,11 @@ use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GeneratorContext;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\LazyLoadingMethodInterceptor;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
@@ -99,16 +94,16 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                 [
                     $init,
                     new StaticProxyConstructor($initializer, $filteredProperties),
-                    $factoryMethod->magicGet(),
-                    $factoryMethod->magicSet(),
-                    $factoryMethod->magicIsset(),
-                    $factoryMethod->magicUnset(),
-                    $factoryMethod->magicClone(),
-                    $factoryMethod->magicSleep(),
-                    new SetProxyInitializer($initializer),
-                    new GetProxyInitializer($initializer),
-                    new InitializeProxy($initializer, $init),
-                    new IsProxyInitialized($initializer),
+                    $factoryMethod->getMagicGet(),
+                    $factoryMethod->getMagicSet(),
+                    $factoryMethod->getMagicIsset(),
+                    $factoryMethod->getMagicUnset(),
+                    $factoryMethod->getMagicClone(),
+                    $factoryMethod->getMagicSleep(),
+                    $factoryMethod->getSetProxyInitializer(),
+                    $factoryMethod->getGetProxyInitializer(),
+                    $factoryMethod->getInitializeProxy(),
+                    $factoryMethod->getIsProxyInitialized(),
                 ]
             )
         );
