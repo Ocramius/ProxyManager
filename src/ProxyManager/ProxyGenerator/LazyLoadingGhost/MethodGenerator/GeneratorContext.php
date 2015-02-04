@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
@@ -181,6 +182,21 @@ class GeneratorContext
     public function getMagicSleep()
     {
         return new MagicSleep(
+            $this->originalClass,
+            $this->initializerProperty,
+            $this->callInitializer,
+            $this->publicProperties,
+            $this->protectedProperties,
+            $this->privateProperties
+        );
+    }
+
+    /**
+     * @return MagicWakeup
+     */
+    public function getMagicWakeup()
+    {
+        return new MagicWakeup(
             $this->originalClass,
             $this->initializerProperty,
             $this->callInitializer,
