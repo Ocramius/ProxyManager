@@ -82,7 +82,8 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
             $publicProperties,
             $protectedProperties,
             $privateProperties,
-            $initializationTracker
+            $initializationTracker,
+            $filteredProperties
         );
 
         array_map(
@@ -93,7 +94,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                 $this->getAbstractProxiedMethods($originalClass),
                 [
                     $init,
-                    new StaticProxyConstructor($initializer, $filteredProperties),
+                    $factoryMethod->getStaticProxyConstructor(),
                     $factoryMethod->getMagicGet(),
                     $factoryMethod->getMagicSet(),
                     $factoryMethod->getMagicIsset(),

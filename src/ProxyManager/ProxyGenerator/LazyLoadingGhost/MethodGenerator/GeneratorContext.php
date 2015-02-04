@@ -20,12 +20,14 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Generator\GeneratorInterface;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
-use Zend\Code\Generator\GeneratorInterface;
 
 /**
  * Factory to centralize creation of methods.
@@ -71,6 +73,11 @@ class GeneratorContext
     private $initializationTracker;
 
     /**
+     * @var Properties
+     */
+    private $filteredProperties;
+
+    /**
      * Constructor.
      *
      * @param ReflectionClass       $originalClass
@@ -80,6 +87,7 @@ class GeneratorContext
      * @param GeneratorInterface    $protectedProperties
      * @param PrivatePropertiesMap  $privateProperties
      * @param InitializationTracker $initializationTracker
+     * @param Properties            $filteredProperties
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -87,8 +95,9 @@ class GeneratorContext
         GeneratorInterface $callInitializer,
         GeneratorInterface $publicProperties,
         GeneratorInterface $protectedProperties,
-        PrivatePropertiesMap $privateProperties = null,
-        InitializationTracker $initializationTracker = null
+        PrivatePropertiesMap $privateProperties,
+        InitializationTracker $initializationTracker,
+        Properties $filteredProperties
     ) {
         $this->originalClass = $originalClass;
         $this->initializerProperty = $initializerProperty;
@@ -97,6 +106,7 @@ class GeneratorContext
         $this->protectedProperties = $protectedProperties;
         $this->privateProperties = $privateProperties;
         $this->initializationTracker = $initializationTracker;
+        $this->filteredProperties = $filteredProperties;
     }
 
     /**
@@ -220,5 +230,13 @@ class GeneratorContext
     public function getIsProxyInitialized()
     {
         return new IsProxyInitialized($this->initializerProperty);
+    }
+
+    /**
+     * @return StaticProxyConstructor
+     */
+    public function getStaticProxyConstructor()
+    {
+        return new StaticProxyConstructor($this->initializerProperty, $this->filteredProperties);
     }
 }
