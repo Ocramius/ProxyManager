@@ -18,6 +18,7 @@
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Generator\MethodGenerator as ProxyManagerMethodGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
@@ -27,6 +28,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\Factory;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\LazyLoadingMethodInterceptor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
@@ -36,7 +38,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
-use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
