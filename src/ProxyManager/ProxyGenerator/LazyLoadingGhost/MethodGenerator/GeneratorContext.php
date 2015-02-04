@@ -31,7 +31,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedProp
  * @author  Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
  */
-class Factory
+class GeneratorContext
 {
     /**
      * @var ReflectionClass

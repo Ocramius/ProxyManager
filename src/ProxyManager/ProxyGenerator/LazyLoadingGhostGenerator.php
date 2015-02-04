@@ -24,7 +24,7 @@ use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
-use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\Factory;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GeneratorContext;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
@@ -34,6 +34,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitial
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesDefaults;
@@ -79,7 +80,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $init = new CallInitializer($initializer, $initializationTracker, $filteredProperties);
 
-        $factoryMethod = new Factory(
+        $factoryMethod = new GeneratorContext(
             $originalClass,
             $initializer,
             $init,
