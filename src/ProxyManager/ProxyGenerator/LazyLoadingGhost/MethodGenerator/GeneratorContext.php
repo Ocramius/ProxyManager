@@ -19,11 +19,13 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
+use Zend\Code\Generator\GeneratorInterface;
 
 /**
  * Factory to centralize creation of methods.
@@ -81,12 +83,12 @@ class GeneratorContext
      */
     public function __construct(
         ReflectionClass $originalClass,
-        InitializerProperty $initializerProperty,
-        CallInitializer $callInitializer,
-        PublicPropertiesMap $publicProperties,
-        ProtectedPropertiesMap $protectedProperties,
-        PrivatePropertiesMap $privateProperties,
-        InitializationTracker $initializationTracker
+        PropertyGenerator $initializerProperty,
+        GeneratorInterface $callInitializer,
+        GeneratorInterface $publicProperties,
+        GeneratorInterface $protectedProperties,
+        PrivatePropertiesMap $privateProperties = null,
+        InitializationTracker $initializationTracker = null
     ) {
         $this->originalClass = $originalClass;
         $this->initializerProperty = $initializerProperty;
