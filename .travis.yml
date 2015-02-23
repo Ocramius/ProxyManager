@@ -6,6 +6,13 @@ php:
   - hhvm
   - hhvm-nightly
 
+env:
+  global:
+    - GIT_NAME:  "Marco Pivetta"
+    - GIT_EMAIL: ocramius@gmail.com
+    - GH_REF:    github.com/Ocramius/ProxyManager
+    - secure:    "KEY"
+
 before_script:
   - sh .travis.install.sh
 
@@ -22,3 +29,9 @@ matrix:
 
 after_script:
   - sh .travis.coverage.sh
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover ./clover.xml
+
+after_success:
+  - ./vendor/bin/couscous travis-auto-deploy --php-version=5.5
+
