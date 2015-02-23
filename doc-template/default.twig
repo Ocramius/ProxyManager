@@ -22,10 +22,21 @@
 
 <nav class="main-nav" role="navigation">
 <ul>
-    <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a>
-    <div class="bcms-clearfix"></div>
-</li>
+    <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
+
+    {% if versions is defined %}
+        <li>
+            <a href="#">Version</a>
+
+            <ul>
+                {% for key, version in versions.items %}
+                    <li><a href="{{ version.link|e }}">{{ version.name|e }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
 </ul>
+    <div class="bcms-clearfix"></div>
 </nav>
 </div>
 </header>
@@ -55,15 +66,6 @@
 
 <aside class="sidebar">
     <nav class="spy-nav">
-
-        {% if versions is defined %}
-            <select class="select" id="versions">
-            {% for key, version in versions.items %}
-                <option value="{{ version.link|e }}">{{ version.name|e }}</option>
-            {% endfor %}
-            <select>
-        {% endif %}
-
         <ul>
             <li><a href="{{ baseUrl }}/index.html">Intro</a></li>
             <li><a href="{{ baseUrl }}/docs/lazy-loading-value-holder.html">Virtual Proxy</a></li>

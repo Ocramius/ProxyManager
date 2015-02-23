@@ -23,6 +23,13 @@ p { margin-bottom: 1.5em; font-size: 1.125em; }
 hr { margin: 2.5em 0; padding: 0; width: 100%; height: 3px; border: 0; background: #e6eaef; }
 pre code { border-radius: 4px; font-size: 15px; padding: 20px; border: 1px solid #EBEBEB; }
 .content h1 { padding-bottom: 12px; border-bottom: 1px solid #EFEFEF; margin-bottom: 20px; }
+.main-nav ul li{ position: relative;}
+.main-nav ul li{ position: relative;}
+.main-nav ul li:hover { background: #2F611C;}
+.main-nav ul li:hover > ul { display:block }
+.main-nav ul li > ul { display:none; position: absolute; list-style: none; width: 100%; z-index: 9;}
+.main-nav ul li > ul li a { color: #BFE5F1; display: block; background: #2F611C; padding: 20px;}
+.main-nav ul li > ul li a:hover { background: #1C440C;}
 
 /* Menu Sidebar*/
 .button-block { padding-top: 15px; }
@@ -108,10 +115,6 @@ main { overflow: hidden; }
 
 .site-footer { margin-top: 20px; padding-top: 50px; padding-bottom: 50px; background: #18324f; color: #7c8ea3; text-align: center; }
 .site-footer .container { position: relative; }
-.site-footer + .bcms-clearfix:after { content: ""; }
-.about + .site-footer .main { padding-top: 150px; }
-.footer-logos ul li{ list-style: none; display: inline-block;}
-.footer-logos ul li a{ padding-left: 10px; padding-right: 10px}
 .site-footer a{ color: white !important;}
 .site-footer p { text-align: left; display: block; margin-bottom: 1.5em; font-size: 1.125em; }
 @media only screen and (max-width: 1024px) { .site-footer p { margin-left: 0; } }
@@ -156,7 +159,6 @@ main { overflow: hidden; }
 .spy-nav a { padding-top: 9px; padding-bottom: 10px; height: auto; border-bottom: 1px solid #4B8B20; text-align: left; text-transform: none; font-size: 1.375em; line-height: normal; }
 .spy-nav .active a { border-bottom-color: #fff; background: #fff; color: #17324f; }
 .spy-nav select{ width: 100%; margin-bottom: 10px}
-@media only screen and (max-width: 768px) { /*.spy-nav { display: none; } */}
 
 .main-wrapper { margin: 44px auto 44px; max-width: 600px; }
 .main-wrapper label { display: block; margin-bottom: .75em; color: #3f4e5e; font-size: 1.25em; }
