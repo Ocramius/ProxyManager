@@ -115,6 +115,8 @@ main { overflow: hidden; }
 
 .site-footer { margin-top: 20px; padding-top: 50px; padding-bottom: 50px; background: #18324f; color: #7c8ea3; text-align: center; }
 .site-footer .container { position: relative; }
+.footer-logos ul li{ list-style: none; display: inline-block;}
+.footer-logos ul li a{ padding-left: 10px; padding-right: 10px}
 .site-footer a{ color: white !important;}
 .site-footer p { text-align: left; display: block; margin-bottom: 1.5em; font-size: 1.125em; }
 @media only screen and (max-width: 1024px) { .site-footer p { margin-left: 0; } }
