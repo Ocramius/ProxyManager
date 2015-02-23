@@ -15,6 +15,8 @@ env:
 
 before_script:
   - sh .travis.install.sh
+  - curl -OS http://couscous.io/couscous.phar
+  - chmod +x couscous.phar
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
@@ -33,5 +35,5 @@ after_script:
   - php ocular.phar code-coverage:upload --format=php-clover ./clover.xml
 
 after_success:
-  - ./vendor/bin/couscous travis-auto-deploy --php-version=5.5
+  - php couscous.phar travis-auto-deploy --php-version=5.5
 
