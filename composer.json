@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php":                     "~5.5",
+        "php":                     "~5.5|~7.0",
         "zendframework/zend-code": ">2.2.5,<3.0"
     },
     "require-dev": {
