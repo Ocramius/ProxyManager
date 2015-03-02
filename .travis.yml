@@ -37,4 +37,3 @@ after_script:
 
 after_success:
   - couscous travis-auto-deploy --php-version=5.5
-
