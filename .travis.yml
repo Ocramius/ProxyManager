@@ -3,6 +3,7 @@ language: php
 php:
   - 5.5
   - 5.6
+  - 7
   - hhvm
   - hhvm-nightly
 
@@ -11,7 +12,7 @@ env:
     - GIT_NAME:  "'Marco Pivetta'"
     - GIT_EMAIL: ocramius@gmail.com
     - GH_REF:    github.com/Ocramius/ProxyManager
-    - secure:    "KEY"
+    - secure: HUDB66EnmKFx2A+E3HxvuX/7XSjgfNy8dnzcpG+K9mf/JM5JXZflK3xO3J3LCgSQG6Ptwr2yy//7vX+PdJMdSRTmP+d/dy6v8yLRP+GvYZXLIbuKg7dQjLerOxJcy9JhU2eAEBevc002PwFqLalfhCyWLvLiCof8++E2uGbvTSU=
 
 before_script:
   - sh .travis.install.sh
@@ -25,6 +26,7 @@ script:
 
 matrix:
   allow_failures:
+    - php: 7
     - php: hhvm
     - php: hhvm-nightly
 
