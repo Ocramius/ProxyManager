@@ -25,6 +25,7 @@ use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\LazyLoadingMock;
@@ -181,6 +182,13 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                     '__sleep',
                     '__unset',
                     '__wakeup',
+                ],
+            ],
+            [
+                new ReflectionClass(ClassWithMethodWithVariadicFunction::class),
+                null,
+                [
+                    'foo',
                 ],
             ],
         ];
