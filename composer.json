@@ -23,9 +23,10 @@
         "zendframework/zend-code": ">2.2.5,<3.0"
     },
     "require-dev": {
-        "ext-phar":                    "*",
-        "phpunit/phpunit":             "~4.0",
-        "squizlabs/php_codesniffer":   "~2.0"
+        "ext-phar":                                     "*",
+        "phpunit/phpunit":                              "~4.0",
+        "squizlabs/php_codesniffer":                    "dev-master as 1.5.x-dev",
+        "object-calisthenics/phpcs-calisthenics-rules": "1.0.0"
     },
     "suggest": {
         "php": ">5.6 if you work with internal PHP classes, as reflection instantiation does not work with older PHP versions",
