@@ -19,7 +19,7 @@
 namespace ProxyManagerTestAsset;
 
 /**
- * Test asset class with method with default values
+ * Test asset class with method with variadic parameter
  *
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
