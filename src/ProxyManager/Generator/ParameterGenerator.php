@@ -32,6 +32,13 @@ use Zend\Code\Reflection\ParameterReflection;
 class ParameterGenerator extends ZendParameterGenerator
 {
     /**
+     * Set if a parameter is variadic or not
+     *
+     * @var boolean
+     */
+    private $variadic;
+
+    /**
      * @override - uses `static` to instantiate the parameter
      *
      * {@inheritDoc}
@@ -41,6 +48,7 @@ class ParameterGenerator extends ZendParameterGenerator
         /* @var $param self */
         $param = new static();
 
+        $param->isVariadic($reflectionParameter->isVariadic());
         $param->setName($reflectionParameter->getName());
         $param->setPosition($reflectionParameter->getPosition());
 
@@ -88,8 +96,9 @@ class ParameterGenerator extends ZendParameterGenerator
     {
         return $this->getGeneratedType()
             . (true === $this->passedByReference ? '&' : '')
+            . ($this->variadic ? '...' : '')
             . '$' . $this->name
-            . $this->generateDefaultValue();
+            . (!$this->variadic ? $this->generateDefaultValue() : '');
     }
 
     /**
@@ -165,5 +174,10 @@ class ParameterGenerator extends ZendParameterGenerator
                 $parameterGenerator->setDefaultValue(null);
             }
         }
+    }
+
+    private function isVariadic($isVariadic)
+    {
+        $this->variadic = $isVariadic;
     }
 }
