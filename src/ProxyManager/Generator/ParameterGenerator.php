@@ -36,7 +36,7 @@ class ParameterGenerator extends ZendParameterGenerator
      *
      * @var boolean
      */
-    private $variadic;
+    private $variadic = false;
 
     /**
      * @override - uses `static` to instantiate the parameter
@@ -48,7 +48,10 @@ class ParameterGenerator extends ZendParameterGenerator
         /* @var $param self */
         $param = new static();
 
-        $param->isVariadic($reflectionParameter->isVariadic());
+        if (version_compare(PHP_VERSION, '5.6.0', '>=')) {
+            $param->isVariadic($reflectionParameter->isVariadic());
+        }
+
         $param->setName($reflectionParameter->getName());
         $param->setPosition($reflectionParameter->getPosition());
 
