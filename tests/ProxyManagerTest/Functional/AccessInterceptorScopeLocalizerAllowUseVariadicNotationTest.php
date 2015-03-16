@@ -25,14 +25,21 @@ use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 
 class AccessInterceptorScopeLocalizerAllowUseVariadicNotationTest extends PHPUnit_Framework_TestCase
 {
-    public function testCanCreateAndRegisterCallbackIWithVariadicNotation()
+    public function setUp()
+    {
+        if (version_compare(PHP_VERSION, '5.6.0', '<=')) {
+            $this->markTestSkipped('Teste can\'t run on < 5.6.0 php version');
+        }
+    }
+
+    public function testCanCreateAndRegisterCallbackWithVariadicNotation()
     {
         $configuration = new Configuration();
         $factory = new AccessInterceptorScopeLocalizerFactory($configuration);
 
         $targetObject = new ClassWithMethodWithVariadicFunction();
 
-        $object = $factory->createProxy($targetObject, [ function (...$paratemers) {
+        $object = $factory->createProxy($targetObject, [ function ($paratemers) {
             return 'Foo Baz';
         },]);
 
@@ -41,12 +48,13 @@ class AccessInterceptorScopeLocalizerAllowUseVariadicNotationTest extends PHPUni
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
         $this->assertSame('Ocramius', $object->bar);
-        $this->assertSame([
+        $this->assertSame(
             [
-                'Malukenho',
-                'Danizord',
+                [
+                    'Malukenho',
+                    'Danizord',
+                ],
             ],
-        ],
             $object->baz
         );
     }
