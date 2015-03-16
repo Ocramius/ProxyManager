@@ -106,7 +106,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      */
     public function expectedMethods()
     {
-        return [
+        $methods = [
             [
                 new ReflectionClass(BaseClass::class),
                 null,
@@ -184,14 +184,17 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                     '__wakeup',
                 ],
             ],
-            [
+        ];
+
+        if (PHP_VERSION_ID >= 50600) {
+            $methods[] = [
                 new ReflectionClass(ClassWithMethodWithVariadicFunction::class),
                 null,
                 [
                     'foo',
                 ],
-            ],
-        ];
+            ];
+        }
     }
 
     /**
