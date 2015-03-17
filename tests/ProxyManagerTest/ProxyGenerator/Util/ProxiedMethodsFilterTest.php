@@ -195,6 +195,8 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 ],
             ];
         }
+
+        return $methods;
     }
 
     /**

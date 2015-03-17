@@ -19,7 +19,9 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Configuration;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
+use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -28,6 +30,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -438,5 +441,36 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
                 'Property "' . $property->getName() . '" is synchronized between instance and proxy'
             );
         }
+    }
+
+    public function testCanCreateAndRegisterCallbackWithVariadicNotation()
+    {
+        if (PHP_VERSION_ID <= 50600) {
+            $this->markTestSkipped('Test can\'t run on < 5.6.0 php version');
+        }
+
+        $configuration = new Configuration();
+        $factory = new AccessInterceptorScopeLocalizerFactory($configuration);
+
+        $targetObject = new ClassWithMethodWithVariadicFunction();
+
+        $object = $factory->createProxy($targetObject, [ function ($paratemers) {
+            return 'Foo Baz';
+        },]);
+
+        $this->assertNull($object->bar);
+        $this->assertNull($object->baz);
+
+        $object->foo('Ocramius', 'Malukenho', 'Danizord');
+        $this->assertSame('Ocramius', $object->bar);
+        $this->assertSame(
+            [
+                [
+                    'Malukenho',
+                    'Danizord',
+                ],
+            ],
+            $object->baz
+        );
     }
 }
