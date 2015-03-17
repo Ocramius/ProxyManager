@@ -190,9 +190,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
             $methods[] = [
                 new ReflectionClass(ClassWithMethodWithVariadicFunction::class),
                 null,
-                [
-                    'foo',
-                ],
+                ['foo', 'buz'],
             ];
         }
 
