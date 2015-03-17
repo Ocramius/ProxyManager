@@ -28,6 +28,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -376,7 +377,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        return [
+        $methods = [
             [
                 BaseClass::class,
                 new BaseClass(),
@@ -413,6 +414,18 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 $selfHintParam
             ],
         ];
+
+        if (PHP_VERSION_ID >= 50600) {
+            $methods[] = [
+                ClassWithMethodWithVariadicFunction::class,
+                new ClassWithMethodWithVariadicFunction(),
+                'buz',
+                ['Ocramius', 'Malukenho'],
+                [['Ocramius', 'Malukenho']]
+            ];
+        }
+
+        return $methods;
     }
 
     /**
