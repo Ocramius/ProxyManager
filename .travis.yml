@@ -15,8 +15,6 @@ env:
     - secure: HUDB66EnmKFx2A+E3HxvuX/7XSjgfNy8dnzcpG+K9mf/JM5JXZflK3xO3J3LCgSQG6Ptwr2yy//7vX+PdJMdSRTmP+d/dy6v8yLRP+GvYZXLIbuKg7dQjLerOxJcy9JhU2eAEBevc002PwFqLalfhCyWLvLiCof8++E2uGbvTSU=
 
 before_script:
-  - composer update
-  - composer global require couscous/couscous
   - sh .travis.install.sh
 
 script:
@@ -32,4 +30,4 @@ matrix:
     - php: hhvm-nightly
 
 after_script:
-  - couscous travis-auto-deploy --php-version=5.5
+  - ./vendor/bin/couscous travis-auto-deploy --php-version=5.5
