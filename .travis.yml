@@ -7,6 +7,13 @@ php:
   - hhvm
   - hhvm-nightly
 
+env:
+  global:
+    - GIT_NAME:  "'Marco Pivetta'"
+    - GIT_EMAIL: ocramius@gmail.com
+    - GH_REF:    github.com/Ocramius/ProxyManager
+    - secure: HUDB66EnmKFx2A+E3HxvuX/7XSjgfNy8dnzcpG+K9mf/JM5JXZflK3xO3J3LCgSQG6Ptwr2yy//7vX+PdJMdSRTmP+d/dy6v8yLRP+GvYZXLIbuKg7dQjLerOxJcy9JhU2eAEBevc002PwFqLalfhCyWLvLiCof8++E2uGbvTSU=
+
 before_script:
   - sh .travis.install.sh
 
@@ -23,8 +30,4 @@ matrix:
     - php: hhvm-nightly
 
 after_script:
-  - sh .travis.coverage.sh
-
-env:
-  global:
-    secure: HUDB66EnmKFx2A+E3HxvuX/7XSjgfNy8dnzcpG+K9mf/JM5JXZflK3xO3J3LCgSQG6Ptwr2yy//7vX+PdJMdSRTmP+d/dy6v8yLRP+GvYZXLIbuKg7dQjLerOxJcy9JhU2eAEBevc002PwFqLalfhCyWLvLiCof8++E2uGbvTSU=
+  - ./vendor/bin/couscous travis-auto-deploy --php-version=5.5
