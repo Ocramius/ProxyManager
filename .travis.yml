@@ -16,6 +16,7 @@ env:
 
 before_script:
   - composer update
+  - composer global require couscous/couscous
   - sh .travis.install.sh
 
 script:
