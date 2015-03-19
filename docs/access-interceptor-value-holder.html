@@ -82,40 +82,87 @@
 
 <div class="content">
     
-        <h1>Proxy Manager</h1>
-<p>This library aims at providing abstraction for generating various kinds of <a href="http://marco-pivetta.com/proxy-pattern-in-php/">proxy classes</a>.</p>
-<p><img src="proxy-manager.png" alt="ProxyManager" /></p>
-<p><a href="https://travis-ci.org/Ocramius/ProxyManager"><img src="https://travis-ci.org/Ocramius/ProxyManager.png?branch=master" alt="Build Status" /></a>
-<a href="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/"><img src="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/badges/coverage.png?s=ca3b9ceb9e36aeec0e57569cc8983394b7d2a59e" alt="Code Coverage" /></a>
-<a href="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/"><img src="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/badges/quality-score.png?s=eaa858f876137ed281141b1d1e98acfa739729ed" alt="Scrutinizer Quality Score" /></a>
-<a href="https://insight.sensiolabs.com/projects/69fe5f97-b1c8-4ddd-93ce-900b8b788cf2"><img src="https://insight.sensiolabs.com/projects/69fe5f97-b1c8-4ddd-93ce-900b8b788cf2/mini.png" alt="SensioLabsInsight" /></a>
-<a href="https://www.versioneye.com/package/php--ocramius--proxy-manager"><img src="https://www.versioneye.com/package/php--ocramius--proxy-manager/badge.png" alt="Dependency Status" /></a>
-<a href="https://www.versioneye.com/php/ocramius:proxy-manager/references"><img src="https://www.versioneye.com/php/ocramius:proxy-manager/reference_badge.svg" alt="Reference Status" /></a>
-<a href="http://hhvm.h4cc.de/package/ocramius/proxy-manager"><img src="http://hhvm.h4cc.de/badge/ocramius/proxy-manager.png" alt="HHVM Status" /></a></p>
-<p><a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/downloads.png" alt="Total Downloads" /></a>
-<a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/v/stable.png" alt="Latest Stable Version" /></a>
-<a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/v/unstable.png" alt="Latest Unstable Version" /></a></p>
-<h2>Documentation</h2>
-<p>You can learn about the proxy pattern and how to use the <strong>ProxyManager</strong> on the <a href="http://ocramius.github.io/ProxyManager">online documentation</a>.</p>
-<h2>Help/Support</h2>
-<p><a href="https://gitter.im/Ocramius/ProxyManager?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
-<h2>Installation</h2>
-<p>The suggested installation method is via <a href="https://getcomposer.org/">composer</a>:</p>
-<pre><code class="language-sh">php composer.phar require ocramius/proxy-manager:1.0.*</code></pre>
-<h2>Proxy example</h2>
-<p>Here's how you build a lazy loadable object with ProxyManager using a <em>Virtual Proxy</em></p>
-<pre><code class="language-php">$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
+        <h1>Access Interceptor Value Holder Proxy</h1>
+<p>An access interceptor value holder is a smart reference proxy that allows you to dynamically
+define logic to be executed before or after any of the wrapped object's methods
+logic.</p>
+<p>It wraps around a real instance of the object to be proxied, and can be useful for things like:</p>
+<ul>
+<li>caching execution of slow and heavy methods</li>
+<li>log method calls</li>
+<li>debugging</li>
+<li>event triggering</li>
+<li>handling of orthogonal logic, and <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">AOP</a> in general</li>
+</ul>
+<h2>Example</h2>
+<p>Here's an example of how you can create and use an access interceptor value holder:</p>
+<pre><code class="language-php">&lt;?php
+
+use ProxyManager\Factory\AccessInterceptorValueHolderFactory as Factory;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+class Foo
+{
+    public function doFoo()
+    {
+        echo "Foo!\n";
+    }
+}
+
+$factory = new Factory();
 
 $proxy = $factory-&gt;createProxy(
-    'MyApp\HeavyComplexObject',
-    function (&amp; $wrappedObject, $proxy, $method, $parameters, &amp; $initializer) {
-        $wrappedObject = new HeavyComplexObject(); // instantiation logic here
-        $initializer   = null; // turning off further lazy initialization
-    }
+    new Foo(),
+    ['doFoo' =&gt; function () { echo "PreFoo!\n"; }],
+    ['doFoo' =&gt; function () { echo "PostFoo!\n"; }]
 );
 
 $proxy-&gt;doFoo();</code></pre>
-<p>See the <a href="http://ocramius.github.io/ProxyManager">online documentation</a> for more supported proxy types and examples. </p>
+<p>This send something like following to your output:</p>
+<pre><code>PreFoo!
+Foo!
+PostFoo!</code></pre>
+<h2>Implementing pre- and post- access interceptors</h2>
+<p>A proxy produced by the
+<a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/AccessInterceptorValueHolderFactory.php"><code>ProxyManager\Factory\AccessInterceptorValueHolderFactory</code></a>
+implements both the
+<a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/ValueHolderInterface.php"><code>ProxyManager\Proxy\ValueHolderInterface</code></a>
+and the
+<a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/ValueHolderInterface.php"><code>ProxyManager\Proxy\AccessInterceptorInterface</code></a>.</p>
+<p>Therefore, you can set an access interceptor callback by calling:</p>
+<pre><code class="language-php">$proxy-&gt;setMethodPrefixInterceptor('methodName', function () { echo 'pre'; });
+$proxy-&gt;setMethodSuffixInterceptor('methodName', function () { echo 'post'; });</code></pre>
+<p>You can also listen to public properties access by attaching interceptors to <code>__get</code>, <code>__set</code>, <code>__isset</code> and <code>__unset</code>.</p>
+<p>A prefix interceptor (executed before method logic) should have following signature:</p>
+<pre><code class="language-php">/**
+ * @var object $proxy       the proxy that intercepted the method call
+ * @var object $instance    the wrapped instance within the proxy
+ * @var string $method      name of the called method
+ * @var array  $params      sorted array of parameters passed to the intercepted
+ *                          method, indexed by parameter name
+ * @var bool   $returnEarly flag to tell the interceptor proxy to return early, returning
+ *                          the interceptor's return value instead of executing the method logic
+ *
+ * @return mixed
+ */
+$prefixInterceptor = function ($proxy, $instance, $method, $params, &amp; $returnEarly) {};</code></pre>
+<p>A suffix interceptor (executed after method logic) should have following signature:</p>
+<pre><code class="language-php">/**
+ * @var object $proxy       the proxy that intercepted the method call
+ * @var object $instance    the wrapped instance within the proxy
+ * @var string $method      name of the called method
+ * @var array  $params      sorted array of parameters passed to the intercepted
+ *                          method, indexed by parameter name
+ * @var mixed  $returnValue the return value of the intercepted method
+ * @var bool   $returnEarly flag to tell the proxy to return early, returning the interceptor's
+ *                          return value instead of the value produced by the method
+ *
+ * @return mixed
+ */
+$suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, &amp; $returnEarly) {};</code></pre>
+<h2>Tuning performance for production</h2>
+<p>See <a href="https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 
     </div>
 

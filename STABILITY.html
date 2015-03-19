@@ -82,40 +82,25 @@
 
 <div class="content">
     
-        <h1>Proxy Manager</h1>
-<p>This library aims at providing abstraction for generating various kinds of <a href="http://marco-pivetta.com/proxy-pattern-in-php/">proxy classes</a>.</p>
-<p><img src="proxy-manager.png" alt="ProxyManager" /></p>
-<p><a href="https://travis-ci.org/Ocramius/ProxyManager"><img src="https://travis-ci.org/Ocramius/ProxyManager.png?branch=master" alt="Build Status" /></a>
-<a href="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/"><img src="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/badges/coverage.png?s=ca3b9ceb9e36aeec0e57569cc8983394b7d2a59e" alt="Code Coverage" /></a>
-<a href="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/"><img src="https://scrutinizer-ci.com/g/Ocramius/ProxyManager/badges/quality-score.png?s=eaa858f876137ed281141b1d1e98acfa739729ed" alt="Scrutinizer Quality Score" /></a>
-<a href="https://insight.sensiolabs.com/projects/69fe5f97-b1c8-4ddd-93ce-900b8b788cf2"><img src="https://insight.sensiolabs.com/projects/69fe5f97-b1c8-4ddd-93ce-900b8b788cf2/mini.png" alt="SensioLabsInsight" /></a>
-<a href="https://www.versioneye.com/package/php--ocramius--proxy-manager"><img src="https://www.versioneye.com/package/php--ocramius--proxy-manager/badge.png" alt="Dependency Status" /></a>
-<a href="https://www.versioneye.com/php/ocramius:proxy-manager/references"><img src="https://www.versioneye.com/php/ocramius:proxy-manager/reference_badge.svg" alt="Reference Status" /></a>
-<a href="http://hhvm.h4cc.de/package/ocramius/proxy-manager"><img src="http://hhvm.h4cc.de/badge/ocramius/proxy-manager.png" alt="HHVM Status" /></a></p>
-<p><a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/downloads.png" alt="Total Downloads" /></a>
-<a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/v/stable.png" alt="Latest Stable Version" /></a>
-<a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/v/unstable.png" alt="Latest Unstable Version" /></a></p>
-<h2>Documentation</h2>
-<p>You can learn about the proxy pattern and how to use the <strong>ProxyManager</strong> on the <a href="http://ocramius.github.io/ProxyManager">online documentation</a>.</p>
-<h2>Help/Support</h2>
-<p><a href="https://gitter.im/Ocramius/ProxyManager?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
-<h2>Installation</h2>
-<p>The suggested installation method is via <a href="https://getcomposer.org/">composer</a>:</p>
-<pre><code class="language-sh">php composer.phar require ocramius/proxy-manager:1.0.*</code></pre>
-<h2>Proxy example</h2>
-<p>Here's how you build a lazy loadable object with ProxyManager using a <em>Virtual Proxy</em></p>
-<pre><code class="language-php">$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
-
-$proxy = $factory-&gt;createProxy(
-    'MyApp\HeavyComplexObject',
-    function (&amp; $wrappedObject, $proxy, $method, $parameters, &amp; $initializer) {
-        $wrappedObject = new HeavyComplexObject(); // instantiation logic here
-        $initializer   = null; // turning off further lazy initialization
-    }
-);
-
-$proxy-&gt;doFoo();</code></pre>
-<p>See the <a href="http://ocramius.github.io/ProxyManager">online documentation</a> for more supported proxy types and examples. </p>
+        <p>This is a list of supported versions, with their expected release/support time-frames:</p>
+<h1>0.5.x</h1>
+<ul>
+<li>Release date: 2013-12-01</li>
+<li>Bug fixes: till 2015-03-11</li>
+<li>Security fixes: till 2015-12-11</li>
+</ul>
+<h1>1.0.x</h1>
+<ul>
+<li>Release date: 2014-12-12</li>
+<li>Bug fixes: till 2015-12-11</li>
+<li>Security fixes: till 2016-12-11</li>
+</ul>
+<h1>2.0.x</h1>
+<ul>
+<li>Release date: TBA</li>
+<li>Bug fixes: TBA</li>
+<li>Security fixes: TBA</li>
+</ul>
 
     </div>
 
