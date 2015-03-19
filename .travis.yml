@@ -15,8 +15,8 @@ env:
     - secure: HUDB66EnmKFx2A+E3HxvuX/7XSjgfNy8dnzcpG+K9mf/JM5JXZflK3xO3J3LCgSQG6Ptwr2yy//7vX+PdJMdSRTmP+d/dy6v8yLRP+GvYZXLIbuKg7dQjLerOxJcy9JhU2eAEBevc002PwFqLalfhCyWLvLiCof8++E2uGbvTSU=
 
 before_script:
+  - composer update
   - sh .travis.install.sh
-  - composer global require couscous/couscous
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
@@ -31,9 +31,4 @@ matrix:
     - php: hhvm-nightly
 
 after_script:
-  - sh .travis.coverage.sh
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover ./clover.xml
-
-after_success:
   - couscous travis-auto-deploy --php-version=5.5
