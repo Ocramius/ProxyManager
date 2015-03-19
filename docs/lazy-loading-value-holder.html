@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -82,10 +74,10 @@
 
 <div class="content">
     
-        <h1>Lazy Loading Value Holder Proxy</h1>
+        <h1 id="lazy-loading-value-holder-proxy">Lazy Loading Value Holder Proxy</h1>
 <p>A lazy loading value holder proxy is a virtual proxy that wraps and lazily initializes a &quot;real&quot; instance of the proxied
 class.</p>
-<h2>What is lazy loading?</h2>
+<h2 id="what-is-lazy-loading">What is lazy loading?</h2>
 <p>In pseudo-code, in userland, <a href="http://www.martinfowler.com/eaaCatalog/lazyLoad.html">lazy loading</a> looks like following:</p>
 <pre><code class="language-php">class MyObjectProxy
 {
@@ -114,13 +106,13 @@ with service location raise, as I've explained
 <a href="http://ocramius.github.com/blog/zf2-and-symfony-service-proxies-with-doctrine-proxies/">in this article</a>.</p>
 <p>Lazy loading value holders abstract this logic for you, hiding your complex, slow, performance-impacting objects behind
 tiny wrappers that have their same API, and that get initialized at first usage.</p>
-<h2>When do I use a lazy value holder?</h2>
+<h2 id="when-do-i-use-a-lazy-value-holder">When do I use a lazy value holder?</h2>
 <p>You usually need a lazy value holder in cases where following applies</p>
 <ul>
 <li>your object takes a lot of time and memory to be initialized (with all dependencies)</li>
 <li>your object is not always used, and the instantiation overhead can be avoided</li>
 </ul>
-<h2>Usage examples</h2>
+<h2 id="usage-examples">Usage examples</h2>
 <p><a href="https://github.com/Ocramius/ProxyManager">ProxyManager</a> provides a factory that eases instantiation of lazy loading
 value holders. To use it, follow these steps:</p>
 <p>First of all, define your object's logic without taking care of lazy loading:</p>
@@ -158,7 +150,7 @@ $instance = $factory-&gt;createProxy('MyApp\HeavyComplexObject', $initializer);<
 <p>You can now simply use your object as before:</p>
 <pre><code class="language-php">// this will just work as before
 $proxy-&gt;doFoo(); // OK!</code></pre>
-<h2>Lazy Initialization</h2>
+<h2 id="lazy-initialization">Lazy Initialization</h2>
 <p>As you can see, we use a closure to handle lazy initialization of the proxy instance at runtime.
 The initializer closure signature should be as following:</p>
 <pre><code class="language-php">/**
@@ -197,7 +189,7 @@ and the
 <pre><code class="language-php">$proxy-&gt;setProxyInitializer(null);</code></pre>
 <p>or</p>
 <pre><code class="language-php">$initializer = null; // if you use the initializer by reference</code></pre>
-<h2>Triggering Initialization</h2>
+<h2 id="triggering-initialization">Triggering Initialization</h2>
 <p>A lazy loading proxy is initialized whenever you access any property or method of it.
 Any of the following interactions would trigger lazy initialization:</p>
 <pre><code class="language-php">// calling a method
@@ -222,11 +214,11 @@ clone $proxy;
 $unserialized = serialize(unserialize($proxy));</code></pre>
 <p>Remember to call <code>$proxy-&gt;setProxyInitializer(null);</code> to disable initialization of your proxy, or it will happen more
 than once.</p>
-<h2>Proxying interfaces</h2>
+<h2 id="proxying-interfaces">Proxying interfaces</h2>
 <p>You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the
 methods defined by the interface itself, even if the <code>wrappedObject</code> implements more methods. This will anyway save
 some memory since the proxy won't contain useless inherited properties.</p>
-<h2>Tuning performance for production</h2>
+<h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 
     </div>

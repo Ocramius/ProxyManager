@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -82,22 +74,22 @@
 
 <div class="content">
     
-        <h1>Contributing</h1>
+        <h1 id="contributing">Contributing</h1>
 <ul>
-<li>Coding standard for the project is <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.html">PSR-2</a></li>
+<li>Coding standard for the project is <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/psr-2-coding-style-guide.html">PSR-2</a></li>
 <li>The project will follow strict <a href="http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php">object calisthenics</a></li>
 <li>Any contribution must provide tests for additional introduced conditions</li>
 <li>Any un-confirmed issue needs a failing test case before being accepted</li>
 <li>Pull requests must be sent from a new hotfix/feature branch, not from <code>master</code>.</li>
 </ul>
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 <p>To install the project and run the tests, you need to clone it first:</p>
 <pre><code class="language-sh">$ git clone git://github.com/Ocramius/ProxyManager.git</code></pre>
 <p>You will then need to run a composer installation:</p>
 <pre><code class="language-sh">$ cd ProxyManager
 $ curl -s https://getcomposer.org/installer | php
 $ php composer.phar update</code></pre>
-<h2>Testing</h2>
+<h2 id="testing">Testing</h2>
 <p>The PHPUnit version to be used is the one installed as a dev- dependency via composer:</p>
 <pre><code class="language-sh">$ ./vendor/bin/phpunit</code></pre>
 <p>Accepted coverage for new contributions is 80%. Any contribution not satisfying this requirement

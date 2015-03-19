@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -82,7 +74,7 @@
 
 <div class="content">
     
-        <h1>Access Interceptor Value Holder Proxy</h1>
+        <h1 id="access-interceptor-value-holder-proxy">Access Interceptor Value Holder Proxy</h1>
 <p>An access interceptor value holder is a smart reference proxy that allows you to dynamically
 define logic to be executed before or after any of the wrapped object's methods
 logic.</p>
@@ -94,7 +86,7 @@ logic.</p>
 <li>event triggering</li>
 <li>handling of orthogonal logic, and <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">AOP</a> in general</li>
 </ul>
-<h2>Example</h2>
+<h2 id="example">Example</h2>
 <p>Here's an example of how you can create and use an access interceptor value holder:</p>
 <pre><code class="language-php">&lt;?php
 
@@ -123,7 +115,7 @@ $proxy-&gt;doFoo();</code></pre>
 <pre><code>PreFoo!
 Foo!
 PostFoo!</code></pre>
-<h2>Implementing pre- and post- access interceptors</h2>
+<h2 id="implementing-pre--and-post--access-interceptors">Implementing pre- and post- access interceptors</h2>
 <p>A proxy produced by the
 <a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/AccessInterceptorValueHolderFactory.php"><code>ProxyManager\Factory\AccessInterceptorValueHolderFactory</code></a>
 implements both the
@@ -161,7 +153,7 @@ $prefixInterceptor = function ($proxy, $instance, $method, $params, &amp; $retur
  * @return mixed
  */
 $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, &amp; $returnEarly) {};</code></pre>
-<h2>Tuning performance for production</h2>
+<h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 
     </div>

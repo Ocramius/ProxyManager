@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -82,13 +74,13 @@
 
 <div class="content">
     
-        <h1>Remote Object Proxy</h1>
+        <h1 id="remote-object-proxy">Remote Object Proxy</h1>
 <p>The remote object implementation is a mechanism that enables an local object to control an other object on an other server.
 Each call method on the local object will do a network call to get information or execute operations on the remote object.</p>
-<h2>What is remote object proxy ?</h2>
+<h2 id="what-is-remote-object-proxy-">What is remote object proxy ?</h2>
 <p>A remote object is based on an interface. The remote interface defines the API that a consumer can call. This interface
 must be implemented both by the client and the RPC server.</p>
-<h2>Adapters</h2>
+<h2 id="adapters">Adapters</h2>
 <p>ZendFramework's RPC components (XmlRpc, JsonRpc &amp; Soap) can be used easily with the remote object.
 You will need to require the one you need via composer, though:</p>
 <pre><code class="language-sh">$ php composer.phar require zendframework/zend-xmlrpc:2.*
@@ -100,7 +92,7 @@ $ php composer.phar require zendframework/zend-soap:2.*</code></pre>
 <li><code>ProxyManager\Factory\RemoteObject\Adapter\JsonRpc</code></li>
 <li><code>ProxyManager\Factory\RemoteObject\Adapter\Soap</code></li>
 </ul>
-<h2>Usage examples</h2>
+<h2 id="usage-examples">Usage examples</h2>
 <p>RPC server side code (<code>xmlrpc.php</code> in your local webroot):</p>
 <pre><code class="language-php">interface FooServiceInterface
 {
@@ -138,7 +130,7 @@ $factory = new \ProxyManager\Factory\RemoteObjectFactory(
 $proxy = $factory-&gt;createProxy('FooServiceInterface');
 
 var_dump($proxy-&gt;foo()); // "bar remote"</code></pre>
-<h2>Implementing custom adapters</h2>
+<h2 id="implementing-custom-adapters">Implementing custom adapters</h2>
 <p>Your adapters must implement <code>ProxyManager\Factory\RemoteObject\AdapterInterface</code> :</p>
 <pre><code class="language-php">interface AdapterInterface
 {
@@ -155,7 +147,7 @@ var_dump($proxy-&gt;foo()); // "bar remote"</code></pre>
 }</code></pre>
 <p>It is very easy to create your own implementation (for RESTful web services, for example). Simply pass
 your own adapter instance to your factory at construction time</p>
-<h2>Tuning performance for production</h2>
+<h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 
     </div>

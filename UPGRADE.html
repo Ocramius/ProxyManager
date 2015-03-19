@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -83,7 +75,7 @@
 <div class="content">
     
         <p>This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:</p>
-<h1>0.5.0</h1>
+<h1 id="050">0.5.0</h1>
 <ul>
 <li>The Generated Hydrator has been removed - it is now available as a separate project
 at <a href="https://github.com/Ocramius/GeneratedHydrator">Ocramius/GeneratedHydrator</a> <a href="https://github.com/Ocramius/ProxyManager/pull/65">#65</a></li>
@@ -97,7 +89,7 @@ are now no-op and deprecated, and will be removed in the next minor
 version <a href="https://github.com/Ocramius/ProxyManager/pull/87">#87</a> <a href="https://github.com/Ocramius/ProxyManager/pull/90">#90</a></li>
 <li>Proxy public properties defaults are now set before initialization <a href="https://github.com/Ocramius/ProxyManager/pull/116">#116</a> <a href="https://github.com/Ocramius/ProxyManager/pull/122">#122</a></li>
 </ul>
-<h1>0.4.0</h1>
+<h1 id="040">0.4.0</h1>
 <ul>
 <li>An optional parameter <code>$options</code> was introduced
 in <a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Inflector/ClassNameInflectorInterface.php"><code>ProxyManager\Inflector\ClassNameInflectorInterface#getProxyClassName($className, array $options = array())</code></a>
@@ -106,20 +98,20 @@ and <a href="https://github.com/Ocramius/ProxyManager/pull/59">#59</a></li>
 <li>Generated hydrators no longer have constructor arguments. Any required reflection instantiation is now dealt with
 in the hydrator internally as of <a href="https://github.com/Ocramius/ProxyManager/pull/63">#63</a></li>
 </ul>
-<h1>0.3.4</h1>
+<h1 id="034">0.3.4</h1>
 <ul>
 <li>Interface names are also supported for proxy generation as of <a href="https://github.com/Ocramius/ProxyManager/pull/40">#40</a></li>
 </ul>
-<h1>0.3.3</h1>
+<h1 id="033">0.3.3</h1>
 <ul>
 <li><a href="https://github.com/Ocramius/ProxyManager/tree/master/docs/generated-hydrator.html">Generated hydrators</a> were introduced</li>
 </ul>
-<h1>0.3.2</h1>
+<h1 id="032">0.3.2</h1>
 <ul>
 <li>An additional (optional) <a href="https://github.com/Ocramius/ProxyManager/pull/31">by-ref parameter was added</a>
 to the lazy loading proxies' initializer to allow unsetting the initializer with less overhead.</li>
 </ul>
-<h1>0.3.0</h1>
+<h1 id="030">0.3.0</h1>
 <ul>
 <li>Dependency to <a href="https://github.com/schmittjoh/cg-library">jms/cg</a> removed</li>
 <li>Moved code generation logic to <a href="https://github.com/zendframework/zf2"><code>Zend\Code</code></a></li>
@@ -133,7 +125,7 @@ instead</li>
 <li>All code generation logic has been replaced - If you wrote any logic based on <code>ProxyManager\ProxyGenerator</code>, you will
 have to rewrite it</li>
 </ul>
-<h1>0.2.0</h1>
+<h1 id="020">0.2.0</h1>
 <ul>
 <li>
 <p>The signature of initializers to be used with proxies implementing

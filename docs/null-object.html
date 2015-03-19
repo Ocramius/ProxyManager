@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -82,17 +74,17 @@
 
 <div class="content">
     
-        <h1>Null Object Proxy</h1>
+        <h1 id="null-object-proxy">Null Object Proxy</h1>
 <p>A Null Object proxy is a <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">null object pattern</a> implementation.
 The proxy factory creates a new object with defined neutral behavior based on an other object, class name or interface.</p>
-<h2>What is null object proxy ?</h2>
+<h2 id="what-is-null-object-proxy-">What is null object proxy ?</h2>
 <p>In your application, when you can't return the object related to the request, the consumer of the model must check
 for the return value and handle the failing condition gracefully, thus generating an explosion of conditionals throughout your code.
 Fortunately, this seemingly-tangled situation can be sorted out simply by creating a polymorphic implementation of the
 domain object, which would implement the same interface as the one of the object in question, only that its methods
 wouldn’t do anything, therefore offloading client code from doing repetitive checks for ugly null values when the operation
 is executed.</p>
-<h2>Usage examples</h2>
+<h2 id="usage-examples">Usage examples</h2>
 <pre><code class="language-php">class UserMapper
 {   
     private $adapter;
@@ -155,10 +147,10 @@ var_dump($nullUser-&gt;getName()); // empty return</code></pre>
         return $user; 
     }
 }</code></pre>
-<h2>Proxying interfaces</h2>
+<h2 id="proxying-interfaces">Proxying interfaces</h2>
 <p>You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the
 methods defined by the interface itself, and like with the object, the methods are empty.</p>
-<h2>Tuning performance for production</h2>
+<h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 
     </div>

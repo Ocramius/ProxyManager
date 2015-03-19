@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -82,10 +74,10 @@
 
 <div class="content">
     
-        <h1>Lazy Loading Ghost Object Proxies</h1>
+        <h1 id="lazy-loading-ghost-object-proxies">Lazy Loading Ghost Object Proxies</h1>
 <p>A lazy loading ghost object proxy is a ghost proxy that looks exactly like the real instance of the proxied subject,
 but which has all properties nulled before initialization.</p>
-<h2>Lazy loading with the Ghost Object</h2>
+<h2 id="lazy-loading-with-the-ghost-object">Lazy loading with the Ghost Object</h2>
 <p>In pseudo-code, in userland, <a href="http://www.martinfowler.com/eaaCatalog/lazyLoad.html">lazy loading</a> in a ghost object
 looks like following:</p>
 <pre><code class="language-php">class MyObjectProxy
@@ -115,7 +107,7 @@ looks like following:</p>
 }</code></pre>
 <p>Ghost objects work similarly to virtual proxies, but since they don't wrap around a &quot;real&quot; instance of the proxied
 subject, they are better suited for representing dataset rows.</p>
-<h2>When do I use a ghost object?</h2>
+<h2 id="when-do-i-use-a-ghost-object">When do I use a ghost object?</h2>
 <p>You usually need a ghost object in cases where following applies</p>
 <ul>
 <li>you are building a small data-mapper and want to lazily load data across associations in your object graph</li>
@@ -124,7 +116,7 @@ subject, they are better suited for representing dataset rows.</p>
 <li>you are aware of the internal state of the object and are confident in working with its internals via reflection
 or direct property access</li>
 </ul>
-<h2>Usage examples</h2>
+<h2 id="usage-examples">Usage examples</h2>
 <p><a href="https://github.com/Ocramius/ProxyManager">ProxyManager</a> provides a factory that creates lazy loading ghost objects.
 To use it, follow these steps:</p>
 <p>First of all, define your object's logic without taking care of lazy loading:</p>
@@ -167,7 +159,7 @@ $instance = $factory-&gt;createProxy('MyApp\Customer', $initializer);</code></pr
 <p>You can now simply use your object as before:</p>
 <pre><code class="language-php">// this will just work as before
 echo $proxy-&gt;getName() . ' ' . $proxy-&gt;getSurname(); // Agent Smith</code></pre>
-<h2>Lazy Initialization</h2>
+<h2 id="lazy-initialization">Lazy Initialization</h2>
 <p>As you can see, we use a closure to handle lazy initialization of the proxy instance at runtime.
 The initializer closure signature for ghost objects should be as following:</p>
 <pre><code class="language-php">/**
@@ -203,7 +195,7 @@ and the
 <pre><code class="language-php">$proxy-&gt;setProxyInitializer(null);</code></pre>
 <p>or</p>
 <pre><code class="language-php">$initializer = null; // if you use the initializer passed by reference to the closure</code></pre>
-<h2>Triggering Initialization</h2>
+<h2 id="triggering-initialization">Triggering Initialization</h2>
 <p>A lazy loading ghost object is initialized whenever you access any property or method of it.
 Any of the following interactions would trigger lazy initialization:</p>
 <pre><code class="language-php">// calling a method
@@ -228,11 +220,11 @@ clone $proxy;
 $unserialized = unserialize(serialize($proxy));</code></pre>
 <p>Remember to call <code>$proxy-&gt;setProxyInitializer(null);</code> to disable initialization of your proxy, or it will happen more
 than once.</p>
-<h2>Proxying interfaces</h2>
+<h2 id="proxying-interfaces">Proxying interfaces</h2>
 <p>You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the
 methods defined by the interface itself, even if the <code>wrappedObject</code> implements more methods. This will anyway save
 some memory since the proxy won't contain any properties.</p>
-<h2>Tuning performance for production</h2>
+<h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 
     </div>

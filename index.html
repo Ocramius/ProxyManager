@@ -24,14 +24,6 @@
 <ul>
     <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
 
-            <li>
-            <a href="#">Version</a>
-
-            <ul>
-                                    <li><a href="/1.0.0">v1.0.0</a></li>
-                                    <li><a href="/2.0.0">v2.0.0</a></li>
-                            </ul>
-        </li>
     </ul>
     <div class="bcms-clearfix"></div>
 </nav>
@@ -82,7 +74,7 @@
 
 <div class="content">
     
-        <h1>Proxy Manager</h1>
+        <h1 id="proxy-manager">Proxy Manager</h1>
 <p>This library aims at providing abstraction for generating various kinds of <a href="http://marco-pivetta.com/proxy-pattern-in-php/">proxy classes</a>.</p>
 <p><img src="proxy-manager.png" alt="ProxyManager" /></p>
 <p><a href="https://travis-ci.org/Ocramius/ProxyManager"><img src="https://travis-ci.org/Ocramius/ProxyManager.png?branch=master" alt="Build Status" /></a>
@@ -95,14 +87,14 @@
 <p><a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/downloads.png" alt="Total Downloads" /></a>
 <a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/v/stable.png" alt="Latest Stable Version" /></a>
 <a href="https://packagist.org/packages/ocramius/proxy-manager"><img src="https://poser.pugx.org/ocramius/proxy-manager/v/unstable.png" alt="Latest Unstable Version" /></a></p>
-<h2>Documentation</h2>
+<h2 id="documentation">Documentation</h2>
 <p>You can learn about the proxy pattern and how to use the <strong>ProxyManager</strong> on the <a href="http://ocramius.github.io/ProxyManager">online documentation</a>.</p>
-<h2>Help/Support</h2>
+<h2 id="helpsupport">Help/Support</h2>
 <p><a href="https://gitter.im/Ocramius/ProxyManager?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 <p>The suggested installation method is via <a href="https://getcomposer.org/">composer</a>:</p>
 <pre><code class="language-sh">php composer.phar require ocramius/proxy-manager:1.0.*</code></pre>
-<h2>Proxy example</h2>
+<h2 id="proxy-example">Proxy example</h2>
 <p>Here's how you build a lazy loadable object with ProxyManager using a <em>Virtual Proxy</em></p>
 <pre><code class="language-php">$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
 
