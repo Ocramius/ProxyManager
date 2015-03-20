@@ -1,5 +1,5 @@
 ---
-title: Remote Object Proxy
+title: Lazy Loading Ghost Object Proxies
 ---
 
 # Lazy Loading Ghost Object Proxies
