@@ -1,3 +1,7 @@
+---
+title: Access Interceptor Value Holder Proxy
+---
+
 # Access Interceptor Value Holder Proxy
 
 An access interceptor value holder is a smart reference proxy that allows you to dynamically
