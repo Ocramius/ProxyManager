@@ -1,3 +1,7 @@
+---
+title: Stability
+---
+
 This is a list of supported versions, with their expected release/support time-frames:
 
 # 0.5.x

@@ -1,3 +1,7 @@
+---
+title: Download / Installation
+---
+
 ## Download / Installation
 
 The suggested installation method is via [composer](https://getcomposer.org/).

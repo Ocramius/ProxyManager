@@ -1,3 +1,7 @@
+---
+title: Access Interceptor Scope Localizer Proxy
+---
+
 # Access Interceptor Scope Localizer Proxy
 
 An access interceptor scope localizer is a smart reference proxy that allows you to dynamically

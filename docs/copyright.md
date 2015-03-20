@@ -1,3 +1,7 @@
+---
+title: License
+---
+
 # License
 
 Copyright (c) 2013 Marco Pivetta

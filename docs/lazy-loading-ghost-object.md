@@ -1,3 +1,7 @@
+---
+title: Lazy Loading Ghost Object Proxies
+---
+
 # Lazy Loading Ghost Object Proxies
 
 A lazy loading ghost object proxy is a ghost proxy that looks exactly like the real instance of the proxied subject,

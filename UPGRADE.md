@@ -1,3 +1,7 @@
+---
+title: Upgrade
+---
+
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
 # 0.5.0
