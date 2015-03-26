@@ -24,6 +24,7 @@ use ProxyManager\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\CallableTypeHintClass;
 use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use stdClass;
 use Zend\Code\Generator\ValueGenerator;
 use Zend\Code\Reflection\ParameterReflection;
@@ -102,6 +103,44 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertSame(stdClass::class, $parameter->getType());
+    }
+
+    public function testVariadicParamIsSettedByDefaultAsFalse()
+    {
+        $parameter = new ParameterGenerator();
+        $ref = new \ReflectionObject($parameter);
+        $property = $ref->getProperty('variadic');
+        $property->setAccessible(true);
+
+        $this->assertFalse($property->getValue($parameter));
+    }
+
+    public function testVariadicParamKeepAsFalseIfANotVariadicMethodIsPassed()
+    {
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            [BaseClass::class, 'publicTypeHintedMethod'],
+            'param'
+        ));
+
+        $ref = new \ReflectionObject($parameter);
+        $property = $ref->getProperty('variadic');
+        $property->setAccessible(true);
+
+        $this->assertFalse($property->getValue($parameter));
+    }
+
+    public function testVariadicParamTurnTrueWhenPassAVariadicMethod()
+    {
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            [ClassWithMethodWithVariadicFunction::class, 'buz'],
+            'fooz'
+        ));
+
+        $ref = new \ReflectionObject($parameter);
+        $property = $ref->getProperty('variadic');
+        $property->setAccessible(true);
+
+        $this->assertTrue($property->getValue($parameter));
     }
 
     public function testGeneratesParameterPassedByReference()

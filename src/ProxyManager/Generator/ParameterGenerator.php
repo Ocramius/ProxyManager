@@ -49,7 +49,7 @@ class ParameterGenerator extends ZendParameterGenerator
         $param = new static();
 
         if (PHP_VERSION_ID >= 50600) {
-            $param->isVariadic($reflectionParameter->isVariadic());
+            $param->setVariadic($reflectionParameter->isVariadic());
         }
 
         $param->setName($reflectionParameter->getName());
@@ -101,7 +101,7 @@ class ParameterGenerator extends ZendParameterGenerator
             . (true === $this->passedByReference ? '&' : '')
             . ($this->variadic ? '...' : '')
             . '$' . $this->name
-            . (!$this->variadic ? $this->generateDefaultValue() : '');
+            . ($this->variadic ? '' : $this->generateDefaultValue());
     }
 
     /**
@@ -179,7 +179,7 @@ class ParameterGenerator extends ZendParameterGenerator
         }
     }
 
-    private function isVariadic($isVariadic)
+    public function setVariadic($isVariadic)
     {
         $this->variadic = $isVariadic;
     }
