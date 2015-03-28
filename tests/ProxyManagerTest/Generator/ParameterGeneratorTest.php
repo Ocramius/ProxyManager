@@ -107,6 +107,9 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testVariadicParamIsSettedByDefaultAsFalse()
     {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Can\'t run tests for variadic support.');
+        }
         $parameter = new ParameterGenerator();
         $ref = new \ReflectionObject($parameter);
         $property = $ref->getProperty('variadic');
@@ -117,6 +120,9 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testVariadicParamKeepAsFalseIfANotVariadicMethodIsPassed()
     {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Can\'t run tests for variadic support.');
+        }
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
             [BaseClass::class, 'publicTypeHintedMethod'],
             'param'
@@ -131,6 +137,9 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testVariadicParamTurnTrueWhenPassAVariadicMethod()
     {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Can\'t run tests for variadic support.');
+        }
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
             [ClassWithMethodWithVariadicFunction::class, 'buz'],
             'fooz'
