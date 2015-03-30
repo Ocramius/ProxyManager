@@ -19,7 +19,6 @@
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -54,7 +53,7 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
 
         foreach ($parameters as $parameter) {
             $parameterName       = $parameter->getName();
-            $variadicPrefix      = ($parameter instanceof ParameterGenerator && $parameter->isVariadic() ? '...' : '');
+            $variadicPrefix      = $parameter->isVariadic() ? '...' : '';
             $initializerParams[] = var_export($parameterName, true) . ' => $' . $parameterName;
             $forwardedParams[]   = $variadicPrefix . '$' . $parameterName;
         }
