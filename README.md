@@ -1,7 +1,3 @@
----
-title: Home
----
-
 # Proxy Manager
 
 This library aims at providing abstraction for generating various kinds of [proxy classes](http://marco-pivetta.com/proxy-pattern-in-php/).
