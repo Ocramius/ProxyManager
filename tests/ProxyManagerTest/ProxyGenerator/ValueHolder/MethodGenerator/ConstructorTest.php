@@ -99,6 +99,10 @@ $this->foo->__construct();',
 
     public function testBodyStructureWithPhp4StyleConstructor()
     {
+        if (PHP_VERSION_ID >= 70000) {
+            $this->markTestSkipped('Can\'t run this test on PHP7 or high version!');
+        }
+
         $className = uniqid('ClassWithPhp4Constructor');
 
         eval('class ' . $className . '{ public function ' . $className . '($first, $second, $third) {}}');
