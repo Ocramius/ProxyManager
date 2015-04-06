@@ -421,7 +421,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 new ClassWithMethodWithVariadicFunction(),
                 'buz',
                 ['Ocramius', 'Malukenho'],
-                ['Ocramius', 'Malukenho']
+                [['Ocramius', 'Malukenho']]
             ];
         }
 
