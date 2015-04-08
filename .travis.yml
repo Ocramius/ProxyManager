@@ -17,6 +17,7 @@ env:
 before_script:
   - composer update
   - sh .travis.install.sh
+  - sh .travis.coverage.sh
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
