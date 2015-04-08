@@ -17,7 +17,6 @@ env:
 before_script:
   - composer update
   - sh .travis.install.sh
-  - sh .travis.coverage.sh
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
@@ -27,9 +26,9 @@ script:
 
 matrix:
   allow_failures:
-    - php: 7
     - php: hhvm
     - php: hhvm-nightly
 
 after_script:
+  - sh .travis.coverage.sh
   - ./vendor/bin/couscous travis-auto-deploy --php-version=5.5
