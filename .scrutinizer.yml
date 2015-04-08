@@ -3,7 +3,7 @@ before_commands:
 
 tools:
     external_code_coverage:
-        timeout: 36000
+        timeout: 600
     php_code_coverage:
         enabled: true
     php_code_sniffer:
