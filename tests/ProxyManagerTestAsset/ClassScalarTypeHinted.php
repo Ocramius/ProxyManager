@@ -20,23 +20,23 @@ namespace ProxyManagerTestAsset;
 
 class ClassScalarTypeHinted
 {
-    public function acceptString(string $string)
+    public function acceptString(string $param)
     {
-        return $string;
+        return $param;
     }
 
-    public function acceptInteger(int $integer)
+    public function acceptInteger(int $param)
     {
-        return $integer;
+        return $param;
     }
 
-    public function acceptBoolean(bool $bool)
+    public function acceptBoolean(bool $param)
     {
-        return $bool;
+        return $param;
     }
 
-    public function acceptFloat(float $float)
+    public function acceptFloat(float $param)
     {
-        return $float;
+        return $param;
     }
 }
