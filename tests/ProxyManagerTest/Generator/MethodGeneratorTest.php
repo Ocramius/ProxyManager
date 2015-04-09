@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassScalarTypeHinted;
 use stdClass;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -110,4 +111,46 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame(stdClass::class, $param->getType());
     }
+
+    /**
+     * @param string $methodName
+     * @param        $type
+     *
+     * @dataProvider scalarTypeHintedMethods
+     */
+    public function testGenerateMethodWithScalarTypeHinting($methodName, $type)
+    {
+        if (PHP_VERSION_ID < 700000) {
+            $this->markTestSkipped(sprintf(
+                'Can\'t run tests about scalar type hinting for %s',
+                phpversion()
+            ));
+        }
+
+        $method = MethodGenerator::fromReflection(new MethodReflection(
+            ClassScalarTypeHinted::class,
+            $methodName
+        ));
+
+        $this->assertSame($methodName, $method->getName());
+
+        $parameters = $method->getParameters();
+
+        $this->assertCount(1, $parameters);
+
+        $param = $parameters['param'];
+
+        $this->assertSame($type, $param->getType());
+    }
+
+    public function scalarTypeHintedMethods()
+    {
+        return [
+            ['acceptString', 'string'],
+            ['acceptInt', 'int'],
+            ['acceptBoolean', 'bool'],
+            ['acceptFloat', 'float'],
+        ];
+    }
+
 }
