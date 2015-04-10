@@ -353,10 +353,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $this->assertSame('Ocramius', $object->bar);
         $this->assertSame(
             [
-                [
-                    'Malukenho',
-                    'Danizord',
-                ],
+                'Malukenho',
+                'Danizord',
             ],
             $object->baz
         );
