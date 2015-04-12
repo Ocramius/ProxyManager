@@ -56,24 +56,21 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGenerateMethodWithVariadicParameter()
     {
-        if (PHP_VERSION_ID < 70000) {
+        if (PHP_VERSION_ID < 50600) {
             $this->markTestSkipped('Can\'t run tests for variadic syntax support.');
         }
         $methodGenerator = new MethodGenerator();
 
         $methodGenerator->setReturnsReference(true);
         $methodGenerator->setName('methodName');
-        $methodGenerator->setVisibility('public');
-        $methodGenerator->setDocBlock('docBlock');
 
         $parameter = new ParameterGenerator('foo');
         $parameter->setVariadic(true);
 
         $methodGenerator->setParameter($parameter);
 
-        $this->assertSame(true, $methodGenerator->returnsReference());
         $this->assertStringMatchesFormat(
-            '%a/**%adocBlock%a*/%apublic function & methodName(...$foo)%a{%a%a}',
+            '%apublic function & methodName(...$foo)%a{%a%a}',
             $methodGenerator->generate()
         );
     }
