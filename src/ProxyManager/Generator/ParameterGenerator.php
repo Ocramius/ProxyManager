@@ -183,4 +183,10 @@ class ParameterGenerator extends ZendParameterGenerator
     {
         $this->variadic = $isVariadic;
     }
+
+    public function isVariadic()
+    {
+        return $this->variadic;
+    }
+
 }
