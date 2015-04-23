@@ -50,7 +50,8 @@ class InterceptedMethod extends MethodGenerator
         $forwardedParams = [];
 
         foreach ($originalMethod->getParameters() as $parameter) {
-            $forwardedParams[]   = '$' . $parameter->getName();
+            $variadicPrefix      = $parameter->isVariadic() ? '...' : '';
+            $forwardedParams[]   = $variadicPrefix . '$' . $parameter->getName();
         }
 
         $method->setDocblock('{@inheritDoc}');
