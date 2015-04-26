@@ -24,6 +24,7 @@ use ProxyManager\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\CallableTypeHintClass;
 use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use stdClass;
 use Zend\Code\Generator\ValueGenerator;
 use Zend\Code\Reflection\ParameterReflection;
@@ -102,6 +103,42 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertSame(stdClass::class, $parameter->getType());
+    }
+
+    public function testVariadicParamIsSettedByDefaultAsFalse()
+    {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Can\'t run tests for variadic support.');
+        }
+
+        $parameter = new ParameterGenerator();
+        $this->assertFalse($parameter->isVariadic());
+    }
+
+    public function testVariadicParamKeepAsFalseIfANotVariadicMethodIsPassed()
+    {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Can\'t run tests for variadic support.');
+        }
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            [BaseClass::class, 'publicTypeHintedMethod'],
+            'param'
+        ));
+
+        $this->assertFalse($parameter->isVariadic());
+    }
+
+    public function testVariadicParamTurnTrueWhenPassAVariadicMethod()
+    {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Can\'t run tests for variadic support.');
+        }
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            [ClassWithMethodWithVariadicFunction::class, 'buz'],
+            'fooz'
+        ));
+
+        $this->assertTrue($parameter->isVariadic());
     }
 
     public function testGeneratesParameterPassedByReference()

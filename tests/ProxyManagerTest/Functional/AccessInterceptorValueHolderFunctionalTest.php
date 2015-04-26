@@ -19,6 +19,7 @@
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -26,6 +27,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -324,6 +326,40 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy->__construct(5);
         $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
         $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+    }
+
+    public function testCanCreateAndRegisterCallbackWithVariadicNotation()
+    {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
+        }
+
+        $factory       = new AccessInterceptorValueHolderFactory();
+        $targetObject  = new ClassWithMethodWithVariadicFunction();
+
+        $object = $factory->createProxy(
+            $targetObject,
+            [
+                function ($paratemers) {
+                    return 'Foo Baz';
+                },
+            ]
+        );
+
+        $this->assertNull($object->bar);
+        $this->assertNull($object->baz);
+
+        $object->foo('Ocramius', 'Malukenho', 'Danizord');
+        $this->assertSame('Ocramius', $object->bar);
+        $this->assertSame(
+            [
+                [
+                    'Malukenho',
+                    'Danizord',
+                ]
+            ],
+            $object->baz
+        );
     }
 
     /**

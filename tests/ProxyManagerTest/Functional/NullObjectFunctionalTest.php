@@ -26,6 +26,7 @@ use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
 
@@ -169,7 +170,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        return [
+        $methods =  [
             [
                 BaseClass::class,
                 'publicMethod',
@@ -201,6 +202,17 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 $selfHintParam
             ],
         ];
+
+        if (PHP_VERSION_ID >= 50600) {
+            $methods[] = [
+                ClassWithMethodWithVariadicFunction::class,
+                'buz',
+                ['Ocramius', 'Malukenho'],
+                null
+            ];
+        }
+
+        return $methods;
     }
 
     /**

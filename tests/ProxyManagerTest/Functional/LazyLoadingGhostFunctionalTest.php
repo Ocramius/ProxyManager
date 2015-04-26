@@ -30,6 +30,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedPropertiesAndAccessorMethods;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
@@ -100,7 +101,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertFalse($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array(array($proxy, $method), $params));
+        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
         $this->assertFalse($proxy->isProxyInitialized());
     }
 
@@ -681,7 +682,11 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generatedClass     = new ClassGenerator($generatedClassName);
 
-        (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($parentClassName), $generatedClass, $proxyOptions);
+        (new LazyLoadingGhostGenerator())->generate(
+            new ReflectionClass($parentClassName),
+            $generatedClass,
+            $proxyOptions
+        );
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);
 
         return $generatedClassName;
@@ -792,7 +797,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function getProxyInitializingMethods()
     {
-        return [
+        $methods = [
             [
                 BaseClass::class,
                 new BaseClass(),
@@ -815,6 +820,18 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'privatePropertyDefault'
             ],
         ];
+
+        if (PHP_VERSION_ID >= 50600) {
+            $methods[] = [
+                ClassWithMethodWithVariadicFunction::class,
+                new ClassWithMethodWithVariadicFunction(),
+                'foo',
+                ['Ocramius', 'Malukenho'],
+                null
+            ];
+        }
+
+        return $methods;
     }
 
     /**

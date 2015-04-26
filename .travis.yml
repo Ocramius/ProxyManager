@@ -21,7 +21,7 @@ script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --strict --exclude-group=Performance,Coverage
   - php -n ./vendor/bin/phpunit --group=Performance
-#  - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
+  # - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 
 matrix:
   allow_failures:
@@ -29,4 +29,5 @@ matrix:
     - php: hhvm-nightly
 
 after_script:
+  - sh .travis.coverage.sh
   - ./vendor/bin/couscous travis-auto-deploy --php-version=5.5
