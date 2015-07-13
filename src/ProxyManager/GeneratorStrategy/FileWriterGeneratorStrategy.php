@@ -74,6 +74,8 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
             restore_error_handler();
         }
 
+        eval($generatedCode);
+
         return $generatedCode;
     }
 

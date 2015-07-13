@@ -87,7 +87,7 @@ abstract class AbstractBaseFactory
         $this
             ->configuration
             ->getSignatureChecker()
-            ->checkSignature(new ReflectionClass($proxyClassName), $proxyParameters);
+            ->checkSignature(\BetterReflection\Reflection\ReflectionClass::createFromName($proxyClassName), $proxyParameters);
 
         return $this->checkedClasses[$className] = $proxyClassName;
     }
@@ -112,7 +112,7 @@ abstract class AbstractBaseFactory
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 
-        $this->getGenerator()->generate(new ReflectionClass($className), $phpClass, $proxyOptions);
+        $this->getGenerator()->generate(\BetterReflection\Reflection\ReflectionClass::createFromName($className), $phpClass, $proxyOptions);
 
         $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
 
