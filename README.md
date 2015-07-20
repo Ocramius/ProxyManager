@@ -30,7 +30,7 @@ You can learn about the proxy pattern and how to use the **ProxyManager** on the
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require ocramius/proxy-manager:1.0.*
+php composer.phar require ocramius/proxy-manager
 ```
 
 ## Proxy example
