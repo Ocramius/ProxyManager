@@ -20,4 +20,4 @@ $proxy = $factory->createProxy(Kitchen::class, function (& $wrapped, $proxy, $me
 $proxy->sweets;
 ?>
 --EXPECTF--
-%SFatal error: Cannot access private property %s::$sweets in %s on line %d
+%SFatal error:%sCannot access private property %s::$sweets in %s
