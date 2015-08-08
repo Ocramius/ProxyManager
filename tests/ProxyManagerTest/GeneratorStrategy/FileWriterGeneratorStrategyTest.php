@@ -32,15 +32,12 @@ use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
  * @license MIT
  *
  * @group Coverage
+ * @covers \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy
  *
  * Note: this test generates temporary files that are not deleted
  */
 class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy::__construct
-     * @covers \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy::generate
-     */
     public function testGenerate()
     {
         /* @var $locator FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
