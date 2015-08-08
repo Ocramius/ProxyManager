@@ -141,7 +141,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         } catch (FileNotWritableException $exception) {
             rmdir($tmpFile);
 
-            $this->assertEquals(array('.', '..'), scandir($tmpDirPath));
+            $this->assertEquals(['.', '..'], scandir($tmpDirPath));
         }
     }
 }
