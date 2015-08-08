@@ -54,7 +54,7 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
      */
     public static function fromNonWritableLocation($path)
     {
-        $messages = [];
+        $messages = array();
 
         if (($destination = realpath($path)) && ! is_file($destination)) {
             $messages[] = 'exists and is not a file';
