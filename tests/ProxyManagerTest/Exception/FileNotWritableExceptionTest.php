@@ -36,7 +36,7 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
     {
         $exception = FileNotWritableException::fromInvalidMoveOperation('/tmp/a', '/tmp/b');
 
-        $this->assertInstanceOf('ProxyManager\\Exception\\FileNotWritableException', $exception);
+        $this->assertInstanceOf(FileNotWritableException::class, $exception);
         $this->assertSame(
             'Could not move file "/tmp/a" to location "/tmp/b": either the source file is not readable,'
             . ' or the destination is not writable',
@@ -48,7 +48,7 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
     {
         $exception = FileNotWritableException::fromNonWritableLocation(__DIR__);
 
-        $this->assertInstanceOf('ProxyManager\\Exception\\FileNotWritableException', $exception);
+        $this->assertInstanceOf(FileNotWritableException::class, $exception);
         $this->assertSame(
             'Could not write to path "' . __DIR__ . '": exists and is not a file',
             $exception->getMessage()
@@ -63,7 +63,7 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
 
         $exception = FileNotWritableException::fromNonWritableLocation($path . '/foo');
 
-        $this->assertInstanceOf('ProxyManager\\Exception\\FileNotWritableException', $exception);
+        $this->assertInstanceOf(FileNotWritableException::class, $exception);
         $this->assertSame(
             'Could not write to path "' . $path . '/foo": is not writable',
             $exception->getMessage()
