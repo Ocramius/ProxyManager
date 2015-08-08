@@ -97,6 +97,8 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
         }
 
         if (! rename($tmpFileName, $location)) {
+            unlink($tmpFileName);
+
             throw FileNotWritableException::fromInvalidMoveOperation($tmpFileName, $location);
         }
     }
