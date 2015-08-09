@@ -17,4 +17,4 @@ $proxy = $factory->createProxy(Kitchen::class, function () {});
 $proxy->sweets;
 ?>
 --EXPECTF--
-%SFatal error:%sCannot access protected property %s::$sweets in %s
+%SFatal error:%sCannot access protected property %s::$sweets in %a

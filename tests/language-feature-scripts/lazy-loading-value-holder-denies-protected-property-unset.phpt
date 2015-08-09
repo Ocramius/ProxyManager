@@ -20,4 +20,4 @@ $proxy = $factory->createProxy(Kitchen::class, function (& $wrapped, $proxy, $me
 unset($proxy->sweets);
 ?>
 --EXPECTF--
-%SFatal error:%sCannot %s property%sin %s
+%SFatal error:%sCannot %s property%sin %a

@@ -20,4 +20,4 @@ $proxy = $factory->createProxy(Kitchen::class, function (& $wrapped, $proxy, $me
 $proxy->sweets = 'stolen';
 ?>
 --EXPECTF--
-%SFatal error:%sCannot access %s property %s
+%SFatal error:%sCannot access %s property %a

@@ -17,4 +17,4 @@ $proxy = $factory->createProxy(Kitchen::class, function () {});
 $proxy->nonExisting;
 ?>
 --EXPECTF--
-%SNotice: Undefined property: Kitchen::$nonExisting in %s
+%SNotice: Undefined property: Kitchen::$nonExisting in %a
