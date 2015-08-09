@@ -31,7 +31,7 @@ class Foo implements FooServiceInterface
 
 class CustomAdapter implements AdapterInterface
 {
-    public function call($wrappedClass, $method, array $params = array())
+    public function call($wrappedClass, $method, array $params = [])
     {
         return 'baz';
     }
