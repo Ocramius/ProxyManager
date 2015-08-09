@@ -18,6 +18,7 @@
 
 namespace ProxyManager\GeneratorStrategy;
 
+use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use Zend\Code\Generator\ClassGenerator;
 
@@ -37,11 +38,18 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     protected $fileLocator;
 
     /**
+     * @var callable
+     */
+    private $emptyErrorHandler;
+
+    /**
      * @param \ProxyManager\FileLocator\FileLocatorInterface $fileLocator
      */
     public function __construct(FileLocatorInterface $fileLocator)
     {
-        $this->fileLocator = $fileLocator;
+        $this->fileLocator       = $fileLocator;
+        $this->emptyErrorHandler = function () {
+        };
     }
 
     /**
@@ -55,13 +63,43 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
             . '\\' . trim($classGenerator->getName(), '\\');
         $generatedCode = $classGenerator->generate();
         $fileName      = $this->fileLocator->getProxyFileName($className);
-        $tmpFileName   = $fileName . '.' . uniqid('', true);
 
-        // renaming files is necessary to avoid race conditions when the same file is written multiple times
-        // in a short time period
-        file_put_contents($tmpFileName, "<?php\n\n" . $generatedCode);
-        rename($tmpFileName, $fileName);
+        set_error_handler($this->emptyErrorHandler);
+
+        try {
+            $this->writeFile("<?php\n\n" . $generatedCode, $fileName);
+        } catch (FileNotWritableException $fileNotWritable) {
+            restore_error_handler();
+
+            throw $fileNotWritable;
+        }
+
+        restore_error_handler();
 
         return $generatedCode;
+    }
+
+    /**
+     * Writes the source file in such a way that race conditions are avoided when the same file is written
+     * multiple times in a short time period
+     *
+     * @param string $source
+     * @param string $location
+     *
+     * @throws FileNotWritableException
+     */
+    private function writeFile($source, $location)
+    {
+        $tmpFileName   = $location . '.' . uniqid('', true);
+
+        if (! file_put_contents($tmpFileName, $source)) {
+            throw FileNotWritableException::fromNonWritableLocation($tmpFileName);
+        }
+
+        if (! rename($tmpFileName, $location)) {
+            unlink($tmpFileName);
+
+            throw FileNotWritableException::fromInvalidMoveOperation($tmpFileName, $location);
+        }
     }
 }
