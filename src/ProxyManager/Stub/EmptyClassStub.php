@@ -24,6 +24,6 @@ namespace ProxyManager\Stub;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class EmptyClassStub
+final class EmptyClassStub
 {
 }
