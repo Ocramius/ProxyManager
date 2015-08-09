@@ -20,4 +20,4 @@ $proxy = $factory->createProxy(Kitchen::class, function (& $wrapped, $proxy, $me
 $proxy->sweets = 'stolen';
 ?>
 --EXPECTF--
-%SFatal error: Cannot %s property%sin %s on line %d
+%SFatal error:%sCannot %s property%sin %a

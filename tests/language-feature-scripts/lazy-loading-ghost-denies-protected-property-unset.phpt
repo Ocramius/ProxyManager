@@ -17,4 +17,4 @@ $proxy = $factory->createProxy(Kitchen::class, function () {});
 unset($proxy->sweets);
 ?>
 --EXPECTF--
-%SFatal error: Cannot %s property%sin %s on line %d
+%SFatal error:%sCannot %s property%sin %a
