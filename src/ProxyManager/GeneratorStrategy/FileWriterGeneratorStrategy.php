@@ -69,12 +69,10 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
         try {
             $this->writeFile("<?php\n\n" . $generatedCode, $fileName);
         } catch (FileNotWritableException $fileNotWritable) {
-            restore_error_handler();
-
             throw $fileNotWritable;
+        } finally {
+            restore_error_handler();
         }
-
-        restore_error_handler();
 
         return $generatedCode;
     }
