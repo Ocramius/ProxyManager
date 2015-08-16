@@ -18,9 +18,6 @@
 
 namespace ProxyManager\Exception;
 
-use InvalidArgumentException;
-use ReflectionClass;
-use ReflectionMethod;
 use UnexpectedValueException;
 
 /**
