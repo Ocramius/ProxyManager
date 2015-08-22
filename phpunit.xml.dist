@@ -10,6 +10,7 @@
     processIsolation="false"
     backupGlobals="false"
     syntaxCheck="true"
+    columns="max"
 >
     <testsuite name="ProxyManager tests">
         <directory>./tests/ProxyManagerTest</directory>
