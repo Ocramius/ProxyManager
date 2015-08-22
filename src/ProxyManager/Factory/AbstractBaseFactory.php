@@ -112,7 +112,7 @@ abstract class AbstractBaseFactory
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 
-        $this->getGenerator()->generate(new ReflectionClass($className), $phpClass, $proxyOptions);
+        $this->getGenerator()->generate(new ReflectionClass($className), $phpClass);
 
         $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
 
