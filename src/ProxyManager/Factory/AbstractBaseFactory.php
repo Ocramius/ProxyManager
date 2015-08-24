@@ -18,10 +18,11 @@
 
 namespace ProxyManager\Factory;
 
+use BetterReflection\Reflection\Adapter\ReflectionClass;
+use BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Version;
-use ReflectionClass;
 
 /**
  * Base factory common logic
@@ -87,7 +88,10 @@ abstract class AbstractBaseFactory
         $this
             ->configuration
             ->getSignatureChecker()
-            ->checkSignature(\BetterReflection\Reflection\ReflectionClass::createFromName($proxyClassName), $proxyParameters);
+            ->checkSignature(
+                new ReflectionClass(BetterReflectionClass::createFromName($proxyClassName)),
+                $proxyParameters
+            );
 
         return $this->checkedClasses[$className] = $proxyClassName;
     }
@@ -112,7 +116,13 @@ abstract class AbstractBaseFactory
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 
-        $this->getGenerator()->generate(\BetterReflection\Reflection\ReflectionClass::createFromName($className), $phpClass, $proxyOptions);
+        $this
+            ->getGenerator()
+            ->generate(
+                new ReflectionClass(BetterReflectionClass::createFromName($className)),
+                $phpClass,
+                $proxyOptions
+            );
 
         $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
 
