@@ -157,9 +157,26 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
+        $this
+            ->generator
+            ->expects($this->once())
+            ->method('generate')
+            ->with(
+                $this->callback(function (\ReflectionClass $reflectionClass) {
+                    return $reflectionClass->getName() === 'stdClass';
+                }),
+                $this->isInstanceOf(ClassGenerator::class),
+                ['some' => 'proxy', 'options' => 'here']
+            );
 
-        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, stdClass::class));
+        $this->assertSame(
+            $generatedClass,
+            $generateProxy->invoke($this->factory, stdClass::class, ['some' => 'proxy', 'options' => 'here'])
+        );
         $this->assertTrue(class_exists($generatedClass, false));
-        $this->assertSame($generatedClass, $generateProxy->invoke($this->factory, stdClass::class));
+        $this->assertSame(
+            $generatedClass,
+            $generateProxy->invoke($this->factory, stdClass::class, ['some' => 'proxy', 'options' => 'here'])
+        );
     }
 }
