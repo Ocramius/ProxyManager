@@ -48,7 +48,7 @@ pre code { border-radius: 4px; font-size: 15px; padding: 20px; border: 1px solid
     .content iframe{width: 100%; height: 100%;}
 }
 
-.btn-top { position: relative; display: inline-block; float: right; margin: 20px 0 0; padding: 0 30px 0 50px; height: 57px; border: 2px solid ##31811D; color: #31811D; vertical-align: top; text-align: center; text-transform: uppercase; font-weight: 600; font-size: 1.125em; line-height: 53px; transition: all .2s; }
+.btn-top { position: relative; display: inline-block; float: right; margin: 20px 0 0; padding: 0 30px 0 50px; height: 57px; border: 2px solid #31811D; color: #31811D; vertical-align: top; text-align: center; text-transform: uppercase; font-weight: 600; font-size: 1.125em; line-height: 53px; transition: all .2s; }
 .btn-top:before { background-position: 0 -140px; width: 52px; height: 52px; position: absolute; top: 0; left: 0; content: ''; }
 @media only screen and (min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 2) { .btn-top:before { background-position: 0 -140px; background-size: 152px auto; width: 52px; height: 52px; } }
 .btn-top:hover { border-color: #2F611C; color: #2F611C; }
