@@ -19,7 +19,6 @@
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
@@ -51,11 +50,7 @@ class InterceptedMethod extends MethodGenerator
         $forwardedParams = [];
 
         foreach ($originalMethod->getParameters() as $parameter) {
-            $variadicPrefix = ($parameter instanceof ParameterGenerator && $parameter->isVariadic())
-                ? '...' :
-                '';
-
-            $forwardedParams[]   = $variadicPrefix . '$' . $parameter->getName();
+            $forwardedParams[] = ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
         }
 
         $method->setDocblock('{@inheritDoc}');
