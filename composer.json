@@ -29,7 +29,6 @@
         "couscous/couscous":           "^1.4.0"
     },
     "suggest": {
-        "php": ">5.6 if you work with internal PHP classes, as reflection instantiation does not work with older PHP versions",
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
         "zendframework/zend-xmlrpc":   "To have the XmlRpc adapter (Remote Object feature)",
         "zendframework/zend-json":     "To have the JsonRpc adapter (Remote Object feature)",
