@@ -503,13 +503,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
@@ -534,7 +534,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
@@ -566,13 +566,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
