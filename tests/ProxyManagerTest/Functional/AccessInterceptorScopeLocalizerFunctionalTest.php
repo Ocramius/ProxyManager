@@ -455,7 +455,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $object = $factory->createProxy(
             $targetObject,
             [
-                function ($paratemers) {
+                function () {
                     return 'Foo Baz';
                 },
             ]
@@ -482,7 +482,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $object = $factory->createProxy(
             $targetObject,
             [
-                function ($paratemers) {
+                function () {
                     return 'Foo Baz';
                 },
             ]
@@ -509,7 +509,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
             ->createProxy(
                 new ClassWithDynamicArgumentsMethod(),
                 [
-                    'dynamicArgumentsMethod' => function ($paratemers) {
+                    'dynamicArgumentsMethod' => function () {
                         return 'Foo Baz';
                     },
                 ]

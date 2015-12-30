@@ -339,7 +339,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $object = $factory->createProxy(
             $targetObject,
             [
-                function ($paratemers) {
+                function () {
                     return 'Foo Baz';
                 },
             ]
@@ -365,7 +365,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $object = $factory->createProxy(
             $targetObject,
             [
-                function ($paratemers) {
+                function () {
                     return 'Foo Baz';
                 },
             ]
