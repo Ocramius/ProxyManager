@@ -27,6 +27,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
+use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
 use ReflectionClass;
 use Zend\Server\Client;
 
@@ -227,7 +228,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         return [
             [
-                'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface',
+                FooServiceInterface::class,
                 'publicProperty',
                 'publicProperty remote',
             ],
