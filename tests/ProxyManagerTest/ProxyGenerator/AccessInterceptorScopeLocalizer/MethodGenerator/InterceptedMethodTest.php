@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -36,32 +37,42 @@ use Zend\Code\Reflection\MethodReflection;
  */
 class InterceptedMethodTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $prefixInterceptors;
+
+    /**
+     * @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $suffixInterceptors;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        $this->suffixInterceptors = $this->getMock(PropertyGenerator::class);
+
+        $this->prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
+        $this->suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+    }
+
     public function testBodyStructure()
     {
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
-
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
-
         $method = InterceptedMethod::generateMethod(
             new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod'),
-            $prefixInterceptors,
-            $suffixInterceptors
+            $this->prefixInterceptors,
+            $this->suffixInterceptors
         );
 
         $this->assertInstanceOf(MethodGenerator::class, $method);
 
         $this->assertSame('publicByReferenceParameterMethod', $method->getName());
         $this->assertCount(2, $method->getParameters());
-        $this->assertGreaterThan(
-            0,
-            strpos(
-                $method->getBody(),
-                '$returnValue = parent::publicByReferenceParameterMethod($param, $byRefParam);'
-            )
+        $this->assertStringMatchesFormat(
+            '%a$returnValue = parent::publicByReferenceParameterMethod($param, $byRefParam);%A',
+            $method->getBody()
         );
     }
 }
