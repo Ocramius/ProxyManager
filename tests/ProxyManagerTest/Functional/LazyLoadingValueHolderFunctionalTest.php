@@ -28,6 +28,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -331,7 +332,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
         /* @var $object ClassWithMethodWithByRefVariadicFunction */
-        $object = $proxyName::staticProxyConstructor(function (& $wrappedInstance) use (& $counter) {
+        $object = $proxyName::staticProxyConstructor(function (& $wrappedInstance) {
             $wrappedInstance = new ClassWithMethodWithByRefVariadicFunction();
         });
 
@@ -341,6 +342,28 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame(['a', 'changed', 'c'], (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$parameters));
         self::assertSame(['a', 'changed', 'c'], $object->tuz(...$parameters));
         self::assertSame(['a', 'changed', 'c'], $parameters, 'by-ref variadic parameter was changed');
+    }
+
+    /**
+     * This test documents a known limitation: `func_get_args()` (and similars) don't work in proxied APIs.
+     * If you manage to make this test pass, then please do send a patch
+     *
+     * @group 265
+     */
+    public function testWillNotForwardDynamicArguments()
+    {
+        $proxyName = $this->generateProxy(ClassWithDynamicArgumentsMethod::class);
+
+        /* @var $object ClassWithDynamicArgumentsMethod */
+        $object = $proxyName::staticProxyConstructor(function (& $wrappedInstance) {
+            $wrappedInstance = new ClassWithDynamicArgumentsMethod();
+        });
+
+        self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
+
+        $this->setExpectedException(\PHPUnit_Framework_ExpectationFailedException::class);
+
+        self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
 
     /**
