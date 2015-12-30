@@ -27,7 +27,6 @@ script:
 matrix:
   allow_failures:
     - php: hhvm
-    - php: hhvm-nightly
 
 after_script:
   - sh .travis.coverage.sh
