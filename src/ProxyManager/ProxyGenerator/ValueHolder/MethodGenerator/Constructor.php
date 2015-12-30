@@ -65,7 +65,7 @@ class Constructor extends MethodGenerator
                 ', ',
                 array_map(
                     function (ParameterGenerator $parameter) {
-                        return '$' . $parameter->getName();
+                        return ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
                     },
                     $constructor->getParameters()
                 )

@@ -30,6 +30,8 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedPropertiesAndAccessorMethods;
@@ -70,7 +72,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         $this->assertTrue($proxy->isProxyInitialized());
     }
 
@@ -100,9 +108,15 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $this->createInitializer($className, $instance, $initializeMatcher)
         );
 
-        $this->assertFalse($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
-        $this->assertFalse($proxy->isProxyInitialized());
+        self::assertFalse($proxy->isProxyInitialized());
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
+        self::assertFalse($proxy->isProxyInitialized());
     }
 
     /**
@@ -124,7 +138,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         )));
 
         $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
     }
 
     /**
@@ -145,7 +165,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $cloned = clone $proxy;
 
         $this->assertTrue($cloned->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
     }
 
     /**
@@ -477,13 +503,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
@@ -508,7 +534,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
@@ -540,13 +566,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy1 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy1    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
-            function ($proxy, $method, $params, & $initializer, array $properties) {
+            function ($proxy, $method, $params, & $initializer) {
                 $initializer = null;
             }
         );
@@ -786,6 +812,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 [],
                 null
             ],
+            [
+                ClassWithMethodWithByRefVariadicFunction::class,
+                new ClassWithMethodWithByRefVariadicFunction(),
+                'tuz',
+                ['Ocramius', 'Malukenho'],
+                ['Ocramius', 'changed']
+            ],
         ];
     }
 
@@ -819,17 +852,14 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 [],
                 'privatePropertyDefault'
             ],
-        ];
-
-        if (PHP_VERSION_ID >= 50600) {
-            $methods[] = [
+            [
                 ClassWithMethodWithVariadicFunction::class,
                 new ClassWithMethodWithVariadicFunction(),
                 'foo',
                 ['Ocramius', 'Malukenho'],
                 null
-            ];
-        }
+            ],
+        ];
 
         return $methods;
     }
@@ -938,6 +968,42 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $property->getValue($ghostObject),
             'Property should not be changed by proxy initialization'
         );
+    }
+
+    /**
+     * @group 265
+     */
+    public function testWillForwardVariadicByRefArguments()
+    {
+        $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
+        /* @var $object ClassWithMethodWithByRefVariadicFunction */
+        $object = $proxyName::staticProxyConstructor(function ($proxy, $method, $params, & $initializer) {
+            $initializer = null;
+
+            return true;
+        });
+
+        $parameters = ['a', 'b', 'c'];
+
+        // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)
+        self::assertSame(['a', 'changed', 'c'], (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $object->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $parameters, 'by-ref variadic parameter was changed');
+    }
+
+    /**
+     * @group 265
+     */
+    public function testWillForwardDynamicArguments()
+    {
+        $proxyName   = $this->generateProxy(ClassWithDynamicArgumentsMethod::class);
+        /* @var $object ClassWithDynamicArgumentsMethod */
+        $object = $proxyName::staticProxyConstructor(function () {
+        });
+
+        // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)
+        self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
+        self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
 
     /**

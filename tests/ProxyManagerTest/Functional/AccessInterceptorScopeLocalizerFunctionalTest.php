@@ -30,6 +30,8 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -443,20 +445,17 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         }
     }
 
-    public function testCanCreateAndRegisterCallbackWithVariadicNotation()
+    public function testWillForwardVariadicArguments()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
-        }
-
         $configuration = new Configuration();
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
         $targetObject  = new ClassWithMethodWithVariadicFunction();
 
+        /* @var $object ClassWithMethodWithVariadicFunction */
         $object = $factory->createProxy(
             $targetObject,
             [
-                function ($paratemers) {
+                function () {
                     return 'Foo Baz';
                 },
             ]
@@ -467,14 +466,59 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
         $this->assertSame('Ocramius', $object->bar);
-        $this->assertSame(
+        $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
+    }
+
+    /**
+     * @group 265
+     */
+    public function testWillForwardVariadicByRefArguments()
+    {
+        $configuration = new Configuration();
+        $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
+        $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
+
+        /* @var $object ClassWithMethodWithByRefVariadicFunction */
+        $object = $factory->createProxy(
+            $targetObject,
             [
-                [
-                    'Malukenho',
-                    'Danizord',
-                ],
-            ],
-            $object->baz
+                function () {
+                    return 'Foo Baz';
+                },
+            ]
         );
+
+        $parameters = ['a', 'b', 'c'];
+
+        // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)
+        self::assertSame(['a', 'changed', 'c'], (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $object->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $parameters, 'by-ref variadic parameter was changed');
+    }
+
+    /**
+     * This test documents a known limitation: `func_get_args()` (and similars) don't work in proxied APIs.
+     * If you manage to make this test pass, then please do send a patch
+     *
+     * @group 265
+     */
+    public function testWillNotForwardDynamicArguments()
+    {
+        /* @var $object ClassWithDynamicArgumentsMethod */
+        $object = (new AccessInterceptorScopeLocalizerFactory())
+            ->createProxy(
+                new ClassWithDynamicArgumentsMethod(),
+                [
+                    'dynamicArgumentsMethod' => function () {
+                        return 'Foo Baz';
+                    },
+                ]
+            );
+
+        self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
+
+        $this->setExpectedException(\PHPUnit_Framework_ExpectationFailedException::class);
+
+        self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
 }

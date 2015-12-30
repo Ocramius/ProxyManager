@@ -107,6 +107,13 @@ A suffix interceptor (executed after method logic) should have following signatu
 $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) {};
 ```
 
+## Known limitations
+
+ * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly
+   for parameters that are not part of the proxied object interface: use 
+   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list)
+   instead.
+
 ## Tuning performance for production
 
 See [Tuning ProxyManager for Production](https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.md).

@@ -1,10 +1,5 @@
 --TEST--
 Verifies that lazy loading value holder factory can generate proxy for PHP core classes.
---SKIPIF--
-<?php
-if (PHP_VERSION_ID < 50600) {
-    echo 'skip PHP 5.6+ is needed to instantiated internal php classes via reflection';
-}
 ?>
 --FILE--
 <?php

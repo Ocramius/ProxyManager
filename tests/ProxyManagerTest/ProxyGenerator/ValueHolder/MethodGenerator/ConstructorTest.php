@@ -21,6 +21,7 @@ namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithVariadicConstructorArgument;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
@@ -157,6 +158,35 @@ if (! $this->foo) {
 }
 
 $this->foo->__construct();
+PHP;
+
+        $this->assertSame($expectedCode, $constructor->getBody());
+    }
+
+    public function testBodyStructureWithVariadicArguments()
+    {
+        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $valueHolder = $this->getMock(PropertyGenerator::class);
+
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+
+        $constructor = Constructor::generateMethod(
+            new ReflectionClass(ClassWithVariadicConstructorArgument::class),
+            $valueHolder
+        );
+
+        $this->assertSame('__construct', $constructor->getName());
+        $this->assertCount(2, $constructor->getParameters());
+
+        $expectedCode = <<<'PHP'
+static $reflection;
+
+if (! $this->foo) {
+    $reflection = $reflection ?: new \ReflectionClass('ProxyManagerTestAsset\\ClassWithVariadicConstructorArgument');
+    $this->foo = $reflection->newInstanceWithoutConstructor();
+}
+
+$this->foo->__construct($foo, ...$bar);
 PHP;
 
         $this->assertSame($expectedCode, $constructor->getBody());

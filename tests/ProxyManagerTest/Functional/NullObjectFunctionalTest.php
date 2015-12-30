@@ -26,6 +26,7 @@ use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ReflectionClass;
@@ -55,7 +56,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy NullObjectInterface */
         $proxy = $proxyName::staticProxyConstructor();
 
-        $this->assertSame(null, call_user_func_array([$proxy, $method], $params));
+        $this->assertNullMethodCall($proxy, $method, $params);
     }
 
     /**
@@ -71,7 +72,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy NullObjectInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor()));
 
-        $this->assertSame(null, call_user_func_array([$proxy, $method], $params));
+        $this->assertNullMethodCall($proxy, $method, $params);
     }
 
     /**
@@ -87,9 +88,8 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
         /* @var $proxy NullObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor();
-        $cloned    = clone $proxy;
 
-        $this->assertSame(null, call_user_func_array([$cloned, $method], $params));
+        $this->assertNullMethodCall(clone $proxy, $method, $params);
     }
 
     /**
@@ -170,7 +170,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        $methods =  [
+        return [
             [
                 BaseClass::class,
                 'publicMethod',
@@ -201,18 +201,19 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 ['parameter' => $selfHintParam],
                 $selfHintParam
             ],
-        ];
-
-        if (PHP_VERSION_ID >= 50600) {
-            $methods[] = [
+            [
                 ClassWithMethodWithVariadicFunction::class,
                 'buz',
                 ['Ocramius', 'Malukenho'],
                 null
-            ];
-        }
-
-        return $methods;
+            ],
+            [
+                ClassWithMethodWithByRefVariadicFunction::class,
+                'tuz',
+                ['Ocramius', 'Malukenho'],
+                null
+            ],
+        ];
     }
 
     /**
@@ -237,5 +238,22 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicPropertyDefault',
             ],
         ];
+    }
+
+    /**
+     * @param NullObjectInterface $proxy
+     * @param string              $methodName
+     * @param array               $parameters
+     */
+    private function assertNullMethodCall(NullObjectInterface $proxy, $methodName, array $parameters)
+    {
+        /* @var callable $method */
+        $method = [$proxy, $methodName];
+
+        self::assertInternalType('callable', $method);
+
+        $parameterValues = array_values($parameters);
+
+        self::assertSame(null, $method(...$parameterValues));
     }
 }

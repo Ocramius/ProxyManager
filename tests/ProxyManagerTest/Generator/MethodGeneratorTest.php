@@ -56,9 +56,6 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGenerateMethodWithVariadicParameter()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Can\'t run tests for variadic syntax support.');
-        }
         $methodGenerator = new MethodGenerator();
 
         $methodGenerator->setReturnsReference(true);

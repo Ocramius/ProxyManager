@@ -99,6 +99,13 @@ interface AdapterInterface
 It is very easy to create your own implementation (for RESTful web services, for example). Simply pass
 your own adapter instance to your factory at construction time
 
+## Known limitations
+
+ * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly
+   for parameters that are not part of the proxied object interface: use 
+   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list)
+   instead.
+
 ## Tuning performance for production
 
 See [Tuning ProxyManager for Production](tuning-for-production.md).
