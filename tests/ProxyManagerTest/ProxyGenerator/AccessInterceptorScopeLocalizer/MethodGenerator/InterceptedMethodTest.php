@@ -75,4 +75,22 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
             $method->getBody()
         );
     }
+
+    public function testForwardsVariadicParameters()
+    {
+        $method = InterceptedMethod::generateMethod(
+            new MethodReflection(ClassWithMethodWithVariadicFunction::class, 'foo'),
+            $this->prefixInterceptors,
+            $this->suffixInterceptors
+        );
+
+        $this->assertInstanceOf(MethodGenerator::class, $method);
+
+        $this->assertSame('foo', $method->getName());
+        $this->assertCount(2, $method->getParameters());
+        $this->assertStringMatchesFormat(
+            '%a$returnValue = parent::foo($bar, ...$baz);%A',
+            $method->getBody()
+        );
+    }
 }
