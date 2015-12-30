@@ -23,6 +23,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\CallableTypeHintClass;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use stdClass;
@@ -128,7 +129,7 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($parameter->isVariadic());
     }
 
-    public function testVariadicParamTurnTrueWhenPassAVariadicMethod()
+    public function testIsVariadicParamTurnTrueWhenPassAVariadicMethod()
     {
         if (PHP_VERSION_ID < 50600) {
             $this->markTestSkipped('Can\'t run tests for variadic support.');
@@ -139,6 +140,20 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($parameter->isVariadic());
+    }
+
+    public function testIsVariadicParamTurnTrueWhenPassedAVariadicByRefMethod()
+    {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Can\'t run tests for variadic support.');
+        }
+        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
+            [ClassWithMethodWithByRefVariadicFunction::class, 'tuz'],
+            'fooz'
+        ));
+
+        $this->assertTrue($parameter->isVariadic());
+        $this->assertTrue($parameter->getPassedByReference());
     }
 
     public function testGeneratesParameterPassedByReference()
