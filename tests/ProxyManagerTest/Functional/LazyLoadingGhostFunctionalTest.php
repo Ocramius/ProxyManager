@@ -30,6 +30,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedPropertiesAndAccessorMethods;
@@ -70,7 +71,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         $this->assertTrue($proxy->isProxyInitialized());
     }
 
@@ -100,9 +107,15 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $this->createInitializer($className, $instance, $initializeMatcher)
         );
 
-        $this->assertFalse($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
-        $this->assertFalse($proxy->isProxyInitialized());
+        self::assertFalse($proxy->isProxyInitialized());
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
+        self::assertFalse($proxy->isProxyInitialized());
     }
 
     /**
@@ -124,7 +137,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         )));
 
         $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
     }
 
     /**
@@ -145,7 +164,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $cloned = clone $proxy;
 
         $this->assertTrue($cloned->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
     }
 
     /**
@@ -785,6 +810,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicAbstractMethod',
                 [],
                 null
+            ],
+            [
+                ClassWithMethodWithByRefVariadicFunction::class,
+                new ClassWithMethodWithByRefVariadicFunction(),
+                'tuz',
+                ['Ocramius', 'Malukenho'],
+                ['Ocramius', 'changed']
             ],
         ];
     }
