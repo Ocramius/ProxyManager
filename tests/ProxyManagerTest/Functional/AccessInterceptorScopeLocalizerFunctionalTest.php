@@ -30,6 +30,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -453,6 +454,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
         $targetObject  = new ClassWithMethodWithVariadicFunction();
 
+        /* @var $object ClassWithMethodWithVariadicFunction */
         $object = $factory->createProxy(
             $targetObject,
             [
@@ -467,14 +469,34 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
         $this->assertSame('Ocramius', $object->bar);
-        $this->assertSame(
+        $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
+    }
+
+    public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
+    {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
+        }
+
+        $configuration = new Configuration();
+        $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
+        $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
+
+        /* @var $object ClassWithMethodWithByRefVariadicFunction */
+        $object = $factory->createProxy(
+            $targetObject,
             [
-                [
-                    'Malukenho',
-                    'Danizord',
-                ],
-            ],
-            $object->baz
+                function ($paratemers) {
+                    return 'Foo Baz';
+                },
+            ]
         );
+
+        $parameters = ['a', 'b', 'c'];
+
+        // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)
+        self::assertSame(['a', 'changed', 'c'], (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $object->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $parameters, 'by-ref variadic parameter was changed');
     }
 }
