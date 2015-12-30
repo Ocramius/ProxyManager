@@ -444,7 +444,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         }
     }
 
-    public function testCanCreateAndRegisterCallbackWithVariadicNotation()
+    public function testWillForwardVariadicArguments()
     {
         $configuration = new Configuration();
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
@@ -468,7 +468,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
     }
 
-    public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
+    /**
+     * @group 265
+     */
+    public function testWillForwardVariadicByRefArguments()
     {
         $configuration = new Configuration();
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);

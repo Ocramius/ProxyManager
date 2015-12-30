@@ -969,7 +969,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
+    /**
+     * @group 265
+     */
+    public function testWillForwardVariadicByRefArguments()
     {
         $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
         /* @var $object ClassWithMethodWithByRefVariadicFunction */

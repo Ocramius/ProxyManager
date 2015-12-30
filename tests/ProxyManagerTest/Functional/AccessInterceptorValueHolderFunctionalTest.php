@@ -329,7 +329,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
-    public function testCanCreateAndRegisterCallbackWithVariadicNotation()
+    public function testWillForwardVariadicArguments()
     {
         $factory       = new AccessInterceptorValueHolderFactory();
         $targetObject  = new ClassWithMethodWithVariadicFunction();
@@ -352,7 +352,10 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
     }
 
-    public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
+    /**
+     * @group 265
+     */
+    public function testWillForwardVariadicByRefArguments()
     {
         $factory       = new AccessInterceptorValueHolderFactory();
         $targetObject  = new ClassWithMethodWithByRefVariadicFunction();

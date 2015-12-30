@@ -324,7 +324,10 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
-    public function testWillRespectVariadicByRefParameterForwarding()
+    /**
+     * @group 265
+     */
+    public function testWillForwardVariadicByRefArguments()
     {
         $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
         /* @var $object ClassWithMethodWithByRefVariadicFunction */
