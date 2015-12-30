@@ -64,8 +64,6 @@ would break an [access interceptor value holder](access-interceptor-value-holder
    will cause the two objects to be un-synchronized, with possible unexpected behaviour.
  * serializing or un-serializing an access interceptor scope localizer (or the real instance)
    will not cause the real instance (or the proxy) to be serialized or un-serialized
- * if a proxied object contains private properties, then an exception will be thrown if you use
-   PHP `< 5.4.0`.
 
 ## Example
 
