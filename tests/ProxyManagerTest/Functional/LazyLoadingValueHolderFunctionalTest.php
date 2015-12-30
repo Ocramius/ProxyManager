@@ -28,6 +28,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -63,7 +64,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
         $this->assertFalse($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         $this->assertTrue($proxy->isProxyInitialized());
         $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
     }
@@ -87,7 +93,14 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         )));
 
         $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$proxy, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+
+        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
@@ -110,7 +123,14 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($cloned->isProxyInitialized());
         $this->assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
-        $this->assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
+
+        /* @var $callProxyMethod callable */
+        $callProxyMethod = [$cloned, $method];
+        $parameterValues = array_values($params);
+
+        self::assertInternalType('callable', $callProxyMethod);
+
+        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         $this->assertEquals($instance, $cloned->getWrappedValueHolderValue());
     }
 
@@ -422,6 +442,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 'buz',
                 ['Ocramius', 'Malukenho'],
                 [['Ocramius', 'Malukenho']]
+            ];
+            $methods[] = [
+                ClassWithMethodWithByRefVariadicFunction::class,
+                new ClassWithMethodWithByRefVariadicFunction(),
+                'tuz',
+                ['Ocramius', 'Malukenho'],
+                [['Ocramius', 'Malukenho'], 'changed']
             ];
         }
 
