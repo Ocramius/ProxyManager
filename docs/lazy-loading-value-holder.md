@@ -201,6 +201,13 @@ You can also generate proxies from an interface FQCN. By proxying an interface, 
 methods defined by the interface itself, even if the `wrappedObject` implements more methods. This will anyway save
 some memory since the proxy won't contain useless inherited properties.
 
+## Known limitations
+
+ * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly
+   for parameters that are not part of the proxied object interface: use 
+   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list)
+   instead.
+
 ## Tuning performance for production
 
 See [Tuning ProxyManager for Production](tuning-for-production.md).
