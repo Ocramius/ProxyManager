@@ -25,7 +25,7 @@
     "require-dev": {
         "ext-phar":                    "*",
         "phpunit/phpunit":             "~4.0",
-        "squizlabs/php_codesniffer":   "~2.0",
+        "squizlabs/php_codesniffer":   "^2.5.0",
         "couscous/couscous":           "^1.4.0"
     },
     "suggest": {
