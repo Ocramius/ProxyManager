@@ -54,7 +54,7 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
 
         foreach ($parameters as $parameter) {
             $parameterName       = $parameter->getName();
-            $variadicPrefix      = ($parameter instanceof ParameterGenerator && $parameter->isVariadic()) ? '...' : '';
+            $variadicPrefix      = $parameter->isVariadic() ? '...' : '';
             $initializerParams[] = var_export($parameterName, true) . ' => $' . $parameterName;
             $forwardedParams[]   = $variadicPrefix . '$' . $parameterName;
         }
