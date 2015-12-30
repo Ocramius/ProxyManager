@@ -27,6 +27,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -337,6 +338,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $factory       = new AccessInterceptorValueHolderFactory();
         $targetObject  = new ClassWithMethodWithVariadicFunction();
 
+        /* @var $object ClassWithMethodWithVariadicFunction */
         $object = $factory->createProxy(
             $targetObject,
             [
@@ -351,15 +353,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
         $this->assertSame('Ocramius', $object->bar);
-        $this->assertSame(
-            [
-                [
-                    'Malukenho',
-                    'Danizord',
-                ]
-            ],
-            $object->baz
-        );
+        $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
     }
 
     /**
