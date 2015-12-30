@@ -969,6 +969,24 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
+    {
+        $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
+        /* @var $object ClassWithMethodWithByRefVariadicFunction */
+        $object = $proxyName::staticProxyConstructor(function ($proxy, $method, $params, & $initializer) {
+            $initializer = null;
+
+            return true;
+        });
+
+        $parameters = ['a', 'b', 'c'];
+
+        // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)
+        self::assertSame(['a', 'changed', 'c'], (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $object->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $parameters, 'by-ref variadic parameter was changed');
+    }
+
     /**
      * @return mixed[] in order:
      *                  - the class to be proxied
