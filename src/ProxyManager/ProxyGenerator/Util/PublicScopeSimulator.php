@@ -71,7 +71,7 @@ class PublicScopeSimulator
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {'   . "\n"
             . '    $targetObject = ' . $target . ';' . "\n\n"
             . self::getUndefinedPropertyNotice($operationType, $nameParameter)
-            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . ";\n"
+            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
             . "    return;\n"
             . '}' . "\n\n"
             . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
