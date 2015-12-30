@@ -356,6 +356,36 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
     }
 
+    public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
+    {
+        if (PHP_VERSION_ID < 50600) {
+            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
+        }
+
+        $factory       = new AccessInterceptorValueHolderFactory();
+        $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
+
+        /* @var $object ClassWithMethodWithByRefVariadicFunction */
+        $object = $factory->createProxy(
+            $targetObject,
+            [
+                function ($paratemers) {
+                    return 'Foo Baz';
+                },
+            ]
+        );
+
+        $arguments = ['Ocramius', 'Malukenho', 'Danizord'];
+
+        self::assertSame(
+            ['Ocramius', 'changed', 'Danizord'],
+            (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$arguments),
+            'Verifying that the implementation of the test asset is correct before proceeding'
+        );
+        self::assertSame(['Ocramius', 'changed', 'Danizord'], $object->tuz(...$arguments));
+        self::assertSame(['Ocramius', 'changed', 'Danizord'], $arguments, 'By-ref arguments were changed');
+    }
+
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
