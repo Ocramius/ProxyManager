@@ -128,8 +128,10 @@ Interfaces obviously don't provide a parent method implementation.</li>
 will cause the two objects to be un-synchronized, with possible unexpected behaviour.</li>
 <li>serializing or un-serializing an access interceptor scope localizer (or the real instance)
 will not cause the real instance (or the proxy) to be serialized or un-serialized</li>
-<li>if a proxied object contains private properties, then an exception will be thrown if you use
-PHP <code>&lt; 5.4.0</code>.</li>
+<li>methods using <code>func_get_args()</code>, <code>func_get_arg()</code> and <code>func_num_arg()</code> will not function properly
+for parameters that are not part of the proxied object interface: use
+<a href="http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list">variadic arguments</a>
+instead.</li>
 </ul>
 <h2 id="example">Example</h2>
 <p>Here's an example of how you can create and use an access interceptor scope localizer :</p>

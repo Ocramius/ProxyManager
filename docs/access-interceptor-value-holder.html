@@ -154,6 +154,13 @@ $prefixInterceptor = function ($proxy, $instance, $method, $params, &amp; $retur
  * @return mixed
  */
 $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, &amp; $returnEarly) {};</code></pre>
+<h2 id="known-limitations">Known limitations</h2>
+<ul>
+<li>methods using <code>func_get_args()</code>, <code>func_get_arg()</code> and <code>func_num_arg()</code> will not function properly
+for parameters that are not part of the proxied object interface: use
+<a href="http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list">variadic arguments</a>
+instead.</li>
+</ul>
 <h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 

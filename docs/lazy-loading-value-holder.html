@@ -219,6 +219,13 @@ than once.</p>
 <p>You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the
 methods defined by the interface itself, even if the <code>wrappedObject</code> implements more methods. This will anyway save
 some memory since the proxy won't contain useless inherited properties.</p>
+<h2 id="known-limitations">Known limitations</h2>
+<ul>
+<li>methods using <code>func_get_args()</code>, <code>func_get_arg()</code> and <code>func_num_arg()</code> will not function properly
+for parameters that are not part of the proxied object interface: use
+<a href="http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list">variadic arguments</a>
+instead.</li>
+</ul>
 <h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 

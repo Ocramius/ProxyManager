@@ -148,6 +148,13 @@ var_dump($proxy-&gt;foo()); // "bar remote"</code></pre>
 }</code></pre>
 <p>It is very easy to create your own implementation (for RESTful web services, for example). Simply pass
 your own adapter instance to your factory at construction time</p>
+<h2 id="known-limitations">Known limitations</h2>
+<ul>
+<li>methods using <code>func_get_args()</code>, <code>func_get_arg()</code> and <code>func_num_arg()</code> will not function properly
+for parameters that are not part of the proxied object interface: use
+<a href="http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list">variadic arguments</a>
+instead.</li>
+</ul>
 <h2 id="tuning-performance-for-production">Tuning performance for production</h2>
 <p>See <a href="tuning-for-production.html">Tuning ProxyManager for Production</a>.</p>
 
