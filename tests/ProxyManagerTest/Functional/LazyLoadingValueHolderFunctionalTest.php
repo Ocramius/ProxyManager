@@ -397,7 +397,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $selfHintParam = new ClassWithSelfHint();
 
-        $methods = [
+        return [
             [
                 BaseClass::class,
                 new BaseClass(),
@@ -433,26 +433,21 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 ['parameter' => $selfHintParam],
                 $selfHintParam
             ],
-        ];
-
-        if (PHP_VERSION_ID >= 50600) {
-            $methods[] = [
+            [
                 ClassWithMethodWithVariadicFunction::class,
                 new ClassWithMethodWithVariadicFunction(),
                 'buz',
                 ['Ocramius', 'Malukenho'],
                 [['Ocramius', 'Malukenho']]
-            ];
-            $methods[] = [
+            ],
+            [
                 ClassWithMethodWithByRefVariadicFunction::class,
                 new ClassWithMethodWithByRefVariadicFunction(),
                 'tuz',
                 ['Ocramius', 'Malukenho'],
                 [['Ocramius', 'Malukenho'], 'changed']
-            ];
-        }
-
-        return $methods;
+            ]
+        ];
     }
 
     /**

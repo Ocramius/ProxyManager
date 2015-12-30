@@ -851,17 +851,14 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 [],
                 'privatePropertyDefault'
             ],
-        ];
-
-        if (PHP_VERSION_ID >= 50600) {
-            $methods[] = [
+            [
                 ClassWithMethodWithVariadicFunction::class,
                 new ClassWithMethodWithVariadicFunction(),
                 'foo',
                 ['Ocramius', 'Malukenho'],
                 null
-            ];
-        }
+            ],
+        ];
 
         return $methods;
     }

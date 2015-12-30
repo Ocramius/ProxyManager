@@ -105,7 +105,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      */
     public function getTestedClasses()
     {
-        $classesToTest =  [
+        return [
             [BaseClass::class],
             [ClassWithMagicMethods::class],
             [ClassWithFinalMethods::class],
@@ -119,13 +119,8 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             [HydratedObject::class],
             [ClassWithSelfHint::class],
             [ClassWithCollidingPrivateInheritedProperties::class],
+            [ClassWithMethodWithVariadicFunction::class],
+            [ClassWithMethodWithByRefVariadicFunction::class],
         ];
-
-        if (PHP_VERSION_ID >= 50600) {
-            $classesToTest[] = [ClassWithMethodWithVariadicFunction::class];
-            $classesToTest[] = [ClassWithMethodWithByRefVariadicFunction::class];
-        }
-
-        return $classesToTest;
     }
 }

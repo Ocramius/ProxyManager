@@ -48,10 +48,7 @@ class ParameterGenerator extends ZendParameterGenerator
         /* @var $param self */
         $param = new static();
 
-        if (PHP_VERSION_ID >= 50600) {
-            $param->setVariadic($reflectionParameter->isVariadic());
-        }
-
+        $param->setVariadic($reflectionParameter->isVariadic());
         $param->setName($reflectionParameter->getName());
         $param->setPosition($reflectionParameter->getPosition());
 

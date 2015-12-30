@@ -108,19 +108,12 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testVariadicParamIsSettedByDefaultAsFalse()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Can\'t run tests for variadic support.');
-        }
-
         $parameter = new ParameterGenerator();
         $this->assertFalse($parameter->isVariadic());
     }
 
     public function testVariadicParamKeepAsFalseIfANotVariadicMethodIsPassed()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Can\'t run tests for variadic support.');
-        }
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
             [BaseClass::class, 'publicTypeHintedMethod'],
             'param'
@@ -131,9 +124,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testIsVariadicParamTurnTrueWhenPassAVariadicMethod()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Can\'t run tests for variadic support.');
-        }
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
             [ClassWithMethodWithVariadicFunction::class, 'buz'],
             'fooz'
@@ -144,9 +134,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testIsVariadicParamTurnTrueWhenPassedAVariadicByRefMethod()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Can\'t run tests for variadic support.');
-        }
         $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
             [ClassWithMethodWithByRefVariadicFunction::class, 'tuz'],
             'fooz'

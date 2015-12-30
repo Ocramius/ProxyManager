@@ -446,10 +446,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
     public function testCanCreateAndRegisterCallbackWithVariadicNotation()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
-        }
-
         $configuration = new Configuration();
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
         $targetObject  = new ClassWithMethodWithVariadicFunction();
@@ -474,10 +470,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
     public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
-        }
-
         $configuration = new Configuration();
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
         $targetObject  = new ClassWithMethodWithByRefVariadicFunction();

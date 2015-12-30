@@ -331,10 +331,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     public function testCanCreateAndRegisterCallbackWithVariadicNotation()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
-        }
-
         $factory       = new AccessInterceptorValueHolderFactory();
         $targetObject  = new ClassWithMethodWithVariadicFunction();
 
@@ -358,10 +354,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     public function testCanCreateAndRegisterCallbackWithByRefVariadicNotation()
     {
-        if (PHP_VERSION_ID < 50600) {
-            $this->markTestSkipped('Test can\'t run on < 5.5.0 php version');
-        }
-
         $factory       = new AccessInterceptorValueHolderFactory();
         $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
 
