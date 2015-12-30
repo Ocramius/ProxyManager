@@ -185,5 +185,4 @@ class ParameterGenerator extends ZendParameterGenerator
     {
         return $this->variadic;
     }
-
 }
