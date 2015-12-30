@@ -33,6 +33,7 @@ use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
@@ -122,6 +123,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
 
         if (PHP_VERSION_ID >= 50600) {
             $classesToTest[] = [ClassWithMethodWithVariadicFunction::class];
+            $classesToTest[] = [ClassWithMethodWithByRefVariadicFunction::class];
         }
 
         return $classesToTest;
