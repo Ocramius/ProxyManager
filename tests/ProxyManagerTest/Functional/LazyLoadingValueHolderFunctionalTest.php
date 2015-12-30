@@ -324,6 +324,22 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
+    public function testWillRespectVariadicByRefParameterForwarding()
+    {
+        $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
+        /* @var $object ClassWithMethodWithByRefVariadicFunction */
+        $object = $proxyName::staticProxyConstructor(function (& $wrappedInstance) use (& $counter) {
+            $wrappedInstance = new ClassWithMethodWithByRefVariadicFunction();
+        });
+
+        $parameters = ['a', 'b', 'c'];
+
+        // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)
+        self::assertSame(['a', 'changed', 'c'], (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $object->tuz(...$parameters));
+        self::assertSame(['a', 'changed', 'c'], $parameters, 'by-ref variadic parameter was changed');
+    }
+
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
@@ -438,14 +454,14 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 new ClassWithMethodWithVariadicFunction(),
                 'buz',
                 ['Ocramius', 'Malukenho'],
-                [['Ocramius', 'Malukenho']]
+                ['Ocramius', 'Malukenho']
             ],
             [
                 ClassWithMethodWithByRefVariadicFunction::class,
                 new ClassWithMethodWithByRefVariadicFunction(),
                 'tuz',
                 ['Ocramius', 'Malukenho'],
-                [['Ocramius', 'Malukenho'], 'changed']
+                ['Ocramius', 'changed']
             ]
         ];
     }
