@@ -25,6 +25,7 @@ use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
@@ -191,6 +192,11 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 new ReflectionClass(ClassWithMethodWithVariadicFunction::class),
                 null,
                 ['foo', 'buz'],
+            ];
+            $methods[] = [
+                new ReflectionClass(ClassWithMethodWithByRefVariadicFunction::class),
+                null,
+                ['foo', 'tuz'],
             ];
         }
 
