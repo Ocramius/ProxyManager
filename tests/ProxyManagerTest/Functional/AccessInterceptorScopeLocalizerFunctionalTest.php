@@ -30,6 +30,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -493,5 +494,31 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         self::assertSame(['a', 'changed', 'c'], (new ClassWithMethodWithByRefVariadicFunction())->tuz(...$parameters));
         self::assertSame(['a', 'changed', 'c'], $object->tuz(...$parameters));
         self::assertSame(['a', 'changed', 'c'], $parameters, 'by-ref variadic parameter was changed');
+    }
+
+    /**
+     * This test documents a known limitation: `func_get_args()` (and similars) don't work in proxied APIs.
+     * If you manage to make this test pass, then please do send a patch
+     *
+     * @group 265
+     */
+    public function testWillNotForwardDynamicArguments()
+    {
+        /* @var $object ClassWithDynamicArgumentsMethod */
+        $object = (new AccessInterceptorScopeLocalizerFactory())
+            ->createProxy(
+                new ClassWithDynamicArgumentsMethod(),
+                [
+                    'dynamicArgumentsMethod' => function ($paratemers) {
+                        return 'Foo Baz';
+                    },
+                ]
+            );
+
+        self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
+
+        $this->setExpectedException(\PHPUnit_Framework_ExpectationFailedException::class);
+
+        self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
 }
