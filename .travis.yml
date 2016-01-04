@@ -28,4 +28,4 @@ matrix:
 
 after_script:
   - sh .travis.coverage.sh
-  - ./vendor/bin/couscous travis-auto-deploy --php-version=5.6
+  - ./vendor/bin/couscous travis-auto-deploy --php-version=7.0
