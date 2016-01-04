@@ -19,7 +19,7 @@
 namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
+use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionProperty;
 use Zend\Code\Generator\PropertyGenerator;

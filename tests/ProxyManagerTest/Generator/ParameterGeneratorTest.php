@@ -20,7 +20,7 @@ namespace ProxyManagerTest\Generator;
 
 use Phar;
 use PHPUnit_Framework_TestCase;
-use ProxyManager\Generator\ParameterGenerator;
+use Zend\Code\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\CallableTypeHintClass;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
