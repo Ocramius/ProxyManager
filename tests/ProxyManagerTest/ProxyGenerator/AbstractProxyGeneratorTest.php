@@ -28,6 +28,8 @@ use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ReturnTypeHintedClass;
+use ProxyManagerTestAsset\ReturnTypeHintedInterface;
 use ReflectionClass;
 
 /**
@@ -99,6 +101,8 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
             [ClassWithMixedProperties::class],
             [ClassWithAbstractPublicMethod::class],
             [BaseInterface::class],
+            [ReturnTypeHintedClass::class],
+            [ReturnTypeHintedInterface::class],
         ];
     }
 }
