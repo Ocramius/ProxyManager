@@ -98,41 +98,6 @@ $this->foo->__construct();',
         );
     }
 
-    public function testBodyStructureWithPhp4StyleConstructor()
-    {
-        if (PHP_VERSION_ID >= 70000) {
-            $this->markTestSkipped('Can\'t run this test on PHP7 or high version!');
-        }
-
-        $className = uniqid('ClassWithPhp4Constructor');
-
-        eval('class ' . $className . '{ public function ' . $className . '($first, $second, $third) {}}');
-
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock(PropertyGenerator::class);
-
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-
-        $constructor = Constructor::generateMethod(
-            new ReflectionClass($className),
-            $valueHolder
-        );
-
-        $this->assertSame($className, $constructor->getName());
-        $this->assertCount(3, $constructor->getParameters());
-        $this->assertSame(
-            'static $reflection;
-
-if (! $this->foo) {
-    $reflection = $reflection ?: new \ReflectionClass(\'' . $className . '\');
-    $this->foo = $reflection->newInstanceWithoutConstructor();
-}
-
-$this->foo->' . $className . '($first, $second, $third);',
-            $constructor->getBody()
-        );
-    }
-
     public function testBodyStructureWithStaticProperties()
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
