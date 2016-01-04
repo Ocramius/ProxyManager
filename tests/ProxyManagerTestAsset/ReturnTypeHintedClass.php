@@ -18,23 +18,41 @@
 
 namespace ProxyManagerTestAsset;
 
-interface ReturnTypeHintedClass
+class ReturnTypeHintedClass
 {
-    public function returnString() : string;
+    public function returnString() : string
+    {
+    }
 
-    public function returnInteger() : int;
+    public function returnInteger() : int
+    {
+    }
 
-    public function returnBool() : bool;
+    public function returnBool() : bool
+    {
+    }
 
-    public function returnFloat() : float;
+    public function returnFloat() : float
+    {
+    }
 
-    public function returnArray() : array;
+    public function returnArray() : array
+    {
+    }
 
-    public function returnCallable() : callable;
+    public function returnCallable() : callable
+    {
+    }
 
-    public function returnSelf() : self;
+    public function returnSelf() : self
+    {
+    }
 
-    public function returnSameClass() : ReturnTypeHintedClass;
+    public function returnSameClass() : ReturnTypeHintedClass
+    {
+    }
 
-    public function returnOtherClass() : EmptyClass;
+    public function returnOtherClass() : EmptyClass
+    {
+    }
 }
