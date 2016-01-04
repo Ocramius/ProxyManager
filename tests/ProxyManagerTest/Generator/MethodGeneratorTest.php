@@ -48,27 +48,8 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         $methodGenerator->setDocBlock('docBlock');
         $methodGenerator->setParameter(new ParameterGenerator('foo'));
 
-        $this->assertSame(true, $methodGenerator->returnsReference());
         $this->assertStringMatchesFormat(
             '%a/**%adocBlock%a*/%aprotected function & methodName($foo)%a{%a/* body */%a}',
-            $methodGenerator->generate()
-        );
-    }
-
-    public function testGenerateMethodWithVariadicParameter()
-    {
-        $methodGenerator = new MethodGenerator();
-
-        $methodGenerator->setReturnsReference(true);
-        $methodGenerator->setName('methodName');
-
-        $parameter = new ParameterGenerator('foo');
-        $parameter->setVariadic(true);
-
-        $methodGenerator->setParameter($parameter);
-
-        $this->assertStringMatchesFormat(
-            '%apublic function & methodName(...$foo)%a{%a%a}',
             $methodGenerator->generate()
         );
     }

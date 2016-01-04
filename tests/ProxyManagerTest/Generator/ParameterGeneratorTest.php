@@ -106,43 +106,6 @@ class ParameterGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertSame(stdClass::class, $parameter->getType());
     }
 
-    public function testVariadicParamIsSettedByDefaultAsFalse()
-    {
-        $parameter = new ParameterGenerator();
-        $this->assertFalse($parameter->isVariadic());
-    }
-
-    public function testVariadicParamKeepAsFalseIfANotVariadicMethodIsPassed()
-    {
-        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            [BaseClass::class, 'publicTypeHintedMethod'],
-            'param'
-        ));
-
-        $this->assertFalse($parameter->isVariadic());
-    }
-
-    public function testIsVariadicParamTurnTrueWhenPassAVariadicMethod()
-    {
-        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            [ClassWithMethodWithVariadicFunction::class, 'buz'],
-            'fooz'
-        ));
-
-        $this->assertTrue($parameter->isVariadic());
-    }
-
-    public function testIsVariadicParamTurnTrueWhenPassedAVariadicByRefMethod()
-    {
-        $parameter = ParameterGenerator::fromReflection(new ParameterReflection(
-            [ClassWithMethodWithByRefVariadicFunction::class, 'tuz'],
-            'fooz'
-        ));
-
-        $this->assertTrue($parameter->isVariadic());
-        $this->assertTrue($parameter->getPassedByReference());
-    }
-
     public function testGeneratesParameterPassedByReference()
     {
         $parameter = new ParameterGenerator('foo');
