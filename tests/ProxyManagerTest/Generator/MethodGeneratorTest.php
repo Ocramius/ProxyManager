@@ -22,7 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
-use ProxyManagerTestAsset\ClassScalarTypeHinted;
+use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use stdClass;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -128,7 +128,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         }
 
         $method = MethodGenerator::fromReflection(new MethodReflection(
-            ClassScalarTypeHinted::class,
+            ScalarTypeHintedClass::class,
             $methodName
         ));
 

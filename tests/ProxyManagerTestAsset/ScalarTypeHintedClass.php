@@ -18,7 +18,7 @@
 
 namespace ProxyManagerTestAsset;
 
-class ClassScalarTypeHinted
+class ScalarTypeHintedClass
 {
     public function acceptString(string $param)
     {
