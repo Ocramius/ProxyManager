@@ -34,10 +34,10 @@ $factory = new \ProxyManager\Factory\RemoteObjectFactory(new CustomAdapter(), $c
 /* @var $proxy FooServiceInterface */
 $proxy   = $factory->createProxy(FooServiceInterface::class);
 
-var_dump($proxy->fooBar());
-var_dump($proxy->unknown());
+echo $proxy->fooBar() . "\n";
+$proxy->unknown();
 ?>
 --EXPECTF--
-%Sstring(3) "baz"
+baz
 
-%SFatal error:%sCall to undefined method %s::unknown%S in %s on line %d
+%AFatal error:%sCall to undefined method %s::unknown%S in %A
