@@ -42,6 +42,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
+use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 
 /**
@@ -123,6 +124,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             [ClassWithMethodWithVariadicFunction::class],
             [ClassWithMethodWithByRefVariadicFunction::class],
             [ScalarTypeHintedClass::class],
+            [ReturnTypeHintedClass::class],
         ];
     }
 }
