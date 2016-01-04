@@ -101,13 +101,6 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGenerateMethodWithScalarTypeHinting($methodName, $type)
     {
-        if (PHP_VERSION_ID < 70000) {
-            $this->markTestSkipped(sprintf(
-                'Can\'t run tests about scalar type hinting for %s',
-                phpversion()
-            ));
-        }
-
         $method = MethodGenerator::fromReflection(new MethodReflection(
             ScalarTypeHintedClass::class,
             $methodName

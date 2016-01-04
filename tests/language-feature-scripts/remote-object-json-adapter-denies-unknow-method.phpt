@@ -1,11 +1,5 @@
 --TEST--
 Verifies that generated remote object can call public property
---SKIPIF--
-<?php
-if (PHP_VERSION_ID >= 70000) {
-    echo 'Skip on PHP 7+ as PHP4 constructors are deprecated';
-}
-?>
 --FILE--
 <?php
 
