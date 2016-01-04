@@ -20,7 +20,7 @@
     ],
     "require": {
         "php":                     "~5.6|~7.0",
-        "zendframework/zend-code": "^2.6.1"
+        "zendframework/zend-code": "dev-feature/php7-compliance@DEV"
     },
     "require-dev": {
         "ext-phar":                    "*",
