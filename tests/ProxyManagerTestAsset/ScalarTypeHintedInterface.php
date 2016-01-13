@@ -16,29 +16,15 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\Generator;
+namespace ProxyManagerTestAsset;
 
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
-use Zend\Code\Reflection\MethodReflection;
-
-/**
- * Method generator that fixes minor quirks in ZF2's method generator
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- */
-class MethodGenerator extends ZendMethodGenerator
+interface ScalarTypeHintedInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public static function fromReflection(MethodReflection $reflectionMethod)
-    {
-        $method = parent::fromReflection($reflectionMethod);
+    public function acceptString(string $param);
 
-        $method->setInterface(false);
+    public function acceptInteger(int $param);
 
-        return $method;
-    }
+    public function acceptBoolean(bool $param);
+
+    public function acceptFloat(float $param);
 }

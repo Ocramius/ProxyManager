@@ -1,29 +1,22 @@
 --TEST--
 Verifies that generated remote object can call public property
---SKIPIF--
-<?php
-if (PHP_VERSION_ID >= 70000) {
-    echo 'Skip on PHP 7+ as PHP4 constructors are deprecated';
-}
-?>
 --FILE--
 <?php
 
 require_once __DIR__ . '/init.php';
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use Zend\Json\Server\Client;
 
 interface FooServiceInterface
 {
-    public function foo();
+    public function fooBar();
 }
 
 class Foo implements FooServiceInterface
 {
     public $foo = "baz";
     
-    public function foo()
+    public function fooBar()
     {
         return 'bar';
     }
@@ -38,12 +31,13 @@ class CustomAdapter implements AdapterInterface
 }
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory(new CustomAdapter(), $configuration);
-$proxy   = $factory->createProxy('ProxyManagerTestAsset\RemoteProxy\FooServiceInterface');
+/* @var $proxy FooServiceInterface */
+$proxy   = $factory->createProxy(FooServiceInterface::class);
 
-var_dump($proxy->foo());
-var_dump($proxy->unknown());
+echo $proxy->fooBar() . "\n";
+$proxy->unknown();
 ?>
 --EXPECTF--
-string(3) "baz"
+baz
 
-%SFatal error:%sCall to undefined method %s::unknown%S in %s on line %d
+%AFatal error:%sCall to undefined method %s::unknown%S in %A

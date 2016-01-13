@@ -42,6 +42,8 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
+use ProxyManagerTestAsset\ReturnTypeHintedClass;
+use ProxyManagerTestAsset\ScalarTypeHintedClass;
 
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
@@ -121,6 +123,8 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             [ClassWithCollidingPrivateInheritedProperties::class],
             [ClassWithMethodWithVariadicFunction::class],
             [ClassWithMethodWithByRefVariadicFunction::class],
+            [ScalarTypeHintedClass::class],
+            [ReturnTypeHintedClass::class],
         ];
     }
 }

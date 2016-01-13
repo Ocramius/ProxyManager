@@ -19,7 +19,7 @@
 namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
+use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
@@ -65,7 +65,7 @@ class Constructor extends MethodGenerator
                 ', ',
                 array_map(
                     function (ParameterGenerator $parameter) {
-                        return ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
+                        return ($parameter->getVariadic() ? '...' : '') . '$' . $parameter->getName();
                     },
                     $constructor->getParameters()
                 )

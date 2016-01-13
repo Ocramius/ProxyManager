@@ -20,8 +20,9 @@ namespace ProxyManagerTest\Generator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\ParameterGenerator;
+use Zend\Code\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use stdClass;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -47,27 +48,8 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         $methodGenerator->setDocBlock('docBlock');
         $methodGenerator->setParameter(new ParameterGenerator('foo'));
 
-        $this->assertSame(true, $methodGenerator->returnsReference());
         $this->assertStringMatchesFormat(
             '%a/**%adocBlock%a*/%aprotected function & methodName($foo)%a{%a/* body */%a}',
-            $methodGenerator->generate()
-        );
-    }
-
-    public function testGenerateMethodWithVariadicParameter()
-    {
-        $methodGenerator = new MethodGenerator();
-
-        $methodGenerator->setReturnsReference(true);
-        $methodGenerator->setName('methodName');
-
-        $parameter = new ParameterGenerator('foo');
-        $parameter->setVariadic(true);
-
-        $methodGenerator->setParameter($parameter);
-
-        $this->assertStringMatchesFormat(
-            '%apublic function & methodName(...$foo)%a{%a%a}',
             $methodGenerator->generate()
         );
     }
@@ -110,4 +92,39 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame(stdClass::class, $param->getType());
     }
+
+    /**
+     * @param string $methodName
+     * @param        $type
+     *
+     * @dataProvider scalarTypeHintedMethods
+     */
+    public function testGenerateMethodWithScalarTypeHinting($methodName, $type)
+    {
+        $method = MethodGenerator::fromReflection(new MethodReflection(
+            ScalarTypeHintedClass::class,
+            $methodName
+        ));
+
+        $this->assertSame($methodName, $method->getName());
+
+        $parameters = $method->getParameters();
+
+        $this->assertCount(1, $parameters);
+
+        $param = $parameters['param'];
+
+        $this->assertSame($type, $param->getType());
+    }
+
+    public function scalarTypeHintedMethods()
+    {
+        return [
+            ['acceptString', 'string'],
+            ['acceptInteger', 'int'],
+            ['acceptBoolean', 'bool'],
+            ['acceptFloat', 'float'],
+        ];
+    }
+
 }
