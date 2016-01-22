@@ -25,7 +25,7 @@ script:
   - php examples/ghost-object.php
   - php examples/smart-reference.php
   - php examples/virtual-proxy.php
-  #- ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
+  - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 
 matrix:
   allow_failures:
