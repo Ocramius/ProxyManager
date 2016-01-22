@@ -211,6 +211,10 @@ respectively to `"foo"`, `"bar"` and `"baz"`.
 Also note that you may read the default values for those properties by
 just reading the respective array keys.
 
+You may still initialize the object by interacting with its public API, but since it
+only contains default property values (the constructor was not called), it is not
+safe to do so.
+
 ## Proxy implementation
 
 The
