@@ -540,6 +540,11 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
+        if (! (new \ReflectionProperty($realInstance, $propertyName))->isPublic()) {
+            // @TODO to be fixed:
+            self::markTestIncomplete('Not yet supported');
+        }
+
         self::assertInternalType('callable', $accessor);
         self::assertSame($expectedValue, $accessor($proxy));
     }
@@ -549,11 +554,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
 
         foreach ((new \ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
-            if (! $property->isPublic()) {
-                // @TODO for now, only public properties seem to work correctly for friend class access
-                continue;
-            }
-
             $property->setAccessible(true);
 
             $propertyName  = $property->getName();
