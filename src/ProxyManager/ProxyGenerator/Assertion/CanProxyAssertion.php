@@ -47,6 +47,8 @@ final class CanProxyAssertion
      * @param ReflectionClass $originalClass
      * @param bool            $allowInterfaces
      *
+     * @return void
+     *
      * @throws InvalidProxiedClassException
      */
     public static function assertClassCanBeProxied(ReflectionClass $originalClass, bool $allowInterfaces = true)
@@ -62,6 +64,8 @@ final class CanProxyAssertion
     /**
      * @param ReflectionClass $originalClass
      *
+     * @return void
+     *
      * @throws InvalidProxiedClassException
      */
     private static function isNotFinal(ReflectionClass $originalClass)
@@ -73,6 +77,8 @@ final class CanProxyAssertion
 
     /**
      * @param ReflectionClass $originalClass
+     *
+     * @return void
      *
      * @throws InvalidProxiedClassException
      */
@@ -92,6 +98,8 @@ final class CanProxyAssertion
 
     /**
      * @param ReflectionClass $originalClass
+     *
+     * @return void
      *
      * @throws InvalidProxiedClassException
      */
