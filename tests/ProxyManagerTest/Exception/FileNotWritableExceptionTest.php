@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Exception;
 
 use PHPUnit_Framework_TestCase;
@@ -61,11 +63,24 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
 
         mkdir($path, 0555);
 
+        $exception = FileNotWritableException::fromNonWritableLocation($path);
+
+        $this->assertInstanceOf(FileNotWritableException::class, $exception);
+        $this->assertSame(
+            'Could not write to path "' . $path . '": exists and is not a file, is not writable',
+            $exception->getMessage()
+        );
+    }
+
+    public function testFromNonExistingPath()
+    {
+        $path = sys_get_temp_dir() . '/' . uniqid('FileNotWritableExceptionTestNonWritable', true);
+
         $exception = FileNotWritableException::fromNonWritableLocation($path . '/foo');
 
         $this->assertInstanceOf(FileNotWritableException::class, $exception);
         $this->assertSame(
-            'Could not write to path "' . $path . '/foo": is not writable',
+            'Could not write to path "' . $path . '/foo": path does not exist',
             $exception->getMessage()
         );
     }

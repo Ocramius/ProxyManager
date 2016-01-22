@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\PropertyGenerator;
 
 use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;

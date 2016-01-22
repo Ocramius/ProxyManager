@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Exception;
 
 use UnexpectedValueException;
@@ -40,13 +42,18 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
 
     public static function fromNonWritableLocation($path) : self
     {
-        $messages = [];
+        $messages    = [];
+        $destination = realpath($path);
 
-        if (($destination = realpath($path)) && ! is_file($destination)) {
+        if (! $destination) {
+            $messages[] = 'path does not exist';
+        }
+
+        if ($destination && ! is_file($destination)) {
             $messages[] = 'exists and is not a file';
         }
 
-        if (! is_writable($destination)) {
+        if ($destination && ! is_writable($destination)) {
             $messages[] = 'is not writable';
         }
 
