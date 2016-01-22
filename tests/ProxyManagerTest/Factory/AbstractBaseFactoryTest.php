@@ -64,7 +64,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
     private $generatorStrategy;
 
     /**
-     * @var \ProxyManager\Autoloader\AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $proxyAutoloader;
 
@@ -153,6 +153,8 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->with($generatedClass)
             ->will($this->returnCallback(function ($className) {
                 eval('class ' . $className . ' {}');
+
+                return true;
             }));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');

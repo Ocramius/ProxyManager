@@ -149,16 +149,11 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->will(
-                $this->returnCallback(
-                    function () use ($proxyClassName) {
-                        eval(
-                            'class ' . $proxyClassName
-                            . ' extends \\ProxyManagerTestAsset\\NullObjectMock {}'
-                        );
-                    }
-                )
-            );
+            ->willReturnCallback(function () use ($proxyClassName) {
+                eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\NullObjectMock {}');
+
+                return true;
+            });
 
         $this
             ->inflector

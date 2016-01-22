@@ -18,13 +18,15 @@
 
 namespace ProxyManagerTestAsset;
 
+use ProxyManager\Proxy\LazyLoadingInterface;
+
 /**
  * Base test class to catch instantiations of lazy loading objects
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingMock
+class LazyLoadingMock implements LazyLoadingInterface
 {
     /**
      * @var callable
@@ -43,5 +45,38 @@ class LazyLoadingMock
         $instance->initializer = $initializer;
 
         return $instance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setProxyInitializer(\Closure $initializer = null)
+    {
+        $this->initializer = $initializer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getProxyInitializer()
+    {
+        return $this->initializer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function initializeProxy() : bool
+    {
+        // empty (on purpose)
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isProxyInitialized() : bool
+    {
+        return true;
     }
 }

@@ -54,5 +54,6 @@ class InitializeProxyTest extends PHPUnit_Framework_TestCase
             'return $this->foo && $this->bar(\'initializeProxy\', []);',
             $initializeProxy->getBody()
         );
+        self::assertStringMatchesFormat('%A : bool%A', $initializeProxy->generate(), 'Return type hint is boolean');
     }
 }

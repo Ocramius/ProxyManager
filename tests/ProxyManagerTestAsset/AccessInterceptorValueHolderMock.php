@@ -18,13 +18,16 @@
 
 namespace ProxyManagerTestAsset;
 
+use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
+
 /**
  * Base test class to catch instantiations of access interceptor value holders
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class AccessInterceptorValueHolderMock
+class AccessInterceptorValueHolderMock implements ValueHolderInterface, AccessInterceptorInterface
 {
     /**
      * @var object
@@ -57,5 +60,29 @@ class AccessInterceptorValueHolderMock
         $selfInstance->suffixInterceptors = $suffixInterceptors;
 
         return $selfInstance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMethodPrefixInterceptor(string $methodName, \Closure $prefixInterceptor = null)
+    {
+        // no-op (on purpose)
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMethodSuffixInterceptor(string $methodName, \Closure $suffixInterceptor = null)
+    {
+        // no-op (on purpose)
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWrappedValueHolderValue()
+    {
+        return $this->instance;
     }
 }

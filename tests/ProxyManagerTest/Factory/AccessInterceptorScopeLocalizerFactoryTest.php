@@ -166,16 +166,14 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->will(
-                $this->returnCallback(
-                    function () use ($proxyClassName) {
-                        eval(
-                            'class ' . $proxyClassName
-                            . ' extends \\ProxyManagerTestAsset\\AccessInterceptorValueHolderMock {}'
-                        );
-                    }
-                )
-            );
+            ->willReturnCallback(function () use ($proxyClassName) {
+                eval(
+                    'class ' . $proxyClassName
+                    . ' extends \\ProxyManagerTestAsset\\AccessInterceptorValueHolderMock {}'
+                );
+
+                return true;
+            });
 
         $this
             ->inflector

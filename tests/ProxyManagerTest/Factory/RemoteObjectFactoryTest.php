@@ -150,17 +150,15 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->will(
-                $this->returnCallback(
-                    function () use ($proxyClassName) {
-                        eval(
-                            'class ' . $proxyClassName . ' {'
-                            . 'public static function staticProxyConstructor() { return new static(); }'
-                            . '}'
-                        );
-                    }
-                )
-            );
+            ->willReturnCallback(function () use ($proxyClassName) {
+                eval(
+                    'class ' . $proxyClassName . ' implements \ProxyManager\Proxy\RemoteObjectInterface {'
+                    . 'public static function staticProxyConstructor() { return new static(); }'
+                    . '}'
+                );
+
+                return true;
+            });
 
         $this
             ->inflector

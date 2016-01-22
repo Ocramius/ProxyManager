@@ -47,5 +47,6 @@ class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
         $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
         $this->assertCount(0, $isProxyInitialized->getParameters());
         $this->assertSame('return ! $this->foo;', $isProxyInitialized->getBody());
+        self::assertStringMatchesFormat('%A : bool%A', $isProxyInitialized->generate(), 'Return type hint is boolean');
     }
 }

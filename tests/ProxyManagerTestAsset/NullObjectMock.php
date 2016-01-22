@@ -18,13 +18,15 @@
 
 namespace ProxyManagerTestAsset;
 
+use ProxyManager\Proxy\NullObjectInterface;
+
 /**
  * Base test class to catch instantiations of null object
  *
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMock
+class NullObjectMock implements NullObjectInterface
 {
     /**
      * @return static
