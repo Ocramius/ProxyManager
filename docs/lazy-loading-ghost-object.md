@@ -94,8 +94,12 @@ $initializer = function (LazyLoadingInterface $proxy, $method, array $parameters
     $initializer   = null; // disable initialization
 
     // load data and modify the object here
-    $proxy->setName('Agent');
-    $proxy->setSurname('Smith');
+    $properties["\0ClassName\0foo"] = 'foo';
+    $properties["\0ClassName\0bar"] = 'bar'; 
+    
+    // you may also call methods on the object, but remember that
+    // the constructor was not called yet:
+    $proxy->setBaz('baz');
 
     return true; // confirm that initialization occurred correctly
 };
