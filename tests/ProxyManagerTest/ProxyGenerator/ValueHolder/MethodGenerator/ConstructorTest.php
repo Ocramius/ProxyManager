@@ -64,9 +64,7 @@ if (! $this->foo) {
 
     unset($this->bar);
     unset($this->baz);
-}
-
-$this->foo->__construct();',
+}',
             $constructor->getBody()
         );
     }
@@ -91,9 +89,7 @@ $this->foo->__construct();',
 if (! $this->foo) {
     $reflection = $reflection ?: new \ReflectionClass(\'ProxyManagerTestAsset\\\\EmptyClass\');
     $this->foo = $reflection->newInstanceWithoutConstructor();
-}
-
-$this->foo->__construct();',
+}',
             $constructor->getBody()
         );
     }
@@ -121,8 +117,6 @@ if (! $this->foo) {
     unset($this->publicProperty1);
     unset($this->publicProperty2);
 }
-
-$this->foo->__construct();
 PHP;
 
         $this->assertSame($expectedCode, $constructor->getBody());
