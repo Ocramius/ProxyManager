@@ -244,6 +244,10 @@ or
 $initializer = null; // if you use the initializer passed by reference to the closure
 ```
 
+Remember to call `$proxy->setProxyInitializer(null);`, or to set `$initializer = null` inside your
+initializer closure to disable initialization of your proxy, or else initialization will trigger
+more than once.
+
 ## Triggering Initialization
 
 A lazy loading ghost object is initialized whenever you access any property of it.
@@ -272,8 +276,14 @@ clone $proxy;
 $unserialized = unserialize(serialize($proxy));
 ```
 
-Remember to call `$proxy->setProxyInitializer(null);` to disable initialization of your proxy, or it will happen more
-than once.
+A method like following would never trigger lazy loading, in the context of a ghost object:
+
+```php
+public function sayHello() : string
+{
+    return 'Look ma! No property accessed!';
+}
+```
 
 ## Proxying interfaces
 
