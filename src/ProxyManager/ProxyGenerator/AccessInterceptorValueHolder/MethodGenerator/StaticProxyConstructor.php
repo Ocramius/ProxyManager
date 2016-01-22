@@ -19,6 +19,7 @@
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
@@ -60,11 +61,29 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
-        $publicProperties = Properties::fromReflectionClass($originalClass)->getPublicProperties();
-        $unsetProperties  = [];
+        $properties      = Properties::fromReflectionClass($originalClass);
+        $unsetProperties = [];
 
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$instance->' . $publicProperty->getName();
+        foreach ($properties->getAccessibleProperties() as $accessibleProperty) {
+            $unsetProperties[] = '$instance->' . $accessibleProperty->getName();
+        }
+
+        $unsetPrivateProperties = [];
+
+        foreach ($properties->getPrivateProperties() as $privateProperty) {
+            $propertyName       = $privateProperty->getName();
+            $declaringClassName = $privateProperty->getDeclaringClass()->getName();
+            $unsetCode          = <<<'PHP'
+\Closure::bind(function (\%s $instance) {
+    unset($instance->%s);
+}, $instance, %s)->__invoke($instance);
+PHP;
+            $unsetPrivateProperties[] = sprintf(
+                $unsetCode,
+                $declaringClassName,
+                $propertyName,
+                var_export($declaringClassName, true)
+            );
         }
 
         $this->setDocblock(
@@ -74,11 +93,14 @@ class StaticProxyConstructor extends MethodGenerator
             . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
             . "@return self"
         );
+
         $this->setBody(
             'static $reflection;' . "\n\n"
             . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
+            //. UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'instance')
             . ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
+            . ($unsetPrivateProperties ? implode("\n\n", $unsetPrivateProperties) . "\n\n" : '')
             . '$instance->' . $valueHolder->getName() . " = \$wrappedObject;\n"
             . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
             . '$instance->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;\n\n"
