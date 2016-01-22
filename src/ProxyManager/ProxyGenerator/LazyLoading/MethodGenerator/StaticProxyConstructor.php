@@ -19,9 +19,9 @@
 namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
-use ReflectionProperty;
+use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
+use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -49,54 +49,9 @@ class StaticProxyConstructor extends MethodGenerator
             'static $reflection;' . "\n\n"
             . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
-            . $this->generateUnsetPropertiesCode($properties)
+            . UnsetPropertiesGenerator::generateSnippet($properties, 'instance')
             . '$instance->' . $initializerProperty->getName() . ' = $initializer;' . "\n\n"
             . 'return $instance;'
         );
-    }
-
-    /**
-     * @param Properties $properties
-     *
-     * @return string
-     */
-    private function generateUnsetPropertiesCode(Properties $properties)
-    {
-        $code = '';
-
-        if ($accessibleProperties = $properties->getAccessibleProperties()) {
-            $code .= $this->getUnsetPropertiesGroupCode($accessibleProperties) . "\n";
-        }
-
-        foreach ($properties->getGroupedPrivateProperties() as $className => $privateProperties) {
-            $cacheKey = 'cache' . str_replace('\\', '_', $className);
-            $code    .= 'static $' . $cacheKey . ";\n\n"
-                . '$' . $cacheKey . ' ?: $' . $cacheKey . " = \\Closure::bind(function (\$instance) {\n"
-                . '    ' . $this->getUnsetPropertiesGroupCode($privateProperties)
-                . '}, null, ' . var_export($className, true) . ");\n\n"
-                . '$' . $cacheKey . "(\$instance);\n\n";
-        }
-
-        return $code;
-    }
-
-    /**
-     * @param ReflectionProperty[] $properties
-     *
-     * @return string
-     */
-    private function getUnsetPropertiesGroupCode(array $properties)
-    {
-        return 'unset('
-            . implode(
-                ', ',
-                array_map(
-                    function (ReflectionProperty $property) {
-                        return '$instance->' . $property->getName();
-                    },
-                    $properties
-                )
-            )
-            . ");\n";
     }
 }
