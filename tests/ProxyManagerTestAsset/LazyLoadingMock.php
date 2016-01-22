@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTestAsset;
 
-use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\VirtualProxyInterface;
 
 /**
  * Base test class to catch instantiations of lazy loading objects
@@ -28,7 +28,7 @@ use ProxyManager\Proxy\LazyLoadingInterface;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingMock implements LazyLoadingInterface
+class LazyLoadingMock implements VirtualProxyInterface
 {
     /**
      * @var callable
@@ -80,5 +80,14 @@ class LazyLoadingMock implements LazyLoadingInterface
     public function isProxyInitialized() : bool
     {
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWrappedValueHolderValue()
+    {
+        // we're not supposed to call this
+        throw new \BadMethodCallException('Not implemented');
     }
 }
