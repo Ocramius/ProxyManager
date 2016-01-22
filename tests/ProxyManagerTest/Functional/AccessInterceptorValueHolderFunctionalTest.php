@@ -540,11 +540,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        if (! (new \ReflectionProperty($realInstance, $propertyName))->isPublic()) {
-            // @TODO to be fixed:
-            self::markTestIncomplete('Not yet supported');
-        }
-
         self::assertInternalType('callable', $accessor);
         self::assertSame($expectedValue, $accessor($proxy));
     }
