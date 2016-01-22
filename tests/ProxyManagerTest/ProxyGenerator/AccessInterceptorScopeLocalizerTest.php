@@ -40,7 +40,7 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
      *
      * {@inheritDoc}
      */
-    public function testGeneratesValidCode($className)
+    public function testGeneratesValidCode(string $className)
     {
         $reflectionClass = new ReflectionClass($className);
 
