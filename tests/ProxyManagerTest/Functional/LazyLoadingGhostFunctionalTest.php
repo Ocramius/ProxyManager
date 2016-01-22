@@ -1109,6 +1109,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : array
     {
+        $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
+
         return [
             OtherObjectAccessClass::class . '#$privateProperty' => [
                 new OtherObjectAccessClass(),
@@ -1124,6 +1126,27 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             ],
             OtherObjectAccessClass::class . '#$publicProperty' => [
                 new OtherObjectAccessClass(),
+                'getPublicProperty',
+                'publicProperty',
+                uniqid('', true),
+            ],
+            '(proxy) ' . OtherObjectAccessClass::class . '#$privateProperty' => [
+                $proxyClass::staticProxyConstructor(function () {
+                }),
+                'getPrivateProperty',
+                "\0" . OtherObjectAccessClass::class . "\0privateProperty",
+                uniqid('', true),
+            ],
+            '(proxy) ' . OtherObjectAccessClass::class . '#$protectedProperty' => [
+                $proxyClass::staticProxyConstructor(function () {
+                }),
+                'getProtectedProperty',
+                "\0*\0protectedProperty",
+                uniqid('', true),
+            ],
+            '(proxy) ' . OtherObjectAccessClass::class . '#$publicProperty' => [
+                $proxyClass::staticProxyConstructor(function () {
+                }),
                 'getPublicProperty',
                 'publicProperty',
                 uniqid('', true),
