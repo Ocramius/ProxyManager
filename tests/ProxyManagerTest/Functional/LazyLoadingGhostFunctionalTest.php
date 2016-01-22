@@ -1103,7 +1103,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertFalse($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
         self::assertTrue($proxy->isProxyInitialized());
@@ -1138,7 +1137,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertTrue($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
     }
@@ -1172,7 +1170,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertTrue($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
     }

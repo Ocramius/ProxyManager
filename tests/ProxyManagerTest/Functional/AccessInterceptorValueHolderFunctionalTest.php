@@ -540,7 +540,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
@@ -584,7 +583,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
@@ -629,7 +627,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
