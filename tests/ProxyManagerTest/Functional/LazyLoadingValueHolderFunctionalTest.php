@@ -555,6 +555,36 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertTrue($proxy->isProxyInitialized());
     }
 
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     */
+    public function testWillFetchMembersOfOtherDeSerializedProxiesWithTheSamePrivateScope(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = unserialize(serialize(
+            $proxyName::staticProxyConstructor($this->createInitializer(get_class($realInstance), $realInstance))
+        ));
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertInternalType('callable', $accessor);
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
     {
         $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
