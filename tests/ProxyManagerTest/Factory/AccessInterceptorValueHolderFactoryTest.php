@@ -30,7 +30,7 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManagerTestAsset\AccessInterceptorValueHolderMock;
-use ProxyManagerTestAsset\LazyLoadingMock;
+use ProxyManagerTestAsset\EmptyClass;
 use stdClass;
 
 /**
@@ -188,7 +188,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will($this->returnValue(LazyLoadingMock::class));
+            ->will($this->returnValue(EmptyClass::class));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
