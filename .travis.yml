@@ -23,6 +23,7 @@ script:
   - echo "Running examples"
   - php examples/access-interceptor-scope-localizer.php
   - php examples/ghost-object.php
+  - php examples/smart-reference.php
   - php examples/virtual-proxy.php
   #- ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 
