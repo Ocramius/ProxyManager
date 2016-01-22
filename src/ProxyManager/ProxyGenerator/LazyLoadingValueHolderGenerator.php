@@ -84,13 +84,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
             },
             array_merge(
                 array_map(
-                    function (ReflectionMethod $method) use ($initializer, $valueHolder) {
-                        return LazyLoadingMethodInterceptor::generateMethod(
-                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                            $initializer,
-                            $valueHolder
-                        );
-                    },
+                    $this->buildLazyLoadingMethodInterceptor($initializer, $valueHolder),
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
                 [
@@ -111,5 +105,18 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                 ]
             )
         );
+    }
+
+    private function buildLazyLoadingMethodInterceptor(
+        InitializerProperty $initializer,
+        ValueHolderProperty $valueHolder
+    ) : callable {
+        return function (ReflectionMethod $method) use ($initializer, $valueHolder) : LazyLoadingMethodInterceptor {
+            return LazyLoadingMethodInterceptor::generateMethod(
+                new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                $initializer,
+                $valueHolder
+            );
+        };
     }
 }
