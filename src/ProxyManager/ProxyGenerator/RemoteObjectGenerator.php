@@ -69,7 +69,7 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
             },
             array_merge(
                 array_map(
-                    function (ReflectionMethod $method) use ($adapter, $originalClass) {
+                    function (ReflectionMethod $method) use ($adapter, $originalClass) : RemoteObjectMethod {
                         return RemoteObjectMethod::generateMethod(
                             new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                             $adapter,
