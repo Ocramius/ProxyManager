@@ -26,12 +26,12 @@ use ProxyManagerTestAsset\EmptyClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
- * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}
+ * Tests for {@see \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator}
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  *
- * @covers \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator
+ * @covers \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator
  * @group Coverage
  */
 class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
