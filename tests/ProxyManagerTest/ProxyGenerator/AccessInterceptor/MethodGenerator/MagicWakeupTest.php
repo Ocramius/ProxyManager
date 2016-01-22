@@ -66,8 +66,9 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
     {
         $magicWakeup = new MagicWakeup(new ReflectionClass(ClassWithMixedProperties::class));
 
-        self::assertSame('unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, '
-        . '$this->protectedProperty0, $this->protectedProperty1, $this->protectedProperty2);
+        self::assertSame(
+            'unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, '
+            . '$this->protectedProperty0, $this->protectedProperty1, $this->protectedProperty2);
 
 \Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $this) {
     unset($this->privateProperty0, $this->privateProperty1, $this->privateProperty2);
