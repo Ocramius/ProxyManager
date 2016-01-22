@@ -55,8 +55,8 @@ class PublicPropertiesMap extends PropertyGenerator
     /**
      * @return bool whether there are no public properties
      */
-    public function isEmpty()
+    public function isEmpty() : bool
     {
-        return empty($this->publicProperties);
+        return ! $this->publicProperties;
     }
 }

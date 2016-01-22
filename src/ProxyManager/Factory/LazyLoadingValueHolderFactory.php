@@ -20,6 +20,7 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Factory responsible of producing virtual proxy instances
@@ -39,7 +40,7 @@ class LazyLoadingValueHolderFactory extends AbstractLazyFactory
     /**
      * {@inheritDoc}
      */
-    protected function getGenerator()
+    protected function getGenerator() : ProxyGeneratorInterface
     {
         return $this->generator ?: $this->generator = new LazyLoadingValueHolderGenerator();
     }

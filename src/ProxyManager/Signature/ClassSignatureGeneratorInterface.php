@@ -36,5 +36,5 @@ interface ClassSignatureGeneratorInterface
      *
      * @return ClassGenerator
      */
-    public function addSignature(ClassGenerator $classGenerator, array $parameters);
+    public function addSignature(ClassGenerator $classGenerator, array $parameters) : ClassGenerator;
 }

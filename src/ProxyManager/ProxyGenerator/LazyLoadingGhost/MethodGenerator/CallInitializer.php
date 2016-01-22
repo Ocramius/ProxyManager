@@ -98,12 +98,7 @@ PHP;
         ));
     }
 
-    /**
-     * @param Properties $properties
-     *
-     * @return string
-     */
-    private function propertiesInitializationCode(Properties $properties)
+    private function propertiesInitializationCode(Properties $properties) : string
     {
         $assignments = [];
 
@@ -131,7 +126,7 @@ PHP;
      *
      * @return string
      */
-    private function getPropertyDefaultsAssignments(array $properties)
+    private function getPropertyDefaultsAssignments(array $properties) : string
     {
         return implode(
             "\n",
@@ -145,12 +140,7 @@ PHP;
         );
     }
 
-    /**
-     * @param Properties $properties
-     *
-     * @return string
-     */
-    private function propertiesReferenceArrayCode(Properties $properties)
+    private function propertiesReferenceArrayCode(Properties $properties) : string
     {
         $assignments = [];
 
@@ -182,7 +172,7 @@ PHP;
      *
      * @return string
      */
-    private function generatePrivatePropertiesAssignmentsCode(array $properties)
+    private function generatePrivatePropertiesAssignmentsCode(array $properties) : string
     {
         $code = '';
 
@@ -195,12 +185,7 @@ PHP;
         return $code;
     }
 
-    /**
-     * @param ReflectionProperty $property
-     *
-     * @return string
-     */
-    private function getExportedPropertyDefaultValue(ReflectionProperty $property)
+    private function getExportedPropertyDefaultValue(ReflectionProperty $property) : string
     {
         $name     = $property->getName();
         $defaults = $property->getDeclaringClass()->getDefaultProperties();

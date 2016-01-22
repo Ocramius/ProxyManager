@@ -58,7 +58,7 @@ class PublicScopeSimulator
         $valueParameter = null,
         PropertyGenerator $valueHolder = null,
         $returnPropertyName = null
-    ) {
+    ) : string {
         $byRef  = self::getByRefReturnValue($operationType);
         $value  = static::OPERATION_SET === $operationType ? ', $value' : '';
         $target = '$this';
@@ -94,7 +94,7 @@ class PublicScopeSimulator
      *
      * @return string
      */
-    private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter)
+    private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter) : string
     {
         if (static::OPERATION_GET !== $operationType) {
             return '';
@@ -119,7 +119,7 @@ class PublicScopeSimulator
      *
      * @return string
      */
-    private static function getByRefReturnValue(string $operationType)
+    private static function getByRefReturnValue(string $operationType) : string
     {
         return (static::OPERATION_GET === $operationType || static::OPERATION_SET === $operationType) ? '& ' : '';
     }
@@ -131,7 +131,7 @@ class PublicScopeSimulator
      *
      * @return string
      */
-    private static function getTargetObject(PropertyGenerator $valueHolder = null)
+    private static function getTargetObject(PropertyGenerator $valueHolder = null) : string
     {
         if ($valueHolder) {
             return '$this->' . $valueHolder->getName();
@@ -149,7 +149,7 @@ class PublicScopeSimulator
      *
      * @throws \InvalidArgumentException
      */
-    private static function getOperation(string $operationType, string $nameParameter, $valueParameter)
+    private static function getOperation(string $operationType, string $nameParameter, $valueParameter) : string
     {
         switch ($operationType) {
             case static::OPERATION_GET:
@@ -174,7 +174,7 @@ class PublicScopeSimulator
      *
      * @return string
      */
-    private static function getScopeReBind()
+    private static function getScopeReBind() : string
     {
         return '    $backtrace = debug_backtrace(true);' . "\n"
             . '    $scopeObject = isset($backtrace[1][\'object\'])'

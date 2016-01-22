@@ -35,13 +35,13 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
      * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
      * @param \Zend\Code\Generator\PropertyGenerator $valueHolderProperty
      *
-     * @return LazyLoadingMethodInterceptor|static
+     * @return self|static
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
         PropertyGenerator $initializerProperty,
         PropertyGenerator $valueHolderProperty
-    ) {
+    ) : self {
         /* @var $method self */
         $method            = static::fromReflection($originalMethod);
         $initializerName   = $initializerProperty->getName();

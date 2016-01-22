@@ -60,6 +60,7 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter(new ParameterGenerator('wrappedObject'));
         $this->setParameter($prefix);
         $this->setParameter($suffix);
+        $this->setReturnType($originalClass->getName());
 
         $this->setDocblock(
             "Constructor to setup interceptors\n\n"

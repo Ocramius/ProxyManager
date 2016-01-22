@@ -36,13 +36,13 @@ class RemoteObjectMethod extends MethodGenerator
      * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
      * @param \ReflectionClass                       $originalClass
      *
-     * @return RemoteObjectMethod|static
+     * @return self|static
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
         PropertyGenerator $adapterProperty,
         ReflectionClass $originalClass
-    ) {
+    ) : self {
         /* @var $method self */
         $method        = static::fromReflection($originalMethod);
         $parameters    = $originalMethod->getParameters();

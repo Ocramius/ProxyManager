@@ -33,7 +33,7 @@ interface SignatureGeneratorInterface
      *
      * @return string
      */
-    public function generateSignature(array $parameters);
+    public function generateSignature(array $parameters) : string;
 
     /**
      * Generates a signature key to be looked up when verifying generated code validity
@@ -42,5 +42,5 @@ interface SignatureGeneratorInterface
      *
      * @return string
      */
-    public function generateSignatureKey(array $parameters);
+    public function generateSignatureKey(array $parameters) : string;
 }

@@ -62,7 +62,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * {@inheritDoc}
      */
-    public function getUserClassName(string $className)
+    public function getUserClassName(string $className) : string
     {
         $className = ltrim($className, '\\');
 
@@ -80,7 +80,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * {@inheritDoc}
      */
-    public function getProxyClassName(string $className, array $options = [])
+    public function getProxyClassName(string $className, array $options = []) : string
     {
         return $this->proxyNamespace
             . $this->proxyMarker
@@ -91,7 +91,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * {@inheritDoc}
      */
-    public function isProxyClassName(string $className)
+    public function isProxyClassName(string $className) : bool
     {
         return false !== strrpos($className, $this->proxyMarker);
     }

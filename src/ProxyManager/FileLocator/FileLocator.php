@@ -50,7 +50,7 @@ class FileLocator implements FileLocatorInterface
     /**
      * {@inheritDoc}
      */
-    public function getProxyFileName(string $className)
+    public function getProxyFileName(string $className) : string
     {
         return $this->proxiesDirectory . DIRECTORY_SEPARATOR . str_replace('\\', '', $className) . '.php';
     }

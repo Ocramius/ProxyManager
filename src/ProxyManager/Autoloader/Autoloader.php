@@ -52,7 +52,7 @@ class Autoloader implements AutoloaderInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(string $className)
+    public function __invoke(string $className) : bool
     {
         if (class_exists($className, false) || ! $this->classNameInflector->isProxyClassName($className)) {
             return false;

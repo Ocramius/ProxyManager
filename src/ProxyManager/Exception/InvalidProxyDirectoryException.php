@@ -28,12 +28,7 @@ use InvalidArgumentException;
  */
 class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {
-    /**
-     * @param string $directory
-     *
-     * @return self
-     */
-    public static function proxyDirectoryNotFound(string $directory)
+    public static function proxyDirectoryNotFound(string $directory) : self
     {
         return new self(sprintf('Provided directory "%s" does not exist', $directory));
     }

@@ -20,6 +20,7 @@ namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Version;
 use ReflectionClass;
 
@@ -59,7 +60,7 @@ abstract class AbstractBaseFactory
      *
      * @return string proxy class name
      */
-    protected function generateProxy(string $className, array $proxyOptions = [])
+    protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
         if (isset($this->checkedClasses[$className])) {
             return $this->checkedClasses[$className];
@@ -92,10 +93,7 @@ abstract class AbstractBaseFactory
         return $this->checkedClasses[$className] = $proxyClassName;
     }
 
-    /**
-     * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
-     */
-    abstract protected function getGenerator();
+    abstract protected function getGenerator() : ProxyGeneratorInterface;
 
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`

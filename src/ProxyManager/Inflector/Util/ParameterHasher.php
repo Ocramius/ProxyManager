@@ -33,7 +33,7 @@ class ParameterHasher
      *
      * @return string
      */
-    public function hashParameters(array $parameters)
+    public function hashParameters(array $parameters) : string
     {
         return md5(serialize($parameters));
     }

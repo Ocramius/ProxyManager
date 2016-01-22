@@ -31,7 +31,7 @@ class BaseGeneratorStrategy implements GeneratorStrategyInterface
     /**
      * {@inheritDoc}
      */
-    public function generate(ClassGenerator $classGenerator)
+    public function generate(ClassGenerator $classGenerator) : string
     {
         return $classGenerator->generate();
     }

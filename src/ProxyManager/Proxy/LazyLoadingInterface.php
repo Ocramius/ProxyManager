@@ -53,12 +53,12 @@ interface LazyLoadingInterface extends ProxyInterface
      *
      * @return bool true if the proxy could be initialized
      */
-    public function initializeProxy();
+    public function initializeProxy() : bool;
 
     /**
      * Retrieves current initialization status of the proxy
      *
      * @return bool
      */
-    public function isProxyInitialized();
+    public function isProxyInitialized() : bool;
 }

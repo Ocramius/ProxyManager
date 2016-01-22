@@ -33,5 +33,5 @@ interface FileLocatorInterface
      *
      * @return string
      */
-    public function getProxyFileName(string $className);
+    public function getProxyFileName(string $className) : string;
 }

@@ -45,7 +45,7 @@ class ProtectedPropertiesMap extends PropertyGenerator
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setStatic(true);
-        $this->setDocblock(
+        $this->setDocBlock(
             '@var string[][] declaring class name of defined protected properties, indexed by property name'
         );
         $this->setDefaultValue($this->getMap($properties));
@@ -57,7 +57,7 @@ class ProtectedPropertiesMap extends PropertyGenerator
      *
      * @return int[][]|mixed[][]
      */
-    private function getMap(Properties $properties)
+    private function getMap(Properties $properties) : array
     {
         $map = [];
 

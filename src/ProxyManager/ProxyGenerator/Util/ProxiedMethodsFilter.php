@@ -48,7 +48,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getProxiedMethods(ReflectionClass $class, array $excluded = null)
+    public static function getProxiedMethods(ReflectionClass $class, array $excluded = null) : array
     {
         return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded);
     }
@@ -59,7 +59,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getAbstractProxiedMethods(ReflectionClass $class, array $excluded = null)
+    public static function getAbstractProxiedMethods(ReflectionClass $class, array $excluded = null) : array
     {
         return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded, true);
     }
@@ -71,7 +71,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false)
+    private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false) : array
     {
         $ignored = array_flip(array_map('strtolower', $excluded));
 
@@ -91,7 +91,7 @@ final class ProxiedMethodsFilter
      *
      * @return bool
      */
-    private static function methodCannotBeProxied(ReflectionMethod $method)
+    private static function methodCannotBeProxied(ReflectionMethod $method) : bool
     {
         return $method->isConstructor() || $method->isFinal() || $method->isStatic();
     }

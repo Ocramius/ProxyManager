@@ -40,6 +40,7 @@ class InitializeProxy extends MethodGenerator
     {
         parent::__construct('initializeProxy');
         $this->setDocblock('{@inheritDoc}');
+        $this->setReturnType('bool');
 
         $initializer = $initializerProperty->getName();
 

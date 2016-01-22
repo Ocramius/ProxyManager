@@ -30,32 +30,17 @@ use ReflectionMethod;
  */
 class InvalidProxiedClassException extends InvalidArgumentException implements ExceptionInterface
 {
-    /**
-     * @param ReflectionClass $reflection
-     *
-     * @return self
-     */
-    public static function interfaceNotSupported(ReflectionClass $reflection)
+    public static function interfaceNotSupported(ReflectionClass $reflection) : self
     {
         return new self(sprintf('Provided interface "%s" cannot be proxied', $reflection->getName()));
     }
 
-    /**
-     * @param ReflectionClass $reflection
-     *
-     * @return self
-     */
-    public static function finalClassNotSupported(ReflectionClass $reflection)
+    public static function finalClassNotSupported(ReflectionClass $reflection) : self
     {
         return new self(sprintf('Provided class "%s" is final and cannot be proxied', $reflection->getName()));
     }
 
-    /**
-     * @param ReflectionClass $reflection
-     *
-     * @return self
-     */
-    public static function abstractProtectedMethodsNotSupported(ReflectionClass $reflection)
+    public static function abstractProtectedMethodsNotSupported(ReflectionClass $reflection) : self
     {
         return new self(sprintf(
             'Provided class "%s" has following protected abstract methods, and therefore cannot be proxied:' . "\n%s",

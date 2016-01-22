@@ -33,9 +33,9 @@ class NullObjectMethodInterceptor extends MethodGenerator
     /**
      * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      *
-     * @return NullObjectMethodInterceptor|static
+     * @return self|static
      */
-    public static function generateMethod(MethodReflection $originalMethod)
+    public static function generateMethod(MethodReflection $originalMethod) : self
     {
         /* @var $method self */
         $method = static::fromReflection($originalMethod);

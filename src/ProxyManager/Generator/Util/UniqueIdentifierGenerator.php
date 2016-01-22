@@ -37,7 +37,7 @@ abstract class UniqueIdentifierGenerator
      *
      * @return string
      */
-    public static function getIdentifier(string $name)
+    public static function getIdentifier(string $name) : string
     {
         return str_replace(
             '.',

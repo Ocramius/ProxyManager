@@ -39,6 +39,7 @@ class IsProxyInitialized extends MethodGenerator
     {
         parent::__construct('isProxyInitialized');
         $this->setDocblock('{@inheritDoc}');
+        $this->setReturnType('bool');
         $this->setBody('return null !== $this->' . $valueHolderProperty->getName() . ';');
     }
 }

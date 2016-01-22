@@ -18,7 +18,9 @@
 
 namespace ProxyManager\Factory;
 
+use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Factory responsible of producing proxy objects
@@ -40,10 +42,13 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
      * @param \Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       after method logic is executed
      *
-     * @return \ProxyManager\Proxy\AccessInterceptorInterface
+     * @return AccessInterceptorInterface
      */
-    public function createProxy($instance, array $prefixInterceptors = [], array $suffixInterceptors = [])
-    {
+    public function createProxy(
+        $instance,
+        array $prefixInterceptors = [],
+        array $suffixInterceptors = []
+    ) : AccessInterceptorInterface {
         $proxyClassName = $this->generateProxy(get_class($instance));
 
         return $proxyClassName::staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors);
@@ -52,7 +57,7 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
     /**
      * {@inheritDoc}
      */
-    protected function getGenerator()
+    protected function getGenerator() : ProxyGeneratorInterface
     {
         return $this->generator ?: $this->generator = new AccessInterceptorScopeLocalizerGenerator();
     }

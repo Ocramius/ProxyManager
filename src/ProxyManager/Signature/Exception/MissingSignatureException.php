@@ -36,7 +36,7 @@ class MissingSignatureException extends UnexpectedValueException implements Exce
      *
      * @return self
      */
-    public static function fromMissingSignature(ReflectionClass $class, array $parameters, string $expected)
+    public static function fromMissingSignature(ReflectionClass $class, array $parameters, string $expected) : self
     {
         return new self(sprintf(
             'No signature found for class "%s", expected signature "%s" for %d parameters',

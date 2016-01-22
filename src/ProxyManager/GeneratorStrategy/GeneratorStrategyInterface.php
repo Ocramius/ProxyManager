@@ -35,5 +35,5 @@ interface GeneratorStrategyInterface
      *
      * @return string the class body
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function generate(ClassGenerator $classGenerator) : string;
 }

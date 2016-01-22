@@ -141,7 +141,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      *
      * @return MethodGenerator[]
      */
-    private function getAbstractProxiedMethods(ReflectionClass $originalClass)
+    private function getAbstractProxiedMethods(ReflectionClass $originalClass) : array
     {
         return array_map(
             function (ReflectionMethod $method) {

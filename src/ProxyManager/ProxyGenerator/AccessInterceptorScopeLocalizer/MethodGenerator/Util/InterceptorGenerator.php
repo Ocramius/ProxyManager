@@ -46,7 +46,7 @@ class InterceptorGenerator
         MethodGenerator $method,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
-    ) {
+    ) : string {
         $name               = var_export($method->getName(), true);
         $prefixInterceptors = $prefixInterceptors->getName();
         $suffixInterceptors = $suffixInterceptors->getName();

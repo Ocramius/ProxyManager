@@ -28,13 +28,7 @@ use UnexpectedValueException;
  */
 class FileNotWritableException extends UnexpectedValueException implements ExceptionInterface
 {
-    /**
-     * @param string $fromPath
-     * @param string $toPath
-     *
-     * @return self
-     */
-    public static function fromInvalidMoveOperation(string $fromPath, string $toPath)
+    public static function fromInvalidMoveOperation(string $fromPath, string $toPath) : self
     {
         return new self(sprintf(
             'Could not move file "%s" to location "%s": '
@@ -44,12 +38,7 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
         ));
     }
 
-    /**
-     * @param string $path
-     *
-     * @return self
-     */
-    public static function fromNonWritableLocation($path)
+    public static function fromNonWritableLocation($path) : self
     {
         $messages = [];
 

@@ -19,6 +19,7 @@
 namespace ProxyManager\Factory;
 
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Factory responsible of producing proxy objects
@@ -41,6 +42,8 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *                                       after method logic is executed
      *
      * @return \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface
+     *
+     * @todo need an interface that aggregates the two interfaces above (to be done before merging)
      */
     public function createProxy($instance, array $prefixInterceptors = [], array $suffixInterceptors = [])
     {
@@ -52,7 +55,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
     /**
      * {@inheritDoc}
      */
-    protected function getGenerator()
+    protected function getGenerator() : ProxyGeneratorInterface
     {
         return $this->generator ?: $this->generator = new AccessInterceptorValueHolderGenerator();
     }

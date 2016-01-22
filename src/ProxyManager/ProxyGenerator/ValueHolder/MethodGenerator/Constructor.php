@@ -40,9 +40,9 @@ class Constructor extends MethodGenerator
      * @param ReflectionClass   $originalClass
      * @param PropertyGenerator $valueHolder
      *
-     * @return MethodGenerator
+     * @return self
      */
-    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder)
+    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder) : self
     {
         $originalConstructor = self::getConstructor($originalClass);
 

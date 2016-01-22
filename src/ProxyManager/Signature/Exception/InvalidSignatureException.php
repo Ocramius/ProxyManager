@@ -42,7 +42,7 @@ class InvalidSignatureException extends UnexpectedValueException implements Exce
         array $parameters,
         string $signature,
         string $expected
-    ) {
+    ) : self {
         return new self(sprintf(
             'Found signature "%s" for class "%s" does not correspond to expected signature "%s" for %d parameters',
             $signature,

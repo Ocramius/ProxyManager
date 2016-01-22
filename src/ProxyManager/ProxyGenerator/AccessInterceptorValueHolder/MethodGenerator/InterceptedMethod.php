@@ -44,7 +44,7 @@ class InterceptedMethod extends MethodGenerator
         PropertyGenerator $valueHolderProperty,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
-    ) {
+    ) : self {
         /* @var $method self */
         $method          = static::fromReflection($originalMethod);
         $forwardedParams = [];

@@ -18,7 +18,9 @@
 
 namespace ProxyManager\Factory;
 
+use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Factory responsible of producing proxy objects
@@ -36,9 +38,9 @@ class NullObjectFactory extends AbstractBaseFactory
     /**
      * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
      *
-     * @return \ProxyManager\Proxy\NullobjectInterface
+     * @return NullObjectInterface
      */
-    public function createProxy($instanceOrClassName)
+    public function createProxy($instanceOrClassName) : NullObjectInterface
     {
         $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
         $proxyClassName = $this->generateProxy($className);
@@ -49,7 +51,7 @@ class NullObjectFactory extends AbstractBaseFactory
     /**
      * {@inheritDoc}
      */
-    protected function getGenerator()
+    protected function getGenerator() : ProxyGeneratorInterface
     {
         return $this->generator ?: $this->generator = new NullObjectGenerator();
     }

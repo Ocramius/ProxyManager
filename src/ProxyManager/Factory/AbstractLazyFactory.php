@@ -19,6 +19,7 @@
 namespace ProxyManager\Factory;
 
 use Closure;
+use ProxyManager\Proxy\LazyLoadingInterface;
 
 /**
  * Base factory common logic
@@ -36,10 +37,13 @@ abstract class AbstractLazyFactory extends AbstractBaseFactory
      * @param \Closure $initializer initializer to be passed to the proxy
      * @param mixed[]  $proxyOptions
      *
-     * @return \ProxyManager\Proxy\LazyLoadingInterface
+     * @return LazyLoadingInterface
      */
-    public function createProxy(string $className, Closure $initializer, array $proxyOptions = [])
-    {
+    public function createProxy(
+        string $className,
+        Closure $initializer,
+        array $proxyOptions = []
+    ) : LazyLoadingInterface {
         $proxyClassName = $this->generateProxy($className, $proxyOptions);
 
         return $proxyClassName::staticProxyConstructor($initializer);
