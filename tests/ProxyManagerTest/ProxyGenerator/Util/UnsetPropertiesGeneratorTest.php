@@ -21,6 +21,7 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
+use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\EmptyClass;
 
 /**
@@ -61,6 +62,17 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
             EmptyClass::class => [
                 EmptyClass::class,
                 '',
+                'foo',
+            ],
+            BaseClass::class => [
+                BaseClass::class,
+                'unset($foo->publicProperty, $foo->protectedProperty);
+
+\Closure::bind(function (\ProxyManagerTestAsset\BaseClass $foo) {
+    unset($foo->privateProperty);
+}, $foo, \'ProxyManagerTestAsset\\\\BaseClass\')->__invoke($foo);
+
+',
                 'foo',
             ],
         ];
