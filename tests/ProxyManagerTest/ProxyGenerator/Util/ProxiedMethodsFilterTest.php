@@ -60,7 +60,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         }
 
         $keys = array_map(
-            function (ReflectionMethod $method) {
+            function (ReflectionMethod $method) : string {
                 return $method->getName();
             },
             $filtered
@@ -88,7 +88,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         }
 
         $keys = array_map(
-            function (ReflectionMethod $method) {
+            function (ReflectionMethod $method) : string {
                 return $method->getName();
             },
             $filtered

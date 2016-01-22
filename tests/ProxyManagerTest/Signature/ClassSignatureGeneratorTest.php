@@ -62,7 +62,7 @@ class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
         $classGenerator
             ->expects($this->once())
             ->method('addPropertyFromGenerator')
-            ->with($this->callback(function (PropertyGenerator $property) {
+            ->with($this->callback(function (PropertyGenerator $property) : bool {
                 return $property->getName() === 'signaturePropertyName'
                     && $property->isStatic()
                     && $property->getVisibility() === 'private'
