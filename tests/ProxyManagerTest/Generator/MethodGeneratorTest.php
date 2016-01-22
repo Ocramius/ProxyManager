@@ -126,5 +126,4 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
             ['acceptFloat', 'float'],
         ];
     }
-
 }
