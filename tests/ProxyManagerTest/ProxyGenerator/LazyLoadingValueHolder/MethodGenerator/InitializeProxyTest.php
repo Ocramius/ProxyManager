@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
@@ -53,5 +55,6 @@ class InitializeProxyTest extends PHPUnit_Framework_TestCase
             'return $this->foo && $this->foo->__invoke($this->bar, $this, \'initializeProxy\', array(), $this->foo);',
             $initializeProxy->getBody()
         );
+        self::assertStringMatchesFormat('%A : bool%A', $initializeProxy->generate(), 'Return type hint is boolean');
     }
 }

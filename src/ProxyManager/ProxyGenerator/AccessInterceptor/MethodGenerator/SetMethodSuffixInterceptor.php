@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use Closure;
@@ -45,7 +47,7 @@ class SetMethodSuffixInterceptor extends MethodGenerator
 
         $interceptor->setType(Closure::class);
         $interceptor->setDefaultValue(null);
-        $this->setParameter(new ParameterGenerator('methodName'));
+        $this->setParameter(new ParameterGenerator('methodName', 'string'));
         $this->setParameter($interceptor);
         $this->setDocblock('{@inheritDoc}');
         $this->setBody('$this->' . $suffixInterceptor->getName() . '[$methodName] = $suffixInterceptor;');

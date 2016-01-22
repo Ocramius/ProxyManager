@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util;
 
 use ProxyManager\Generator\MethodGenerator;
@@ -43,12 +45,12 @@ class InterceptorGenerator
      * @return string
      */
     public static function createInterceptedMethodBody(
-        $methodBody,
+        string $methodBody,
         MethodGenerator $method,
         PropertyGenerator $valueHolder,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
-    ) {
+    ) : string {
         $name               = var_export($method->getName(), true);
         $valueHolder        = $valueHolder->getName();
         $prefixInterceptors = $prefixInterceptors->getName();

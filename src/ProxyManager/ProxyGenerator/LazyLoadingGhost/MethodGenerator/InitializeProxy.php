@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
@@ -41,6 +43,7 @@ class InitializeProxy extends MethodGenerator
     {
         parent::__construct('initializeProxy');
         $this->setDocblock('{@inheritDoc}');
+        $this->setReturnType('bool');
 
         $this->setBody(
             'return $this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()

@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\Util;
 
 use ReflectionClass;
@@ -48,7 +50,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getProxiedMethods(ReflectionClass $class, array $excluded = null)
+    public static function getProxiedMethods(ReflectionClass $class, array $excluded = null) : array
     {
         return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded);
     }
@@ -59,7 +61,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getAbstractProxiedMethods(ReflectionClass $class, array $excluded = null)
+    public static function getAbstractProxiedMethods(ReflectionClass $class, array $excluded = null) : array
     {
         return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded, true);
     }
@@ -71,13 +73,13 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    private static function doFilter(ReflectionClass $class, array $excluded, $requireAbstract = false)
+    private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false) : array
     {
         $ignored = array_flip(array_map('strtolower', $excluded));
 
         return array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($ignored, $requireAbstract) {
+            function (ReflectionMethod $method) use ($ignored, $requireAbstract) : bool {
                 return (! $requireAbstract || $method->isAbstract())
                     && ! (isset($ignored[strtolower($method->getName())]) || self::methodCannotBeProxied($method));
             }
@@ -91,7 +93,7 @@ final class ProxiedMethodsFilter
      *
      * @return bool
      */
-    private static function methodCannotBeProxied(ReflectionMethod $method)
+    private static function methodCannotBeProxied(ReflectionMethod $method) : bool
     {
         return $method->isConstructor() || $method->isFinal() || $method->isStatic();
     }

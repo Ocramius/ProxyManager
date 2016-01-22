@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Signature;
 
 use ProxyManager\Inflector\Util\ParameterEncoder;
@@ -51,7 +53,7 @@ final class SignatureGenerator implements SignatureGeneratorInterface
     /**
      * {@inheritDoc}
      */
-    public function generateSignature(array $parameters)
+    public function generateSignature(array $parameters) : string
     {
         return $this->parameterEncoder->encodeParameters($parameters);
     }
@@ -59,7 +61,7 @@ final class SignatureGenerator implements SignatureGeneratorInterface
     /**
      * {@inheritDoc}
      */
-    public function generateSignatureKey(array $parameters)
+    public function generateSignatureKey(array $parameters) : string
     {
         return $this->parameterHasher->hashParameters($parameters);
     }

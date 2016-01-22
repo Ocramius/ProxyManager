@@ -16,11 +16,12 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator;
 
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
-use ProxyManager\Proxy\AccessInterceptorInterface;
-use ProxyManager\Proxy\ValueHolderInterface;
+use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
@@ -66,7 +67,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
         $publicProperties = new PublicPropertiesMap(Properties::fromReflectionClass($originalClass));
-        $interfaces       = [AccessInterceptorInterface::class, ValueHolderInterface::class];
+        $interfaces       = [AccessInterceptorValueHolderInterface::class];
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -86,14 +87,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
             },
             array_merge(
                 array_map(
-                    function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors, $valueHolder) {
-                        return InterceptedMethod::generateMethod(
-                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                            $valueHolder,
-                            $prefixInterceptors,
-                            $suffixInterceptors
-                        );
-                    },
+                    $this->buildMethodInterceptor($prefixInterceptors, $suffixInterceptors, $valueHolder),
                     ProxiedMethodsFilter::getProxiedMethods($originalClass)
                 ),
                 [
@@ -136,5 +130,20 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                 ]
             )
         );
+    }
+
+    private function buildMethodInterceptor(
+        MethodPrefixInterceptors $prefixes,
+        MethodSuffixInterceptors $suffixes,
+        ValueHolderProperty $valueHolder
+    ) : callable {
+        return function (ReflectionMethod $method) use ($prefixes, $suffixes, $valueHolder) : InterceptedMethod {
+            return InterceptedMethod::generateMethod(
+                new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                $valueHolder,
+                $prefixes,
+                $suffixes
+            );
+        };
     }
 }

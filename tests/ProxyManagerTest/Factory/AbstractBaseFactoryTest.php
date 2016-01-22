@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
@@ -64,7 +66,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
     private $generatorStrategy;
 
     /**
-     * @var \ProxyManager\Autoloader\AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $proxyAutoloader;
 
@@ -151,8 +153,10 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($generatedClass)
-            ->will($this->returnCallback(function ($className) {
+            ->will($this->returnCallback(function ($className) : bool {
                 eval('class ' . $className . ' {}');
+
+                return true;
             }));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
@@ -162,7 +166,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('generate')
             ->with(
-                $this->callback(function (\ReflectionClass $reflectionClass) {
+                $this->callback(function (\ReflectionClass $reflectionClass) : bool {
                     return $reflectionClass->getName() === 'stdClass';
                 }),
                 $this->isInstanceOf(ClassGenerator::class),

@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Inflector\Util;
 
 use PHPUnit_Framework_TestCase;
@@ -39,7 +41,7 @@ class ParameterHasherTest extends PHPUnit_Framework_TestCase
      * @param mixed[] $parameters
      * @param string  $expectedHash
      */
-    public function testGeneratesValidClassName(array $parameters, $expectedHash)
+    public function testGeneratesValidClassName(array $parameters, string $expectedHash)
     {
         $encoder = new ParameterHasher();
 
@@ -49,7 +51,7 @@ class ParameterHasherTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getParameters()
+    public function getParameters() : array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

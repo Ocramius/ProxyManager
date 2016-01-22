@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
@@ -97,7 +99,7 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
 
 \Closure::bind(function (\ProxyManagerTestAsset\ClassWithPrivateProperties $bar) {
     unset($bar->property0, $bar->property1, $bar->property2, $bar->property3, $bar->property4, '
-        . '$bar->property5, $bar->property6, $bar->property7, $bar->property8, $bar->property9);
+                . '$bar->property5, $bar->property6, $bar->property7, $bar->property8, $bar->property9);
 }, $bar, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke($bar);
 
 ',

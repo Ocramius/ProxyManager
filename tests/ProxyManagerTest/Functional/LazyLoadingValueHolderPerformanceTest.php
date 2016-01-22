@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Functional;
 
 use ProxyManager\Generator\ClassGenerator;
@@ -48,7 +50,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
      *
      * @return void
      */
-    public function testProxyInstantiationPerformance($className, array $methods, array $properties)
+    public function testProxyInstantiationPerformance(string $className, array $methods, array $properties)
     {
         $proxyName   = $this->generateProxy($className);
         $iterations  = 20000;
@@ -58,10 +60,10 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
         $initializer = function (
             & $valueHolder,
             VirtualProxyInterface $proxy,
-            $method,
+            string $method,
             $params,
             & $initializer
-        ) use ($className) {
+        ) use ($className) : bool {
             $initializer = null;
             $valueHolder = new $className();
 
@@ -110,7 +112,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
     /**
      * @return array
      */
-    public function getTestedClasses()
+    public function getTestedClasses() : array
     {
         return [
             [stdClass::class, [], []],
@@ -121,7 +123,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
     /**
      * {@inheritDoc}
      */
-    protected function generateProxy($parentClassName)
+    protected function generateProxy(string $parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingValueHolderGenerator();

@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
@@ -40,9 +42,9 @@ class Constructor extends MethodGenerator
      * @param ReflectionClass   $originalClass
      * @param PropertyGenerator $valueHolder
      *
-     * @return MethodGenerator
+     * @return self
      */
-    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder)
+    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder) : self
     {
         $originalConstructor = self::getConstructor($originalClass);
 
@@ -83,7 +85,7 @@ class Constructor extends MethodGenerator
             . implode(
                 ', ',
                 array_map(
-                    function (ParameterGenerator $parameter) {
+                    function (ParameterGenerator $parameter) : string {
                         return ($parameter->getVariadic() ? '...' : '') . '$' . $parameter->getName();
                     },
                     $constructor->getParameters()
@@ -100,7 +102,7 @@ class Constructor extends MethodGenerator
     private static function getConstructor(ReflectionClass $class)
     {
         $constructors = array_map(
-            function (\ReflectionMethod $method) {
+            function (\ReflectionMethod $method) : MethodReflection {
                 return new MethodReflection(
                     $method->getDeclaringClass()->getName(),
                     $method->getName()
@@ -108,7 +110,7 @@ class Constructor extends MethodGenerator
             },
             array_filter(
                 $class->getMethods(),
-                function (\ReflectionMethod $method) {
+                function (\ReflectionMethod $method) : bool {
                     return $method->isConstructor();
                 }
             )

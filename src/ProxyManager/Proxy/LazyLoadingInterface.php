@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Proxy;
 
 /**
@@ -34,7 +36,7 @@ interface LazyLoadingInterface extends ProxyInterface
      * An initializer should have a signature like following:
      *
      * <code>
-     * $initializer = function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {};
+     * $initializer = function (& $wrappedObject, $proxy, string $method, array $parameters, & $initializer) {};
      * </code>
      *
      * @param \Closure|null $initializer
@@ -53,12 +55,12 @@ interface LazyLoadingInterface extends ProxyInterface
      *
      * @return bool true if the proxy could be initialized
      */
-    public function initializeProxy();
+    public function initializeProxy() : bool;
 
     /**
      * Retrieves current initialization status of the proxy
      *
      * @return bool
      */
-    public function isProxyInitialized();
+    public function isProxyInitialized() : bool;
 }

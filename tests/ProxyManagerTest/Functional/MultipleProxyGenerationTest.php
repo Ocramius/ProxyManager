@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
@@ -67,7 +69,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      *
      * @param string $className
      */
-    public function testCanGenerateMultipleDifferentProxiesForSameClass($className)
+    public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className)
     {
         $ghostProxyFactory                      = new LazyLoadingGhostFactory();
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
@@ -109,7 +111,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
     /**
      * @return string[][]
      */
-    public function getTestedClasses()
+    public function getTestedClasses() : array
     {
         return [
             [BaseClass::class],

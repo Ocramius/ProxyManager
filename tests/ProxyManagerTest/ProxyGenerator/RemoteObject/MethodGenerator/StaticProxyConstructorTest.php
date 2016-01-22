@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
@@ -58,7 +60,7 @@ $instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor()
 $instance->adapter = $adapter;
 
 unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
-        . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
+            . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
 
 \Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $instance) {
     unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);

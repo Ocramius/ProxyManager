@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Signature;
 
 use PHPUnit_Framework_TestCase;
@@ -51,7 +53,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider signatures
      */
-    public function testGenerateSignature(array $parameters, $expected)
+    public function testGenerateSignature(array $parameters, string $expected)
     {
         $this->assertSame($expected, $this->signatureGenerator->generateSignature($parameters));
     }
@@ -62,7 +64,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider signatureKeys
      */
-    public function testGenerateSignatureKey(array $parameters, $expected)
+    public function testGenerateSignatureKey(array $parameters, string $expected)
     {
         $this->assertSame($expected, $this->signatureGenerator->generateSignatureKey($parameters));
     }
@@ -72,7 +74,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @return array[]
      */
-    public function signatures()
+    public function signatures() : array
     {
         return [
             [
@@ -103,7 +105,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @return array[]
      */
-    public function signatureKeys()
+    public function signatureKeys() : array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

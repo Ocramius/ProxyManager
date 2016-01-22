@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\GeneratorStrategy;
 
 use Zend\Code\Generator\ClassGenerator;
@@ -35,5 +37,5 @@ interface GeneratorStrategyInterface
      *
      * @return string the class body
      */
-    public function generate(ClassGenerator $classGenerator);
+    public function generate(ClassGenerator $classGenerator) : string;
 }

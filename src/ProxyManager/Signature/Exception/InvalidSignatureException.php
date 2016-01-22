@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Signature\Exception;
 
 use ReflectionClass;
@@ -37,8 +39,12 @@ class InvalidSignatureException extends UnexpectedValueException implements Exce
      *
      * @return self
      */
-    public static function fromInvalidSignature(ReflectionClass $class, array $parameters, $signature, $expected)
-    {
+    public static function fromInvalidSignature(
+        ReflectionClass $class,
+        array $parameters,
+        string $signature,
+        string $expected
+    ) : self {
         return new self(sprintf(
             'Found signature "%s" for class "%s" does not correspond to expected signature "%s" for %d parameters',
             $signature,

@@ -16,9 +16,13 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Factory;
 
+use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Factory responsible of producing proxy objects
@@ -40,10 +44,15 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      * @param \Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       after method logic is executed
      *
-     * @return \ProxyManager\Proxy\AccessInterceptorInterface|\ProxyManager\Proxy\ValueHolderInterface
+     * @return AccessInterceptorValueHolderInterface
+     *
+     * @todo need an interface that aggregates the two interfaces above (to be done before merging)
      */
-    public function createProxy($instance, array $prefixInterceptors = [], array $suffixInterceptors = [])
-    {
+    public function createProxy(
+        $instance,
+        array $prefixInterceptors = [],
+        array $suffixInterceptors = []
+    ) {
         $proxyClassName = $this->generateProxy(get_class($instance));
 
         return $proxyClassName::staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors);
@@ -52,7 +61,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
     /**
      * {@inheritDoc}
      */
-    protected function getGenerator()
+    protected function getGenerator() : ProxyGeneratorInterface
     {
         return $this->generator ?: $this->generator = new AccessInterceptorValueHolderGenerator();
     }

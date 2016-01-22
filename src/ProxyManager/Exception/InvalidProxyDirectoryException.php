@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Exception;
 
 use InvalidArgumentException;
@@ -28,13 +30,8 @@ use InvalidArgumentException;
  */
 class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {
-    /**
-     * @param string $directory
-     *
-     * @return self
-     */
-    public static function proxyDirectoryNotFound($directory)
+    public static function proxyDirectoryNotFound(string $directory) : self
     {
-        return new self(sprintf('Provided directory "%s" does not exist', (string) $directory));
+        return new self(sprintf('Provided directory "%s" does not exist', $directory));
     }
 }

@@ -16,11 +16,14 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator;
 
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ReflectionClass;
 
 /**
@@ -39,7 +42,7 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
      *
      * {@inheritDoc}
      */
-    public function testGeneratesValidCode($className)
+    public function testGeneratesValidCode(string $className)
     {
         $reflectionClass = new ReflectionClass($className);
 
@@ -54,7 +57,7 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getProxyGenerator()
+    protected function getProxyGenerator() : ProxyGeneratorInterface
     {
         return new LazyLoadingGhostGenerator();
     }
@@ -62,7 +65,7 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces()
+    protected function getExpectedImplementedInterfaces() : array
     {
         return [GhostObjectInterface::class];
     }

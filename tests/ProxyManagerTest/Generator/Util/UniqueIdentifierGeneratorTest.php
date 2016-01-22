@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Generator\Util;
 
 use PHPUnit_Framework_TestCase;
@@ -38,7 +40,7 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $name
      */
-    public function testGeneratesUniqueIdentifiers($name)
+    public function testGeneratesUniqueIdentifiers(string $name)
     {
         $this->assertNotSame(
             UniqueIdentifierGenerator::getIdentifier($name),
@@ -53,7 +55,7 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $name
      */
-    public function testGeneratesValidIdentifiers($name)
+    public function testGeneratesValidIdentifiers(string $name)
     {
         $this->assertRegExp(
             '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/',
@@ -66,7 +68,7 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @return string[][]
      */
-    public function getBaseIdentifierNames()
+    public function getBaseIdentifierNames() : array
     {
         return [
             [''],

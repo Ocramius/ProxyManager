@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Zend\XmlRpc\Server;
 
 require_once __DIR__ . '/../../vendor/autoload.php';

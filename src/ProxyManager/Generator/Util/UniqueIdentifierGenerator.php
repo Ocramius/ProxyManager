@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Generator\Util;
 
 /**
@@ -37,7 +39,7 @@ abstract class UniqueIdentifierGenerator
      *
      * @return string
      */
-    public static function getIdentifier($name)
+    public static function getIdentifier(string $name) : string
     {
         return str_replace(
             '.',

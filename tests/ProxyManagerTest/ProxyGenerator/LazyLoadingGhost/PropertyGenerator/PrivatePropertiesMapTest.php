@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
@@ -25,6 +27,7 @@ use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap}
@@ -40,7 +43,7 @@ class PrivatePropertiesMapTest extends AbstractUniquePropertyNameTest
     /**
      * {@inheritDoc}
      */
-    protected function createProperty()
+    protected function createProperty() : PropertyGenerator
     {
         return new PrivatePropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))

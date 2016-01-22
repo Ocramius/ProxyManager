@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
@@ -52,7 +54,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return XmlRpcAdapter
      */
-    protected function getXmlRpcAdapter($expectedValue, $method, array $params)
+    protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this->getMock(Client::class, ['call']);
@@ -81,7 +83,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return JsonRpcAdapter
      */
-    protected function getJsonRpcAdapter($expectedValue, $method, array $params)
+    protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this->getMock(Client::class, ['call']);
@@ -111,7 +113,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[]       $params
      * @param mixed         $expectedValue
      */
-    public function testXmlRpcMethodCalls($instanceOrClassName, $method, array $params, $expectedValue)
+    public function testXmlRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($instanceOrClassName);
 
@@ -129,7 +131,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[]       $params
      * @param mixed         $expectedValue
      */
-    public function testJsonRpcMethodCalls($instanceOrClassName, $method, array $params, $expectedValue)
+    public function testJsonRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($instanceOrClassName);
 
@@ -146,7 +148,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string        $publicProperty
      * @param string        $propertyValue
      */
-    public function testJsonRpcPropertyReadAccess($instanceOrClassName, $publicProperty, $propertyValue)
+    public function testJsonRpcPropertyReadAccess($instanceOrClassName, string $publicProperty, $propertyValue)
     {
         $proxyName = $this->generateProxy($instanceOrClassName);
 
@@ -162,11 +164,11 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Generates a proxy for the given class name, and retrieves its class name
      *
-     * @param string $parentClassName
+     * @param string|object $parentClassName
      *
      * @return string
      */
-    private function generateProxy($parentClassName)
+    private function generateProxy($parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new RemoteObjectGenerator();
@@ -184,7 +186,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function getProxyMethods()
+    public function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
 
@@ -227,7 +229,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function getPropertyAccessProxies()
+    public function getPropertyAccessProxies() : array
     {
         return [
             [

@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
@@ -35,13 +37,13 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
      * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
      * @param \Zend\Code\Generator\PropertyGenerator $valueHolderProperty
      *
-     * @return LazyLoadingMethodInterceptor|static
+     * @return self|static
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
         PropertyGenerator $initializerProperty,
         PropertyGenerator $valueHolderProperty
-    ) {
+    ) : self {
         /* @var $method self */
         $method            = static::fromReflection($originalMethod);
         $initializerName   = $initializerProperty->getName();

@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Proxy;
 
 /**
@@ -34,7 +36,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      * A prefix interceptor should have a signature like following:
      *
      * <code>
-     * $prefixInterceptor = function ($proxy, $instance, $method, $params, & $returnEarly) {};
+     * $interceptor = function ($proxy, $instance, string $method, array $params, & $returnEarly) {};
      * </code>
      *
      * @param string        $methodName        name of the intercepted method
@@ -42,7 +44,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      *
      * @return void
      */
-    public function setMethodPrefixInterceptor($methodName, \Closure $prefixInterceptor = null);
+    public function setMethodPrefixInterceptor(string $methodName, \Closure $prefixInterceptor = null);
 
     /**
      * Set or remove the suffix interceptor for a method
@@ -52,7 +54,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      * A prefix interceptor should have a signature like following:
      *
      * <code>
-     * $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) {};
+     * $interceptor = function ($proxy, $instance, string $method, array $params, $returnValue, & $returnEarly) {};
      * </code>
      *
      * @param string        $methodName        name of the intercepted method
@@ -60,5 +62,5 @@ interface AccessInterceptorInterface extends ProxyInterface
      *
      * @return void
      */
-    public function setMethodSuffixInterceptor($methodName, \Closure $suffixInterceptor = null);
+    public function setMethodSuffixInterceptor(string $methodName, \Closure $suffixInterceptor = null);
 }

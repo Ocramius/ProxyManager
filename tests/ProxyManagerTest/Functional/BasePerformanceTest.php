@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_TestCase;
@@ -67,7 +69,7 @@ abstract class BasePerformanceTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    protected function endCapturing($messageTemplate)
+    protected function endCapturing(string $messageTemplate) : array
     {
         $time     = microtime(true) - $this->startTime;
         $memory   = memory_get_usage() - $this->startMemory;

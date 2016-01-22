@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace ProxyManager\Proxy;
 
 /**
- * Smart reference object marker
+ * Aggregates AccessInterceptor and ValueHolderInterface, mostly for return type hinting
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-interface SmartReferenceInterface extends ProxyInterface
+interface AccessInterceptorValueHolderInterface extends AccessInterceptorInterface, ValueHolderInterface
 {
 }

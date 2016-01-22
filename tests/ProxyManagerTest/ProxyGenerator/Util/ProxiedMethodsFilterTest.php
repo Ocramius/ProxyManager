@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
@@ -60,7 +62,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         }
 
         $keys = array_map(
-            function (ReflectionMethod $method) {
+            function (ReflectionMethod $method) : string {
                 return $method->getName();
             },
             $filtered
@@ -88,7 +90,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         }
 
         $keys = array_map(
-            function (ReflectionMethod $method) {
+            function (ReflectionMethod $method) : string {
                 return $method->getName();
             },
             $filtered
@@ -105,7 +107,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array[][]
      */
-    public function expectedMethods()
+    public function expectedMethods() : array
     {
         return [
             [
@@ -130,12 +132,24 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
             [
                 new ReflectionClass(LazyLoadingMock::class),
                 null,
-                [],
+                [
+                    'getProxyInitializer',
+                    'getWrappedValueHolderValue',
+                    'initializeProxy',
+                    'isProxyInitialized',
+                    'setProxyInitializer',
+                ],
             ],
             [
                 new ReflectionClass(LazyLoadingMock::class),
                 [],
-                [],
+                [
+                    'getProxyInitializer',
+                    'getWrappedValueHolderValue',
+                    'initializeProxy',
+                    'isProxyInitialized',
+                    'setProxyInitializer',
+                ],
             ],
             [
                 new ReflectionClass(HydratedObject::class),
@@ -203,7 +217,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array[][]
      */
-    public function expectedAbstractPublicMethods()
+    public function expectedAbstractPublicMethods() : array
     {
         return [
             [

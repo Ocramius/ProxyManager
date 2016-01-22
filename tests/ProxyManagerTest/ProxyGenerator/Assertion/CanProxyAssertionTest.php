@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\Assertion;
 
 use BadMethodCallException;
@@ -94,7 +96,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider validClasses
      */
-    public function testAllowedClass($className)
+    public function testAllowedClass(string $className)
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass($className));
 
@@ -111,7 +113,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     /**
      * @return string[][]
      */
-    public function validClasses()
+    public function validClasses() : array
     {
         return [
             [AccessInterceptorValueHolderMock::class],

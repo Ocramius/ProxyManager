@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\PropertyGenerator;
 
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -55,8 +57,8 @@ class PublicPropertiesMap extends PropertyGenerator
     /**
      * @return bool whether there are no public properties
      */
-    public function isEmpty()
+    public function isEmpty() : bool
     {
-        return empty($this->publicProperties);
+        return ! $this->publicProperties;
     }
 }

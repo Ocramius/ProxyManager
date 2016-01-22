@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc;
@@ -16,7 +18,7 @@ if (! class_exists('Zend\XmlRpc\Client')) {
 
 class Foo
 {
-    public function bar()
+    public function bar() : string
     {
         return 'bar local!';
     }

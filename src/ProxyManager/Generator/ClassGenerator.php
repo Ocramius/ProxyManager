@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Generator;
 
 use Zend\Code\Generator\ClassGenerator as ZendClassGenerator;
@@ -31,7 +33,7 @@ class ClassGenerator extends ZendClassGenerator
     /**
      * {@inheritDoc}
      */
-    public function setExtendedClass($extendedClass)
+    public function setExtendedClass($extendedClass) : self
     {
         if ($extendedClass) {
             $extendedClass = '\\' . trim($extendedClass, '\\');
@@ -43,7 +45,7 @@ class ClassGenerator extends ZendClassGenerator
     /**
      * {@inheritDoc}
      */
-    public function setImplementedInterfaces(array $interfaces)
+    public function setImplementedInterfaces(array $interfaces) : self
     {
         foreach ($interfaces as & $interface) {
             $interface = '\\' . trim($interface, '\\');

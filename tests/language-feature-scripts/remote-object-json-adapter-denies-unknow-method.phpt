@@ -24,7 +24,7 @@ class Foo implements FooServiceInterface
 
 class CustomAdapter implements AdapterInterface
 {
-    public function call($wrappedClass, $method, array $params = [])
+    public function call(string $wrappedClass, string $method, array $params = [])
     {
         return 'baz';
     }

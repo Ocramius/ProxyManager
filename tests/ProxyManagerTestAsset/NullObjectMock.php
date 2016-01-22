@@ -16,7 +16,11 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTestAsset;
+
+use ProxyManager\Proxy\NullObjectInterface;
 
 /**
  * Base test class to catch instantiations of null object
@@ -24,12 +28,12 @@ namespace ProxyManagerTestAsset;
  * @author Vincent Blanchon <blanchon.vincent@gmail.com>
  * @license MIT
  */
-class NullObjectMock
+class NullObjectMock implements NullObjectInterface
 {
     /**
      * @return static
      */
-    public static function staticProxyConstructor()
+    public static function staticProxyConstructor() : self
     {
         return new static();
     }

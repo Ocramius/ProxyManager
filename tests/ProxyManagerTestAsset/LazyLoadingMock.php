@@ -16,7 +16,11 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTestAsset;
+
+use ProxyManager\Proxy\VirtualProxyInterface;
 
 /**
  * Base test class to catch instantiations of lazy loading objects
@@ -24,7 +28,7 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingMock
+class LazyLoadingMock implements VirtualProxyInterface
 {
     /**
      * @var callable
@@ -36,12 +40,54 @@ class LazyLoadingMock
      *
      * @return static
      */
-    public static function staticProxyConstructor($initializer)
+    public static function staticProxyConstructor($initializer) : self
     {
         $instance = new static();
 
         $instance->initializer = $initializer;
 
         return $instance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setProxyInitializer(\Closure $initializer = null)
+    {
+        $this->initializer = $initializer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getProxyInitializer()
+    {
+        return $this->initializer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function initializeProxy() : bool
+    {
+        // empty (on purpose)
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isProxyInitialized() : bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWrappedValueHolderValue()
+    {
+        // we're not supposed to call this
+        throw new \BadMethodCallException('Not implemented');
     }
 }

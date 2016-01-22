@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Generator;
 
 use Zend\Code\Generator\DocBlockGenerator;
@@ -33,7 +35,7 @@ class MethodGenerator extends ZendMethodGenerator
     /**
      * {@inheritDoc}
      */
-    public static function fromReflection(MethodReflection $reflectionMethod)
+    public static function fromReflection(MethodReflection $reflectionMethod) : self
     {
         $method = parent::fromReflection($reflectionMethod);
 

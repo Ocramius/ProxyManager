@@ -16,10 +16,13 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Factory;
 
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Version;
 use ReflectionClass;
 
@@ -59,7 +62,7 @@ abstract class AbstractBaseFactory
      *
      * @return string proxy class name
      */
-    protected function generateProxy($className, array $proxyOptions = [])
+    protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
         if (isset($this->checkedClasses[$className])) {
             return $this->checkedClasses[$className];
@@ -92,10 +95,7 @@ abstract class AbstractBaseFactory
         return $this->checkedClasses[$className] = $proxyClassName;
     }
 
-    /**
-     * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
-     */
-    abstract protected function getGenerator();
+    abstract protected function getGenerator() : ProxyGeneratorInterface;
 
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
@@ -107,8 +107,12 @@ abstract class AbstractBaseFactory
      *
      * @return void
      */
-    private function generateProxyClass($proxyClassName, $className, array $proxyParameters, array $proxyOptions = [])
-    {
+    private function generateProxyClass(
+        string $proxyClassName,
+        string $className,
+        array $proxyParameters,
+        array $proxyOptions = []
+    ) {
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 

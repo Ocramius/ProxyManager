@@ -16,7 +16,11 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTestAsset;
+
+use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 
 /**
  * Base test class to catch instantiations of access interceptor value holders
@@ -24,7 +28,7 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class AccessInterceptorValueHolderMock
+class AccessInterceptorValueHolderMock implements AccessInterceptorValueHolderInterface
 {
     /**
      * @var object
@@ -48,7 +52,7 @@ class AccessInterceptorValueHolderMock
      *
      * @return self
      */
-    public static function staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors)
+    public static function staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors) : self
     {
         $selfInstance = new static(); // note: static because on-the-fly generated classes in tests extend this one.
 
@@ -57,5 +61,29 @@ class AccessInterceptorValueHolderMock
         $selfInstance->suffixInterceptors = $suffixInterceptors;
 
         return $selfInstance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMethodPrefixInterceptor(string $methodName, \Closure $prefixInterceptor = null)
+    {
+        // no-op (on purpose)
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMethodSuffixInterceptor(string $methodName, \Closure $suffixInterceptor = null)
+    {
+        // no-op (on purpose)
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getWrappedValueHolderValue()
+    {
+        return $this->instance;
     }
 }

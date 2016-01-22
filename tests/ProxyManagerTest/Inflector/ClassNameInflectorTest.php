@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Inflector;
 
 use PHPUnit_Framework_TestCase;
@@ -43,7 +45,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @param string $realClassName
      * @param string $proxyClassName
      */
-    public function testInflector($realClassName, $proxyClassName)
+    public function testInflector(string $realClassName, string $proxyClassName)
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -119,7 +121,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @param string $className
      * @param array  $parameters
      */
-    public function testClassNameIsValidClassIdentifier($className, array $parameters)
+    public function testClassNameIsValidClassIdentifier(string $className, array $parameters)
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -135,7 +137,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      *
      * @return array[]
      */
-    public function getClassNames()
+    public function getClassNames() : array
     {
         return [
             ['Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\%s'],
@@ -148,7 +150,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      *
      * @return array[]
      */
-    public function getClassAndParametersCombinations()
+    public function getClassAndParametersCombinations() : array
     {
         return [
             ['Foo', []],

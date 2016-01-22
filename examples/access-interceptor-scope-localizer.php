@@ -5,6 +5,8 @@
  * proxy fluent interfaces.
  */
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
@@ -13,8 +15,7 @@ class FluentCounter
 {
     public $counter = 0;
 
-    /** @return FluentCounter */
-    public function fluentMethod()
+    public function fluentMethod() : self
     {
         $this->counter += 1;
 

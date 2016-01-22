@@ -16,9 +16,12 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\PropertyGenerator;
 
 use PHPUnit_Framework_TestCase;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Base test for unique property names
@@ -42,8 +45,5 @@ abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals($property1->getName(), $property2->getName());
     }
 
-    /**
-     * @return \Zend\Code\Generator\PropertyGenerator
-     */
-    abstract protected function createProperty();
+    abstract protected function createProperty() : PropertyGenerator;
 }

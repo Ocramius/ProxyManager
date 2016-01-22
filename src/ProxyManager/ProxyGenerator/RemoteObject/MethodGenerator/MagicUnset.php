@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;

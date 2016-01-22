@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Signature;
 
 use Zend\Code\Generator\ClassGenerator;
@@ -44,8 +46,10 @@ final class ClassSignatureGenerator implements ClassSignatureGeneratorInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \Zend\Code\Exception\InvalidArgumentException
      */
-    public function addSignature(ClassGenerator $classGenerator, array $parameters)
+    public function addSignature(ClassGenerator $classGenerator, array $parameters) : ClassGenerator
     {
         $classGenerator->addPropertyFromGenerator(new PropertyGenerator(
             'signature' . $this->signatureGenerator->generateSignatureKey($parameters),

@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Signature;
 
 use PHPUnit_Framework_TestCase;
@@ -62,7 +64,7 @@ class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
         $classGenerator
             ->expects($this->once())
             ->method('addPropertyFromGenerator')
-            ->with($this->callback(function (PropertyGenerator $property) {
+            ->with($this->callback(function (PropertyGenerator $property) : bool {
                 return $property->getName() === 'signaturePropertyName'
                     && $property->isStatic()
                     && $property->getVisibility() === 'private'

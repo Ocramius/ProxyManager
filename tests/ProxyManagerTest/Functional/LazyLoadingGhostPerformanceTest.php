@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Functional;
 
 use ProxyManager\Generator\ClassGenerator;
@@ -59,13 +61,13 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
         $realInstance = (array) new $className();
         $initializer  = function (
             GhostObjectInterface $proxy,
-            $method,
+            string $method,
             $params,
             & $initializer,
             array $properties
         ) use (
             $realInstance
-        ) {
+        ) : bool {
             $initializer = null;
 
             foreach ($realInstance as $name => $value) {
@@ -117,7 +119,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
     /**
      * @return array
      */
-    public function getTestedClasses()
+    public function getTestedClasses() : array
     {
         $testedClasses = [
             [stdClass::class, [], []],
@@ -143,7 +145,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
     /**
      * {@inheritDoc}
      */
-    protected function generateProxy($parentClassName)
+    protected function generateProxy(string $parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingGhostGenerator();

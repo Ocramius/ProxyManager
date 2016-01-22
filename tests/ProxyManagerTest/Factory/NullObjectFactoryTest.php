@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
@@ -138,7 +140,7 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->method('generate')
             ->with(
                 $this->callback(
-                    function (ClassGenerator $targetClass) use ($proxyClassName) {
+                    function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -149,16 +151,11 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->will(
-                $this->returnCallback(
-                    function () use ($proxyClassName) {
-                        eval(
-                            'class ' . $proxyClassName
-                            . ' extends \\ProxyManagerTestAsset\\NullObjectMock {}'
-                        );
-                    }
-                )
-            );
+            ->willReturnCallback(function () use ($proxyClassName) : bool {
+                eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\NullObjectMock {}');
+
+                return true;
+            });
 
         $this
             ->inflector

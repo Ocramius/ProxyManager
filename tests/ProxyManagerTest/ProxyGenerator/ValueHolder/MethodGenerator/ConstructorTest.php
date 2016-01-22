@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
@@ -105,20 +107,19 @@ if (! $this->foo) {
         $this->assertSame('__construct', $constructor->getName());
         $this->assertCount(0, $constructor->getParameters());
 
-        $expectedCode = <<<'PHP'
-static $reflection;
+        $expectedCode = 'static $reflection;
 
 if (! $this->foo) {
-    $reflection = $reflection ?: new \ReflectionClass('ProxyManagerTestAsset\\ClassWithMixedProperties');
+    $reflection = $reflection ?: new \ReflectionClass(\'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
     $this->foo = $reflection->newInstanceWithoutConstructor();
-unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $this->protectedProperty0, $this->protectedProperty1, $this->protectedProperty2);
+unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $this->protectedProperty0, '
+            . '$this->protectedProperty1, $this->protectedProperty2);
 
 \Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $this) {
     unset($this->privateProperty0, $this->privateProperty1, $this->privateProperty2);
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke($this);
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
 
-}
-PHP;
+}';
 
         $this->assertSame($expectedCode, $constructor->getBody());
     }

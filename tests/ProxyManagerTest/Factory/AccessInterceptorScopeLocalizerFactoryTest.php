@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit_Framework_TestCase;
@@ -155,7 +157,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
             ->method('generate')
             ->with(
                 $this->callback(
-                    function (ClassGenerator $targetClass) use ($proxyClassName) {
+                    function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -166,16 +168,14 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->will(
-                $this->returnCallback(
-                    function () use ($proxyClassName) {
-                        eval(
-                            'class ' . $proxyClassName
-                            . ' extends \\ProxyManagerTestAsset\\AccessInterceptorValueHolderMock {}'
-                        );
-                    }
-                )
-            );
+            ->willReturnCallback(function () use ($proxyClassName) : bool {
+                eval(
+                    'class ' . $proxyClassName
+                    . ' extends \\ProxyManagerTestAsset\\AccessInterceptorValueHolderMock {}'
+                );
+
+                return true;
+            });
 
         $this
             ->inflector

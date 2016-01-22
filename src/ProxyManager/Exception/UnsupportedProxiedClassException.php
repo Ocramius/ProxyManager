@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\Exception;
 
 use LogicException;
@@ -29,12 +31,7 @@ use ReflectionProperty;
  */
 class UnsupportedProxiedClassException extends LogicException implements ExceptionInterface
 {
-    /**
-     * @param ReflectionProperty $property
-     *
-     * @return self
-     */
-    public static function unsupportedLocalizedReflectionProperty(ReflectionProperty $property)
+    public static function unsupportedLocalizedReflectionProperty(ReflectionProperty $property) : self
     {
         return new self(
             sprintf(

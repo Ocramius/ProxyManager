@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
@@ -44,7 +46,7 @@ class InterceptedMethod extends MethodGenerator
         PropertyGenerator $valueHolderProperty,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
-    ) {
+    ) : self {
         /* @var $method self */
         $method          = static::fromReflection($originalMethod);
         $forwardedParams = [];

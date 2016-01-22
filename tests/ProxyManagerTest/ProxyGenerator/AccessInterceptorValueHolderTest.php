@@ -16,11 +16,15 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator;
 
 use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}
@@ -36,7 +40,7 @@ class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getProxyGenerator()
+    protected function getProxyGenerator() : ProxyGeneratorInterface
     {
         return new AccessInterceptorValueHolderGenerator();
     }
@@ -44,9 +48,10 @@ class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces()
+    protected function getExpectedImplementedInterfaces() : array
     {
         return [
+            AccessInterceptorValueHolderInterface::class,
             AccessInterceptorInterface::class,
             ValueHolderInterface::class,
         ];

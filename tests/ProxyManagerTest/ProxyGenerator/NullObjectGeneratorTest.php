@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\ProxyGenerator;
 
 use PHPUnit_Framework_TestCase;
@@ -24,6 +26,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
@@ -42,7 +45,7 @@ use ReflectionMethod;
  * @covers \ProxyManager\ProxyGenerator\NullObjectGenerator
  * @group Coverage
  */
-class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
+class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * @dataProvider getTestedImplementations
@@ -51,7 +54,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $className
      */
-    public function testGeneratesValidCode($className)
+    public function testGeneratesValidCode(string $className)
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');
@@ -90,7 +93,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritDoc}
      */
-    protected function getProxyGenerator()
+    protected function getProxyGenerator() : ProxyGeneratorInterface
     {
         return new NullObjectGenerator();
     }
@@ -98,7 +101,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces()
+    protected function getExpectedImplementedInterfaces() : array
     {
         return [
             NullObjectInterface::class,
@@ -108,7 +111,7 @@ class NullObjectGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getTestedImplementations()
+    public function getTestedImplementations() : array
     {
         return [
             [BaseClass::class],

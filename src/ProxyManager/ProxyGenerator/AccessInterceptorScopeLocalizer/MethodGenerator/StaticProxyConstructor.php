@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
@@ -52,6 +54,7 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($localizedObject);
         $this->setParameter($prefix);
         $this->setParameter($suffix);
+        $this->setReturnType($originalClass->getName());
 
         $this->setDocblock(
             "Constructor to setup interceptors\n\n"

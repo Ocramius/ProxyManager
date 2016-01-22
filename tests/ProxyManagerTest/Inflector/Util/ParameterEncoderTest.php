@@ -16,6 +16,8 @@
  * and is licensed under the MIT license.
  */
 
+declare(strict_types=1);
+
 namespace ProxyManagerTest\Inflector\Util;
 
 use PHPUnit_Framework_TestCase;
@@ -52,7 +54,7 @@ class ParameterEncoderTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getParameters()
+    public function getParameters() : array
     {
         return [
             [[]],

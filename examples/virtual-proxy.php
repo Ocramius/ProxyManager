@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
@@ -8,7 +10,7 @@ class Foo
 {
     public function __construct()
     {
-        sleep(5);
+        sleep(1);
     }
 
     public function doFoo()
