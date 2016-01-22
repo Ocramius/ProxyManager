@@ -287,9 +287,8 @@ public function sayHello() : string
 
 ## Proxying interfaces
 
-You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the
-methods defined by the interface itself, even if the `wrappedObject` implements more methods. This will anyway save
-some memory since the proxy won't contain any properties.
+A lazy loading ghost object cannot proxy an interface directly, as it operates directly around
+the state of an object: use a [Virtual Proxy](lazy-loading-value-holder.md) for that instead.
 
 ## Tuning performance for production
 
