@@ -119,10 +119,8 @@ PostFoo!</code></pre>
 <h2 id="implementing-pre--and-post--access-interceptors">Implementing pre- and post- access interceptors</h2>
 <p>A proxy produced by the
 <a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/AccessInterceptorValueHolderFactory.php"><code>ProxyManager\Factory\AccessInterceptorValueHolderFactory</code></a>
-implements both the
-<a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/ValueHolderInterface.php"><code>ProxyManager\Proxy\ValueHolderInterface</code></a>
-and the
-<a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/ValueHolderInterface.php"><code>ProxyManager\Proxy\AccessInterceptorInterface</code></a>.</p>
+implements the
+<a href="https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/AccessInterceptorValueHolderInterface.php"><code>ProxyManager\Proxy\AccessInterceptorValueHolderInterface</code></a>.</p>
 <p>Therefore, you can set an access interceptor callback by calling:</p>
 <pre><code class="language-php">$proxy-&gt;setMethodPrefixInterceptor('methodName', function () { echo 'pre'; });
 $proxy-&gt;setMethodSuffixInterceptor('methodName', function () { echo 'post'; });</code></pre>
