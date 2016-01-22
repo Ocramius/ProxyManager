@@ -273,7 +273,6 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
@@ -312,7 +311,6 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $accessor callable */
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
