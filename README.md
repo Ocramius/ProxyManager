@@ -1,6 +1,6 @@
 # Proxy Manager
 
-This library aims at providing abstraction for generating various kinds of [proxy classes](http://marco-pivetta.com/proxy-pattern-in-php/).
+This library aims at providing abstraction for generating various kinds of [proxy classes](http://ocramius.github.io/presentations/proxy-pattern-in-php/).
 
 ![ProxyManager](https://raw.githubusercontent.com/Ocramius/ProxyManager/917bf1698243a1079aaa27ed8ea08c2aef09f4cb/proxy-manager.png)
 
@@ -19,7 +19,8 @@ This library aims at providing abstraction for generating various kinds of [prox
 
 ## Documentation
 
-You can learn about the proxy pattern and how to use the **ProxyManager** on the [online documentation](http://ocramius.github.io/ProxyManager).
+You can learn about the proxy pattern and how to use the **ProxyManager** in the [docs](docs), which are also
+[compiled to HTML](http://ocramius.github.io/ProxyManager).
 
 ## Help/Support
 
