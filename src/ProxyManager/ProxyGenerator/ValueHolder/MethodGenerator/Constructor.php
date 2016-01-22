@@ -19,10 +19,10 @@
 namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
-use ReflectionProperty;
+use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -58,7 +58,7 @@ class Constructor extends MethodGenerator
             . var_export($originalClass->getName(), true)
             . ");\n"
             . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"
-            . self::getUnsetPropertiesString($originalClass)
+            . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'this')
             . "}"
             . self::generateOriginalConstructorCall($originalClass, $valueHolder)
         );
@@ -90,26 +90,6 @@ class Constructor extends MethodGenerator
                 )
             )
             . ');';
-    }
-
-    /**
-     * @param ReflectionClass $class
-     *
-     * @return string
-     */
-    private static function getUnsetPropertiesString(ReflectionClass $class)
-    {
-        $unsetProperties = implode(
-            "\n    ",
-            array_map(
-                function (ReflectionProperty $unsetProperty) {
-                    return 'unset($this->' . $unsetProperty->getName() . ');';
-                },
-                Properties::fromReflectionClass($class)->getPublicProperties()
-            )
-        );
-
-        return $unsetProperties ? "\n    " . $unsetProperties . "\n" : '';
     }
 
     /**
