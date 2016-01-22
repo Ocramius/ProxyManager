@@ -193,7 +193,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
      *
      * @param string $propertyName with property name
      */
-    public function testSkipPropertiesByFiltering($propertyName)
+    public function testSkipPropertiesByFiltering(string $propertyName)
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithMixedProperties::class)

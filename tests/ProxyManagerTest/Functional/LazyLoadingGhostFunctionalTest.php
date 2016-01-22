@@ -66,8 +66,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsThatLazyLoadTheObject($className, $instance, $method, array $params, $expectedValue)
-    {
+    public function testMethodCallsThatLazyLoadTheObject(
+        string $className,
+        $instance,
+        string $method,
+        array $params,
+        $expectedValue
+    ) {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy GhostObjectInterface */
@@ -94,9 +99,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed   $expectedValue
      */
     public function testMethodCallsThatDoNotLazyLoadTheObject(
-        $className,
+        string $className,
         $instance,
-        $method,
+        string $method,
         array $params,
         $expectedValue
     ) {
@@ -130,8 +135,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterUnSerialization($className, $instance, $method, array $params, $expectedValue)
-    {
+    public function testMethodCallsAfterUnSerialization(
+        string $className,
+        $instance,
+        string $method,
+        array $params,
+        $expectedValue
+    ) {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy GhostObjectInterface */
@@ -158,8 +168,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterCloning($className, $instance, $method, array $params, $expectedValue)
-    {
+    public function testMethodCallsAfterCloning(
+        string $className,
+        $instance,
+        string $method,
+        array $params,
+        $expectedValue
+    ) {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy GhostObjectInterface */
@@ -184,8 +199,12 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string               $publicProperty
      * @param mixed                $propertyValue
      */
-    public function testPropertyReadAccess($instance, GhostObjectInterface $proxy, $publicProperty, $propertyValue)
-    {
+    public function testPropertyReadAccess(
+        $instance,
+        GhostObjectInterface $proxy,
+        string $publicProperty,
+        $propertyValue
+    ) {
         $this->assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertTrue($proxy->isProxyInitialized());
     }
@@ -197,7 +216,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyWriteAccess($instance, GhostObjectInterface $proxy, $publicProperty)
+    public function testPropertyWriteAccess($instance, GhostObjectInterface $proxy, string $publicProperty)
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -213,7 +232,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyExistence($instance, GhostObjectInterface $proxy, $publicProperty)
+    public function testPropertyExistence($instance, GhostObjectInterface $proxy, string $publicProperty)
     {
         $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertTrue($proxy->isProxyInitialized());
@@ -226,7 +245,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyAbsence($instance, GhostObjectInterface $proxy, $publicProperty)
+    public function testPropertyAbsence($instance, GhostObjectInterface $proxy, string $publicProperty)
     {
         $proxy->$publicProperty = null;
         $this->assertFalse(isset($proxy->$publicProperty));
@@ -240,7 +259,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyUnset($instance, GhostObjectInterface $proxy, $publicProperty)
+    public function testPropertyUnset($instance, GhostObjectInterface $proxy, string $publicProperty)
     {
         unset($proxy->$publicProperty);
 
@@ -333,7 +352,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $instance    = new BaseClass();
         $proxyName   = $this->generateProxy(get_class($instance));
-        $initializer = function (BaseClass $proxy, $method, $parameters, & $initializer) {
+        $initializer = function (BaseClass $proxy, string $method, $parameters, & $initializer) {
             $initializer           = null;
             $proxy->publicProperty = 'newValue';
         };
@@ -705,7 +724,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    private function generateProxy($parentClassName, array $proxyOptions = [])
+    private function generateProxy(string $parentClassName, array $proxyOptions = [])
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generatedClass     = new ClassGenerator($generatedClassName);
@@ -727,7 +746,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return \Closure
      */
-    private function createInitializer($className, $realInstance, Mock $initializerMatcher = null)
+    private function createInitializer(string $className, $realInstance, Mock $initializerMatcher = null)
     {
         if (null === $initializerMatcher) {
             $initializerMatcher = $this->getMock('stdClass', ['__invoke']);
@@ -916,9 +935,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[] $proxyOptions
      */
     public function testInitializationIsSkippedForSkippedProperties(
-        $className,
-        $propertyClass,
-        $propertyName,
+        string $className,
+        string $propertyClass,
+        string $propertyName,
         array $proxyOptions,
         $expected
     ) {
@@ -942,14 +961,14 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[] $proxyOptions
      */
     public function testSkippedPropertiesAreNotOverwrittenOnInitialization(
-        $className,
-        $propertyClass,
-        $propertyName,
+        string $className,
+        string $propertyClass,
+        string $propertyName,
         array $proxyOptions
     ) {
         $proxyName   = $this->generateProxy($className, $proxyOptions);
         /* @var $ghostObject GhostObjectInterface */
-        $ghostObject = $proxyName::staticProxyConstructor(function ($proxy, $method, $params, & $initializer) {
+        $ghostObject = $proxyName::staticProxyConstructor(function ($proxy, string $method, $params, & $initializer) {
             $initializer = null;
 
             return true;

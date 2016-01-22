@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
@@ -49,7 +50,7 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $className
      */
-    public function testGeneratesValidCode($className)
+    public function testGeneratesValidCode(string $className)
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');
@@ -78,21 +79,21 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * Retrieve a new generator instance
      *
-     * @return \ProxyManager\ProxyGenerator\ProxyGeneratorInterface
+     * @return ProxyGeneratorInterface
      */
-    abstract protected function getProxyGenerator();
+    abstract protected function getProxyGenerator() : ProxyGeneratorInterface;
 
     /**
      * Retrieve interfaces that should be implemented by the generated code
      *
      * @return string[]
      */
-    abstract protected function getExpectedImplementedInterfaces();
+    abstract protected function getExpectedImplementedInterfaces() : array;
 
     /**
      * @return array
      */
-    public function getTestedImplementations()
+    public function getTestedImplementations() : array
     {
         return [
             [BaseClass::class],

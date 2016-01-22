@@ -36,8 +36,13 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
      * @param string                                     $methodName
      * @param array                                      $parameters
      */
-    protected function profileMethodAccess($className, array $instances, array $proxies, $methodName, array $parameters)
-    {
+    protected function profileMethodAccess(
+        string $className,
+        array $instances,
+        array $proxies,
+        string $methodName,
+        array $parameters
+    ) {
         $iterations = count($instances);
 
         $this->startCapturing();
@@ -67,8 +72,12 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
      * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
      * @param string                                     $property
      */
-    protected function profilePropertyWrites($className, array $instances, array $proxies, $property)
-    {
+    protected function profilePropertyWrites(
+        string $className,
+        array $instances,
+        array $proxies,
+        string $property
+    ) {
         $iterations = count($instances);
 
         $this->startCapturing();
@@ -98,8 +107,12 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
      * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
      * @param string                                     $property
      */
-    protected function profilePropertyReads($className, array $instances, array $proxies, $property)
-    {
+    protected function profilePropertyReads(
+        string $className,
+        array $instances,
+        array $proxies,
+        string $property
+    ) {
         $iterations = count($instances);
 
         $this->startCapturing();
@@ -129,7 +142,7 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
      * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
      * @param string                                     $property
      */
-    protected function profilePropertyIsset($className, array $instances, array $proxies, $property)
+    protected function profilePropertyIsset(string $className, array $instances, array $proxies, string $property)
     {
         $iterations = count($instances);
 
@@ -160,7 +173,7 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
      * @param \ProxyManager\Proxy\LazyLoadingInterface[] $proxies
      * @param string                                     $property
      */
-    protected function profilePropertyUnset($className, array $instances, array $proxies, $property)
+    protected function profilePropertyUnset(string $className, array $instances, array $proxies, string $property)
     {
         $iterations = count($instances);
 
@@ -192,5 +205,5 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
      *
      * @return string
      */
-    abstract protected function generateProxy($parentClassName);
+    abstract protected function generateProxy(string $parentClassName) : string;
 }

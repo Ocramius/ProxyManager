@@ -59,7 +59,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCalls($className, $instance, $method, array $params, $expectedValue)
+    public function testMethodCalls(string $className, $instance, string $method, array $params, $expectedValue)
     {
         $proxyName = $this->generateProxy($className);
 
@@ -109,8 +109,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsWithSuffixListener($className, $instance, $method, array $params, $expectedValue)
-    {
+    public function testMethodCallsWithSuffixListener(
+        string $className,
+        $instance,
+        string $method,
+        array $params,
+        $expectedValue
+    ) {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy AccessInterceptorInterface */
@@ -155,8 +160,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterUnSerialization($className, $instance, $method, array $params, $expectedValue)
-    {
+    public function testMethodCallsAfterUnSerialization(
+        string $className,
+        $instance,
+        string $method,
+        array $params,
+        $expectedValue
+    ) {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy AccessInterceptorInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
@@ -174,8 +184,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterCloning($className, $instance, $method, array $params, $expectedValue)
-    {
+    public function testMethodCallsAfterCloning(
+        string $className,
+        $instance,
+        string $method,
+        array $params,
+        $expectedValue
+    ) {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy AccessInterceptorInterface */
@@ -198,7 +213,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     public function testPropertyReadAccess(
         $instance,
         AccessInterceptorInterface $proxy,
-        $publicProperty,
+        string $publicProperty,
         $propertyValue
     ) {
         $this->assertSame($propertyValue, $proxy->$publicProperty);
@@ -212,7 +227,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param AccessInterceptorInterface $proxy
      * @param string                     $publicProperty
      */
-    public function testPropertyWriteAccess($instance, AccessInterceptorInterface $proxy, $publicProperty)
+    public function testPropertyWriteAccess($instance, AccessInterceptorInterface $proxy, string $publicProperty)
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -228,7 +243,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param AccessInterceptorInterface $proxy
      * @param string                     $publicProperty
      */
-    public function testPropertyExistence($instance, AccessInterceptorInterface $proxy, $publicProperty)
+    public function testPropertyExistence($instance, AccessInterceptorInterface $proxy, string $publicProperty)
     {
         $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
@@ -245,7 +260,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param AccessInterceptorInterface $proxy
      * @param string                     $publicProperty
      */
-    public function testPropertyUnset($instance, AccessInterceptorInterface $proxy, $publicProperty)
+    public function testPropertyUnset($instance, AccessInterceptorInterface $proxy, string $publicProperty)
     {
         $this->markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);
@@ -352,7 +367,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      *
      * @throws UnsupportedProxiedClassException
      */
-    private function generateProxy($parentClassName)
+    private function generateProxy(string $parentClassName)
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new AccessInterceptorScopeLocalizerGenerator();

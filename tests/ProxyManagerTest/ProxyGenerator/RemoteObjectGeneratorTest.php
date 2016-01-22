@@ -49,7 +49,7 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $className
      */
-    public function testGeneratesValidCode($className)
+    public function testGeneratesValidCode(string $className)
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');

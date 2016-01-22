@@ -21,6 +21,7 @@ namespace ProxyManagerTest\ProxyGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ReflectionClass;
 
 /**
@@ -54,7 +55,7 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getProxyGenerator()
+    protected function getProxyGenerator() : ProxyGeneratorInterface
     {
         return new AccessInterceptorScopeLocalizerGenerator();
     }
@@ -62,7 +63,7 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces()
+    protected function getExpectedImplementedInterfaces() : array
     {
         return [AccessInterceptorInterface::class];
     }

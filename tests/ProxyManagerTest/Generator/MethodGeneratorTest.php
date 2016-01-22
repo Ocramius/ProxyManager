@@ -95,11 +95,11 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param string $methodName
-     * @param        $type
+     * @param string $type
      *
      * @dataProvider scalarTypeHintedMethods
      */
-    public function testGenerateMethodWithScalarTypeHinting($methodName, $type)
+    public function testGenerateMethodWithScalarTypeHinting(string $methodName, string $type)
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(
             ScalarTypeHintedClass::class,

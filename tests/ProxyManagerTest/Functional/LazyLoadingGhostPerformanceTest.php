@@ -59,7 +59,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
         $realInstance = (array) new $className();
         $initializer  = function (
             GhostObjectInterface $proxy,
-            $method,
+            string $method,
             $params,
             & $initializer,
             array $properties
@@ -143,7 +143,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
     /**
      * {@inheritDoc}
      */
-    protected function generateProxy($parentClassName)
+    protected function generateProxy(string $parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingGhostGenerator();

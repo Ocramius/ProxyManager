@@ -54,7 +54,7 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider getTestedClasses
      */
-    public function testCodeGeneration($generatorClass, $className)
+    public function testCodeGeneration(string $generatorClass, string $className)
     {
         $generatedClass          = new ClassGenerator(uniqid('generated'));
         $generatorStrategy       = new EvaluatingGeneratorStrategy();
