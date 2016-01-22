@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 
@@ -87,6 +88,20 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
 
 ',
                 'foo',
+            ],
+            ClassWithCollidingPrivateInheritedProperties::class => [
+                ClassWithCollidingPrivateInheritedProperties::class,
+                '\Closure::bind(function (\ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties $bar) {
+    unset($bar->property0);
+}, $bar, \'ProxyManagerTestAsset\\\\ClassWithCollidingPrivateInheritedProperties\')->__invoke($bar);
+
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithPrivateProperties $bar) {
+    unset($bar->property0, $bar->property1, $bar->property2, $bar->property3, $bar->property4, '
+        . '$bar->property5, $bar->property6, $bar->property7, $bar->property8, $bar->property9);
+}, $bar, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke($bar);
+
+',
+                'bar',
             ],
         ];
     }
