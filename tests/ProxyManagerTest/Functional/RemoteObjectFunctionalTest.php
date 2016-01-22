@@ -277,6 +277,45 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     * @param string $propertyName
+     */
+    public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfCloned(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue,
+        string $propertyName
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+
+        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $adapter = $this->getMock(AdapterInterface::class);
+
+        $adapter
+            ->expects(self::once())
+            ->method('call')
+            ->with(get_class($realInstance), '__get', [$propertyName])
+            ->willReturn($expectedValue);
+
+        /* @var $proxy OtherObjectAccessClass|RemoteObjectInterface */
+        $proxy = clone $proxyName::staticProxyConstructor($adapter);
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertInternalType('callable', $accessor);
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
     {
         foreach ((new \ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
