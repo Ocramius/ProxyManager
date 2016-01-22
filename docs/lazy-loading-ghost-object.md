@@ -246,11 +246,11 @@ $initializer = null; // if you use the initializer passed by reference to the cl
 
 ## Triggering Initialization
 
-A lazy loading ghost object is initialized whenever you access any property or method of it.
+A lazy loading ghost object is initialized whenever you access any property of it.
 Any of the following interactions would trigger lazy initialization:
 
 ```php
-// calling a method
+// calling a method (only if the method accesses internal state)
 $proxy->someMethod();
 
 // reading a property
