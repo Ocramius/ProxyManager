@@ -65,7 +65,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
             array $properties
         ) use (
             $realInstance
-        ) {
+        ) : bool {
             $initializer = null;
 
             foreach ($realInstance as $name => $value) {
@@ -117,7 +117,7 @@ class LazyLoadingGhostPerformanceTest extends BaseLazyLoadingPerformanceTest
     /**
      * @return array
      */
-    public function getTestedClasses()
+    public function getTestedClasses() : array
     {
         $testedClasses = [
             [stdClass::class, [], []],

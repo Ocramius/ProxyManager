@@ -111,7 +111,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     /**
      * @return string[][]
      */
-    public function validClasses()
+    public function validClasses() : array
     {
         return [
             [AccessInterceptorValueHolderMock::class],

@@ -155,7 +155,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
             ->method('generate')
             ->with(
                 $this->callback(
-                    function (ClassGenerator $targetClass) use ($proxyClassName) {
+                    function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -166,7 +166,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->willReturnCallback(function () use ($proxyClassName) {
+            ->willReturnCallback(function () use ($proxyClassName) : bool {
                 eval(
                     'class ' . $proxyClassName
                     . ' extends \\ProxyManagerTestAsset\\AccessInterceptorValueHolderMock {}'

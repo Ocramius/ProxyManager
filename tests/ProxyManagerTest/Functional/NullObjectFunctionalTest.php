@@ -148,7 +148,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    private function generateProxy(string $parentClassName)
+    private function generateProxy(string $parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new NullObjectGenerator();
@@ -166,7 +166,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function getProxyMethods()
+    public function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
 
@@ -221,7 +221,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function getPropertyAccessProxies()
+    public function getPropertyAccessProxies() : array
     {
         $proxyName1 = $this->generateProxy(BaseClass::class);
         $proxyName2 = $this->generateProxy(BaseClass::class);

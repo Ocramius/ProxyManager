@@ -52,7 +52,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return XmlRpcAdapter
      */
-    protected function getXmlRpcAdapter($expectedValue, string $method, array $params)
+    protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this->getMock(Client::class, ['call']);
@@ -81,7 +81,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return JsonRpcAdapter
      */
-    protected function getJsonRpcAdapter($expectedValue, string $method, array $params)
+    protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this->getMock(Client::class, ['call']);
@@ -166,7 +166,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    private function generateProxy($parentClassName)
+    private function generateProxy($parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new RemoteObjectGenerator();

@@ -72,7 +72,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @return array[]
      */
-    public function signatures()
+    public function signatures() : array
     {
         return [
             [
@@ -103,7 +103,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @return array[]
      */
-    public function signatureKeys()
+    public function signatureKeys() : array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

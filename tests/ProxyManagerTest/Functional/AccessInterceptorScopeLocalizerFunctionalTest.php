@@ -85,11 +85,11 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        $random = uniqid();
+        $random = uniqid('', true);
 
         $proxy->setMethodPrefixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, & $returnEarly) use ($random) {
+            function ($proxy, $instance, string $method, $params, & $returnEarly) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -136,11 +136,11 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        $random = uniqid();
+        $random = uniqid('', true);
 
         $proxy->setMethodSuffixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($random) {
+            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -367,7 +367,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      *
      * @throws UnsupportedProxiedClassException
      */
-    private function generateProxy(string $parentClassName)
+    private function generateProxy(string $parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new AccessInterceptorScopeLocalizerGenerator();
@@ -385,7 +385,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      *
      * @return array
      */
-    public function getProxyMethods()
+    public function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
 
@@ -426,7 +426,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      *
      * @return array
      */
-    public function getPropertyAccessProxies()
+    public function getPropertyAccessProxies() : array
     {
         $instance1  = new BaseClass();
         $proxyName1 = $this->generateProxy(get_class($instance1));
@@ -470,7 +470,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $object = $factory->createProxy(
             $targetObject,
             [
-                function () {
+                function () : string {
                     return 'Foo Baz';
                 },
             ]
@@ -497,7 +497,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $object = $factory->createProxy(
             $targetObject,
             [
-                function () {
+                function () : string {
                     return 'Foo Baz';
                 },
             ]
@@ -524,7 +524,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
             ->createProxy(
                 new ClassWithDynamicArgumentsMethod(),
                 [
-                    'dynamicArgumentsMethod' => function () {
+                    'dynamicArgumentsMethod' => function () : string {
                         return 'Foo Baz';
                     },
                 ]

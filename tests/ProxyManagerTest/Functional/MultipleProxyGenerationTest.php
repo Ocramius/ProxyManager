@@ -109,7 +109,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
     /**
      * @return string[][]
      */
-    public function getTestedClasses()
+    public function getTestedClasses() : array
     {
         return [
             [BaseClass::class],

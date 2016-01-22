@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerat
 
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
+use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty}
@@ -35,7 +36,7 @@ class ValueHolderPropertyTest extends AbstractUniquePropertyNameTest
     /**
      * {@inheritDoc}
      */
-    protected function createProperty()
+    protected function createProperty() : PropertyGenerator
     {
         return new ValueHolderProperty();
     }

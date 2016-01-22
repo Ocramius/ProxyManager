@@ -84,11 +84,11 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        $random = uniqid();
+        $random = uniqid('', true);
 
         $proxy->setMethodPrefixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, & $returnEarly) use ($random) {
+            function ($proxy, $instance, string $method, $params, & $returnEarly) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -138,7 +138,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         $proxy->setMethodSuffixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($random) {
+            function ($proxy, $instance, string $method, $params, $returnValue, & $returnEarly) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -351,7 +351,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $object = $factory->createProxy(
             $targetObject,
             [
-                function () {
+                function () : string {
                     return 'Foo Baz';
                 },
             ]
@@ -377,7 +377,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $object = $factory->createProxy(
             $targetObject,
             [
-                function () {
+                function () : string {
                     return 'Foo Baz';
                 },
             ]

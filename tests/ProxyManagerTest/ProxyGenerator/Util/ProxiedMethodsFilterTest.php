@@ -105,7 +105,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array[][]
      */
-    public function expectedMethods()
+    public function expectedMethods() : array
     {
         return [
             [
@@ -213,7 +213,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array[][]
      */
-    public function expectedAbstractPublicMethods()
+    public function expectedAbstractPublicMethods() : array
     {
         return [
             [

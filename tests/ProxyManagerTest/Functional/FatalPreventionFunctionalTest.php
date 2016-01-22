@@ -78,16 +78,16 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @return string[][]
      */
-    public function getTestedClasses()
+    public function getTestedClasses() : array
     {
         $that = $this;
 
         return call_user_func_array(
             'array_merge',
             array_map(
-                function ($generator) use ($that) {
+                function ($generator) use ($that) : array {
                     return array_map(
-                        function ($class) use ($generator) {
+                        function ($class) use ($generator) : array {
                             return [$generator, $class];
                         },
                         $that->getProxyTestedClasses()
@@ -110,7 +110,7 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return string[]
      */
-    public function getProxyTestedClasses()
+    public function getProxyTestedClasses() : array
     {
         $skippedPaths = [
             realpath(__DIR__ . '/../../src'),
@@ -120,7 +120,7 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
 
         return array_filter(
             get_declared_classes(),
-            function ($className) use ($skippedPaths) {
+            function ($className) use ($skippedPaths) : bool {
                 $reflectionClass = new ReflectionClass($className);
                 $fileName        = $reflectionClass->getFileName();
 

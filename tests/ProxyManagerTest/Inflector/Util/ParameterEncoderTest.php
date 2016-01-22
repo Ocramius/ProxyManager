@@ -52,7 +52,7 @@ class ParameterEncoderTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getParameters()
+    public function getParameters() : array
     {
         return [
             [[]],

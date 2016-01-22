@@ -23,6 +23,7 @@ use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\RemoteObjectInterface;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
@@ -40,7 +41,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\RemoteObjectGenerator
  * @group Coverage
  */
-class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
+class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * @dataProvider getTestedImplementations
@@ -80,7 +81,7 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritDoc}
      */
-    protected function getProxyGenerator()
+    protected function getProxyGenerator() : ProxyGeneratorInterface
     {
         return new RemoteObjectGenerator();
     }
@@ -88,7 +89,7 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces()
+    protected function getExpectedImplementedInterfaces() : array
     {
         return [
             RemoteObjectInterface::class,
@@ -98,7 +99,7 @@ class RemoteObjectGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getTestedImplementations()
+    public function getTestedImplementations() : array
     {
         return [
             [BaseClass::class],

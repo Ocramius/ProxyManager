@@ -61,7 +61,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
             string $method,
             $params,
             & $initializer
-        ) use ($className) {
+        ) use ($className) : bool {
             $initializer = null;
             $valueHolder = new $className();
 
@@ -110,7 +110,7 @@ class LazyLoadingValueHolderPerformanceTest extends BaseLazyLoadingPerformanceTe
     /**
      * @return array
      */
-    public function getTestedClasses()
+    public function getTestedClasses() : array
     {
         return [
             [stdClass::class, [], []],

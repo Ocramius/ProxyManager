@@ -49,7 +49,7 @@ class ParameterHasherTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getParameters()
+    public function getParameters() : array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

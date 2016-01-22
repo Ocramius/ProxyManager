@@ -151,7 +151,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($generatedClass)
-            ->will($this->returnCallback(function ($className) {
+            ->will($this->returnCallback(function ($className) : bool {
                 eval('class ' . $className . ' {}');
 
                 return true;
@@ -164,7 +164,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('generate')
             ->with(
-                $this->callback(function (\ReflectionClass $reflectionClass) {
+                $this->callback(function (\ReflectionClass $reflectionClass) : bool {
                     return $reflectionClass->getName() === 'stdClass';
                 }),
                 $this->isInstanceOf(ClassGenerator::class),

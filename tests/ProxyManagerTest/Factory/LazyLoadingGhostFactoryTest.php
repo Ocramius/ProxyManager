@@ -152,7 +152,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->method('generate')
             ->with(
                 $this->callback(
-                    function (ClassGenerator $targetClass) use ($proxyClassName) {
+                    function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -163,7 +163,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->willReturnCallback(function () use ($proxyClassName) {
+            ->willReturnCallback(function () use ($proxyClassName) : bool {
                 eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
 
                 return true;

@@ -389,7 +389,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    private function generateProxy(string $parentClassName)
+    private function generateProxy(string $parentClassName) : string
     {
         $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
         $generator          = new LazyLoadingValueHolderGenerator();
@@ -407,9 +407,9 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      * @param object $realInstance
      * @param Mock   $initializerMatcher
      *
-     * @return \Closure
+     * @return callable
      */
-    private function createInitializer(string $className, $realInstance, Mock $initializerMatcher = null)
+    private function createInitializer(string $className, $realInstance, Mock $initializerMatcher = null) : callable
     {
         if (null === $initializerMatcher) {
             $initializerMatcher = $this->getMock(stdClass::class, ['__invoke']);
@@ -451,7 +451,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function getProxyMethods()
+    public function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
 
@@ -513,7 +513,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function getPropertyAccessProxies()
+    public function getPropertyAccessProxies() : array
     {
         $instance1 = new BaseClass();
         $proxyName1 = $this->generateProxy(get_class($instance1));
