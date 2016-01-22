@@ -1143,6 +1143,40 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param string $method
+     * @param string $propertyIndex
+     * @param string $expectedValue
+     */
+    public function testWillAccessMembersOfOtherClonedProxiesWithTheSamePrivateScope(
+        $callerObject,
+        string $method,
+        string $propertyIndex,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($callerObject));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = clone $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $props) use ($propertyIndex, $expectedValue) {
+                $initializer = null;
+
+                $props[$propertyIndex] = $expectedValue;
+            }
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertInternalType('callable', $accessor);
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : array
     {
         $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
