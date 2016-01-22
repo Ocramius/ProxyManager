@@ -73,6 +73,8 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
     unset($this->privateProperty0, $this->privateProperty1, $this->privateProperty2);
 }, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
 
-', $magicWakeup->getBody());
+',
+            $magicWakeup->getBody()
+        );
     }
 }
