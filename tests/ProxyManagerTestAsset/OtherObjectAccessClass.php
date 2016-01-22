@@ -18,6 +18,9 @@
 
 namespace ProxyManagerTestAsset;
 
+/**
+ * Class used to verify that accessing protected scope of other objects still triggers lazy loading/interception
+ */
 class OtherObjectAccessClass
 {
     private $privateProperty = 'privateProperty';
