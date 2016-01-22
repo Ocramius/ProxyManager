@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTestAsset;
 
-use ProxyManager\Proxy\AccessInterceptorInterface;
-use ProxyManager\Proxy\ValueHolderInterface;
+use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 
 /**
  * Base test class to catch instantiations of access interceptor value holders
@@ -29,7 +28,7 @@ use ProxyManager\Proxy\ValueHolderInterface;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class AccessInterceptorValueHolderMock implements ValueHolderInterface, AccessInterceptorInterface
+class AccessInterceptorValueHolderMock implements AccessInterceptorValueHolderInterface
 {
     /**
      * @var object

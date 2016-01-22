@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator;
 
 use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -50,6 +51,7 @@ class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
     protected function getExpectedImplementedInterfaces() : array
     {
         return [
+            AccessInterceptorValueHolderInterface::class,
             AccessInterceptorInterface::class,
             ValueHolderInterface::class,
         ];
