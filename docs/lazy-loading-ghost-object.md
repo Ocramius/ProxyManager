@@ -285,6 +285,81 @@ public function sayHello() : string
 }
 ```
 
+## Skipping properties (properties that should not be initialized)
+
+In some contexts, you may want some properties to be completely ignored by the lazy-loading
+system.
+
+An example for that (in data mappers) is entities with identifiers: an identifier is usually
+
+ * lightweight
+ * known at all times
+
+This means that it can be set in our object at all times, and we may never need to lazy-load
+it. Here is a typical example:
+
+```php
+namespace MyApp;
+
+class User
+{
+    private $id;
+    private $username;
+    private $passwordHash;
+    private $email;
+    private $address;
+    // ...
+    
+    public function getId() : Uuid
+    {
+        return $this->id;
+    }
+}
+```
+
+If we want to skip the property `$id` from lazy-loading, we might want to tell that to
+the `LazyLoadingGhostFactory`. Here is a longer example, with a more near-real-world
+scenario:
+
+```php
+namespace MyApp;
+
+use ProxyManager\Factory\LazyLoadingGhostFactory;
+use ProxyManager\Proxy\LazyLoadingInterface;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$factory     = new LazyLoadingGhostFactory();
+$initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer, array $properties) {
+    $initializer = null;
+
+    // note that `getId` won't initialize our proxy here
+    $properties["\0MyApp\\User\0username"]     = $db->fetchField('users', 'username', $proxy->getId();
+    $properties["\0MyApp\\User\0passwordHash"] = $db->fetchField('users', 'passwordHash', $proxy->getId();
+    $properties["\0MyApp\\User\0email"]        = $db->fetchField('users', 'email', $proxy->getId();
+    $properties["\0MyApp\\User\0address"]      = $db->fetchField('users', 'address', $proxy->getId();
+
+    return true;
+};
+$proxyOptions = [
+    'skippedProperties' => [
+        "\0MyApp\\User\0id",
+    ],
+];
+
+$instance = $factory->createProxy(User::class, $initializer, $proxyOptions);
+
+$idReflection = new \ReflectionProperty(User::class, 'id');
+
+$idReflection->setAccessible(true);
+
+// write the identifier into our proxy (assuming `setId` doesn't exist)
+$idReflection->setValue($instance, new Uuid('b99cf791-3a2d-467a-808d-d3ecc84ffce1'));
+```
+
+As you can see, we simply pass a `skippedProperties` array to our proxy factory, and again,
+we are using the weird `"\0"` syntax for keys (see above for what that means).
+
 ## Proxying interfaces
 
 A lazy loading ghost object cannot proxy an interface directly, as it operates directly around
