@@ -134,6 +134,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 null,
                 [
                     'getProxyInitializer',
+                    'getWrappedValueHolderValue',
                     'initializeProxy',
                     'isProxyInitialized',
                     'setProxyInitializer',
@@ -144,6 +145,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 [],
                 [
                     'getProxyInitializer',
+                    'getWrappedValueHolderValue',
                     'initializeProxy',
                     'isProxyInitialized',
                     'setProxyInitializer',
