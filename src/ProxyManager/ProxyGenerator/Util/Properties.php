@@ -53,7 +53,7 @@ final class Properties
                 $properties,
                 array_values(array_filter(
                     $class->getProperties(),
-                    function (ReflectionProperty $property) use ($class) {
+                    function (ReflectionProperty $property) use ($class) : bool {
                         return $class->getName() === $property->getDeclaringClass()->getName()
                             && ! $property->isStatic();
                     }

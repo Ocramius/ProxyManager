@@ -33,7 +33,7 @@ class MethodGenerator extends ZendMethodGenerator
     /**
      * {@inheritDoc}
      */
-    public static function fromReflection(MethodReflection $reflectionMethod)
+    public static function fromReflection(MethodReflection $reflectionMethod) : self
     {
         $method = parent::fromReflection($reflectionMethod);
 

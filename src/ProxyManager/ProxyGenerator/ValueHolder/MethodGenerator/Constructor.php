@@ -83,7 +83,7 @@ class Constructor extends MethodGenerator
             . implode(
                 ', ',
                 array_map(
-                    function (ParameterGenerator $parameter) {
+                    function (ParameterGenerator $parameter) : string {
                         return ($parameter->getVariadic() ? '...' : '') . '$' . $parameter->getName();
                     },
                     $constructor->getParameters()
@@ -108,7 +108,7 @@ class Constructor extends MethodGenerator
             },
             array_filter(
                 $class->getMethods(),
-                function (\ReflectionMethod $method) {
+                function (\ReflectionMethod $method) : bool {
                     return $method->isConstructor();
                 }
             )

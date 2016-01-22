@@ -48,12 +48,12 @@ class InvalidProxiedClassException extends InvalidArgumentException implements E
             implode(
                 "\n",
                 array_map(
-                    function (ReflectionMethod $reflectionMethod) {
+                    function (ReflectionMethod $reflectionMethod) : string {
                         return $reflectionMethod->getDeclaringClass()->getName() . '::' . $reflectionMethod->getName();
                     },
                     array_filter(
                         $reflection->getMethods(),
-                        function (ReflectionMethod $method) {
+                        function (ReflectionMethod $method) : bool {
                             return $method->isAbstract() && $method->isProtected();
                         }
                     )
