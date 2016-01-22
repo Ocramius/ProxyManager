@@ -20,10 +20,8 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\Properties;
-use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ProxyManagerTestAsset\EmptyClass;
-use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator}
