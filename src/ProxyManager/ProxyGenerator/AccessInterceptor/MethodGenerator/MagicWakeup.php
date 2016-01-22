@@ -20,8 +20,8 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
-use ReflectionProperty;
 
 /**
  * Magic `__wakeup` for lazy loading value holder objects
@@ -40,13 +40,9 @@ class MagicWakeup extends MagicMethodGenerator
     {
         parent::__construct($originalClass, '__wakeup');
 
-        $unsetProperties = array_map(
-            function (ReflectionProperty $property) {
-                return '$this->' . $property->getName();
-            },
-            Properties::fromReflectionClass($originalClass)->getPublicProperties()
-        );
-
-        $this->setBody($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");" : '');
+        $this->setBody(UnsetPropertiesGenerator::generateSnippet(
+            Properties::fromReflectionClass($originalClass),
+            'this'
+        ));
     }
 }
