@@ -53,8 +53,8 @@ class PublicScopeSimulator
      * @throws \InvalidArgumentException
      */
     public static function getPublicAccessSimulationCode(
-        $operationType,
-        $nameParameter,
+        string $operationType,
+        string $nameParameter,
         $valueParameter = null,
         PropertyGenerator $valueHolder = null,
         $returnPropertyName = null
@@ -94,7 +94,7 @@ class PublicScopeSimulator
      *
      * @return string
      */
-    private static function getUndefinedPropertyNotice($operationType, $nameParameter)
+    private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter)
     {
         if (static::OPERATION_GET !== $operationType) {
             return '';
@@ -119,7 +119,7 @@ class PublicScopeSimulator
      *
      * @return string
      */
-    private static function getByRefReturnValue($operationType)
+    private static function getByRefReturnValue(string $operationType)
     {
         return (static::OPERATION_GET === $operationType || static::OPERATION_SET === $operationType) ? '& ' : '';
     }
@@ -149,7 +149,7 @@ class PublicScopeSimulator
      *
      * @throws \InvalidArgumentException
      */
-    private static function getOperation($operationType, $nameParameter, $valueParameter)
+    private static function getOperation(string $operationType, string $nameParameter, $valueParameter)
     {
         switch ($operationType) {
             case static::OPERATION_GET:

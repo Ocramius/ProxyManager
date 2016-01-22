@@ -34,7 +34,7 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
      *
      * @return self
      */
-    public static function fromInvalidMoveOperation($fromPath, $toPath)
+    public static function fromInvalidMoveOperation(string $fromPath, string $toPath)
     {
         return new self(sprintf(
             'Could not move file "%s" to location "%s": '

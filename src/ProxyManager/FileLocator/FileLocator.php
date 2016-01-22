@@ -38,7 +38,7 @@ class FileLocator implements FileLocatorInterface
      *
      * @throws \ProxyManager\Exception\InvalidProxyDirectoryException
      */
-    public function __construct($proxiesDirectory)
+    public function __construct(string $proxiesDirectory)
     {
         $this->proxiesDirectory = realpath($proxiesDirectory);
 
@@ -50,7 +50,7 @@ class FileLocator implements FileLocatorInterface
     /**
      * {@inheritDoc}
      */
-    public function getProxyFileName($className)
+    public function getProxyFileName(string $className)
     {
         return $this->proxiesDirectory . DIRECTORY_SEPARATOR . str_replace('\\', '', $className) . '.php';
     }

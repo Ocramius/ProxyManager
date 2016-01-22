@@ -51,9 +51,9 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * @param string $proxyNamespace
      */
-    public function __construct($proxyNamespace)
+    public function __construct(string $proxyNamespace)
     {
-        $this->proxyNamespace    = (string) $proxyNamespace;
+        $this->proxyNamespace    = $proxyNamespace;
         $this->proxyMarker       = '\\' . static::PROXY_MARKER . '\\';
         $this->proxyMarkerLength = strlen($this->proxyMarker);
         $this->parameterHasher   = new ParameterHasher();
@@ -62,7 +62,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * {@inheritDoc}
      */
-    public function getUserClassName($className)
+    public function getUserClassName(string $className)
     {
         $className = ltrim($className, '\\');
 
@@ -80,7 +80,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * {@inheritDoc}
      */
-    public function getProxyClassName($className, array $options = [])
+    public function getProxyClassName(string $className, array $options = [])
     {
         return $this->proxyNamespace
             . $this->proxyMarker
@@ -91,7 +91,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     /**
      * {@inheritDoc}
      */
-    public function isProxyClassName($className)
+    public function isProxyClassName(string $className)
     {
         return false !== strrpos($className, $this->proxyMarker);
     }

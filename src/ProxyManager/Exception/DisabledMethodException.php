@@ -35,8 +35,8 @@ class DisabledMethodException extends BadMethodCallException implements Exceptio
      *
      * @return self
      */
-    public static function disabledMethod($method)
+    public static function disabledMethod(string $method)
     {
-        return new self(sprintf('Method "%s" is forcefully disabled', (string) $method));
+        return new self(sprintf('Method "%s" is forcefully disabled', $method));
     }
 }

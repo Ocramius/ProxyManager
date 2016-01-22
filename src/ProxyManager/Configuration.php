@@ -105,7 +105,7 @@ class Configuration
     /**
      * @param string $proxiesNamespace
      */
-    public function setProxiesNamespace($proxiesNamespace)
+    public function setProxiesNamespace(string $proxiesNamespace)
     {
         $this->proxiesNamespace = $proxiesNamespace;
     }
@@ -121,9 +121,9 @@ class Configuration
     /**
      * @param string $proxiesTargetDir
      */
-    public function setProxiesTargetDir($proxiesTargetDir)
+    public function setProxiesTargetDir(string $proxiesTargetDir)
     {
-        $this->proxiesTargetDir = (string) $proxiesTargetDir;
+        $this->proxiesTargetDir = $proxiesTargetDir;
     }
 
     /**

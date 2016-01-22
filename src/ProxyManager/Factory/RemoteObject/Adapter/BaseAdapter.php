@@ -58,7 +58,7 @@ abstract class BaseAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function call($wrappedClass, $method, array $params = [])
+    public function call(string $wrappedClass, string $method, array $params = [])
     {
         $serviceName = $this->getServiceName($wrappedClass, $method);
 
@@ -77,5 +77,5 @@ abstract class BaseAdapter implements AdapterInterface
      *
      * @return string Service name
      */
-    abstract protected function getServiceName($wrappedClass, $method);
+    abstract protected function getServiceName(string $wrappedClass, string $method);
 }

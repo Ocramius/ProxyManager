@@ -42,7 +42,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      *
      * @return void
      */
-    public function setMethodPrefixInterceptor($methodName, \Closure $prefixInterceptor = null);
+    public function setMethodPrefixInterceptor(string $methodName, \Closure $prefixInterceptor = null);
 
     /**
      * Set or remove the suffix interceptor for a method
@@ -60,5 +60,5 @@ interface AccessInterceptorInterface extends ProxyInterface
      *
      * @return void
      */
-    public function setMethodSuffixInterceptor($methodName, \Closure $suffixInterceptor = null);
+    public function setMethodSuffixInterceptor(string $methodName, \Closure $suffixInterceptor = null);
 }

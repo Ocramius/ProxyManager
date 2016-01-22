@@ -86,7 +86,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      *
      * @throws FileNotWritableException
      */
-    private function writeFile($source, $location)
+    private function writeFile(string $source, string $location)
     {
         $tmpFileName   = $location . '.' . uniqid('', true);
 

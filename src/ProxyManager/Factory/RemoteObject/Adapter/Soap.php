@@ -29,8 +29,8 @@ class Soap extends BaseAdapter
     /**
      * {@inheritDoc}
      */
-    protected function getServiceName($wrappedClass, $method)
+    protected function getServiceName(string $wrappedClass, string $method)
     {
-        return (string) $method;
+        return $method;
     }
 }

@@ -59,7 +59,7 @@ abstract class AbstractBaseFactory
      *
      * @return string proxy class name
      */
-    protected function generateProxy($className, array $proxyOptions = [])
+    protected function generateProxy(string $className, array $proxyOptions = [])
     {
         if (isset($this->checkedClasses[$className])) {
             return $this->checkedClasses[$className];
@@ -107,8 +107,12 @@ abstract class AbstractBaseFactory
      *
      * @return void
      */
-    private function generateProxyClass($proxyClassName, $className, array $proxyParameters, array $proxyOptions = [])
-    {
+    private function generateProxyClass(
+        string $proxyClassName,
+        string $className,
+        array $proxyParameters,
+        array $proxyOptions = []
+    ) {
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 

@@ -42,7 +42,7 @@ class InterceptorGenerator
      * @return string
      */
     public static function createInterceptedMethodBody(
-        $methodBody,
+        string $methodBody,
         MethodGenerator $method,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors

@@ -33,7 +33,7 @@ class MagicMethodGenerator extends MethodGenerator
      * @param string          $name
      * @param array           $parameters
      */
-    public function __construct(ReflectionClass $originalClass, $name, array $parameters = [])
+    public function __construct(ReflectionClass $originalClass, string $name, array $parameters = [])
     {
         parent::__construct(
             $name,

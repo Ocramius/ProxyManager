@@ -38,7 +38,7 @@ interface ClassNameInflectorInterface
      *
      * @return string
      */
-    public function getUserClassName($className);
+    public function getUserClassName(string $className);
 
     /**
      * Retrieve the class name of the proxy for the given user-defined class name
@@ -48,7 +48,7 @@ interface ClassNameInflectorInterface
      *
      * @return string
      */
-    public function getProxyClassName($className, array $options = []);
+    public function getProxyClassName(string $className, array $options = []);
 
     /**
      * Retrieve whether the provided class name is a proxy
@@ -57,5 +57,5 @@ interface ClassNameInflectorInterface
      *
      * @return bool
      */
-    public function isProxyClassName($className);
+    public function isProxyClassName(string $className);
 }

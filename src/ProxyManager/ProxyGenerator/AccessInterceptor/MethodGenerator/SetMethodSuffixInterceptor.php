@@ -45,7 +45,7 @@ class SetMethodSuffixInterceptor extends MethodGenerator
 
         $interceptor->setType(Closure::class);
         $interceptor->setDefaultValue(null);
-        $this->setParameter(new ParameterGenerator('methodName'));
+        $this->setParameter(new ParameterGenerator('methodName', 'string'));
         $this->setParameter($interceptor);
         $this->setDocblock('{@inheritDoc}');
         $this->setBody('$this->' . $suffixInterceptor->getName() . '[$methodName] = $suffixInterceptor;');

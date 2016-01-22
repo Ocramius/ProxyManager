@@ -37,8 +37,12 @@ class InvalidSignatureException extends UnexpectedValueException implements Exce
      *
      * @return self
      */
-    public static function fromInvalidSignature(ReflectionClass $class, array $parameters, $signature, $expected)
-    {
+    public static function fromInvalidSignature(
+        ReflectionClass $class,
+        array $parameters,
+        string $signature,
+        string $expected
+    ) {
         return new self(sprintf(
             'Found signature "%s" for class "%s" does not correspond to expected signature "%s" for %d parameters',
             $signature,
