@@ -310,7 +310,7 @@ class User
     private $address;
     // ...
     
-    public function getId() : Uuid
+    public function getId() : int
     {
         return $this->id;
     }
@@ -354,7 +354,7 @@ $idReflection = new \ReflectionProperty(User::class, 'id');
 $idReflection->setAccessible(true);
 
 // write the identifier into our proxy (assuming `setId` doesn't exist)
-$idReflection->setValue($instance, new Uuid('b99cf791-3a2d-467a-808d-d3ecc84ffce1'));
+$idReflection->setValue($instance, 1234);
 ```
 
 As you can see, we simply pass a `skippedProperties` array to our proxy factory, and again,
