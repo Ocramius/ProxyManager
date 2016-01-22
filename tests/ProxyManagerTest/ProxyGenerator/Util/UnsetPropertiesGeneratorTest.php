@@ -22,6 +22,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 
 /**
@@ -71,6 +72,18 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
 \Closure::bind(function (\ProxyManagerTestAsset\BaseClass $foo) {
     unset($foo->privateProperty);
 }, $foo, \'ProxyManagerTestAsset\\\\BaseClass\')->__invoke($foo);
+
+',
+                'foo',
+            ],
+            ClassWithMixedProperties::class => [
+                ClassWithMixedProperties::class,
+                'unset($foo->publicProperty0, $foo->publicProperty1, $foo->publicProperty2, $foo->protectedProperty0, '
+                . '$foo->protectedProperty1, $foo->protectedProperty2);
+
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $foo) {
+    unset($foo->privateProperty0, $foo->privateProperty1, $foo->privateProperty2);
+}, $foo, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($foo);
 
 ',
                 'foo',
