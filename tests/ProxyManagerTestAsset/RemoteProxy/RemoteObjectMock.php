@@ -31,7 +31,7 @@ class RemoteObjectMock implements RemoteObjectInterface
     /**
      * @return static
      */
-    public static function staticProxyConstructor()
+    public static function staticProxyConstructor() : self
     {
         return new static();
     }

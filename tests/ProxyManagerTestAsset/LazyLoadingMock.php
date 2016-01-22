@@ -38,7 +38,7 @@ class LazyLoadingMock implements LazyLoadingInterface
      *
      * @return static
      */
-    public static function staticProxyConstructor($initializer)
+    public static function staticProxyConstructor($initializer) : self
     {
         $instance = new static();
 
