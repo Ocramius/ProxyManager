@@ -71,7 +71,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    private static function doFilter(ReflectionClass $class, array $excluded, $requireAbstract = false)
+    private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false)
     {
         $ignored = array_flip(array_map('strtolower', $excluded));
 

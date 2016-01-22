@@ -47,7 +47,7 @@ final class CanProxyAssertion
      *
      * @throws InvalidProxiedClassException
      */
-    public static function assertClassCanBeProxied(ReflectionClass $originalClass, $allowInterfaces = true)
+    public static function assertClassCanBeProxied(ReflectionClass $originalClass, bool $allowInterfaces = true)
     {
         self::isNotFinal($originalClass);
         self::hasNoAbstractProtectedMethods($originalClass);
