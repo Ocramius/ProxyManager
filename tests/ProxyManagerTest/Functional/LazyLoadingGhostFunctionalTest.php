@@ -1075,6 +1075,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group 276
+     *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      *
      * @param object $callerObject
