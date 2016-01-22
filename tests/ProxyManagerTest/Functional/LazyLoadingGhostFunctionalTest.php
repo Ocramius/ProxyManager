@@ -1134,6 +1134,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             ],
             '(proxy) ' . OtherObjectAccessClass::class . '#$privateProperty' => [
                 $proxyClass::staticProxyConstructor(function () {
+                    self::fail('Should never be initialized, as its values aren\'t accessed');
                 }),
                 'getPrivateProperty',
                 "\0" . OtherObjectAccessClass::class . "\0privateProperty",
@@ -1141,6 +1142,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             ],
             '(proxy) ' . OtherObjectAccessClass::class . '#$protectedProperty' => [
                 $proxyClass::staticProxyConstructor(function () {
+                    self::fail('Should never be initialized, as its values aren\'t accessed');
                 }),
                 'getProtectedProperty',
                 "\0*\0protectedProperty",
@@ -1148,6 +1150,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             ],
             '(proxy) ' . OtherObjectAccessClass::class . '#$publicProperty' => [
                 $proxyClass::staticProxyConstructor(function () {
+                    self::fail('Should never be initialized, as its values aren\'t accessed');
                 }),
                 'getPublicProperty',
                 'publicProperty',
