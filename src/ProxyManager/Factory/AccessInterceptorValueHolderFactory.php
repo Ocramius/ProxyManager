@@ -45,14 +45,12 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *                                       after method logic is executed
      *
      * @return AccessInterceptorValueHolderInterface
-     *
-     * @todo need an interface that aggregates the two interfaces above (to be done before merging)
      */
     public function createProxy(
         $instance,
         array $prefixInterceptors = [],
         array $suffixInterceptors = []
-    ) {
+    ) : AccessInterceptorValueHolderInterface {
         $proxyClassName = $this->generateProxy(get_class($instance));
 
         return $proxyClassName::staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors);
