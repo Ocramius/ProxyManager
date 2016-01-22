@@ -544,6 +544,50 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     * @param string $propertyName
+     */
+    public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfDeSerialized(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue,
+        string $propertyName
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|AccessInterceptorInterface */
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
+
+        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $listener = $this->getMock(\stdClass::class, ['__invoke']);
+
+        $listener
+            ->expects(self::once())
+            ->method('__invoke')
+            ->with($proxy, $realInstance, '__get', ['name' => $propertyName]);
+
+        $proxy->setMethodPrefixInterceptor(
+            '__get',
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+                $listener($proxy, $instance, $method, $params, $returnEarly);
+            }
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertInternalType('callable', $accessor);
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
     {
         $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
