@@ -28,6 +28,7 @@ use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
+use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\LazyLoadingMock;
 
 /**
@@ -163,13 +164,11 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->will(
-                $this->returnCallback(
-                    function () use ($proxyClassName) {
-                        eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
-                    }
-                )
-            );
+            ->willReturnCallback(function () use ($proxyClassName) {
+                eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
+
+                return true;
+            });
 
         $this
             ->inflector
@@ -183,7 +182,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getUserClassName')
             ->with($className)
-            ->will($this->returnValue(LazyLoadingMock::class));
+            ->will($this->returnValue(EmptyClass::class));
 
         $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
@@ -195,6 +194,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
         $proxy       = $factory->createProxy($className, $initializer);
 
         $this->assertInstanceOf($proxyClassName, $proxy);
+        $this->assertSame($proxyClassName, get_class($proxy));
         $this->assertSame($initializer, $proxy->initializer);
     }
 }
