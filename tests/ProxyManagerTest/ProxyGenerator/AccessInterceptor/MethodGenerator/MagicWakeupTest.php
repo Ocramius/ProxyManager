@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
@@ -31,12 +32,11 @@ use ReflectionClass;
  * @license MIT
  *
  * @group Coverage
+ *
+ * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup
  */
 class MagicWakeupTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup::__construct
-     */
     public function testBodyStructure()
     {
         $reflection  = new ReflectionClass(
@@ -47,12 +47,9 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('__wakeup', $magicWakeup->getName());
         $this->assertCount(0, $magicWakeup->getParameters());
-        $this->assertSame("unset(\$this->bar, \$this->baz);", $magicWakeup->getBody());
+        $this->assertSame("unset(\$this->bar, \$this->baz);\n\n", $magicWakeup->getBody());
     }
 
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup::__construct
-     */
     public function testBodyStructureWithoutPublicProperties()
     {
         $magicWakeup = new MagicWakeup(new ReflectionClass(EmptyClass::class));
@@ -60,5 +57,22 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__wakeup', $magicWakeup->getName());
         $this->assertCount(0, $magicWakeup->getParameters());
         $this->assertEmpty($magicWakeup->getBody());
+    }
+
+    /**
+     * @group 276
+     */
+    public function testWillUnsetPrivateProperties()
+    {
+        $magicWakeup = new MagicWakeup(new ReflectionClass(ClassWithMixedProperties::class));
+
+        self::assertSame('unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, '
+        . '$this->protectedProperty0, $this->protectedProperty1, $this->protectedProperty2);
+
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $this) {
+    unset($this->privateProperty0, $this->privateProperty1, $this->privateProperty2);
+}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
+
+', $magicWakeup->getBody());
     }
 }
