@@ -1116,6 +1116,12 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 "\0" . OtherObjectAccessClass::class . "\0privateProperty",
                 uniqid('', true),
             ],
+            OtherObjectAccessClass::class . '#$protectedProperty' => [
+                new OtherObjectAccessClass(),
+                'getProtectedProperty',
+                "\0*\0protectedProperty",
+                uniqid('', true),
+            ],
         ];
     }
 }
