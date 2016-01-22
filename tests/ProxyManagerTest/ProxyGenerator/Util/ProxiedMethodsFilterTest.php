@@ -130,12 +130,22 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
             [
                 new ReflectionClass(LazyLoadingMock::class),
                 null,
-                [],
+                [
+                    'getProxyInitializer',
+                    'initializeProxy',
+                    'isProxyInitialized',
+                    'setProxyInitializer',
+                ],
             ],
             [
                 new ReflectionClass(LazyLoadingMock::class),
                 [],
-                [],
+                [
+                    'getProxyInitializer',
+                    'initializeProxy',
+                    'isProxyInitialized',
+                    'setProxyInitializer',
+                ],
             ],
             [
                 new ReflectionClass(HydratedObject::class),
