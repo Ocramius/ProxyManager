@@ -123,21 +123,30 @@ The initializer closure signature for ghost objects should be as following:
  *                             triggered initialization, indexed by parameter name
  * @var Closure $initializer   a reference to the property that is the initializer for the
  *                             proxy. Set it to null to disable further initialization
+ * @var array   $properties    an array with the properties defined in the object, with their
+ *                             default values pre-assigned. Keys are in the same format that
+ *                             an (array) cast of an object would provide:
+ *                              - `"\0Ns\\ClassName\0propertyName"` for `private $propertyName`
+ *                                defined on `Ns\ClassName`
+ *                              - `"\0Ns\\ClassName\0propertyName"` for `protected $propertyName`
+ *                                defined in any level of the hierarchy
+ *                              - `"propertyName"` for `public $propertyName`
+ *                                defined in any level of the hierarchy
  *
  * @return bool true on success
  */
-$initializer = function ($proxy, $method, $parameters, & $initializer) {};
+$initializer = function ($proxy, $method, $parameters, & $initializer, array $properties) {};
 ```
 
 The initializer closure should usually be coded like following:
 
 ```php
-$initializer = function ($proxy, $method, $parameters, & $initializer) {
+$initializer = function ($proxy, $method, $parameters, & $initializer, array $properties) {
     $initializer = null; // disable initializer for this proxy instance
 
-    // modify the object with loaded data
-    $proxy->setFoo(/* ... */);
-    $proxy->setBar(/* ... */);
+    // initialize properties (please read further on)
+    $properties["\0ClassName\0foo"] = 'foo';
+    $properties["\0ClassName\0bar"] = 'bar'; 
 
     return true; // report success
 };
