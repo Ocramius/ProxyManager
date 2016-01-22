@@ -59,7 +59,26 @@ class Constructor extends MethodGenerator
             . ");\n"
             . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"
             . self::getUnsetPropertiesString($originalClass)
-            . "}\n\n"
+            . "}"
+            . self::generateOriginalConstructorCall($originalClass, $valueHolder)
+        );
+
+        return $constructor;
+    }
+
+    private static function generateOriginalConstructorCall(
+        ReflectionClass $class,
+        PropertyGenerator $valueHolder
+    ) : string {
+        $originalConstructor = self::getConstructor($class);
+
+        if (! $originalConstructor) {
+            return '';
+        }
+
+        $constructor = self::fromReflection($originalConstructor);
+
+        return "\n\n"
             . '$this->' . $valueHolder->getName() . '->' . $constructor->getName() . '('
             . implode(
                 ', ',
@@ -70,10 +89,7 @@ class Constructor extends MethodGenerator
                     $constructor->getParameters()
                 )
             )
-            . ');'
-        );
-
-        return $constructor;
+            . ');';
     }
 
     /**
