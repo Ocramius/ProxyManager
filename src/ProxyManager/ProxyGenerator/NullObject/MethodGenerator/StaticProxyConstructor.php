@@ -41,7 +41,7 @@ class StaticProxyConstructor extends MethodGenerator
         parent::__construct('staticProxyConstructor', [], static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $nullableProperties = array_map(
-            function (ReflectionProperty $publicProperty) {
+            function (ReflectionProperty $publicProperty) : string {
                 return '$instance->' . $publicProperty->getName() . ' = null;';
             },
             Properties::fromReflectionClass($originalClass)->getPublicProperties()

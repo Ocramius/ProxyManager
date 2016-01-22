@@ -100,7 +100,7 @@ class Constructor extends MethodGenerator
     private static function getConstructor(ReflectionClass $class)
     {
         $constructors = array_map(
-            function (\ReflectionMethod $method) {
+            function (\ReflectionMethod $method) : MethodReflection {
                 return new MethodReflection(
                     $method->getDeclaringClass()->getName(),
                     $method->getName()

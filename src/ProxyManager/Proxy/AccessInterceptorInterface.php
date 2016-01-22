@@ -34,7 +34,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      * A prefix interceptor should have a signature like following:
      *
      * <code>
-     * $prefixInterceptor = function ($proxy, $instance, $method, $params, & $returnEarly) {};
+     * $interceptor = function ($proxy, $instance, string $method, array $params, & $returnEarly) {};
      * </code>
      *
      * @param string        $methodName        name of the intercepted method
@@ -52,7 +52,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      * A prefix interceptor should have a signature like following:
      *
      * <code>
-     * $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) {};
+     * $interceptor = function ($proxy, $instance, string $method, array $params, $returnValue, & $returnEarly) {};
      * </code>
      *
      * @param string        $methodName        name of the intercepted method

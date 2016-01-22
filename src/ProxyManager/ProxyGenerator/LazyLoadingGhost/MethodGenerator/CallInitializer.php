@@ -131,7 +131,7 @@ PHP;
         return implode(
             "\n",
             array_map(
-                function (ReflectionProperty $property) {
+                function (ReflectionProperty $property) : string {
                     return '    $instance->' . $property->getName()
                         . ' = ' . $this->getExportedPropertyDefaultValue($property) . ';';
                 },
