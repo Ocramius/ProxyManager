@@ -5,5 +5,5 @@ if [ "$TRAVIS_PHP_VERSION" = 'hhvm' ] ; then
     hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 composer.phar update --prefer-source
 else
     composer self-update
-    composer update --prefer-source
+    composer update --prefer-source $DEPENDENCIES
 fi
