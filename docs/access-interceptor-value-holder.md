@@ -58,10 +58,8 @@ PostFoo!
 
 A proxy produced by the
 [`ProxyManager\Factory\AccessInterceptorValueHolderFactory`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/AccessInterceptorValueHolderFactory.php)
-implements both the
-[`ProxyManager\Proxy\ValueHolderInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/ValueHolderInterface.php)
-and the
-[`ProxyManager\Proxy\AccessInterceptorInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/ValueHolderInterface.php).
+implements the
+[`ProxyManager\Proxy\AccessInterceptorValueHolderInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/AccessInterceptorValueHolderInterface.php).
 
 Therefore, you can set an access interceptor callback by calling:
 

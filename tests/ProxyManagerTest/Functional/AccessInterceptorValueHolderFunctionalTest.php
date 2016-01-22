@@ -25,7 +25,6 @@ use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -545,7 +544,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $propertyName
     ) {
         $proxyName = $this->generateProxy(get_class($realInstance));
-        /* @var $proxy OtherObjectAccessClass|AccessInterceptorInterface */
+        /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = $proxyName::staticProxyConstructor($realInstance);
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
@@ -588,7 +587,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $propertyName
     ) {
         $proxyName = $this->generateProxy(get_class($realInstance));
-        /* @var $proxy OtherObjectAccessClass|AccessInterceptorInterface */
+        /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
@@ -632,7 +631,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $propertyName
     ) {
         $proxyName = $this->generateProxy(get_class($realInstance));
-        /* @var $proxy OtherObjectAccessClass|AccessInterceptorInterface */
+        /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = clone $proxyName::staticProxyConstructor($realInstance);
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
