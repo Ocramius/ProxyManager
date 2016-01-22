@@ -32,9 +32,10 @@ $factory   = new LazyLoadingGhostFactory();
 for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
         'Foo',
-        function ($proxy, $method, $parameters, & $initializer) {
+        function ($proxy, $method, $parameters, & $initializer, array $properties) {
             $initializer   = null;
-            $proxy->setFoo('Hello World!');
+
+            $properties["\0Foo\0foo"] = 'Hello World!';
 
             return true;
         }
