@@ -668,20 +668,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 $expectedValue,
                 $propertyName,
             ];
-
-            $realInstance  = new OtherObjectAccessClass();
-            $expectedValue = uniqid('', true);
-
-            $property->setValue($realInstance, $expectedValue);
-
-            // callee is a proxy (not to be lazy-loaded!)
-            yield '(proxy constructed via __construct) ' . OtherObjectAccessClass::class . '#$' . $propertyName => [
-                new $proxyClass,
-                $realInstance,
-                'get' . ucfirst($propertyName),
-                $expectedValue,
-                $propertyName,
-            ];
         }
     }
 }
