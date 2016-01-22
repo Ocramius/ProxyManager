@@ -12,6 +12,7 @@ class Foo
 
     public function __construct()
     {
+        // this will be completely skipped
         sleep(5);
     }
 
