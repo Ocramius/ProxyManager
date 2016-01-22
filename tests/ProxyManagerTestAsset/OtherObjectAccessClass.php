@@ -16,33 +16,31 @@
  * and is licensed under the MIT license.
  */
 
-namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
-
-use ProxyManager\Generator\MagicMethodGenerator;
-use ProxyManager\ProxyGenerator\Util\Properties;
-use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
-use ReflectionClass;
+namespace ProxyManagerTestAsset;
 
 /**
- * Magic `__wakeup` for lazy loading value holder objects
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
+ * Class used to verify that accessing protected scope of other objects still triggers lazy loading/interception
  */
-class MagicWakeup extends MagicMethodGenerator
+class OtherObjectAccessClass
 {
-    /**
-     * Constructor
-     *
-     * @param ReflectionClass $originalClass
-     */
-    public function __construct(ReflectionClass $originalClass)
-    {
-        parent::__construct($originalClass, '__wakeup');
+    private $privateProperty = 'privateProperty';
 
-        $this->setBody(UnsetPropertiesGenerator::generateSnippet(
-            Properties::fromReflectionClass($originalClass),
-            'this'
-        ));
+    protected $protectedProperty = 'protectedProperty';
+
+    public $publicProperty = 'publicProperty';
+
+    public function getPrivateProperty(self $other) : string
+    {
+        return $other->privateProperty;
+    }
+
+    public function getProtectedProperty(self $other) : string
+    {
+        return $other->protectedProperty;
+    }
+
+    public function getPublicProperty(self $other) : string
+    {
+        return $other->publicProperty;
     }
 }

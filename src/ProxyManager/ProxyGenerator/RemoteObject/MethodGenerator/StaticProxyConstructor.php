@@ -20,9 +20,10 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
+use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -56,11 +57,8 @@ class StaticProxyConstructor extends MethodGenerator
         $body = 'static $reflection;' . "\n\n"
             . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
-            . '$instance->' . $adapterName . ' = $' . $adapterName . ';';
-
-        foreach (Properties::fromReflectionClass($originalClass)->getPublicProperties() as $property) {
-            $body .= "\nunset(\$instance->" . $property->getName() . ');';
-        }
+            . '$instance->' . $adapterName . ' = $' . $adapterName . ";\n\n"
+            . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'instance');
 
         $this->setBody($body . "\n\nreturn \$instance;");
     }

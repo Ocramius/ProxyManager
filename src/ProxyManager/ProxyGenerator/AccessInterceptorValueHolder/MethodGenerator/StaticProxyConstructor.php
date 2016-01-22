@@ -19,9 +19,10 @@
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
+use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -60,13 +61,6 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($prefix);
         $this->setParameter($suffix);
 
-        $publicProperties = Properties::fromReflectionClass($originalClass)->getPublicProperties();
-        $unsetProperties  = [];
-
-        foreach ($publicProperties as $publicProperty) {
-            $unsetProperties[] = '$instance->' . $publicProperty->getName();
-        }
-
         $this->setDocblock(
             "Constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$wrappedObject\n"
@@ -74,11 +68,12 @@ class StaticProxyConstructor extends MethodGenerator
             . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
             . "@return self"
         );
+
         $this->setBody(
             'static $reflection;' . "\n\n"
             . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
             . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
-            . ($unsetProperties ? 'unset(' . implode(', ', $unsetProperties) . ");\n\n" : '')
+            . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'instance')
             . '$instance->' . $valueHolder->getName() . " = \$wrappedObject;\n"
             . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
             . '$instance->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;\n\n"

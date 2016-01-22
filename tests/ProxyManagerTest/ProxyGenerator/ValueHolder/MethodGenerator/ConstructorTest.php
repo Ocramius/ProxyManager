@@ -61,12 +61,9 @@ if (! $this->foo) {
     $reflection = $reflection ?: new \ReflectionClass(\'ProxyManagerTestAsset\\\\ProxyGenerator\\\\LazyLoading\\\\'
             . 'MethodGenerator\\\\ClassWithTwoPublicProperties\');
     $this->foo = $reflection->newInstanceWithoutConstructor();
+unset($this->bar, $this->baz);
 
-    unset($this->bar);
-    unset($this->baz);
-}
-
-$this->foo->__construct();',
+}',
             $constructor->getBody()
         );
     }
@@ -91,9 +88,7 @@ $this->foo->__construct();',
 if (! $this->foo) {
     $reflection = $reflection ?: new \ReflectionClass(\'ProxyManagerTestAsset\\\\EmptyClass\');
     $this->foo = $reflection->newInstanceWithoutConstructor();
-}
-
-$this->foo->__construct();',
+}',
             $constructor->getBody()
         );
     }
@@ -116,13 +111,13 @@ static $reflection;
 if (! $this->foo) {
     $reflection = $reflection ?: new \ReflectionClass('ProxyManagerTestAsset\\ClassWithMixedProperties');
     $this->foo = $reflection->newInstanceWithoutConstructor();
+unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $this->protectedProperty0, $this->protectedProperty1, $this->protectedProperty2);
 
-    unset($this->publicProperty0);
-    unset($this->publicProperty1);
-    unset($this->publicProperty2);
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $this) {
+    unset($this->privateProperty0, $this->privateProperty1, $this->privateProperty2);
+}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke($this);
+
 }
-
-$this->foo->__construct();
 PHP;
 
         $this->assertSame($expectedCode, $constructor->getBody());
@@ -149,6 +144,10 @@ static $reflection;
 if (! $this->foo) {
     $reflection = $reflection ?: new \ReflectionClass('ProxyManagerTestAsset\\ClassWithVariadicConstructorArgument');
     $this->foo = $reflection->newInstanceWithoutConstructor();
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithVariadicConstructorArgument $this) {
+    unset($this->foo, $this->bar);
+}, $this, 'ProxyManagerTestAsset\\ClassWithVariadicConstructorArgument')->__invoke($this);
+
 }
 
 $this->foo->__construct($foo, ...$bar);

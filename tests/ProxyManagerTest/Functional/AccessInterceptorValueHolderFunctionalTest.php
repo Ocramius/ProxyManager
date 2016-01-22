@@ -23,6 +23,7 @@ use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
@@ -33,6 +34,7 @@ use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ReflectionClass;
 use stdClass;
 
@@ -496,5 +498,173 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 'publicPropertyDefault',
             ],
         ];
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     * @param string $propertyName
+     */
+    public function testWillInterceptAccessToPropertiesViaFriendClassAccess(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue,
+        string $propertyName
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|AccessInterceptorInterface */
+        $proxy = $proxyName::staticProxyConstructor($realInstance);
+
+        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $listener = $this->getMock(\stdClass::class, ['__invoke']);
+
+        $listener
+            ->expects(self::once())
+            ->method('__invoke')
+            ->with($proxy, $realInstance, '__get', ['name' => $propertyName]);
+
+        $proxy->setMethodPrefixInterceptor(
+            '__get',
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+                $listener($proxy, $instance, $method, $params, $returnEarly);
+            }
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     * @param string $propertyName
+     */
+    public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfDeSerialized(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue,
+        string $propertyName
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|AccessInterceptorInterface */
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
+
+        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $listener = $this->getMock(\stdClass::class, ['__invoke']);
+
+        $listener
+            ->expects(self::once())
+            ->method('__invoke')
+            ->with($proxy, $realInstance, '__get', ['name' => $propertyName]);
+
+        $proxy->setMethodPrefixInterceptor(
+            '__get',
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+                $listener($proxy, $instance, $method, $params, $returnEarly);
+            }
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     * @param string $propertyName
+     */
+    public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfCloned(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue,
+        string $propertyName
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|AccessInterceptorInterface */
+        $proxy = clone $proxyName::staticProxyConstructor($realInstance);
+
+        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        $listener = $this->getMock(\stdClass::class, ['__invoke']);
+
+        $listener
+            ->expects(self::once())
+            ->method('__invoke')
+            ->with($proxy, $realInstance, '__get', ['name' => $propertyName]);
+
+        $proxy->setMethodPrefixInterceptor(
+            '__get',
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+                $listener($proxy, $instance, $method, $params, $returnEarly);
+            }
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
+    {
+        $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
+
+        foreach ((new \ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
+            $property->setAccessible(true);
+
+            $propertyName  = $property->getName();
+            $realInstance  = new OtherObjectAccessClass();
+            $expectedValue = uniqid('', true);
+
+            $property->setValue($realInstance, $expectedValue);
+
+            // callee is an actual object
+            yield OtherObjectAccessClass::class . '#$' . $propertyName => [
+                new OtherObjectAccessClass(),
+                $realInstance,
+                'get' . ucfirst($propertyName),
+                $expectedValue,
+                $propertyName,
+            ];
+
+            $realInstance  = new OtherObjectAccessClass();
+            $expectedValue = uniqid('', true);
+
+            $property->setValue($realInstance, $expectedValue);
+
+            // callee is a proxy (not to be lazy-loaded!)
+            yield '(proxy) ' . OtherObjectAccessClass::class . '#$' . $propertyName => [
+                $proxyClass::staticProxyConstructor(new OtherObjectAccessClass()),
+                $realInstance,
+                'get' . ucfirst($propertyName),
+                $expectedValue,
+                $propertyName,
+            ];
+        }
     }
 }

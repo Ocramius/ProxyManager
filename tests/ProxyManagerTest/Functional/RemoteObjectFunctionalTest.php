@@ -21,11 +21,14 @@ namespace ProxyManagerTest\Functional;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\RemoteObjectInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
 use ReflectionClass;
@@ -233,5 +236,102 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicProperty remote',
             ],
         ];
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     * @param string $propertyName
+     */
+    public function testWillInterceptAccessToPropertiesViaFriendClassAccess(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue,
+        string $propertyName
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+
+        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $adapter = $this->getMock(AdapterInterface::class);
+
+        $adapter
+            ->expects(self::once())
+            ->method('call')
+            ->with(get_class($realInstance), '__get', [$propertyName])
+            ->willReturn($expectedValue);
+
+        /* @var $proxy OtherObjectAccessClass|RemoteObjectInterface */
+        $proxy = $proxyName::staticProxyConstructor($adapter);
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     * @param string $propertyName
+     */
+    public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfCloned(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue,
+        string $propertyName
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+
+        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $adapter = $this->getMock(AdapterInterface::class);
+
+        $adapter
+            ->expects(self::once())
+            ->method('call')
+            ->with(get_class($realInstance), '__get', [$propertyName])
+            ->willReturn($expectedValue);
+
+        /* @var $proxy OtherObjectAccessClass|RemoteObjectInterface */
+        $proxy = clone $proxyName::staticProxyConstructor($adapter);
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
+    {
+        foreach ((new \ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
+            $property->setAccessible(true);
+
+            $propertyName  = $property->getName();
+            $realInstance  = new OtherObjectAccessClass();
+            $expectedValue = uniqid('', true);
+
+            $property->setValue($realInstance, $expectedValue);
+
+            yield OtherObjectAccessClass::class . '#$' . $propertyName => [
+                new OtherObjectAccessClass(),
+                $realInstance,
+                'get' . ucfirst($propertyName),
+                $expectedValue,
+                $propertyName,
+            ];
+        }
     }
 }

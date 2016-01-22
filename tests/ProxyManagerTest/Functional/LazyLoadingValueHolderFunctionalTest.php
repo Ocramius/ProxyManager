@@ -23,6 +23,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -34,6 +35,7 @@ use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ReflectionClass;
 use stdClass;
 
@@ -522,5 +524,141 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 'publicPropertyDefault',
             ],
         ];
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     */
+    public function testWillLazyLoadMembersOfOtherProxiesWithTheSamePrivateScope(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = $proxyName::staticProxyConstructor($this->createInitializer(get_class($realInstance), $realInstance));
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertFalse($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+        self::assertTrue($proxy->isProxyInitialized());
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     */
+    public function testWillFetchMembersOfOtherDeSerializedProxiesWithTheSamePrivateScope(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = unserialize(serialize(
+            $proxyName::staticProxyConstructor($this->createInitializer(get_class($realInstance), $realInstance))
+        ));
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param object $realInstance
+     * @param string $method
+     * @param string $expectedValue
+     */
+    public function testWillFetchMembersOfOtherClonedProxiesWithTheSamePrivateScope(
+        $callerObject,
+        $realInstance,
+        string $method,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($realInstance));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = clone $proxyName::staticProxyConstructor(
+            $this->createInitializer(get_class($realInstance), $realInstance)
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
+    {
+        $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
+
+        foreach ((new \ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
+            $propertyName  = $property->getName();
+            $expectedValue = uniqid('', true);
+
+            // callee is an actual object
+            yield OtherObjectAccessClass::class . '#$' . $propertyName => [
+                new OtherObjectAccessClass(),
+                $this->buildInstanceWithValues(new OtherObjectAccessClass(), [$propertyName => $expectedValue]),
+                'get' . ucfirst($propertyName),
+                $expectedValue,
+            ];
+
+            $expectedValue = uniqid('', true);
+
+            // callee is a proxy (not to be lazy-loaded!)
+            yield '(proxy) ' . OtherObjectAccessClass::class . '#$' . $propertyName => [
+                $proxyClass::staticProxyConstructor($this->createInitializer(
+                    OtherObjectAccessClass::class,
+                    new OtherObjectAccessClass()
+                )),
+                $this->buildInstanceWithValues(new OtherObjectAccessClass(), [$propertyName => $expectedValue]),
+                'get' . ucfirst($propertyName),
+                $expectedValue,
+            ];
+        }
+    }
+
+    /**
+     * @param object $instance
+     * @param array  $values
+     *
+     * @return object
+     */
+    private function buildInstanceWithValues($instance, array $values)
+    {
+        foreach ($values as $property => $value) {
+            $property = new \ReflectionProperty($instance, $property);
+
+            $property->setAccessible(true);
+
+            $property->setValue($instance, $value);
+        }
+
+        return $instance;
     }
 }

@@ -24,6 +24,7 @@ use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
@@ -41,6 +42,7 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -1006,6 +1008,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
 
+
     /**
      * @return mixed[] in order:
      *                  - the class to be proxied
@@ -1067,6 +1070,156 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                     ]
                 ],
                 'property0',
+            ],
+        ];
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param string $method
+     * @param string $propertyIndex
+     * @param string $expectedValue
+     */
+    public function testWillLazyLoadMembersOfOtherProxiesWithTheSamePrivateScope(
+        $callerObject,
+        string $method,
+        string $propertyIndex,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($callerObject));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $props) use ($propertyIndex, $expectedValue) {
+                $initializer = null;
+
+                $props[$propertyIndex] = $expectedValue;
+            }
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertFalse($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+        self::assertTrue($proxy->isProxyInitialized());
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param string $method
+     * @param string $propertyIndex
+     * @param string $expectedValue
+     */
+    public function testWillAccessMembersOfOtherDeSerializedProxiesWithTheSamePrivateScope(
+        $callerObject,
+        string $method,
+        string $propertyIndex,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($callerObject));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $props) use ($propertyIndex, $expectedValue) {
+                $initializer = null;
+
+                $props[$propertyIndex] = $expectedValue;
+            }
+        )));
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    /**
+     * @group 276
+     *
+     * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     *
+     * @param object $callerObject
+     * @param string $method
+     * @param string $propertyIndex
+     * @param string $expectedValue
+     */
+    public function testWillAccessMembersOfOtherClonedProxiesWithTheSamePrivateScope(
+        $callerObject,
+        string $method,
+        string $propertyIndex,
+        string $expectedValue
+    ) {
+        $proxyName = $this->generateProxy(get_class($callerObject));
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = clone $proxyName::staticProxyConstructor(
+            function ($proxy, $method, $params, & $initializer, array $props) use ($propertyIndex, $expectedValue) {
+                $initializer = null;
+
+                $props[$propertyIndex] = $expectedValue;
+            }
+        );
+
+        /* @var $accessor callable */
+        $accessor = [$callerObject, $method];
+
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : array
+    {
+        $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
+
+        return [
+            OtherObjectAccessClass::class . '#$privateProperty' => [
+                new OtherObjectAccessClass(),
+                'getPrivateProperty',
+                "\0" . OtherObjectAccessClass::class . "\0privateProperty",
+                uniqid('', true),
+            ],
+            OtherObjectAccessClass::class . '#$protectedProperty' => [
+                new OtherObjectAccessClass(),
+                'getProtectedProperty',
+                "\0*\0protectedProperty",
+                uniqid('', true),
+            ],
+            OtherObjectAccessClass::class . '#$publicProperty' => [
+                new OtherObjectAccessClass(),
+                'getPublicProperty',
+                'publicProperty',
+                uniqid('', true),
+            ],
+            '(proxy) ' . OtherObjectAccessClass::class . '#$privateProperty' => [
+                $proxyClass::staticProxyConstructor(function () {
+                    self::fail('Should never be initialized, as its values aren\'t accessed');
+                }),
+                'getPrivateProperty',
+                "\0" . OtherObjectAccessClass::class . "\0privateProperty",
+                uniqid('', true),
+            ],
+            '(proxy) ' . OtherObjectAccessClass::class . '#$protectedProperty' => [
+                $proxyClass::staticProxyConstructor(function () {
+                    self::fail('Should never be initialized, as its values aren\'t accessed');
+                }),
+                'getProtectedProperty',
+                "\0*\0protectedProperty",
+                uniqid('', true),
+            ],
+            '(proxy) ' . OtherObjectAccessClass::class . '#$publicProperty' => [
+                $proxyClass::staticProxyConstructor(function () {
+                    self::fail('Should never be initialized, as its values aren\'t accessed');
+                }),
+                'getPublicProperty',
+                'publicProperty',
+                uniqid('', true),
             ],
         ];
     }

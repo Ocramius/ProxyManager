@@ -60,13 +60,9 @@ $instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor()
 unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
             . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
 
-static $cache%a;
-
-$cache%s ?: $cache%s = \Closure::bind(function ($instance) {
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $instance) {
     unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);
-}, null, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
-
-$cache%s($instance);
+}, $instance, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($instance);
 
 $instance->foo = $initializer;
 

@@ -93,6 +93,10 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
 
                 $this->assertNotSame(get_class($comparedProxy), get_class($proxy));
             }
+
+            $proxyClass = get_class($proxy);
+
+            self::assertInstanceOf($proxyClass, new $proxyClass, 'Proxy can be instantiated via normal constructor');
         }
 
         $this->assertInstanceOf(GhostObjectInterface::class, $generated[0]);
