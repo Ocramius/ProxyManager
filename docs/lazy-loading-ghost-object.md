@@ -90,7 +90,7 @@ use ProxyManager\Proxy\LazyLoadingInterface;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $factory     = new LazyLoadingGhostFactory();
-$initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer) {
+$initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer, array $properties) {
     $initializer   = null; // disable initialization
 
     // load data and modify the object here
@@ -123,7 +123,7 @@ The initializer closure signature for ghost objects should be as following:
  *                             triggered initialization, indexed by parameter name
  * @var Closure $initializer   a reference to the property that is the initializer for the
  *                             proxy. Set it to null to disable further initialization
- * @var array   $properties    an array with the properties defined in the object, with their
+ * @var array   $properties    by-ref array with the properties defined in the object, with their
  *                             default values pre-assigned. Keys are in the same format that
  *                             an (array) cast of an object would provide:
  *                              - `"\0Ns\\ClassName\0propertyName"` for `private $propertyName`
@@ -152,12 +152,71 @@ $initializer = function ($proxy, $method, $parameters, & $initializer, array $pr
 };
 ```
 
+### Lazy initialization `$properties` explained
+
+Please note the interesting assignments in this closure: the keys are using weird `"\0"` sequences.
+This is nothing special, actually: that's how PHP represents private and protected properties when
+casting an object to an array.
+ProxyManager simply copies a reference to the properties into the `$properties` array passed to the
+initializer, which allows you to set the state of the object without accessing any of its public
+API (very important detail for mapper implementations!).
+
+Specifically:
+
+ * `"\0Ns\\ClassName\0propertyName"` stands for `private $propertyName` defined in `Ns\ClassName`
+ * `"\0*\0propertyName"` stands for `protected $propertyName` defined in any level of the class 
+   hierarchy
+ * `"propertyName"` stands for `public $propertyName` defined in any level of the class hierarchy
+
+Therefore, if you want to initialize the values of a class like the following one:
+
+```php
+namespace MyNamespace;
+
+class MyClass
+{
+    private $property1;
+    protected $property2;
+    public $property3;
+}
+```
+
+You would write initialization code like following:
+
+```php
+namespace MyApp;
+
+use ProxyManager\Factory\LazyLoadingGhostFactory;
+use ProxyManager\Proxy\LazyLoadingInterface;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$factory     = new LazyLoadingGhostFactory();
+$initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer, array $properties) {
+    $initializer = null;
+
+    $properties["\0MyNamespace\\MyClass\0property1"] = 'foo';
+    $properties["\0*\0property2"]                    = 'bar';
+    $properties["property3"]                         = 'baz';
+
+    return true;
+};
+
+$instance = $factory->createProxy(\MyNamespace\MyClass::class, $initializer);
+```
+
+This code would initialize `$property1`, `$property2` and `$property3`
+respectively to `"foo"`, `"bar"` and `"baz"`.
+
+Also note that you may read the default values for those properties by
+just reading the respective array keys.
+
+## Proxy implementation
+
 The
 [`ProxyManager\Factory\LazyLoadingGhostFactory`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/LazyLoadingGhostFactory.php)
-produces proxies that implement both the
-[`ProxyManager\Proxy\GhostObjectInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/GhostObjectInterface.php)
-and the
-[`ProxyManager\Proxy\LazyLoadingInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/LazyLoadingInterface.php).
+produces proxies that implement the
+[`ProxyManager\Proxy\GhostObjectInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/GhostObjectInterface.php).
 
 At any point in time, you can set a new initializer for the proxy:
 
