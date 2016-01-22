@@ -29,15 +29,23 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
- *
- * @method VirtualProxyInterface createProxy($className, \Closure $initializer)
  */
-class LazyLoadingValueHolderFactory extends AbstractLazyFactory
+class LazyLoadingValueHolderFactory extends AbstractBaseFactory
 {
     /**
      * @var \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator|null
      */
     private $generator;
+
+    public function createProxy(
+        string $className,
+        \Closure $initializer,
+        array $proxyOptions = []
+    ) : VirtualProxyInterface {
+        $proxyClassName = $this->generateProxy($className, $proxyOptions);
+
+        return $proxyClassName::staticProxyConstructor($initializer);
+    }
 
     /**
      * {@inheritDoc}
