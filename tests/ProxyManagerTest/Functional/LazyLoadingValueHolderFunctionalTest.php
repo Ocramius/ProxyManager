@@ -620,39 +620,48 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
 
         foreach ((new \ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
-            $property->setAccessible(true);
-
             $propertyName  = $property->getName();
-            $caller        = new OtherObjectAccessClass();
-            $realInstance  = new OtherObjectAccessClass();
             $expectedValue = uniqid('', true);
-
-            $property->setValue($realInstance, $expectedValue);
 
             // callee is an actual object
             yield OtherObjectAccessClass::class . '#$' . $propertyName => [
-                $caller,
-                $realInstance,
+                new OtherObjectAccessClass(),
+                $this->buildInstanceWithValues(new OtherObjectAccessClass(), [$propertyName => $expectedValue]),
                 'get' . ucfirst($propertyName),
                 $expectedValue,
             ];
 
-            $realInstance  = new OtherObjectAccessClass();
             $expectedValue = uniqid('', true);
-            $caller        = $proxyClass::staticProxyConstructor($this->createInitializer(
-                OtherObjectAccessClass::class,
-                new OtherObjectAccessClass()
-            ));
-
-            $property->setValue($realInstance, $expectedValue);
 
             // callee is a proxy (not to be lazy-loaded!)
             yield '(proxy) ' . OtherObjectAccessClass::class . '#$' . $propertyName => [
-                $caller,
-                $realInstance,
+                $proxyClass::staticProxyConstructor($this->createInitializer(
+                    OtherObjectAccessClass::class,
+                    new OtherObjectAccessClass()
+                )),
+                $this->buildInstanceWithValues(new OtherObjectAccessClass(), [$propertyName => $expectedValue]),
                 'get' . ucfirst($propertyName),
                 $expectedValue,
             ];
         }
+    }
+
+    /**
+     * @param object $instance
+     * @param array  $values
+     *
+     * @return object
+     */
+    private function buildInstanceWithValues($instance, array $values)
+    {
+        foreach ($values as $property => $value) {
+            $property = new \ReflectionProperty($instance, $property);
+
+            $property->setAccessible(true);
+
+            $property->setValue($instance, $value);
+        }
+
+        return $instance;
     }
 }
