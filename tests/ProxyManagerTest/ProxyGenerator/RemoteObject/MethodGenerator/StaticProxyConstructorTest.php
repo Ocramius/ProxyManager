@@ -56,9 +56,15 @@ $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
 $instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();
 
 $instance->adapter = $adapter;
-unset($instance->publicProperty0);
-unset($instance->publicProperty1);
-unset($instance->publicProperty2);
+
+unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
+        . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
+
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $instance) {
+    unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);
+}, $instance, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($instance);
+
+
 
 return $instance;',
             $constructor->getBody()
