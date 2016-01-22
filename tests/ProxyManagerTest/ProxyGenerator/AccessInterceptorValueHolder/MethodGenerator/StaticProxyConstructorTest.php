@@ -20,6 +20,7 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGen
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\StaticProxyConstructor;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
 use ReflectionClass;
@@ -110,6 +111,40 @@ $instance->pre = $prefixInterceptors;
 $instance->post = $suffixInterceptors;
 
 return $instance;',
+            $constructor->getBody()
+        );
+    }
+
+    /**
+     * @group 276
+     */
+    public function testUnsetsPrivatePropertiesAsWell()
+    {
+        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $valueHolder        = $this->getMock(PropertyGenerator::class);
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $prefixInterceptors = $this->getMock(PropertyGenerator::class);
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $suffixInterceptors = $this->getMock(PropertyGenerator::class);
+
+        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
+        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+
+        $constructor = new StaticProxyConstructor(
+            new ReflectionClass(ClassWithMixedProperties::class),
+            $valueHolder,
+            $prefixInterceptors,
+            $suffixInterceptors
+        );
+
+        self::assertContains(
+            'unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
+            . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
+
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $instance) {
+    unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);
+}, $instance, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($instance);',
             $constructor->getBody()
         );
     }
