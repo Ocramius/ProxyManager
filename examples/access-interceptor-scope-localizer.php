@@ -13,8 +13,7 @@ class FluentCounter
 {
     public $counter = 0;
 
-    /** @return FluentCounter */
-    public function fluentMethod()
+    public function fluentMethod() : self
     {
         $this->counter += 1;
 

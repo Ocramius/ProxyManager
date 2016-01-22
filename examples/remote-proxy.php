@@ -16,7 +16,7 @@ if (! class_exists('Zend\XmlRpc\Client')) {
 
 class Foo
 {
-    public function bar()
+    public function bar() : string
     {
         return 'bar local!';
     }

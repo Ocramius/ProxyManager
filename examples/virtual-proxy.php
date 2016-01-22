@@ -8,7 +8,7 @@ class Foo
 {
     public function __construct()
     {
-        sleep(5);
+        sleep(1);
     }
 
     public function doFoo()

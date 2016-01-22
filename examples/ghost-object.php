@@ -6,7 +6,7 @@ use ProxyManager\Factory\LazyLoadingGhostFactory;
 
 class Foo
 {
-    private $foo;
+    private $foo = '';
 
     public function __construct()
     {
@@ -18,7 +18,7 @@ class Foo
         $this->foo = (string) $foo;
     }
 
-    public function getFoo()
+    public function getFoo() : string
     {
         return $this->foo;
     }
