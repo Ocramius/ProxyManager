@@ -20,7 +20,11 @@ script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --exclude-group=Performance,Coverage
   - php -n ./vendor/bin/phpunit --group=Performance
-  # - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
+  - echo "Running examples"
+  - php examples/access-interceptor-scope-localizer.php
+  - php examples/ghost-object.php
+  - php examples/virtual-proxy.php
+  #- ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
 
 matrix:
   allow_failures:
