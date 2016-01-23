@@ -160,7 +160,7 @@ $initializer = function (
 ) {};
 ```
 
-The initializer closure should usually be coded like following:
+An initializer closure generally follows the following pattern:
 
 ```php
 $initializer = function (
@@ -277,6 +277,11 @@ $initializer = null; // if you use the initializer passed by reference to the cl
 Remember to call `$ghostObject->setProxyInitializer(null);`, or to set `$initializer = null` inside your
 initializer closure to disable initialization of your proxy, or else initialization will trigger
 more than once.
+
+In some exceptional cases, you might want to lazy-load an object multiple times, and
+not unset the initializer. This is an advanced use-case scenario, and you should
+probably avoid doing so unless you are absolutely sure that you want multiple
+lazy-initialization cycles (object gets refreshed at every property access).
 
 ## Triggering Initialization
 
