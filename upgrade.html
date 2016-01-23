@@ -76,6 +76,31 @@
 <div class="content">
     
         <p>This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:</p>
+<h1 id="200">2.0.0</h1>
+<ul>
+<li>PHP <code>~7.0</code> is now required to use ProxyManager</li>
+<li>HHVM compatibility is not guaranteed, as HHVM is not yet PHP 7 compliant</li>
+<li>All classes and interfaces now use <a href="http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration">strict scalar type hints</a>.
+If you extended or implemented anything from the <code>ProxyManager\</code> namespace, you probably need to change
+that code to adapt it to the new signature.</li>
+<li>All classes and interfaces now use <a href="http://php.net/manual/en/functions.returning-values.php#functions.returning-values.type-declaration">return type declarations</a>.
+If you extended or implemented anything from the <code>ProxyManager\</code> namespace, you probably need to change
+that code to adapt it to the new signature.</li>
+<li>ProxyManager will no longer write proxies to disk by default:
+the <a href="src/GeneratorStrategy/EvaluatingGeneratorStrategy.php"><code>EvaluatingGeneratorStrategy</code></a> is used instead.
+If you still want ProxyManager to write files to disk, please refer to the <a href="docs/tuning-for-production.html">tuning for production docs</a></li>
+<li>Ghost objects were entirely rewritten, for better support and improved performance. Lazy-loading is not
+triggered by public API access, but by property access (private and public). While this is not really a BC
+break, you are encouraged to check your applications if you rely on <a href="docs/lazy-loading-ghost-object.html">ghost objects</a>.</li>
+<li>If ProxyManager can't find a proxy, it will now automatically attempt to auto-generate it, regardless of
+the settings passed to it.</li>
+<li><code>ProxyManager\Configuration#setAutoGenerateProxies()</code> was removed. Please look for calls to this method and
+remove them.</li>
+<li>Private properties are now also correctly handled by ProxyManager: accessing proxy state via friend classes
+(protected or private scope) does not require any particular workarounds anymore.</li>
+</ul>
+<h1 id="100">1.0.0</h1>
+<p><code>1.0.0</code> is be fully compatible with <code>0.5.0</code>.</p>
 <h1 id="050">0.5.0</h1>
 <ul>
 <li>The Generated Hydrator has been removed - it is now available as a separate project
