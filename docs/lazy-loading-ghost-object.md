@@ -53,18 +53,18 @@ subject, they are better suited for representing dataset rows.
 
 You usually need a ghost object in cases where following applies:
 
- * you are building a small data-mapper and want to lazily load data across associations in your object graph
- * you want to initialize objects representing rows in a large dataset
- * you want to compare instances of lazily initialized objects without the risk of comparing a proxy with a real subject
+ * you are building a small data-mapper and want to lazily load data across associations in your object graph;
+ * you want to initialize objects representing rows in a large dataset;
+ * you want to compare instances of lazily initialized objects without the risk of comparing a proxy with a real subject;
  * you are aware of the internal state of the object and are confident in working with its internals via reflection
-   or direct property access
+   or direct property access.
 
 ## Usage examples
 
 [ProxyManager](https://github.com/Ocramius/ProxyManager) provides a factory that creates lazy loading ghost objects.
 To use it, follow these steps:
 
-First of all, define your object's logic without taking care of lazy loading:
+First, define your object's logic without taking care of lazy loading:
 
 ```php
 namespace MyApp;
@@ -84,8 +84,8 @@ class Customer
 }
 ```
 
-Then use the proxy manager to create a ghost object of it.
-You will be responsible of setting its state during lazy loading:
+Then, use the proxy manager to create a ghost object of it.
+You will be responsible for setting its state during lazy loading:
 
 ```php
 namespace MyApp;
@@ -106,8 +106,8 @@ $initializer = function (
     $initializer   = null; // disable initialization
 
     // load data and modify the object here
-    $properties["\0ClassName\0name"]    = 'Agent';
-    $properties["\0ClassName\0surname"] = 'Smith'; 
+    $properties["\0ClassName\0foo"] = 'foo';
+    $properties["\0ClassName\0bar"] = 'bar'; 
     
     // you may also call methods on the object, but remember that
     // the constructor was not called yet:
@@ -116,30 +116,30 @@ $initializer = function (
     return true; // confirm that initialization occurred correctly
 };
 
-$instance = $factory->createProxy(\MyApp\Customer::class, $initializer);
+$instance = $factory->createProxy('MyApp\Customer', $initializer);
 ```
 
-You can now simply use your object as before:
+You can now use your object as before:
 
 ```php
-// this will just work as before
+// this will work as before
 echo $ghostObject->getName() . ' ' . $ghostObject->getSurname(); // Agent Smith
 ```
 
 ## Lazy Initialization
 
-As you can see, we use a closure to handle lazy initialization of the proxy instance at runtime.
-The initializer closure signature for ghost objects should be as following:
+We use a closure to handle lazy initialization of the proxy instance at runtime.
+The initializer closure signature for ghost objects is:
 
 ```php
 /**
- * @var object  $ghostObject   the instance the ghost object proxy that is being initialized
- * @var string  $method        the name of the method that triggered lazy initialization
- * @var array   $parameters    an ordered list of parameters passed to the method that
- *                             triggered initialization, indexed by parameter name
- * @var Closure $initializer   a reference to the property that is the initializer for the
- *                             proxy. Set it to null to disable further initialization
- * @var array   $properties    by-ref array with the properties defined in the object, with their
+ * @var object  $ghostObject   The instance of the ghost object proxy that is being initialized.
+ * @var string  $method        The name of the method that triggered lazy initialization.
+ * @var array   $parameters    An ordered list of parameters passed to the method that
+ *                             triggered initialization, indexed by parameter name.
+ * @var Closure $initializer   A reference to the property that is the initializer for the
+ *                             proxy. Set it to null to disable further initialization.
+ * @var array   $properties    By-ref array with the properties defined in the object, with their
  *                             default values pre-assigned. Keys are in the same format that
  *                             an (array) cast of an object would provide:
  *                              - `"\0Ns\\ClassName\0propertyName"` for `private $propertyName`
@@ -160,7 +160,7 @@ $initializer = function (
 ) {};
 ```
 
-An initializer closure generally follows the following pattern:
+The initializer closure should usually be coded like following:
 
 ```php
 $initializer = function (
@@ -182,21 +182,21 @@ $initializer = function (
 
 ### Lazy initialization `$properties` explained
 
-Please note the interesting assignments in this closure: the keys are using weird `"\0"` sequences.
-This is nothing special, actually: that's how PHP represents private and protected properties when
+The assignments to properties in this closure use unusual `"\0"` sequences.
+This is to be consistent with how PHP represents private and protected properties when
 casting an object to an array.
-ProxyManager simply copies a reference to the properties into the `$properties` array passed to the
+`ProxyManager` simply copies a reference to the properties into the `$properties` array passed to the
 initializer, which allows you to set the state of the object without accessing any of its public
-API (very important detail for mapper implementations!).
+API. (This is a very important detail for mapper implementations!)
 
 Specifically:
 
- * `"\0Ns\\ClassName\0propertyName"` stands for `private $propertyName` defined in `Ns\ClassName`
- * `"\0*\0propertyName"` stands for `protected $propertyName` defined in any level of the class 
-   hierarchy
- * `"propertyName"` stands for `public $propertyName` defined in any level of the class hierarchy
+ * `"\0Ns\\ClassName\0propertyName"` means `private $propertyName` defined in `Ns\ClassName`;
+ * `"\0*\0propertyName"` means `protected $propertyName` defined in any level of the class 
+   hierarchy;
+ * `"propertyName"` means `public $propertyName` defined in any level of the class hierarchy.
 
-Therefore, if you want to initialize the values of a class like the following one:
+Therefore, given this class:
 
 ```php
 namespace MyNamespace;
@@ -209,7 +209,7 @@ class MyClass
 }
 ```
 
-You would write initialization code like following:
+Its appropriate initialization code would be:
 
 ```php
 namespace MyApp;
@@ -229,9 +229,9 @@ $initializer = function (
 ) {
     $initializer = null;
 
-    $properties["\0MyNamespace\\MyClass\0property1"] = 'foo';
-    $properties["\0*\0property2"]                    = 'bar';
-    $properties["property3"]                         = 'baz';
+    $properties["\0MyNamespace\\MyClass\0property1"] = 'foo';  //private property of MyNamespace\MyClass
+    $properties["\0*\0property2"]                    = 'bar';  //protected property in MyClass's hierarchy
+    $properties["property3"]                         = 'baz';  //public property in MyClass's hierarchy
 
     return true;
 };
@@ -242,21 +242,10 @@ $instance = $factory->createProxy(\MyNamespace\MyClass::class, $initializer);
 This code would initialize `$property1`, `$property2` and `$property3`
 respectively to `"foo"`, `"bar"` and `"baz"`.
 
-Also note that you may read the default values for those properties by
-just reading the respective array keys.
+You may read the default values for those properties by reading the respective array keys.
 
-You may still initialize the object by interacting with its public API, but since it
-only contains default property values (the constructor was not called), it is not
-safe to do so.
-
-You may also just call the public constructor yourself by simply calling
-it from within the initializer:
-
-```php
-$ghostObject->__construct(/* parameters */);
-```
-
-This will initialize your object as it would normally do.
+Although it is possible to initialize the object by interacting with its public API, it is
+not safe to do so, because the object only contains default property values since its constructor was not called.
 
 ## Proxy implementation
 
@@ -287,14 +276,9 @@ Remember to call `$ghostObject->setProxyInitializer(null);`, or to set `$initial
 initializer closure to disable initialization of your proxy, or else initialization will trigger
 more than once.
 
-In some exceptional cases, you might want to lazy-load an object multiple times, and
-not unset the initializer. This is an advanced use-case scenario, and you should
-probably avoid doing so unless you are absolutely sure that you want multiple
-lazy-initialization cycles (object gets refreshed at every property access).
-
 ## Triggering Initialization
 
-A lazy loading ghost object is initialized whenever you access any property of it.
+A lazy loading ghost object is initialized whenever you access any of its properties.
 Any of the following interactions would trigger lazy initialization:
 
 ```php
@@ -344,7 +328,7 @@ An example for that (in data mappers) is entities with identifiers: an identifie
  * lightweight
  * known at all times
 
-This means that it can be set in our object at all times, and we may never need to lazy-load
+This means that it can be set in our object at all times, and we never need to lazy-load
 it. Here is a typical example:
 
 ```php
@@ -412,13 +396,12 @@ $idReflection->setAccessible(true);
 $idReflection->setValue($instance, 1234);
 ```
 
-As you can see, we simply pass a `skippedProperties` array to our proxy factory, and again,
-we are using the weird `"\0"` syntax for keys (see above for what that means).
+In this example, we pass a `skippedProperties` array to our proxy factory. Note the use of the `"\0"` parameter syntax as described above.
 
 ## Proxying interfaces
 
 A lazy loading ghost object cannot proxy an interface directly, as it operates directly around
-the state of an object: use a [Virtual Proxy](lazy-loading-value-holder.md) for that instead.
+the state of an object. Use a [Virtual Proxy](lazy-loading-value-holder.md) for that instead.
 
 ## Tuning performance for production
 
