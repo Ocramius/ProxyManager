@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use ProxyManager\Factory\LazyLoadingGhostFactory;
+use ProxyManager\Proxy\GhostObjectInterface;
 
 class Foo
 {
@@ -33,7 +34,7 @@ $factory   = new LazyLoadingGhostFactory();
 for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
         'Foo',
-        function ($proxy, $method, $parameters, & $initializer, array $properties) {
+        function (GhostObjectInterface $proxy, string $method, array $parameters, & $initializer, array $properties) {
             $initializer   = null;
 
             $properties["\0Foo\0foo"] = 'Hello World!';
