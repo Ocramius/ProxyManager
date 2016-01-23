@@ -8,6 +8,8 @@ This is a list of backwards compatibility (BC) breaks introduced in ProxyManager
 
  * PHP `~7.0` is now required to use ProxyManager
  * HHVM compatibility is not guaranteed, as HHVM is not yet PHP 7 compliant
+ * ProxyManager will no longer write proxies to disk by default:
+   the [`EvaluatingGeneratorStrategy`](src/GeneratorStrategy/EvaluatingGeneratorStrategy.php) is used instead
 
 # 1.0.0
 
