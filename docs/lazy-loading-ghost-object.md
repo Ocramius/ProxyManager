@@ -85,12 +85,18 @@ You will be responsible of setting its state during lazy loading:
 namespace MyApp;
 
 use ProxyManager\Factory\LazyLoadingGhostFactory;
-use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\GhostObjectInterface;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 $factory     = new LazyLoadingGhostFactory();
-$initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer, array $properties) {
+$initializer = function (
+    GhostObjectInterface $proxy,
+    string $method,
+    array $parameters,
+    & $initializer,
+    array $properties
+) {
     $initializer   = null; // disable initialization
 
     // load data and modify the object here
@@ -139,13 +145,25 @@ The initializer closure signature for ghost objects should be as following:
  *
  * @return bool true on success
  */
-$initializer = function ($proxy, $method, $parameters, & $initializer, array $properties) {};
+$initializer = function (
+    \ProxyManager\Proxy\GhostObjectInterface $proxy,
+    string $method,
+    array $parameters,
+    & $initializer,
+    array $properties
+) {};
 ```
 
 The initializer closure should usually be coded like following:
 
 ```php
-$initializer = function ($proxy, $method, $parameters, & $initializer, array $properties) {
+$initializer = function (
+    \ProxyManager\Proxy\GhostObjectInterface $proxy,
+    string $method,
+    array $parameters,
+    & $initializer,
+    array $properties
+) {
     $initializer = null; // disable initializer for this proxy instance
 
     // initialize properties (please read further on)
@@ -191,12 +209,18 @@ You would write initialization code like following:
 namespace MyApp;
 
 use ProxyManager\Factory\LazyLoadingGhostFactory;
-use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\GhostObjectInterface;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 $factory     = new LazyLoadingGhostFactory();
-$initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer, array $properties) {
+$initializer = function (
+    GhostObjectInterface $proxy,
+    string $method, array
+    array $parameters,
+    & $initializer,
+    array $properties
+) {
     $initializer = null;
 
     $properties["\0MyNamespace\\MyClass\0property1"] = 'foo';
@@ -325,12 +349,18 @@ scenario:
 namespace MyApp;
 
 use ProxyManager\Factory\LazyLoadingGhostFactory;
-use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\GhostObjectInterface;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 $factory     = new LazyLoadingGhostFactory();
-$initializer = function (LazyLoadingInterface $proxy, $method, array $parameters, & $initializer, array $properties) {
+$initializer = function (
+    GhostObjectInterface $proxy,
+    string $method,
+    array $parameters,
+    & $initializer,
+    array $properties
+) {
     $initializer = null;
 
     // note that `getId` won't initialize our proxy here
