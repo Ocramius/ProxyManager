@@ -106,8 +106,8 @@ $initializer = function (
     $initializer   = null; // disable initialization
 
     // load data and modify the object here
-    $properties["\0ClassName\0foo"] = 'foo';
-    $properties["\0ClassName\0bar"] = 'bar'; 
+    $properties["\0ClassName\0name"]    = 'Agent';
+    $properties["\0ClassName\0surname"] = 'Smith'; 
     
     // you may also call methods on the object, but remember that
     // the constructor was not called yet:
@@ -116,7 +116,7 @@ $initializer = function (
     return true; // confirm that initialization occurred correctly
 };
 
-$instance = $factory->createProxy('MyApp\Customer', $initializer);
+$instance = $factory->createProxy(\MyApp\Customer::class, $initializer);
 ```
 
 You can now simply use your object as before:
