@@ -18,6 +18,8 @@ This is a list of backwards compatibility (BC) breaks introduced in ProxyManager
    the settings passed to it.
  * `ProxyManager\Configuration#setAutoGenerateProxies()` was removed. Please look for calls to this method and
    remove them.
+ * Private properties are now also correctly handled by `ProxyManager`: accessing proxy state via friend classes
+   (protected or private scope) does not require any particular workarounds anymore.
  
 # 1.0.0
 
