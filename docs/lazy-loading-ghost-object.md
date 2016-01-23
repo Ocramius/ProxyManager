@@ -4,8 +4,14 @@ title: Lazy Loading Ghost Object Proxies
 
 # Lazy Loading Ghost Object Proxies
 
-A lazy loading ghost object proxy is a ghost proxy that looks exactly like the real instance of the proxied subject,
-but which has all properties nulled before initialization.
+A Lazy Loading Ghost ist a type of proxy object.
+
+More specifically, is a fake object that looks exactly like an object
+that you want to interact with, but is actually just an empty instance
+that gets all properties populated as soon as they are needed.
+
+Those properties do not actually exist until the ghost object is actually
+initialized.
 
 ## Lazy loading with the Ghost Object
 
@@ -45,7 +51,7 @@ subject, they are better suited for representing dataset rows.
 
 ## When do I use a ghost object?
 
-You usually need a ghost object in cases where following applies
+You usually need a ghost object in cases where following applies:
 
  * you are building a small data-mapper and want to lazily load data across associations in your object graph
  * you want to initialize objects representing rows in a large dataset
@@ -91,7 +97,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $factory     = new LazyLoadingGhostFactory();
 $initializer = function (
-    GhostObjectInterface $proxy,
+    GhostObjectInterface $ghostObject,
     string $method,
     array $parameters,
     & $initializer,
@@ -105,7 +111,7 @@ $initializer = function (
     
     // you may also call methods on the object, but remember that
     // the constructor was not called yet:
-    $proxy->setBaz('baz');
+    $ghostObject->setBaz('baz');
 
     return true; // confirm that initialization occurred correctly
 };
@@ -117,7 +123,7 @@ You can now simply use your object as before:
 
 ```php
 // this will just work as before
-echo $proxy->getName() . ' ' . $proxy->getSurname(); // Agent Smith
+echo $ghostObject->getName() . ' ' . $ghostObject->getSurname(); // Agent Smith
 ```
 
 ## Lazy Initialization
@@ -127,7 +133,7 @@ The initializer closure signature for ghost objects should be as following:
 
 ```php
 /**
- * @var object  $proxy         the instance the ghost object proxy that is being initialized
+ * @var object  $ghostObject   the instance the ghost object proxy that is being initialized
  * @var string  $method        the name of the method that triggered lazy initialization
  * @var array   $parameters    an ordered list of parameters passed to the method that
  *                             triggered initialization, indexed by parameter name
@@ -146,7 +152,7 @@ The initializer closure signature for ghost objects should be as following:
  * @return bool true on success
  */
 $initializer = function (
-    \ProxyManager\Proxy\GhostObjectInterface $proxy,
+    \ProxyManager\Proxy\GhostObjectInterface $ghostObject,
     string $method,
     array $parameters,
     & $initializer,
@@ -158,7 +164,7 @@ The initializer closure should usually be coded like following:
 
 ```php
 $initializer = function (
-    \ProxyManager\Proxy\GhostObjectInterface $proxy,
+    \ProxyManager\Proxy\GhostObjectInterface $ghostObject,
     string $method,
     array $parameters,
     & $initializer,
@@ -215,7 +221,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $factory     = new LazyLoadingGhostFactory();
 $initializer = function (
-    GhostObjectInterface $proxy,
+    GhostObjectInterface $ghostObject,
     string $method, array
     array $parameters,
     & $initializer,
@@ -253,13 +259,13 @@ produces proxies that implement the
 At any point in time, you can set a new initializer for the proxy:
 
 ```php
-$proxy->setProxyInitializer($initializer);
+$ghostObject->setProxyInitializer($initializer);
 ```
 
 In your initializer, you **MUST** turn off any further initialization:
 
 ```php
-$proxy->setProxyInitializer(null);
+$ghostObject->setProxyInitializer(null);
 ```
 
 or
@@ -268,7 +274,7 @@ or
 $initializer = null; // if you use the initializer passed by reference to the closure
 ```
 
-Remember to call `$proxy->setProxyInitializer(null);`, or to set `$initializer = null` inside your
+Remember to call `$ghostObject->setProxyInitializer(null);`, or to set `$initializer = null` inside your
 initializer closure to disable initialization of your proxy, or else initialization will trigger
 more than once.
 
@@ -279,25 +285,25 @@ Any of the following interactions would trigger lazy initialization:
 
 ```php
 // calling a method (only if the method accesses internal state)
-$proxy->someMethod();
+$ghostObject->someMethod();
 
 // reading a property
-echo $proxy->someProperty;
+echo $ghostObject->someProperty;
 
 // writing a property
-$proxy->someProperty = 'foo';
+$ghostObject->someProperty = 'foo';
 
 // checking for existence of a property
-isset($proxy->someProperty);
+isset($ghostObject->someProperty);
 
 // removing a property
-unset($proxy->someProperty);
+unset($ghostObject->someProperty);
 
 // cloning the entire proxy
-clone $proxy;
+clone $ghostObject;
 
 // serializing the proxy
-$unserialized = unserialize(serialize($proxy));
+$unserialized = unserialize(serialize($ghostObject));
 ```
 
 A method like following would never trigger lazy loading, in the context of a ghost object:
@@ -355,7 +361,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $factory     = new LazyLoadingGhostFactory();
 $initializer = function (
-    GhostObjectInterface $proxy,
+    GhostObjectInterface $ghostObject,
     string $method,
     array $parameters,
     & $initializer,
@@ -364,10 +370,10 @@ $initializer = function (
     $initializer = null;
 
     // note that `getId` won't initialize our proxy here
-    $properties["\0MyApp\\User\0username"]     = $db->fetchField('users', 'username', $proxy->getId();
-    $properties["\0MyApp\\User\0passwordHash"] = $db->fetchField('users', 'passwordHash', $proxy->getId();
-    $properties["\0MyApp\\User\0email"]        = $db->fetchField('users', 'email', $proxy->getId();
-    $properties["\0MyApp\\User\0address"]      = $db->fetchField('users', 'address', $proxy->getId();
+    $properties["\0MyApp\\User\0username"]     = $db->fetchField('users', 'username', $ghostObject->getId();
+    $properties["\0MyApp\\User\0passwordHash"] = $db->fetchField('users', 'passwordHash', $ghostObject->getId();
+    $properties["\0MyApp\\User\0email"]        = $db->fetchField('users', 'email', $ghostObject->getId();
+    $properties["\0MyApp\\User\0address"]      = $db->fetchField('users', 'address', $ghostObject->getId();
 
     return true;
 };
@@ -383,7 +389,7 @@ $idReflection = new \ReflectionProperty(User::class, 'id');
 
 $idReflection->setAccessible(true);
 
-// write the identifier into our proxy (assuming `setId` doesn't exist)
+// write the identifier into our ghost object (assuming `setId` doesn't exist)
 $idReflection->setValue($instance, 1234);
 ```
 
