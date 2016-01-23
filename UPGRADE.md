@@ -10,6 +10,9 @@ This is a list of backwards compatibility (BC) breaks introduced in ProxyManager
  * HHVM compatibility is not guaranteed, as HHVM is not yet PHP 7 compliant
  * ProxyManager will no longer write proxies to disk by default:
    the [`EvaluatingGeneratorStrategy`](src/GeneratorStrategy/EvaluatingGeneratorStrategy.php) is used instead
+ * Ghost objects were entirely rewritten, for better support and improved performance. Lazy-loading is not
+   triggered by public API access, but by property access (private and public). While this is not really a BC
+   break, you are encouraged to check your applications if you rely on [ghost objects](docs/lazy-loading-ghost-object.md).
 
 # 1.0.0
 
