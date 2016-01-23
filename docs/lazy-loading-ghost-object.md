@@ -4,13 +4,13 @@ title: Lazy Loading Ghost Object Proxies
 
 # Lazy Loading Ghost Object Proxies
 
-A Lazy Loading Ghost ist a type of proxy object.
+A Lazy Loading Ghost is a type of proxy object.
 
-More specifically, is a fake object that looks exactly like an object
+More specifically, it is a fake object that looks exactly like an object
 that you want to interact with, but is actually just an empty instance
 that gets all properties populated as soon as they are needed.
 
-Those properties do not actually exist until the ghost object is actually
+Those properties do not really exist until the ghost object is actually
 initialized.
 
 ## Lazy loading with the Ghost Object
