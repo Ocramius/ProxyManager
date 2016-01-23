@@ -299,6 +299,11 @@ isset($ghostObject->someProperty);
 // removing a property
 unset($ghostObject->someProperty);
 
+// accessing a property via reflection
+$reflection = new \ReflectionProperty($ghostObject, 'someProperty);
+$reflection->setAccessible(true);
+$reflection->getValue($ghostObject);
+
 // cloning the entire proxy
 clone $ghostObject;
 
