@@ -4,6 +4,11 @@ title: Upgrade
 
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 2.0.0
+
+ * PHP `~7.0` is now required to use ProxyManager
+ * HHVM compatibility is not guaranteed, as HHVM is not yet PHP 7 compliant
+
 # 1.0.0
 
 `1.0.0` is be fully compatible with `0.5.0`.
