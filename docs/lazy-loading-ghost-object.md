@@ -249,6 +249,15 @@ You may still initialize the object by interacting with its public API, but sinc
 only contains default property values (the constructor was not called), it is not
 safe to do so.
 
+You may also just call the public constructor yourself by simply calling
+it from within the initializer:
+
+```php
+$ghostObject->__construct(/* parameters */);
+```
+
+This will initialize your object as it would normally do.
+
 ## Proxy implementation
 
 The
