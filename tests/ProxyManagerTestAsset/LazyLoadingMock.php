@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTestAsset;
 
+use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 
 /**
@@ -28,7 +29,7 @@ use ProxyManager\Proxy\VirtualProxyInterface;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class LazyLoadingMock implements VirtualProxyInterface
+class LazyLoadingMock implements VirtualProxyInterface, GhostObjectInterface
 {
     /**
      * @var callable
