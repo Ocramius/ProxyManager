@@ -14,6 +14,8 @@ This is a list of backwards compatibility (BC) breaks introduced in ProxyManager
  * Ghost objects were entirely rewritten, for better support and improved performance. Lazy-loading is not
    triggered by public API access, but by property access (private and public). While this is not really a BC
    break, you are encouraged to check your applications if you rely on [ghost objects](docs/lazy-loading-ghost-object.md).
+ * If ProxyManager can't find a proxy, it will now automatically attempt to auto-generate it, regardless of
+   the settings passed to it.
 
 # 1.0.0
 
