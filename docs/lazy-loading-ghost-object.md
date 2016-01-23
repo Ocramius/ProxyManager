@@ -111,7 +111,7 @@ $initializer = function (
     
     // you may also call methods on the object, but remember that
     // the constructor was not called yet:
-    $ghostObject->setBaz('baz');
+    $ghostObject->setSurname('Smith');
 
     return true; // confirm that initialization occurred correctly
 };
