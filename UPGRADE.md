@@ -4,6 +4,10 @@ title: Upgrade
 
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 1.0.0
+
+`1.0.0` is be fully compatible with `0.5.0`.
+
 # 0.5.0
 
  * The Generated Hydrator has been removed - it is now available as a separate project
