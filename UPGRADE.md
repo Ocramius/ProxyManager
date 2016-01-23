@@ -4,6 +4,33 @@ title: Upgrade
 
 This is a list of backwards compatibility (BC) breaks introduced in ProxyManager:
 
+# 2.0.0
+
+ * PHP `~7.0` is now required to use ProxyManager
+ * HHVM compatibility is not guaranteed, as HHVM is not yet PHP 7 compliant
+ * All classes and interfaces now use [strict scalar type hints](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration).
+   If you extended or implemented anything from the `ProxyManager\` namespace, you probably need to change
+   that code to adapt it to the new signature.
+ * All classes and interfaces now use [return type declarations](http://php.net/manual/en/functions.returning-values.php#functions.returning-values.type-declaration).
+   If you extended or implemented anything from the `ProxyManager\` namespace, you probably need to change
+   that code to adapt it to the new signature.
+ * ProxyManager will no longer write proxies to disk by default:
+   the [`EvaluatingGeneratorStrategy`](src/GeneratorStrategy/EvaluatingGeneratorStrategy.php) is used instead.
+   If you still want ProxyManager to write files to disk, please refer to the [tuning for production docs](docs/tuning-for-production.md)
+ * Ghost objects were entirely rewritten, for better support and improved performance. Lazy-loading is not
+   triggered by public API access, but by property access (private and public). While this is not really a BC
+   break, you are encouraged to check your applications if you rely on [ghost objects](docs/lazy-loading-ghost-object.md).
+ * If ProxyManager can't find a proxy, it will now automatically attempt to auto-generate it, regardless of
+   the settings passed to it.
+ * `ProxyManager\Configuration#setAutoGenerateProxies()` was removed. Please look for calls to this method and
+   remove them.
+ * Private properties are now also correctly handled by ProxyManager: accessing proxy state via friend classes
+   (protected or private scope) does not require any particular workarounds anymore.
+ 
+# 1.0.0
+
+`1.0.0` is be fully compatible with `0.5.0`.
+
 # 0.5.0
 
  * The Generated Hydrator has been removed - it is now available as a separate project
