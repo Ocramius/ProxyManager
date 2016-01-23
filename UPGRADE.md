@@ -16,7 +16,9 @@ This is a list of backwards compatibility (BC) breaks introduced in ProxyManager
    break, you are encouraged to check your applications if you rely on [ghost objects](docs/lazy-loading-ghost-object.md).
  * If ProxyManager can't find a proxy, it will now automatically attempt to auto-generate it, regardless of
    the settings passed to it.
-
+ * `ProxyManager\Configuration#setAutoGenerateProxies()` was removed. Please look for calls to this method and
+   remove them.
+ 
 # 1.0.0
 
 `1.0.0` is be fully compatible with `0.5.0`.
