@@ -41,4 +41,13 @@ class VersionTest extends PHPUnit_Framework_TestCase
             Version::VERSION
         );
     }
+
+    public function testGetVersion()
+    {
+        $version = Version::getVersion();
+
+        self::assertInternalType('string', $version);
+        self::assertNotEmpty($version);
+        self::assertStringMatchesFormat('%A@%A', $version);
+    }
 }
