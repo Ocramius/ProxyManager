@@ -32,8 +32,6 @@ use PackageVersions\Versions;
  */
 final class Version
 {
-    const VERSION = '2.0.0-dev';
-
     /**
      * Private constructor - this class is not meant to be instantiated
      */
