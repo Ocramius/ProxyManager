@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace ProxyManager;
 
+use PackageVersions\Versions;
+
 /**
  * Version class - to be adjusted when a new release is created.
  *
@@ -37,5 +39,16 @@ final class Version
      */
     private function __construct()
     {
+    }
+
+    /**
+     * Retrieves the package version in the format <detected-version>@<commit-hash>,
+     * where the detected version is what composer could detect.
+     *
+     * @return string
+     */
+    public static function getVersion() : string
+    {
+        return Versions::getVersion('ocramius/proxy-manager');
     }
 }
