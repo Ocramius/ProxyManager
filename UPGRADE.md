@@ -26,7 +26,8 @@ This is a list of backwards compatibility (BC) breaks introduced in ProxyManager
    remove them.
  * Private properties are now also correctly handled by ProxyManager: accessing proxy state via friend classes
    (protected or private scope) does not require any particular workarounds anymore.
- 
+ * `ProxyManager\Version::VERSION` was removed. Please use `ProxyManager\Version::getVersion()` instead.
+
 # 1.0.0
 
 `1.0.0` is be fully compatible with `0.5.0`.
