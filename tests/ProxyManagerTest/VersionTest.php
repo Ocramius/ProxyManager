@@ -34,14 +34,6 @@ use ProxyManager\Version;
  */
 class VersionTest extends PHPUnit_Framework_TestCase
 {
-    public function testVersionNumberIsSemverCompliant()
-    {
-        $this->assertRegExp(
-            '/\d+\.\d+\.\d+(-(ALPHA|BETA|RC(\d+)?|DEV))?/i',
-            Version::VERSION
-        );
-    }
-
     public function testGetVersion()
     {
         $version = Version::getVersion();
