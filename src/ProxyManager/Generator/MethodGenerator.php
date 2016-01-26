@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace ProxyManager\Generator;
 
-use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
