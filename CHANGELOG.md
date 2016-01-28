@@ -100,6 +100,9 @@ $object = new ProxyClassName(); // echoes "Hello!"
 var_dump($object); // a proxy object
 ```
 
+If you still want to manually build a proxy (without factories), a
+`public static staticProxyConstructor` method is added to the generated proxy classes.
+
 #### Friend classes support
 
 You can now access state of "friend objects" at any time.
