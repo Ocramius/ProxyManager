@@ -41,7 +41,7 @@ class SayHello
 }
 ```
 
-### PHP 5.6 Variadics support
+#### PHP 5.6 Variadics support
 
 ProxyManager will now correctly mimic behavior of methods with variadic parameters:
 
@@ -69,7 +69,7 @@ class SayHello
 }
 ```
 
-### Constructors in proxies are not replaced anymore
+#### Constructors in proxies are not replaced anymore
 
 In ProxyManager v1.x, the constructor of a proxy was completely replaced with a method
 accepting proxy-specific parameters.
