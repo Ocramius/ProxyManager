@@ -29,3 +29,20 @@ class SayHello
 
 Every factory in the `ProxyManager\Factory` namespace is now capable of dealing with
 this type of API.
+
+#### PHP 7 Scalar type hints
+
+ProxyManager will now correctly mimic signatures of methods with scalar type hints
+
+```php
+class SayHello
+{
+    public function hello(string $name) : string
+    {
+        return 'hello, ' . $name;
+    }
+}
+```
+
+Every factory in the `ProxyManager\Factory` namespace is now capable of dealing with
+this type of API.
