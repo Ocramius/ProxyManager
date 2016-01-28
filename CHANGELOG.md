@@ -27,9 +27,6 @@ class SayHello
 }
 ```
 
-Every factory in the `ProxyManager\Factory` namespace is now capable of dealing with
-this type of API.
-
 #### PHP 7 Scalar type hints
 
 ProxyManager will now correctly mimic signatures of methods with scalar type hints
@@ -43,9 +40,6 @@ class SayHello
     }
 }
 ```
-
-Every factory in the `ProxyManager\Factory` namespace is now capable of dealing with
-this type of API.
 
 ### PHP 5.6 Variadics support
 
