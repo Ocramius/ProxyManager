@@ -267,3 +267,9 @@ $idReflection->setValue($proxy, 123);
 var_dump($proxy->getId());       // 123
 var_dump($proxy->getUsername()); // "Triggered lazy-loading!", then "Ocramius"
 ```
+
+#### Proxies are now always generated on-the-fly by default
+
+Proxies are now automatically generated any time you require them: no configuration
+needed. If you want to gain better performance, you may still want to read
+the [tuning for production docs](docs/tuning-for-production.md).
