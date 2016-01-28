@@ -60,3 +60,17 @@ class SayHello
     }
 }
 ```
+
+By-ref variadic arguments are also supported:
+
+```php
+class SayHello
+{
+    public function hello(string ... & $names)
+    {
+        foreach ($names as & $name) {
+            $name = 'hello, ' . $name;
+        }
+    }
+}
+```
