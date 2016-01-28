@@ -6,6 +6,10 @@ This is a list of changes/improvements that were introduced in ProxyManager
 
 ## 2.0.0
 
+### BC Breaks
+
+Please refer to [the upgrade documentation](UPGRADE.md) to see which backwards-incompatible
+changes were applied to this release.
 
 ### New features
 
