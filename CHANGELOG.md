@@ -273,3 +273,11 @@ var_dump($proxy->getUsername()); // "Triggered lazy-loading!", then "Ocramius"
 Proxies are now automatically generated any time you require them: no configuration
 needed. If you want to gain better performance, you may still want to read
 the [tuning for production docs](docs/tuning-for-production.md).
+
+#### Proxy names are now hashed, simplified signature is attached to them
+
+Proxy classes now have shorter names, as the parameters used to generate them are
+hashed into their name. A signature is attached to proxy classes (as a private static
+property) so that proxy classes aren't re-used across library updates.
+Upgrading ProxyManager will now cause all proxies to be re-generated automatically,
+while the old proxy files are going to be ignored.
