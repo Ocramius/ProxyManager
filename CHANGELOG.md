@@ -99,3 +99,29 @@ $object = new ProxyClassName(); // echoes "Hello!"
 
 var_dump($object); // a proxy object
 ```
+
+#### Friend classes support
+
+You can now access state of "friend objects" at any time.
+
+```php
+class EmailAddress
+{
+    private $address;
+
+    public function __construct(string $address)
+    {
+        assertEmail($address);
+        
+        $this->address = $address;
+    }
+    
+    public function equalsTo(EmailAddress $other)
+    {
+        return $this->address === $other->address;
+    }
+}
+```
+
+When using lazy-loading or access-interceptors, the `equalsTo` method will
+properly work, as even `protected` and `private` access are now correctly proxied.
