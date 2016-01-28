@@ -27,7 +27,7 @@ class Foo
 $factory = new RemoteObjectFactory(
     new XmlRpc(new Client('http://localhost:9876/remote-proxy/remote-proxy-server.php'))
 );
-$proxy = $factory->createProxy('Foo');
+$proxy = $factory->createProxy(Foo::class);
 
 try {
     var_dump($proxy->bar()); // bar remote !

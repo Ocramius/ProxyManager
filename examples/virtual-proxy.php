@@ -24,7 +24,7 @@ $factory   = new LazyLoadingValueHolderFactory();
 
 for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
-        'Foo',
+        Foo::class,
         function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
             $initializer   = null;
             $wrappedObject = new Foo();
