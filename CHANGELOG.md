@@ -68,3 +68,34 @@ class SayHello
     }
 }
 ```
+
+### Constructors in proxies are not replaced anymore
+
+In ProxyManager v1.x, the constructor of a proxy was completely replaced with a method
+accepting proxy-specific parameters.
+
+This is no longer true, and you will be able to use the constructor of your objects as
+if the class wasn't proxied at all:
+
+```php
+class SayHello
+{
+    public function __construct()
+    {
+        echo 'Hello!';
+    }
+}
+
+/* @var $proxyGenerator \ProxyManager\ProxyGenerator\ProxyGeneratorInterface */
+$proxyClass = $proxyGenerator->generateProxy(
+    new ReflectionClass(SayHello::class),
+    new ClassGenerator('ProxyClassName')
+);
+
+eval('<?php ' . $proxyClass->generate());
+
+$proxyName = $proxyClass->getName();
+$object = new ProxyClassName(); // echoes "Hello!"
+
+var_dump($object); // a proxy object
+```
