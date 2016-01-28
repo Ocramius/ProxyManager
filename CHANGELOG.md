@@ -46,3 +46,17 @@ class SayHello
 
 Every factory in the `ProxyManager\Factory` namespace is now capable of dealing with
 this type of API.
+
+### PHP 5.6 Variadics support
+
+ProxyManager will now correctly mimic behavior of methods with variadic parameters:
+
+```php
+class SayHello
+{
+    public function hello(string ...$names) : string
+    {
+        return 'hello, ' . implode(', ', $names);
+    }
+}
+```
