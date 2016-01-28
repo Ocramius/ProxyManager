@@ -205,5 +205,61 @@ $reflectionB->setAccessible(true);
 var_dump($reflectionB->getValue($proxy)); // dumps "def"
 
 var_dump($proxy->c); // dumps "ghi"
+```
 
+#### Skipping lazy-loaded properties in generated proxies
+
+Lazy loading ghost objects can now skip lazy-loading for certain properties.
+This is especially useful when you have properties that are always available,
+such as identifiers of entities:
+
+```php
+class User
+{
+    private $id;
+    private $username;
+
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+    public function getUsername() : string
+    {
+        return $this->username;
+    }
+}
+
+/* @var $proxy User */
+$proxy = (new \ProxyManager\Factory\LazyLoadingGhostFactory())->createProxy(
+    User::class,
+    function (
+        GhostObjectInterface $proxy,
+        string $method,
+        array $parameters,
+        & $initializer,
+        array $properties
+    ) {
+        $initializer   = null;
+
+        var_dump('Triggered lazy-loading!');
+
+        $properties["\0User\0username"] = 'Ocramius';
+
+        return true;
+    },
+    [
+        'skippedProperties' => [
+            "\0User\0id",
+        ],
+    ]
+);
+
+$idReflection = new \ReflectionProperty(User::class, 'id');
+
+$idReflection->setAccessible(true);
+$idReflection->setValue($proxy, 123);
+
+var_dump($proxy->getId());       // 123
+var_dump($proxy->getUsername()); // "Triggered lazy-loading!", then "Ocramius"
 ```
