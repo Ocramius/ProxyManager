@@ -134,7 +134,7 @@ properly work, as even `protected` and `private` access are now correctly proxie
 Lazy loading ghost objects now trigger lazy-loading only when their state is accessed.
 This also implies that lazy loading ghost objects cannot be used with interfaces anymore.
 
-```
+```php
 class AccessPolicy
 {
     private $policyName;
@@ -157,4 +157,53 @@ class AccessPolicy
         return false;
     }
 }
+```
+
+#### Faster ghost object state initialization
+
+Lazy loading ghost objects can now be initialized in a more efficient way, by avoiding
+reflection or setters:
+
+```php
+class Foo
+{
+    private $a;
+    protected $b;
+    public $c;
+}
+
+$factory = new \ProxyManager\Factory\LazyLoadingGhostFactory();
+
+$proxy = $factory-createProxy(
+    Foo::class,
+    function (
+        GhostObjectInterface $proxy, 
+        string $method, 
+        array $parameters, 
+        & $initializer,
+        array $properties
+    ) {
+        $initializer   = null;
+
+        $properties["\0Foo\0a"] = 'abc';
+        $properties["\0*\0b"]   = 'def';
+        $properties['c']        = 'ghi';
+
+        return true;
+    }
+);
+
+
+$reflectionA = new ReflectionProperty(Foo::class, 'a');
+$reflectionA->setAccessible(true);
+
+var_dump($reflectionA->getValue($proxy)); // dumps "abc"
+
+$reflectionB = new ReflectionProperty(Foo::class, 'b');
+$reflectionB->setAccessible(true);
+
+var_dump($reflectionB->getValue($proxy)); // dumps "def"
+
+var_dump($proxy->c); // dumps "ghi"
+
 ```
