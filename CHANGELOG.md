@@ -9,6 +9,10 @@ This is a list of changes/improvements that were introduced in ProxyManager
 
 ### New features
 
+#### PHP 7 support
+
+ProxyManager will now correctly operate in PHP 7 environments.
+
 #### PHP 7 Return type hints
 
 ProxyManager will now correctly mimic signatures of methods with return type hints:
