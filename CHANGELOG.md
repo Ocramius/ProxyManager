@@ -128,3 +128,33 @@ class EmailAddress
 
 When using lazy-loading or access-interceptors, the `equalsTo` method will
 properly work, as even `protected` and `private` access are now correctly proxied.
+
+#### Ghost objects now only lazy-load on state-access
+
+Lazy loading ghost objects now trigger lazy-loading only when their state is accessed.
+This also implies that lazy loading ghost objects cannot be used with interfaces anymore.
+
+```
+class AccessPolicy
+{
+    private $policyName;
+    
+    /**
+     * Calling this method WILL cause lazy-loading, when using a ghost object,
+     * as the method is accessing the object's state
+     */
+    public function getPolicyName() : string
+    {
+        return $this->policyName;        
+    }
+    
+    /**
+     * Calling this method WILL NOT cause lazy-loading, when using a ghost object,
+     * as the method is not reading any from the object.
+     */
+    public function allowAccess() : bool
+    {
+        return false;
+    }
+}
+```
