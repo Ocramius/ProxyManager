@@ -1244,4 +1244,48 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * @group 276
+     */
+    public function testFriendObjectWillNotCauseLazyLoadingOnSkippedProperty()
+    {
+        $proxyName = $this->generateProxy(
+            OtherObjectAccessClass::class,
+            [
+                'skippedProperties' => [
+                    "\0" . OtherObjectAccessClass::class . "\0privateProperty",
+                    "\0*\0protectedProperty",
+                    'publicProperty'
+                ],
+            ]
+        );
+
+        /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
+        $proxy = $proxyName::staticProxyConstructor(function () {
+            throw new \BadMethodCallException('The proxy should never be initialized, as all properties are skipped');
+        });
+
+        $privatePropertyValue   = uniqid('', true);
+        $protectedPropertyValue = uniqid('', true);
+        $publicPropertyValue    = uniqid('', true);
+
+        $reflectionPrivateProperty = new \ReflectionProperty(OtherObjectAccessClass::class, 'privateProperty');
+
+        $reflectionPrivateProperty->setAccessible(true);
+        $reflectionPrivateProperty->setValue($proxy, $privatePropertyValue);
+
+        $reflectionProtectedProperty = new \ReflectionProperty(OtherObjectAccessClass::class, 'protectedProperty');
+
+        $reflectionProtectedProperty->setAccessible(true);
+        $reflectionProtectedProperty->setValue($proxy, $protectedPropertyValue);
+
+        $proxy->publicProperty = $publicPropertyValue;
+
+        $friendObject = new OtherObjectAccessClass();
+
+        self::assertSame($privatePropertyValue, $friendObject->getPrivateProperty($proxy));
+        self::assertSame($protectedPropertyValue, $friendObject->getProtectedProperty($proxy));
+        self::assertSame($publicPropertyValue, $friendObject->getPublicProperty($proxy));
+    }
 }
