@@ -101,7 +101,7 @@
 <pre><code class="language-php">$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
 
 $proxy = $factory-&gt;createProxy(
-    'MyApp\HeavyComplexObject',
+    \MyApp\HeavyComplexObject::class,
     function (&amp; $wrappedObject, $proxy, $method, $parameters, &amp; $initializer) {
         $wrappedObject = new HeavyComplexObject(); // instantiation logic here
         $initializer   = null; // turning off further lazy initialization
@@ -123,6 +123,7 @@ $proxy-&gt;doFoo();</code></pre>
                 <ul>
                     <li><a href="https://ocramius.github.io/ProxyManager/stability.html">Stability</a> | </li>
                     <li><a href="https://ocramius.github.io/ProxyManager/upgrade.html">Upgrade Notes</a> | </li>
+                    <li><a href="https://ocramius.github.io/ProxyManager/changelog.html">Changelog</a> | </li>
                     <li><a href="https://ocramius.github.io/ProxyManager/contributing.html">Contributing</a> | </li>
                     <li><a href="https://ocramius.github.io/ProxyManager/docs/credits.html">Credits</a> | </li>
                     <li><a href="https://ocramius.github.io/ProxyManager/docs/copyright.html">Copyright</a></li>
