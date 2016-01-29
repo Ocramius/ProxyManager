@@ -33,7 +33,7 @@ $factory   = new LazyLoadingGhostFactory();
 
 for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
-        'Foo',
+        Foo::class,
         function (GhostObjectInterface $proxy, string $method, array $parameters, & $initializer, array $properties) {
             $initializer   = null;
 
