@@ -1288,4 +1288,52 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame($protectedPropertyValue, $friendObject->getProtectedProperty($proxy));
         self::assertSame($publicPropertyValue, $friendObject->getPublicProperty($proxy));
     }
+
+    public function testClonedSkippedPropertiesArePreserved()
+    {
+
+        $proxyName = $this->generateProxy(
+            BaseClass::class,
+            [
+                'skippedProperties' => [
+                    "\0" . BaseClass::class . "\0privateProperty",
+                    "\0*\0protectedProperty",
+                    'publicProperty'
+                ],
+            ]
+        );
+
+        /* @var $proxy BaseClass|GhostObjectInterface */
+        $proxy = $proxyName::staticProxyConstructor(function ($proxy) {
+            $proxy->setProxyInitializer(null);
+        });
+
+        $reflectionPrivate   = new \ReflectionProperty(BaseClass::class, 'privateProperty');
+        $reflectionProtected = new \ReflectionProperty(BaseClass::class, 'protectedProperty');
+
+        $reflectionPrivate->setAccessible(true);
+        $reflectionProtected->setAccessible(true);
+
+        $privateValue   = uniqid('', true);
+        $protectedValue = uniqid('', true);
+        $publicValue    = uniqid('', true);
+
+        $reflectionPrivate->setValue($proxy, $privateValue);
+        $reflectionProtected->setValue($proxy, $protectedValue);
+        $proxy->publicProperty = $publicValue;
+
+        self::assertFalse($proxy->isProxyInitialized());
+
+        $clone = clone $proxy;
+
+        self::assertFalse($proxy->isProxyInitialized());
+        self::assertTrue($clone->isProxyInitialized());
+
+        self::assertSame($privateValue, $reflectionPrivate->getValue($proxy));
+        self::assertSame($privateValue, $reflectionPrivate->getValue($clone));
+        self::assertSame($protectedValue, $reflectionProtected->getValue($proxy));
+        self::assertSame($protectedValue, $reflectionProtected->getValue($clone));
+        self::assertSame($publicValue, $proxy->publicProperty);
+        self::assertSame($publicValue, $clone->publicProperty);
+    }
 }
