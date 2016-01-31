@@ -7,8 +7,9 @@ php:
   - hhvm
 
 env:
-  - DEPENDENCIES=""
-  - DEPENDENCIES="--prefer-lowest --prefer-stable"
+  matrix:
+    - DEPENDENCIES=""
+    - DEPENDENCIES="--prefer-lowest --prefer-stable"
   global:
     - GIT_NAME:  "'Marco Pivetta'"
     - GIT_EMAIL: ocramius@gmail.com
