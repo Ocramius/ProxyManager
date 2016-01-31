@@ -9,8 +9,6 @@ php:
 env:
   - DEPENDENCIES=""
   - DEPENDENCIES="--prefer-lowest --prefer-stable"
-
-env:
   global:
     - GIT_NAME:  "'Marco Pivetta'"
     - GIT_EMAIL: ocramius@gmail.com
