@@ -8,8 +8,8 @@ php:
 
 env:
   matrix:
-    - DEPENDENCIES=""
-    - DEPENDENCIES=" && composer update --prefer-source --prefer-lowest --prefer-stable"
+    - DEPENDENCIES="high"
+    - DEPENDENCIES="low"
   global:
     - GIT_NAME:  "'Marco Pivetta'"
     - GIT_EMAIL: ocramius@gmail.com
