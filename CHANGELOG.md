@@ -6,9 +6,13 @@ This is a list of changes/improvements that were introduced in ProxyManager
 
 ## 2.0.1
 
-Total issues resolved: **2**
-- [291: Test - cloned properties should be preserved](https://github.com/Ocramius/ProxyManager/pull/291)
-- [292: Correct travis environment variables - adds oldest/newest deps to the matrix](https://github.com/Ocramius/ProxyManager/pull/292)
+### Fixed
+
+- Travis-CI environment was fixed to test the library using the minimum dependencies version.
+
+### Added
+
+- Added unit test to make sure that properties skipped should be preserved even being cloned.
 
 ## 2.0.0
 
