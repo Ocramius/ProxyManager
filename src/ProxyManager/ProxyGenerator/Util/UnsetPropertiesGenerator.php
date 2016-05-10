@@ -29,7 +29,7 @@ namespace ProxyManager\ProxyGenerator\Util;
 final class UnsetPropertiesGenerator
 {
     private static $closureTemplate = <<<'PHP'
-\Closure::bind(function (\%s $%s) {
+\Closure::bind(function (\%s $instance) {
     %s
 }, $%s, %s)->__invoke($%s);
 PHP;
@@ -86,8 +86,7 @@ PHP;
         return sprintf(
             self::$closureTemplate,
             $declaringClassName,
-            $instanceName,
-            self::generateUnsetStatement($properties, $instanceName),
+            self::generateUnsetStatement($properties, 'instance'),
             $instanceName,
             var_export($declaringClassName, true),
             $instanceName
