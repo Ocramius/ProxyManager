@@ -72,8 +72,8 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
                 BaseClass::class,
                 'unset($foo->publicProperty, $foo->protectedProperty);
 
-\Closure::bind(function (\ProxyManagerTestAsset\BaseClass $foo) {
-    unset($foo->privateProperty);
+\Closure::bind(function (\ProxyManagerTestAsset\BaseClass $instance) {
+    unset($instance->privateProperty);
 }, $foo, \'ProxyManagerTestAsset\\\\BaseClass\')->__invoke($foo);
 
 ',
@@ -84,8 +84,8 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
                 'unset($foo->publicProperty0, $foo->publicProperty1, $foo->publicProperty2, $foo->protectedProperty0, '
                 . '$foo->protectedProperty1, $foo->protectedProperty2);
 
-\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $foo) {
-    unset($foo->privateProperty0, $foo->privateProperty1, $foo->privateProperty2);
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $instance) {
+    unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);
 }, $foo, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($foo);
 
 ',
@@ -93,13 +93,15 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
             ],
             ClassWithCollidingPrivateInheritedProperties::class => [
                 ClassWithCollidingPrivateInheritedProperties::class,
-                '\Closure::bind(function (\ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties $bar) {
-    unset($bar->property0);
+                '\Closure::bind(function (\ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties '
+                . '$instance) {
+    unset($instance->property0);
 }, $bar, \'ProxyManagerTestAsset\\\\ClassWithCollidingPrivateInheritedProperties\')->__invoke($bar);
 
-\Closure::bind(function (\ProxyManagerTestAsset\ClassWithPrivateProperties $bar) {
-    unset($bar->property0, $bar->property1, $bar->property2, $bar->property3, $bar->property4, '
-                . '$bar->property5, $bar->property6, $bar->property7, $bar->property8, $bar->property9);
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithPrivateProperties $instance) {
+    unset($instance->property0, $instance->property1, $instance->property2, $instance->property3, '
+                . '$instance->property4, $instance->property5, $instance->property6, $instance->property7, '
+                . '$instance->property8, $instance->property9);
 }, $bar, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke($bar);
 
 ',
