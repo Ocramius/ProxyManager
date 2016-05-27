@@ -534,7 +534,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
 
-        $this->setExpectedException(\PHPUnit_Framework_ExpectationFailedException::class);
+        $this->expectException(\PHPUnit_Framework_ExpectationFailedException::class);
 
         self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
