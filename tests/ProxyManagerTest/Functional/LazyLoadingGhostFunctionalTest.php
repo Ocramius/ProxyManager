@@ -80,15 +80,15 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy GhostObjectInterface */
         $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
-        $this->assertFalse($proxy->isProxyInitialized());
+        self::assertFalse($proxy->isProxyInitialized());
 
         /* @var $callProxyMethod callable */
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
         self::assertInternalType('callable', $callProxyMethod);
-        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
+        self::assertTrue($proxy->isProxyInitialized());
     }
 
     /**
@@ -151,7 +151,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $this->createInitializer($className, $instance)
         )));
 
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertTrue($proxy->isProxyInitialized());
 
         /* @var $callProxyMethod callable */
         $callProxyMethod = [$proxy, $method];
@@ -183,7 +183,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy  = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
         $cloned = clone $proxy;
 
-        $this->assertTrue($cloned->isProxyInitialized());
+        self::assertTrue($cloned->isProxyInitialized());
 
         /* @var $callProxyMethod callable */
         $callProxyMethod = [$proxy, $method];
@@ -207,8 +207,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $publicProperty,
         $propertyValue
     ) {
-        $this->assertSame($propertyValue, $proxy->$publicProperty);
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertSame($propertyValue, $proxy->$publicProperty);
+        self::assertTrue($proxy->isProxyInitialized());
     }
 
     /**
@@ -223,8 +223,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertSame($newValue, $proxy->$publicProperty);
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($newValue, $proxy->$publicProperty);
     }
 
     /**
@@ -236,8 +236,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyExistence($instance, GhostObjectInterface $proxy, string $publicProperty)
     {
-        $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
+        self::assertTrue($proxy->isProxyInitialized());
     }
 
     /**
@@ -250,8 +250,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     public function testPropertyAbsence($instance, GhostObjectInterface $proxy, string $publicProperty)
     {
         $proxy->$publicProperty = null;
-        $this->assertFalse(isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertFalse(isset($proxy->$publicProperty));
+        self::assertTrue($proxy->isProxyInitialized());
     }
 
     /**
@@ -265,9 +265,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         unset($proxy->$publicProperty);
 
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertTrue(isset($instance->$publicProperty));
-        $this->assertFalse(isset($proxy->$publicProperty));
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertTrue(isset($instance->$publicProperty));
+        self::assertFalse(isset($proxy->$publicProperty));
     }
 
     /**
@@ -284,11 +284,11 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $proxy->arrayProperty['foo'] = 'bar';
 
-        $this->assertSame('bar', $proxy->arrayProperty['foo']);
+        self::assertSame('bar', $proxy->arrayProperty['foo']);
 
         $proxy->arrayProperty = ['tab' => 'taz'];
 
-        $this->assertSame(['tab' => 'taz'], $proxy->arrayProperty);
+        self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
     }
 
     /**
@@ -304,12 +304,12 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('property0', $proxy->property0);
-        $this->assertSame('foo', $variable);
+        self::assertSame('property0', $proxy->property0);
+        self::assertSame('foo', $variable);
     }
 
     /**
@@ -325,12 +325,12 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = & $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('foo', $proxy->property0);
-        $this->assertSame('foo', $variable);
+        self::assertSame('foo', $proxy->property0);
+        self::assertSame('foo', $variable);
     }
 
     public function testKeepsInitializerWhenNotOverwitten()
@@ -344,7 +344,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $proxy->initializeProxy();
 
-        $this->assertSame($initializer, $proxy->getProxyInitializer());
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 
     /**
@@ -362,13 +362,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy       = $proxyName::staticProxyConstructor($initializer);
 
         $proxy->initializeProxy();
-        $this->assertSame('newValue', $proxy->publicProperty);
+        self::assertSame('newValue', $proxy->publicProperty);
 
         $proxy->publicProperty = 'otherValue';
 
         $proxy->initializeProxy();
 
-        $this->assertSame('otherValue', $proxy->publicProperty);
+        self::assertSame('otherValue', $proxy->publicProperty);
     }
 
     /**
@@ -382,7 +382,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy       = $proxyName::staticProxyConstructor(function () {
         });
 
-        $this->assertSame('property0', $proxy->property0);
+        self::assertSame('property0', $proxy->property0);
     }
 
     /**
@@ -400,7 +400,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $reflectionProperty = new ReflectionProperty($instance, 'property0');
         $reflectionProperty->setAccessible(true);
 
-        $this->assertSame('property0', $reflectionProperty->getValue($proxy));
+        self::assertSame('property0', $reflectionProperty->getValue($proxy));
     }
 
     /**
@@ -418,7 +418,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $reflectionProperty = new ReflectionProperty($instance, 'property0');
         $reflectionProperty->setAccessible(true);
 
-        $this->assertSame('property0', $reflectionProperty->getValue($proxy));
+        self::assertSame('property0', $reflectionProperty->getValue($proxy));
     }
 
     /**
@@ -439,8 +439,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $childProperty->setAccessible(true);
         $parentProperty->setAccessible(true);
 
-        $this->assertSame('childClassProperty0', $childProperty->getValue($proxy));
-        $this->assertSame('property0', $parentProperty->getValue($proxy));
+        self::assertSame('childClassProperty0', $childProperty->getValue($proxy));
+        self::assertSame('property0', $parentProperty->getValue($proxy));
     }
 
     /**
@@ -466,8 +466,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $childProperty->setAccessible(true);
         $parentProperty->setAccessible(true);
 
-        $this->assertSame('foo', $childProperty->getValue($proxy));
-        $this->assertSame('bar', $parentProperty->getValue($proxy));
+        self::assertSame('foo', $childProperty->getValue($proxy));
+        self::assertSame('bar', $parentProperty->getValue($proxy));
     }
 
     /**
@@ -505,11 +505,11 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $childProperty->setAccessible(true);
         $parentProperty->setAccessible(true);
 
-        $this->assertSame('foo', $childProperty->getValue($proxy1));
-        $this->assertSame('bar', $parentProperty->getValue($proxy1));
+        self::assertSame('foo', $childProperty->getValue($proxy1));
+        self::assertSame('bar', $parentProperty->getValue($proxy1));
 
-        $this->assertSame('baz', $childProperty->getValue($proxy2));
-        $this->assertSame('tab', $parentProperty->getValue($proxy2));
+        self::assertSame('baz', $childProperty->getValue($proxy2));
+        self::assertSame('tab', $parentProperty->getValue($proxy2));
     }
 
     /**
@@ -539,8 +539,8 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $proxy1->set('privateProperty', 'private1');
         $proxy2->set('privateProperty', 'private2');
-        $this->assertSame('private1', $proxy1->get('privateProperty'));
-        $this->assertSame('private2', $proxy2->get('privateProperty'));
+        self::assertSame('private1', $proxy1->get('privateProperty'));
+        self::assertSame('private2', $proxy2->get('privateProperty'));
     }
 
     /**
@@ -569,10 +569,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             }
         );
 
-        $this->assertTrue($proxy1->has('privateProperty'));
-        $this->assertFalse($proxy2->has('privateProperty'));
-        $this->assertTrue($proxy1->has('privateProperty'));
-        $this->assertFalse($proxy2->has('privateProperty'));
+        self::assertTrue($proxy1->has('privateProperty'));
+        self::assertFalse($proxy2->has('privateProperty'));
+        self::assertTrue($proxy1->has('privateProperty'));
+        self::assertFalse($proxy2->has('privateProperty'));
     }
 
     /**
@@ -600,13 +600,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             }
         );
 
-        $this->assertTrue($proxy1->has('privateProperty'));
+        self::assertTrue($proxy1->has('privateProperty'));
         $proxy2->remove('privateProperty');
-        $this->assertFalse($proxy2->has('privateProperty'));
-        $this->assertTrue($proxy1->has('privateProperty'));
+        self::assertFalse($proxy2->has('privateProperty'));
+        self::assertTrue($proxy1->has('privateProperty'));
         $proxy1->remove('privateProperty');
-        $this->assertFalse($proxy1->has('privateProperty'));
-        $this->assertFalse($proxy2->has('privateProperty'));
+        self::assertFalse($proxy1->has('privateProperty'));
+        self::assertFalse($proxy2->has('privateProperty'));
     }
 
     /**
@@ -640,13 +640,13 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             }
         );
 
-        $this->assertTrue($proxy1->has('protectedProperty'));
-        $this->assertTrue($proxy1->has('publicProperty'));
-        $this->assertTrue($proxy1->has('privateProperty'));
+        self::assertTrue($proxy1->has('protectedProperty'));
+        self::assertTrue($proxy1->has('publicProperty'));
+        self::assertTrue($proxy1->has('privateProperty'));
 
-        $this->assertFalse($proxy2->has('protectedProperty'));
-        $this->assertFalse($proxy2->has('publicProperty'));
-        $this->assertFalse($proxy2->has('privateProperty'));
+        self::assertFalse($proxy2->has('protectedProperty'));
+        self::assertFalse($proxy2->has('publicProperty'));
+        self::assertFalse($proxy2->has('privateProperty'));
     }
 
     public function testByRefInitialization()
@@ -673,7 +673,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {
             $property->setAccessible(true);
 
-            $this->assertSame(str_replace('Property', '', $property->getName()), $property->getValue($proxy));
+            self::assertSame(str_replace('Property', '', $property->getName()), $property->getValue($proxy));
         }
     }
 
@@ -685,22 +685,22 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $instance = new ClassWithCounterConstructor(10);
 
-        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
         $instance->__construct(3);
-        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
         $proxyName = $this->generateProxy(get_class($instance));
 
         /* @var $proxy ClassWithCounterConstructor */
         $proxy = new $proxyName(15);
 
-        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
         $proxy->__construct(5);
-        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     public function testInitializeProxyWillReturnTrueOnSuccessfulInitialization()
@@ -713,9 +713,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             new ClassWithMixedProperties()
         ));
 
-        $this->assertTrue($proxy->initializeProxy());
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertFalse($proxy->initializeProxy());
+        self::assertTrue($proxy->initializeProxy());
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertFalse($proxy->initializeProxy());
     }
 
     /**
@@ -754,12 +754,12 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $initializerMatcher = $this->getMock('stdClass', ['__invoke']);
 
             $initializerMatcher
-                ->expects($this->once())
+                ->expects(self::once())
                 ->method('__invoke')
                 ->with(
                     $this->logicalAnd(
-                        $this->isInstanceOf(GhostObjectInterface::class),
-                        $this->isInstanceOf($className)
+                        self::isInstanceOf(GhostObjectInterface::class),
+                        self::isInstanceOf($className)
                     )
                 );
         }
@@ -949,7 +949,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $property = new ReflectionProperty($propertyClass, $propertyName);
         $property->setAccessible(true);
 
-        $this->assertSame($expected, $property->getValue($ghostObject));
+        self::assertSame($expected, $property->getValue($ghostObject));
     }
 
     /**
@@ -984,9 +984,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
         $property->setValue($ghostObject, $value);
 
-        $this->assertTrue($ghostObject->initializeProxy());
+        self::assertTrue($ghostObject->initializeProxy());
 
-        $this->assertSame(
+        self::assertSame(
             $value,
             $property->getValue($ghostObject),
             'Property should not be changed by proxy initialization'

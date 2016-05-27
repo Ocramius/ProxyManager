@@ -67,13 +67,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
         $proxy     = $proxyName::staticProxyConstructor($instance);
 
-        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
         $listener = $this->getMock(stdClass::class, ['__invoke']);
         $listener
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($proxy, $instance, $method, $params, false);
 
@@ -84,7 +84,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
             }
         );
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         $random = uniqid('', true);
 
@@ -97,7 +97,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
             }
         );
 
-        $this->assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -123,7 +123,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
         $listener = $this->getMock(stdClass::class, ['__invoke']);
         $listener
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($proxy, $instance, $method, $params, $expectedValue, false);
 
@@ -134,7 +134,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
             }
         );
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         $random = uniqid();
 
@@ -147,7 +147,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
             }
         );
 
-        $this->assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -170,8 +170,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
-        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
     /**
@@ -191,9 +191,9 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy     = $proxyName::staticProxyConstructor($instance);
         $cloned    = clone $proxy;
 
-        $this->assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
-        $this->assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
-        $this->assertEquals($instance, $cloned->getWrappedValueHolderValue());
+        self::assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
+        self::assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
+        self::assertEquals($instance, $cloned->getWrappedValueHolderValue());
     }
 
     /**
@@ -210,8 +210,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $publicProperty,
         $propertyValue
     ) {
-        $this->assertSame($propertyValue, $proxy->$publicProperty);
-        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame($propertyValue, $proxy->$publicProperty);
+        self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
     /**
@@ -229,8 +229,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
-        $this->assertSame($newValue, $proxy->$publicProperty);
-        $this->assertSame($newValue, $proxy->getWrappedValueHolderValue()->$publicProperty);
+        self::assertSame($newValue, $proxy->$publicProperty);
+        self::assertSame($newValue, $proxy->getWrappedValueHolderValue()->$publicProperty);
     }
 
     /**
@@ -245,11 +245,11 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
     ) {
-        $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
-        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
+        self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
 
         $proxy->getWrappedValueHolderValue()->$publicProperty = null;
-        $this->assertFalse(isset($proxy->$publicProperty));
+        self::assertFalse(isset($proxy->$publicProperty));
     }
 
     /**
@@ -267,8 +267,8 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         unset($proxy->$publicProperty);
 
-        $this->assertFalse(isset($instance->$publicProperty));
-        $this->assertFalse(isset($proxy->$publicProperty));
+        self::assertFalse(isset($instance->$publicProperty));
+        self::assertFalse(isset($proxy->$publicProperty));
     }
 
     /**
@@ -284,11 +284,11 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
         $proxy->arrayProperty['foo'] = 'bar';
 
-        $this->assertSame('bar', $proxy->arrayProperty['foo']);
+        self::assertSame('bar', $proxy->arrayProperty['foo']);
 
         $proxy->arrayProperty = ['tab' => 'taz'];
 
-        $this->assertSame(['tab' => 'taz'], $proxy->arrayProperty);
+        self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
     }
 
     /**
@@ -303,12 +303,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('property0', $proxy->property0);
-        $this->assertSame('foo', $variable);
+        self::assertSame('property0', $proxy->property0);
+        self::assertSame('foo', $variable);
     }
 
     /**
@@ -323,12 +323,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = & $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('foo', $proxy->property0);
-        $this->assertSame('foo', $variable);
+        self::assertSame('foo', $proxy->property0);
+        self::assertSame('foo', $variable);
     }
 
     /**
@@ -339,22 +339,22 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     {
         $instance = new ClassWithCounterConstructor(10);
 
-        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
         $instance->__construct(3);
-        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
         $proxyName = $this->generateProxy(get_class($instance));
 
         /* @var $proxy ClassWithCounterConstructor */
         $proxy = new $proxyName(15);
 
-        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
         $proxy->__construct(5);
-        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     public function testWillForwardVariadicArguments()
@@ -372,12 +372,12 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
             ]
         );
 
-        $this->assertNull($object->bar);
-        $this->assertNull($object->baz);
+        self::assertNull($object->bar);
+        self::assertNull($object->baz);
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
-        $this->assertSame('Ocramius', $object->bar);
-        $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
+        self::assertSame('Ocramius', $object->bar);
+        self::assertSame(['Malukenho', 'Danizord'], $object->baz);
     }
 
     /**

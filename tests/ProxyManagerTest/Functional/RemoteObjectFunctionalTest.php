@@ -60,10 +60,10 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $client = $this->getMock(Client::class, ['call']);
 
         $client
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('call')
             ->with($this->stringEndsWith($method), $params)
-            ->will($this->returnValue($expectedValue));
+            ->will(self::returnValue($expectedValue));
 
         $adapter = new XmlRpcAdapter(
             $client,
@@ -89,10 +89,10 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $client = $this->getMock(Client::class, ['call']);
 
         $client
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('call')
             ->with($this->stringEndsWith($method), $params)
-            ->will($this->returnValue($expectedValue));
+            ->will(self::returnValue($expectedValue));
 
         $adapter = new JsonRpcAdapter(
             $client,
@@ -120,7 +120,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -138,7 +138,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy \ProxyManager\Proxy\RemoteObjectInterface */
         $proxy     = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
     }
 
     /**
@@ -158,7 +158,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         );
 
         /* @var $proxy \ProxyManager\Proxy\NullObjectInterface */
-        $this->assertSame($propertyValue, $proxy->$publicProperty);
+        self::assertSame($propertyValue, $proxy->$publicProperty);
     }
 
     /**

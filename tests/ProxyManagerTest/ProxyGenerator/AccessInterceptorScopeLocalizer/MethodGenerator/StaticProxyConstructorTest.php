@@ -45,8 +45,8 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         $this->prefixInterceptors = $this->getMock(PropertyGenerator::class);
         $this->suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $this->prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $this->suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $this->prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $this->suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
     }
 
     public function testSignature()
@@ -56,18 +56,18 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
-        $this->assertSame('staticProxyConstructor', $method->getName());
+        self::assertSame('staticProxyConstructor', $method->getName());
 
         $parameters = $method->getParameters();
 
-        $this->assertCount(3, $parameters);
+        self::assertCount(3, $parameters);
 
-        $this->assertSame(
+        self::assertSame(
             ClassWithProtectedProperties::class,
             $parameters['localizedObject']->getType()
         );
-        $this->assertSame('array', $parameters['prefixInterceptors']->getType());
-        $this->assertSame('array', $parameters['suffixInterceptors']->getType());
+        self::assertSame('array', $parameters['prefixInterceptors']->getType());
+        self::assertSame('array', $parameters['suffixInterceptors']->getType());
     }
 
     public function testBodyStructure()
@@ -78,7 +78,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
             $this->suffixInterceptors
         );
 
-        $this->assertSame(
+        self::assertSame(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);

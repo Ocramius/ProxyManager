@@ -47,18 +47,18 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
 
         $magicWakeup = new MagicWakeup($reflection);
 
-        $this->assertSame('__wakeup', $magicWakeup->getName());
-        $this->assertCount(0, $magicWakeup->getParameters());
-        $this->assertSame("unset(\$this->bar, \$this->baz);\n\n", $magicWakeup->getBody());
+        self::assertSame('__wakeup', $magicWakeup->getName());
+        self::assertCount(0, $magicWakeup->getParameters());
+        self::assertSame("unset(\$this->bar, \$this->baz);\n\n", $magicWakeup->getBody());
     }
 
     public function testBodyStructureWithoutPublicProperties()
     {
         $magicWakeup = new MagicWakeup(new ReflectionClass(EmptyClass::class));
 
-        $this->assertSame('__wakeup', $magicWakeup->getName());
-        $this->assertCount(0, $magicWakeup->getParameters());
-        $this->assertEmpty($magicWakeup->getBody());
+        self::assertSame('__wakeup', $magicWakeup->getName());
+        self::assertCount(0, $magicWakeup->getParameters());
+        self::assertEmpty($magicWakeup->getBody());
     }
 
     /**

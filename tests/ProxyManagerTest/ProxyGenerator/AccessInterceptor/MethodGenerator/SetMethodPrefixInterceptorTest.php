@@ -42,12 +42,12 @@ class SetMethodPrefixInterceptorTest extends PHPUnit_Framework_TestCase
         /* @var $suffix PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffix = $this->getMock(PropertyGenerator::class);
 
-        $suffix->expects($this->once())->method('getName')->will($this->returnValue('foo'));
+        $suffix->expects(self::once())->method('getName')->will(self::returnValue('foo'));
 
         $setter = new SetMethodPrefixInterceptor($suffix);
 
-        $this->assertSame('setMethodPrefixInterceptor', $setter->getName());
-        $this->assertCount(2, $setter->getParameters());
-        $this->assertSame('$this->foo[$methodName] = $prefixInterceptor;', $setter->getBody());
+        self::assertSame('setMethodPrefixInterceptor', $setter->getName());
+        self::assertCount(2, $setter->getParameters());
+        self::assertSame('$this->foo[$methodName] = $prefixInterceptor;', $setter->getBody());
     }
 }

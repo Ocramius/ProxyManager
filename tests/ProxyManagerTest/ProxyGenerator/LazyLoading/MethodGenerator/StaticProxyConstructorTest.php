@@ -43,17 +43,17 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $constructor = new StaticProxyConstructor(
             $initializer,
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
         );
 
-        $this->assertSame('staticProxyConstructor', $constructor->getName());
-        $this->assertCount(1, $constructor->getParameters());
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertCount(1, $constructor->getParameters());
 
-        $this->assertStringMatchesFormat(
+        self::assertStringMatchesFormat(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);

@@ -69,12 +69,12 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxy     = $proxyName::staticProxyConstructor($instance);
 
         $this->assertProxySynchronized($instance, $proxy);
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
         $listener = $this->getMock('stdClass', ['__invoke']);
         $listener
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($proxy, $proxy, $method, $params, false);
 
@@ -85,7 +85,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
             }
         );
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         $random = uniqid('', true);
 
@@ -98,7 +98,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
             }
         );
 
-        $this->assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -125,7 +125,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
         $listener  = $this->getMock(stdClass::class, ['__invoke']);
         $listener
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($proxy, $proxy, $method, $params, $expectedValue, false);
 
@@ -136,7 +136,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
             }
         );
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         $random = uniqid('', true);
 
@@ -149,7 +149,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
             }
         );
 
-        $this->assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -173,7 +173,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         /* @var $proxy AccessInterceptorInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
-        $this->assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -200,7 +200,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $cloned    = clone $proxy;
 
         $this->assertProxySynchronized($instance, $proxy);
-        $this->assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
+        self::assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -218,7 +218,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         string $publicProperty,
         $propertyValue
     ) {
-        $this->assertSame($propertyValue, $proxy->$publicProperty);
+        self::assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -234,7 +234,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
-        $this->assertSame($newValue, $proxy->$publicProperty);
+        self::assertSame($newValue, $proxy->$publicProperty);
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -247,11 +247,11 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      */
     public function testPropertyExistence($instance, AccessInterceptorInterface $proxy, string $publicProperty)
     {
-        $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
+        self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
 
         $instance->$publicProperty = null;
-        $this->assertFalse(isset($proxy->$publicProperty));
+        self::assertFalse(isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -267,8 +267,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $this->markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);
 
-        $this->assertFalse(isset($instance->$publicProperty));
-        $this->assertFalse(isset($proxy->$publicProperty));
+        self::assertFalse(isset($instance->$publicProperty));
+        self::assertFalse(isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -285,11 +285,11 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         $proxy->arrayProperty['foo'] = 'bar';
 
-        $this->assertSame('bar', $proxy->arrayProperty['foo']);
+        self::assertSame('bar', $proxy->arrayProperty['foo']);
 
         $proxy->arrayProperty = ['tab' => 'taz'];
 
-        $this->assertSame(['tab' => 'taz'], $proxy->arrayProperty);
+        self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -305,13 +305,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('property0', $proxy->property0);
+        self::assertSame('property0', $proxy->property0);
         $this->assertProxySynchronized($instance, $proxy);
-        $this->assertSame('foo', $variable);
+        self::assertSame('foo', $variable);
     }
 
     /**
@@ -325,13 +325,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = & $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('foo', $proxy->property0);
+        self::assertSame('foo', $proxy->property0);
         $this->assertProxySynchronized($instance, $proxy);
-        $this->assertSame('foo', $variable);
+        self::assertSame('foo', $variable);
     }
 
     /**
@@ -342,22 +342,22 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     {
         $instance = new ClassWithCounterConstructor(10);
 
-        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
         $instance->__construct(3);
-        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
         $proxyName = $this->generateProxy(get_class($instance));
 
         /* @var $proxy ClassWithCounterConstructor */
         $proxy = new $proxyName(15);
 
-        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
         $proxy->__construct(5);
-        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     /**
@@ -454,7 +454,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {
             $property->setAccessible(true);
 
-            $this->assertSame(
+            self::assertSame(
                 $property->getValue($instance),
                 $property->getValue($proxy),
                 'Property "' . $property->getName() . '" is synchronized between instance and proxy'
@@ -478,12 +478,12 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
             ]
         );
 
-        $this->assertNull($object->bar);
-        $this->assertNull($object->baz);
+        self::assertNull($object->bar);
+        self::assertNull($object->baz);
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
-        $this->assertSame('Ocramius', $object->bar);
-        $this->assertSame(['Malukenho', 'Danizord'], $object->baz);
+        self::assertSame('Ocramius', $object->bar);
+        self::assertSame(['Malukenho', 'Danizord'], $object->baz);
     }
 
     /**

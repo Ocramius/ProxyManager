@@ -43,9 +43,9 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
         $reflection = new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = NullObjectMethodInterceptor::generateMethod($reflection);
 
-        $this->assertSame('publicByReferenceParameterMethod', $method->getName());
-        $this->assertCount(2, $method->getParameters());
-        $this->assertSame("", $method->getBody());
+        self::assertSame('publicByReferenceParameterMethod', $method->getName());
+        self::assertCount(2, $method->getParameters());
+        self::assertSame("", $method->getBody());
     }
 
     /**
@@ -57,9 +57,9 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
 
         $method = NullObjectMethodInterceptor::generateMethod($reflectionMethod);
 
-        $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
-        $this->assertCount(0, $method->getParameters());
-        $this->assertSame("", $method->getBody());
+        self::assertSame('testBodyStructureWithoutParameters', $method->getName());
+        self::assertCount(0, $method->getParameters());
+        self::assertSame("", $method->getBody());
     }
 
     /**
@@ -71,8 +71,8 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
 
         $method = NullObjectMethodInterceptor::generateMethod($reflectionMethod);
 
-        $this->assertSame('publicByReferenceMethod', $method->getName());
-        $this->assertCount(0, $method->getParameters());
-        $this->assertStringMatchesFormat("\$ref%s = null;\nreturn \$ref%s;", $method->getBody());
+        self::assertSame('publicByReferenceMethod', $method->getName());
+        self::assertCount(0, $method->getParameters());
+        self::assertStringMatchesFormat("\$ref%s = null;\nreturn \$ref%s;", $method->getBody());
     }
 }

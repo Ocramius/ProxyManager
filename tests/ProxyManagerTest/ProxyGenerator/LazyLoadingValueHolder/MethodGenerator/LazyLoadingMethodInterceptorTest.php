@@ -46,15 +46,15 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder      = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
 
         $reflection = new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer, $valueHolder);
 
-        $this->assertSame('publicByReferenceParameterMethod', $method->getName());
-        $this->assertCount(2, $method->getParameters());
-        $this->assertSame(
+        self::assertSame('publicByReferenceParameterMethod', $method->getName());
+        self::assertCount(2, $method->getParameters());
+        self::assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, 'publicByReferenceParameterMethod', "
             . "array('param' => \$param, 'byRefParam' => \$byRefParam), \$this->foo);\n\n"
             . "return \$this->bar->publicByReferenceParameterMethod(\$param, \$byRefParam);",
@@ -73,16 +73,16 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder      = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $method = LazyLoadingMethodInterceptor::generateMethod($reflectionMethod, $initializer, $valueHolder);
 
-        $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
-        $this->assertCount(0, $method->getParameters());
-        $this->assertSame(
+        self::assertSame('testBodyStructureWithoutParameters', $method->getName());
+        self::assertCount(0, $method->getParameters());
+        self::assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
             . "'testBodyStructureWithoutParameters', array(), \$this->foo);\n\n"
             . "return \$this->bar->testBodyStructureWithoutParameters();",

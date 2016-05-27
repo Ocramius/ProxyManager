@@ -75,21 +75,21 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will($this->returnValue($this->inflector));
+            ->will(self::returnValue($this->inflector));
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will($this->returnValue($this->signatureChecker));
+            ->will(self::returnValue($this->signatureChecker));
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will($this->returnValue($this->classSignatureGenerator));
+            ->will(self::returnValue($this->classSignatureGenerator));
     }
 
     /**
@@ -100,8 +100,8 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
     public function testWithOptionalFactory()
     {
         $factory = new LazyLoadingValueHolderFactory();
-        $this->assertAttributeNotEmpty('configuration', $factory);
-        $this->assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
+        self::assertAttributeNotEmpty('configuration', $factory);
+        self::assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
     }
 
     /**
@@ -116,10 +116,10 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyClassName')
             ->with($className)
-            ->will($this->returnValue(LazyLoadingMock::class));
+            ->will(self::returnValue(LazyLoadingMock::class));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
         $initializer = function () {
@@ -127,8 +127,8 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
         /* @var $proxy LazyLoadingMock */
         $proxy       = $factory->createProxy($className, $initializer);
 
-        $this->assertInstanceOf(LazyLoadingMock::class, $proxy);
-        $this->assertSame($initializer, $proxy->initializer);
+        self::assertInstanceOf(LazyLoadingMock::class, $proxy);
+        self::assertSame($initializer, $proxy->initializer);
     }
 
     /**
@@ -147,14 +147,14 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
         $generator      = $this->getMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->getMock(AutoloaderInterface::class);
 
-        $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
-        $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
+        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
+        $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
 
         $generator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('generate')
             ->with(
-                $this->callback(
+                self::callback(
                     function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
@@ -163,7 +163,7 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
 
         // simulate autoloading
         $autoloader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
             ->willReturnCallback(function () use ($proxyClassName) : bool {
@@ -174,20 +174,20 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyClassName')
             ->with($className)
-            ->will($this->returnValue($proxyClassName));
+            ->will(self::returnValue($proxyClassName));
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUserClassName')
             ->with($className)
-            ->will($this->returnValue(EmptyClass::class));
+            ->will(self::returnValue(EmptyClass::class));
 
-        $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
-        $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
+        $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
+        $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
         $initializer = function () {
@@ -195,8 +195,8 @@ class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
         /* @var $proxy LazyLoadingMock */
         $proxy       = $factory->createProxy($className, $initializer);
 
-        $this->assertInstanceOf($proxyClassName, $proxy);
-        $this->assertSame($proxyClassName, get_class($proxy));
-        $this->assertSame($initializer, $proxy->initializer);
+        self::assertInstanceOf($proxyClassName, $proxy);
+        self::assertSame($proxyClassName, get_class($proxy));
+        self::assertSame($initializer, $proxy->initializer);
     }
 }

@@ -44,13 +44,13 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
         $reflection   = new ReflectionClass(EmptyClass::class);
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter      = $this->getMock(PropertyGenerator::class);
-        $adapter->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $adapter->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $magicGet     = new MagicSet($reflection, $adapter);
 
-        $this->assertSame('__set', $magicGet->getName());
-        $this->assertCount(2, $magicGet->getParameters());
-        $this->assertStringMatchesFormat(
+        self::assertSame('__set', $magicGet->getName());
+        self::assertCount(2, $magicGet->getParameters());
+        self::assertStringMatchesFormat(
             '$return = $this->foo->call(\'ProxyManagerTestAsset\\\EmptyClass\', \'__set\', array($name, $value));'
             . "\n\nreturn \$return;",
             $magicGet->getBody()

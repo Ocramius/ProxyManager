@@ -41,7 +41,7 @@ class UnsupportedProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
      */
     public function testUnsupportedLocalizedReflectionProperty()
     {
-        $this->assertSame(
+        self::assertSame(
             'Provided reflection property "property0" of class "' . ClassWithPrivateProperties::class
             . '" is private and cannot be localized in PHP 5.3',
             UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty(
