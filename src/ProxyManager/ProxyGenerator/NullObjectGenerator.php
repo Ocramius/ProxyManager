@@ -51,11 +51,13 @@ class NullObjectGenerator implements ProxyGeneratorInterface
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
+        } else {
+            $classGenerator->setExtendedClass($originalClass->getName());
         }
 
         $classGenerator->setImplementedInterfaces($interfaces);
 
-        foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass) as $method) {
+        foreach (ProxiedMethodsFilter::getProxiedMethods($originalClass, []) as $method) {
             $classGenerator->addMethodFromGenerator(
                 NullObjectMethodInterceptor::generateMethod(
                     new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
