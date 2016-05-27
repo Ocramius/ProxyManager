@@ -94,39 +94,39 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
         $this->classSignatureGenerator = $this->getMock(ClassSignatureGeneratorInterface::class);
 
         $configuration
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will($this->returnValue($this->classNameInflector));
+            ->will(self::returnValue($this->classNameInflector));
 
         $configuration
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getGeneratorStrategy')
-            ->will($this->returnValue($this->generatorStrategy));
+            ->will(self::returnValue($this->generatorStrategy));
 
         $configuration
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProxyAutoloader')
-            ->will($this->returnValue($this->proxyAutoloader));
+            ->will(self::returnValue($this->proxyAutoloader));
 
         $configuration
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will($this->returnValue($this->signatureChecker));
+            ->will(self::returnValue($this->signatureChecker));
 
         $configuration
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will($this->returnValue($this->classSignatureGenerator));
+            ->will(self::returnValue($this->classSignatureGenerator));
 
         $this
             ->classNameInflector
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getUserClassName')
-            ->will($this->returnValue('stdClass'));
+            ->will(self::returnValue('stdClass'));
 
         $this->factory = $this->getMockForAbstractClass(AbstractBaseFactory::class, [$configuration]);
 
-        $this->factory->expects($this->any())->method('getGenerator')->will($this->returnValue($this->generator));
+        $this->factory->expects(self::any())->method('getGenerator')->will(self::returnValue($this->generator));
     }
 
     public function testGeneratesClass()
@@ -138,47 +138,47 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
 
         $this
             ->classNameInflector
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue($generatedClass));
+            ->will(self::returnValue($generatedClass));
 
         $this
             ->generatorStrategy
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('generate')
-            ->with($this->isInstanceOf(ClassGenerator::class));
+            ->with(self::isInstanceOf(ClassGenerator::class));
         $this
             ->proxyAutoloader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($generatedClass)
-            ->will($this->returnCallback(function ($className) : bool {
+            ->will(self::returnCallback(function ($className) : bool {
                 eval('class ' . $className . ' {}');
 
                 return true;
             }));
 
-        $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
-        $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
+        $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
+        $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
         $this
             ->generator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('generate')
             ->with(
-                $this->callback(function (\ReflectionClass $reflectionClass) : bool {
+                self::callback(function (\ReflectionClass $reflectionClass) : bool {
                     return $reflectionClass->getName() === 'stdClass';
                 }),
-                $this->isInstanceOf(ClassGenerator::class),
+                self::isInstanceOf(ClassGenerator::class),
                 ['some' => 'proxy', 'options' => 'here']
             );
 
-        $this->assertSame(
+        self::assertSame(
             $generatedClass,
             $generateProxy->invoke($this->factory, stdClass::class, ['some' => 'proxy', 'options' => 'here'])
         );
-        $this->assertTrue(class_exists($generatedClass, false));
-        $this->assertSame(
+        self::assertTrue(class_exists($generatedClass, false));
+        self::assertSame(
             $generatedClass,
             $generateProxy->invoke($this->factory, stdClass::class, ['some' => 'proxy', 'options' => 'here'])
         );

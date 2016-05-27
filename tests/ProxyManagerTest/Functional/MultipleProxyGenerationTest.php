@@ -86,14 +86,14 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         ];
 
         foreach ($generated as $key => $proxy) {
-            $this->assertInstanceOf($className, $proxy);
+            self::assertInstanceOf($className, $proxy);
 
             foreach ($generated as $comparedKey => $comparedProxy) {
                 if ($comparedKey === $key) {
                     continue;
                 }
 
-                $this->assertNotSame(get_class($comparedProxy), get_class($proxy));
+                self::assertNotSame(get_class($comparedProxy), get_class($proxy));
             }
 
             $proxyClass = get_class($proxy);
@@ -101,11 +101,11 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             self::assertInstanceOf($proxyClass, new $proxyClass, 'Proxy can be instantiated via normal constructor');
         }
 
-        $this->assertInstanceOf(GhostObjectInterface::class, $generated[0]);
-        $this->assertInstanceOf(VirtualProxyInterface::class, $generated[1]);
-        $this->assertInstanceOf(AccessInterceptorInterface::class, $generated[2]);
-        $this->assertInstanceOf(ValueHolderInterface::class, $generated[2]);
-        $this->assertInstanceOf(AccessInterceptorInterface::class, $generated[3]);
+        self::assertInstanceOf(GhostObjectInterface::class, $generated[0]);
+        self::assertInstanceOf(VirtualProxyInterface::class, $generated[1]);
+        self::assertInstanceOf(AccessInterceptorInterface::class, $generated[2]);
+        self::assertInstanceOf(ValueHolderInterface::class, $generated[2]);
+        self::assertInstanceOf(AccessInterceptorInterface::class, $generated[3]);
     }
 
     /**

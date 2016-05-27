@@ -47,8 +47,8 @@ class CallInitializerTest extends PHPUnit_Framework_TestCase
         /* @var $initializationTracker PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializationTracker = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('init'));
-        $initializationTracker->expects($this->any())->method('getName')->will($this->returnValue('track'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('init'));
+        $initializationTracker->expects(self::any())->method('getName')->will(self::returnValue('track'));
 
         $callInitializer = new CallInitializer(
             $initializer,
@@ -110,7 +110,7 @@ $this->track = false;
 
 return $result;';
 
-        $this->assertSame(
+        self::assertSame(
             $expectedCode,
             $callInitializer->getBody()
         );

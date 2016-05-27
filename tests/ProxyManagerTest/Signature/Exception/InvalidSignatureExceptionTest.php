@@ -44,12 +44,12 @@ class InvalidSignatureExceptionTest extends PHPUnit_Framework_TestCase
             'expected-signature'
         );
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             'ProxyManager\Signature\Exception\InvalidSignatureException',
             $exception
         );
 
-        $this->assertSame(
+        self::assertSame(
             'Found signature "blah" for class "'
             . __CLASS__
             . '" does not correspond to expected signature "expected-signature" for 2 parameters',

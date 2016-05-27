@@ -43,19 +43,19 @@ class SetProxyInitializerTest extends PHPUnit_Framework_TestCase
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $setter     = new SetProxyInitializer($initializer);
         $parameters = $setter->getParameters();
 
-        $this->assertSame('setProxyInitializer', $setter->getName());
-        $this->assertCount(1, $parameters);
+        self::assertSame('setProxyInitializer', $setter->getName());
+        self::assertCount(1, $parameters);
 
         /* @var $initializer ParameterGenerator */
         $initializer = array_shift($parameters);
 
-        $this->assertInstanceOf(ParameterGenerator::class, $initializer);
-        $this->assertSame('initializer', $initializer->getName());
-        $this->assertSame('$this->foo = $initializer;', $setter->getBody());
+        self::assertInstanceOf(ParameterGenerator::class, $initializer);
+        self::assertSame('initializer', $initializer->getName());
+        self::assertSame('$this->foo = $initializer;', $setter->getBody());
     }
 }

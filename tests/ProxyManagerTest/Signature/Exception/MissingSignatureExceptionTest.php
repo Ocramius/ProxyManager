@@ -43,12 +43,12 @@ class MissingSignatureExceptionTest extends PHPUnit_Framework_TestCase
             'expected-signature'
         );
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             'ProxyManager\Signature\Exception\MissingSignatureException',
             $exception
         );
 
-        $this->assertSame(
+        self::assertSame(
             'No signature found for class "'
             . __CLASS__
             . '", expected signature "expected-signature" for 2 parameters',

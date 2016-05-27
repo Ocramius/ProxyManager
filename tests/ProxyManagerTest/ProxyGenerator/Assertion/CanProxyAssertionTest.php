@@ -79,7 +79,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
             BaseInterface::class
         ));
 
-        $this->assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
+        self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
     public function testDeniesInterfaceIfSpecified()
@@ -100,7 +100,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass($className));
 
-        $this->assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
+        self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
     public function testDisallowsConstructor()

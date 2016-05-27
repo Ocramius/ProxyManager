@@ -55,10 +55,10 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
-        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
 
         $magicIsset = new MagicIsset(
             $reflection,
@@ -68,8 +68,8 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
             $publicProperties
         );
 
-        $this->assertSame('__isset', $magicIsset->getName());
-        $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertGreaterThan(0, strpos($magicIsset->getBody(), '$returnValue = isset($this->bar->$name);'));
+        self::assertSame('__isset', $magicIsset->getName());
+        self::assertCount(1, $magicIsset->getParameters());
+        self::assertGreaterThan(0, strpos($magicIsset->getBody(), '$returnValue = isset($this->bar->$name);'));
     }
 }

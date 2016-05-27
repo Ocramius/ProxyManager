@@ -42,12 +42,12 @@ class GetProxyInitializerTest extends PHPUnit_Framework_TestCase
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $getter = new GetProxyInitializer($initializer);
 
-        $this->assertSame('getProxyInitializer', $getter->getName());
-        $this->assertCount(0, $getter->getParameters());
-        $this->assertSame('return $this->foo;', $getter->getBody());
+        self::assertSame('getProxyInitializer', $getter->getName());
+        self::assertCount(0, $getter->getParameters());
+        self::assertSame('return $this->foo;', $getter->getBody());
     }
 }

@@ -48,8 +48,8 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $magicGet = new MagicSleep(
             $reflection,
@@ -57,9 +57,9 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
             $suffixInterceptors
         );
 
-        $this->assertSame('__sleep', $magicGet->getName());
-        $this->assertEmpty($magicGet->getParameters());
-        $this->assertStringMatchesFormat('%a$returnValue = array_keys((array) $this);%a', $magicGet->getBody());
+        self::assertSame('__sleep', $magicGet->getName());
+        self::assertEmpty($magicGet->getParameters());
+        self::assertStringMatchesFormat('%a$returnValue = array_keys((array) $this);%a', $magicGet->getBody());
     }
 
     /**
@@ -73,8 +73,8 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $magicGet = new MagicSleep(
             $reflection,
@@ -82,8 +82,8 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
             $suffixInterceptors
         );
 
-        $this->assertSame('__sleep', $magicGet->getName());
-        $this->assertEmpty($magicGet->getParameters());
-        $this->assertStringMatchesFormat('%a$returnValue = & parent::__sleep();%a', $magicGet->getBody());
+        self::assertSame('__sleep', $magicGet->getName());
+        self::assertEmpty($magicGet->getParameters());
+        self::assertStringMatchesFormat('%a$returnValue = & parent::__sleep();%a', $magicGet->getBody());
     }
 }

@@ -53,18 +53,18 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
         );
 
         $client
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('call')
             ->with('foobarbaz', ['tab' => 'taz'])
-            ->will($this->returnValue('baz'));
+            ->will(self::returnValue('baz'));
 
         $adapter
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getServiceName')
             ->with('foo', 'bar')
-            ->will($this->returnValue('foobarbaz'));
+            ->will(self::returnValue('foobarbaz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
+        self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 
     /**
@@ -87,17 +87,17 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
         );
 
         $client
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('call')
             ->with('mapped', ['tab' => 'taz'])
-            ->will($this->returnValue('baz'));
+            ->will(self::returnValue('baz'));
 
         $adapter
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getServiceName')
             ->with('foo', 'bar')
-            ->will($this->returnValue('foobarbaz'));
+            ->will(self::returnValue('foobarbaz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
+        self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 }

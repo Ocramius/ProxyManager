@@ -45,14 +45,14 @@ class InitializeProxyTest extends PHPUnit_Framework_TestCase
         /* @var $initCall MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initCall    = $this->getMock(MethodGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $initCall->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $initCall->expects(self::any())->method('getName')->will(self::returnValue('bar'));
 
         $initializeProxy = new InitializeProxy($initializer, $initCall);
 
-        $this->assertSame('initializeProxy', $initializeProxy->getName());
-        $this->assertCount(0, $initializeProxy->getParameters());
-        $this->assertSame(
+        self::assertSame('initializeProxy', $initializeProxy->getName());
+        self::assertCount(0, $initializeProxy->getParameters());
+        self::assertSame(
             'return $this->foo && $this->bar(\'initializeProxy\', []);',
             $initializeProxy->getBody()
         );

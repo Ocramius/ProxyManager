@@ -42,12 +42,12 @@ class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $getter = new GetWrappedValueHolderValue($valueHolder);
 
-        $this->assertSame('getWrappedValueHolderValue', $getter->getName());
-        $this->assertCount(0, $getter->getParameters());
-        $this->assertSame('return $this->foo;', $getter->getBody());
+        self::assertSame('getWrappedValueHolderValue', $getter->getName());
+        self::assertCount(0, $getter->getParameters());
+        self::assertSame('return $this->foo;', $getter->getBody());
     }
 }

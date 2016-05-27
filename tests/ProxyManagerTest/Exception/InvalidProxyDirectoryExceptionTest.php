@@ -41,6 +41,6 @@ class InvalidProxyDirectoryExceptionTest extends PHPUnit_Framework_TestCase
     {
         $exception = InvalidProxyDirectoryException::proxyDirectoryNotFound('foo/bar');
 
-        $this->assertSame('Provided directory "foo/bar" does not exist', $exception->getMessage());
+        self::assertSame('Provided directory "foo/bar" does not exist', $exception->getMessage());
     }
 }

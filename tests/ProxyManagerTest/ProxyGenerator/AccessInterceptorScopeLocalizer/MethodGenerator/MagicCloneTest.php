@@ -48,14 +48,14 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $magicClone = new MagicClone($reflection, $prefixInterceptors, $suffixInterceptors);
 
-        $this->assertSame('__clone', $magicClone->getName());
-        $this->assertCount(0, $magicClone->getParameters());
-        $this->assertStringMatchesFormat("%a\n\n\$returnValue = null;\n\n%a", $magicClone->getBody());
+        self::assertSame('__clone', $magicClone->getName());
+        self::assertCount(0, $magicClone->getParameters());
+        self::assertStringMatchesFormat("%a\n\n\$returnValue = null;\n\n%a", $magicClone->getBody());
     }
 
     /**
@@ -69,13 +69,13 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $magicClone = new MagicClone($reflection, $prefixInterceptors, $suffixInterceptors);
 
-        $this->assertSame('__clone', $magicClone->getName());
-        $this->assertCount(0, $magicClone->getParameters());
-        $this->assertStringMatchesFormat("%a\n\n\$returnValue = parent::__clone();\n\n%a", $magicClone->getBody());
+        self::assertSame('__clone', $magicClone->getName());
+        self::assertCount(0, $magicClone->getParameters());
+        self::assertStringMatchesFormat("%a\n\n\$returnValue = parent::__clone();\n\n%a", $magicClone->getBody());
     }
 }

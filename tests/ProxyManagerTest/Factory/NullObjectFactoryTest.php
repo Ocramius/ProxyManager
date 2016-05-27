@@ -74,21 +74,21 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will($this->returnValue($this->inflector));
+            ->will(self::returnValue($this->inflector));
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will($this->returnValue($this->signatureChecker));
+            ->will(self::returnValue($this->signatureChecker));
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will($this->returnValue($this->classSignatureGenerator));
+            ->will(self::returnValue($this->classSignatureGenerator));
     }
 
     /**
@@ -104,16 +104,16 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue(NullObjectMock::class));
+            ->will(self::returnValue(NullObjectMock::class));
 
         $factory    = new NullObjectFactory($this->config);
         /* @var $proxy NullObjectMock */
         $proxy      = $factory->createProxy($instance);
 
-        $this->assertInstanceOf(NullObjectMock::class, $proxy);
+        self::assertInstanceOf(NullObjectMock::class, $proxy);
     }
 
     /**
@@ -132,14 +132,14 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
         $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock(AutoloaderInterface::class);
 
-        $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
-        $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
+        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
+        $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
 
         $generator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('generate')
             ->with(
-                $this->callback(
+                self::callback(
                     function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
@@ -148,7 +148,7 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
 
         // simulate autoloading
         $autoloader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
             ->willReturnCallback(function () use ($proxyClassName) : bool {
@@ -159,25 +159,25 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue($proxyClassName));
+            ->will(self::returnValue($proxyClassName));
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will($this->returnValue(NullObjectMock::class));
+            ->will(self::returnValue(NullObjectMock::class));
 
-        $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
-        $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
+        $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
+        $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory    = new NullObjectFactory($this->config);
         /* @var $proxy NullObjectMock */
         $proxy      = $factory->createProxy($instance);
 
-        $this->assertInstanceOf($proxyClassName, $proxy);
+        self::assertInstanceOf($proxyClassName, $proxy);
     }
 }

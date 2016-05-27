@@ -102,7 +102,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty)
     {
-        $this->assertSame(null, $proxy->$publicProperty);
+        self::assertSame(null, $proxy->$publicProperty);
     }
 
     /**
@@ -116,7 +116,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
-        $this->assertSame($newValue, $proxy->$publicProperty);
+        self::assertSame($newValue, $proxy->$publicProperty);
     }
 
     /**
@@ -127,7 +127,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty)
     {
-        $this->assertSame(null, $proxy->$publicProperty);
+        self::assertSame(null, $proxy->$publicProperty);
     }
 
     /**
@@ -140,7 +140,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     {
         unset($proxy->$publicProperty);
 
-        $this->assertFalse(isset($proxy->$publicProperty));
+        self::assertFalse(isset($proxy->$publicProperty));
     }
 
     /**

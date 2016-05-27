@@ -45,7 +45,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%a$bar = %s;', $code);
     }
 
     public function testSimpleSet()
@@ -58,7 +58,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;', $code);
     }
 
     public function testSimpleIsset()
@@ -71,7 +71,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn isset($%s->$foo);%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn isset($%s->$foo);%a}%a$bar = %s;', $code);
     }
 
     public function testSimpleUnset()
@@ -84,7 +84,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%aunset($%s->$foo);%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%aunset($%s->$foo);%a}%a$bar = %s;', $code);
     }
 
     public function testSetRequiresValueParameterName()
@@ -110,7 +110,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat(
+        self::assertStringMatchesFormat(
             '%A$targetObject = $this->valueHolder;%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;',
             $code
         );
@@ -130,6 +130,6 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'foo'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%areturn %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%areturn %s;', $code);
     }
 }

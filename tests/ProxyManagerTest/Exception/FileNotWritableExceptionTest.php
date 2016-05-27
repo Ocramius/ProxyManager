@@ -38,8 +38,8 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
     {
         $exception = FileNotWritableException::fromInvalidMoveOperation('/tmp/a', '/tmp/b');
 
-        $this->assertInstanceOf(FileNotWritableException::class, $exception);
-        $this->assertSame(
+        self::assertInstanceOf(FileNotWritableException::class, $exception);
+        self::assertSame(
             'Could not move file "/tmp/a" to location "/tmp/b": either the source file is not readable,'
             . ' or the destination is not writable',
             $exception->getMessage()
@@ -50,8 +50,8 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
     {
         $exception = FileNotWritableException::fromNonWritableLocation(__DIR__);
 
-        $this->assertInstanceOf(FileNotWritableException::class, $exception);
-        $this->assertSame(
+        self::assertInstanceOf(FileNotWritableException::class, $exception);
+        self::assertSame(
             'Could not write to path "' . __DIR__ . '": exists and is not a file',
             $exception->getMessage()
         );
@@ -65,8 +65,8 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
 
         $exception = FileNotWritableException::fromNonWritableLocation($path);
 
-        $this->assertInstanceOf(FileNotWritableException::class, $exception);
-        $this->assertSame(
+        self::assertInstanceOf(FileNotWritableException::class, $exception);
+        self::assertSame(
             'Could not write to path "' . $path . '": exists and is not a file, is not writable',
             $exception->getMessage()
         );
@@ -78,8 +78,8 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
 
         $exception = FileNotWritableException::fromNonWritableLocation($path . '/foo');
 
-        $this->assertInstanceOf(FileNotWritableException::class, $exception);
-        $this->assertSame(
+        self::assertInstanceOf(FileNotWritableException::class, $exception);
+        self::assertSame(
             'Could not write to path "' . $path . '/foo": path does not exist',
             $exception->getMessage()
         );
