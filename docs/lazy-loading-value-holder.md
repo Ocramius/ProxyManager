@@ -93,7 +93,7 @@ $initializer = function (& $wrappedObject, LazyLoadingInterface $proxy, $method,
     return true; // confirm that initialization occurred correctly
 };
 
-$instance = $factory->createProxy('MyApp\HeavyComplexObject', $initializer);
+$proxy = $factory->createProxy('MyApp\HeavyComplexObject', $initializer);
 ```
 
 You can now simply use your object as before:
