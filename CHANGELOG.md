@@ -4,6 +4,30 @@ title: Changelog
 
 This is a list of changes/improvements that were introduced in ProxyManager
 
+## 2.0.2
+
+### Fixed
+
+- Various optimizations were performed in the [`ocramius/package-versions`](https://github.com/Ocramius/PackageVersions)
+  integration in order to prevent "class not found" fatals. [#294](https://github.com/Ocramius/ProxyManager/issues/294)
+- Null objects produced via a given class name were not extending from the given class name, causing obvious LSP
+  compliance and type-compatibility issues. [#300](https://github.com/Ocramius/ProxyManager/issues/300)
+  [#301](https://github.com/Ocramius/ProxyManager/issues/301)
+- Specific installation versions were removed from the [README.md](README.md) install instructions, since composer
+  is installing the latest available version by default. [#305](https://github.com/Ocramius/ProxyManager/issues/305)
+- PHP 7.0.6 support was dropped. PHP 7.0.6 includes some nasty reflection bugs that caused `__isset` to be called when
+  `ReflectionProperty#getValue()` is used (https://bugs.php.net/72174).
+  [#306](https://github.com/Ocramius/ProxyManager/issues/306)
+  [#308](https://github.com/Ocramius/ProxyManager/issues/308)
+- PHP 7.0.7 contains additional limitations as to when `$this` can be used. Specifically, `$this` cannot be used as a
+  parameter name for closures that have an already assigned `$this`. Due to `$this` being incorrectly used as parameter
+  name within this library, running ProxyManager on PHP 7.0.7 would have caused a fatal error.
+  [#306](https://github.com/Ocramius/ProxyManager/issues/306)
+  [#308](https://github.com/Ocramius/ProxyManager/issues/308)
+  [#316](https://github.com/Ocramius/ProxyManager/issues/316)
+- PHP 7.1.0-DEV includes type-checks for incompatible arithmetic operations: some of those operations were erroneously
+  performed in the library internals. [#308](https://github.com/Ocramius/ProxyManager/issues/308)
+
 ## 2.0.1
 
 ### Fixed
