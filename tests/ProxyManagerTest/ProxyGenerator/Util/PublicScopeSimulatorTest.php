@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -89,7 +90,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
 
     public function testSetRequiresValueParameterName()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
 
         PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_SET,
@@ -118,7 +119,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
 
     public function testSetRequiresValidOperation()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
 
         PublicScopeSimulator::getPublicAccessSimulationCode('invalid', 'foo');
     }

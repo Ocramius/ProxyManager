@@ -59,14 +59,14 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 {
     public function testDeniesFinalClasses()
     {
-        $this->setExpectedException(InvalidProxiedClassException::class);
+        $this->expectException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(FinalClass::class));
     }
 
     public function testDeniesClassesWithAbstractProtectedMethods()
     {
-        $this->setExpectedException(InvalidProxiedClassException::class);
+        $this->expectException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
             ClassWithAbstractProtectedMethod::class
@@ -86,7 +86,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseClass::class), false);
 
-        $this->setExpectedException(InvalidProxiedClassException::class);
+        $this->expectException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseInterface::class), false);
     }
@@ -105,7 +105,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 
     public function testDisallowsConstructor()
     {
-        $this->setExpectedException(BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
 
         new CanProxyAssertion();
     }

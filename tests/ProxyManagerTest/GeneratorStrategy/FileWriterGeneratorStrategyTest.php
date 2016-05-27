@@ -88,7 +88,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
             ->with($fqcn)
             ->will(self::returnValue($tmpFile));
 
-        $this->setExpectedException(FileNotWritableException::class);
+        $this->expectException(FileNotWritableException::class);
         $generator->generate(new ClassGenerator($fqcn));
     }
 
@@ -110,7 +110,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
 
         mkdir($tmpFile);
 
-        $this->setExpectedException(FileNotWritableException::class);
+        $this->expectException(FileNotWritableException::class);
         $generator->generate(new ClassGenerator($fqcn));
     }
 
