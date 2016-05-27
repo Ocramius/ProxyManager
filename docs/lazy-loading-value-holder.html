@@ -147,7 +147,7 @@ $initializer = function (&amp; $wrappedObject, LazyLoadingInterface $proxy, $met
     return true; // confirm that initialization occurred correctly
 };
 
-$instance = $factory-&gt;createProxy('MyApp\HeavyComplexObject', $initializer);</code></pre>
+$proxy = $factory-&gt;createProxy('MyApp\HeavyComplexObject', $initializer);</code></pre>
 <p>You can now simply use your object as before:</p>
 <pre><code class="language-php">// this will just work as before
 $proxy-&gt;doFoo(); // OK!</code></pre>

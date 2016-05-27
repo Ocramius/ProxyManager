@@ -125,7 +125,7 @@ implements the
 <pre><code class="language-php">$proxy-&gt;setMethodPrefixInterceptor('methodName', function () { echo 'pre'; });
 $proxy-&gt;setMethodSuffixInterceptor('methodName', function () { echo 'post'; });</code></pre>
 <p>You can also listen to public properties access by attaching interceptors to <code>__get</code>, <code>__set</code>, <code>__isset</code> and <code>__unset</code>.</p>
-<p>A prefix interceptor (executed before method logic) should have following signature:</p>
+<p>A prefix interceptor (executed before method logic) should have the following signature:</p>
 <pre><code class="language-php">/**
  * @var object $proxy       the proxy that intercepted the method call
  * @var object $instance    the wrapped instance within the proxy
@@ -138,7 +138,7 @@ $proxy-&gt;setMethodSuffixInterceptor('methodName', function () { echo 'post'; }
  * @return mixed
  */
 $prefixInterceptor = function ($proxy, $instance, $method, $params, &amp; $returnEarly) {};</code></pre>
-<p>A suffix interceptor (executed after method logic) should have following signature:</p>
+<p>A suffix interceptor (executed after method logic) should have the following signature:</p>
 <pre><code class="language-php">/**
  * @var object $proxy       the proxy that intercepted the method call
  * @var object $instance    the wrapped instance within the proxy

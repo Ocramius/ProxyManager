@@ -306,7 +306,7 @@ isset($ghostObject-&gt;someProperty);
 unset($ghostObject-&gt;someProperty);
 
 // accessing a property via reflection
-$reflection = new \ReflectionProperty($ghostObject, 'someProperty);
+$reflection = new \ReflectionProperty($ghostObject, 'someProperty');
 $reflection-&gt;setAccessible(true);
 $reflection-&gt;getValue($ghostObject);
 
