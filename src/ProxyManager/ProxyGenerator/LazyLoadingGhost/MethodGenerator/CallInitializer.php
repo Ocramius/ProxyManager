@@ -63,7 +63,7 @@ DOCBLOCK;
                 new ParameterGenerator('methodName'),
                 new ParameterGenerator('parameters', 'array'),
             ],
-            static::VISIBILITY_PRIVATE,
+            static::FLAG_PRIVATE,
             null,
             $docblock
         );

@@ -115,8 +115,8 @@ if (! $this->foo) {
 unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $this->protectedProperty0, '
             . '$this->protectedProperty1, $this->protectedProperty2);
 
-\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $this) {
-    unset($this->privateProperty0, $this->privateProperty1, $this->privateProperty2);
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedProperties $instance) {
+    unset($instance->privateProperty0, $instance->privateProperty1, $instance->privateProperty2);
 }, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\')->__invoke($this);
 
 }';
@@ -145,8 +145,8 @@ static $reflection;
 if (! $this->foo) {
     $reflection = $reflection ?: new \ReflectionClass('ProxyManagerTestAsset\\ClassWithVariadicConstructorArgument');
     $this->foo = $reflection->newInstanceWithoutConstructor();
-\Closure::bind(function (\ProxyManagerTestAsset\ClassWithVariadicConstructorArgument $this) {
-    unset($this->foo, $this->bar);
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithVariadicConstructorArgument $instance) {
+    unset($instance->foo, $instance->bar);
 }, $this, 'ProxyManagerTestAsset\\ClassWithVariadicConstructorArgument')->__invoke($this);
 
 }
