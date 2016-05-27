@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
