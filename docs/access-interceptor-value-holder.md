@@ -70,7 +70,7 @@ $proxy->setMethodSuffixInterceptor('methodName', function () { echo 'post'; });
 
 You can also listen to public properties access by attaching interceptors to `__get`, `__set`, `__isset` and `__unset`.
 
-A prefix interceptor (executed before method logic) should have following signature:
+A prefix interceptor (executed before method logic) should have the following signature:
 
 ```php
 /**
@@ -87,7 +87,7 @@ A prefix interceptor (executed before method logic) should have following signat
 $prefixInterceptor = function ($proxy, $instance, $method, $params, & $returnEarly) {};
 ```
 
-A suffix interceptor (executed after method logic) should have following signature:
+A suffix interceptor (executed after method logic) should have the following signature:
 
 ```php
 /**

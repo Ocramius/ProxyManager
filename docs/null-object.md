@@ -13,7 +13,7 @@ In your application, when you can't return the object related to the request, th
 for the return value and handle the failing condition gracefully, thus generating an explosion of conditionals throughout your code.
 Fortunately, this seemingly-tangled situation can be sorted out simply by creating a polymorphic implementation of the 
 domain object, which would implement the same interface as the one of the object in question, only that its methods 
-wouldn’t do anything, therefore offloading client code from doing repetitive checks for ugly null values when the operation
+wouldn't do anything, therefore offloading client code from doing repetitive checks for ugly null values when the operation
  is executed.
 
 ## Usage examples
