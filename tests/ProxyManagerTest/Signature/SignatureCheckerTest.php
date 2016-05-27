@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Signature;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Signature\SignatureChecker;
 use ReflectionClass;
 
@@ -63,16 +65,16 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
     {
         $this
             ->signatureGenerator
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('Example'));
+            ->will(self::returnValue('Example'));
         $this
             ->signatureGenerator
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('valid-signature'));
+            ->will(self::returnValue('valid-signature'));
 
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }
@@ -81,18 +83,18 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
     {
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('InvalidKey'));
+            ->will(self::returnValue('InvalidKey'));
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('valid-signature'));
+            ->will(self::returnValue('valid-signature'));
 
-        $this->setExpectedException('ProxyManager\Signature\Exception\MissingSignatureException');
+        $this->expectException(MissingSignatureException::class);
 
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }
@@ -101,18 +103,18 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
     {
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('Example'));
+            ->will(self::returnValue('Example'));
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('invalid-signature'));
+            ->will(self::returnValue('invalid-signature'));
 
-        $this->setExpectedException('ProxyManager\Signature\Exception\InvalidSignatureException');
+        $this->expectException(InvalidSignatureException::class);
 
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }

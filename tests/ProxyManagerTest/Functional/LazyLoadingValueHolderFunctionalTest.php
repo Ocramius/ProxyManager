@@ -68,15 +68,15 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         /* @var $proxy VirtualProxyInterface */
         $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
 
-        $this->assertFalse($proxy->isProxyInitialized());
+        self::assertFalse($proxy->isProxyInitialized());
 
         /* @var $callProxyMethod callable */
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
-        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertSame($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($instance, $proxy->getWrappedValueHolderValue());
     }
 
     /**
@@ -102,7 +102,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
             $this->createInitializer($className, $instance)
         )));
 
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertTrue($proxy->isProxyInitialized());
 
         /* @var $callProxyMethod callable */
         $callProxyMethod = [$proxy, $method];
@@ -110,8 +110,8 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         self::assertInternalType('callable', $callProxyMethod);
 
-        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
-        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
+        self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
     /**
@@ -136,8 +136,8 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy  = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
         $cloned = clone $proxy;
 
-        $this->assertTrue($cloned->isProxyInitialized());
-        $this->assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
+        self::assertTrue($cloned->isProxyInitialized());
+        self::assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
 
         /* @var $callProxyMethod callable */
         $callProxyMethod = [$cloned, $method];
@@ -145,8 +145,8 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         self::assertInternalType('callable', $callProxyMethod);
 
-        $this->assertSame($expectedValue, $callProxyMethod(...$parameterValues));
-        $this->assertEquals($instance, $cloned->getWrappedValueHolderValue());
+        self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
+        self::assertEquals($instance, $cloned->getWrappedValueHolderValue());
     }
 
     /**
@@ -163,9 +163,9 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         string $publicProperty,
         $propertyValue
     ) {
-        $this->assertSame($propertyValue, $proxy->$publicProperty);
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame($propertyValue, $proxy->$publicProperty);
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
     /**
@@ -180,9 +180,9 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertSame($newValue, $proxy->$publicProperty);
-        $this->assertSame($newValue, $proxy->getWrappedValueHolderValue()->$publicProperty);
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertSame($newValue, $proxy->$publicProperty);
+        self::assertSame($newValue, $proxy->getWrappedValueHolderValue()->$publicProperty);
     }
 
     /**
@@ -194,9 +194,9 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyExistence($instance, VirtualProxyInterface $proxy, string $publicProperty)
     {
-        $this->assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
-        $this->assertEquals($instance, $proxy->getWrappedValueHolderValue());
+        self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
+        self::assertTrue($proxy->isProxyInitialized());
+        self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
     /**
@@ -210,8 +210,8 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         $instance->$publicProperty = null;
-        $this->assertFalse(isset($proxy->$publicProperty));
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertFalse(isset($proxy->$publicProperty));
+        self::assertTrue($proxy->isProxyInitialized());
     }
 
     /**
@@ -226,10 +226,10 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
         unset($proxy->$publicProperty);
 
-        $this->assertTrue($proxy->isProxyInitialized());
+        self::assertTrue($proxy->isProxyInitialized());
 
-        $this->assertFalse(isset($instance->$publicProperty));
-        $this->assertFalse(isset($proxy->$publicProperty));
+        self::assertFalse(isset($instance->$publicProperty));
+        self::assertFalse(isset($proxy->$publicProperty));
     }
 
     /**
@@ -246,11 +246,11 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         $proxy->arrayProperty['foo'] = 'bar';
 
-        $this->assertSame('bar', $proxy->arrayProperty['foo']);
+        self::assertSame('bar', $proxy->arrayProperty['foo']);
 
         $proxy->arrayProperty = ['tab' => 'taz'];
 
-        $this->assertSame(['tab' => 'taz'], $proxy->arrayProperty);
+        self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
     }
 
     /**
@@ -266,12 +266,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('property0', $proxy->property0);
-        $this->assertSame('foo', $variable);
+        self::assertSame('property0', $proxy->property0);
+        self::assertSame('foo', $variable);
     }
 
     /**
@@ -287,12 +287,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy       = $proxyName::staticProxyConstructor($initializer);
         $variable    = & $proxy->property0;
 
-        $this->assertSame('property0', $variable);
+        self::assertSame('property0', $variable);
 
         $variable = 'foo';
 
-        $this->assertSame('foo', $proxy->property0);
-        $this->assertSame('foo', $variable);
+        self::assertSame('foo', $proxy->property0);
+        self::assertSame('foo', $variable);
     }
 
     /**
@@ -312,9 +312,9 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
             $wrappedInstance->publicProperty = (string) ($counter += 1);
         });
 
-        $this->assertSame('1', $proxy->publicProperty);
-        $this->assertSame('2', $proxy->publicProperty);
-        $this->assertSame('3', $proxy->publicProperty);
+        self::assertSame('1', $proxy->publicProperty);
+        self::assertSame('2', $proxy->publicProperty);
+        self::assertSame('3', $proxy->publicProperty);
     }
 
     /**
@@ -325,22 +325,22 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     {
         $instance = new ClassWithCounterConstructor(10);
 
-        $this->assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(10, $instance->getAmount(), 'Verifying that test asset works as expected');
         $instance->__construct(3);
-        $this->assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
-        $this->assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
+        self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
         $proxyName = $this->generateProxy(get_class($instance));
 
         /* @var $proxy ClassWithCounterConstructor */
         $proxy = new $proxyName(15);
 
-        $this->assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(15, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
         $proxy->__construct(5);
-        $this->assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
-        $this->assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->amount, 'Verifying that the proxy constructor works as expected');
+        self::assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
     /**
@@ -379,7 +379,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
 
-        $this->setExpectedException(\PHPUnit_Framework_ExpectationFailedException::class);
+        $this->expectException(\PHPUnit_Framework_ExpectationFailedException::class);
 
         self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
@@ -417,12 +417,12 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
             $initializerMatcher = $this->getMock(stdClass::class, ['__invoke']);
 
             $initializerMatcher
-                ->expects($this->once())
+                ->expects(self::once())
                 ->method('__invoke')
                 ->with(
                     $this->logicalAnd(
-                        $this->isInstanceOf(VirtualProxyInterface::class),
-                        $this->isInstanceOf($className)
+                        self::isInstanceOf(VirtualProxyInterface::class),
+                        self::isInstanceOf($className)
                     ),
                     $realInstance
                 );

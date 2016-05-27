@@ -161,13 +161,13 @@ PHP;
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-        $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
-        $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
-        $this->initializationTracker->expects($this->any())->method('getName')->will($this->returnValue('init'));
+        $this->initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $this->initMethod->expects(self::any())->method('getName')->will(self::returnValue('baz'));
+        $this->publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
+        $this->publicProperties->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $this->protectedProperties->expects(self::any())->method('getName')->will(self::returnValue('baz'));
+        $this->privateProperties->expects(self::any())->method('getName')->will(self::returnValue('tab'));
+        $this->initializationTracker->expects(self::any())->method('getName')->will(self::returnValue('init'));
     }
 
     /**
@@ -185,10 +185,10 @@ PHP;
             $this->initializationTracker
         );
 
-        $this->assertSame('__get', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
+        self::assertSame('__get', $magicGet->getName());
+        self::assertCount(1, $magicGet->getParameters());
 
-        $this->assertStringMatchesFormat($this->expectedCode, $magicGet->getBody());
+        self::assertStringMatchesFormat($this->expectedCode, $magicGet->getBody());
     }
 
     /**
@@ -206,10 +206,10 @@ PHP;
             $this->initializationTracker
         );
 
-        $this->assertSame('__get', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
+        self::assertSame('__get', $magicGet->getName());
+        self::assertCount(1, $magicGet->getParameters());
 
-        $this->assertStringMatchesFormat($this->expectedCode, $magicGet->getBody());
-        $this->assertStringMatchesFormat('%Areturn parent::__get($name);', $magicGet->getBody());
+        self::assertStringMatchesFormat($this->expectedCode, $magicGet->getBody());
+        self::assertStringMatchesFormat('%Areturn parent::__get($name);', $magicGet->getBody());
     }
 }

@@ -53,16 +53,16 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
-        $publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
+        $publicProperties->expects(self::any())->method('getName')->will(self::returnValue('bar'));
 
         $magicIsset = new MagicUnset($reflection, $initializer, $valueHolder, $publicProperties);
 
-        $this->assertSame('__unset', $magicIsset->getName());
-        $this->assertCount(1, $magicIsset->getParameters());
-        $this->assertStringMatchesFormat(
+        self::assertSame('__unset', $magicIsset->getName());
+        self::assertCount(1, $magicIsset->getParameters());
+        self::assertStringMatchesFormat(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__unset', array('name' => \$name)"
             . ", \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->bar->\$name);\n\n    return;\n}"

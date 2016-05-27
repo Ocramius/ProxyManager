@@ -48,7 +48,7 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
         $methodGenerator = $this->getMock(MethodGenerator::class);
 
         $methodGenerator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getName')
             ->willReturn('foo');
 
@@ -58,7 +58,7 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 
         $reflection = new ReflectionClass(ClassWithFinalMethods::class);
 
-        $this->assertFalse(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
+        self::assertFalse(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
     }
 
     public function testCanAddANotFinalMethod()
@@ -69,16 +69,16 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
         $methodGenerator = $this->getMock(MethodGenerator::class);
 
         $methodGenerator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getName')
             ->willReturn('publicMethod');
 
         $classGenerator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('addMethodFromGenerator');
 
         $reflection = new ReflectionClass(BaseClass::class);
 
-        $this->assertTrue(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
+        self::assertTrue(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
     }
 }

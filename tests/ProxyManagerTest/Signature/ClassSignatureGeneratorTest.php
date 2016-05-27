@@ -62,9 +62,9 @@ class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
         $classGenerator = $this->getMock(ClassGenerator::class);
 
         $classGenerator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('addPropertyFromGenerator')
-            ->with($this->callback(function (PropertyGenerator $property) : bool {
+            ->with(self::callback(function (PropertyGenerator $property) : bool {
                 return $property->getName() === 'signaturePropertyName'
                     && $property->isStatic()
                     && $property->getVisibility() === 'private'
@@ -73,17 +73,17 @@ class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
 
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('valid-signature'));
+            ->will(self::returnValue('valid-signature'));
 
         $this
             ->signatureGenerator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will($this->returnValue('PropertyName'));
+            ->will(self::returnValue('PropertyName'));
 
         $this->classSignatureGenerator->addSignature($classGenerator, ['foo' => 'bar']);
     }

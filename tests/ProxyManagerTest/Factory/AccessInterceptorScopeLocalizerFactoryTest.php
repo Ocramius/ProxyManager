@@ -76,21 +76,21 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will($this->returnValue($this->inflector));
+            ->will(self::returnValue($this->inflector));
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will($this->returnValue($this->signatureChecker));
+            ->will(self::returnValue($this->signatureChecker));
 
         $this
             ->config
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will($this->returnValue($this->classSignatureGenerator));
+            ->will(self::returnValue($this->classSignatureGenerator));
     }
 
     /**
@@ -101,8 +101,8 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
     public function testWithOptionalFactory()
     {
         $factory = new AccessInterceptorValueHolderFactory();
-        $this->assertAttributeNotEmpty('configuration', $factory);
-        $this->assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
+        self::assertAttributeNotEmpty('configuration', $factory);
+        self::assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
     }
 
     /**
@@ -118,19 +118,19 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue(AccessInterceptorValueHolderMock::class));
+            ->will(self::returnValue(AccessInterceptorValueHolderMock::class));
 
         $factory     = new AccessInterceptorScopeLocalizerFactory($this->config);
         /* @var $proxy AccessInterceptorValueHolderMock */
         $proxy       = $factory->createProxy($instance, ['foo'], ['bar']);
 
-        $this->assertInstanceOf(AccessInterceptorValueHolderMock::class, $proxy);
-        $this->assertSame($instance, $proxy->instance);
-        $this->assertSame(['foo'], $proxy->prefixInterceptors);
-        $this->assertSame(['bar'], $proxy->suffixInterceptors);
+        self::assertInstanceOf(AccessInterceptorValueHolderMock::class, $proxy);
+        self::assertSame($instance, $proxy->instance);
+        self::assertSame(['foo'], $proxy->prefixInterceptors);
+        self::assertSame(['bar'], $proxy->suffixInterceptors);
     }
 
     /**
@@ -149,14 +149,14 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
         $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
         $autoloader     = $this->getMock(AutoloaderInterface::class);
 
-        $this->config->expects($this->any())->method('getGeneratorStrategy')->will($this->returnValue($generator));
-        $this->config->expects($this->any())->method('getProxyAutoloader')->will($this->returnValue($autoloader));
+        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
+        $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
 
         $generator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('generate')
             ->with(
-                $this->callback(
+                self::callback(
                     function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
@@ -165,7 +165,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
 
         // simulate autoloading
         $autoloader
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
             ->willReturnCallback(function () use ($proxyClassName) : bool {
@@ -179,28 +179,28 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will($this->returnValue($proxyClassName));
+            ->will(self::returnValue($proxyClassName));
 
         $this
             ->inflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will($this->returnValue(LazyLoadingMock::class));
+            ->will(self::returnValue(LazyLoadingMock::class));
 
-        $this->signatureChecker->expects($this->atLeastOnce())->method('checkSignature');
-        $this->classSignatureGenerator->expects($this->once())->method('addSignature')->will($this->returnArgument(0));
+        $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
+        $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new AccessInterceptorScopeLocalizerFactory($this->config);
         /* @var $proxy AccessInterceptorValueHolderMock */
         $proxy       = $factory->createProxy($instance, ['foo'], ['bar']);
 
-        $this->assertInstanceOf($proxyClassName, $proxy);
-        $this->assertSame($instance, $proxy->instance);
-        $this->assertSame(['foo'], $proxy->prefixInterceptors);
-        $this->assertSame(['bar'], $proxy->suffixInterceptors);
+        self::assertInstanceOf($proxyClassName, $proxy);
+        self::assertSame($instance, $proxy->instance);
+        self::assertSame(['foo'], $proxy->prefixInterceptors);
+        self::assertSame(['bar'], $proxy->suffixInterceptors);
     }
 }

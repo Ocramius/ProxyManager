@@ -147,12 +147,12 @@ PHP;
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $this->initMethod->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-        $this->publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
-        $this->publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $this->protectedProperties->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-        $this->privateProperties->expects($this->any())->method('getName')->will($this->returnValue('tab'));
+        $this->initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $this->initMethod->expects(self::any())->method('getName')->will(self::returnValue('baz'));
+        $this->publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
+        $this->publicProperties->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $this->protectedProperties->expects(self::any())->method('getName')->will(self::returnValue('baz'));
+        $this->privateProperties->expects(self::any())->method('getName')->will(self::returnValue('tab'));
     }
 
     /**
@@ -169,9 +169,9 @@ PHP;
             $this->privateProperties
         );
 
-        $this->assertSame('__set', $magicSet->getName());
-        $this->assertCount(2, $magicSet->getParameters());
-        $this->assertStringMatchesFormat($this->expectedCode, $magicSet->getBody());
+        self::assertSame('__set', $magicSet->getName());
+        self::assertCount(2, $magicSet->getParameters());
+        self::assertStringMatchesFormat($this->expectedCode, $magicSet->getBody());
     }
 
     /**
@@ -188,12 +188,12 @@ PHP;
             $this->privateProperties
         );
 
-        $this->assertSame('__set', $magicSet->getName());
-        $this->assertCount(2, $magicSet->getParameters());
+        self::assertSame('__set', $magicSet->getName());
+        self::assertCount(2, $magicSet->getParameters());
 
         $body = $magicSet->getBody();
 
-        $this->assertStringMatchesFormat($this->expectedCode, $body);
-        $this->assertStringMatchesFormat('%Areturn parent::__set($name, $value);', $body);
+        self::assertStringMatchesFormat($this->expectedCode, $body);
+        self::assertStringMatchesFormat('%Areturn parent::__set($name, $value);', $body);
     }
 }

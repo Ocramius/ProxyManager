@@ -45,11 +45,11 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
             Properties::fromReflectionClass(new ReflectionClass(EmptyClass::class))
         );
 
-        $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
-        $this->assertEmpty($publicProperties->getDefaultValue()->getValue());
-        $this->assertTrue($publicProperties->isStatic());
-        $this->assertSame('private', $publicProperties->getVisibility());
-        $this->assertTrue($publicProperties->isEmpty());
+        self::assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
+        self::assertEmpty($publicProperties->getDefaultValue()->getValue());
+        self::assertTrue($publicProperties->isStatic());
+        self::assertSame('private', $publicProperties->getVisibility());
+        self::assertTrue($publicProperties->isEmpty());
     }
 
     public function testClassWithPublicProperties()
@@ -58,11 +58,11 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
             Properties::fromReflectionClass(new ReflectionClass(ClassWithPublicProperties::class))
         );
 
-        $this->assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
-        $this->assertCount(10, $publicProperties->getDefaultValue()->getValue());
-        $this->assertTrue($publicProperties->isStatic());
-        $this->assertSame('private', $publicProperties->getVisibility());
-        $this->assertFalse($publicProperties->isEmpty());
+        self::assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
+        self::assertCount(10, $publicProperties->getDefaultValue()->getValue());
+        self::assertTrue($publicProperties->isStatic());
+        self::assertSame('private', $publicProperties->getVisibility());
+        self::assertFalse($publicProperties->isEmpty());
     }
 
     public function testClassWithMixedProperties()
@@ -71,6 +71,6 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
         );
 
-        $this->assertCount(3, $publicProperties->getDefaultValue()->getValue());
+        self::assertCount(3, $publicProperties->getDefaultValue()->getValue());
     }
 }

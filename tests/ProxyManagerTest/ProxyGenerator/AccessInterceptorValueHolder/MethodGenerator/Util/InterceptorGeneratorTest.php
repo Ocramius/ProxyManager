@@ -54,13 +54,13 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $bar->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $baz->expects($this->any())->method('getName')->will($this->returnValue('baz'));
-        $method->expects($this->any())->method('getName')->will($this->returnValue('fooMethod'));
-        $method->expects($this->any())->method('getParameters')->will($this->returnValue([$bar, $baz]));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $baz->expects(self::any())->method('getName')->will(self::returnValue('baz'));
+        $method->expects(self::any())->method('getName')->will(self::returnValue('fooMethod'));
+        $method->expects(self::any())->method('getParameters')->will(self::returnValue([$bar, $baz]));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $body = InterceptorGenerator::createInterceptedMethodBody(
             '$returnValue = "foo";',
@@ -70,7 +70,7 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
             $suffixInterceptors
         );
 
-        $this->assertSame(
+        self::assertSame(
             'if (isset($this->pre[\'fooMethod\'])) {' . "\n"
             . '    $returnEarly       = false;' . "\n"
             . '    $prefixReturnValue = $this->pre[\'fooMethod\']->__invoke($this, $this->foo, \'fooMethod\', '

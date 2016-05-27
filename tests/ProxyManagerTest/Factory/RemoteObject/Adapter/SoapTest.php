@@ -48,11 +48,11 @@ class SoapTest extends PHPUnit_Framework_TestCase
         $adapter = new Soap($client);
 
         $client
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('call')
             ->with('bar', ['tab' => 'taz'])
-            ->will($this->returnValue('baz'));
+            ->will(self::returnValue('baz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
+        self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 }

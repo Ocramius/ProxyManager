@@ -37,7 +37,7 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {
     public function testInterfaceNotSupported()
     {
-        $this->assertSame(
+        self::assertSame(
             'Provided interface "ProxyManagerTestAsset\BaseInterface" cannot be proxied',
             InvalidProxiedClassException::interfaceNotSupported(
                 new ReflectionClass('ProxyManagerTestAsset\BaseInterface')
@@ -47,7 +47,7 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 
     public function testFinalClassNotSupported()
     {
-        $this->assertSame(
+        self::assertSame(
             'Provided class "ProxyManagerTestAsset\FinalClass" is final and cannot be proxied',
             InvalidProxiedClassException::finalClassNotSupported(
                 new ReflectionClass('ProxyManagerTestAsset\FinalClass')
@@ -57,7 +57,7 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 
     public function testAbstractProtectedMethodsNotSupported()
     {
-        $this->assertSame(
+        self::assertSame(
             'Provided class "ProxyManagerTestAsset\ClassWithAbstractProtectedMethod" has following protected abstract'
             . ' methods, and therefore cannot be proxied:' . "\n"
             . 'ProxyManagerTestAsset\ClassWithAbstractProtectedMethod::protectedAbstractMethod',

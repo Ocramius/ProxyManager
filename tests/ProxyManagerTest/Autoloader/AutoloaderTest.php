@@ -70,12 +70,12 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
             ->classNameInflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isProxyClassName')
             ->with($className)
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
 
-        $this->assertFalse($this->autoloader->__invoke($className));
+        self::assertFalse($this->autoloader->__invoke($className));
     }
 
     /**
@@ -86,17 +86,17 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
             ->classNameInflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isProxyClassName')
             ->with($className)
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
         $this
             ->fileLocator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyFileName')
-            ->will($this->returnValue(__DIR__ . '/non-existing'));
+            ->will(self::returnValue(__DIR__ . '/non-existing'));
 
-        $this->assertFalse($this->autoloader->__invoke($className));
+        self::assertFalse($this->autoloader->__invoke($className));
     }
 
     /**
@@ -104,7 +104,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillNotAutoloadExistingClass()
     {
-        $this->assertFalse($this->autoloader->__invoke(__CLASS__));
+        self::assertFalse($this->autoloader->__invoke(__CLASS__));
     }
 
     /**
@@ -121,17 +121,17 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
 
         $this
             ->classNameInflector
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isProxyClassName')
             ->with($fqcn)
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
         $this
             ->fileLocator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getProxyFileName')
-            ->will($this->returnValue($fileName));
+            ->will(self::returnValue($fileName));
 
-        $this->assertTrue($this->autoloader->__invoke($fqcn));
-        $this->assertTrue(class_exists($fqcn, false));
+        self::assertTrue($this->autoloader->__invoke($fqcn));
+        self::assertTrue(class_exists($fqcn, false));
     }
 }
