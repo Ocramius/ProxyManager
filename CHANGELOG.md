@@ -4,6 +4,16 @@ title: Changelog
 
 This is a list of changes/improvements that were introduced in ProxyManager
 
+## 2.0.1
+
+### Fixed
+
+- Travis-CI environment was fixed to test the library using the minimum dependencies version.
+
+### Added
+
+- Added unit test to make sure that properties skipped should be preserved even being cloned.
+
 ## 2.0.0
 
 ### BC Breaks
