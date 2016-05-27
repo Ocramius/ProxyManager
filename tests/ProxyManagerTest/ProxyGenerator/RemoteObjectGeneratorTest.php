@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -66,17 +65,17 @@ class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
         $generatedReflection = new ReflectionClass($generatedClassName);
 
         if ($originalClass->isInterface()) {
-            $this->assertTrue($generatedReflection->implementsInterface($className));
+            self::assertTrue($generatedReflection->implementsInterface($className));
         } else {
-            $this->assertEmpty(
+            self::assertEmpty(
                 array_diff($originalClass->getInterfaceNames(), $generatedReflection->getInterfaceNames())
             );
         }
 
-        $this->assertSame($generatedClassName, $generatedReflection->getName());
+        self::assertSame($generatedClassName, $generatedReflection->getName());
 
         foreach ($this->getExpectedImplementedInterfaces() as $interface) {
-            $this->assertTrue($generatedReflection->implementsInterface($interface));
+            self::assertTrue($generatedReflection->implementsInterface($interface));
         }
     }
 

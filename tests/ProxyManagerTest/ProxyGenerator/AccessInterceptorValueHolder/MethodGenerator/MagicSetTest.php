@@ -55,10 +55,10 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
-        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
 
         $magicSet = new MagicSet(
             $reflection,
@@ -68,8 +68,8 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
             $publicProperties
         );
 
-        $this->assertSame('__set', $magicSet->getName());
-        $this->assertCount(2, $magicSet->getParameters());
-        $this->assertGreaterThan(0, strpos($magicSet->getBody(), '$returnValue = ($this->bar->$name = $value);'));
+        self::assertSame('__set', $magicSet->getName());
+        self::assertCount(2, $magicSet->getParameters());
+        self::assertGreaterThan(0, strpos($magicSet->getBody(), '$returnValue = ($this->bar->$name = $value);'));
     }
 }

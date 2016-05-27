@@ -48,9 +48,9 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(
@@ -61,9 +61,9 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
             $suffixInterceptors
         );
 
-        $this->assertSame('staticProxyConstructor', $constructor->getName());
-        $this->assertCount(3, $constructor->getParameters());
-        $this->assertSame(
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertCount(3, $constructor->getParameters());
+        self::assertSame(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
@@ -89,9 +89,9 @@ return $instance;',
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(EmptyClass::class),
@@ -100,9 +100,9 @@ return $instance;',
             $suffixInterceptors
         );
 
-        $this->assertSame('staticProxyConstructor', $constructor->getName());
-        $this->assertCount(3, $constructor->getParameters());
-        $this->assertSame(
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertCount(3, $constructor->getParameters());
+        self::assertSame(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
@@ -129,9 +129,9 @@ return $instance;',
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(ClassWithMixedProperties::class),

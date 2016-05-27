@@ -50,7 +50,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         $methodGenerator->setDocBlock('docBlock');
         $methodGenerator->setParameter(new ParameterGenerator('foo'));
 
-        $this->assertStringMatchesFormat(
+        self::assertStringMatchesFormat(
             '%a/**%adocBlock%a*/%aprotected function & methodName($foo)%a{%a/* body */%a}',
             $methodGenerator->generate()
         );
@@ -63,18 +63,18 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(__CLASS__, __FUNCTION__));
 
-        $this->assertSame(__FUNCTION__, $method->getName());
-        $this->assertSame(MethodGenerator::VISIBILITY_PUBLIC, $method->getVisibility());
-        $this->assertFalse($method->isStatic());
-        $this->assertSame('Verify that building from reflection works', $method->getDocBlock()->getShortDescription());
+        self::assertSame(__FUNCTION__, $method->getName());
+        self::assertSame(MethodGenerator::VISIBILITY_PUBLIC, $method->getVisibility());
+        self::assertFalse($method->isStatic());
+        self::assertSame('Verify that building from reflection works', $method->getDocBlock()->getShortDescription());
 
         $method = MethodGenerator::fromReflection(new MethodReflection(BaseClass::class, 'protectedMethod'));
 
-        $this->assertSame(MethodGenerator::VISIBILITY_PROTECTED, $method->getVisibility());
+        self::assertSame(MethodGenerator::VISIBILITY_PROTECTED, $method->getVisibility());
 
         $method = MethodGenerator::fromReflection(new MethodReflection(BaseClass::class, 'privateMethod'));
 
-        $this->assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
+        self::assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
 
     public function testGeneratedParametersFromReflection()
@@ -84,15 +84,15 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
             'publicTypeHintedMethod'
         ));
 
-        $this->assertSame('publicTypeHintedMethod', $method->getName());
+        self::assertSame('publicTypeHintedMethod', $method->getName());
 
         $parameters = $method->getParameters();
 
-        $this->assertCount(1, $parameters);
+        self::assertCount(1, $parameters);
 
         $param = $parameters['param'];
 
-        $this->assertSame(stdClass::class, $param->getType());
+        self::assertSame(stdClass::class, $param->getType());
     }
 
     /**
@@ -108,15 +108,15 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
             $methodName
         ));
 
-        $this->assertSame($methodName, $method->getName());
+        self::assertSame($methodName, $method->getName());
 
         $parameters = $method->getParameters();
 
-        $this->assertCount(1, $parameters);
+        self::assertCount(1, $parameters);
 
         $param = $parameters['param'];
 
-        $this->assertSame($type, $param->getType());
+        self::assertSame($type, $param->getType());
     }
 
     public function scalarTypeHintedMethods()

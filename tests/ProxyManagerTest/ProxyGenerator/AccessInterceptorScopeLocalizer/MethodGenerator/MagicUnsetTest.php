@@ -48,8 +48,8 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $magicGet = new MagicUnset(
             $reflection,
@@ -57,9 +57,9 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
             $suffixInterceptors
         );
 
-        $this->assertSame('__unset', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
-        $this->assertStringMatchesFormat('%a$returnValue = $accessor();%a', $magicGet->getBody());
+        self::assertSame('__unset', $magicGet->getName());
+        self::assertCount(1, $magicGet->getParameters());
+        self::assertStringMatchesFormat('%a$returnValue = $accessor();%a', $magicGet->getBody());
     }
 
     /**
@@ -73,8 +73,8 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $magicGet = new MagicUnset(
             $reflection,
@@ -82,8 +82,8 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
             $suffixInterceptors
         );
 
-        $this->assertSame('__unset', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
-        $this->assertStringMatchesFormat('%a$returnValue = & parent::__unset($name);%a', $magicGet->getBody());
+        self::assertSame('__unset', $magicGet->getName());
+        self::assertCount(1, $magicGet->getParameters());
+        self::assertStringMatchesFormat('%a$returnValue = & parent::__unset($name);%a', $magicGet->getBody());
     }
 }

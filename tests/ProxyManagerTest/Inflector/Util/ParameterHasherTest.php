@@ -45,7 +45,7 @@ class ParameterHasherTest extends PHPUnit_Framework_TestCase
     {
         $encoder = new ParameterHasher();
 
-        $this->assertSame($expectedHash, $encoder->hashParameters($parameters));
+        self::assertSame($expectedHash, $encoder->hashParameters($parameters));
     }
 
     /**

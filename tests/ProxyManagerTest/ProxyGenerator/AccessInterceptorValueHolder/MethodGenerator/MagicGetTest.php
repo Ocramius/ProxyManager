@@ -55,10 +55,10 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
-        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
 
         $magicGet = new MagicGet(
             $reflection,
@@ -68,8 +68,8 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
             $publicProperties
         );
 
-        $this->assertSame('__get', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
-        $this->assertStringMatchesFormat('%A$returnValue = & $this->bar->$name;%A', $magicGet->getBody());
+        self::assertSame('__get', $magicGet->getName());
+        self::assertCount(1, $magicGet->getParameters());
+        self::assertStringMatchesFormat('%A$returnValue = & $this->bar->$name;%A', $magicGet->getBody());
     }
 }

@@ -46,17 +46,17 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $properties       = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $publicProperties = $properties->getPublicProperties();
 
-        $this->assertCount(3, $publicProperties);
-        $this->assertInstanceOf(ReflectionProperty::class, $publicProperties['publicProperty0']);
-        $this->assertInstanceOf(ReflectionProperty::class, $publicProperties['publicProperty1']);
-        $this->assertInstanceOf(ReflectionProperty::class, $publicProperties['publicProperty2']);
+        self::assertCount(3, $publicProperties);
+        self::assertInstanceOf(ReflectionProperty::class, $publicProperties['publicProperty0']);
+        self::assertInstanceOf(ReflectionProperty::class, $publicProperties['publicProperty1']);
+        self::assertInstanceOf(ReflectionProperty::class, $publicProperties['publicProperty2']);
     }
 
     public function testGetPublicPropertiesSkipsAbstractMethods()
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractPublicMethod::class));
 
-        $this->assertEmpty($properties->getPublicProperties());
+        self::assertEmpty($properties->getPublicProperties());
     }
 
     public function testGetProtectedProperties()
@@ -65,18 +65,18 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $protectedProperties = $properties->getProtectedProperties();
 
-        $this->assertCount(3, $protectedProperties);
+        self::assertCount(3, $protectedProperties);
 
-        $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty0"]);
-        $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty1"]);
-        $this->assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty2"]);
+        self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty0"]);
+        self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty1"]);
+        self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty2"]);
     }
 
     public function testGetProtectedPropertiesSkipsAbstractMethods()
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class));
 
-        $this->assertEmpty($properties->getProtectedProperties());
+        self::assertEmpty($properties->getProtectedProperties());
     }
 
     public function testGetPrivateProperties()
@@ -85,13 +85,13 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $privateProperties = $properties->getPrivateProperties();
 
-        $this->assertCount(3, $privateProperties);
+        self::assertCount(3, $privateProperties);
 
         $prefix = "\0" . ClassWithMixedProperties::class . "\0";
 
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty0']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty1']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty2']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty0']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty1']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty2']);
     }
 
     public function testGetPrivatePropertiesFromInheritance()
@@ -102,24 +102,24 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $privateProperties = $properties->getPrivateProperties();
 
-        $this->assertCount(11, $privateProperties);
+        self::assertCount(11, $privateProperties);
 
         $prefix = "\0" . ClassWithCollidingPrivateInheritedProperties::class . "\0";
 
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property0']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property0']);
 
         $prefix = "\0" . ClassWithPrivateProperties::class . "\0";
 
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property0']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property1']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property2']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property3']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property4']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property5']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property6']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property7']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property8']);
-        $this->assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property9']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property0']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property1']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property2']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property3']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property4']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property5']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property6']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property7']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property8']);
+        self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property9']);
     }
 
     public function testGetAccessibleMethods()
@@ -127,13 +127,13 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $properties           = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $accessibleProperties = $properties->getAccessibleProperties();
 
-        $this->assertCount(6, $accessibleProperties);
-        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty0']);
-        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty1']);
-        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty2']);
-        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty0"]);
-        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty1"]);
-        $this->assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty2"]);
+        self::assertCount(6, $accessibleProperties);
+        self::assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty0']);
+        self::assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty1']);
+        self::assertInstanceOf(ReflectionProperty::class, $accessibleProperties['publicProperty2']);
+        self::assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty0"]);
+        self::assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty1"]);
+        self::assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty2"]);
     }
 
     public function testGetGroupedPrivateProperties()
@@ -141,15 +141,15 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         $properties     = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $groupedPrivate = $properties->getGroupedPrivateProperties();
 
-        $this->assertCount(1, $groupedPrivate);
+        self::assertCount(1, $groupedPrivate);
 
         $group = $groupedPrivate[ClassWithMixedProperties::class];
 
-        $this->assertCount(3, $group);
+        self::assertCount(3, $group);
 
-        $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty0']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty1']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group['privateProperty2']);
+        self::assertInstanceOf(ReflectionProperty::class, $group['privateProperty0']);
+        self::assertInstanceOf(ReflectionProperty::class, $group['privateProperty1']);
+        self::assertInstanceOf(ReflectionProperty::class, $group['privateProperty2']);
     }
 
     public function testGetGroupedPrivatePropertiesWithInheritedProperties()
@@ -160,25 +160,25 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
 
         $groupedPrivate = $properties->getGroupedPrivateProperties();
 
-        $this->assertCount(2, $groupedPrivate);
+        self::assertCount(2, $groupedPrivate);
 
         $group1 = $groupedPrivate[ClassWithCollidingPrivateInheritedProperties::class];
         $group2 = $groupedPrivate[ClassWithPrivateProperties::class];
 
-        $this->assertCount(1, $group1);
-        $this->assertCount(10, $group2);
+        self::assertCount(1, $group1);
+        self::assertCount(10, $group2);
 
-        $this->assertInstanceOf(ReflectionProperty::class, $group1['property0']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property0']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property1']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property2']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property3']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property4']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property5']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property6']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property7']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property8']);
-        $this->assertInstanceOf(ReflectionProperty::class, $group2['property9']);
+        self::assertInstanceOf(ReflectionProperty::class, $group1['property0']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property0']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property1']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property2']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property3']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property4']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property5']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property6']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property7']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property8']);
+        self::assertInstanceOf(ReflectionProperty::class, $group2['property9']);
     }
 
     public function testGetInstanceProperties()
@@ -187,7 +187,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(ClassWithMixedProperties::class)
         );
 
-        $this->assertCount(9, $properties->getInstanceProperties());
+        self::assertCount(9, $properties->getInstanceProperties());
     }
 
     /**
@@ -201,10 +201,10 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(ClassWithMixedProperties::class)
         );
 
-        $this->assertArrayHasKey($propertyName, $properties->getInstanceProperties());
+        self::assertArrayHasKey($propertyName, $properties->getInstanceProperties());
         $filteredProperties =  $properties->filter([$propertyName]);
 
-        $this->assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
+        self::assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
     public function testSkipOverwritedPropertyUsingInheritance()
@@ -215,10 +215,10 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
         );
 
-        $this->assertArrayHasKey($propertyName, $properties->getInstanceProperties());
+        self::assertArrayHasKey($propertyName, $properties->getInstanceProperties());
         $filteredProperties =  $properties->filter([$propertyName]);
 
-        $this->assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
+        self::assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
     public function testPropertiesIsSkippedFromRelatedMethods()
@@ -227,12 +227,12 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(ClassWithMixedProperties::class)
         );
 
-        $this->assertArrayHasKey("\0*\0protectedProperty0", $properties->getProtectedProperties());
-        $this->assertArrayHasKey("\0*\0protectedProperty0", $properties->getInstanceProperties());
+        self::assertArrayHasKey("\0*\0protectedProperty0", $properties->getProtectedProperties());
+        self::assertArrayHasKey("\0*\0protectedProperty0", $properties->getInstanceProperties());
         $filteredProperties =  $properties->filter(["\0*\0protectedProperty0"]);
 
-        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getProtectedProperties());
-        $this->assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());
+        self::assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getProtectedProperties());
+        self::assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());
     }
 
     public function propertiesToSkipFixture()

@@ -46,8 +46,8 @@ class EvaluatingGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $classGenerator = new ClassGenerator($className);
         $generated      = $strategy->generate($classGenerator);
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
-        $this->assertTrue(class_exists($className, false));
+        self::assertGreaterThan(0, strpos($generated, $className));
+        self::assertTrue(class_exists($className, false));
     }
 
     /**
@@ -65,7 +65,7 @@ class EvaluatingGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $classGenerator = new ClassGenerator($className);
         $generated      = $strategy->generate($classGenerator);
 
-        $this->assertGreaterThan(0, strpos($generated, $className));
-        $this->assertTrue(class_exists($className, false));
+        self::assertGreaterThan(0, strpos($generated, $className));
+        self::assertTrue(class_exists($className, false));
     }
 }

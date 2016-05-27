@@ -48,11 +48,11 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
         $adapter = new XmlRpc($client);
 
         $client
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('call')
             ->with('foo.bar', ['tab' => 'taz'])
-            ->will($this->returnValue('baz'));
+            ->will(self::returnValue('baz'));
 
-        $this->assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
+        self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
 }

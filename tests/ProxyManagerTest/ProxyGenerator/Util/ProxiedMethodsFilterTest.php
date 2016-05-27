@@ -58,7 +58,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
 
         foreach ($filtered as $method) {
-            $this->assertInstanceOf(ReflectionMethod::class, $method);
+            self::assertInstanceOf(ReflectionMethod::class, $method);
         }
 
         $keys = array_map(
@@ -71,7 +71,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         sort($keys);
         sort($expectedMethods);
 
-        $this->assertSame($keys, $expectedMethods);
+        self::assertSame($keys, $expectedMethods);
     }
 
     /**
@@ -86,7 +86,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
 
         foreach ($filtered as $method) {
-            $this->assertInstanceOf(ReflectionMethod::class, $method);
+            self::assertInstanceOf(ReflectionMethod::class, $method);
         }
 
         $keys = array_map(
@@ -99,7 +99,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
         sort($keys);
         sort($expectedMethods);
 
-        $this->assertSame($keys, $expectedMethods);
+        self::assertSame($keys, $expectedMethods);
     }
 
     /**

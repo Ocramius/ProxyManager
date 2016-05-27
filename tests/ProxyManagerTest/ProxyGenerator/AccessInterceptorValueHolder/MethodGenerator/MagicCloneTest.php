@@ -49,15 +49,15 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $magicClone = new MagicClone($reflection, $valueHolder, $prefixInterceptors, $suffixInterceptors);
 
-        $this->assertSame('__clone', $magicClone->getName());
-        $this->assertCount(0, $magicClone->getParameters());
-        $this->assertSame(
+        self::assertSame('__clone', $magicClone->getName());
+        self::assertCount(0, $magicClone->getParameters());
+        self::assertSame(
             '$this->bar = clone $this->bar;' . "\n\n"
             . 'foreach ($this->pre as $key => $value) {' . "\n"
             . '    $this->pre[$key] = clone $value;' . "\n"

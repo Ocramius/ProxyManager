@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -45,7 +46,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%a$bar = %s;', $code);
     }
 
     public function testSimpleSet()
@@ -58,7 +59,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;', $code);
     }
 
     public function testSimpleIsset()
@@ -71,7 +72,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn isset($%s->$foo);%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn isset($%s->$foo);%a}%a$bar = %s;', $code);
     }
 
     public function testSimpleUnset()
@@ -84,12 +85,12 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat('%a{%aunset($%s->$foo);%a}%a$bar = %s;', $code);
+        self::assertStringMatchesFormat('%a{%aunset($%s->$foo);%a}%a$bar = %s;', $code);
     }
 
     public function testSetRequiresValueParameterName()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
 
         PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_SET,
@@ -110,7 +111,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        $this->assertStringMatchesFormat(
+        self::assertStringMatchesFormat(
             '%A$targetObject = $this->valueHolder;%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;',
             $code
         );
@@ -118,7 +119,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
 
     public function testSetRequiresValidOperation()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
 
         PublicScopeSimulator::getPublicAccessSimulationCode('invalid', 'foo');
     }
@@ -130,6 +131,6 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'foo'
         );
 
-        $this->assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%areturn %s;', $code);
+        self::assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%areturn %s;', $code);
     }
 }

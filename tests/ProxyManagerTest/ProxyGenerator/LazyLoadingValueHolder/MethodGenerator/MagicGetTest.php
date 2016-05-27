@@ -53,16 +53,16 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
-        $publicProperties->expects($this->any())->method('isEmpty')->will($this->returnValue(false));
-        $publicProperties->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
+        $publicProperties->expects(self::any())->method('getName')->will(self::returnValue('bar'));
 
         $magicGet = new MagicGet($reflection, $initializer, $valueHolder, $publicProperties);
 
-        $this->assertSame('__get', $magicGet->getName());
-        $this->assertCount(1, $magicGet->getParameters());
-        $this->assertStringMatchesFormat(
+        self::assertSame('__get', $magicGet->getName());
+        self::assertCount(1, $magicGet->getParameters());
+        self::assertStringMatchesFormat(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__get', array('name' => \$name)"
             . ", \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return \$this->bar->\$name;\n}"

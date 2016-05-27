@@ -47,9 +47,9 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
         /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
         $method = InterceptedMethod::generateMethod(
             new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod'),
@@ -58,11 +58,11 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
             $suffixInterceptors
         );
 
-        $this->assertInstanceOf(MethodGenerator::class, $method);
+        self::assertInstanceOf(MethodGenerator::class, $method);
 
-        $this->assertSame('publicByReferenceParameterMethod', $method->getName());
-        $this->assertCount(2, $method->getParameters());
-        $this->assertGreaterThan(
+        self::assertSame('publicByReferenceParameterMethod', $method->getName());
+        self::assertCount(2, $method->getParameters());
+        self::assertGreaterThan(
             0,
             strpos(
                 $method->getBody(),

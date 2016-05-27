@@ -66,15 +66,15 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
         $generatedReflection = new ReflectionClass($generatedClassName);
 
         if ($originalClass->isInterface()) {
-            $this->assertTrue($generatedReflection->implementsInterface($className));
+            self::assertTrue($generatedReflection->implementsInterface($className));
         } else {
-            $this->assertSame($originalClass->getName(), $generatedReflection->getParentClass()->getName());
+            self::assertSame($originalClass->getName(), $generatedReflection->getParentClass()->getName());
         }
 
-        $this->assertSame($generatedClassName, $generatedReflection->getName());
+        self::assertSame($generatedClassName, $generatedReflection->getName());
 
         foreach ($this->getExpectedImplementedInterfaces() as $interface) {
-            $this->assertTrue($generatedReflection->implementsInterface($interface));
+            self::assertTrue($generatedReflection->implementsInterface($interface));
         }
     }
 

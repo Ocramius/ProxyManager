@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\FileLocator;
 
 use PHPUnit_Framework_TestCase;
+use ProxyManager\Exception\InvalidProxyDirectoryException;
 use ProxyManager\FileLocator\FileLocator;
 
 /**
@@ -41,8 +42,8 @@ class FileLocatorTest extends PHPUnit_Framework_TestCase
     {
         $locator = new FileLocator(__DIR__);
 
-        $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'FooBarBaz.php', $locator->getProxyFileName('Foo\\Bar\\Baz'));
-        $this->assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'Foo_Bar_Baz.php', $locator->getProxyFileName('Foo_Bar_Baz'));
+        self::assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'FooBarBaz.php', $locator->getProxyFileName('Foo\\Bar\\Baz'));
+        self::assertSame(__DIR__ . DIRECTORY_SEPARATOR . 'Foo_Bar_Baz.php', $locator->getProxyFileName('Foo_Bar_Baz'));
     }
 
     /**
@@ -50,7 +51,7 @@ class FileLocatorTest extends PHPUnit_Framework_TestCase
      */
     public function testRejectsNonExistingDirectory()
     {
-        $this->setExpectedException('ProxyManager\\Exception\\InvalidProxyDirectoryException');
+        $this->expectException(InvalidProxyDirectoryException::class);
         new FileLocator(__DIR__ . '/non-existing');
     }
 }
