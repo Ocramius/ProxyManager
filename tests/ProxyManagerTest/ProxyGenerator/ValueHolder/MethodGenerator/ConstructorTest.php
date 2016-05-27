@@ -45,7 +45,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $constructor = Constructor::generateMethod(
             new ReflectionClass(
@@ -54,9 +54,9 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
             $valueHolder
         );
 
-        $this->assertSame('__construct', $constructor->getName());
-        $this->assertCount(0, $constructor->getParameters());
-        $this->assertSame(
+        self::assertSame('__construct', $constructor->getName());
+        self::assertCount(0, $constructor->getParameters());
+        self::assertSame(
             'static $reflection;
 
 if (! $this->foo) {
@@ -75,16 +75,16 @@ unset($this->bar, $this->baz);
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $constructor = Constructor::generateMethod(
             new ReflectionClass(EmptyClass::class),
             $valueHolder
         );
 
-        $this->assertSame('__construct', $constructor->getName());
-        $this->assertCount(0, $constructor->getParameters());
-        $this->assertSame(
+        self::assertSame('__construct', $constructor->getName());
+        self::assertCount(0, $constructor->getParameters());
+        self::assertSame(
             'static $reflection;
 
 if (! $this->foo) {
@@ -100,12 +100,12 @@ if (! $this->foo) {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $constructor = Constructor::generateMethod(new ReflectionClass(ClassWithMixedProperties::class), $valueHolder);
 
-        $this->assertSame('__construct', $constructor->getName());
-        $this->assertCount(0, $constructor->getParameters());
+        self::assertSame('__construct', $constructor->getName());
+        self::assertCount(0, $constructor->getParameters());
 
         $expectedCode = 'static $reflection;
 
@@ -121,7 +121,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
 
 }';
 
-        $this->assertSame($expectedCode, $constructor->getBody());
+        self::assertSame($expectedCode, $constructor->getBody());
     }
 
     public function testBodyStructureWithVariadicArguments()
@@ -129,15 +129,15 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $constructor = Constructor::generateMethod(
             new ReflectionClass(ClassWithVariadicConstructorArgument::class),
             $valueHolder
         );
 
-        $this->assertSame('__construct', $constructor->getName());
-        $this->assertCount(2, $constructor->getParameters());
+        self::assertSame('__construct', $constructor->getName());
+        self::assertCount(2, $constructor->getParameters());
 
         $expectedCode = <<<'PHP'
 static $reflection;
@@ -154,6 +154,6 @@ if (! $this->foo) {
 $this->foo->__construct($foo, ...$bar);
 PHP;
 
-        $this->assertSame($expectedCode, $constructor->getBody());
+        self::assertSame($expectedCode, $constructor->getBody());
     }
 }

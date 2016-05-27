@@ -74,7 +74,7 @@ class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
             // empty catch: this is actually a supported failure
         }
 
-        $this->assertTrue(true, 'Code generation succeeded: proxy is valid or couldn\'t be generated at all');
+        self::assertTrue(true, 'Code generation succeeded: proxy is valid or couldn\'t be generated at all');
     }
 
     /**

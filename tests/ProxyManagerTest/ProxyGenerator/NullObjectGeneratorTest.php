@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -68,13 +67,13 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         $generatedReflection = new ReflectionClass($generatedClassName);
 
         if ($originalClass->isInterface()) {
-            $this->assertTrue($generatedReflection->implementsInterface($className));
+            self::assertTrue($generatedReflection->implementsInterface($className));
         }
 
-        $this->assertSame($generatedClassName, $generatedReflection->getName());
+        self::assertSame($generatedClassName, $generatedReflection->getName());
 
         foreach ($this->getExpectedImplementedInterfaces() as $interface) {
-            $this->assertTrue($generatedReflection->implementsInterface($interface));
+            self::assertTrue($generatedReflection->implementsInterface($interface));
         }
 
         $proxy = $generatedClassName::staticProxyConstructor();
@@ -82,12 +81,12 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         self::assertInstanceOf($className, $proxy);
 
         foreach (Properties::fromReflectionClass($generatedReflection)->getPublicProperties() as $property) {
-            $this->assertNull($proxy->{$property->getName()});
+            self::assertNull($proxy->{$property->getName()});
         }
 
         foreach ($generatedReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (! ($method->getNumberOfParameters() || $method->isStatic())) {
-                $this->assertNull(call_user_func([$proxy, $method->getName()]));
+                self::assertNull(call_user_func([$proxy, $method->getName()]));
             }
         }
     }

@@ -56,8 +56,8 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
         $this->prefixInterceptors = $this->getMock(PropertyGenerator::class);
         $this->suffixInterceptors = $this->getMock(PropertyGenerator::class);
 
-        $this->prefixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('pre'));
-        $this->suffixInterceptors->expects($this->any())->method('getName')->will($this->returnValue('post'));
+        $this->prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $this->suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
     }
 
     public function testBodyStructure()
@@ -68,11 +68,11 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
             $this->suffixInterceptors
         );
 
-        $this->assertInstanceOf(MethodGenerator::class, $method);
+        self::assertInstanceOf(MethodGenerator::class, $method);
 
-        $this->assertSame('publicByReferenceParameterMethod', $method->getName());
-        $this->assertCount(2, $method->getParameters());
-        $this->assertStringMatchesFormat(
+        self::assertSame('publicByReferenceParameterMethod', $method->getName());
+        self::assertCount(2, $method->getParameters());
+        self::assertStringMatchesFormat(
             '%a$returnValue = parent::publicByReferenceParameterMethod($param, $byRefParam);%A',
             $method->getBody()
         );
@@ -86,11 +86,11 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
             $this->suffixInterceptors
         );
 
-        $this->assertInstanceOf(MethodGenerator::class, $method);
+        self::assertInstanceOf(MethodGenerator::class, $method);
 
-        $this->assertSame('foo', $method->getName());
-        $this->assertCount(2, $method->getParameters());
-        $this->assertStringMatchesFormat(
+        self::assertSame('foo', $method->getName());
+        self::assertCount(2, $method->getParameters());
+        self::assertStringMatchesFormat(
             '%a$returnValue = parent::foo($bar, ...$baz);%A',
             $method->getBody()
         );

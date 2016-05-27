@@ -42,13 +42,13 @@ class IsProxyInitializedTest extends PHPUnit_Framework_TestCase
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $isProxyInitialized = new IsProxyInitialized($initializer);
 
-        $this->assertSame('isProxyInitialized', $isProxyInitialized->getName());
-        $this->assertCount(0, $isProxyInitialized->getParameters());
-        $this->assertSame('return ! $this->foo;', $isProxyInitialized->getBody());
+        self::assertSame('isProxyInitialized', $isProxyInitialized->getName());
+        self::assertCount(0, $isProxyInitialized->getParameters());
+        self::assertSame('return ! $this->foo;', $isProxyInitialized->getBody());
         self::assertStringMatchesFormat('%A : bool%A', $isProxyInitialized->generate(), 'Return type hint is boolean');
     }
 }

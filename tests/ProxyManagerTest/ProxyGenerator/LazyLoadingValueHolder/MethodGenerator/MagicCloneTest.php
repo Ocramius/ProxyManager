@@ -47,14 +47,14 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->getMock(PropertyGenerator::class);
 
-        $initializer->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
 
         $magicClone = new MagicClone($reflection, $initializer, $valueHolder);
 
-        $this->assertSame('__clone', $magicClone->getName());
-        $this->assertCount(0, $magicClone->getParameters());
-        $this->assertSame(
+        self::assertSame('__clone', $magicClone->getName());
+        self::assertCount(0, $magicClone->getParameters());
+        self::assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
             . "'__clone', array(), \$this->foo);\n\n\$this->bar = clone \$this->bar;",
             $magicClone->getBody()

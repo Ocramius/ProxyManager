@@ -47,7 +47,7 @@ class ClassGeneratorTest extends PHPUnit_Framework_TestCase
             $classGenerator = new ClassGenerator();
             $classGenerator->setExtendedClass($className);
 
-            $this->assertEquals($desiredFqcn, $classGenerator->getExtendedClass());
+            self::assertEquals($desiredFqcn, $classGenerator->getExtendedClass());
         }
     }
 
@@ -63,7 +63,7 @@ class ClassGeneratorTest extends PHPUnit_Framework_TestCase
             $classGenerator = new ClassGenerator();
             $classGenerator->setImplementedInterfaces($interfaceNames);
 
-            $this->assertEquals($desiredFqcns, $classGenerator->getImplementedInterfaces());
+            self::assertEquals($desiredFqcns, $classGenerator->getImplementedInterfaces());
         }
     }
 }

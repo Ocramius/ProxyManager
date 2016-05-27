@@ -51,21 +51,21 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
-            ->will($this->returnValue($tmpFile));
+            ->will(self::returnValue($tmpFile));
 
         $body = $generator->generate(new ClassGenerator($fqcn));
 
-        $this->assertGreaterThan(0, strpos($body, $className));
-        $this->assertFalse(class_exists($fqcn, false));
-        $this->assertTrue(file_exists($tmpFile));
+        self::assertGreaterThan(0, strpos($body, $className));
+        self::assertFalse(class_exists($fqcn, false));
+        self::assertTrue(file_exists($tmpFile));
 
         /* @noinspection PhpIncludeInspection */
         require $tmpFile;
 
-        $this->assertTrue(class_exists($fqcn, false));
+        self::assertTrue(class_exists($fqcn, false));
     }
 
     public function testGenerateWillFailIfTmpFileCannotBeWrittenToDisk()
@@ -83,12 +83,12 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
-            ->will($this->returnValue($tmpFile));
+            ->will(self::returnValue($tmpFile));
 
-        $this->setExpectedException(FileNotWritableException::class);
+        $this->expectException(FileNotWritableException::class);
         $generator->generate(new ClassGenerator($fqcn));
     }
 
@@ -103,14 +103,14 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
-            ->will($this->returnValue($tmpFile));
+            ->will(self::returnValue($tmpFile));
 
         mkdir($tmpFile);
 
-        $this->setExpectedException(FileNotWritableException::class);
+        $this->expectException(FileNotWritableException::class);
         $generator->generate(new ClassGenerator($fqcn));
     }
 
@@ -129,10 +129,10 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
-            ->will($this->returnValue($tmpFile));
+            ->will(self::returnValue($tmpFile));
 
         mkdir($tmpFile);
 
@@ -143,7 +143,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         } catch (FileNotWritableException $exception) {
             rmdir($tmpFile);
 
-            $this->assertEquals(['.', '..'], scandir($tmpDirPath));
+            self::assertEquals(['.', '..'], scandir($tmpDirPath));
         }
     }
 }

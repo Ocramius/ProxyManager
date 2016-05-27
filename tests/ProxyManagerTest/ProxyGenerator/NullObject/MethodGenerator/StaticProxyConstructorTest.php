@@ -43,9 +43,9 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(ClassWithMixedProperties::class)
         );
 
-        $this->assertSame('staticProxyConstructor', $constructor->getName());
-        $this->assertCount(0, $constructor->getParameters());
-        $this->assertSame(
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertCount(0, $constructor->getParameters());
+        self::assertSame(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
@@ -66,10 +66,10 @@ return $instance;',
             new ReflectionClass(ClassWithPrivateProperties::class)
         );
 
-        $this->assertSame('staticProxyConstructor', $constructor->getName());
-        $this->assertCount(0, $constructor->getParameters());
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertCount(0, $constructor->getParameters());
         $body = $constructor->getBody();
-        $this->assertSame(
+        self::assertSame(
             'static $reflection;
 
 $reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);

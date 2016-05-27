@@ -42,7 +42,7 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGeneratesUniqueIdentifiers(string $name)
     {
-        $this->assertNotSame(
+        self::assertNotSame(
             UniqueIdentifierGenerator::getIdentifier($name),
             UniqueIdentifierGenerator::getIdentifier($name)
         );
@@ -57,7 +57,7 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGeneratesValidIdentifiers(string $name)
     {
-        $this->assertRegExp(
+        self::assertRegExp(
             '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/',
             UniqueIdentifierGenerator::getIdentifier($name)
         );

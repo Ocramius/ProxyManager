@@ -44,7 +44,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->getMock(PropertyGenerator::class);
-        $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
+        $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(
             BaseClass::class,
@@ -57,9 +57,9 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(PropertyGenerator::class)
         );
 
-        $this->assertSame('publicByReferenceParameterMethod', $method->getName());
-        $this->assertCount(2, $method->getParameters());
-        $this->assertSame(
+        self::assertSame('publicByReferenceParameterMethod', $method->getName());
+        self::assertCount(2, $method->getParameters());
+        self::assertSame(
             '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
             . '\'publicByReferenceParameterMethod\', array($param, $byRefParam));'
             . "\n\nreturn \$return;",
@@ -74,7 +74,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->getMock(PropertyGenerator::class);
-        $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
+        $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicArrayHintedMethod');
 
@@ -84,9 +84,9 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(PropertyGenerator::class)
         );
 
-        $this->assertSame('publicArrayHintedMethod', $method->getName());
-        $this->assertCount(1, $method->getParameters());
-        $this->assertSame(
+        self::assertSame('publicArrayHintedMethod', $method->getName());
+        self::assertCount(1, $method->getParameters());
+        self::assertSame(
             '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
             . '\'publicArrayHintedMethod\', array($param));'
             . "\n\nreturn \$return;",
@@ -101,7 +101,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->getMock(PropertyGenerator::class);
-        $adapter->expects($this->any())->method('getName')->will($this->returnValue('adapter'));
+        $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
 
@@ -111,9 +111,9 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(PropertyGenerator::class)
         );
 
-        $this->assertSame('testBodyStructureWithoutParameters', $method->getName());
-        $this->assertCount(0, $method->getParameters());
-        $this->assertSame(
+        self::assertSame('testBodyStructureWithoutParameters', $method->getName());
+        self::assertCount(0, $method->getParameters());
+        self::assertSame(
             '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
             . '\'testBodyStructureWithoutParameters\', array());'
             . "\n\nreturn \$return;",

@@ -45,13 +45,13 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->getMock(PropertyGenerator::class);
 
-        $valueHolder->expects($this->any())->method('getName')->will($this->returnValue('bar'));
+        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
 
         $magicSleep = new MagicSleep($reflection, $valueHolder);
 
-        $this->assertSame('__sleep', $magicSleep->getName());
-        $this->assertCount(0, $magicSleep->getParameters());
-        $this->assertSame(
+        self::assertSame('__sleep', $magicSleep->getName());
+        self::assertCount(0, $magicSleep->getParameters());
+        self::assertSame(
             "return array('bar');",
             $magicSleep->getBody()
         );
