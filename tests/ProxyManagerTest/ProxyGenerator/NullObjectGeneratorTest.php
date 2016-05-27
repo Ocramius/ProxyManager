@@ -80,7 +80,7 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         $proxyGenerated = $generatedClassName::staticProxyConstructor();
 
         foreach (Properties::fromReflectionClass($generatedReflection)->getPublicProperties() as $property) {
-            $this->assertNull($proxyGenerated->$property);
+            $this->assertNull($proxyGenerated->{$property->getName()});
         }
 
         foreach ($generatedReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
