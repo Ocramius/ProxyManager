@@ -77,15 +77,17 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             $this->assertTrue($generatedReflection->implementsInterface($interface));
         }
 
-        $proxyGenerated = $generatedClassName::staticProxyConstructor();
+        $proxy = $generatedClassName::staticProxyConstructor();
+
+        self::assertInstanceOf($className, $proxy);
 
         foreach (Properties::fromReflectionClass($generatedReflection)->getPublicProperties() as $property) {
-            $this->assertNull($proxyGenerated->$property);
+            $this->assertNull($proxy->{$property->getName()});
         }
 
         foreach ($generatedReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (! ($method->getNumberOfParameters() || $method->isStatic())) {
-                $this->assertNull(call_user_func([$proxyGenerated, $method->getName()]));
+                $this->assertNull(call_user_func([$proxy, $method->getName()]));
             }
         }
     }
