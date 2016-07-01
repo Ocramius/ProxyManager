@@ -27,7 +27,8 @@
         "ext-phar":                    "*",
         "phpunit/phpunit":             "^5.4.6",
         "squizlabs/php_codesniffer":   "^2.6.0",
-        "couscous/couscous":           "^1.4.0"
+        "couscous/couscous":           "^1.4.0",
+        "phpbench/phpbench":            "^0.11.2"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
