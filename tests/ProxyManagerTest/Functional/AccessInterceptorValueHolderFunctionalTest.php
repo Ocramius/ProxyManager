@@ -264,7 +264,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
     ) {
-        $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
+        $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
         unset($proxy->$publicProperty);
 
         self::assertFalse(isset($instance->$publicProperty));
