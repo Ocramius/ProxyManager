@@ -111,7 +111,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName         = $this->generateProxy($className);
         $initializeMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
-        $initializeMatcher->expects($this->never())->method('__invoke'); // should not initialize the proxy
+        $initializeMatcher->expects(self::never())->method('__invoke'); // should not initialize the proxy
 
         /* @var $proxy GhostObjectInterface */
         $proxy = $proxyName::staticProxyConstructor(
@@ -758,12 +758,10 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
             $initializerMatcher
                 ->expects(self::once())
                 ->method('__invoke')
-                ->with(
-                    $this->logicalAnd(
-                        self::isInstanceOf(GhostObjectInterface::class),
-                        self::isInstanceOf($className)
-                    )
-                );
+                ->with(self::logicalAnd(
+                    self::isInstanceOf(GhostObjectInterface::class),
+                    self::isInstanceOf($className)
+                ));
         }
 
         return function (
@@ -942,7 +940,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     ) {
         $proxy       = $this->generateProxy($className, $proxyOptions);
         $ghostObject = $proxy::staticProxyConstructor(function () use ($propertyName) {
-            $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
+            self::fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
         });
 
         $property = new ReflectionProperty($propertyClass, $propertyName);

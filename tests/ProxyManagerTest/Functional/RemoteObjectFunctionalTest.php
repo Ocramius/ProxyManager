@@ -62,7 +62,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $client
             ->expects(self::any())
             ->method('call')
-            ->with($this->stringEndsWith($method), $params)
+            ->with(self::stringEndsWith($method), $params)
             ->will(self::returnValue($expectedValue));
 
         $adapter = new XmlRpcAdapter(
@@ -91,7 +91,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $client
             ->expects(self::any())
             ->method('call')
-            ->with($this->stringEndsWith($method), $params)
+            ->with(self::stringEndsWith($method), $params)
             ->will(self::returnValue($expectedValue));
 
         $adapter = new JsonRpcAdapter(
