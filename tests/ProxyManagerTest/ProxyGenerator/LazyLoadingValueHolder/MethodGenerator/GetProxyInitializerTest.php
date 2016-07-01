@@ -40,7 +40,7 @@ class GetProxyInitializerTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer = $this->getMock(PropertyGenerator::class);
+        $initializer = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 

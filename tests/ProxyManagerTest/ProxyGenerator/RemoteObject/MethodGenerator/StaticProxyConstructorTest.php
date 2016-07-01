@@ -40,7 +40,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock(PropertyGenerator::class);
+        $adapter = $this->createMock(PropertyGenerator::class);
 
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 

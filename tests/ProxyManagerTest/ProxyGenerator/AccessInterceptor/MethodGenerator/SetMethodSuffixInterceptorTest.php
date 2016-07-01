@@ -40,7 +40,7 @@ class SetMethodSuffixInterceptorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $suffix PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $suffix = $this->getMock(PropertyGenerator::class);
+        $suffix = $this->createMock(PropertyGenerator::class);
 
         $suffix->expects(self::once())->method('getName')->will(self::returnValue('foo'));
 

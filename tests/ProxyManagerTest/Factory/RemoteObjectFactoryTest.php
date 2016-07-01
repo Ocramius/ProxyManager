@@ -69,10 +69,10 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->config                  = $this->getMock(Configuration::class);
-        $this->inflector               = $this->getMock(ClassNameInflectorInterface::class);
-        $this->signatureChecker        = $this->getMock(SignatureCheckerInterface::class);
-        $this->classSignatureGenerator = $this->getMock(ClassSignatureGeneratorInterface::class);
+        $this->config                  = $this->createMock(Configuration::class);
+        $this->inflector               = $this->createMock(ClassNameInflectorInterface::class);
+        $this->signatureChecker        = $this->createMock(SignatureCheckerInterface::class);
+        $this->classSignatureGenerator = $this->createMock(ClassSignatureGeneratorInterface::class);
 
         $this
             ->config
@@ -110,7 +110,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
             ->will(self::returnValue(RemoteObjectMock::class));
 
         /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock(AdapterInterface::class);
+        $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /* @var $proxy \stdClass */
         $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
@@ -130,8 +130,8 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
     public function testWillTryAutoGeneration()
     {
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
-        $generator      = $this->getMock(GeneratorStrategyInterface::class);
-        $autoloader     = $this->getMock(AutoloaderInterface::class);
+        $generator      = $this->createMock(GeneratorStrategyInterface::class);
+        $autoloader     = $this->createMock(AutoloaderInterface::class);
 
         $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
         $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
@@ -180,7 +180,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         /* @var $adapter AdapterInterface */
-        $adapter = $this->getMock(AdapterInterface::class);
+        $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
 

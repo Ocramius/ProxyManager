@@ -71,7 +71,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $listener = $this->getMock(stdClass::class, ['__invoke']);
+        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
             ->method('__invoke')
@@ -121,7 +121,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
         $proxy    = $proxyName::staticProxyConstructor($instance);
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $listener = $this->getMock(stdClass::class, ['__invoke']);
+        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
             ->method('__invoke')
@@ -548,7 +548,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy = $proxyName::staticProxyConstructor($realInstance);
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $listener = $this->getMock(\stdClass::class, ['__invoke']);
+        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener
             ->expects(self::once())
@@ -591,7 +591,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $listener = $this->getMock(\stdClass::class, ['__invoke']);
+        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener
             ->expects(self::once())
@@ -635,7 +635,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $proxy = clone $proxyName::staticProxyConstructor($realInstance);
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $listener = $this->getMock(\stdClass::class, ['__invoke']);
+        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener
             ->expects(self::once())

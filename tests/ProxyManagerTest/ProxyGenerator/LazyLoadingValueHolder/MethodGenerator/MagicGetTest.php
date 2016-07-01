@@ -44,9 +44,9 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer      = $this->getMock(PropertyGenerator::class);
+        $initializer      = $this->createMock(PropertyGenerator::class);
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder      = $this->getMock(PropertyGenerator::class);
+        $valueHolder      = $this->createMock(PropertyGenerator::class);
         /* @var $publicProperties PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)

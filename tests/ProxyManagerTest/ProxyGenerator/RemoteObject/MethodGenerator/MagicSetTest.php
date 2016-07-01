@@ -43,7 +43,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
     {
         $reflection   = new ReflectionClass(EmptyClass::class);
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter      = $this->getMock(PropertyGenerator::class);
+        $adapter      = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
         $magicGet     = new MagicSet($reflection, $adapter);

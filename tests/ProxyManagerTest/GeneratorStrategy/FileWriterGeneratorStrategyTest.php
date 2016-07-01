@@ -43,7 +43,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
     public function testGenerate()
     {
         /* @var $locator FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $locator   = $this->getMock(FileLocatorInterface::class);
+        $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = sys_get_temp_dir() . '/' . uniqid('FileWriterGeneratorStrategyTest', true) . '.php';
         $namespace = 'Foo';
@@ -75,7 +75,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         mkdir($tmpDirPath, 0555, true);
 
         /* @var $locator FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $locator   = $this->getMock(FileLocatorInterface::class);
+        $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = $tmpDirPath . '/' . uniqid('FileWriterGeneratorStrategyFailedFileWriteTest', true) . '.php';
         $namespace = 'Foo';
@@ -95,7 +95,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
     public function testGenerateWillFailIfTmpFileCannotBeMovedToFinalDestination()
     {
         /* @var $locator \ProxyManager\FileLocator\FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $locator   = $this->getMock(FileLocatorInterface::class);
+        $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = sys_get_temp_dir() . '/' . uniqid('FileWriterGeneratorStrategyFailedFileMoveTest', true) . '.php';
         $namespace = 'Foo';
@@ -121,7 +121,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         mkdir($tmpDirPath);
 
         /* @var $locator FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $locator   = $this->getMock(FileLocatorInterface::class);
+        $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = $tmpDirPath . '/' . uniqid('FileWriterGeneratorStrategyFailedFileMoveTest', true) . '.php';
         $namespace = 'Foo';

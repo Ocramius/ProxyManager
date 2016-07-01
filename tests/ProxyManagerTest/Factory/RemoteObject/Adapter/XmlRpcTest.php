@@ -43,7 +43,7 @@ class XmlRpcTest extends PHPUnit_Framework_TestCase
     public function testCanBuildAdapterWithXmlRpcClient()
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
-        $client = $this->getMock(Client::class, ['call']);
+        $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new XmlRpc($client);
 

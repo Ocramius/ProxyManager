@@ -47,6 +47,7 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ReflectionClass;
 use ReflectionProperty;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
@@ -108,7 +109,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $expectedValue
     ) {
         $proxyName         = $this->generateProxy($className);
-        $initializeMatcher = $this->getMock('stdClass', ['__invoke']);
+        $initializeMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $initializeMatcher->expects($this->never())->method('__invoke'); // should not initialize the proxy
 
@@ -750,8 +751,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      */
     private function createInitializer(string $className, $realInstance, Mock $initializerMatcher = null) : callable
     {
-        if (null === $initializerMatcher) {
-            $initializerMatcher = $this->getMock('stdClass', ['__invoke']);
+        /* @var $initializerMatcher callable|\PHPUnit_Framework_MockObject_MockObject */
+        if (! $initializerMatcher) {
+            $initializerMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
             $initializerMatcher
                 ->expects(self::once())
@@ -763,9 +765,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                     )
                 );
         }
-
-        /* @var $initializerMatcher callable */
-        $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', ['__invoke']);
 
         return function (
             GhostObjectInterface $proxy,
@@ -811,7 +810,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 BaseClass::class,
                 new BaseClass(),
                 'publicTypeHintedMethod',
-                [new \stdClass()],
+                [new stdClass()],
                 'publicTypeHintedMethodDefault'
             ],
             [

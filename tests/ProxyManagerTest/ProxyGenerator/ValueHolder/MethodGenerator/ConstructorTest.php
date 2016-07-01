@@ -43,7 +43,7 @@ class ConstructorTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock(PropertyGenerator::class);
+        $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
@@ -73,7 +73,7 @@ unset($this->bar, $this->baz);
     public function testBodyStructureWithoutPublicProperties()
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock(PropertyGenerator::class);
+        $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
@@ -98,7 +98,7 @@ if (! $this->foo) {
     public function testBodyStructureWithStaticProperties()
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock(PropertyGenerator::class);
+        $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 
@@ -127,7 +127,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
     public function testBodyStructureWithVariadicArguments()
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder = $this->getMock(PropertyGenerator::class);
+        $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 

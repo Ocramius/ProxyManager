@@ -44,10 +44,7 @@ class InvalidSignatureExceptionTest extends PHPUnit_Framework_TestCase
             'expected-signature'
         );
 
-        self::assertInstanceOf(
-            'ProxyManager\Signature\Exception\InvalidSignatureException',
-            $exception
-        );
+        self::assertInstanceOf(InvalidSignatureException::class, $exception);
 
         self::assertSame(
             'Found signature "blah" for class "'
