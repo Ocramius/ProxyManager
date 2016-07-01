@@ -24,6 +24,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Signature\SignatureChecker;
+use ProxyManager\Signature\SignatureGeneratorInterface;
 use ReflectionClass;
 
 /**
@@ -57,7 +58,7 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->signatureGenerator = $this->getMock('ProxyManager\Signature\SignatureGeneratorInterface');
+        $this->signatureGenerator = $this->createMock(SignatureGeneratorInterface::class);
         $this->signatureChecker   = new SignatureChecker($this->signatureGenerator);
     }
 

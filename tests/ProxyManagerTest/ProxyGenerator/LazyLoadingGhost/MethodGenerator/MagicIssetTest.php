@@ -131,8 +131,8 @@ PHP;
      */
     protected function setUp()
     {
-        $this->initializer      = $this->getMock(PropertyGenerator::class);
-        $this->initMethod       = $this->getMock(MethodGenerator::class);
+        $this->initializer      = $this->createMock(PropertyGenerator::class);
+        $this->initMethod       = $this->createMock(MethodGenerator::class);
         $this->publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

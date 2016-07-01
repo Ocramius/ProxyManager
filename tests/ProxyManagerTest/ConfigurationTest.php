@@ -78,7 +78,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ClassNameInflectorInterface::class, $this->configuration->getClassNameInflector());
 
         /* @var $inflector \ProxyManager\Inflector\ClassNameInflectorInterface */
-        $inflector = $this->getMock(ClassNameInflectorInterface::class);
+        $inflector = $this->createMock(ClassNameInflectorInterface::class);
 
         $this->configuration->setClassNameInflector($inflector);
         self::assertSame($inflector, $this->configuration->getClassNameInflector());
@@ -102,7 +102,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(GeneratorStrategyInterface::class, $this->configuration->getGeneratorStrategy());
 
         /* @var $strategy \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface */
-        $strategy = $this->getMock(GeneratorStrategyInterface::class);
+        $strategy = $this->createMock(GeneratorStrategyInterface::class);
 
         $this->configuration->setGeneratorStrategy($strategy);
         self::assertSame($strategy, $this->configuration->getGeneratorStrategy());
@@ -129,7 +129,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(AutoloaderInterface::class, $this->configuration->getProxyAutoloader());
 
         /* @var $autoloader \ProxyManager\Autoloader\AutoloaderInterface */
-        $autoloader = $this->getMock(AutoloaderInterface::class);
+        $autoloader = $this->createMock(AutoloaderInterface::class);
 
         $this->configuration->setProxyAutoloader($autoloader);
         self::assertSame($autoloader, $this->configuration->getProxyAutoloader());
@@ -144,7 +144,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(SignatureGeneratorInterface::class, $this->configuration->getSignatureGenerator());
 
         /* @var $signatureGenerator \ProxyManager\Signature\SignatureGeneratorInterface */
-        $signatureGenerator = $this->getMock(SignatureGeneratorInterface::class);
+        $signatureGenerator = $this->createMock(SignatureGeneratorInterface::class);
 
         $this->configuration->setSignatureGenerator($signatureGenerator);
         self::assertSame($signatureGenerator, $this->configuration->getSignatureGenerator());
@@ -159,7 +159,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
 
         /* @var $signatureChecker \ProxyManager\Signature\SignatureCheckerInterface */
-        $signatureChecker = $this->getMock(SignatureCheckerInterface::class);
+        $signatureChecker = $this->createMock(SignatureCheckerInterface::class);
 
         $this->configuration->setSignatureChecker($signatureChecker);
         self::assertSame($signatureChecker, $this->configuration->getSignatureChecker());
@@ -177,7 +177,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         );
 
         /* @var $classSignatureGenerator \ProxyManager\Signature\ClassSignatureGeneratorInterface */
-        $classSignatureGenerator = $this->getMock(ClassSignatureGeneratorInterface::class);
+        $classSignatureGenerator = $this->createMock(ClassSignatureGeneratorInterface::class);
 
         $this->configuration->setClassSignatureGenerator($classSignatureGenerator);
         self::assertSame($classSignatureGenerator, $this->configuration->getClassSignatureGenerator());

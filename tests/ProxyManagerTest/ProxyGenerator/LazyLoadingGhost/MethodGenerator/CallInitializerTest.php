@@ -43,9 +43,9 @@ class CallInitializerTest extends PHPUnit_Framework_TestCase
     public function testBodyStructure()
     {
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer           = $this->getMock(PropertyGenerator::class);
+        $initializer           = $this->createMock(PropertyGenerator::class);
         /* @var $initializationTracker PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializationTracker = $this->getMock(PropertyGenerator::class);
+        $initializationTracker = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('init'));
         $initializationTracker->expects(self::any())->method('getName')->will(self::returnValue('track'));
