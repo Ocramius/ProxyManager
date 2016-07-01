@@ -233,15 +233,15 @@ class LazyLoadingGhostPropertyAccessBench
 
     public function benchObjectWithPublicPropertiesPropertyIsset()
     {
-        /** @noinspection PhpExpressionResultUnusedInspection */
-        /** @noinspection UnSafeIsSetOverArrayInspection */
+        /* @noinspection PhpExpressionResultUnusedInspection */
+        /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->publicPropertiesProxy->property0);
     }
 
     public function benchInitializedObjectWithPublicPropertiesPropertyIsset()
     {
-        /** @noinspection PhpExpressionResultUnusedInspection */
-        /** @noinspection UnSafeIsSetOverArrayInspection */
+        /* @noinspection PhpExpressionResultUnusedInspection */
+        /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->initializedPublicPropertiesProxy->property0);
     }
 
@@ -287,15 +287,15 @@ class LazyLoadingGhostPropertyAccessBench
 
     public function benchObjectWithMixedPropertiesPropertyIsset()
     {
-        /** @noinspection PhpExpressionResultUnusedInspection */
-        /** @noinspection UnSafeIsSetOverArrayInspection */
+        /* @noinspection PhpExpressionResultUnusedInspection */
+        /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->mixedPropertiesProxy->publicProperty0);
     }
 
     public function benchInitializedObjectWithMixedPropertiesPropertyIsset()
     {
-        /** @noinspection PhpExpressionResultUnusedInspection */
-        /** @noinspection UnSafeIsSetOverArrayInspection */
+        /* @noinspection PhpExpressionResultUnusedInspection */
+        /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->initializedMixedPropertiesProxy->publicProperty0);
     }
 
