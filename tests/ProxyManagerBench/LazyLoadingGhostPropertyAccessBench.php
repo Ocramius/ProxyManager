@@ -35,7 +35,7 @@ use ReflectionClass;
 use ReflectionProperty;
 
 /**
- * Benchmark that provides baseline results for simple object instantiation
+ * Benchmark that provides results for simple initialization/state access for lazy loading ghost proxies
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
