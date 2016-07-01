@@ -72,7 +72,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $listener = $this->getMock('stdClass', ['__invoke']);
+        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
             ->method('__invoke')
@@ -123,7 +123,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         /* @var $proxy AccessInterceptorInterface */
         $proxy     = $proxyName::staticProxyConstructor($instance);
         /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
-        $listener  = $this->getMock(stdClass::class, ['__invoke']);
+        $listener  = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
             ->method('__invoke')
@@ -264,7 +264,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      */
     public function testPropertyUnset($instance, AccessInterceptorInterface $proxy, string $publicProperty)
     {
-        $this->markTestSkipped('It is currently not possible to synchronize properties un-setting');
+        self::markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);
 
         self::assertFalse(isset($instance->$publicProperty));
@@ -514,7 +514,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     }
 
     /**
-     * This test documents a known limitation: `func_get_args()` (and similars) don't work in proxied APIs.
+     * This test documents a known limitation: `func_get_args()` (and similar) don't work in proxied APIs.
      * If you manage to make this test pass, then please do send a patch
      *
      * @group 265

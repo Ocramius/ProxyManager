@@ -151,6 +151,7 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
         $this->startCapturing();
 
         foreach ($instances as $instance) {
+            /** @noinspection PhpExpressionResultUnusedInspection */
             isset($instance->$property);
         }
 
@@ -160,6 +161,7 @@ abstract class BaseLazyLoadingPerformanceTest extends BasePerformanceTest
         $this->startCapturing();
 
         foreach ($proxies as $proxy) {
+            /** @noinspection PhpExpressionResultUnusedInspection */
             isset($proxy->$property);
         }
 

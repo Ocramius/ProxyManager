@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTestAsset;
 
+use BadMethodCallException;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 
@@ -85,10 +86,12 @@ class LazyLoadingMock implements VirtualProxyInterface, GhostObjectInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws BadMethodCallException
      */
     public function getWrappedValueHolderValue()
     {
         // we're not supposed to call this
-        throw new \BadMethodCallException('Not implemented');
+        throw new BadMethodCallException('Not implemented');
     }
 }

@@ -57,12 +57,12 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
-        $client = $this->getMock(Client::class, ['call']);
+        $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
             ->expects(self::any())
             ->method('call')
-            ->with($this->stringEndsWith($method), $params)
+            ->with(self::stringEndsWith($method), $params)
             ->will(self::returnValue($expectedValue));
 
         $adapter = new XmlRpcAdapter(
@@ -86,12 +86,12 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
     protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
-        $client = $this->getMock(Client::class, ['call']);
+        $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
             ->expects(self::any())
             ->method('call')
-            ->with($this->stringEndsWith($method), $params)
+            ->with(self::stringEndsWith($method), $params)
             ->will(self::returnValue($expectedValue));
 
         $adapter = new JsonRpcAdapter(
@@ -261,7 +261,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy(get_class($realInstance));
 
         /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock(AdapterInterface::class);
+        $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
             ->expects(self::once())
@@ -299,7 +299,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $proxyName = $this->generateProxy(get_class($realInstance));
 
         /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock(AdapterInterface::class);
+        $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
             ->expects(self::once())

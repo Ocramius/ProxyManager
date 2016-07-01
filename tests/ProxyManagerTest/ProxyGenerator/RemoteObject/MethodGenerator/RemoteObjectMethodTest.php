@@ -43,7 +43,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithParameters()
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock(PropertyGenerator::class);
+        $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(
@@ -73,7 +73,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithArrayParameter()
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock(PropertyGenerator::class);
+        $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicArrayHintedMethod');
@@ -100,7 +100,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     public function testBodyStructureWithoutParameters()
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock(PropertyGenerator::class);
+        $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
         $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
