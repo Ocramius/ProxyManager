@@ -14,7 +14,7 @@ interface FooServiceInterface
 
 class Foo implements FooServiceInterface
 {
-    public $foo = "baz";
+    public $foo = 'baz';
     
     public function fooBar()
     {

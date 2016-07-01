@@ -66,7 +66,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
             . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return (\$this->bar->\$name = \$value);\n}"
-            . "%areturn %s;",
+            . '%areturn %s;',
             $magicSet->getBody()
         );
     }

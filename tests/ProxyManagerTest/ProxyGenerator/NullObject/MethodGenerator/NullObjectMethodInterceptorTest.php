@@ -45,7 +45,7 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
 
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
-        self::assertSame("", $method->getBody());
+        self::assertSame('', $method->getBody());
     }
 
     /**
@@ -59,7 +59,7 @@ class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
 
         self::assertSame('testBodyStructureWithoutParameters', $method->getName());
         self::assertCount(0, $method->getParameters());
-        self::assertSame("", $method->getBody());
+        self::assertSame('', $method->getBody());
     }
 
     /**

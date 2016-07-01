@@ -566,7 +566,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy2    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
-                $properties["\0" . $class . "\0" . "privateProperty"] = null;
+                $properties["\0" . $class . "\0privateProperty"] = null;
             }
         );
 
@@ -626,18 +626,18 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy1    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
-                $properties["publicProperty"] = false;
-                $properties["\0*\0" . "protectedProperty"] = false;
-                $properties["\0" . $class . "\0" . "privateProperty"] = false;
+                $properties['publicProperty'] = false;
+                $properties["\0*\0protectedProperty"] = false;
+                $properties["\0" . $class . "\0privateProperty"] = false;
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
-                $properties["publicProperty"] = null;
-                $properties["\0*\0" . "protectedProperty"] = null;
-                $properties["\0" . $class . "\0" . "privateProperty"] = null;
+                $properties['publicProperty'] = null;
+                $properties["\0*\0protectedProperty"] = null;
+                $properties["\0" . $class . "\0privateProperty"] = null;
             }
         );
 
@@ -663,9 +663,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 $properties["\0*\0protectedProperty0"] = 'protected0';
                 $properties["\0*\0protectedProperty1"] = 'protected1';
                 $properties["\0*\0protectedProperty2"] = 'protected2';
-                $properties["publicProperty0"] = 'public0';
-                $properties["publicProperty1"] = 'public1';
-                $properties["publicProperty2"] = 'public2';
+                $properties['publicProperty0'] = 'public0';
+                $properties['publicProperty1'] = 'public1';
+                $properties['publicProperty2'] = 'public2';
             }
         );
 
@@ -1043,7 +1043,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 ClassWithPublicProperties::class,
                 'property9',
                 [
-                    'skippedProperties' => ["property9"]
+                    'skippedProperties' => ['property9']
                 ],
                 'property9',
             ],
