@@ -132,7 +132,7 @@ class LazyLoadingValueHolderInstantiationBench
 
     private function generateProxy(string $originalClass) : string
     {
-        $generatedClassName = __NAMESPACE__ . '\\' . $originalClass;
+        $generatedClassName = __CLASS__ . '\\' . $originalClass;
 
         if (class_exists($generatedClassName)) {
             return $generatedClassName;

@@ -344,7 +344,7 @@ class LazyLoadingGhostPropertyAccessBench
 
     private function generateProxyClass(string $originalClassName) : string
     {
-        $generatedClassName = __NAMESPACE__ . '\\' . $originalClassName;
+        $generatedClassName = __CLASS__ . '\\' . $originalClassName;
 
         if (class_exists($generatedClassName)) {
             return $generatedClassName;
