@@ -1,0 +1,5 @@
+{
+    "bootstrap":       "vendor/autoload.php",
+    "path":            "tests/ProxyManagerBench",
+    "retry_threshold": 5
+}
