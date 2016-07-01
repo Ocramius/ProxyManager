@@ -44,9 +44,9 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer      = $this->getMock(PropertyGenerator::class);
+        $initializer      = $this->createMock(PropertyGenerator::class);
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder      = $this->getMock(PropertyGenerator::class);
+        $valueHolder      = $this->createMock(PropertyGenerator::class);
         /* @var $publicProperties PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
@@ -66,7 +66,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
             . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return (\$this->bar->\$name = \$value);\n}"
-            . "%areturn %s;",
+            . '%areturn %s;',
             $magicSet->getBody()
         );
     }

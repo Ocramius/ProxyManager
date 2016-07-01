@@ -44,9 +44,9 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer      = $this->getMock(PropertyGenerator::class);
+        $initializer      = $this->createMock(PropertyGenerator::class);
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder      = $this->getMock(PropertyGenerator::class);
+        $valueHolder      = $this->createMock(PropertyGenerator::class);
         /* @var $publicProperties PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
@@ -66,7 +66,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__unset', array('name' => \$name)"
             . ", \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->bar->\$name);\n\n    return;\n}"
-            . "%areturn %s;",
+            . '%areturn %s;',
             $magicIsset->getBody()
         );
     }

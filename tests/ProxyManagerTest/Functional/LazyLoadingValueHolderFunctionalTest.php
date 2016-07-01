@@ -208,7 +208,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyAbsence($instance, VirtualProxyInterface $proxy, string $publicProperty)
     {
-        $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
+        $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
         $instance->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
         self::assertTrue($proxy->isProxyInitialized());
@@ -223,7 +223,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     public function testPropertyUnset($instance, VirtualProxyInterface $proxy, string $publicProperty)
     {
-        $instance = $proxy->getWrappedValueHolderValue() ? $proxy->getWrappedValueHolderValue() : $instance;
+        $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
         unset($proxy->$publicProperty);
 
         self::assertTrue($proxy->isProxyInitialized());
@@ -413,23 +413,21 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     private function createInitializer(string $className, $realInstance, Mock $initializerMatcher = null) : callable
     {
-        if (null === $initializerMatcher) {
-            $initializerMatcher = $this->getMock(stdClass::class, ['__invoke']);
+        /* @var $initializerMatcher callable|Mock */
+        if (! $initializerMatcher) {
+            $initializerMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
             $initializerMatcher
                 ->expects(self::once())
                 ->method('__invoke')
                 ->with(
-                    $this->logicalAnd(
+                    self::logicalAnd(
                         self::isInstanceOf(VirtualProxyInterface::class),
                         self::isInstanceOf($className)
                     ),
                     $realInstance
                 );
         }
-
-        /* @var $initializerMatcher callable */
-        $initializerMatcher = $initializerMatcher ?: $this->getMock(stdClass::class, ['__invoke']);
 
         return function (
             & $wrappedObject,

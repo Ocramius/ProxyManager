@@ -48,7 +48,7 @@ abstract class BasePerformanceTest extends PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        $header = "Performance test - " . get_called_class() . ":";
+        $header = 'Performance test - ' . get_called_class() . ':';
 
         echo "\n\n" . str_repeat('=', strlen($header)) . "\n" . $header . "\n\n";
     }

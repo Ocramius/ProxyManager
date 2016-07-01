@@ -44,9 +44,9 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
     {
         $reflection  = new ReflectionClass(EmptyClass::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer = $this->getMock(PropertyGenerator::class);
+        $initializer = $this->createMock(PropertyGenerator::class);
         /* @var $initCall MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initCall    = $this->getMock(MethodGenerator::class);
+        $initCall    = $this->createMock(MethodGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
         $initCall->expects(self::any())->method('getName')->will(self::returnValue('bar'));

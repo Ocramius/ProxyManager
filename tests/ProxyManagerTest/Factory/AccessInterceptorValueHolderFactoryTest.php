@@ -26,6 +26,7 @@ use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
@@ -68,10 +69,10 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->config                  = $this->getMock(Configuration::class);
-        $this->inflector               = $this->getMock(ClassNameInflectorInterface::class);
-        $this->signatureChecker        = $this->getMock(SignatureCheckerInterface::class);
-        $this->classSignatureGenerator = $this->getMock(ClassSignatureGeneratorInterface::class);
+        $this->config                  = $this->createMock(Configuration::class);
+        $this->inflector               = $this->createMock(ClassNameInflectorInterface::class);
+        $this->signatureChecker        = $this->createMock(SignatureCheckerInterface::class);
+        $this->classSignatureGenerator = $this->createMock(ClassSignatureGeneratorInterface::class);
 
         $this
             ->config
@@ -145,8 +146,8 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
     {
         $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
-        $generator      = $this->getMock('ProxyManager\GeneratorStrategy\\GeneratorStrategyInterface');
-        $autoloader     = $this->getMock(AutoloaderInterface::class);
+        $generator      = $this->createMock(GeneratorStrategyInterface::class);
+        $autoloader     = $this->createMock(AutoloaderInterface::class);
 
         $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
         $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));

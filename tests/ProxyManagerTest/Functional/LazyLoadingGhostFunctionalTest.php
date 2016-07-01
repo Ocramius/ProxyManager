@@ -47,6 +47,7 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ReflectionClass;
 use ReflectionProperty;
+use stdClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
@@ -108,9 +109,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $expectedValue
     ) {
         $proxyName         = $this->generateProxy($className);
-        $initializeMatcher = $this->getMock('stdClass', ['__invoke']);
+        $initializeMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
-        $initializeMatcher->expects($this->never())->method('__invoke'); // should not initialize the proxy
+        $initializeMatcher->expects(self::never())->method('__invoke'); // should not initialize the proxy
 
         /* @var $proxy GhostObjectInterface */
         $proxy = $proxyName::staticProxyConstructor(
@@ -565,7 +566,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy2    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
-                $properties["\0" . $class . "\0" . "privateProperty"] = null;
+                $properties["\0" . $class . "\0privateProperty"] = null;
             }
         );
 
@@ -625,18 +626,18 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         $proxy1    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
-                $properties["publicProperty"] = false;
-                $properties["\0*\0" . "protectedProperty"] = false;
-                $properties["\0" . $class . "\0" . "privateProperty"] = false;
+                $properties['publicProperty'] = false;
+                $properties["\0*\0protectedProperty"] = false;
+                $properties["\0" . $class . "\0privateProperty"] = false;
             }
         );
         /* @var $proxy2 ClassWithMixedPropertiesAndAccessorMethods */
         $proxy2    = $proxyName::staticProxyConstructor(
             function ($proxy, $method, $params, & $initializer, array $properties) use ($class) {
                 $initializer = null;
-                $properties["publicProperty"] = null;
-                $properties["\0*\0" . "protectedProperty"] = null;
-                $properties["\0" . $class . "\0" . "privateProperty"] = null;
+                $properties['publicProperty'] = null;
+                $properties["\0*\0protectedProperty"] = null;
+                $properties["\0" . $class . "\0privateProperty"] = null;
             }
         );
 
@@ -662,9 +663,9 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 $properties["\0*\0protectedProperty0"] = 'protected0';
                 $properties["\0*\0protectedProperty1"] = 'protected1';
                 $properties["\0*\0protectedProperty2"] = 'protected2';
-                $properties["publicProperty0"] = 'public0';
-                $properties["publicProperty1"] = 'public1';
-                $properties["publicProperty2"] = 'public2';
+                $properties['publicProperty0'] = 'public0';
+                $properties['publicProperty1'] = 'public1';
+                $properties['publicProperty2'] = 'public2';
             }
         );
 
@@ -746,26 +747,22 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param object $realInstance
      * @param Mock   $initializerMatcher
      *
-     * @return \Closure
+     * @return callable
      */
     private function createInitializer(string $className, $realInstance, Mock $initializerMatcher = null) : callable
     {
-        if (null === $initializerMatcher) {
-            $initializerMatcher = $this->getMock('stdClass', ['__invoke']);
+        /* @var $initializerMatcher callable|Mock */
+        if (! $initializerMatcher) {
+            $initializerMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
             $initializerMatcher
                 ->expects(self::once())
                 ->method('__invoke')
-                ->with(
-                    $this->logicalAnd(
-                        self::isInstanceOf(GhostObjectInterface::class),
-                        self::isInstanceOf($className)
-                    )
-                );
+                ->with(self::logicalAnd(
+                    self::isInstanceOf(GhostObjectInterface::class),
+                    self::isInstanceOf($className)
+                ));
         }
-
-        /* @var $initializerMatcher callable */
-        $initializerMatcher = $initializerMatcher ?: $this->getMock('stdClass', ['__invoke']);
 
         return function (
             GhostObjectInterface $proxy,
@@ -811,7 +808,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 BaseClass::class,
                 new BaseClass(),
                 'publicTypeHintedMethod',
-                [new \stdClass()],
+                [new stdClass()],
                 'publicTypeHintedMethodDefault'
             ],
             [
@@ -943,7 +940,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     ) {
         $proxy       = $this->generateProxy($className, $proxyOptions);
         $ghostObject = $proxy::staticProxyConstructor(function () use ($propertyName) {
-            $this->fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
+            self::fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
         });
 
         $property = new ReflectionProperty($propertyClass, $propertyName);
@@ -1046,7 +1043,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
                 ClassWithPublicProperties::class,
                 'property9',
                 [
-                    'skippedProperties' => ["property9"]
+                    'skippedProperties' => ['property9']
                 ],
                 'property9',
             ],
