@@ -20,7 +20,7 @@
     ],
     "require": {
         "php":                       "7.0.0 - 7.0.5 || ^7.0.7",
-        "zendframework/zend-code":   "^3.0.2",
+        "zendframework/zend-code":   "3.0.0 - 3.0.2 || ^3.0.4",
         "ocramius/package-versions": "^1.0"
     },
     "require-dev": {
