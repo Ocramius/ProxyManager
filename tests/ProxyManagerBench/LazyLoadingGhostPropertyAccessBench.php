@@ -104,16 +104,6 @@ class LazyLoadingGhostPropertyAccessBench
      */
     private $initializedMixedPropertiesProxy;
 
-    /**
-     * @var ReflectionProperty
-     */
-    private $accessMixedPropertiesPrivate;
-
-    /**
-     * @var ReflectionProperty
-     */
-    private $accessMixedPropertiesProtected;
-
     public function setUp()
     {
         $this->emptyClassProxy          = $this->buildProxy(EmptyClass::class);
@@ -139,18 +129,6 @@ class LazyLoadingGhostPropertyAccessBench
 
         $this->accessProtectedProperty = new ReflectionProperty(ClassWithProtectedProperties::class, 'property0');
         $this->accessProtectedProperty->setAccessible(true);
-
-        $this->accessMixedPropertiesPrivate = new ReflectionProperty(
-            ClassWithMixedProperties::class,
-            'privateProperty0'
-        );
-        $this->accessMixedPropertiesPrivate->setAccessible(true);
-
-        $this->accessMixedPropertiesProtected = new ReflectionProperty(
-            ClassWithMixedProperties::class,
-            'protectedProperty0'
-        );
-        $this->accessMixedPropertiesProtected->setAccessible(true);
     }
 
     public function benchEmptyClassInitialization()
