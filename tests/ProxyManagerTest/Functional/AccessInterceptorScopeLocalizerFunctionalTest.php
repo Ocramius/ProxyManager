@@ -264,7 +264,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      */
     public function testPropertyUnset($instance, AccessInterceptorInterface $proxy, string $publicProperty)
     {
-        $this->markTestSkipped('It is currently not possible to synchronize properties un-setting');
+        self::markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);
 
         self::assertFalse(isset($instance->$publicProperty));

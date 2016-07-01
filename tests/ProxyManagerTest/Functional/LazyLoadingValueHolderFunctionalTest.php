@@ -421,7 +421,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 ->expects(self::once())
                 ->method('__invoke')
                 ->with(
-                    $this->logicalAnd(
+                    self::logicalAnd(
                         self::isInstanceOf(VirtualProxyInterface::class),
                         self::isInstanceOf($className)
                     ),

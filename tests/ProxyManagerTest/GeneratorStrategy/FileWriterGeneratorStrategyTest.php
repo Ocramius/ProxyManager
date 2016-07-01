@@ -139,7 +139,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         try {
             $generator->generate(new ClassGenerator($fqcn));
 
-            $this->fail('An exception was supposed to be thrown');
+            self::fail('An exception was supposed to be thrown');
         } catch (FileNotWritableException $exception) {
             rmdir($tmpFile);
 

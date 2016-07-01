@@ -53,7 +53,7 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
             ->willReturn('foo');
 
         $classGenerator
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('addMethodFromGenerator');
 
         $reflection = new ReflectionClass(ClassWithFinalMethods::class);
