@@ -32,6 +32,7 @@ use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
+use ReflectionProperty;
 
 /**
  * Benchmark that provides baseline results for simple object instantiation
@@ -64,6 +65,11 @@ class LazyLoadingGhostPropertyAccessBench
     private $initializedPrivatePropertiesProxy;
 
     /**
+     * @var ReflectionProperty
+     */
+    private $accessPrivateProperty;
+
+    /**
      * @var ClassWithProtectedProperties|GhostObjectInterface
      */
     private $protectedPropertiesProxy;
@@ -72,6 +78,11 @@ class LazyLoadingGhostPropertyAccessBench
      * @var ClassWithProtectedProperties|GhostObjectInterface
      */
     private $initializedProtectedPropertiesProxy;
+
+    /**
+     * @var ReflectionProperty
+     */
+    private $accessProtectedProperty;
 
     /**
      * @var ClassWithPublicProperties|GhostObjectInterface
@@ -93,6 +104,16 @@ class LazyLoadingGhostPropertyAccessBench
      */
     private $initializedMixedPropertiesProxy;
 
+    /**
+     * @var ReflectionProperty
+     */
+    private $accessMixedPropertiesPrivate;
+
+    /**
+     * @var ReflectionProperty
+     */
+    private $accessMixedPropertiesProtected;
+
     public function setUp()
     {
         $this->emptyClassProxy          = $this->buildProxy(EmptyClass::class);
@@ -112,6 +133,24 @@ class LazyLoadingGhostPropertyAccessBench
         $this->initializedProtectedPropertiesProxy->initializeProxy();
         $this->initializedPublicPropertiesProxy->initializeProxy();
         $this->initializedMixedPropertiesProxy->initializeProxy();
+
+        $this->accessPrivateProperty = new ReflectionProperty(ClassWithPrivateProperties::class, 'property0');
+        $this->accessPrivateProperty->setAccessible(true);
+
+        $this->accessProtectedProperty = new ReflectionProperty(ClassWithProtectedProperties::class, 'property0');
+        $this->accessProtectedProperty->setAccessible(true);
+
+        $this->accessMixedPropertiesPrivate = new ReflectionProperty(
+            ClassWithMixedProperties::class,
+            'privateProperty0'
+        );
+        $this->accessMixedPropertiesPrivate->setAccessible(true);
+
+        $this->accessMixedPropertiesProtected = new ReflectionProperty(
+            ClassWithMixedProperties::class,
+            'protectedProperty0'
+        );
+        $this->accessMixedPropertiesProtected->setAccessible(true);
     }
 
     public function benchEmptyClassInitialization()
@@ -134,6 +173,26 @@ class LazyLoadingGhostPropertyAccessBench
         $this->initializedPrivatePropertiesProxy->initializeProxy();
     }
 
+    public function benchObjectWithPrivatePropertiesPropertyRead()
+    {
+        $this->accessPrivateProperty->getValue($this->privatePropertiesProxy);
+    }
+
+    public function benchInitializedObjectWithPrivatePropertiesPropertyRead()
+    {
+        $this->accessPrivateProperty->getValue($this->initializedPrivatePropertiesProxy);
+    }
+
+    public function benchObjectWithPrivatePropertiesPropertyWrite()
+    {
+        $this->accessPrivateProperty->setValue($this->privatePropertiesProxy, 'foo');
+    }
+
+    public function benchInitializedObjectWithPrivatePropertiesPropertyWrite()
+    {
+        $this->accessPrivateProperty->setValue($this->initializedPrivatePropertiesProxy, 'foo');
+    }
+
     public function benchObjectWithProtectedPropertiesInitialization()
     {
         $this->protectedPropertiesProxy->initializeProxy();
@@ -142,6 +201,26 @@ class LazyLoadingGhostPropertyAccessBench
     public function benchInitializedObjectWithProtectedPropertiesInitialization()
     {
         $this->initializedProtectedPropertiesProxy->initializeProxy();
+    }
+
+    public function benchObjectWithProtectedPropertiesPropertyRead()
+    {
+        $this->accessProtectedProperty->getValue($this->protectedPropertiesProxy);
+    }
+
+    public function benchInitializedObjectWithProtectedPropertiesPropertyRead()
+    {
+        $this->accessProtectedProperty->getValue($this->initializedProtectedPropertiesProxy);
+    }
+
+    public function benchObjectWithProtectedPropertiesPropertyWrite()
+    {
+        $this->accessProtectedProperty->setValue($this->protectedPropertiesProxy, 'foo');
+    }
+
+    public function benchInitializedObjectWithProtectedPropertiesPropertyWrite()
+    {
+        $this->accessProtectedProperty->setValue($this->initializedProtectedPropertiesProxy, 'foo');
     }
 
     public function benchObjectWithPublicPropertiesInitialization()
@@ -154,6 +233,50 @@ class LazyLoadingGhostPropertyAccessBench
         $this->initializedPublicPropertiesProxy->initializeProxy();
     }
 
+    public function benchObjectWithPublicPropertiesPropertyRead()
+    {
+        $this->publicPropertiesProxy->property0;
+    }
+
+    public function benchInitializedObjectWithPublicPropertiesPropertyRead()
+    {
+        $this->initializedPublicPropertiesProxy->property0;
+    }
+
+    public function benchObjectWithPublicPropertiesPropertyWrite()
+    {
+        $this->publicPropertiesProxy->property0 = 'foo';
+    }
+
+    public function benchInitializedObjectWithPublicPropertiesPropertyWrite()
+    {
+        $this->initializedPublicPropertiesProxy->property0 = 'foo';
+    }
+
+    public function benchObjectWithPublicPropertiesPropertyIsset()
+    {
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        /** @noinspection UnSafeIsSetOverArrayInspection */
+        isset($this->publicPropertiesProxy->property0);
+    }
+
+    public function benchInitializedObjectWithPublicPropertiesPropertyIsset()
+    {
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        /** @noinspection UnSafeIsSetOverArrayInspection */
+        isset($this->initializedPublicPropertiesProxy->property0);
+    }
+
+    public function benchObjectWithPublicPropertiesPropertyUnset()
+    {
+        unset($this->publicPropertiesProxy->property0);
+    }
+
+    public function benchInitializedObjectWithPublicPropertiesPropertyUnset()
+    {
+        unset($this->initializedPublicPropertiesProxy->property0);
+    }
+
     public function benchObjectWithMixedPropertiesInitialization()
     {
         $this->mixedPropertiesProxy->initializeProxy();
@@ -162,6 +285,50 @@ class LazyLoadingGhostPropertyAccessBench
     public function benchInitializedObjectWithMixedPropertiesInitialization()
     {
         $this->initializedMixedPropertiesProxy->initializeProxy();
+    }
+
+    public function benchObjectWithMixedPropertiesPropertyRead()
+    {
+        $this->mixedPropertiesProxy->publicProperty0;
+    }
+
+    public function benchInitializedObjectWithMixedPropertiesPropertyRead()
+    {
+        $this->initializedMixedPropertiesProxy->publicProperty0;
+    }
+
+    public function benchObjectWithMixedPropertiesPropertyWrite()
+    {
+        $this->mixedPropertiesProxy->publicProperty0 = 'foo';
+    }
+
+    public function benchInitializedObjectWithMixedPropertiesPropertyWrite()
+    {
+        $this->initializedMixedPropertiesProxy->publicProperty0 = 'foo';
+    }
+
+    public function benchObjectWithMixedPropertiesPropertyIsset()
+    {
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        /** @noinspection UnSafeIsSetOverArrayInspection */
+        isset($this->mixedPropertiesProxy->publicProperty0);
+    }
+
+    public function benchInitializedObjectWithMixedPropertiesPropertyIsset()
+    {
+        /** @noinspection PhpExpressionResultUnusedInspection */
+        /** @noinspection UnSafeIsSetOverArrayInspection */
+        isset($this->initializedMixedPropertiesProxy->publicProperty0);
+    }
+
+    public function benchObjectWithMixedPropertiesPropertyUnset()
+    {
+        unset($this->mixedPropertiesProxy->publicProperty0);
+    }
+
+    public function benchInitializedObjectWithMixedPropertiesPropertyUnset()
+    {
+        unset($this->initializedMixedPropertiesProxy->publicProperty0);
     }
 
     private function buildProxy(string $originalClass) : LazyLoadingInterface
