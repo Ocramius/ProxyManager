@@ -38,8 +38,19 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
     private $prefixInterceptors;
+
+    /**
+     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     */
     private $suffixInterceptors;
+
+    /**
+     * {@inheritDoc}
+     */
     public function setUp()
     {
         $this->prefixInterceptors = $this->createMock(PropertyGenerator::class);
