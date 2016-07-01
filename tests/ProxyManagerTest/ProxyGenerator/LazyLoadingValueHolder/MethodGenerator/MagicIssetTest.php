@@ -66,7 +66,7 @@ class MagicIssetTest extends PHPUnit_Framework_TestCase
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__isset', array('name' => \$name)"
             . ", \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return isset(\$this->bar->\$name);\n}"
-            . "%areturn %s;",
+            . '%areturn %s;',
             $magicIsset->getBody()
         );
     }

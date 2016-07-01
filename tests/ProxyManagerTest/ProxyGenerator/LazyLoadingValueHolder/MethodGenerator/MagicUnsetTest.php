@@ -66,7 +66,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__unset', array('name' => \$name)"
             . ", \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->bar->\$name);\n\n    return;\n}"
-            . "%areturn %s;",
+            . '%areturn %s;',
             $magicIsset->getBody()
         );
     }
