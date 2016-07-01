@@ -8,7 +8,7 @@ require_once __DIR__ . '/init.php';
 class Kitchen
 {
     private $sweet = 'yummy!';
-    private $sour  = null;
+    private $sour;
 
     public function hasSweet()
     {
