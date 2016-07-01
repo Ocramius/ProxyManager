@@ -4,6 +4,19 @@ title: Changelog
 
 This is a list of changes/improvements that were introduced in ProxyManager
 
+## 2.0.3
+
+### Fixed
+
+- Various test suite cleanups, mostly because of
+  [new PHPUnit 5.4.0 deprecations being introduced](https://github.com/sebastianbergmann/phpunit/wiki/Release-Announcement-for-PHPUnit-5.4.0)
+  [#318](https://github.com/Ocramius/ProxyManager/issues/318)
+- Removed `zendframework/zend-code:3.0.3` from installable dependencies, since
+  a critical bug was introduced in it [#321](https://github.com/Ocramius/ProxyManager/issues/321) 
+  [#323](https://github.com/Ocramius/ProxyManager/issues/323)
+  [#324](https://github.com/Ocramius/ProxyManager/issues/324). Please upgrade to
+  `zendframework/zend-code:3.0.4` or newer.
+
 ## 2.0.2
 
 ### Fixed
