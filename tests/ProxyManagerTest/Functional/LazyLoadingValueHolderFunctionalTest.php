@@ -413,7 +413,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      */
     private function createInitializer(string $className, $realInstance, Mock $initializerMatcher = null) : callable
     {
-        /* @var $initializerMatcher callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initializerMatcher callable|Mock */
         if (! $initializerMatcher) {
             $initializerMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
