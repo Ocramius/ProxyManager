@@ -60,7 +60,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
 
         self::assertGreaterThan(0, strpos($body, $className));
         self::assertFalse(class_exists($fqcn, false));
-        self::assertTrue(file_exists($tmpFile));
+        self::assertFileExists($tmpFile);
 
         /* @noinspection PhpIncludeInspection */
         require $tmpFile;
