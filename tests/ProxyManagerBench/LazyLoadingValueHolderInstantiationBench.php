@@ -32,7 +32,7 @@ use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 
 /**
- * Benchmark that provides baseline results for simple object instantiation
+ * Benchmark that provides results for simple object instantiation for lazy loading value holder proxies
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
