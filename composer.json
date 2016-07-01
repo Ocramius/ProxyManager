@@ -43,6 +43,7 @@
     },
     "autoload-dev": {
         "psr-0": {
+            "ProxyManagerBench\\": "tests",
             "ProxyManagerTest\\": "tests",
             "ProxyManagerTestAsset\\": "tests"
         }
