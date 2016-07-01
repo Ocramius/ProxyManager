@@ -28,7 +28,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ReflectionProperty;
 
 /**
- * Benchmark that provides baseline results for simple object instantiation
+ * Benchmark that provides baseline results for simple object state interactions
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
