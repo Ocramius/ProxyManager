@@ -65,11 +65,24 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
             . ' && $this->' . $initializerName
             . '->__invoke($this->' . $valueHolderName . ', $this, ' . var_export($methodName, true)
             . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ");\n\n"
-            . 'return $this->' . $valueHolderName . '->'
-            . $methodName . '(' . implode(', ', $forwardedParams) . ');'
+            . self::returnStatement(
+                '$this->' . $valueHolderName . '->' . $methodName . '(' . implode(', ', $forwardedParams) . ')',
+                $originalMethod
+            )
         );
         $method->setDocblock('{@inheritDoc}');
 
         return $method;
+    }
+
+    private static function returnStatement(string $returnedValue, \ReflectionMethod $originalMethod) : string
+    {
+        $returnType = $originalMethod->getReturnType();
+
+        if ($returnType && 'void' === (string) $returnType) {
+            return $returnedValue . ";\n\nreturn;\n";
+        }
+
+        return 'return ' . $returnedValue . ";\n";
     }
 }
