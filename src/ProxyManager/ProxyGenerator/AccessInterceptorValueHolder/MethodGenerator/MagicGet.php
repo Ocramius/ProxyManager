@@ -79,7 +79,8 @@ class MagicGet extends MagicMethodGenerator
                 $this,
                 $valueHolder,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $override ? $originalClass->getMethod('__get') : null
             )
         );
     }
