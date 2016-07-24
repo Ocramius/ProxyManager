@@ -80,7 +80,8 @@ class MagicUnset extends MagicMethodGenerator
                 $this,
                 $valueHolder,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $override ? $originalClass->getMethod('__unset') : null
             )
         );
     }

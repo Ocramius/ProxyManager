@@ -63,7 +63,8 @@ class InterceptedMethod extends MethodGenerator
                 $method,
                 $valueHolderProperty,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $originalMethod
             )
         );
 
