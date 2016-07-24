@@ -54,11 +54,19 @@ class RemoteObjectMethod extends MethodGenerator
             $list[] = '$' . $parameter->getName();
         }
 
-        $method->setBody(
-            '$return = $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
-            . ', ' . var_export($originalMethod->getName(), true) . ', array('. implode(', ', $list) .'));' . "\n\n"
-            . 'return $return;'
-        );
+        $body = '$return = $this->' . $adapterProperty->getName()
+            . '->call(' . var_export($originalClass->getName(), true)
+            . ', ' . var_export($originalMethod->getName(), true) . ', array('. implode(', ', $list) .'));' . "\n\n";
+
+        $returnType = $originalMethod->getReturnType();
+
+        if ($returnType && 'void' === (string) $returnType) {
+            $method->setBody($body);
+
+            return $method;
+        }
+
+        $method->setBody($body . 'return $return;');
 
         return $method;
     }
