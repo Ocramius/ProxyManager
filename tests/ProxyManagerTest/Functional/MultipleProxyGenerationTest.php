@@ -46,6 +46,7 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
+use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
@@ -131,6 +132,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             [ClassWithMethodWithByRefVariadicFunction::class],
             [ScalarTypeHintedClass::class],
             [ReturnTypeHintedClass::class],
+            [VoidMethodTypeHintedClass::class],
         ];
     }
 }
