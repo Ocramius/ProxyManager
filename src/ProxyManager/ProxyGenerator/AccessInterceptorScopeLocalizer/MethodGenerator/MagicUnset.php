@@ -68,7 +68,8 @@ class MagicUnset extends MagicMethodGenerator
                 $callParent,
                 $this,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $override ? $originalClass->getMethod('__unset') : null
             )
         );
     }

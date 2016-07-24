@@ -72,7 +72,8 @@ class MagicSet extends MagicMethodGenerator
                 $callParent,
                 $this,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $override ? $originalClass->getMethod('__set') : null
             )
         );
     }

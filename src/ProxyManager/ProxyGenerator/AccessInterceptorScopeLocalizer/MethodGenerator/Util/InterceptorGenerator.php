@@ -47,7 +47,8 @@ class InterceptorGenerator
         string $methodBody,
         MethodGenerator $method,
         PropertyGenerator $prefixInterceptors,
-        PropertyGenerator $suffixInterceptors
+        PropertyGenerator $suffixInterceptors,
+        \ReflectionMethod $originalMethod = null
     ) : string {
         $name               = var_export($method->getName(), true);
         $prefixInterceptors = $prefixInterceptors->getName();
@@ -66,7 +67,7 @@ class InterceptorGenerator
             . "    \$prefixReturnValue = \$this->$prefixInterceptors" . "[$name]->__invoke("
             . "\$this, \$this, $name, $paramsString, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
-            . "        return \$prefixReturnValue;\n"
+            . '        ' . self::returnStatement('$prefixReturnValue', $originalMethod)
             . "    }\n"
             . "}\n\n"
             . $methodBody . "\n\n"
@@ -75,9 +76,20 @@ class InterceptorGenerator
             . "    \$suffixReturnValue = \$this->$suffixInterceptors" . "[$name]->__invoke("
             . "\$this, \$this, $name, $paramsString, \$returnValue, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
-            . "        return \$suffixReturnValue;\n"
+            . '        ' . self::returnStatement('$suffixReturnValue', $originalMethod)
             . "    }\n"
             . "}\n\n"
-            . "return \$returnValue;";
+            . self::returnStatement('$returnValue', $originalMethod);
+    }
+
+    private static function returnStatement(string $returnedValue, \ReflectionMethod $originalMethod = null) : string
+    {
+        $returnType = $originalMethod ? $originalMethod->getReturnType() : null;
+
+        if ($returnType && 'void' === (string) $returnType) {
+            return $returnedValue . ";\n\nreturn;\n";
+        }
+
+        return 'return ' . $returnedValue . ";\n";
     }
 }

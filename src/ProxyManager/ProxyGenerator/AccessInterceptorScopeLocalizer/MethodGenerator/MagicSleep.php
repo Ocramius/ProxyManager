@@ -56,7 +56,8 @@ class MagicSleep extends MagicMethodGenerator
                 $callParent,
                 $this,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $originalClass->hasMethod('__sleep') ? $originalClass->getMethod('__sleep') : null
             )
         );
     }
