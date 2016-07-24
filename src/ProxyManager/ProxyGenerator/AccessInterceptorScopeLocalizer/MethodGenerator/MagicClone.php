@@ -52,7 +52,8 @@ class MagicClone extends MagicMethodGenerator
                 $originalClass->hasMethod('__clone') ? '$returnValue = parent::__clone();' : '$returnValue = null;',
                 $this,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $originalClass->hasMethod('__clone') ? $originalClass->getMethod('__clone') : null
             )
         );
     }

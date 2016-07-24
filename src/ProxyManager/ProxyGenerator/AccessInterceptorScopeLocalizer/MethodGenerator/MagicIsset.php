@@ -68,7 +68,8 @@ class MagicIsset extends MagicMethodGenerator
                 $callParent,
                 $this,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $override ? $originalClass->getMethod('__isset') : null
             )
         );
     }

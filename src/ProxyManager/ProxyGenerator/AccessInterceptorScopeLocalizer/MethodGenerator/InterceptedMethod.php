@@ -60,7 +60,8 @@ class InterceptedMethod extends MethodGenerator
                 . $originalMethod->getName() . '(' . implode(', ', $forwardedParams) . ');',
                 $method,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                $originalMethod
             )
         );
 
