@@ -65,10 +65,10 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
             . ' && $this->' . $initializerName
             . '->__invoke($this->' . $valueHolderName . ', $this, ' . var_export($methodName, true)
             . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ");\n\n"
-            . self::returnStatement(
+            . rtrim(self::returnStatement(
                 '$this->' . $valueHolderName . '->' . $methodName . '(' . implode(', ', $forwardedParams) . ')',
                 $originalMethod
-            )
+            ))
         );
         $method->setDocblock('{@inheritDoc}');
 

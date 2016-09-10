@@ -79,7 +79,7 @@ class InterceptorGenerator
             . '        ' . self::returnStatement('$suffixReturnValue', $originalMethod)
             . "    }\n"
             . "}\n\n"
-            . self::returnStatement('$returnValue', $originalMethod);
+            . rtrim(self::returnStatement('$returnValue', $originalMethod));
     }
 
     private static function returnStatement(string $returnedValue, \ReflectionMethod $originalMethod = null) : string
