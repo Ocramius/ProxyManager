@@ -50,6 +50,7 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
+     * @throws \OutOfBoundsException
      */
     public function createProxy(
         $instance,

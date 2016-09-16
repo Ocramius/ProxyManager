@@ -88,6 +88,7 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      *
      * @throws MissingSignatureException
      * @throws InvalidSignatureException
+     * @throws \OutOfBoundsException
      */
     public function createProxy(
         string $className,

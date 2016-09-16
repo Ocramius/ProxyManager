@@ -66,6 +66,7 @@ abstract class AbstractBaseFactory
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
+     * @throws \OutOfBoundsException
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {

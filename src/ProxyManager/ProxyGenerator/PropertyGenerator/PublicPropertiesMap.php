@@ -39,6 +39,8 @@ class PublicPropertiesMap extends PropertyGenerator
 
     /**
      * @param Properties $properties
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(Properties $properties)
     {

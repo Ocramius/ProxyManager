@@ -39,6 +39,8 @@ class StaticProxyConstructor extends MethodGenerator
      *
      * @param PropertyGenerator $initializerProperty
      * @param Properties        $properties
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(PropertyGenerator $initializerProperty, Properties $properties)
     {

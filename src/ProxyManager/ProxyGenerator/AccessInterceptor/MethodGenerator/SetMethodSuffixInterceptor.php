@@ -38,6 +38,8 @@ class SetMethodSuffixInterceptor extends MethodGenerator
      * Constructor
      *
      * @param PropertyGenerator $suffixInterceptor
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(PropertyGenerator $suffixInterceptor)
     {

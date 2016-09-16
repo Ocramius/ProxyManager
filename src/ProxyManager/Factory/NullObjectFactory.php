@@ -46,6 +46,7 @@ class NullObjectFactory extends AbstractBaseFactory
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
+     * @throws \OutOfBoundsException
      */
     public function createProxy($instanceOrClassName) : NullObjectInterface
     {
