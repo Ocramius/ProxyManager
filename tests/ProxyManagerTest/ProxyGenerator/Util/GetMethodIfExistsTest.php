@@ -22,14 +22,6 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
-use ProxyManager\ProxyGenerator\Util\Properties;
-use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
-use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
-use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
-use ProxyManagerTestAsset\ClassWithMixedProperties;
-use ProxyManagerTestAsset\ClassWithPrivateProperties;
-use ReflectionClass;
-use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\GetMethodIfExists}
