@@ -34,12 +34,17 @@ use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
  */
 class GetMethodIfExistsTest extends PHPUnit_Framework_TestCase
 {
-    public function testGetExistingMethod()
+    public function testGetExistingMethod() : void
     {
         $method = GetMethodIfExists::get(new \ReflectionClass(self::class), 'testGetExistingMethod');
 
         self::assertInstanceOf(\ReflectionMethod::class, $method);
         self::assertSame('testGetExistingMethod', $method->getName());
         self::assertSame(self::class, $method->getDeclaringClass()->getName());
+    }
+
+    public function testGetNonExistingMethod() : void
+    {
+        self::assertNull(GetMethodIfExists::get(new \ReflectionClass(self::class), uniqid('nonExisting', true)));
     }
 }
