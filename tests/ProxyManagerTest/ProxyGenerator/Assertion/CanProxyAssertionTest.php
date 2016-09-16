@@ -34,6 +34,7 @@ use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -130,6 +131,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
             [ClassWithPublicProperties::class],
             [ClassWithPublicArrayProperty::class],
             [ClassWithSelfHint::class],
+            [ClassWithParentHint::class],
             [EmptyClass::class],
             [HydratedObject::class],
             [LazyLoadingMock::class],
