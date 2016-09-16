@@ -64,7 +64,7 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setParameter($suffix);
         $this->setReturnType($originalClass->getName());
 
-        $this->setDocblock(
+        $this->setDocBlock(
             "Constructor to setup interceptors\n\n"
             . "@param \\" . $originalClass->getName() . " \$wrappedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"

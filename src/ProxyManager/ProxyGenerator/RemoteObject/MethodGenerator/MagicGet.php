@@ -42,7 +42,7 @@ class MagicGet extends MagicMethodGenerator
     {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
-        $this->setDocblock('@param string $name');
+        $this->setDocBlock('@param string $name');
         $this->setBody(
             '$return = $this->' . $adapterProperty->getName() . '->call(' . var_export($originalClass->getName(), true)
             . ', \'__get\', array($name));' . "\n\n" . 'return $return;'

@@ -51,7 +51,7 @@ class MagicUnset extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
 
-        $hasParent   = $originalClass->hasMethod('__isset');
+        $hasParent   = $originalClass->hasMethod('__unset');
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
         $callParent  = '';

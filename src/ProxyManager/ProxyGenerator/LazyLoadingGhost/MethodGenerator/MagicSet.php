@@ -123,7 +123,7 @@ PHP;
 
         $override = $originalClass->hasMethod('__set');
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         $parentAccess = 'return parent::__set($name, $value);';
 

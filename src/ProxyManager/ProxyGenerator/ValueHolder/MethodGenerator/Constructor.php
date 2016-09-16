@@ -52,7 +52,7 @@ class Constructor extends MethodGenerator
             ? self::fromReflection($originalConstructor)
             : new self('__construct');
 
-        $constructor->setDocblock('{@inheritDoc}');
+        $constructor->setDocBlock('{@inheritDoc}');
         $constructor->setBody(
             'static $reflection;' . "\n\n"
             . 'if (! $this->' . $valueHolder->getName() . ') {' . "\n"

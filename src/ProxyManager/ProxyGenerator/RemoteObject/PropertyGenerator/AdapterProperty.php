@@ -40,6 +40,6 @@ class AdapterProperty extends PropertyGenerator
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('adapter'));
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setDocblock('@var \\' . AdapterInterface::class . ' Remote web service adapter');
+        $this->setDocBlock('@var \\' . AdapterInterface::class . ' Remote web service adapter');
     }
 }
