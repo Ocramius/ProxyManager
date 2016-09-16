@@ -20,14 +20,14 @@
     ],
     "require": {
         "php":                       "^7.1.0",
-        "zendframework/zend-code":   "3.0.0 - 3.0.2 || ^3.0.4",
-        "ocramius/package-versions": "^1.0"
+        "zendframework/zend-code":   "^3.1.0",
+        "ocramius/package-versions": "^1.1.1"
     },
     "require-dev": {
         "ext-phar":                    "*",
-        "phpunit/phpunit":             "^5.4.6",
-        "squizlabs/php_codesniffer":   "^2.6.0",
-        "couscous/couscous":           "^1.4.0",
+        "phpunit/phpunit":             "^5.5.4",
+        "squizlabs/php_codesniffer":   "^2.7.0",
+        "couscous/couscous":           "^1.5.2",
         "phpbench/phpbench":            "^0.11.2"
     },
     "suggest": {
