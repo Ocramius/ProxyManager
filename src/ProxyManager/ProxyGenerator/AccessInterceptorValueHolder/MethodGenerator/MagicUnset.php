@@ -43,6 +43,9 @@ class MagicUnset extends MagicMethodGenerator
      * @param PropertyGenerator   $prefixInterceptors
      * @param PropertyGenerator   $suffixInterceptors
      * @param PublicPropertiesMap $publicProperties
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -53,10 +56,10 @@ class MagicUnset extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
 
-        $override        = $originalClass->hasMethod('__unset');
+        $parent          = $originalClass->hasMethod('__unset') ? $originalClass->getMethod('__unset') : null;
         $valueHolderName = $valueHolder->getName();
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_UNSET,
@@ -74,15 +77,13 @@ class MagicUnset extends MagicMethodGenerator
 
         $callParent .= '$returnValue = false;';
 
-        $this->setBody(
-            InterceptorGenerator::createInterceptedMethodBody(
-                $callParent,
-                $this,
-                $valueHolder,
-                $prefixInterceptors,
-                $suffixInterceptors,
-                $override ? $originalClass->getMethod('__unset') : null
-            )
-        );
+        $this->setBody(InterceptorGenerator::createInterceptedMethodBody(
+            $callParent,
+            $this,
+            $valueHolder,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $parent
+        ));
     }
 }
