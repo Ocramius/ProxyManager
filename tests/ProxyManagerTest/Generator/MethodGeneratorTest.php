@@ -22,6 +22,8 @@ namespace ProxyManagerTest\Generator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -139,5 +141,44 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 
         self::assertSame('returnVoid', $method->getName());
         self::assertStringMatchesFormat('%a : void%a', $method->generate());
+    }
+
+    /**
+     * @dataProvider returnTypeHintsProvider
+     *
+     * @param string $methodName
+     * @param string $expectedType
+     *
+     * @return void
+     */
+    public function testReturnTypeHintGeneration(string $methodName, string $expectedType) : void
+    {
+        $method = MethodGenerator::fromReflection(new MethodReflection(
+            ReturnTypeHintedClass::class,
+            $methodName
+        ));
+
+        self::assertSame($methodName, $method->getName());
+        self::assertStringMatchesFormat('%a : ' . $expectedType . '%a', $method->generate());
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function returnTypeHintsProvider() : array
+    {
+        return [
+            ['returnString', 'string'],
+            ['returnInteger', 'int'],
+            ['returnBool', 'bool'],
+            ['returnArray', 'array'],
+            ['returnCallable', 'callable'],
+            ['returnSelf', '\\' . ReturnTypeHintedClass::class],
+            ['returnParent', '\\' . EmptyClass::class],
+            ['returnVoid', 'void'],
+            ['returnIterable', 'iterable'],
+            ['returnSameClass', ReturnTypeHintedClass::class],
+            ['returnOtherClass', EmptyClass::class],
+        ];
     }
 }
