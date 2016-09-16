@@ -49,6 +49,13 @@ class ReturnTypeHintedClass
     public function returnSelf() : self
     {
     }
+    public function returnVoid() : void
+    {
+    }
+
+    public function returnIterable() : iterable
+    {
+    }
 
     public function returnSameClass() : ReturnTypeHintedClass
     {
