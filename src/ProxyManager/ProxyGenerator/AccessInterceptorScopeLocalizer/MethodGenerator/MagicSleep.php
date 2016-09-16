@@ -22,6 +22,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
+use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -47,9 +48,7 @@ class MagicSleep extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__sleep');
 
-        $parent = $originalClass->hasMethod('__sleep')
-            ? $originalClass->getMethod('__sleep')
-            : null;
+        $parent = GetMethodIfExists::get($originalClass, '__sleep');
 
         $callParent = $parent ? '$returnValue = & parent::__sleep();' : '$returnValue = array_keys((array) $this);';
 

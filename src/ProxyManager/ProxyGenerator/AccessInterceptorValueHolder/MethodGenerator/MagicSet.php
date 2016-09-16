@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
@@ -60,7 +61,7 @@ class MagicSet extends MagicMethodGenerator
             [new ParameterGenerator('name'), new ParameterGenerator('value')]
         );
 
-        $parent          = $originalClass->hasMethod('__set') ? $originalClass->getMethod('__set') : null;
+        $parent          = GetMethodIfExists::get($originalClass, '__set');
         $valueHolderName = $valueHolder->getName();
 
         $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
@@ -50,9 +51,7 @@ class MagicGet extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
-        $parent = $originalClass->hasMethod('__get')
-            ? $originalClass->getMethod('__get')
-            : null;
+        $parent = GetMethodIfExists::get($originalClass, '__get');
 
         $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
