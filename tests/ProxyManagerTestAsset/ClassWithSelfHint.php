@@ -28,7 +28,7 @@ namespace ProxyManagerTestAsset;
  */
 class ClassWithSelfHint
 {
-    public function selfHintMethod(self $parameter) : self
+    public function selfHintMethod(self $parameter)
     {
         return $parameter;
     }

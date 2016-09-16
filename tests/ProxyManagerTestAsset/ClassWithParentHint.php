@@ -28,7 +28,7 @@ namespace ProxyManagerTestAsset;
  */
 class ClassWithParentHint extends EmptyClass
 {
-    public function parentHintMethod(parent $parameter) : parent
+    public function parentHintMethod(parent $parameter)
     {
         return $parameter;
     }
