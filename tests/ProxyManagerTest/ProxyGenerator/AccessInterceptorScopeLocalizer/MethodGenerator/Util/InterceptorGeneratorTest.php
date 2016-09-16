@@ -59,33 +59,40 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
         $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
         $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
 
-        $body = InterceptorGenerator::createInterceptedMethodBody(
-            '$returnValue = "foo";',
-            $method,
-            $prefixInterceptors,
-            $suffixInterceptors
-        );
+        // @codingStandardsIgnoreStart
+        $expected = <<<'PHP'
+if (isset($this->pre['fooMethod'])) {
+    $returnEarly       = false;
+    $prefixReturnValue = $this->pre['fooMethod']->__invoke($this, $this, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnEarly);
+
+    if ($returnEarly) {
+        return $prefixReturnValue;
+    }
+}
+
+$returnValue = "foo";
+
+if (isset($this->post['fooMethod'])) {
+    $returnEarly       = false;
+    $suffixReturnValue = $this->post['fooMethod']->__invoke($this, $this, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnValue, $returnEarly);
+
+    if ($returnEarly) {
+        return $suffixReturnValue;
+    }
+}
+
+return $returnValue;
+PHP;
+        // @codingStandardsIgnoreEnd
 
         self::assertSame(
-            'if (isset($this->pre[\'fooMethod\'])) {' . "\n"
-            . '    $returnEarly       = false;' . "\n"
-            . '    $prefixReturnValue = $this->pre[\'fooMethod\']->__invoke($this, $this, \'fooMethod\', '
-            . 'array(\'bar\' => $bar, \'baz\' => $baz), $returnEarly);' . "\n\n"
-            . '    if ($returnEarly) {' . "\n"
-            . '        return $prefixReturnValue;' . "\n"
-            . '    }' . "\n"
-            . '}' . "\n\n"
-            . '$returnValue = "foo";' . "\n\n"
-            . 'if (isset($this->post[\'fooMethod\'])) {' . "\n"
-            . '    $returnEarly       = false;' . "\n"
-            . '    $suffixReturnValue = $this->post[\'fooMethod\']->__invoke($this, $this, \'fooMethod\', '
-            . 'array(\'bar\' => $bar, \'baz\' => $baz), $returnValue, $returnEarly);' . "\n\n"
-            . '    if ($returnEarly) {' . "\n"
-            . '        return $suffixReturnValue;' . "\n"
-            . '    }' . "\n"
-            . '}' . "\n\n"
-            . 'return $returnValue;',
-            $body
+            $expected,
+            InterceptorGenerator::createInterceptedMethodBody(
+                '$returnValue = "foo";',
+                $method,
+                $prefixInterceptors,
+                $suffixInterceptors
+            )
         );
     }
 
