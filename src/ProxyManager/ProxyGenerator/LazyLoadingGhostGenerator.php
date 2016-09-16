@@ -67,7 +67,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
         $filteredProperties = Properties::fromReflectionClass($originalClass)
-            ->filter(isset($proxyOptions['skippedProperties']) ? $proxyOptions['skippedProperties'] : []);
+            ->filter($proxyOptions['skippedProperties'] ?? []);
 
         $publicProperties    = new PublicPropertiesMap($filteredProperties);
         $privateProperties   = new PrivatePropertiesMap($filteredProperties);
