@@ -177,8 +177,8 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
             ['returnParent', '\\' . EmptyClass::class],
             ['returnVoid', 'void'],
             ['returnIterable', 'iterable'],
-            ['returnSameClass', ReturnTypeHintedClass::class],
-            ['returnOtherClass', EmptyClass::class],
+            ['returnSameClass', '\\' . ReturnTypeHintedClass::class],
+            ['returnOtherClass', '\\' . EmptyClass::class],
         ];
     }
 }
