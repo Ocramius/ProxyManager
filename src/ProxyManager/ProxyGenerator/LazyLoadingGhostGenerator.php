@@ -147,9 +147,12 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     {
         return array_map(
             function (ReflectionMethod $method) : ProxyManagerMethodGenerator {
-                return ProxyManagerMethodGenerator
-                    ::fromReflection(new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()))
-                    ->setAbstract(false);
+                $generated = ProxyManagerMethodGenerator
+                    ::fromReflection(new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()));
+
+                $generated->setAbstract(false);
+
+                return $generated;
             },
             ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
         );
