@@ -146,4 +146,62 @@ PHP;
             )
         );
     }
+
+    public function testInterceptorGeneratorWithExistingMethod()
+    {
+        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $method             = $this->createMock(MethodGenerator::class);
+        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $bar                = $this->createMock(ParameterGenerator::class);
+        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $baz                = $this->createMock(ParameterGenerator::class);
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $prefixInterceptors = $this->createMock(PropertyGenerator::class);
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $suffixInterceptors = $this->createMock(PropertyGenerator::class);
+
+        $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $baz->expects(self::any())->method('getName')->will(self::returnValue('baz'));
+        $method->expects(self::any())->method('getName')->will(self::returnValue('fooMethod'));
+        $method->expects(self::any())->method('getParameters')->will(self::returnValue([$bar, $baz]));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+
+        // @codingStandardsIgnoreStart
+        $expected = <<<'PHP'
+if (isset($this->pre['fooMethod'])) {
+    $returnEarly       = false;
+    $prefixReturnValue = $this->pre['fooMethod']->__invoke($this, $this, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnEarly);
+
+    if ($returnEarly) {
+        return $prefixReturnValue;
+    }
+}
+
+$returnValue = "foo";
+
+if (isset($this->post['fooMethod'])) {
+    $returnEarly       = false;
+    $suffixReturnValue = $this->post['fooMethod']->__invoke($this, $this, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnValue, $returnEarly);
+
+    if ($returnEarly) {
+        return $suffixReturnValue;
+    }
+}
+
+return $returnValue;
+PHP;
+        // @codingStandardsIgnoreEnd
+
+        self::assertSame(
+            $expected,
+            InterceptorGenerator::createInterceptedMethodBody(
+                '$returnValue = "foo";',
+                $method,
+                $prefixInterceptors,
+                $suffixInterceptors,
+                new \ReflectionMethod(self::class, 'testInterceptorGeneratorWithExistingMethod')
+            )
+        );
+    }
 }
