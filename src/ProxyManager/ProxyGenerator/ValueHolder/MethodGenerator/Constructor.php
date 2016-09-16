@@ -61,7 +61,7 @@ class Constructor extends MethodGenerator
             . ");\n"
             . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"
             . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'this')
-            . "}"
+            . '}'
             . self::generateOriginalConstructorCall($originalClass, $valueHolder)
         );
 
