@@ -22,6 +22,7 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\Method
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -33,12 +34,11 @@ use Zend\Code\Generator\PropertyGenerator;
  * @license MIT
  *
  * @group Coverage
+ *
+ * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator
  */
 class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator
-     */
     public function testInterceptorGenerator()
     {
         /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -86,6 +86,65 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
             . '}' . "\n\n"
             . 'return $returnValue;',
             $body
+        );
+    }
+
+    public function testInterceptorGeneratorWithVoidReturnType()
+    {
+        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $method             = $this->createMock(MethodGenerator::class);
+        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $bar                = $this->createMock(ParameterGenerator::class);
+        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $baz                = $this->createMock(ParameterGenerator::class);
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $prefixInterceptors = $this->createMock(PropertyGenerator::class);
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $suffixInterceptors = $this->createMock(PropertyGenerator::class);
+
+        $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $baz->expects(self::any())->method('getName')->will(self::returnValue('baz'));
+        $method->expects(self::any())->method('getName')->will(self::returnValue('fooMethod'));
+        $method->expects(self::any())->method('getParameters')->will(self::returnValue([$bar, $baz]));
+        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
+        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+
+        // @codingStandardsIgnoreStart
+        $expected = <<<'PHP'
+
+if (isset($this->pre['fooMethod'])) {
+    $returnEarly       = false;
+    $prefixReturnValue = $this->pre['fooMethod']->__invoke($this, $this, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnEarly);
+
+    if ($returnEarly) {
+        return;
+    }
+}
+
+$returnValue = "foo";
+
+if (isset($this->post['fooMethod'])) {
+    $returnEarly       = false;
+    $suffixReturnValue = $this->post['fooMethod']->__invoke($this, $this, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnValue, $returnEarly);
+
+    if ($returnEarly) {
+        return;
+    }
+}
+
+return;
+PHP;
+        // @codingStandardsIgnoreEnd
+
+        self::assertSame(
+            $expected,
+            InterceptorGenerator::createInterceptedMethodBody(
+                '$returnValue = "foo";',
+                $method,
+                $prefixInterceptors,
+                $suffixInterceptors,
+                new \ReflectionMethod(VoidMethodTypeHintedInterface::class, 'returnVoid')
+            )
         );
     }
 }
