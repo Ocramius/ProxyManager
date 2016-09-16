@@ -53,11 +53,11 @@ class InterceptorGenerator
         PropertyGenerator $suffixInterceptors,
         ?\ReflectionMethod $originalMethod
     ) : string {
-        $name               = var_export($method->getName(), true);
-        $valueHolder        = $valueHolder->getName();
-        $prefixInterceptors = $prefixInterceptors->getName();
-        $suffixInterceptors = $suffixInterceptors->getName();
-        $params             = [];
+        $name                   = var_export($method->getName(), true);
+        $valueHolderName        = $valueHolder->getName();
+        $prefixInterceptorsName = $prefixInterceptors->getName();
+        $suffixInterceptorsName = $suffixInterceptors->getName();
+        $params                 = [];
 
         foreach ($method->getParameters() as $parameter) {
             $parameterName = $parameter->getName();
@@ -66,19 +66,19 @@ class InterceptorGenerator
 
         $paramsString = 'array(' . implode(', ', $params) . ')';
 
-        return "if (isset(\$this->$prefixInterceptors" . "[$name])) {\n"
+        return "if (isset(\$this->$prefixInterceptorsName" . "[$name])) {\n"
             . "    \$returnEarly       = false;\n"
-            . "    \$prefixReturnValue = \$this->$prefixInterceptors" . "[$name]->__invoke("
-            . "\$this, \$this->$valueHolder, $name, $paramsString, \$returnEarly);\n\n"
+            . "    \$prefixReturnValue = \$this->$prefixInterceptorsName" . "[$name]->__invoke("
+            . "\$this, \$this->$valueHolderName, $name, $paramsString, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
             . '        ' . self::returnStatement('$prefixReturnValue', $originalMethod)
             . "    }\n"
             . "}\n\n"
             . $methodBody . "\n\n"
-            . "if (isset(\$this->$suffixInterceptors" . "[$name])) {\n"
+            . "if (isset(\$this->$suffixInterceptorsName" . "[$name])) {\n"
             . "    \$returnEarly       = false;\n"
-            . "    \$suffixReturnValue = \$this->$suffixInterceptors" . "[$name]->__invoke("
-            . "\$this, \$this->$valueHolder, $name, $paramsString, \$returnValue, \$returnEarly);\n\n"
+            . "    \$suffixReturnValue = \$this->$suffixInterceptorsName" . "[$name]->__invoke("
+            . "\$this, \$this->$valueHolderName, $name, $paramsString, \$returnValue, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
             . '        ' . self::returnStatement('$suffixReturnValue', $originalMethod)
             . "    }\n"
