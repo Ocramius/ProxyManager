@@ -192,6 +192,6 @@ PHP;
         $name     = $property->getName();
         $defaults = $property->getDeclaringClass()->getDefaultProperties();
 
-        return var_export(isset($defaults[$name]) ? $defaults[$name] : null, true);
+        return var_export($defaults[$name] ?? null, true);
     }
 }
