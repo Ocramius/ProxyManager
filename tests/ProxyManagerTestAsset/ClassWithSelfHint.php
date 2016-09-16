@@ -33,7 +33,7 @@ class ClassWithSelfHint
      *
      * @return self
      */
-    public function selfHintMethod(self $parameter)
+    public function selfHintMethod(self $parameter) : self
     {
         return $parameter;
     }
