@@ -87,10 +87,8 @@ class InterceptorGenerator
 
     private static function returnStatement(string $returnedValue, \ReflectionMethod $originalMethod = null) : string
     {
-        $returnType = $originalMethod ? $originalMethod->getReturnType() : null;
-
-        if ($returnType && 'void' === (string) $returnType) {
-            return $returnedValue . ";\n\nreturn;\n";
+        if ('void' === (string) ($originalMethod ? $originalMethod->getReturnType() : null)) {
+            return "return;\n";
         }
 
         return 'return ' . $returnedValue . ";\n";
