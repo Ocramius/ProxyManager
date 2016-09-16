@@ -38,6 +38,8 @@ class MagicUnset extends MagicMethodGenerator
      *
      * @param ReflectionClass   $originalClass
      * @param PropertyGenerator $adapterProperty
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapterProperty)
     {

@@ -37,6 +37,8 @@ class MagicIsset extends MagicMethodGenerator
      * Constructor
      * @param ReflectionClass                        $originalClass
      * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $adapterProperty)
     {

@@ -38,6 +38,8 @@ class InitializeProxy extends MethodGenerator
      *
      * @param PropertyGenerator   $initializerProperty
      * @param ZendMethodGenerator $callInitializer
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(PropertyGenerator $initializerProperty, ZendMethodGenerator $callInitializer)
     {

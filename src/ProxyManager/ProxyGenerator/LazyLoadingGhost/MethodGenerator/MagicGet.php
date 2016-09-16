@@ -112,6 +112,9 @@ PHP;
      * @param ProtectedPropertiesMap $protectedProperties
      * @param PrivatePropertiesMap   $privateProperties
      * @param InitializationTracker  $initializationTracker
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,

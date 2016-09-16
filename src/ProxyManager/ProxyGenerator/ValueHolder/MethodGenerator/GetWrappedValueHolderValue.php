@@ -36,6 +36,8 @@ class GetWrappedValueHolderValue extends MethodGenerator
      * Constructor
      *
      * @param PropertyGenerator $valueHolderProperty
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(PropertyGenerator $valueHolderProperty)
     {

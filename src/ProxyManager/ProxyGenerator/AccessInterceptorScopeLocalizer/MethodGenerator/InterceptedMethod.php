@@ -39,6 +39,8 @@ class InterceptedMethod extends MethodGenerator
      * @param \Zend\Code\Generator\PropertyGenerator $suffixInterceptors
      *
      * @return self
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
