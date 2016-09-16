@@ -81,7 +81,7 @@ class BindProxyProperties extends MethodGenerator
         }
 
         $this->setBody(
-            (empty($localizedProperties) ? '' : implode("\n\n", $localizedProperties) . "\n\n")
+            ($localizedProperties ? implode("\n\n", $localizedProperties) . "\n\n" : '')
             . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
             . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
         );
