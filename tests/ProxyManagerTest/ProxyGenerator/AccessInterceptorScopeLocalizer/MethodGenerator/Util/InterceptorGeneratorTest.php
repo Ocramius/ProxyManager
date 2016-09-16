@@ -111,7 +111,6 @@ class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
 
         // @codingStandardsIgnoreStart
         $expected = <<<'PHP'
-
 if (isset($this->pre['fooMethod'])) {
     $returnEarly       = false;
     $prefixReturnValue = $this->pre['fooMethod']->__invoke($this, $this, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnEarly);
