@@ -39,6 +39,9 @@ class MagicGet extends MagicMethodGenerator
      * @param ReflectionClass   $originalClass
      * @param PropertyGenerator $prefixInterceptors
      * @param PropertyGenerator $suffixInterceptors
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -47,11 +50,13 @@ class MagicGet extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
-        $override = $originalClass->hasMethod('__get');
+        $parent = $originalClass->hasMethod('__get')
+            ? $originalClass->getMethod('__get')
+            : null;
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if ($override) {
+        if ($parent) {
             $callParent = '$returnValue = & parent::__get($name);';
         } else {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
@@ -69,7 +74,7 @@ class MagicGet extends MagicMethodGenerator
                 $this,
                 $prefixInterceptors,
                 $suffixInterceptors,
-                $override ? $originalClass->getMethod('__get') : null
+                $parent
             )
         );
     }
