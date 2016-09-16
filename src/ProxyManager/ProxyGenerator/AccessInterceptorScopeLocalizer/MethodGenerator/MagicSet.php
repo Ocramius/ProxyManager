@@ -39,6 +39,9 @@ class MagicSet extends MagicMethodGenerator
      * @param \ReflectionClass                       $originalClass
      * @param \Zend\Code\Generator\PropertyGenerator $prefixInterceptors
      * @param \Zend\Code\Generator\PropertyGenerator $suffixInterceptors
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -51,11 +54,13 @@ class MagicSet extends MagicMethodGenerator
             [new ParameterGenerator('name'), new ParameterGenerator('value')]
         );
 
-        $override = $originalClass->hasMethod('__set');
+        $parent = $originalClass->hasMethod('__set')
+            ? $originalClass->getMethod('__set')
+            : null;
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if ($override) {
+        if ($parent) {
             $callParent = '$returnValue = & parent::__set($name, $value);';
         } else {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
@@ -67,14 +72,12 @@ class MagicSet extends MagicMethodGenerator
             );
         }
 
-        $this->setBody(
-            InterceptorGenerator::createInterceptedMethodBody(
-                $callParent,
-                $this,
-                $prefixInterceptors,
-                $suffixInterceptors,
-                $override ? $originalClass->getMethod('__set') : null
-            )
-        );
+        $this->setBody(InterceptorGenerator::createInterceptedMethodBody(
+            $callParent,
+            $this,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $parent
+        ));
     }
 }
