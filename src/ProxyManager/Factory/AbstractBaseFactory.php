@@ -69,7 +69,7 @@ abstract class AbstractBaseFactory
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
-        if (isset($this->checkedClasses[$className])) {
+        if (\array_key_exists($className, $this->checkedClasses)) {
             return $this->checkedClasses[$className];
         }
 

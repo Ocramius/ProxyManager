@@ -64,7 +64,7 @@ abstract class BaseAdapter implements AdapterInterface
     {
         $serviceName = $this->getServiceName($wrappedClass, $method);
 
-        if (isset($this->map[$serviceName])) {
+        if (\array_key_exists($serviceName, $this->map)) {
             $serviceName = $this->map[$serviceName];
         }
 
