@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTestAsset;
 
-class ReturnTypeHintedClass
+class ReturnTypeHintedClass extends EmptyClass
 {
     public function returnString() : string
     {
@@ -49,6 +49,11 @@ class ReturnTypeHintedClass
     public function returnSelf() : self
     {
     }
+
+    public function returnParent() : parent
+    {
+    }
+
     public function returnVoid() : void
     {
     }
