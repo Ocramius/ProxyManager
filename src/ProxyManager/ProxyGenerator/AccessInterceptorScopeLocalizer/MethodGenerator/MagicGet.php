@@ -68,14 +68,12 @@ class MagicGet extends MagicMethodGenerator
             );
         }
 
-        $this->setBody(
-            InterceptorGenerator::createInterceptedMethodBody(
-                $callParent,
-                $this,
-                $prefixInterceptors,
-                $suffixInterceptors,
-                $parent
-            )
-        );
+        $this->setBody(InterceptorGenerator::createInterceptedMethodBody(
+            $callParent,
+            $this,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $parent
+        ));
     }
 }
