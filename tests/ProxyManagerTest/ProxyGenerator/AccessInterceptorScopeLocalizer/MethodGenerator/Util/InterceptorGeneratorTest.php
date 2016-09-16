@@ -91,7 +91,8 @@ PHP;
                 '$returnValue = "foo";',
                 $method,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                null
             )
         );
     }

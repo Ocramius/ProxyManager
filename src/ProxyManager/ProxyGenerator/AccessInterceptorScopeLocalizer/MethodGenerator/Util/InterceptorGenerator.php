@@ -49,7 +49,7 @@ class InterceptorGenerator
         MethodGenerator $method,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors,
-        \ReflectionMethod $originalMethod = null
+        ?\ReflectionMethod $originalMethod
     ) : string {
         $name                   = var_export($method->getName(), true);
         $prefixInterceptorsName = $prefixInterceptors->getName();
