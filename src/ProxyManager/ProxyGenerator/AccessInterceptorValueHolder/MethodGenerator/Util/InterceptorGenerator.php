@@ -51,7 +51,7 @@ class InterceptorGenerator
         PropertyGenerator $valueHolder,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors,
-        \ReflectionMethod $originalMethod = null
+        ?\ReflectionMethod $originalMethod
     ) : string {
         $name               = var_export($method->getName(), true);
         $valueHolder        = $valueHolder->getName();
@@ -86,7 +86,7 @@ class InterceptorGenerator
             . rtrim(self::returnStatement('$returnValue', $originalMethod));
     }
 
-    private static function returnStatement(string $returnedValue, \ReflectionMethod $originalMethod = null) : string
+    private static function returnStatement(string $returnedValue, ?\ReflectionMethod $originalMethod) : string
     {
         if ('void' === (string) ($originalMethod ? $originalMethod->getReturnType() : null)) {
             return "return;\n";

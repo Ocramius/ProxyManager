@@ -94,7 +94,8 @@ PHP;
                 $method,
                 $valueHolder,
                 $prefixInterceptors,
-                $suffixInterceptors
+                $suffixInterceptors,
+                null
             )
         );
     }
