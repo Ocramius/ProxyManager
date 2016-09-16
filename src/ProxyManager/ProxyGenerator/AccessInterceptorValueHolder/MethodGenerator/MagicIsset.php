@@ -43,6 +43,9 @@ class MagicIsset extends MagicMethodGenerator
      * @param PropertyGenerator   $prefixInterceptors
      * @param PropertyGenerator   $suffixInterceptors
      * @param PublicPropertiesMap $publicProperties
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -53,10 +56,10 @@ class MagicIsset extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__isset', [new ParameterGenerator('name')]);
 
-        $override        = $originalClass->hasMethod('__isset');
+        $parent          = $originalClass->hasMethod('__isset') ? $originalClass->getMethod('__isset') : null;
         $valueHolderName = $valueHolder->getName();
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_ISSET,
@@ -72,15 +75,13 @@ class MagicIsset extends MagicMethodGenerator
                 . "\n} else {\n    $callParent\n}\n\n";
         }
 
-        $this->setBody(
-            InterceptorGenerator::createInterceptedMethodBody(
-                $callParent,
-                $this,
-                $valueHolder,
-                $prefixInterceptors,
-                $suffixInterceptors,
-                $override ? $originalClass->getMethod('__isset') : null
-            )
-        );
+        $this->setBody(InterceptorGenerator::createInterceptedMethodBody(
+            $callParent,
+            $this,
+            $valueHolder,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $parent
+        ));
     }
 }
