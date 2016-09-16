@@ -23,6 +23,8 @@ namespace ProxyManager\Factory;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Version;
 use ReflectionClass;
 
@@ -61,6 +63,9 @@ abstract class AbstractBaseFactory
      * @param mixed[] $proxyOptions
      *
      * @return string proxy class name
+     *
+     * @throws InvalidSignatureException
+     * @throws MissingSignatureException
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
