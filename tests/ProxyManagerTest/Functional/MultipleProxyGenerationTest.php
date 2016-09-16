@@ -38,6 +38,7 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -127,6 +128,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             [EmptyClass::class],
             [HydratedObject::class],
             [ClassWithSelfHint::class],
+            [ClassWithParentHint::class],
             [ClassWithCollidingPrivateInheritedProperties::class],
             [ClassWithMethodWithVariadicFunction::class],
             [ClassWithMethodWithByRefVariadicFunction::class],
