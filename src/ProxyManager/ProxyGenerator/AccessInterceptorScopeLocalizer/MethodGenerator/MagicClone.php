@@ -51,14 +51,12 @@ class MagicClone extends MagicMethodGenerator
             ? $originalClass->getMethod('__clone')
             : null;
 
-        $this->setBody(
-            InterceptorGenerator::createInterceptedMethodBody(
-                $parent ? '$returnValue = parent::__clone();' : '$returnValue = null;',
-                $this,
-                $prefixInterceptors,
-                $suffixInterceptors,
-                $parent
-            )
-        );
+        $this->setBody(InterceptorGenerator::createInterceptedMethodBody(
+            $parent ? '$returnValue = parent::__clone();' : '$returnValue = null;',
+            $this,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $parent
+        ));
     }
 }
