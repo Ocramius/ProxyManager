@@ -58,6 +58,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
     /**
      * {@inheritDoc}
      *
+     * @throws \InvalidArgumentException
      * @throws InvalidProxiedClassException
      * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */

@@ -43,6 +43,8 @@ class Constructor extends MethodGenerator
      * @param PropertyGenerator $valueHolder
      *
      * @return self
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder) : self
     {

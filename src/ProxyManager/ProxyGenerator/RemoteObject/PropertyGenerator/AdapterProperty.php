@@ -34,6 +34,8 @@ class AdapterProperty extends PropertyGenerator
 {
     /**
      * Constructor
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct()
     {
