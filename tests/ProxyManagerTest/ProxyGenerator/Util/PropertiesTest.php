@@ -41,7 +41,7 @@ use ReflectionProperty;
  */
 class PropertiesTest extends PHPUnit_Framework_TestCase
 {
-    public function testGetPublicProperties()
+    public function testGetPublicProperties() : void
     {
         $properties       = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $publicProperties = $properties->getPublicProperties();
@@ -52,14 +52,14 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ReflectionProperty::class, $publicProperties['publicProperty2']);
     }
 
-    public function testGetPublicPropertiesSkipsAbstractMethods()
+    public function testGetPublicPropertiesSkipsAbstractMethods() : void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractPublicMethod::class));
 
         self::assertEmpty($properties->getPublicProperties());
     }
 
-    public function testGetProtectedProperties()
+    public function testGetProtectedProperties() : void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
 
@@ -72,14 +72,14 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty2"]);
     }
 
-    public function testGetProtectedPropertiesSkipsAbstractMethods()
+    public function testGetProtectedPropertiesSkipsAbstractMethods() : void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class));
 
         self::assertEmpty($properties->getProtectedProperties());
     }
 
-    public function testGetPrivateProperties()
+    public function testGetPrivateProperties() : void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
 
@@ -94,7 +94,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'privateProperty2']);
     }
 
-    public function testGetPrivatePropertiesFromInheritance()
+    public function testGetPrivatePropertiesFromInheritance() : void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
@@ -122,7 +122,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ReflectionProperty::class, $privateProperties[$prefix . 'property9']);
     }
 
-    public function testGetAccessibleMethods()
+    public function testGetAccessibleMethods() : void
     {
         $properties           = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $accessibleProperties = $properties->getAccessibleProperties();
@@ -136,7 +136,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ReflectionProperty::class, $accessibleProperties["\0*\0protectedProperty2"]);
     }
 
-    public function testGetGroupedPrivateProperties()
+    public function testGetGroupedPrivateProperties() : void
     {
         $properties     = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $groupedPrivate = $properties->getGroupedPrivateProperties();
@@ -152,7 +152,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ReflectionProperty::class, $group['privateProperty2']);
     }
 
-    public function testGetGroupedPrivatePropertiesWithInheritedProperties()
+    public function testGetGroupedPrivatePropertiesWithInheritedProperties() : void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
@@ -181,7 +181,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertInstanceOf(ReflectionProperty::class, $group2['property9']);
     }
 
-    public function testGetInstanceProperties()
+    public function testGetInstanceProperties() : void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithMixedProperties::class)
@@ -207,7 +207,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
-    public function testSkipOverwritedPropertyUsingInheritance()
+    public function testSkipOverwritedPropertyUsingInheritance() : void
     {
         $propertyName = "\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0";
 
@@ -221,7 +221,7 @@ class PropertiesTest extends PHPUnit_Framework_TestCase
         self::assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
-    public function testPropertiesIsSkippedFromRelatedMethods()
+    public function testPropertiesIsSkippedFromRelatedMethods() : void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithMixedProperties::class)

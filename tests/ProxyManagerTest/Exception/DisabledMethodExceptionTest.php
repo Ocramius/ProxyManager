@@ -37,7 +37,7 @@ class DisabledMethodExceptionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Exception\DisabledMethodException::disabledMethod
      */
-    public function testProxyDirectoryNotFound()
+    public function testProxyDirectoryNotFound() : void
     {
         $exception = DisabledMethodException::disabledMethod('foo::bar');
 

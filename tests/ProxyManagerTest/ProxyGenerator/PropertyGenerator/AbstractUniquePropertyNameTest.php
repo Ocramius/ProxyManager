@@ -36,7 +36,7 @@ abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that a given property name is unique across two different instantiations of the property
      */
-    public function testUniqueProperty()
+    public function testUniqueProperty() : void
     {
         $property1 = $this->createProperty();
         $property2 = $this->createProperty();

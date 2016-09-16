@@ -238,7 +238,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that accessing a public property containing an array behaves like in a normal context
      */
-    public function testCanWriteToArrayKeysInPublicProperty()
+    public function testCanWriteToArrayKeysInPublicProperty() : void
     {
         $instance    = new ClassWithPublicArrayProperty();
         $className   = get_class($instance);
@@ -259,7 +259,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that public properties retrieved via `__get` don't get modified in the object itself
      */
-    public function testWillNotModifyRetrievedPublicProperties()
+    public function testWillNotModifyRetrievedPublicProperties() : void
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
@@ -280,7 +280,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that public properties references retrieved via `__get` modify in the object state
      */
-    public function testWillModifyByRefRetrievedPublicProperties()
+    public function testWillModifyByRefRetrievedPublicProperties() : void
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
@@ -303,7 +303,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * Verifies that initialization of a value holder proxy may happen multiple times
      */
-    public function testWillAllowMultipleProxyInitialization()
+    public function testWillAllowMultipleProxyInitialization() : void
     {
         $proxyClass  = $this->generateProxy(BaseClass::class);
         $counter     = 0;
@@ -324,7 +324,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      * @group 115
      * @group 175
      */
-    public function testWillBehaveLikeObjectWithNormalConstructor()
+    public function testWillBehaveLikeObjectWithNormalConstructor() : void
     {
         $instance = new ClassWithCounterConstructor(10);
 
@@ -349,7 +349,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @group 265
      */
-    public function testWillForwardVariadicByRefArguments()
+    public function testWillForwardVariadicByRefArguments() : void
     {
         $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
         /* @var $object ClassWithMethodWithByRefVariadicFunction */
@@ -371,7 +371,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @group 265
      */
-    public function testWillNotForwardDynamicArguments()
+    public function testWillNotForwardDynamicArguments() : void
     {
         $proxyName = $this->generateProxy(ClassWithDynamicArgumentsMethod::class);
 

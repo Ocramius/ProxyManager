@@ -56,7 +56,7 @@ class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
         $this->classSignatureGenerator = new ClassSignatureGenerator($this->signatureGenerator);
     }
 
-    public function testAddSignature()
+    public function testAddSignature() : void
     {
         /* @var $classGenerator \PHPUnit_Framework_MockObject_MockObject|ClassGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);

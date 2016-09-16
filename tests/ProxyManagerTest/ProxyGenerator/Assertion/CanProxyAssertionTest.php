@@ -58,14 +58,14 @@ use ReflectionClass;
  */
 class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 {
-    public function testDeniesFinalClasses()
+    public function testDeniesFinalClasses() : void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(FinalClass::class));
     }
 
-    public function testDeniesClassesWithAbstractProtectedMethods()
+    public function testDeniesClassesWithAbstractProtectedMethods() : void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
@@ -74,7 +74,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         ));
     }
 
-    public function testAllowsInterfaceByDefault()
+    public function testAllowsInterfaceByDefault() : void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
             BaseInterface::class
@@ -83,7 +83,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
-    public function testDeniesInterfaceIfSpecified()
+    public function testDeniesInterfaceIfSpecified() : void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseClass::class), false);
 
@@ -104,7 +104,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
-    public function testDisallowsConstructor()
+    public function testDisallowsConstructor() : void
     {
         $this->expectException(BadMethodCallException::class);
 

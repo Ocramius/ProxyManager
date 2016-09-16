@@ -40,7 +40,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class ConstructorTest extends PHPUnit_Framework_TestCase
 {
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
@@ -70,7 +70,7 @@ unset($this->bar, $this->baz);
         );
     }
 
-    public function testBodyStructureWithoutPublicProperties()
+    public function testBodyStructureWithoutPublicProperties() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
@@ -95,7 +95,7 @@ if (! $this->foo) {
         );
     }
 
-    public function testBodyStructureWithStaticProperties()
+    public function testBodyStructureWithStaticProperties() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
@@ -124,7 +124,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
         self::assertSame($expectedCode, $constructor->getBody());
     }
 
-    public function testBodyStructureWithVariadicArguments()
+    public function testBodyStructureWithVariadicArguments() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);

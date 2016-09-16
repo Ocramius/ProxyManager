@@ -57,7 +57,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getProxiesNamespace
      * @covers \ProxyManager\Configuration::setProxiesNamespace
      */
-    public function testGetSetProxiesNamespace()
+    public function testGetSetProxiesNamespace() : void
     {
         self::assertSame(
             'ProxyManagerGeneratedProxy',
@@ -73,7 +73,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getClassNameInflector
      * @covers \ProxyManager\Configuration::setClassNameInflector
      */
-    public function testSetGetClassNameInflector()
+    public function testSetGetClassNameInflector() : void
     {
         self::assertInstanceOf(ClassNameInflectorInterface::class, $this->configuration->getClassNameInflector());
 
@@ -87,7 +87,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Configuration::getGeneratorStrategy
      */
-    public function testDefaultGeneratorStrategyNeedToBeAInstanceOfEvaluatingGeneratorStrategy()
+    public function testDefaultGeneratorStrategyNeedToBeAInstanceOfEvaluatingGeneratorStrategy() : void
     {
         self::assertInstanceOf(EvaluatingGeneratorStrategy::class, $this->configuration->getGeneratorStrategy());
     }
@@ -96,7 +96,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getGeneratorStrategy
      * @covers \ProxyManager\Configuration::setGeneratorStrategy
      */
-    public function testSetGetGeneratorStrategy()
+    public function testSetGetGeneratorStrategy() : void
     {
 
         self::assertInstanceOf(GeneratorStrategyInterface::class, $this->configuration->getGeneratorStrategy());
@@ -112,7 +112,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getProxiesTargetDir
      * @covers \ProxyManager\Configuration::setProxiesTargetDir
      */
-    public function testSetGetProxiesTargetDir()
+    public function testSetGetProxiesTargetDir() : void
     {
         self::assertTrue(is_dir($this->configuration->getProxiesTargetDir()));
 
@@ -124,7 +124,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getProxyAutoloader
      * @covers \ProxyManager\Configuration::setProxyAutoloader
      */
-    public function testSetGetProxyAutoloader()
+    public function testSetGetProxyAutoloader() : void
     {
         self::assertInstanceOf(AutoloaderInterface::class, $this->configuration->getProxyAutoloader());
 
@@ -139,7 +139,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getSignatureGenerator
      * @covers \ProxyManager\Configuration::setSignatureGenerator
      */
-    public function testSetGetSignatureGenerator()
+    public function testSetGetSignatureGenerator() : void
     {
         self::assertInstanceOf(SignatureGeneratorInterface::class, $this->configuration->getSignatureGenerator());
 
@@ -154,7 +154,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getSignatureChecker
      * @covers \ProxyManager\Configuration::setSignatureChecker
      */
-    public function testSetGetSignatureChecker()
+    public function testSetGetSignatureChecker() : void
     {
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
 
@@ -169,7 +169,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Configuration::getClassSignatureGenerator
      * @covers \ProxyManager\Configuration::setClassSignatureGenerator
      */
-    public function testSetGetClassSignatureGenerator()
+    public function testSetGetClassSignatureGenerator() : void
     {
         self::assertInstanceOf(
             ClassSignatureGeneratorInterface::class,

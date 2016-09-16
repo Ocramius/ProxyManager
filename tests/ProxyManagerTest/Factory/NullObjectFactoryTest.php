@@ -99,7 +99,7 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Factory\NullObjectFactory::createProxy
      * @covers \ProxyManager\Factory\NullObjectFactory::getGenerator
      */
-    public function testWillSkipAutoGeneration()
+    public function testWillSkipAutoGeneration() : void
     {
         $instance = new stdClass();
 
@@ -126,7 +126,7 @@ class NullObjectFactoryTest extends PHPUnit_Framework_TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration()
+    public function testWillTryAutoGeneration() : void
     {
         $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');

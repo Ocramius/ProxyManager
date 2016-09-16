@@ -37,7 +37,7 @@ class InvalidProxyDirectoryExceptionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Exception\InvalidProxyDirectoryException::proxyDirectoryNotFound
      */
-    public function testProxyDirectoryNotFound()
+    public function testProxyDirectoryNotFound() : void
     {
         $exception = InvalidProxyDirectoryException::proxyDirectoryNotFound('foo/bar');
 

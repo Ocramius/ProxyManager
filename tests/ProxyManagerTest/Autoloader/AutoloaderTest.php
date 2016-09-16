@@ -65,7 +65,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillNotAutoloadUserClasses()
+    public function testWillNotAutoloadUserClasses() : void
     {
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
@@ -81,7 +81,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillNotAutoloadNonExistingClass()
+    public function testWillNotAutoloadNonExistingClass() : void
     {
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
@@ -102,7 +102,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillNotAutoloadExistingClass()
+    public function testWillNotAutoloadExistingClass() : void
     {
         self::assertFalse($this->autoloader->__invoke(__CLASS__));
     }
@@ -110,7 +110,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillAutoloadExistingFile()
+    public function testWillAutoloadExistingFile() : void
     {
         $namespace = 'Foo';
         $className = UniqueIdentifierGenerator::getIdentifier('Bar');

@@ -35,7 +35,7 @@ use ReflectionClass;
  */
 class MissingSignatureExceptionTest extends PHPUnit_Framework_TestCase
 {
-    public function testFromMissingSignature()
+    public function testFromMissingSignature() : void
     {
         $exception = MissingSignatureException::fromMissingSignature(
             new ReflectionClass(__CLASS__),

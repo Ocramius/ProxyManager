@@ -275,7 +275,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that accessing a public property containing an array behaves like in a normal context
      */
-    public function testCanWriteToArrayKeysInPublicProperty()
+    public function testCanWriteToArrayKeysInPublicProperty() : void
     {
         $instance    = new ClassWithPublicArrayProperty();
         $className   = get_class($instance);
@@ -296,7 +296,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that public properties retrieved via `__get` don't get modified in the object itself
      */
-    public function testWillNotModifyRetrievedPublicProperties()
+    public function testWillNotModifyRetrievedPublicProperties() : void
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
@@ -317,7 +317,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that public properties references retrieved via `__get` modify in the object state
      */
-    public function testWillModifyByRefRetrievedPublicProperties()
+    public function testWillModifyByRefRetrievedPublicProperties() : void
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
@@ -335,7 +335,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame('foo', $variable);
     }
 
-    public function testKeepsInitializerWhenNotOverwitten()
+    public function testKeepsInitializerWhenNotOverwitten() : void
     {
         $instance    = new BaseClass();
         $proxyName   = $this->generateProxy(get_class($instance));
@@ -352,7 +352,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that public properties are not being initialized multiple times
      */
-    public function testKeepsInitializedPublicProperties()
+    public function testKeepsInitializedPublicProperties() : void
     {
         $instance    = new BaseClass();
         $proxyName   = $this->generateProxy(get_class($instance));
@@ -376,7 +376,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that properties' default values are preserved
      */
-    public function testPublicPropertyDefaultWillBePreserved()
+    public function testPublicPropertyDefaultWillBePreserved() : void
     {
         $instance    = new ClassWithPublicProperties();
         $proxyName   = $this->generateProxy(get_class($instance));
@@ -390,7 +390,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that protected properties' default values are preserved
      */
-    public function testProtectedPropertyDefaultWillBePreserved()
+    public function testProtectedPropertyDefaultWillBePreserved() : void
     {
         $instance    = new ClassWithProtectedProperties();
         $proxyName   = $this->generateProxy(get_class($instance));
@@ -408,7 +408,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * Verifies that private properties' default values are preserved
      */
-    public function testPrivatePropertyDefaultWillBePreserved()
+    public function testPrivatePropertyDefaultWillBePreserved() : void
     {
         $instance  = new ClassWithPrivateProperties();
         $proxyName = $this->generateProxy(get_class($instance));
@@ -427,7 +427,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @group 159
      * @group 192
      */
-    public function testMultiLevelPrivatePropertiesDefaultsWillBePreserved()
+    public function testMultiLevelPrivatePropertiesDefaultsWillBePreserved() : void
     {
         $instance  = new ClassWithCollidingPrivateInheritedProperties();
         $proxyName = $this->generateProxy(ClassWithCollidingPrivateInheritedProperties::class);
@@ -449,7 +449,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @group 159
      * @group 192
      */
-    public function testMultiLevelPrivatePropertiesByRefInitialization()
+    public function testMultiLevelPrivatePropertiesByRefInitialization() : void
     {
         $class     = ClassWithCollidingPrivateInheritedProperties::class;
         $proxyName = $this->generateProxy($class);
@@ -479,7 +479,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * Test designed to verify that the cached logic does take into account the fact that
      * proxies are different instances
      */
-    public function testGetPropertyFromDifferentProxyInstances()
+    public function testGetPropertyFromDifferentProxyInstances() : void
     {
         $class     = ClassWithCollidingPrivateInheritedProperties::class;
         $proxyName = $this->generateProxy($class);
@@ -521,7 +521,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * Test designed to verify that the cached logic does take into account the fact that
      * proxies are different instances
      */
-    public function testSetPrivatePropertyOnDifferentProxyInstances()
+    public function testSetPrivatePropertyOnDifferentProxyInstances() : void
     {
         $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
         $proxyName = $this->generateProxy($class);
@@ -552,7 +552,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * Test designed to verify that the cached logic does take into account the fact that
      * proxies are different instances
      */
-    public function testIssetPrivatePropertyOnDifferentProxyInstances()
+    public function testIssetPrivatePropertyOnDifferentProxyInstances() : void
     {
         $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
         $proxyName = $this->generateProxy($class);
@@ -584,7 +584,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * Test designed to verify that the cached logic does take into account the fact that
      * proxies are different instances
      */
-    public function testUnsetPrivatePropertyOnDifferentProxyInstances()
+    public function testUnsetPrivatePropertyOnDifferentProxyInstances() : void
     {
         $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
         $proxyName = $this->generateProxy($class);
@@ -618,7 +618,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * Test designed to verify that the cached logic does take into account the fact that
      * proxies are different instances
      */
-    public function testIssetPrivateAndProtectedPropertiesDoesCheckAgainstBooleanFalse()
+    public function testIssetPrivateAndProtectedPropertiesDoesCheckAgainstBooleanFalse() : void
     {
         $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
         $proxyName = $this->generateProxy($class);
@@ -651,7 +651,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertFalse($proxy2->has('privateProperty'));
     }
 
-    public function testByRefInitialization()
+    public function testByRefInitialization() : void
     {
         $proxyName = $this->generateProxy(ClassWithMixedProperties::class);
         /* @var $proxy ClassWithPrivateProperties */
@@ -683,7 +683,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @group 115
      * @group 175
      */
-    public function testWillBehaveLikeObjectWithNormalConstructor()
+    public function testWillBehaveLikeObjectWithNormalConstructor() : void
     {
         $instance = new ClassWithCounterConstructor(10);
 
@@ -705,7 +705,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
-    public function testInitializeProxyWillReturnTrueOnSuccessfulInitialization()
+    public function testInitializeProxyWillReturnTrueOnSuccessfulInitialization() : void
     {
         $proxyName = $this->generateProxy(ClassWithMixedProperties::class);
 
@@ -1002,7 +1002,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @group 265
      */
-    public function testWillForwardVariadicByRefArguments()
+    public function testWillForwardVariadicByRefArguments() : void
     {
         $proxyName   = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
         /* @var $object ClassWithMethodWithByRefVariadicFunction */
@@ -1023,7 +1023,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @group 265
      */
-    public function testWillForwardDynamicArguments()
+    public function testWillForwardDynamicArguments() : void
     {
         $proxyName   = $this->generateProxy(ClassWithDynamicArgumentsMethod::class);
         /* @var $object ClassWithDynamicArgumentsMethod */
@@ -1254,7 +1254,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
     /**
      * @group 276
      */
-    public function testFriendObjectWillNotCauseLazyLoadingOnSkippedProperty()
+    public function testFriendObjectWillNotCauseLazyLoadingOnSkippedProperty() : void
     {
         $proxyName = $this->generateProxy(
             OtherObjectAccessClass::class,
@@ -1295,7 +1295,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame($publicPropertyValue, $friendObject->getPublicProperty($proxy));
     }
 
-    public function testClonedSkippedPropertiesArePreserved()
+    public function testClonedSkippedPropertiesArePreserved() : void
     {
 
         $proxyName = $this->generateProxy(

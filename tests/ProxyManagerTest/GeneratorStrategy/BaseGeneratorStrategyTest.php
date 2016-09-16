@@ -38,7 +38,7 @@ class BaseGeneratorStrategyTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
      */
-    public function testGenerate()
+    public function testGenerate() : void
     {
         $strategy       = new BaseGeneratorStrategy();
         $className      = UniqueIdentifierGenerator::getIdentifier('Foo');

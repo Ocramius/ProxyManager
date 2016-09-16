@@ -37,7 +37,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 {
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->createMock(PropertyGenerator::class);

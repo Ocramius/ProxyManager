@@ -34,7 +34,7 @@ use ProxyManager\Exception\FileNotWritableException;
  */
 class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
 {
-    public function testFromInvalidMoveOperation()
+    public function testFromInvalidMoveOperation() : void
     {
         $exception = FileNotWritableException::fromInvalidMoveOperation('/tmp/a', '/tmp/b');
 
@@ -46,7 +46,7 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFromNotWritableLocationWithNonFilePath()
+    public function testFromNotWritableLocationWithNonFilePath() : void
     {
         $exception = FileNotWritableException::fromNonWritableLocation(__DIR__);
 
@@ -57,7 +57,7 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFromNotWritableLocationWithNonWritablePath()
+    public function testFromNotWritableLocationWithNonWritablePath() : void
     {
         $path = sys_get_temp_dir() . '/' . uniqid('FileNotWritableExceptionTestNonWritable', true);
 
@@ -72,7 +72,7 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFromNonExistingPath()
+    public function testFromNonExistingPath() : void
     {
         $path = sys_get_temp_dir() . '/' . uniqid('FileNotWritableExceptionTestNonWritable', true);
 

@@ -96,7 +96,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
      */
-    public function testWithOptionalFactory()
+    public function testWithOptionalFactory() : void
     {
         $factory = new LazyLoadingGhostFactory();
         self::assertAttributeNotEmpty('configuration', $factory);
@@ -109,7 +109,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::createProxy
      */
-    public function testWillSkipAutoGeneration()
+    public function testWillSkipAutoGeneration() : void
     {
         $className = UniqueIdentifierGenerator::getIdentifier('foo');
 
@@ -139,7 +139,7 @@ class LazyLoadingGhostFactoryTest extends PHPUnit_Framework_TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration()
+    public function testWillTryAutoGeneration() : void
     {
         $className      = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');

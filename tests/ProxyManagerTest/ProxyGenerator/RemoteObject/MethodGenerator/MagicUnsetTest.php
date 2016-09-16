@@ -39,7 +39,7 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicUnset::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection   = new ReflectionClass(EmptyClass::class);
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

@@ -22,6 +22,7 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGen
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
@@ -38,7 +39,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
 {
-    public function testInterceptorGenerator()
+    public function testInterceptorGenerator() : void
     {
         /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $method             = $this->createMock(MethodGenerator::class);
@@ -100,7 +101,7 @@ PHP;
         );
     }
 
-    public function testInterceptorGeneratorWithVoidMethod()
+    public function testInterceptorGeneratorWithVoidMethod() : void
     {
         /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $method             = $this->createMock(MethodGenerator::class);
@@ -162,7 +163,7 @@ PHP;
         );
     }
 
-    public function testInterceptorGeneratorWithNonVoidOriginalMethod()
+    public function testInterceptorGeneratorWithNonVoidOriginalMethod() : void
     {
         /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $method             = $this->createMock(MethodGenerator::class);
@@ -219,7 +220,7 @@ PHP;
                 $valueHolder,
                 $prefixInterceptors,
                 $suffixInterceptors,
-                new \ReflectionMethod(self::class, 'testInterceptorGeneratorWithNonVoidOriginalMethod')
+                new \ReflectionMethod(BaseClass::class, 'publicMethod')
             )
         );
     }

@@ -37,7 +37,7 @@ class SetMethodPrefixInterceptorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $suffix PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $suffix = $this->createMock(PropertyGenerator::class);

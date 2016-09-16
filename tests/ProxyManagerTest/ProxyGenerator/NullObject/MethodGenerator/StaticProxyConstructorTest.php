@@ -37,7 +37,7 @@ use ReflectionClass;
  */
 class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 {
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(ClassWithMixedProperties::class)
@@ -60,7 +60,7 @@ return $instance;',
         );
     }
 
-    public function testBodyStructureWithoutPublicProperties()
+    public function testBodyStructureWithoutPublicProperties() : void
     {
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(ClassWithPrivateProperties::class)

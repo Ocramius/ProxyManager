@@ -40,7 +40,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection         = new ReflectionClass(EmptyClass::class);
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

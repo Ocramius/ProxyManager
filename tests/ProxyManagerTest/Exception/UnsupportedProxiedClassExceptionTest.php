@@ -39,7 +39,7 @@ class UnsupportedProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Exception\UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty
      */
-    public function testUnsupportedLocalizedReflectionProperty()
+    public function testUnsupportedLocalizedReflectionProperty() : void
     {
         self::assertSame(
             'Provided reflection property "property0" of class "' . ClassWithPrivateProperties::class

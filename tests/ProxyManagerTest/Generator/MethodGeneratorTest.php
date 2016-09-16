@@ -42,7 +42,7 @@ use Zend\Code\Reflection\MethodReflection;
  */
 class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 {
-    public function testGenerateSimpleMethod()
+    public function testGenerateSimpleMethod() : void
     {
         $methodGenerator = new MethodGenerator();
 
@@ -62,7 +62,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * Verify that building from reflection works
      */
-    public function testGenerateFromReflection()
+    public function testGenerateFromReflection() : void
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(__CLASS__, __FUNCTION__));
 
@@ -80,7 +80,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         self::assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
 
-    public function testGeneratedParametersFromReflection()
+    public function testGeneratedParametersFromReflection() : void
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(
             BaseClass::class,
@@ -132,7 +132,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testGenerateMethodWithVoidReturnTypeHinting()
+    public function testGenerateMethodWithVoidReturnTypeHinting() : void
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(
             VoidMethodTypeHintedInterface::class,

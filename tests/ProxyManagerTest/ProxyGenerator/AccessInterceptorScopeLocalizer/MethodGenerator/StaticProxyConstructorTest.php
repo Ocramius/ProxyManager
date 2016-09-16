@@ -60,7 +60,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         $this->suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
     }
 
-    public function testSignature()
+    public function testSignature() : void
     {
         $method = new StaticProxyConstructor(
             new ReflectionClass(ClassWithProtectedProperties::class),
@@ -81,7 +81,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         self::assertSame('array', $parameters['suffixInterceptors']->getType());
     }
 
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $method = new StaticProxyConstructor(
             new ReflectionClass(ClassWithPublicProperties::class),
