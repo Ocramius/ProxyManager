@@ -33,9 +33,11 @@ use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
+use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ReflectionClass;
 use stdClass;
@@ -457,6 +459,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     public function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
+        $empty         = new EmptyClass();
 
         return [
             [
@@ -493,6 +496,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
                 $selfHintParam
+            ],
+            [
+                ClassWithParentHint::class,
+                new ClassWithParentHint(),
+                'parentHintMethod',
+                ['parameter' => $empty],
+                $empty
             ],
         ];
     }
