@@ -22,6 +22,7 @@ namespace ProxyManagerTest\Generator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
@@ -127,5 +128,16 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
             ['acceptBoolean', 'bool'],
             ['acceptFloat', 'float'],
         ];
+    }
+
+    public function testGenerateMethodWithVoidReturnTypeHinting()
+    {
+        $method = MethodGenerator::fromReflection(new MethodReflection(
+            VoidMethodTypeHintedInterface::class,
+            'returnVoid'
+        ));
+
+        self::assertSame('returnVoid', $method->getName());
+        self::assertStringMatchesFormat('%a : void%a', $method->generate());
     }
 }
