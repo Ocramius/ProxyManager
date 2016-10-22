@@ -32,6 +32,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
+use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -504,6 +505,13 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 'tuz',
                 ['Ocramius', 'Malukenho'],
                 ['Ocramius', 'changed']
+            ],
+            [
+                ClassWithMagicMethods::class,
+                new ClassWithMagicMethods(),
+                '__get',
+                ['parameterName'],
+                'parameterName',
             ]
         ];
     }
