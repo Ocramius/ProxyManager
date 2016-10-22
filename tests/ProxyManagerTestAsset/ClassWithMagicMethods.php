@@ -65,6 +65,7 @@ class ClassWithMagicMethods
      */
     public function __sleep()
     {
+        return [];
     }
 
     /**
