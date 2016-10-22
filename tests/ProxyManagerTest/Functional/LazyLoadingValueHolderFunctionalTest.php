@@ -546,7 +546,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 ClassWithMagicMethodsWeirdlyTypeHinted::class,
                 new ClassWithMagicMethodsWeirdlyTypeHinted(),
                 '__get',
-                ['It needs to be a string, `__get` type hint should convert it to integer' => '111'],
+                [111],
                 111,
             ],
         ];

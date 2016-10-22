@@ -64,7 +64,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
         self::assertSame('__get', $magicGet->getName());
         self::assertCount(1, $magicGet->getParameters());
         self::assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__get', array('name' => \$name)"
+            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__get', ['name' => \$name]"
             . ", \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return \$this->bar->\$name;\n}"
             . '%areturn %s;',
@@ -102,7 +102,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
         self::assertCount(1, $magicGet->getParameters());
 
         self::assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__get', array('name' => \$name)"
+            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__get', ['name' => \$name]"
             . ", \$this->foo);\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return \$this->bar->\$name;\n}\n\n"
             . 'return $this->bar->__get($name);',

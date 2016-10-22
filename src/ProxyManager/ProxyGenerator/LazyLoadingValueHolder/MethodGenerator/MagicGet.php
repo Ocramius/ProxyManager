@@ -64,7 +64,7 @@ class MagicGet extends MagicMethodGenerator
 
             $parameter = $originalClass->getMethod('__get')->getParameters()[0];
 
-            $parameterType = $parameter->getType() ?: 'string';
+            $parameterType = $parameter->hasType() ? $parameter->getType() : null;
 
             parent::__construct($originalClass, '__get', [new ParameterGenerator('name', $parameterType)]);
 
