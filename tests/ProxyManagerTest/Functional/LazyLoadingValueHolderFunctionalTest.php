@@ -512,7 +512,14 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 '__get',
                 ['parameterName'],
                 'parameterName',
-            ]
+            ],
+            [
+                ClassWithMagicMethods::class,
+                new ClassWithMagicMethods(),
+                '__set',
+                ['foo', 'bar'],
+                ['foo' => 'bar'],
+            ],
         ];
     }
 
