@@ -52,8 +52,6 @@ class MagicGet extends MagicMethodGenerator
         PropertyGenerator $valueHolderProperty,
         PublicPropertiesMap $publicProperties
     ) {
-        parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
-
         $hasParent = $originalClass->hasMethod('__get');
 
         $initializer = $initializerProperty->getName();
@@ -67,9 +65,10 @@ class MagicGet extends MagicMethodGenerator
             $parameter = $originalClass->getMethod('__get')->getParameters()[0];
 
             $parameterType = $parameter->getType() ?: 'string';
-            $parameterName = $parameter->getName() ?: 'name';
 
-            $this->setDocBlock(($hasParent ? "{@inheritDoc}\n" : '') . '@param ' . $parameterType . ' $' . $parameterName);
+            parent::__construct($originalClass, '__get', [new ParameterGenerator('name', $parameterType)]);
+
+            $this->setDocBlock(($hasParent ? "{@inheritDoc}\n" : '') . '@param ' . $parameterType . ' $name');
 
             $this->setInitializerBody(
                 $initializer,
@@ -79,6 +78,8 @@ class MagicGet extends MagicMethodGenerator
 
             return;
         }
+
+        parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
         $this->setDocBlock(($hasParent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
