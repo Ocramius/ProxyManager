@@ -106,7 +106,7 @@ class MagicGet extends MagicMethodGenerator
     {
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__get\', array(\'name\' => $name), $this->'
+            . '->__invoke($this->' . $valueHolder . ', $this, \'__get\', [\'name\' => $name], $this->'
             . $initializer . ');'
             . "\n\n" . $callParent
         );
