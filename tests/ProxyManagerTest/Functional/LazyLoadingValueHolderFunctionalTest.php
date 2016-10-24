@@ -33,7 +33,6 @@ use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
-use ProxyManagerTestAsset\ClassWithMagicMethodsWeirdlyTypeHinted;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -541,13 +540,6 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
                 '__unset',
                 ['example'],
                 true,
-            ],
-            [
-                ClassWithMagicMethodsWeirdlyTypeHinted::class,
-                new ClassWithMagicMethodsWeirdlyTypeHinted(),
-                '__get',
-                [111],
-                111,
             ],
         ];
     }
