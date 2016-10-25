@@ -4,6 +4,15 @@ title: Changelog
 
 This is a list of changes/improvements that were introduced in ProxyManager
 
+## 2.0.4
+
+### Fixed
+
+- Remove deprecated `getMock` usage from tests [#325](https://github.com/Ocramius/ProxyManager/pull/325)
+- Fix incorrect type in docs example [#329](https://github.com/Ocramius/ProxyManager/pull/329)
+- Bug when proxy `__get` magic method [#344](https://github.com/Ocramius/ProxyManager/pull/344)
+- Fix lazy loading value holder magic method support [#345](https://github.com/Ocramius/ProxyManager/pull/345)
+
 ## 2.0.3
 
 ### Fixed
