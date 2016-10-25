@@ -9,6 +9,7 @@ if [ "$TRAVIS_PHP_VERSION" = 'hhvm' ] ; then
     fi
 else
     composer self-update
+    composer clear-cache
     composer update --prefer-source
 
     if [ "$DEPENDENCIES" = 'low' ] ; then
