@@ -114,20 +114,20 @@ The initializer closure signature should be as following:
  *                             set it to your real object
  * @var object  $proxy         the instance proxy that is being initialized
  * @var string  $method        the name of the method that triggered lazy initialization
- * @var string  $parameters    an ordered list of parameters passed to the method that
+ * @var array   $parameters    an ordered list of parameters passed to the method that
  *                             triggered initialization, indexed by parameter name
  * @var Closure $initializer   a reference to the property that is the initializer for the
  *                             proxy. Set it to null to disable further initialization
  *
  * @return bool true on success
  */
-$initializer = function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {};
+$initializer = function (& $wrappedObject, $proxy, $method, array $parameters, & $initializer) {};
 ```
 
 The initializer closure should usually be coded like following:
 
 ```php
-$initializer = function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
+$initializer = function (& $wrappedObject, $proxy, $method, array $parameters, & $initializer) {
     $newlyCreatedObject = new Foo(); // instantiation logic
     $newlyCreatedObject->setBar('baz') // instantiation logic
     $newlyCreatedObject->setBat('bam') // instantiation logic

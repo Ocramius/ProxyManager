@@ -222,7 +222,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 $factory     = new LazyLoadingGhostFactory();
 $initializer = function (
     GhostObjectInterface $ghostObject,
-    string $method, array
+    string $method,
     array $parameters,
     & $initializer,
     array $properties

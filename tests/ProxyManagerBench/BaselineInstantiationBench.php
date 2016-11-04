@@ -18,67 +18,44 @@
 
 declare(strict_types=1);
 
-namespace ProxyManagerTestAsset;
+namespace ProxyManagerBench\Functional;
+
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\EmptyClass;
 
 /**
- * Base test class to play around with pre-existing magic methods
+ * Benchmark that provides baseline results for simple object instantiation
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMagicMethods
+class BaselineInstantiationBench
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function __set($name, $value)
+    public function benchInstantiationOfEmptyObject()
     {
-        return [$name => $value];
+        new EmptyClass();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __get($name)
+    public function benchInstantiationOfObjectWithPrivateProperties()
     {
-        return $name;
+        new ClassWithPrivateProperties();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __isset($name)
+    public function benchInstantiationOfObjectWithProtectedProperties()
     {
-        return (bool) $name;
+        new ClassWithProtectedProperties();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __unset($name)
+    public function benchInstantiationOfObjectWithPublicProperties()
     {
-        return (bool) $name;
+        new ClassWithPublicProperties();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __sleep()
+    public function benchInstantiationOfObjectWithMixedProperties()
     {
-        return [];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __wakeup()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __clone()
-    {
+        new ClassWithMixedProperties();
     }
 }
