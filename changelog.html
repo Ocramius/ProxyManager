@@ -76,8 +76,16 @@
 <div class="content">
     
         <p>This is a list of changes/improvements that were introduced in ProxyManager</p>
-<h2 id="203">2.0.3</h2>
+<h2 id="204">2.0.4</h2>
 <h3 id="fixed">Fixed</h3>
+<ul>
+<li>Remove deprecated <code>getMock</code> usage from tests <a href="https://github.com/Ocramius/ProxyManager/pull/325">#325</a></li>
+<li>Fix incorrect type in docs example <a href="https://github.com/Ocramius/ProxyManager/pull/329">#329</a></li>
+<li>Bug when proxy <code>__get</code> magic method <a href="https://github.com/Ocramius/ProxyManager/pull/344">#344</a></li>
+<li>Fix lazy loading value holder magic method support <a href="https://github.com/Ocramius/ProxyManager/pull/345">#345</a></li>
+</ul>
+<h2 id="203">2.0.3</h2>
+<h3 id="fixed-1">Fixed</h3>
 <ul>
 <li>Various test suite cleanups, mostly because of
 <a href="https://github.com/sebastianbergmann/phpunit/wiki/Release-Announcement-for-PHPUnit-5.4.0">new PHPUnit 5.4.0 deprecations being introduced</a>
@@ -89,7 +97,7 @@ a critical bug was introduced in it <a href="https://github.com/Ocramius/ProxyMa
 <code>zendframework/zend-code:3.0.4</code> or newer.</li>
 </ul>
 <h2 id="202">2.0.2</h2>
-<h3 id="fixed-1">Fixed</h3>
+<h3 id="fixed-2">Fixed</h3>
 <ul>
 <li>Various optimizations were performed in the <a href="https://github.com/Ocramius/PackageVersions"><code>ocramius/package-versions</code></a>
 integration in order to prevent &quot;class not found&quot; fatals. <a href="https://github.com/Ocramius/ProxyManager/issues/294">#294</a></li>
@@ -112,7 +120,7 @@ name within this library, running ProxyManager on PHP 7.0.7 would have caused a 
 performed in the library internals. <a href="https://github.com/Ocramius/ProxyManager/issues/308">#308</a></li>
 </ul>
 <h2 id="201">2.0.1</h2>
-<h3 id="fixed-2">Fixed</h3>
+<h3 id="fixed-3">Fixed</h3>
 <ul>
 <li>Travis-CI environment was fixed to test the library using the minimum dependencies version.</li>
 </ul>
