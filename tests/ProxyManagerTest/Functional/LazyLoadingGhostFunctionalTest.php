@@ -46,6 +46,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use ReflectionProperty;
 use stdClass;
@@ -1341,5 +1342,32 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         self::assertSame($protectedValue, $reflectionProtected->getValue($clone));
         self::assertSame($publicValue, $proxy->publicProperty);
         self::assertSame($publicValue, $clone->publicProperty);
+    }
+
+    /**
+     * @group 327
+     */
+    public function testWillExecuteLogicInAVoidMethod() : void
+    {
+        $proxyName = $this->generateProxy(VoidCounter::class);
+
+        $initialCounter = random_int(10, 1000);
+
+        /* @var $proxy VoidCounter|LazyLoadingInterface */
+        $proxy = $proxyName::staticProxyConstructor(
+            function (VoidCounter $proxy, $method, $params, & $initializer, array $props) use ($initialCounter) : bool {
+                $initializer = null;
+
+                $props['counter'] = $initialCounter;
+
+                return true;
+            }
+        );
+
+        $increment = random_int(1001, 10000);
+
+        $proxy->increment($increment);
+
+        self::assertSame($initialCounter + $increment, $proxy->counter);
     }
 }
