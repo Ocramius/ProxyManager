@@ -33,6 +33,7 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use Zend\Server\Client;
 
@@ -314,6 +315,30 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         $accessor = [$callerObject, $method];
 
         self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    /**
+     * @group 327
+     */
+    public function testWillExecuteLogicInAVoidMethod() : void
+    {
+        $proxyName = $this->generateProxy(VoidCounter::class);
+
+        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $adapter = $this->createMock(AdapterInterface::class);
+
+        $increment = random_int(10, 1000);
+
+        $adapter
+            ->expects(self::once())
+            ->method('call')
+            ->with(VoidCounter::class, 'increment', [$increment])
+            ->willReturn(random_int(10, 1000));
+
+        /* @var $proxy VoidCounter */
+        $proxy = clone $proxyName::staticProxyConstructor($adapter);
+
+        $proxy->increment($increment);
     }
 
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
