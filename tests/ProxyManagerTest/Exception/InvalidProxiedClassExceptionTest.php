@@ -24,6 +24,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
+use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithProtectedMethod;
 use ProxyManagerTestAsset\FinalClass;
 use ReflectionClass;
@@ -78,6 +79,17 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
             . ' methods, and therefore cannot be proxied:' . "\n",
             InvalidProxiedClassException::abstractProtectedMethodsNotSupported(
                 new ReflectionClass(ClassWithProtectedMethod::class)
+            )->getMessage()
+        );
+    }
+
+    public function testAbstractPublicMethodsNotSupported() : void
+    {
+        self::assertSame(
+            'Provided class "ProxyManagerTestAsset\ClassWithAbstractPublicMethod" has following protected abstract'
+            . ' methods, and therefore cannot be proxied:' . "\n",
+            InvalidProxiedClassException::abstractProtectedMethodsNotSupported(
+                new ReflectionClass(ClassWithAbstractPublicMethod::class)
             )->getMessage()
         );
     }
