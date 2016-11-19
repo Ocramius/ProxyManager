@@ -30,13 +30,12 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  * @license MIT
  *
  * @group Coverage
+ * @covers \ProxyManager\Generator\Util\UniqueIdentifierGenerator
  */
 class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getBaseIdentifierNames
-     *
-     * @covers \ProxyManager\Generator\Util\UniqueIdentifierGenerator::getIdentifier
      *
      * @param string $name
      */
@@ -51,8 +50,6 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      *
-     * @covers \ProxyManager\Generator\Util\UniqueIdentifierGenerator::getIdentifier
-     *
      * @param string $name
      */
     public function testGeneratesValidIdentifiers(string $name) : void
@@ -61,6 +58,16 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
             '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/',
             UniqueIdentifierGenerator::getIdentifier($name)
         );
+    }
+
+    /**
+     * @dataProvider getBaseIdentifierNames
+     *
+     * @param string $name
+     */
+    public function testGeneratedIdentifierEntropy(string $name) : void
+    {
+        self::assertGreaterThan(14, strlen(UniqueIdentifierGenerator::getIdentifier($name)));
     }
 
     /**
