@@ -4,7 +4,7 @@ cache: false
 sudo: false
 
 php:
-  - 7.0
+  - 7.1
   - hhvm
 
 env:
