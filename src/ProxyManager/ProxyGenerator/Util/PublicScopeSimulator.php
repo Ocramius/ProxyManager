@@ -105,10 +105,11 @@ class PublicScopeSimulator
         return '    $backtrace = debug_backtrace(false);' . "\n"
             . '    trigger_error(' . "\n"
             . '        sprintf(' . "\n"
-            . '            \'Undefined property: %s::%s in %s on line %s\',' . "\n"
+            . '            \'Undefined property: %s::$%s in %s on line %s\',' . "\n"
             . '            get_parent_class($this),' . "\n"
             . '            $' . $nameParameter . ',' . "\n"
-            . '            $backtrace[0][\'file\']' . "\n"
+            . '            $backtrace[0][\'file\'],' . "\n"
+            . '            $backtrace[0][\'line\']' . "\n"
             . '        ),' . "\n"
             . '        \E_USER_NOTICE' . "\n"
             . '    );' . "\n";

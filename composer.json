@@ -21,7 +21,8 @@
     "require": {
         "php":                       "^7.1.0",
         "zendframework/zend-code":   "^3.1.0",
-        "ocramius/package-versions": "^1.1.1"
+        "ocramius/package-versions": "^1.1.1",
+        "humbug/humbug": "dev-master"
     },
     "require-dev": {
         "ext-phar":                     "*",

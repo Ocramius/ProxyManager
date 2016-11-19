@@ -47,10 +47,11 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $backtrace = debug_backtrace(false);
     trigger_error(
         sprintf(
-            'Undefined property: %s::%s in %s on line %s',
+            'Undefined property: %s::$%s in %s on line %s',
             get_parent_class($this),
             $foo,
-            $backtrace[0]['file']
+            $backtrace[0]['file'],
+            $backtrace[0]['line']
         ),
         \E_USER_NOTICE
     );
@@ -247,10 +248,11 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $backtrace = debug_backtrace(false);
     trigger_error(
         sprintf(
-            'Undefined property: %s::%s in %s on line %s',
+            'Undefined property: %s::$%s in %s on line %s',
             get_parent_class($this),
             $foo,
-            $backtrace[0]['file']
+            $backtrace[0]['file'],
+            $backtrace[0]['line']
         ),
         \E_USER_NOTICE
     );
