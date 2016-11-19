@@ -24,10 +24,11 @@
         "ocramius/package-versions": "^1.1.1"
     },
     "require-dev": {
-        "ext-phar":                    "*",
-        "phpunit/phpunit":             "^5.6.4",
-        "squizlabs/php_codesniffer":   "^2.7.0",
-        "couscous/couscous":           "^1.5.2",
+        "ext-phar":                     "*",
+        "phpunit/phpunit":              "^5.6.4",
+        "phpunit/phpunit-mock-objects": "^3.4.1",
+        "squizlabs/php_codesniffer":    "^2.7.0",
+        "couscous/couscous":            "^1.5.2",
         "phpbench/phpbench":            "^0.12.2"
     },
     "suggest": {
