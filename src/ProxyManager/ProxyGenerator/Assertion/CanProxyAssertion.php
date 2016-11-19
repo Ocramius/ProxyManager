@@ -47,11 +47,9 @@ final class CanProxyAssertion
      * @param ReflectionClass $originalClass
      * @param bool            $allowInterfaces
      *
-     * @return void
-     *
      * @throws InvalidProxiedClassException
      */
-    public static function assertClassCanBeProxied(ReflectionClass $originalClass, bool $allowInterfaces = true)
+    public static function assertClassCanBeProxied(ReflectionClass $originalClass, bool $allowInterfaces = true) : void
     {
         self::isNotFinal($originalClass);
         self::hasNoAbstractProtectedMethods($originalClass);
@@ -64,11 +62,9 @@ final class CanProxyAssertion
     /**
      * @param ReflectionClass $originalClass
      *
-     * @return void
-     *
      * @throws InvalidProxiedClassException
      */
-    private static function isNotFinal(ReflectionClass $originalClass)
+    private static function isNotFinal(ReflectionClass $originalClass) : void
     {
         if ($originalClass->isFinal()) {
             throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
@@ -78,11 +74,9 @@ final class CanProxyAssertion
     /**
      * @param ReflectionClass $originalClass
      *
-     * @return void
-     *
      * @throws InvalidProxiedClassException
      */
-    private static function hasNoAbstractProtectedMethods(ReflectionClass $originalClass)
+    private static function hasNoAbstractProtectedMethods(ReflectionClass $originalClass) : void
     {
         $protectedAbstract = array_filter(
             $originalClass->getMethods(),
@@ -99,11 +93,9 @@ final class CanProxyAssertion
     /**
      * @param ReflectionClass $originalClass
      *
-     * @return void
-     *
      * @throws InvalidProxiedClassException
      */
-    private static function isNotInterface(ReflectionClass $originalClass)
+    private static function isNotInterface(ReflectionClass $originalClass) : void
     {
         if ($originalClass->isInterface()) {
             throw InvalidProxiedClassException::interfaceNotSupported($originalClass);

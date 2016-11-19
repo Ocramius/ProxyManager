@@ -86,11 +86,9 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      * @param string $source
      * @param string $location
      *
-     * @return void
-     *
      * @throws FileNotWritableException
      */
-    private function writeFile(string $source, string $location)
+    private function writeFile(string $source, string $location) : void
     {
         $tmpFileName   = $location . '.' . uniqid('', true);
 

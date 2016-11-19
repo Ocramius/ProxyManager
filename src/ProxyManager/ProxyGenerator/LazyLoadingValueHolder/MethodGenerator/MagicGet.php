@@ -86,14 +86,7 @@ class MagicGet extends MagicMethodGenerator
         );
     }
 
-    /**
-     * @param string $initializer
-     * @param string $valueHolder
-     * @param string $callParent
-     *
-     * @return void
-     */
-    private function setInitializerBody(string $initializer, string $valueHolder, string $callParent)
+    private function setInitializerBody(string $initializer, string $valueHolder, string $callParent) : void
     {
         $this->setBody(
             '$this->' . $initializer . ' && $this->' . $initializer

@@ -110,15 +110,13 @@ abstract class AbstractBaseFactory
      * @param string  $className
      * @param array   $proxyParameters
      * @param mixed[] $proxyOptions
-     *
-     * @return void
      */
     private function generateProxyClass(
         string $proxyClassName,
         string $className,
         array $proxyParameters,
         array $proxyOptions = []
-    ) {
+    ) : void {
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 
