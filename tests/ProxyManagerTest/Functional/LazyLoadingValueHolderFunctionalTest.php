@@ -41,6 +41,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 
@@ -670,6 +671,22 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         self::assertTrue($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
+    }
+
+    /**
+     * @group 327
+     */
+    public function testWillExecuteLogicInAVoidMethod() : void
+    {
+        $proxyName = $this->generateProxy(VoidCounter::class);
+        /* @var $proxy VoidCounter */
+        $proxy = $proxyName::staticProxyConstructor($this->createInitializer(VoidCounter::class, new VoidCounter()));
+
+        $increment = random_int(100, 1000);
+
+        $proxy->increment($increment);
+
+        self::assertSame($increment, $proxy->counter);
     }
 
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
