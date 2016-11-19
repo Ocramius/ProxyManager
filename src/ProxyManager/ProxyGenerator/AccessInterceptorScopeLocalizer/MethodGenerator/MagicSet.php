@@ -59,9 +59,9 @@ class MagicSet extends MagicMethodGenerator
 
         $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if ($parent) {
-            $callParent = '$returnValue = & parent::__set($name, $value);';
-        } else {
+        $callParent = '$returnValue = & parent::__set($name, $value);';
+
+        if (! $parent) {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_SET,
                 'name',

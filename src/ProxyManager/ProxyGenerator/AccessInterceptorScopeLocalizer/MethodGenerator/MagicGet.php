@@ -55,9 +55,9 @@ class MagicGet extends MagicMethodGenerator
 
         $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if ($parent) {
-            $callParent = '$returnValue = & parent::__get($name);';
-        } else {
+        $callParent = '$returnValue = & parent::__get($name);';
+
+        if (! $parent) {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_GET,
                 'name',

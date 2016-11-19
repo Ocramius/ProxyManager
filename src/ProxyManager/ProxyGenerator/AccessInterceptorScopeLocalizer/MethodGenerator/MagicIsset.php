@@ -55,9 +55,9 @@ class MagicIsset extends MagicMethodGenerator
 
         $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        if ($parent) {
-            $callParent = '$returnValue = & parent::__isset($name);';
-        } else {
+        $callParent = '$returnValue = & parent::__isset($name);';
+
+        if (! $parent) {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_ISSET,
                 'name',
