@@ -90,7 +90,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      */
     private function writeFile(string $source, string $location) : void
     {
-        $tmpFileName   = $location . '.' . uniqid('', true);
+        $tmpFileName = tempnam($location, 'temporaryProxyManagerFile');
 
         if (! file_put_contents($tmpFileName, $source)) {
             throw FileNotWritableException::fromNonWritableLocation($tmpFileName);
