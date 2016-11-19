@@ -33,6 +33,7 @@ use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 
 /**
@@ -222,6 +223,12 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 ClassWithMethodWithByRefVariadicFunction::class,
                 'tuz',
                 ['Ocramius', 'Malukenho'],
+                null
+            ],
+            [
+                VoidCounter::class,
+                'increment',
+                [random_int(10, 1000)],
                 null
             ],
         ];
