@@ -25,10 +25,10 @@
     },
     "require-dev": {
         "ext-phar":                    "*",
-        "phpunit/phpunit":             "^5.5.4",
+        "phpunit/phpunit":             "^5.6.4",
         "squizlabs/php_codesniffer":   "^2.7.0",
         "couscous/couscous":           "^1.5.2",
-        "phpbench/phpbench":            "^0.11.2"
+        "phpbench/phpbench":            "^0.12.2"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
