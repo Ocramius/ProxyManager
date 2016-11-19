@@ -58,17 +58,15 @@ class InterceptedMethod extends MethodGenerator
         }
 
         $method->setDocBlock('{@inheritDoc}');
-        $method->setBody(
-            InterceptorGenerator::createInterceptedMethodBody(
-                '$returnValue = $this->' . $valueHolderProperty->getName() . '->'
-                . $originalMethod->getName() . '(' . implode(', ', $forwardedParams) . ');',
-                $method,
-                $valueHolderProperty,
-                $prefixInterceptors,
-                $suffixInterceptors,
-                $originalMethod
-            )
-        );
+        $method->setBody(InterceptorGenerator::createInterceptedMethodBody(
+            '$returnValue = $this->' . $valueHolderProperty->getName() . '->'
+            . $originalMethod->getName() . '(' . implode(', ', $forwardedParams) . ');',
+            $method,
+            $valueHolderProperty,
+            $prefixInterceptors,
+            $suffixInterceptors,
+            $originalMethod
+        ));
 
         return $method;
     }

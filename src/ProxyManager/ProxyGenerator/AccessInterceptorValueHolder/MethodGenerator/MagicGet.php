@@ -58,7 +58,7 @@ class MagicGet extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
-        $parent = GetMethodIfExists::get($originalClass, '__get');
+        $parent          = GetMethodIfExists::get($originalClass, '__get');
         $valueHolderName = $valueHolder->getName();
 
         $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
