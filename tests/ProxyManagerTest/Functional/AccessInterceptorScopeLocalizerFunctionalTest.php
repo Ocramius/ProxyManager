@@ -40,6 +40,7 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 
@@ -547,5 +548,59 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
         $this->expectException(\PHPUnit_Framework_ExpectationFailedException::class);
 
         self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
+    }
+
+    /**
+     * This test documents a known limitation: `func_get_args()` (and similar) don't work in proxied APIs.
+     * If you manage to make this test pass, then please do send a patch
+     *
+     * @group 327
+     */
+    public function testWillInterceptAndReturnEarlyOnVoidMethod() : void
+    {
+        $skip      = random_int(100, 200);
+        $addMore   = random_int(201, 300);
+        $increment = random_int(301, 400);
+
+        /* @var $object VoidCounter */
+        $object = (new AccessInterceptorScopeLocalizerFactory())
+            ->createProxy(
+                new VoidCounter(),
+                [
+                    'increment' => function (
+                        VoidCounter $proxy,
+                        VoidCounter $instance,
+                        string $method,
+                        array $params,
+                        ?bool & $returnEarly
+                    ) use ($skip) : void {
+                        if ($skip === $params['amount']) {
+                            $returnEarly = true;
+                        }
+                    },
+                ],
+                [
+                    'increment' => function (
+                        VoidCounter $proxy,
+                        VoidCounter $instance,
+                        string $method,
+                        array $params,
+                        ?bool & $returnEarly
+                    ) use ($addMore) : void {
+                        if ($addMore === $params['amount']) {
+                            $instance->counter += 1;
+                        }
+                    },
+                ]
+            );
+
+        $object->increment($skip);
+        self::assertSame(0, $object->counter);
+
+        $object->increment($increment);
+        self::assertSame($increment, $object->counter);
+
+        $object->increment($addMore);
+        self::assertSame($increment + $addMore + 1, $object->counter);
     }
 }
