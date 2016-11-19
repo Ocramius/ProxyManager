@@ -24,7 +24,9 @@ use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManagerTestAsset\BaseInterface;
 use ReflectionClass;
+use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator}
@@ -52,6 +54,15 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
         }
 
         parent::testGeneratesValidCode($className);
+    }
+
+    public function testWillRejectInterfaces() : void
+    {
+        $this->expectException(InvalidProxiedClassException::class);
+
+        $this
+            ->getProxyGenerator()
+            ->generate(new \ReflectionClass(BaseInterface::class), new ClassGenerator());
     }
 
     /**
