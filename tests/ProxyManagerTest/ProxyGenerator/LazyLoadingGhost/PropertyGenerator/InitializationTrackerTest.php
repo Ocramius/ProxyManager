@@ -42,4 +42,11 @@ class InitializationTrackerTest extends AbstractUniquePropertyNameTest
     {
         return new InitializationTracker();
     }
+
+    public function testInitializationFlagIsFalseByDefault() : void
+    {
+        $property = $this->createProperty();
+
+        self::assertFalse($property->getDefaultValue()->getValue());
+    }
 }
