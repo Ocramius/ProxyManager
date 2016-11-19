@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -67,24 +68,13 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
             . ' && $this->' . $initializerName
             . '->__invoke($this->' . $valueHolderName . ', $this, ' . var_export($methodName, true)
             . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ");\n\n"
-            . rtrim(self::returnStatement(
+            . ProxiedMethodReturnExpression::generate(
                 '$this->' . $valueHolderName . '->' . $methodName . '(' . implode(', ', $forwardedParams) . ')',
                 $originalMethod
-            ))
+            )
         );
         $method->setDocBlock('{@inheritDoc}');
 
         return $method;
-    }
-
-    private static function returnStatement(string $returnedValue, \ReflectionMethod $originalMethod) : string
-    {
-        $returnType = $originalMethod->getReturnType();
-
-        if ($returnType && 'void' === (string) $returnType) {
-            return $returnedValue . ";\n\nreturn;\n";
-        }
-
-        return 'return ' . $returnedValue . ";\n";
     }
 }

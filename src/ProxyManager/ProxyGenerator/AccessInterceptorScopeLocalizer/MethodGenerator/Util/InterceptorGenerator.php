@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -68,7 +69,7 @@ class InterceptorGenerator
             . "    \$prefixReturnValue = \$this->$prefixInterceptorsName" . "[$name]->__invoke("
             . "\$this, \$this, $name, $paramsString, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
-            . '        ' . self::returnStatement('$prefixReturnValue', $originalMethod)
+            . '        ' . ProxiedMethodReturnExpression::generate('$prefixReturnValue', $originalMethod) . "\n"
             . "    }\n"
             . "}\n\n"
             . $methodBody . "\n\n"
@@ -77,18 +78,9 @@ class InterceptorGenerator
             . "    \$suffixReturnValue = \$this->$suffixInterceptorsName" . "[$name]->__invoke("
             . "\$this, \$this, $name, $paramsString, \$returnValue, \$returnEarly);\n\n"
             . "    if (\$returnEarly) {\n"
-            . '        ' . self::returnStatement('$suffixReturnValue', $originalMethod)
+            . '        ' . ProxiedMethodReturnExpression::generate('$suffixReturnValue', $originalMethod) . "\n"
             . "    }\n"
             . "}\n\n"
-            . rtrim(self::returnStatement('$returnValue', $originalMethod));
-    }
-
-    private static function returnStatement(string $returnedValue, ?\ReflectionMethod $originalMethod) : string
-    {
-        if ('void' === (string) ($originalMethod ? $originalMethod->getReturnType() : null)) {
-            return "return;\n";
-        }
-
-        return 'return ' . $returnedValue . ";\n";
+            . ProxiedMethodReturnExpression::generate('$returnValue', $originalMethod);
     }
 }

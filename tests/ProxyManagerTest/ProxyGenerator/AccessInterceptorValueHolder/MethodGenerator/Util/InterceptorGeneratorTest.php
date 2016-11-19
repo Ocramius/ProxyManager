@@ -131,7 +131,8 @@ if (isset($this->pre['fooMethod'])) {
     $prefixReturnValue = $this->pre['fooMethod']->__invoke($this, $this->foo, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnEarly);
 
     if ($returnEarly) {
-        return;
+        $prefixReturnValue;
+return;
     }
 }
 
@@ -142,10 +143,12 @@ if (isset($this->post['fooMethod'])) {
     $suffixReturnValue = $this->post['fooMethod']->__invoke($this, $this->foo, 'fooMethod', array('bar' => $bar, 'baz' => $baz), $returnValue, $returnEarly);
 
     if ($returnEarly) {
-        return;
+        $suffixReturnValue;
+return;
     }
 }
 
+$returnValue;
 return;
 PHP;
         // @codingStandardsIgnoreEnd
