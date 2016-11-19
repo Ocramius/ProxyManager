@@ -75,8 +75,6 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group 344
-     *
-     * @return void
      */
     public function testBodyStructureWithPreExistingGetMethod() : void
     {

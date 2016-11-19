@@ -148,8 +148,6 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $methodName
      * @param string $expectedType
-     *
-     * @return void
      */
     public function testReturnTypeHintGeneration(string $methodName, string $expectedType) : void
     {
