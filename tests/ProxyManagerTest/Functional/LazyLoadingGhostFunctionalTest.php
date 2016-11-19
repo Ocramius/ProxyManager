@@ -77,7 +77,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         array $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy GhostObjectInterface */
@@ -109,7 +109,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         array $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName         = $this->generateProxy($className);
         $initializeMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
@@ -146,7 +146,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         array $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy GhostObjectInterface */
@@ -179,7 +179,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         array $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy GhostObjectInterface */
@@ -209,7 +209,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         GhostObjectInterface $proxy,
         string $publicProperty,
         $propertyValue
-    ) {
+    ) : void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         self::assertTrue($proxy->isProxyInitialized());
     }
@@ -947,7 +947,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $propertyName,
         array $proxyOptions,
         $expected
-    ) {
+    ) : void {
         $proxy       = $this->generateProxy($className, $proxyOptions);
         $ghostObject = $proxy::staticProxyConstructor(function () use ($propertyName) {
             self::fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
@@ -972,7 +972,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $propertyClass,
         string $propertyName,
         array $proxyOptions
-    ) {
+    ) : void {
         $proxyName   = $this->generateProxy($className, $proxyOptions);
         /* @var $ghostObject GhostObjectInterface */
         $ghostObject = $proxyName::staticProxyConstructor(
@@ -1117,7 +1117,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         string $propertyIndex,
         string $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($callerObject));
         /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
         $proxy = $proxyName::staticProxyConstructor(
@@ -1151,7 +1151,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         string $propertyIndex,
         string $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($callerObject));
         /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
@@ -1184,7 +1184,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         string $propertyIndex,
         string $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($callerObject));
         /* @var $proxy OtherObjectAccessClass|LazyLoadingInterface */
         $proxy = clone $proxyName::staticProxyConstructor(

@@ -118,7 +118,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
@@ -168,7 +168,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
@@ -217,7 +217,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty,
         $propertyValue
-    ) {
+    ) : void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
@@ -233,7 +233,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
-    ) {
+    ) : void {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
@@ -252,7 +252,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
-    ) {
+    ) : void {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
 
@@ -271,7 +271,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
-    ) {
+    ) : void {
         $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
         unset($proxy->$publicProperty);
 
@@ -558,7 +558,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = $proxyName::staticProxyConstructor($realInstance);
@@ -601,7 +601,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
@@ -645,7 +645,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = clone $proxyName::staticProxyConstructor($realInstance);

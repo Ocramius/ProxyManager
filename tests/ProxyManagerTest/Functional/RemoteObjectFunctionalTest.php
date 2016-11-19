@@ -258,7 +258,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
 
         /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
@@ -296,7 +296,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
 
         /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
