@@ -102,7 +102,6 @@ class PublicScopeSimulator
             return '';
         }
 
-        //
         return '    $backtrace = debug_backtrace(false);' . "\n"
             . '    trigger_error(\'Undefined property: \' . get_parent_class($this) . \'::$\' . $'
             . $nameParameter
