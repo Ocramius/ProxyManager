@@ -23,7 +23,7 @@ before_script:
 script:
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
   - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --exclude-group=Coverage
-  - php -n ./vendor/bin/phpbench run --revs=1 --iterations=3 --warmup=1 --report=aggregate
+  - php -n ./vendor/bin/phpbench run --revs=100 --iterations=3 --warmup=1 --report=aggregate
   - echo "Running examples"
   - php examples/access-interceptor-scope-localizer.php
   - php examples/ghost-object.php
