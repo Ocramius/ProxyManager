@@ -50,6 +50,8 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
         );
 
         self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertTrue($constructor->isStatic());
+        self::assertSame('public', $constructor->getVisibility());
         self::assertCount(1, $constructor->getParameters());
         self::assertSame(
             'static $reflection;
