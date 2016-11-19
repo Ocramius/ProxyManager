@@ -39,6 +39,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 
@@ -706,5 +707,57 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 $propertyName,
             ];
         }
+    }
+
+    /**
+     * @group 327
+     */
+    public function testWillInterceptAndReturnEarlyOnVoidMethod() : void
+    {
+        $skip      = random_int(100, 200);
+        $addMore   = random_int(201, 300);
+        $increment = random_int(301, 400);
+
+        $proxyName = $this->generateProxy(VoidCounter::class);
+
+        /* @var $object VoidCounter */
+        $object = $proxyName::staticProxyConstructor(
+            new VoidCounter(),
+            [
+                'increment' => function (
+                    VoidCounter $proxy,
+                    VoidCounter $instance,
+                    string $method,
+                    array $params,
+                    ?bool & $returnEarly
+                ) use ($skip) : void {
+                    if ($skip === $params['amount']) {
+                        $returnEarly = true;
+                    }
+                },
+            ],
+            [
+                'increment' => function (
+                    VoidCounter $proxy,
+                    VoidCounter $instance,
+                    string $method,
+                    array $params,
+                    ?bool & $returnEarly
+                ) use ($addMore) : void {
+                    if ($addMore === $params['amount']) {
+                        $instance->counter += 1;
+                    }
+                },
+            ]
+        );
+
+        $object->increment($skip);
+        self::assertSame(0, $object->counter);
+
+        $object->increment($increment);
+        self::assertSame($increment, $object->counter);
+
+        $object->increment($addMore);
+        self::assertSame($increment + $addMore + 1, $object->counter);
     }
 }
