@@ -63,14 +63,34 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
         self::assertTrue($publicProperties->isStatic());
         self::assertSame('private', $publicProperties->getVisibility());
         self::assertFalse($publicProperties->isEmpty());
+        self::assertSame(
+            [
+                'property0' => true,
+                'property1' => true,
+                'property2' => true,
+                'property3' => true,
+                'property4' => true,
+                'property5' => true,
+                'property6' => true,
+                'property7' => true,
+                'property8' => true,
+                'property9' => true,
+            ],
+            $publicProperties->getDefaultValue()->getValue()
+        );
     }
 
     public function testClassWithMixedProperties() : void
     {
-        $publicProperties = new PublicPropertiesMap(
-            Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
+        self::assertSame(
+            [
+                'publicProperty0' => true,
+                'publicProperty1' => true,
+                'publicProperty2' => true,
+            ],
+            (new PublicPropertiesMap(
+                Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
+            ))->getDefaultValue()->getValue()
         );
-
-        self::assertCount(3, $publicProperties->getDefaultValue()->getValue());
     }
 }
