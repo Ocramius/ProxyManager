@@ -46,7 +46,37 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        self::assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%a$bar = %s;', $code);
+        $expected = <<<'PHP'
+$realInstanceReflection = new \ReflectionClass(get_parent_class($this));
+
+if (! $realInstanceReflection->hasProperty($foo)) {
+    $targetObject = $this;
+
+    $backtrace = debug_backtrace(false);
+    trigger_error(
+        sprintf(
+            'Undefined property: %s::%s in %s on line %s',
+            get_parent_class($this),
+            $foo,
+            $backtrace[0]['file']
+        ),
+        \E_USER_NOTICE
+    );
+    return $targetObject->$foo;
+    return;
+}
+
+$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$accessor = function & () use ($targetObject, $name) {
+    return $targetObject->$foo;
+};
+$backtrace = debug_backtrace(true);
+$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
+$bar = & $accessor();
+PHP;
+
+        self::assertSame($expected, $code);
     }
 
     public function testSimpleSet() : void
@@ -59,7 +89,27 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        self::assertStringMatchesFormat('%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;', $code);
+        $expected = <<<'PHP'
+$realInstanceReflection = new \ReflectionClass(get_parent_class($this));
+
+if (! $realInstanceReflection->hasProperty($foo)) {
+    $targetObject = $this;
+
+    return $targetObject->$foo = $baz;
+    return;
+}
+
+$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$accessor = function & () use ($targetObject, $name, $value) {
+    return $targetObject->$foo = $baz;
+};
+$backtrace = debug_backtrace(true);
+$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
+$bar = & $accessor();
+PHP;
+
+        self::assertSame($expected, $code);
     }
 
     public function testSimpleIsset() : void
@@ -72,7 +122,27 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        self::assertStringMatchesFormat('%a{%areturn isset($%s->$foo);%a}%a$bar = %s;', $code);
+        $expected = <<<'PHP'
+$realInstanceReflection = new \ReflectionClass(get_parent_class($this));
+
+if (! $realInstanceReflection->hasProperty($foo)) {
+    $targetObject = $this;
+
+    return isset($targetObject->$foo);
+    return;
+}
+
+$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$accessor = function () use ($targetObject, $name) {
+    return isset($targetObject->$foo);
+};
+$backtrace = debug_backtrace(true);
+$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
+$bar = $accessor();
+PHP;
+
+        self::assertSame($expected, $code);
     }
 
     public function testSimpleUnset() : void
@@ -85,7 +155,27 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        self::assertStringMatchesFormat('%a{%aunset($%s->$foo);%a}%a$bar = %s;', $code);
+        $expected = <<<'PHP'
+$realInstanceReflection = new \ReflectionClass(get_parent_class($this));
+
+if (! $realInstanceReflection->hasProperty($foo)) {
+    $targetObject = $this;
+
+    unset($targetObject->$foo);
+    return;
+}
+
+$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$accessor = function () use ($targetObject, $name) {
+    unset($targetObject->$foo);
+};
+$backtrace = debug_backtrace(true);
+$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
+$bar = $accessor();
+PHP;
+
+        self::assertSame($expected, $code);
     }
 
     public function testSetRequiresValueParameterName() : void
@@ -111,10 +201,27 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'bar'
         );
 
-        self::assertStringMatchesFormat(
-            '%A$targetObject = $this->valueHolder;%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;',
-            $code
-        );
+        $expected = <<<'PHP'
+$realInstanceReflection = new \ReflectionClass(get_parent_class($this));
+
+if (! $realInstanceReflection->hasProperty($foo)) {
+    $targetObject = $this->valueHolder;
+
+    return $targetObject->$foo = $baz;
+    return;
+}
+
+$targetObject = $this->valueHolder;
+$accessor = function & () use ($targetObject, $name, $value) {
+    return $targetObject->$foo = $baz;
+};
+$backtrace = debug_backtrace(true);
+$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
+$bar = & $accessor();
+PHP;
+
+        self::assertSame($expected, $code);
     }
 
     public function testSetRequiresValidOperation() : void
@@ -131,6 +238,38 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
             'foo'
         );
 
-        self::assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%areturn %s;', $code);
+        $expected = <<<'PHP'
+$realInstanceReflection = new \ReflectionClass(get_parent_class($this));
+
+if (! $realInstanceReflection->hasProperty($foo)) {
+    $targetObject = $this;
+
+    $backtrace = debug_backtrace(false);
+    trigger_error(
+        sprintf(
+            'Undefined property: %s::%s in %s on line %s',
+            get_parent_class($this),
+            $foo,
+            $backtrace[0]['file']
+        ),
+        \E_USER_NOTICE
+    );
+    return $targetObject->$foo;
+    return;
+}
+
+$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$accessor = function & () use ($targetObject, $name) {
+    return $targetObject->$foo;
+};
+$backtrace = debug_backtrace(true);
+$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
+$returnValue = & $accessor();
+
+return $returnValue;
+PHP;
+
+        self::assertSame($expected, $code);
     }
 }
