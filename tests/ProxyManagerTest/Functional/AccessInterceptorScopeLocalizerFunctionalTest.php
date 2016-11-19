@@ -551,9 +551,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
     }
 
     /**
-     * This test documents a known limitation: `func_get_args()` (and similar) don't work in proxied APIs.
-     * If you manage to make this test pass, then please do send a patch
-     *
      * @group 327
      */
     public function testWillInterceptAndReturnEarlyOnVoidMethod() : void
