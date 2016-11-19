@@ -38,14 +38,6 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
 {
     public function testSimpleGet() : void
     {
-        $code = PublicScopeSimulator::getPublicAccessSimulationCode(
-            PublicScopeSimulator::OPERATION_GET,
-            'foo',
-            null,
-            null,
-            'bar'
-        );
-
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 
@@ -76,19 +68,20 @@ $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
 PHP;
 
-        self::assertSame($expected, $code);
+        self::assertSame(
+            $expected,
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_GET,
+                'foo',
+                null,
+                null,
+                'bar'
+            )
+        );
     }
 
     public function testSimpleSet() : void
     {
-        $code = PublicScopeSimulator::getPublicAccessSimulationCode(
-            PublicScopeSimulator::OPERATION_SET,
-            'foo',
-            'baz',
-            null,
-            'bar'
-        );
-
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 
@@ -109,19 +102,20 @@ $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
 PHP;
 
-        self::assertSame($expected, $code);
+        self::assertSame(
+            $expected,
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_SET,
+                'foo',
+                'baz',
+                null,
+                'bar'
+            )
+        );
     }
 
     public function testSimpleIsset() : void
     {
-        $code = PublicScopeSimulator::getPublicAccessSimulationCode(
-            PublicScopeSimulator::OPERATION_ISSET,
-            'foo',
-            null,
-            null,
-            'bar'
-        );
-
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 
@@ -142,19 +136,20 @@ $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = $accessor();
 PHP;
 
-        self::assertSame($expected, $code);
+        self::assertSame(
+            $expected,
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_ISSET,
+                'foo',
+                null,
+                null,
+                'bar'
+            )
+        );
     }
 
     public function testSimpleUnset() : void
     {
-        $code = PublicScopeSimulator::getPublicAccessSimulationCode(
-            PublicScopeSimulator::OPERATION_UNSET,
-            'foo',
-            null,
-            null,
-            'bar'
-        );
-
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 
@@ -175,7 +170,16 @@ $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = $accessor();
 PHP;
 
-        self::assertSame($expected, $code);
+        self::assertSame(
+            $expected,
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_UNSET,
+                'foo',
+                null,
+                null,
+                'bar'
+            )
+        );
     }
 
     public function testSetRequiresValueParameterName() : void
@@ -193,14 +197,6 @@ PHP;
 
     public function testDelegatesToValueHolderWhenAvailable() : void
     {
-        $code = PublicScopeSimulator::getPublicAccessSimulationCode(
-            PublicScopeSimulator::OPERATION_SET,
-            'foo',
-            'baz',
-            new PropertyGenerator('valueHolder'),
-            'bar'
-        );
-
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 
@@ -221,7 +217,16 @@ $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
 PHP;
 
-        self::assertSame($expected, $code);
+        self::assertSame(
+            $expected,
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_SET,
+                'foo',
+                'baz',
+                new PropertyGenerator('valueHolder'),
+                'bar'
+            )
+        );
     }
 
     public function testSetRequiresValidOperation() : void
@@ -233,11 +238,6 @@ PHP;
 
     public function testWillReturnDirectlyWithNoReturnParam() : void
     {
-        $code = PublicScopeSimulator::getPublicAccessSimulationCode(
-            PublicScopeSimulator::OPERATION_GET,
-            'foo'
-        );
-
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 
@@ -270,6 +270,12 @@ $returnValue = & $accessor();
 return $returnValue;
 PHP;
 
-        self::assertSame($expected, $code);
+        self::assertSame(
+            $expected,
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_GET,
+                'foo'
+            )
+        );
     }
 }
