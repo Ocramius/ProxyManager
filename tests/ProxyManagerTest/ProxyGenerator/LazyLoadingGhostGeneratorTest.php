@@ -25,6 +25,7 @@ use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
 
@@ -63,6 +64,19 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
         $this
             ->getProxyGenerator()
             ->generate(new \ReflectionClass(BaseInterface::class), new ClassGenerator());
+    }
+
+    public function testAllAbstractMethodsWillBeMadeConcrete() : void
+    {
+        $classGenerator = new ClassGenerator();
+
+        $this
+            ->getProxyGenerator()
+            ->generate(new \ReflectionClass(ClassWithAbstractPublicMethod::class), $classGenerator);
+
+        foreach ($classGenerator->getMethods() as $method) {
+            self::assertFalse($method->isAbstract());
+        }
     }
 
     /**
