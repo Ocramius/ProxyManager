@@ -48,7 +48,7 @@ class CallInitializer extends MethodGenerator
         PropertyGenerator $initTracker,
         Properties $properties
     ) {
-        $docblock = <<<'DOCBLOCK'
+        $docBlock = <<<'DOCBLOCK'
 Triggers initialization logic for this ghost object
 
 @param string  $methodName
@@ -65,7 +65,7 @@ DOCBLOCK;
             ],
             static::FLAG_PRIVATE,
             null,
-            $docblock
+            $docBlock
         );
 
         $initializer    = $initializerProperty->getName();
@@ -192,6 +192,6 @@ PHP;
         $name     = $property->getName();
         $defaults = $property->getDeclaringClass()->getDefaultProperties();
 
-        return var_export(isset($defaults[$name]) ? $defaults[$name] : null, true);
+        return var_export($defaults[$name] ?? null, true);
     }
 }

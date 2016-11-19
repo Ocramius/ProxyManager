@@ -62,7 +62,7 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
         $this->signatureChecker   = new SignatureChecker($this->signatureGenerator);
     }
 
-    public function testCheckSignatureWithValidKey()
+    public function testCheckSignatureWithValidKey() : void
     {
         $this
             ->signatureGenerator
@@ -80,7 +80,7 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }
 
-    public function testCheckSignatureWithInvalidKey()
+    public function testCheckSignatureWithInvalidKey() : void
     {
         $this
             ->signatureGenerator
@@ -100,7 +100,7 @@ class SignatureCheckerTest extends PHPUnit_Framework_TestCase
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }
 
-    public function testCheckSignatureWithInvalidValue()
+    public function testCheckSignatureWithInvalidValue() : void
     {
         $this
             ->signatureGenerator

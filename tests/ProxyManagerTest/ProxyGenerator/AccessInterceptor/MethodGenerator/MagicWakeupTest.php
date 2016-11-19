@@ -39,7 +39,7 @@ use ReflectionClass;
  */
 class MagicWakeupTest extends PHPUnit_Framework_TestCase
 {
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection  = new ReflectionClass(
             ClassWithTwoPublicProperties::class
@@ -52,7 +52,7 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
         self::assertSame("unset(\$this->bar, \$this->baz);\n\n", $magicWakeup->getBody());
     }
 
-    public function testBodyStructureWithoutPublicProperties()
+    public function testBodyStructureWithoutPublicProperties() : void
     {
         $magicWakeup = new MagicWakeup(new ReflectionClass(EmptyClass::class));
 
@@ -64,7 +64,7 @@ class MagicWakeupTest extends PHPUnit_Framework_TestCase
     /**
      * @group 276
      */
-    public function testWillUnsetPrivateProperties()
+    public function testWillUnsetPrivateProperties() : void
     {
         $magicWakeup = new MagicWakeup(new ReflectionClass(ClassWithMixedProperties::class));
 

@@ -40,7 +40,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSet::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection         = new ReflectionClass(EmptyClass::class);
         /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -65,7 +65,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSet::__construct
      */
-    public function testBodyStructureWithInheritedMethod()
+    public function testBodyStructureWithInheritedMethod() : void
     {
         $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
         /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

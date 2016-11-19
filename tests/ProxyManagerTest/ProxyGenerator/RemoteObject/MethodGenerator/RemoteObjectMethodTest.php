@@ -40,7 +40,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithParameters()
+    public function testBodyStructureWithParameters() : void
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->createMock(PropertyGenerator::class);
@@ -70,7 +70,7 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithArrayParameter()
+    public function testBodyStructureWithArrayParameter() : void
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->createMock(PropertyGenerator::class);
@@ -97,13 +97,13 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithoutParameters()
+    public function testBodyStructureWithoutParameters() : void
     {
         /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
-        $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
+        $reflectionMethod = new MethodReflection(BaseClass::class, 'publicMethod');
 
         $method = RemoteObjectMethod::generateMethod(
             $reflectionMethod,
@@ -111,11 +111,11 @@ class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
             new ReflectionClass(PropertyGenerator::class)
         );
 
-        self::assertSame('testBodyStructureWithoutParameters', $method->getName());
+        self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
             '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'testBodyStructureWithoutParameters\', array());'
+            . '\'publicMethod\', array());'
             . "\n\nreturn \$return;",
             $method->getBody()
         );

@@ -63,7 +63,7 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
         $this->suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
     }
 
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $method = InterceptedMethod::generateMethod(
             new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod'),
@@ -81,7 +81,7 @@ class InterceptedMethodTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testForwardsVariadicParameters()
+    public function testForwardsVariadicParameters() : void
     {
         $method = InterceptedMethod::generateMethod(
             new MethodReflection(ClassWithMethodWithVariadicFunction::class, 'foo'),

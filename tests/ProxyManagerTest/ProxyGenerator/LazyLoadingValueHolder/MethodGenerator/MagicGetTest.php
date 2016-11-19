@@ -41,7 +41,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -75,10 +75,8 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group 344
-     *
-     * @return void
      */
-    public function testBodyStructureWithPreExistingGetMethod()
+    public function testBodyStructureWithPreExistingGetMethod() : void
     {
         $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

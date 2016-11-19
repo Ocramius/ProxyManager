@@ -40,7 +40,7 @@ class JsonRpcTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::__construct
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::getServiceName
      */
-    public function testCanBuildAdapterWithJsonRpcClient()
+    public function testCanBuildAdapterWithJsonRpcClient() : void
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();

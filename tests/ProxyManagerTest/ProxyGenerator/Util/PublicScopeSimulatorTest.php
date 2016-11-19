@@ -36,7 +36,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
 {
-    public function testSimpleGet()
+    public function testSimpleGet() : void
     {
         $code = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_GET,
@@ -49,7 +49,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
         self::assertStringMatchesFormat('%a{%areturn $%s->$foo;%a}%a$bar = %s;', $code);
     }
 
-    public function testSimpleSet()
+    public function testSimpleSet() : void
     {
         $code = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_SET,
@@ -62,7 +62,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
         self::assertStringMatchesFormat('%a{%areturn $%s->$foo = $baz;%a}%a$bar = %s;', $code);
     }
 
-    public function testSimpleIsset()
+    public function testSimpleIsset() : void
     {
         $code = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_ISSET,
@@ -75,7 +75,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
         self::assertStringMatchesFormat('%a{%areturn isset($%s->$foo);%a}%a$bar = %s;', $code);
     }
 
-    public function testSimpleUnset()
+    public function testSimpleUnset() : void
     {
         $code = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_UNSET,
@@ -88,7 +88,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
         self::assertStringMatchesFormat('%a{%aunset($%s->$foo);%a}%a$bar = %s;', $code);
     }
 
-    public function testSetRequiresValueParameterName()
+    public function testSetRequiresValueParameterName() : void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -101,7 +101,7 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDelegatesToValueHolderWhenAvailable()
+    public function testDelegatesToValueHolderWhenAvailable() : void
     {
         $code = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_SET,
@@ -117,14 +117,14 @@ class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSetRequiresValidOperation()
+    public function testSetRequiresValidOperation() : void
     {
         $this->expectException(InvalidArgumentException::class);
 
         PublicScopeSimulator::getPublicAccessSimulationCode('invalid', 'foo');
     }
 
-    public function testWillReturnDirectlyWithNoReturnParam()
+    public function testWillReturnDirectlyWithNoReturnParam() : void
     {
         $code = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_GET,

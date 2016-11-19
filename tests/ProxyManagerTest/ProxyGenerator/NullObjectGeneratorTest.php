@@ -53,7 +53,7 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      *
      * @param string $className
      */
-    public function testGeneratesValidCode(string $className)
+    public function testGeneratesValidCode(string $className) : void
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');

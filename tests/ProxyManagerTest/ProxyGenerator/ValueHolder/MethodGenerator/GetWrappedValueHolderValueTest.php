@@ -37,7 +37,7 @@ class GetWrappedValueHolderValueTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);

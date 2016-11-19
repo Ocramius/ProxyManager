@@ -30,7 +30,10 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
+use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 
 /**
@@ -51,7 +54,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCalls(string $className, string $method, array $params)
+    public function testMethodCalls(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -68,7 +71,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params)
+    public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy NullObjectInterface */
@@ -84,7 +87,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCallsAfterCloning(string $className, string $method, array $params)
+    public function testMethodCallsAfterCloning(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -100,7 +103,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
         self::assertNull($proxy->$publicProperty);
     }
@@ -111,7 +114,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -125,7 +128,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty) : void
     {
         self::assertNull($proxy->$publicProperty);
     }
@@ -136,7 +139,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty) : void
     {
         unset($proxy->$publicProperty);
 
@@ -171,6 +174,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
     public function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
+        $empty         = new EmptyClass();
 
         return [
             [
@@ -204,6 +208,12 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 $selfHintParam
             ],
             [
+                ClassWithParentHint::class,
+                'parentHintMethod',
+                ['parameter' => $empty],
+                $empty
+            ],
+            [
                 ClassWithMethodWithVariadicFunction::class,
                 'buz',
                 ['Ocramius', 'Malukenho'],
@@ -213,6 +223,12 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
                 ClassWithMethodWithByRefVariadicFunction::class,
                 'tuz',
                 ['Ocramius', 'Malukenho'],
+                null
+            ],
+            [
+                VoidCounter::class,
+                'increment',
+                [random_int(10, 1000)],
                 null
             ],
         ];

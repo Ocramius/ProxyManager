@@ -98,7 +98,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      *
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::__construct
      */
-    public function testWithOptionalFactory()
+    public function testWithOptionalFactory() : void
     {
         $factory = new AccessInterceptorValueHolderFactory();
         self::assertAttributeNotEmpty('configuration', $factory);
@@ -112,7 +112,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::createProxy
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::getGenerator
      */
-    public function testWillSkipAutoGeneration()
+    public function testWillSkipAutoGeneration() : void
     {
         $instance = new stdClass();
 
@@ -142,7 +142,7 @@ class AccessInterceptorValueHolderFactoryTest extends PHPUnit_Framework_TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration()
+    public function testWillTryAutoGeneration() : void
     {
         $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');

@@ -129,7 +129,7 @@ class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
         $this->factory->expects(self::any())->method('getGenerator')->will(self::returnValue($this->generator));
     }
 
-    public function testGeneratesClass()
+    public function testGeneratesClass() : void
     {
         $generateProxy = new ReflectionMethod($this->factory, 'generateProxy');
 

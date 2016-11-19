@@ -40,7 +40,7 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicClone::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection         = new ReflectionClass(EmptyClass::class);
         /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -61,7 +61,7 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicClone::__construct
      */
-    public function testBodyStructureWithInheritedMethod()
+    public function testBodyStructureWithInheritedMethod() : void
     {
         $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
         /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

@@ -68,7 +68,7 @@ class BindProxyProperties extends MethodGenerator
         foreach ($properties->getAccessibleProperties() as $property) {
             $propertyName = $property->getName();
 
-            $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";";
+            $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ';';
         }
 
         foreach ($properties->getPrivateProperties() as $property) {
@@ -81,7 +81,7 @@ class BindProxyProperties extends MethodGenerator
         }
 
         $this->setBody(
-            (empty($localizedProperties) ? '' : implode("\n\n", $localizedProperties) . "\n\n")
+            ($localizedProperties ? implode("\n\n", $localizedProperties) . "\n\n" : '')
             . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
             . '$this->' . $suffixInterceptors->getName() . " = \$suffixInterceptors;"
         );

@@ -157,7 +157,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset
      */
-    public function testBodyStructureWithPublicProperties()
+    public function testBodyStructureWithPublicProperties() : void
     {
         $magicIsset = new MagicIsset(
             new ReflectionClass(ClassWithTwoPublicProperties::class),
@@ -177,7 +177,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset
      */
-    public function testBodyStructureWithOverriddenMagicGet()
+    public function testBodyStructureWithOverriddenMagicGet() : void
     {
         $magicIsset = new MagicIsset(
             new ReflectionClass(ClassWithMagicMethods::class),

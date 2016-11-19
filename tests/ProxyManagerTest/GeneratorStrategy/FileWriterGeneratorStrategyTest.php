@@ -40,7 +40,7 @@ use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
  */
 class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
 {
-    public function testGenerate()
+    public function testGenerate() : void
     {
         /* @var $locator FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
         $locator   = $this->createMock(FileLocatorInterface::class);
@@ -68,7 +68,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         self::assertTrue(class_exists($fqcn, false));
     }
 
-    public function testGenerateWillFailIfTmpFileCannotBeWrittenToDisk()
+    public function testGenerateWillFailIfTmpFileCannotBeWrittenToDisk() : void
     {
         $tmpDirPath = sys_get_temp_dir() . '/' . uniqid('nonWritable', true);
 
@@ -92,7 +92,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $generator->generate(new ClassGenerator($fqcn));
     }
 
-    public function testGenerateWillFailIfTmpFileCannotBeMovedToFinalDestination()
+    public function testGenerateWillFailIfTmpFileCannotBeMovedToFinalDestination() : void
     {
         /* @var $locator \ProxyManager\FileLocator\FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
         $locator   = $this->createMock(FileLocatorInterface::class);
@@ -114,7 +114,7 @@ class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
         $generator->generate(new ClassGenerator($fqcn));
     }
 
-    public function testWhenFailingAllTemporaryFilesAreRemoved()
+    public function testWhenFailingAllTemporaryFilesAreRemoved() : void
     {
         $tmpDirPath = sys_get_temp_dir() . '/' . uniqid('noTempFilesLeftBehind', true);
 

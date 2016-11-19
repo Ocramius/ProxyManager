@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\MethodGenerator as ProxyManagerMethodGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\GhostObjectInterface;
@@ -61,13 +62,17 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 {
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidProxiedClassException
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = [])
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
         $filteredProperties = Properties::fromReflectionClass($originalClass)
-            ->filter(isset($proxyOptions['skippedProperties']) ? $proxyOptions['skippedProperties'] : []);
+            ->filter($proxyOptions['skippedProperties'] ?? []);
 
         $publicProperties    = new PublicPropertiesMap($filteredProperties);
         $privateProperties   = new PrivatePropertiesMap($filteredProperties);
@@ -147,9 +152,12 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     {
         return array_map(
             function (ReflectionMethod $method) : ProxyManagerMethodGenerator {
-                return ProxyManagerMethodGenerator
-                    ::fromReflection(new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()))
-                    ->setAbstract(false);
+                $generated = ProxyManagerMethodGenerator
+                    ::fromReflection(new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()));
+
+                $generated->setAbstract(false);
+
+                return $generated;
             },
             ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
         );

@@ -38,6 +38,8 @@ class SetProxyInitializer extends MethodGenerator
      * Constructor
      *
      * @param PropertyGenerator $initializerProperty
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(PropertyGenerator $initializerProperty)
     {
@@ -48,7 +50,7 @@ class SetProxyInitializer extends MethodGenerator
         $initializerParameter->setType(Closure::class);
         $initializerParameter->setDefaultValue(null);
         $this->setParameter($initializerParameter);
-        $this->setDocblock('{@inheritDoc}');
+        $this->setDocBlock('{@inheritDoc}');
         $this->setBody('$this->' . $initializerProperty->getName() . ' = $initializer;');
     }
 }

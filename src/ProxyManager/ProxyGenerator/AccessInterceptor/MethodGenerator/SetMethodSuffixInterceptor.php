@@ -38,6 +38,8 @@ class SetMethodSuffixInterceptor extends MethodGenerator
      * Constructor
      *
      * @param PropertyGenerator $suffixInterceptor
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(PropertyGenerator $suffixInterceptor)
     {
@@ -49,7 +51,7 @@ class SetMethodSuffixInterceptor extends MethodGenerator
         $interceptor->setDefaultValue(null);
         $this->setParameter(new ParameterGenerator('methodName', 'string'));
         $this->setParameter($interceptor);
-        $this->setDocblock('{@inheritDoc}');
+        $this->setDocBlock('{@inheritDoc}');
         $this->setBody('$this->' . $suffixInterceptor->getName() . '[$methodName] = $suffixInterceptor;');
     }
 }

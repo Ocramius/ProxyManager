@@ -45,7 +45,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @param string $realClassName
      * @param string $proxyClassName
      */
-    public function testInflector(string $realClassName, string $proxyClassName)
+    public function testInflector(string $realClassName, string $proxyClassName) : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -60,7 +60,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
      */
-    public function testGeneratesSameClassNameWithSameParameters()
+    public function testGeneratesSameClassNameWithSameParameters() : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -78,7 +78,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
      */
-    public function testGeneratesDifferentClassNameWithDifferentParameters()
+    public function testGeneratesDifferentClassNameWithDifferentParameters() : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -103,7 +103,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
      */
-    public function testGeneratesCorrectClassNameWhenGivenLeadingBackslash()
+    public function testGeneratesCorrectClassNameWhenGivenLeadingBackslash() : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -121,7 +121,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @param string $className
      * @param array  $parameters
      */
-    public function testClassNameIsValidClassIdentifier(string $className, array $parameters)
+    public function testClassNameIsValidClassIdentifier(string $className, array $parameters) : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 

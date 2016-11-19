@@ -25,6 +25,8 @@ use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Proxy\RemoteObjectInterface;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 
 /**
  * Factory responsible of producing remote proxy objects
@@ -61,6 +63,10 @@ class RemoteObjectFactory extends AbstractBaseFactory
      * @param string|object $instanceOrClassName
      *
      * @return RemoteObjectInterface
+     *
+     * @throws InvalidSignatureException
+     * @throws MissingSignatureException
+     * @throws \OutOfBoundsException
      */
     public function createProxy($instanceOrClassName) : RemoteObjectInterface
     {

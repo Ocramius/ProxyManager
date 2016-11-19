@@ -31,8 +31,11 @@ use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\IterableMethodTypeHintedInterface;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ReturnTypeHintedInterface;
+use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
+use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use ReflectionClass;
 
 /**
@@ -52,7 +55,7 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $className
      */
-    public function testGeneratesValidCode(string $className)
+    public function testGeneratesValidCode(string $className) : void
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');
@@ -105,7 +108,10 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
             [ClassWithAbstractPublicMethod::class],
             [BaseInterface::class],
             [ReturnTypeHintedClass::class],
+            [VoidMethodTypeHintedClass::class],
             [ReturnTypeHintedInterface::class],
+            [VoidMethodTypeHintedInterface::class],
+            [IterableMethodTypeHintedInterface::class],
         ];
     }
 }

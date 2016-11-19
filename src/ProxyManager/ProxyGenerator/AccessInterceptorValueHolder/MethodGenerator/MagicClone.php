@@ -59,7 +59,7 @@ class MagicClone extends MagicMethodGenerator
             . "}\n\n"
             . "foreach (\$this->$suffix as \$key => \$value) {\n"
             . "    \$this->$suffix" . "[\$key] = clone \$value;\n"
-            . "}"
+            . '}'
         );
     }
 }

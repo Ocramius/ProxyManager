@@ -106,6 +106,9 @@ PHP;
      * @param PublicPropertiesMap    $publicProperties
      * @param ProtectedPropertiesMap $protectedProperties
      * @param PrivatePropertiesMap   $privateProperties
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -119,7 +122,7 @@ PHP;
 
         $override = $originalClass->hasMethod('__isset');
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         $parentAccess = 'return parent::__isset($name);';
 

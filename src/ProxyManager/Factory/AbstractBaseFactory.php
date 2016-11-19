@@ -23,6 +23,8 @@ namespace ProxyManager\Factory;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Version;
 use ReflectionClass;
 
@@ -61,10 +63,14 @@ abstract class AbstractBaseFactory
      * @param mixed[] $proxyOptions
      *
      * @return string proxy class name
+     *
+     * @throws InvalidSignatureException
+     * @throws MissingSignatureException
+     * @throws \OutOfBoundsException
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
-        if (isset($this->checkedClasses[$className])) {
+        if (\array_key_exists($className, $this->checkedClasses)) {
             return $this->checkedClasses[$className];
         }
 
@@ -104,15 +110,13 @@ abstract class AbstractBaseFactory
      * @param string  $className
      * @param array   $proxyParameters
      * @param mixed[] $proxyOptions
-     *
-     * @return void
      */
     private function generateProxyClass(
         string $proxyClassName,
         string $className,
         array $proxyParameters,
         array $proxyOptions = []
-    ) {
+    ) : void {
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 

@@ -112,6 +112,9 @@ PHP;
      * @param ProtectedPropertiesMap $protectedProperties
      * @param PrivatePropertiesMap   $privateProperties
      * @param InitializationTracker  $initializationTracker
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -126,7 +129,7 @@ PHP;
 
         $override = $originalClass->hasMethod('__get');
 
-        $this->setDocblock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         $parentAccess = 'return parent::__get($name);';
 

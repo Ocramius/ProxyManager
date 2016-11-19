@@ -40,7 +40,7 @@ class CallInitializerTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer           = $this->createMock(PropertyGenerator::class);

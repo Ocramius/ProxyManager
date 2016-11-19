@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
@@ -37,7 +38,9 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
      * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
      * @param \Zend\Code\Generator\PropertyGenerator $valueHolderProperty
      *
-     * @return self|static
+     * @return self
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
@@ -65,10 +68,12 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
             . ' && $this->' . $initializerName
             . '->__invoke($this->' . $valueHolderName . ', $this, ' . var_export($methodName, true)
             . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ");\n\n"
-            . 'return $this->' . $valueHolderName . '->'
-            . $methodName . '(' . implode(', ', $forwardedParams) . ');'
+            . ProxiedMethodReturnExpression::generate(
+                '$this->' . $valueHolderName . '->' . $methodName . '(' . implode(', ', $forwardedParams) . ')',
+                $originalMethod
+            )
         );
-        $method->setDocblock('{@inheritDoc}');
+        $method->setDocBlock('{@inheritDoc}');
 
         return $method;
     }

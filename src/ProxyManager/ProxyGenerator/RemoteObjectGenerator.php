@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\RemoteObjectInterface;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
@@ -49,6 +50,9 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
 {
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidProxiedClassException
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {

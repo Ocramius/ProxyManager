@@ -38,14 +38,17 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
+use ProxyManagerTestAsset\IterableTypeHintClass;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
+use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
@@ -69,7 +72,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      *
      * @param string $className
      */
-    public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className)
+    public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className) : void
     {
         $ghostProxyFactory                      = new LazyLoadingGhostFactory();
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
@@ -126,11 +129,14 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
             [EmptyClass::class],
             [HydratedObject::class],
             [ClassWithSelfHint::class],
+            [ClassWithParentHint::class],
             [ClassWithCollidingPrivateInheritedProperties::class],
             [ClassWithMethodWithVariadicFunction::class],
             [ClassWithMethodWithByRefVariadicFunction::class],
             [ScalarTypeHintedClass::class],
+            [IterableTypeHintClass::class],
             [ReturnTypeHintedClass::class],
+            [VoidMethodTypeHintedClass::class],
         ];
     }
 }

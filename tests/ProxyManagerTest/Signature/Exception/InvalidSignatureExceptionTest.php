@@ -35,7 +35,7 @@ use ReflectionClass;
  */
 class InvalidSignatureExceptionTest extends PHPUnit_Framework_TestCase
 {
-    public function testFromInvalidSignature()
+    public function testFromInvalidSignature() : void
     {
         $exception = InvalidSignatureException::fromInvalidSignature(
             new ReflectionClass(__CLASS__),

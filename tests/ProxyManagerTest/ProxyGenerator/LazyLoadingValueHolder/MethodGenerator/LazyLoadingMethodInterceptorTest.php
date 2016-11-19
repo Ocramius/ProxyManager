@@ -39,7 +39,7 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer      = $this->createMock(PropertyGenerator::class);
@@ -65,9 +65,9 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor
      */
-    public function testBodyStructureWithoutParameters()
+    public function testBodyStructureWithoutParameters() : void
     {
-        $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
+        $reflectionMethod = new MethodReflection(BaseClass::class, 'publicMethod');
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer      = $this->createMock(PropertyGenerator::class);
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -80,12 +80,12 @@ class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
 
         $method = LazyLoadingMethodInterceptor::generateMethod($reflectionMethod, $initializer, $valueHolder);
 
-        self::assertSame('testBodyStructureWithoutParameters', $method->getName());
+        self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
-            . "'testBodyStructureWithoutParameters', array(), \$this->foo);\n\n"
-            . "return \$this->bar->testBodyStructureWithoutParameters();",
+            . "'publicMethod', array(), \$this->foo);\n\n"
+            . "return \$this->bar->publicMethod();",
             $method->getBody()
         );
     }

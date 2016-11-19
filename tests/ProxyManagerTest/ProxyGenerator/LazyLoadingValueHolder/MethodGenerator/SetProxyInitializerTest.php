@@ -38,7 +38,7 @@ class SetProxyInitializerTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $initializer = $this->createMock(PropertyGenerator::class);

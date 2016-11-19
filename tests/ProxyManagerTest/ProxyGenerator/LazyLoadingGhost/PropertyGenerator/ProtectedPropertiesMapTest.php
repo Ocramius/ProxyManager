@@ -49,7 +49,7 @@ class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
         );
     }
 
-    public function testExtractsProtectedProperties()
+    public function testExtractsProtectedProperties() : void
     {
         $map = new ProtectedPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
@@ -65,7 +65,7 @@ class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
         );
     }
 
-    public function testSkipsAbstractProtectedMethods()
+    public function testSkipsAbstractProtectedMethods() : void
     {
         $map = new ProtectedPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class))
@@ -74,7 +74,7 @@ class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
         self::assertSame([], $map->getDefaultValue()->getValue());
     }
 
-    public function testIsStaticPrivate()
+    public function testIsStaticPrivate() : void
     {
         $map = $this->createProperty();
 

@@ -34,7 +34,7 @@ use ProxyManager\Version;
  */
 class VersionTest extends PHPUnit_Framework_TestCase
 {
-    public function testGetVersion()
+    public function testGetVersion() : void
     {
         $version = Version::getVersion();
 

@@ -39,7 +39,7 @@ class EvaluatingGeneratorStrategyTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::generate
      * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::__construct
      */
-    public function testGenerate()
+    public function testGenerate() : void
     {
         $strategy       = new EvaluatingGeneratorStrategy();
         $className      = UniqueIdentifierGenerator::getIdentifier('Foo');
@@ -54,7 +54,7 @@ class EvaluatingGeneratorStrategyTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::generate
      * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::__construct
      */
-    public function testGenerateWithDisabledEval()
+    public function testGenerateWithDisabledEval() : void
     {
         if (! ini_get('suhosin.executor.disable_eval')) {
             self::markTestSkipped('Ini setting "suhosin.executor.disable_eval" is needed to run this test');

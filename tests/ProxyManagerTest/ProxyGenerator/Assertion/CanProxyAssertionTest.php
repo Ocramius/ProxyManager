@@ -34,6 +34,7 @@ use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithDefaultParameters;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
@@ -57,14 +58,14 @@ use ReflectionClass;
  */
 class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
 {
-    public function testDeniesFinalClasses()
+    public function testDeniesFinalClasses() : void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(FinalClass::class));
     }
 
-    public function testDeniesClassesWithAbstractProtectedMethods()
+    public function testDeniesClassesWithAbstractProtectedMethods() : void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
@@ -73,7 +74,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         ));
     }
 
-    public function testAllowsInterfaceByDefault()
+    public function testAllowsInterfaceByDefault() : void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
             BaseInterface::class
@@ -82,7 +83,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
         self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
-    public function testDeniesInterfaceIfSpecified()
+    public function testDeniesInterfaceIfSpecified() : void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseClass::class), false);
 
@@ -96,14 +97,14 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider validClasses
      */
-    public function testAllowedClass(string $className)
+    public function testAllowedClass(string $className) : void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass($className));
 
         self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
-    public function testDisallowsConstructor()
+    public function testDisallowsConstructor() : void
     {
         $this->expectException(BadMethodCallException::class);
 
@@ -130,6 +131,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
             [ClassWithPublicProperties::class],
             [ClassWithPublicArrayProperty::class],
             [ClassWithSelfHint::class],
+            [ClassWithParentHint::class],
             [EmptyClass::class],
             [HydratedObject::class],
             [LazyLoadingMock::class],

@@ -40,7 +40,7 @@ use Zend\Code\Generator\MethodGenerator;
  */
 class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
 {
-    public function testCantAddAFinalMethod()
+    public function testCantAddAFinalMethod() : void
     {
         /* @var $classGenerator ClassGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $classGenerator  = $this->createMock(ClassGenerator::class);
@@ -61,7 +61,7 @@ class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
         self::assertFalse(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
     }
 
-    public function testCanAddANotFinalMethod()
+    public function testCanAddANotFinalMethod() : void
     {
         /* @var $classGenerator ClassGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $classGenerator  = $this->createMock(ClassGenerator::class);

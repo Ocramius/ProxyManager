@@ -34,27 +34,27 @@ use ProxyManagerTestAsset\EmptyClass;
  */
 class BaselineInstantiationBench
 {
-    public function benchInstantiationOfEmptyObject()
+    public function benchInstantiationOfEmptyObject() : void
     {
         new EmptyClass();
     }
 
-    public function benchInstantiationOfObjectWithPrivateProperties()
+    public function benchInstantiationOfObjectWithPrivateProperties() : void
     {
         new ClassWithPrivateProperties();
     }
 
-    public function benchInstantiationOfObjectWithProtectedProperties()
+    public function benchInstantiationOfObjectWithProtectedProperties() : void
     {
         new ClassWithProtectedProperties();
     }
 
-    public function benchInstantiationOfObjectWithPublicProperties()
+    public function benchInstantiationOfObjectWithPublicProperties() : void
     {
         new ClassWithPublicProperties();
     }
 
-    public function benchInstantiationOfObjectWithMixedProperties()
+    public function benchInstantiationOfObjectWithMixedProperties() : void
     {
         new ClassWithMixedProperties();
     }

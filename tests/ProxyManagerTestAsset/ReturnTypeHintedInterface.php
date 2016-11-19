@@ -36,6 +36,10 @@ interface ReturnTypeHintedInterface
 
     public function returnSelf() : self;
 
+    public function returnIterable() : iterable;
+
+    public function returnVoid() : void;
+
     public function returnSameClass() : ReturnTypeHintedInterface;
 
     public function returnOtherClass() : EmptyClass;

@@ -39,7 +39,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 {
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder        = $this->createMock(PropertyGenerator::class);
@@ -80,7 +80,7 @@ return $instance;',
         );
     }
 
-    public function testBodyStructureWithoutPublicProperties()
+    public function testBodyStructureWithoutPublicProperties() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder        = $this->createMock(PropertyGenerator::class);
@@ -120,7 +120,7 @@ return $instance;',
     /**
      * @group 276
      */
-    public function testUnsetsPrivatePropertiesAsWell()
+    public function testUnsetsPrivatePropertiesAsWell() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder        = $this->createMock(PropertyGenerator::class);

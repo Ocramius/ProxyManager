@@ -38,7 +38,7 @@ use Zend\Code\Reflection\MethodReflection;
  */
 class InterceptedMethodTest extends PHPUnit_Framework_TestCase
 {
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
         $valueHolder        = $this->createMock(PropertyGenerator::class);

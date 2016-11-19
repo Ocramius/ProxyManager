@@ -23,6 +23,8 @@ namespace ProxyManager\Factory;
 use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 
 /**
  * Factory responsible of producing proxy objects
@@ -41,6 +43,10 @@ class NullObjectFactory extends AbstractBaseFactory
      * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
      *
      * @return NullObjectInterface
+     *
+     * @throws InvalidSignatureException
+     * @throws MissingSignatureException
+     * @throws \OutOfBoundsException
      */
     public function createProxy($instanceOrClassName) : NullObjectInterface
     {

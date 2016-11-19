@@ -40,7 +40,7 @@ class SoapTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::__construct
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::getServiceName
      */
-    public function testCanBuildAdapterWithSoapRpcClient()
+    public function testCanBuildAdapterWithSoapRpcClient() : void
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();

@@ -38,7 +38,7 @@ class FileLocatorTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\FileLocator\FileLocator::__construct
      * @covers \ProxyManager\FileLocator\FileLocator::getProxyFileName
      */
-    public function testGetProxyFileName()
+    public function testGetProxyFileName() : void
     {
         $locator = new FileLocator(__DIR__);
 
@@ -49,7 +49,7 @@ class FileLocatorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\FileLocator\FileLocator::__construct
      */
-    public function testRejectsNonExistingDirectory()
+    public function testRejectsNonExistingDirectory() : void
     {
         $this->expectException(InvalidProxyDirectoryException::class);
         new FileLocator(__DIR__ . '/non-existing');

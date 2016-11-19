@@ -39,7 +39,7 @@ use ReflectionClass;
  */
 class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
 {
-    public function testEmptyClass()
+    public function testEmptyClass() : void
     {
         $publicProperties = new PublicPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(EmptyClass::class))
@@ -52,7 +52,7 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
         self::assertTrue($publicProperties->isEmpty());
     }
 
-    public function testClassWithPublicProperties()
+    public function testClassWithPublicProperties() : void
     {
         $publicProperties = new PublicPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithPublicProperties::class))
@@ -65,7 +65,7 @@ class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
         self::assertFalse($publicProperties->isEmpty());
     }
 
-    public function testClassWithMixedProperties()
+    public function testClassWithMixedProperties() : void
     {
         $publicProperties = new PublicPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))

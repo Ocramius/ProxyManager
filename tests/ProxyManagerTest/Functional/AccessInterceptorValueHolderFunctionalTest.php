@@ -33,10 +33,13 @@ use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
+use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
+use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 
@@ -60,7 +63,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCalls(string $className, $instance, string $method, $params, $expectedValue)
+    public function testMethodCalls(string $className, $instance, string $method, $params, $expectedValue) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -115,7 +118,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
@@ -165,7 +168,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         $params,
         $expectedValue
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
@@ -183,8 +186,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterCloning(string $className, $instance, string $method, $params, $expectedValue)
-    {
+    public function testMethodCallsAfterCloning(
+        string $className,
+        $instance,
+        string $method,
+        $params,
+        $expectedValue
+    ) : void {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
@@ -209,7 +217,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty,
         $propertyValue
-    ) {
+    ) : void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
@@ -225,7 +233,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
-    ) {
+    ) : void {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
 
@@ -244,7 +252,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
-    ) {
+    ) : void {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
 
@@ -263,7 +271,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
-    ) {
+    ) : void {
         $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
         unset($proxy->$publicProperty);
 
@@ -274,7 +282,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * Verifies that accessing a public property containing an array behaves like in a normal context
      */
-    public function testCanWriteToArrayKeysInPublicProperty()
+    public function testCanWriteToArrayKeysInPublicProperty() : void
     {
         $instance    = new ClassWithPublicArrayProperty();
         $className   = get_class($instance);
@@ -294,7 +302,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * Verifies that public properties retrieved via `__get` don't get modified in the object state
      */
-    public function testWillNotModifyRetrievedPublicProperties()
+    public function testWillNotModifyRetrievedPublicProperties() : void
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
@@ -314,7 +322,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * Verifies that public properties references retrieved via `__get` modify in the object state
      */
-    public function testWillModifyByRefRetrievedPublicProperties()
+    public function testWillModifyByRefRetrievedPublicProperties() : void
     {
         $instance    = new ClassWithPublicProperties();
         $className   = get_class($instance);
@@ -335,7 +343,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      * @group 115
      * @group 175
      */
-    public function testWillBehaveLikeObjectWithNormalConstructor()
+    public function testWillBehaveLikeObjectWithNormalConstructor() : void
     {
         $instance = new ClassWithCounterConstructor(10);
 
@@ -357,7 +365,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         self::assertSame(20, $proxy->getAmount(), 'Verifying that the proxy constructor works as expected');
     }
 
-    public function testWillForwardVariadicArguments()
+    public function testWillForwardVariadicArguments() : void
     {
         $factory       = new AccessInterceptorValueHolderFactory();
         $targetObject  = new ClassWithMethodWithVariadicFunction();
@@ -383,7 +391,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     /**
      * @group 265
      */
-    public function testWillForwardVariadicByRefArguments()
+    public function testWillForwardVariadicByRefArguments() : void
     {
         $factory       = new AccessInterceptorValueHolderFactory();
         $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
@@ -415,7 +423,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      *
      * @group 265
      */
-    public function testWillNotForwardDynamicArguments()
+    public function testWillNotForwardDynamicArguments() : void
     {
         $proxyName = $this->generateProxy(ClassWithDynamicArgumentsMethod::class);
 
@@ -457,6 +465,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
     public function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
+        $empty         = new EmptyClass();
 
         return [
             [
@@ -493,6 +502,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
                 $selfHintParam
+            ],
+            [
+                ClassWithParentHint::class,
+                new ClassWithParentHint(),
+                'parentHintMethod',
+                ['parameter' => $empty],
+                $empty
             ],
         ];
     }
@@ -542,7 +558,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = $proxyName::staticProxyConstructor($realInstance);
@@ -585,7 +601,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
@@ -629,7 +645,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
         string $method,
         string $expectedValue,
         string $propertyName
-    ) {
+    ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = clone $proxyName::staticProxyConstructor($realInstance);
@@ -691,5 +707,57 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
                 $propertyName,
             ];
         }
+    }
+
+    /**
+     * @group 327
+     */
+    public function testWillInterceptAndReturnEarlyOnVoidMethod() : void
+    {
+        $skip      = random_int(100, 200);
+        $addMore   = random_int(201, 300);
+        $increment = random_int(301, 400);
+
+        $proxyName = $this->generateProxy(VoidCounter::class);
+
+        /* @var $object VoidCounter */
+        $object = $proxyName::staticProxyConstructor(
+            new VoidCounter(),
+            [
+                'increment' => function (
+                    VoidCounter $proxy,
+                    VoidCounter $instance,
+                    string $method,
+                    array $params,
+                    ?bool & $returnEarly
+                ) use ($skip) : void {
+                    if ($skip === $params['amount']) {
+                        $returnEarly = true;
+                    }
+                },
+            ],
+            [
+                'increment' => function (
+                    VoidCounter $proxy,
+                    VoidCounter $instance,
+                    string $method,
+                    array $params,
+                    ?bool & $returnEarly
+                ) use ($addMore) : void {
+                    if ($addMore === $params['amount']) {
+                        $instance->counter += 1;
+                    }
+                },
+            ]
+        );
+
+        $object->increment($skip);
+        self::assertSame(0, $object->counter);
+
+        $object->increment($increment);
+        self::assertSame($increment, $object->counter);
+
+        $object->increment($addMore);
+        self::assertSame($increment + $addMore + 1, $object->counter);
     }
 }

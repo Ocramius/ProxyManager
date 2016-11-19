@@ -24,6 +24,8 @@ use Closure;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 
 /**
  * Factory responsible of producing ghost instances
@@ -83,6 +85,10 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      *                              via PHP's internal property name (i.e. "\0ClassName\0propertyName")
      *
      * @return GhostObjectInterface
+     *
+     * @throws MissingSignatureException
+     * @throws InvalidSignatureException
+     * @throws \OutOfBoundsException
      */
     public function createProxy(
         string $className,

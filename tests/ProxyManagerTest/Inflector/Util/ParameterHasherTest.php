@@ -41,7 +41,7 @@ class ParameterHasherTest extends PHPUnit_Framework_TestCase
      * @param mixed[] $parameters
      * @param string  $expectedHash
      */
-    public function testGeneratesValidClassName(array $parameters, string $expectedHash)
+    public function testGeneratesValidClassName(array $parameters, string $expectedHash) : void
     {
         $encoder = new ParameterHasher();
 

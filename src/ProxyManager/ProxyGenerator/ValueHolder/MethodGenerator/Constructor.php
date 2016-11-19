@@ -43,6 +43,8 @@ class Constructor extends MethodGenerator
      * @param PropertyGenerator $valueHolder
      *
      * @return self
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder) : self
     {
@@ -52,7 +54,7 @@ class Constructor extends MethodGenerator
             ? self::fromReflection($originalConstructor)
             : new self('__construct');
 
-        $constructor->setDocblock('{@inheritDoc}');
+        $constructor->setDocBlock('{@inheritDoc}');
         $constructor->setBody(
             'static $reflection;' . "\n\n"
             . 'if (! $this->' . $valueHolder->getName() . ') {' . "\n"
@@ -61,7 +63,7 @@ class Constructor extends MethodGenerator
             . ");\n"
             . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"
             . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'this')
-            . "}"
+            . '}'
             . self::generateOriginalConstructorCall($originalClass, $valueHolder)
         );
 

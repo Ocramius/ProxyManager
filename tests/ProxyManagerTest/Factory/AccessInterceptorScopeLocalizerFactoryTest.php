@@ -99,7 +99,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
      *
      * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::__construct
      */
-    public function testWithOptionalFactory()
+    public function testWithOptionalFactory() : void
     {
         $factory = new AccessInterceptorValueHolderFactory();
         self::assertAttributeNotEmpty('configuration', $factory);
@@ -113,7 +113,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
      * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::createProxy
      * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::getGenerator
      */
-    public function testWillSkipAutoGeneration()
+    public function testWillSkipAutoGeneration() : void
     {
         $instance = new stdClass();
 
@@ -143,7 +143,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestC
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration()
+    public function testWillTryAutoGeneration() : void
     {
         $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');

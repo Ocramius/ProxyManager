@@ -163,7 +163,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $magicIsset = new MagicUnset(
             new ReflectionClass(ClassWithTwoPublicProperties::class),
@@ -182,7 +182,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset::__construct
      */
-    public function testBodyStructureWithOverriddenMagicGet()
+    public function testBodyStructureWithOverriddenMagicGet() : void
     {
         $magicIsset = new MagicUnset(
             new ReflectionClass(ClassWithMagicMethods::class),

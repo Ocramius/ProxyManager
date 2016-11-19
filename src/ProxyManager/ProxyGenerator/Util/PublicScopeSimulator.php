@@ -155,7 +155,7 @@ class PublicScopeSimulator
     {
         switch ($operationType) {
             case static::OPERATION_GET:
-                return 'return $targetObject->$' . $nameParameter . ";";
+                return 'return $targetObject->$' . $nameParameter . ';';
             case static::OPERATION_SET:
                 if (! $valueParameter) {
                     throw new \InvalidArgumentException('Parameter $valueParameter not provided');

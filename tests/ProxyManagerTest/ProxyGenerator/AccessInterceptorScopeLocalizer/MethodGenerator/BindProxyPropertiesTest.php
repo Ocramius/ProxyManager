@@ -61,7 +61,7 @@ class BindProxyPropertiesTest extends PHPUnit_Framework_TestCase
         $this->suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
     }
 
-    public function testSignature()
+    public function testSignature() : void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithProtectedProperties::class),
@@ -84,7 +84,7 @@ class BindProxyPropertiesTest extends PHPUnit_Framework_TestCase
         self::assertSame('array', $parameters['suffixInterceptors']->getType());
     }
 
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithMixedProperties::class),
@@ -124,7 +124,7 @@ PHP;
         self::assertSame($expectedCode, $method->getBody());
     }
 
-    public function testBodyStructureWithProtectedProperties()
+    public function testBodyStructureWithProtectedProperties() : void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithProtectedProperties::class),
@@ -159,7 +159,7 @@ $this->post = $suffixInterceptors;',
         );
     }
 
-    public function testBodyStructureWithPrivateProperties()
+    public function testBodyStructureWithPrivateProperties() : void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithPrivateProperties::class),

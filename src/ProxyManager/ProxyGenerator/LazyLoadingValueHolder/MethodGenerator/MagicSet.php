@@ -42,6 +42,9 @@ class MagicSet extends MagicMethodGenerator
      * @param PropertyGenerator   $initializerProperty
      * @param PropertyGenerator   $valueHolderProperty
      * @param PublicPropertiesMap $publicProperties
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -60,7 +63,7 @@ class MagicSet extends MagicMethodGenerator
         $valueHolder = $valueHolderProperty->getName();
         $callParent  = '';
 
-        $this->setDocblock(($hasParent ? "{@inheritDoc}\n" : '') . "@param string \$name\n@param mixed \$value");
+        $this->setDocBlock(($hasParent ? "{@inheritDoc}\n" : '') . "@param string \$name\n@param mixed \$value");
 
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"

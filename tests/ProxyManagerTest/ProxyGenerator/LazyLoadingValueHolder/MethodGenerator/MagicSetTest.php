@@ -39,7 +39,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class MagicSetTest extends PHPUnit_Framework_TestCase
 {
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
@@ -72,10 +72,8 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group 344
-     *
-     * @return void
      */
-    public function testBodyStructureWithPreExistingMagicMethod()
+    public function testBodyStructureWithPreExistingMagicMethod() : void
     {
         $reflection       = new ReflectionClass(ClassWithMagicMethods::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

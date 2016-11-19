@@ -40,7 +40,7 @@ class MagicCloneTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone::__construct
      */
-    public function testBodyStructure()
+    public function testBodyStructure() : void
     {
         $reflection  = new ReflectionClass(EmptyClass::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

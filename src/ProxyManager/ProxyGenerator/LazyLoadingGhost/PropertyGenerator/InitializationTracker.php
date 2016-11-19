@@ -33,13 +33,15 @@ class InitializationTracker extends PropertyGenerator
 {
     /**
      * Constructor
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct()
     {
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('initializationTracker'));
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setDocblock('@var bool tracks initialization status - true while the object is initializing');
+        $this->setDocBlock('@var bool tracks initialization status - true while the object is initializing');
         $this->setDefaultValue(false);
     }
 }

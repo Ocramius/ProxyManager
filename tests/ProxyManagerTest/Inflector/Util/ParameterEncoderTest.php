@@ -40,7 +40,7 @@ class ParameterEncoderTest extends PHPUnit_Framework_TestCase
      *
      * @param mixed[] $parameters
      */
-    public function testGeneratesValidClassName(array $parameters)
+    public function testGeneratesValidClassName(array $parameters) : void
     {
         $encoder = new ParameterEncoder();
 

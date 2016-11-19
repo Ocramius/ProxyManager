@@ -75,56 +75,56 @@ class LazyLoadingValueHolderInstantiationBench
         $this->mixedPropertiesProxy     = $this->generateProxy(ClassWithMixedProperties::class);
     }
 
-    public function benchOriginalConstructorInstantiationOfEmptyObject()
+    public function benchOriginalConstructorInstantiationOfEmptyObject() : void
     {
         new $this->emptyClassProxy;
     }
 
-    public function benchInstantiationOfEmptyObject()
+    public function benchInstantiationOfEmptyObject() : void
     {
         ($this->emptyClassProxy)::staticProxyConstructor(function () {
         });
     }
 
-    public function benchOriginalConstructorInstantiationOfObjectWithPrivateProperties()
+    public function benchOriginalConstructorInstantiationOfObjectWithPrivateProperties() : void
     {
         new $this->privatePropertiesProxy;
     }
 
-    public function benchInstantiationOfObjectWithPrivateProperties()
+    public function benchInstantiationOfObjectWithPrivateProperties() : void
     {
         ($this->privatePropertiesProxy)::staticProxyConstructor(function () {
         });
     }
 
-    public function benchOriginalConstructorInstantiationOfObjectWithProtectedProperties()
+    public function benchOriginalConstructorInstantiationOfObjectWithProtectedProperties() : void
     {
         new $this->protectedPropertiesProxy;
     }
 
-    public function benchInstantiationOfObjectWithProtectedProperties()
+    public function benchInstantiationOfObjectWithProtectedProperties() : void
     {
         ($this->protectedPropertiesProxy)::staticProxyConstructor(function () {
         });
     }
 
-    public function benchOriginalConstructorInstantiationOfObjectWithPublicProperties()
+    public function benchOriginalConstructorInstantiationOfObjectWithPublicProperties() : void
     {
         new $this->publicPropertiesProxy;
     }
 
-    public function benchInstantiationOfObjectWithPublicProperties()
+    public function benchInstantiationOfObjectWithPublicProperties() : void
     {
         ($this->publicPropertiesProxy)::staticProxyConstructor(function () {
         });
     }
 
-    public function benchOriginalConstructorInstantiationOfObjectWithMixedProperties()
+    public function benchOriginalConstructorInstantiationOfObjectWithMixedProperties() : void
     {
         new $this->mixedPropertiesProxy;
     }
 
-    public function benchInstantiationOfObjectWithMixedProperties()
+    public function benchInstantiationOfObjectWithMixedProperties() : void
     {
         ($this->mixedPropertiesProxy)::staticProxyConstructor(function () {
         });

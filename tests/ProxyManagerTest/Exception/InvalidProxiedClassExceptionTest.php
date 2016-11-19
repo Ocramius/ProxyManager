@@ -35,7 +35,7 @@ use ReflectionClass;
  */
 class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
 {
-    public function testInterfaceNotSupported()
+    public function testInterfaceNotSupported() : void
     {
         self::assertSame(
             'Provided interface "ProxyManagerTestAsset\BaseInterface" cannot be proxied',
@@ -45,7 +45,7 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFinalClassNotSupported()
+    public function testFinalClassNotSupported() : void
     {
         self::assertSame(
             'Provided class "ProxyManagerTestAsset\FinalClass" is final and cannot be proxied',
@@ -55,7 +55,7 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAbstractProtectedMethodsNotSupported()
+    public function testAbstractProtectedMethodsNotSupported() : void
     {
         self::assertSame(
             'Provided class "ProxyManagerTestAsset\ClassWithAbstractProtectedMethod" has following protected abstract'

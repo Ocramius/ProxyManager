@@ -34,12 +34,14 @@ class AdapterProperty extends PropertyGenerator
 {
     /**
      * Constructor
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct()
     {
         parent::__construct(UniqueIdentifierGenerator::getIdentifier('adapter'));
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setDocblock('@var \\' . AdapterInterface::class . ' Remote web service adapter');
+        $this->setDocBlock('@var \\' . AdapterInterface::class . ' Remote web service adapter');
     }
 }

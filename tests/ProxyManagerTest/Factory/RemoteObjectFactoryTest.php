@@ -100,7 +100,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
      * @covers \ProxyManager\Factory\RemoteObjectFactory::createProxy
      * @covers \ProxyManager\Factory\RemoteObjectFactory::getGenerator
      */
-    public function testWillSkipAutoGeneration()
+    public function testWillSkipAutoGeneration() : void
     {
         $this
             ->inflector
@@ -127,7 +127,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration()
+    public function testWillTryAutoGeneration() : void
     {
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);

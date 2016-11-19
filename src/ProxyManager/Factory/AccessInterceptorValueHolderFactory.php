@@ -23,6 +23,8 @@ namespace ProxyManager\Factory;
 use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 
 /**
  * Factory responsible of producing proxy objects
@@ -45,6 +47,10 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *                                       after method logic is executed
      *
      * @return AccessInterceptorValueHolderInterface
+     *
+     * @throws InvalidSignatureException
+     * @throws MissingSignatureException
+     * @throws \OutOfBoundsException
      */
     public function createProxy(
         $instance,

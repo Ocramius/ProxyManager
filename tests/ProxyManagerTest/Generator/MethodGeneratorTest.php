@@ -22,6 +22,9 @@ namespace ProxyManagerTest\Generator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\ReturnTypeHintedClass;
+use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
@@ -39,7 +42,7 @@ use Zend\Code\Reflection\MethodReflection;
  */
 class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 {
-    public function testGenerateSimpleMethod()
+    public function testGenerateSimpleMethod() : void
     {
         $methodGenerator = new MethodGenerator();
 
@@ -59,7 +62,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * Verify that building from reflection works
      */
-    public function testGenerateFromReflection()
+    public function testGenerateFromReflection() : void
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(__CLASS__, __FUNCTION__));
 
@@ -77,7 +80,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
         self::assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
 
-    public function testGeneratedParametersFromReflection()
+    public function testGeneratedParametersFromReflection() : void
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(
             BaseClass::class,
@@ -101,7 +104,7 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider scalarTypeHintedMethods
      */
-    public function testGenerateMethodWithScalarTypeHinting(string $methodName, string $type)
+    public function testGenerateMethodWithScalarTypeHinting(string $methodName, string $type) : void
     {
         $method = MethodGenerator::fromReflection(new MethodReflection(
             ScalarTypeHintedClass::class,
@@ -126,6 +129,54 @@ class MethodGeneratorTest extends PHPUnit_Framework_TestCase
             ['acceptInteger', 'int'],
             ['acceptBoolean', 'bool'],
             ['acceptFloat', 'float'],
+        ];
+    }
+
+    public function testGenerateMethodWithVoidReturnTypeHinting() : void
+    {
+        $method = MethodGenerator::fromReflection(new MethodReflection(
+            VoidMethodTypeHintedInterface::class,
+            'returnVoid'
+        ));
+
+        self::assertSame('returnVoid', $method->getName());
+        self::assertStringMatchesFormat('%a : void%a', $method->generate());
+    }
+
+    /**
+     * @dataProvider returnTypeHintsProvider
+     *
+     * @param string $methodName
+     * @param string $expectedType
+     */
+    public function testReturnTypeHintGeneration(string $methodName, string $expectedType) : void
+    {
+        $method = MethodGenerator::fromReflection(new MethodReflection(
+            ReturnTypeHintedClass::class,
+            $methodName
+        ));
+
+        self::assertSame($methodName, $method->getName());
+        self::assertStringMatchesFormat('%a : ' . $expectedType . '%a', $method->generate());
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function returnTypeHintsProvider() : array
+    {
+        return [
+            ['returnString', 'string'],
+            ['returnInteger', 'int'],
+            ['returnBool', 'bool'],
+            ['returnArray', 'array'],
+            ['returnCallable', 'callable'],
+            ['returnSelf', '\\' . ReturnTypeHintedClass::class],
+            ['returnParent', '\\' . EmptyClass::class],
+            ['returnVoid', 'void'],
+            ['returnIterable', 'iterable'],
+            ['returnSameClass', '\\' . ReturnTypeHintedClass::class],
+            ['returnOtherClass', '\\' . EmptyClass::class],
         ];
     }
 }
