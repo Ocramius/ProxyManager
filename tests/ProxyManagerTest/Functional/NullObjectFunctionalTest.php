@@ -53,7 +53,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCalls(string $className, string $method, array $params)
+    public function testMethodCalls(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -70,7 +70,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params)
+    public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
         /* @var $proxy NullObjectInterface */
@@ -86,7 +86,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string  $method
      * @param mixed[] $params
      */
-    public function testMethodCallsAfterCloning(string $className, string $method, array $params)
+    public function testMethodCallsAfterCloning(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -102,7 +102,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
         self::assertNull($proxy->$publicProperty);
     }
@@ -113,7 +113,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -127,7 +127,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty) : void
     {
         self::assertNull($proxy->$publicProperty);
     }
@@ -138,7 +138,7 @@ class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param NullObjectInterface $proxy
      * @param string              $publicProperty
      */
-    public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty)
+    public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty) : void
     {
         unset($proxy->$publicProperty);
 

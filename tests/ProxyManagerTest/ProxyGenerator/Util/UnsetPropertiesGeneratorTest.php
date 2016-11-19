@@ -46,7 +46,7 @@ class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
      * @param string $expectedCode
      * @param string $instanceName
      */
-    public function testGeneratedCode(string $className, string $expectedCode, string $instanceName)
+    public function testGeneratedCode(string $className, string $expectedCode, string $instanceName) : void
     {
         self::assertSame(
             $expectedCode,

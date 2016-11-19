@@ -45,7 +45,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @param string $realClassName
      * @param string $proxyClassName
      */
-    public function testInflector(string $realClassName, string $proxyClassName)
+    public function testInflector(string $realClassName, string $proxyClassName) : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -121,7 +121,7 @@ class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
      * @param string $className
      * @param array  $parameters
      */
-    public function testClassNameIsValidClassIdentifier(string $className, array $parameters)
+    public function testClassNameIsValidClassIdentifier(string $className, array $parameters) : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 

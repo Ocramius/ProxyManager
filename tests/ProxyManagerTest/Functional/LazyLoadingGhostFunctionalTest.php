@@ -220,7 +220,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyWriteAccess($instance, GhostObjectInterface $proxy, string $publicProperty)
+    public function testPropertyWriteAccess($instance, GhostObjectInterface $proxy, string $publicProperty) : void
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -236,7 +236,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyExistence($instance, GhostObjectInterface $proxy, string $publicProperty)
+    public function testPropertyExistence($instance, GhostObjectInterface $proxy, string $publicProperty) : void
     {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         self::assertTrue($proxy->isProxyInitialized());
@@ -249,7 +249,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyAbsence($instance, GhostObjectInterface $proxy, string $publicProperty)
+    public function testPropertyAbsence($instance, GhostObjectInterface $proxy, string $publicProperty) : void
     {
         $proxy->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
@@ -263,7 +263,7 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      * @param GhostObjectInterface $proxy
      * @param string               $publicProperty
      */
-    public function testPropertyUnset($instance, GhostObjectInterface $proxy, string $publicProperty)
+    public function testPropertyUnset($instance, GhostObjectInterface $proxy, string $publicProperty) : void
     {
         unset($proxy->$publicProperty);
 

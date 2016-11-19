@@ -113,7 +113,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[]       $params
      * @param mixed         $expectedValue
      */
-    public function testXmlRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue)
+    public function testXmlRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
     {
         $proxyName = $this->generateProxy($instanceOrClassName);
 
@@ -131,7 +131,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param mixed[]       $params
      * @param mixed         $expectedValue
      */
-    public function testJsonRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue)
+    public function testJsonRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
     {
         $proxyName = $this->generateProxy($instanceOrClassName);
 
@@ -148,7 +148,7 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * @param string        $publicProperty
      * @param string        $propertyValue
      */
-    public function testJsonRpcPropertyReadAccess($instanceOrClassName, string $publicProperty, $propertyValue)
+    public function testJsonRpcPropertyReadAccess($instanceOrClassName, string $publicProperty, $propertyValue) : void
     {
         $proxyName = $this->generateProxy($instanceOrClassName);
 

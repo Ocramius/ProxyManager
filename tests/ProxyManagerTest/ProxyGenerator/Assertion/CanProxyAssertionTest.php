@@ -97,7 +97,7 @@ class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider validClasses
      */
-    public function testAllowedClass(string $className)
+    public function testAllowedClass(string $className) : void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass($className));
 

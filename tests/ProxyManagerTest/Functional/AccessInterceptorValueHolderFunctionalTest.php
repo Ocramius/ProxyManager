@@ -62,7 +62,7 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCalls(string $className, $instance, string $method, $params, $expectedValue)
+    public function testMethodCalls(string $className, $instance, string $method, $params, $expectedValue) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -185,8 +185,13 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCallsAfterCloning(string $className, $instance, string $method, $params, $expectedValue)
-    {
+    public function testMethodCallsAfterCloning(
+        string $className,
+        $instance,
+        string $method,
+        $params,
+        $expectedValue
+    ) : void {
         $proxyName = $this->generateProxy($className);
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */

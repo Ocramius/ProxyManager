@@ -53,7 +53,7 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      * @param array|null      $excludes
      * @param array           $expectedMethods
      */
-    public function testFiltering(ReflectionClass $reflectionClass, $excludes, array $expectedMethods)
+    public function testFiltering(ReflectionClass $reflectionClass, $excludes, array $expectedMethods) : void
     {
         $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
 
@@ -81,8 +81,11 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
      * @param array|null      $excludes
      * @param array           $expectedMethods
      */
-    public function testFilteringOfAbstractPublic(ReflectionClass $reflectionClass, $excludes, array $expectedMethods)
-    {
+    public function testFilteringOfAbstractPublic(
+        ReflectionClass $reflectionClass,
+        ?array $excludes,
+        array $expectedMethods
+    ) : void {
         $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
 
         foreach ($filtered as $method) {

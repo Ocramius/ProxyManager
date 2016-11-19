@@ -63,7 +63,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCalls(string $className, $instance, string $method, array $params, $expectedValue)
+    public function testMethodCalls(string $className, $instance, string $method, array $params, $expectedValue) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -231,7 +231,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param AccessInterceptorInterface $proxy
      * @param string                     $publicProperty
      */
-    public function testPropertyWriteAccess($instance, AccessInterceptorInterface $proxy, string $publicProperty)
+    public function testPropertyWriteAccess($instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -247,7 +247,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param AccessInterceptorInterface $proxy
      * @param string                     $publicProperty
      */
-    public function testPropertyExistence($instance, AccessInterceptorInterface $proxy, string $publicProperty)
+    public function testPropertyExistence($instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
     {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
@@ -264,7 +264,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
      * @param AccessInterceptorInterface $proxy
      * @param string                     $publicProperty
      */
-    public function testPropertyUnset($instance, AccessInterceptorInterface $proxy, string $publicProperty)
+    public function testPropertyUnset($instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
     {
         self::markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);

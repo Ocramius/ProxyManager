@@ -72,7 +72,7 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
      *
      * @param string $className
      */
-    public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className)
+    public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className) : void
     {
         $ghostProxyFactory                      = new LazyLoadingGhostFactory();
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();

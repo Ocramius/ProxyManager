@@ -75,7 +75,7 @@ class MagicSetTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testBodyStructureWithPreExistingMagicMethod()
+    public function testBodyStructureWithPreExistingMagicMethod() : void
     {
         $reflection       = new ReflectionClass(ClassWithMagicMethods::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */

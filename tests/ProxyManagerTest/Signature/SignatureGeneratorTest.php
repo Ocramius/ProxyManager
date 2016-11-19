@@ -53,7 +53,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider signatures
      */
-    public function testGenerateSignature(array $parameters, string $expected)
+    public function testGenerateSignature(array $parameters, string $expected) : void
     {
         self::assertSame($expected, $this->signatureGenerator->generateSignature($parameters));
     }
@@ -64,7 +64,7 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider signatureKeys
      */
-    public function testGenerateSignatureKey(array $parameters, string $expected)
+    public function testGenerateSignatureKey(array $parameters, string $expected) : void
     {
         self::assertSame($expected, $this->signatureGenerator->generateSignatureKey($parameters));
     }

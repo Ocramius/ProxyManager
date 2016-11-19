@@ -78,7 +78,7 @@ class MagicGetTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testBodyStructureWithPreExistingGetMethod()
+    public function testBodyStructureWithPreExistingGetMethod() : void
     {
         $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
         /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
