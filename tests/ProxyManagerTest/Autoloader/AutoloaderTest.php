@@ -75,7 +75,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
             ->with($className)
             ->will(self::returnValue(false));
 
-        self::assertFalse($this->autoloader->__invoke($className));
+        self::assertFalse($this->autoloadWithoutFurtherAutoloaders($className));
     }
 
     /**
@@ -96,7 +96,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
             ->method('getProxyFileName')
             ->will(self::returnValue(__DIR__ . '/non-existing'));
 
-        self::assertFalse($this->autoloader->__invoke($className));
+        self::assertFalse($this->autoloadWithoutFurtherAutoloaders($className));
     }
 
     /**
@@ -104,7 +104,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
      */
     public function testWillNotAutoloadExistingClass() : void
     {
-        self::assertFalse($this->autoloader->__invoke(__CLASS__));
+        self::assertFalse($this->autoloadWithoutFurtherAutoloaders(__CLASS__));
     }
 
     /**
@@ -131,7 +131,25 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
             ->method('getProxyFileName')
             ->will(self::returnValue($fileName));
 
-        self::assertTrue($this->autoloader->__invoke($fqcn));
+        self::assertTrue($this->autoloadWithoutFurtherAutoloaders($fqcn));
         self::assertTrue(class_exists($fqcn, false));
+    }
+
+    private function autoloadWithoutFurtherAutoloaders(string $className) : bool
+    {
+        $failingAutoloader = null;
+        $failingAutoloader = function (string $className) use (& $failingAutoloader) : void {
+            spl_autoload_unregister($failingAutoloader);
+
+            $this->fail(sprintf('Fallback autoloading was triggered to load "%s"', $className));
+        };
+
+        spl_autoload_register($failingAutoloader);
+
+        $result = $this->autoloader->__invoke($className);
+
+        spl_autoload_unregister($failingAutoloader);
+
+        return $result;
     }
 }
