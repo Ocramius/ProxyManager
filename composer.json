@@ -29,7 +29,8 @@
         "phpunit/phpunit-mock-objects": "^3.4.1",
         "squizlabs/php_codesniffer":    "^2.7.0",
         "couscous/couscous":            "^1.5.2",
-        "phpbench/phpbench":            "^0.12.2"
+        "phpbench/phpbench":            "^0.12.2",
+        "humbug/humbug":                "dev-master@DEV"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",

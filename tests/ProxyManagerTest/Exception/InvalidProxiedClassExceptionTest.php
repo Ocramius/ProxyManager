@@ -22,6 +22,11 @@ namespace ProxyManagerTest\Exception;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Exception\InvalidProxiedClassException;
+use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
+use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
+use ProxyManagerTestAsset\ClassWithProtectedMethod;
+use ProxyManagerTestAsset\FinalClass;
 use ReflectionClass;
 
 /**
@@ -40,7 +45,7 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
         self::assertSame(
             'Provided interface "ProxyManagerTestAsset\BaseInterface" cannot be proxied',
             InvalidProxiedClassException::interfaceNotSupported(
-                new ReflectionClass('ProxyManagerTestAsset\BaseInterface')
+                new ReflectionClass(BaseInterface::class)
             )->getMessage()
         );
     }
@@ -50,7 +55,7 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
         self::assertSame(
             'Provided class "ProxyManagerTestAsset\FinalClass" is final and cannot be proxied',
             InvalidProxiedClassException::finalClassNotSupported(
-                new ReflectionClass('ProxyManagerTestAsset\FinalClass')
+                new ReflectionClass(FinalClass::class)
             )->getMessage()
         );
     }
@@ -62,7 +67,29 @@ class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
             . ' methods, and therefore cannot be proxied:' . "\n"
             . 'ProxyManagerTestAsset\ClassWithAbstractProtectedMethod::protectedAbstractMethod',
             InvalidProxiedClassException::abstractProtectedMethodsNotSupported(
-                new ReflectionClass('ProxyManagerTestAsset\ClassWithAbstractProtectedMethod')
+                new ReflectionClass(ClassWithAbstractProtectedMethod::class)
+            )->getMessage()
+        );
+    }
+
+    public function testProtectedMethodsNotSupported() : void
+    {
+        self::assertSame(
+            'Provided class "ProxyManagerTestAsset\ClassWithProtectedMethod" has following protected abstract'
+            . ' methods, and therefore cannot be proxied:' . "\n",
+            InvalidProxiedClassException::abstractProtectedMethodsNotSupported(
+                new ReflectionClass(ClassWithProtectedMethod::class)
+            )->getMessage()
+        );
+    }
+
+    public function testAbstractPublicMethodsNotSupported() : void
+    {
+        self::assertSame(
+            'Provided class "ProxyManagerTestAsset\ClassWithAbstractPublicMethod" has following protected abstract'
+            . ' methods, and therefore cannot be proxied:' . "\n",
+            InvalidProxiedClassException::abstractProtectedMethodsNotSupported(
+                new ReflectionClass(ClassWithAbstractPublicMethod::class)
             )->getMessage()
         );
     }

@@ -40,6 +40,13 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
         ));
     }
 
+    /**
+     * @deprecated this method is unused, and will be removed in ProxyManager 3.0.0
+     *
+     * @param string $path
+     *
+     * @return self
+     */
     public static function fromNonWritableLocation($path) : self
     {
         $messages    = [];

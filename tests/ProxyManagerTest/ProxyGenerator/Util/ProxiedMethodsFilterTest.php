@@ -26,6 +26,8 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
+use ProxyManagerTestAsset\ClassWithCounterConstructor;
+use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
@@ -212,6 +214,16 @@ class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
                 null,
                 ['tuz'],
             ],
+            'final magic methods' => [
+                new ReflectionClass(ClassWithFinalMagicMethods::class),
+                null,
+                []
+            ],
+            'non-final constructor is to be skipped' => [
+                new ReflectionClass(ClassWithCounterConstructor::class),
+                null,
+                ['getAmount']
+            ]
         ];
     }
 

@@ -102,12 +102,17 @@ class PublicScopeSimulator
             return '';
         }
 
-        //
         return '    $backtrace = debug_backtrace(false);' . "\n"
-            . '    trigger_error(\'Undefined property: \' . get_parent_class($this) . \'::$\' . $'
-            . $nameParameter
-            . ' . \' in \' . $backtrace[0][\'file\'] . \' on line \' . $backtrace[0][\'line\'], \E_USER_NOTICE);'
-            . "\n";
+            . '    trigger_error(' . "\n"
+            . '        sprintf(' . "\n"
+            . '            \'Undefined property: %s::$%s in %s on line %s\',' . "\n"
+            . '            get_parent_class($this),' . "\n"
+            . '            $' . $nameParameter . ',' . "\n"
+            . '            $backtrace[0][\'file\'],' . "\n"
+            . '            $backtrace[0][\'line\']' . "\n"
+            . '        ),' . "\n"
+            . '        \E_USER_NOTICE' . "\n"
+            . '    );' . "\n";
     }
 
     /**
@@ -178,9 +183,9 @@ class PublicScopeSimulator
      */
     private static function getScopeReBind() : string
     {
-        return '    $backtrace = debug_backtrace(true);' . "\n"
-            . '    $scopeObject = isset($backtrace[1][\'object\'])'
+        return '$backtrace = debug_backtrace(true);' . "\n"
+            . '$scopeObject = isset($backtrace[1][\'object\'])'
             . ' ? $backtrace[1][\'object\'] : new \ProxyManager\Stub\EmptyClassStub();' . "\n"
-            . '    $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));' . "\n";
+            . '$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));' . "\n";
     }
 }

@@ -68,15 +68,14 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
             $this->suffixInterceptors
         );
         self::assertSame('staticProxyConstructor', $method->getName());
+        self::assertTrue($method->isStatic());
+        self::assertSame('public', $method->getVisibility());
 
         $parameters = $method->getParameters();
 
         self::assertCount(3, $parameters);
 
-        self::assertSame(
-            ClassWithProtectedProperties::class,
-            $parameters['localizedObject']->getType()
-        );
+        self::assertSame(ClassWithProtectedProperties::class, $parameters['localizedObject']->getType());
         self::assertSame('array', $parameters['prefixInterceptors']->getType());
         self::assertSame('array', $parameters['suffixInterceptors']->getType());
     }

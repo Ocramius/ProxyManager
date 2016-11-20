@@ -22,13 +22,14 @@ namespace ProxyManagerTest\Generator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
-use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
-use Zend\Code\Generator\ParameterGenerator;
-use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
+use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use stdClass;
+use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -42,6 +43,16 @@ use Zend\Code\Reflection\MethodReflection;
  */
 class MethodGeneratorTest extends PHPUnit_Framework_TestCase
 {
+    public function testGeneratedMethodsAreAllConcrete() : void
+    {
+        $methodGenerator = MethodGenerator::fromReflection(new MethodReflection(
+            ClassWithAbstractPublicMethod::class,
+            'publicAbstractMethod'
+        ));
+
+        self::assertFalse($methodGenerator->isInterface());
+    }
+
     public function testGenerateSimpleMethod() : void
     {
         $methodGenerator = new MethodGenerator();

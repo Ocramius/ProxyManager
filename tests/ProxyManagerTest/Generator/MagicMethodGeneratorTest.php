@@ -24,6 +24,7 @@ use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 
 /**
@@ -33,12 +34,10 @@ use ReflectionClass;
  * @license MIT
  *
  * @group Coverage
+ * @covers \ProxyManager\Generator\MagicMethodGenerator
  */
 class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \ProxyManager\Generator\MagicMethodGenerator::__construct
-     */
     public function testGeneratesCorrectByRefReturnValue() : void
     {
         $reflection  = new ReflectionClass(ClassWithByRefMagicMethods::class);
@@ -47,14 +46,27 @@ class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
         self::assertStringMatchesFormat('%Apublic function & __get(%A', $magicMethod->generate());
     }
 
-    /**
-     * @covers \ProxyManager\Generator\MagicMethodGenerator::__construct
-     */
     public function testGeneratesCorrectByValReturnValue() : void
     {
         $reflection  = new ReflectionClass(ClassWithMagicMethods::class);
         $magicMethod = new MagicMethodGenerator($reflection, '__get', ['name']);
 
         self::assertStringMatchesFormat('%Apublic function __get(%A', $magicMethod->generate());
+    }
+
+    public function testGeneratesByRefReturnValueWithNonExistingGetMethod() : void
+    {
+        $reflection  = new ReflectionClass(EmptyClass::class);
+        $magicMethod = new MagicMethodGenerator($reflection, '__get', ['name']);
+
+        self::assertStringMatchesFormat('%Apublic function & __get(%A', $magicMethod->generate());
+    }
+
+    public function testGeneratesByValReturnValueWithNonExistingNonGetMethod() : void
+    {
+        $reflection  = new ReflectionClass(EmptyClass::class);
+        $magicMethod = new MagicMethodGenerator($reflection, '__set', ['name']);
+
+        self::assertStringMatchesFormat('%Apublic function __set(%A', $magicMethod->generate());
     }
 }
