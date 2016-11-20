@@ -54,7 +54,7 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
 
         if (! $this->canEval) {
             // @codeCoverageIgnoreStart
-            $fileName = sys_get_temp_dir() . '/EvaluatingGeneratorStrategy.php.tmp.' . uniqid('', true);
+            $fileName = tempnam(sys_get_temp_dir(), 'EvaluatingGeneratorStrategy.php.tmp.');
 
             file_put_contents($fileName, "<?php\n" . $code);
             /* @noinspection PhpIncludeInspection */
