@@ -39,24 +39,4 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
             $toPath
         ));
     }
-
-    public static function fromNonWritableLocation($path) : self
-    {
-        $messages    = [];
-        $destination = realpath($path);
-
-        if (! $destination) {
-            $messages[] = 'path does not exist';
-        }
-
-        if ($destination && ! is_file($destination)) {
-            $messages[] = 'exists and is not a file';
-        }
-
-        if ($destination && ! is_writable($destination)) {
-            $messages[] = 'is not writable';
-        }
-
-        return new self(sprintf('Could not write to path "%s": %s', $path, implode(', ', $messages)));
-    }
 }
