@@ -92,9 +92,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     {
         $tmpFileName = tempnam($location, 'temporaryProxyManagerFile');
 
-        if (! file_put_contents($tmpFileName, $source)) {
-            throw FileNotWritableException::fromNonWritableLocation($tmpFileName);
-        }
+        file_put_contents($tmpFileName, $source);
 
         if (! rename($tmpFileName, $location)) {
             unlink($tmpFileName);
