@@ -45,43 +45,4 @@ class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
             $exception->getMessage()
         );
     }
-
-    public function testFromNotWritableLocationWithNonFilePath() : void
-    {
-        $exception = FileNotWritableException::fromNonWritableLocation(__DIR__);
-
-        self::assertInstanceOf(FileNotWritableException::class, $exception);
-        self::assertSame(
-            'Could not write to path "' . __DIR__ . '": exists and is not a file',
-            $exception->getMessage()
-        );
-    }
-
-    public function testFromNotWritableLocationWithNonWritablePath() : void
-    {
-        $path = sys_get_temp_dir() . '/' . uniqid('FileNotWritableExceptionTestNonWritable', true);
-
-        mkdir($path, 0555);
-
-        $exception = FileNotWritableException::fromNonWritableLocation($path);
-
-        self::assertInstanceOf(FileNotWritableException::class, $exception);
-        self::assertSame(
-            'Could not write to path "' . $path . '": exists and is not a file, is not writable',
-            $exception->getMessage()
-        );
-    }
-
-    public function testFromNonExistingPath() : void
-    {
-        $path = sys_get_temp_dir() . '/' . uniqid('FileNotWritableExceptionTestNonWritable', true);
-
-        $exception = FileNotWritableException::fromNonWritableLocation($path . '/foo');
-
-        self::assertInstanceOf(FileNotWritableException::class, $exception);
-        self::assertSame(
-            'Could not write to path "' . $path . '/foo": path does not exist',
-            $exception->getMessage()
-        );
-    }
 }
