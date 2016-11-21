@@ -34,6 +34,7 @@ use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
+use ProxyManagerTestAsset\ClassWithHintedMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
@@ -45,6 +46,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
+use ProxyManagerTestAsset\InterfaceWithHintedMagicMethods;
 use ProxyManagerTestAsset\IterableTypeHintClass;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
@@ -119,6 +121,8 @@ class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
         return [
             [BaseClass::class],
             [ClassWithMagicMethods::class],
+            [ClassWithHintedMagicMethods::class],
+            //[InterfaceWithHintedMagicMethods::class],
             [ClassWithFinalMethods::class],
             [ClassWithFinalMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
