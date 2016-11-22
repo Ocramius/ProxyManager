@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\Util;
 
+use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -42,19 +43,21 @@ class PublicScopeSimulator
      * This is done by introspecting `debug_backtrace()` and then binding a closure to the scope
      * of the parent caller.
      *
-     * @param string            $operationType      operation to execute: one of 'get', 'set', 'isset' or 'unset'
-     * @param string            $nameParameter      name of the `name` parameter of the magic method
-     * @param string|null       $valueParameter     name of the `value` parameter of the magic method
-     * @param PropertyGenerator $valueHolder        name of the property containing the target object from which
-     *                                              to read the property. `$this` if none provided
-     * @param string|null       $returnPropertyName name of the property to which we want to assign the result of
-     *                                              the operation. Return directly if none provided
+     * @param \ReflectionMethod|null $originalMethod     the original method, if it exists
+     * @param string                 $operationType      operation to execute: one of 'get', 'set', 'isset' or 'unset'
+     * @param string                 $nameParameter      name of the `name` parameter of the magic method
+     * @param string|null            $valueParameter     name of the `value` parameter of the magic method
+     * @param PropertyGenerator      $valueHolder        name of the property containing the target object from which
+     *                                                   to read the property. `$this` if none provided
+     * @param string|null            $returnPropertyName name of the property to which we want to assign the result of
+     *                                                   the operation. Return directly if none provided
      *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
     public static function getPublicAccessSimulationCode(
+        ?\ReflectionMethod $originalMethod,
         string $operationType,
         string $nameParameter,
         $valueParameter = null,
@@ -73,12 +76,11 @@ class PublicScopeSimulator
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {'   . "\n"
             . '    $targetObject = ' . $target . ';' . "\n\n"
             . self::getUndefinedPropertyNotice($operationType, $nameParameter)
-            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
-            . "    return;\n"
+            . '    ' . self::getOperation($originalMethod, $operationType, $nameParameter, $valueParameter) . "\n"
             . '}' . "\n\n"
             . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
             . '$accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
-            . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
+            . '    ' . self::getOperation($originalMethod, $operationType, $nameParameter, $valueParameter) . "\n"
             . "};\n"
             . self::getScopeReBind()
             . (
@@ -134,11 +136,11 @@ class PublicScopeSimulator
     /**
      * Retrieves the logic to fetch the object on which access should be attempted
      *
-     * @param PropertyGenerator $valueHolder
+     * @param PropertyGenerator|null $valueHolder
      *
      * @return string
      */
-    private static function getTargetObject(PropertyGenerator $valueHolder = null) : string
+    private static function getTargetObject(?PropertyGenerator $valueHolder) : string
     {
         if ($valueHolder) {
             return '$this->' . $valueHolder->getName();
@@ -147,30 +149,32 @@ class PublicScopeSimulator
         return 'unserialize(sprintf(\'O:%d:"%s":0:{}\', strlen(get_parent_class($this)), get_parent_class($this)))';
     }
 
-    /**
-     * @param string      $operationType
-     * @param string      $nameParameter
-     * @param string|null $valueParameter
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    private static function getOperation(string $operationType, string $nameParameter, $valueParameter) : string
-    {
+    private static function getOperation(
+        ?\ReflectionMethod $originalMethod,
+        string $operationType,
+        string $nameParameter,
+        ?string $valueParameter
+    ) : string {
         switch ($operationType) {
             case static::OPERATION_GET:
-                return 'return $targetObject->$' . $nameParameter . ';';
+                return ProxiedMethodReturnExpression::generate('$targetObject->$' . $nameParameter, $originalMethod);
             case static::OPERATION_SET:
                 if (! $valueParameter) {
                     throw new \InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
-                return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter . ';';
+                return ProxiedMethodReturnExpression::generate(
+                    '$targetObject->$' . $nameParameter . ' = $' . $valueParameter,
+                    $originalMethod
+                );
             case static::OPERATION_ISSET:
-                return 'return isset($targetObject->$' . $nameParameter . ');';
+                return ProxiedMethodReturnExpression::generate(
+                    'isset($targetObject->$' . $nameParameter . ')',
+                    $originalMethod
+                );
             case static::OPERATION_UNSET:
-                return 'unset($targetObject->$' . $nameParameter . ');';
+                return 'unset($targetObject->$' . $nameParameter . ');'
+                    . ProxiedMethodReturnExpression::generate('true', $originalMethod);
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
