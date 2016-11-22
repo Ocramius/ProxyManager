@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace ProxyManager\Generator;
 
 use ReflectionClass;
+use Zend\Code\Generator\ParameterGenerator;
+use Zend\Code\Reflection\ParameterReflection;
 
 /**
  * Method generator for magic methods
@@ -31,24 +33,55 @@ use ReflectionClass;
 class MagicMethodGenerator extends MethodGenerator
 {
     /**
-     * @param ReflectionClass $originalClass
-     * @param string          $name
-     * @param array           $parameters
+     * @param ReflectionClass      $originalClass
+     * @param string               $name
+     * @param ParameterGenerator[] $parameters
+     *
+     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public function __construct(ReflectionClass $originalClass, string $name, array $parameters = [])
     {
-        parent::__construct(
-            $name,
-            $parameters,
-            static::FLAG_PUBLIC,
-            null,
-            $originalClass->hasMethod($name) ? '{@inheritDoc}' : null
-        );
+        parent::__construct($name, [], static::FLAG_PUBLIC);
 
         $this->setReturnsReference(strtolower($name) === '__get');
 
         if ($originalClass->hasMethod($name)) {
-            $this->setReturnsReference($originalClass->getMethod($name)->returnsReference());
+            $originalMethod = $originalClass->getMethod($name);
+
+            $this->setDocBlock('{@inheritDoc}');
+            $this->setReturnsReference($originalMethod->returnsReference());
+            $this->setReturnType(((string) $originalMethod->getReturnType()) ?: null);
+            $this->addOrReplaceParameterNames($originalMethod, ...$parameters);
+        } else {
+            $this->setParameters($parameters);
         }
+    }
+
+    private function addOrReplaceParameterNames(
+        \ReflectionMethod $originalMethod,
+        ParameterGenerator ...$newParameters
+    ) : void {
+        $originalParameters  = array_values(array_map(
+            function (\ReflectionParameter $parameter) use ($originalMethod) : ParameterGenerator {
+                return ParameterGenerator::fromReflection(new ParameterReflection(
+                    [$originalMethod->getDeclaringClass()->getName(), $originalMethod->getName()],
+                    $parameter->getPosition()
+                ));
+            },
+            $originalMethod->getParameters()
+        ));
+
+        $parametersCount = max(count($originalParameters), count($newParameters));
+        $parameters      = [];
+
+        for ($idx = 0; $idx < $parametersCount; $idx += 1) {
+            $parameter = $originalParameters[$idx] ?? $newParameters[$idx];
+
+            $parameter->setName(($newParameters[$idx] ?? $originalParameters[$idx])->getName());
+
+            $parameters[] = $parameter;
+        }
+
+        $this->setParameters($parameters);
     }
 }
