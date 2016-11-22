@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
+use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
@@ -42,25 +43,25 @@ class MagicUnset extends MagicMethodGenerator
      * @var string
      */
     private $callParentTemplate = <<<'PHP'
-%s
+%init
 
-if (isset(self::$%s[$name])) {
+if (isset(self::$%publicProperties[$name])) {
     unset($this->$name);
 
-    return;
+    %voidReturn1
 }
 
-if (isset(self::$%s[$name])) {
+if (isset(self::$%protectedProperties1[$name])) {
     // check protected property access via compatible class
     $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller       = isset($callers[1]) ? $callers[1] : [];
     $object       = isset($caller['object']) ? $caller['object'] : '';
-    $expectedType = self::$%s[$name];
+    $expectedType = self::$%protectedProperties2[$name];
 
     if ($object instanceof $expectedType) {
         unset($this->$name);
 
-        return;
+        %voidReturn2
     }
 
     $class = isset($caller['class']) ? $caller['class'] : '';
@@ -68,9 +69,9 @@ if (isset(self::$%s[$name])) {
     if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
         unset($this->$name);
 
-        return;
+        %voidReturn3
     }
-} elseif (isset(self::$%s[$name])) {
+} elseif (isset(self::$%privateProperties1[$name])) {
     // check private property access via same class
     $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
     $caller  = isset($callers[1]) ? $callers[1] : [];
@@ -78,7 +79,7 @@ if (isset(self::$%s[$name])) {
 
     static $accessorCache = [];
 
-    if (isset(self::$%s[$name][$class])) {
+    if (isset(self::$%privateProperties2[$name][$class])) {
         $cacheKey = $class . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
@@ -86,11 +87,11 @@ if (isset(self::$%s[$name])) {
                 unset($instance->$name);
             }, null, $class);
 
-        return $accessor($this);
+        %accessorReturn1
     }
 
     if ('ReflectionProperty' === $class) {
-        $tmpClass = key(self::$%s[$name]);
+        $tmpClass = key(self::$%privateProperties3[$name]);
         $cacheKey = $tmpClass . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
@@ -98,11 +99,11 @@ if (isset(self::$%s[$name])) {
                 unset($instance->$name);
             }, null, $tmpClass);
 
-        return $accessor($this);
+        %accessorReturn2
     }
 }
 
-%s
+%parentAccess
 PHP;
 
     /**
@@ -126,30 +127,40 @@ PHP;
     ) {
         parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
 
-        $override = $originalClass->hasMethod('__unset');
+        $existingMethod = $originalClass->hasMethod('__unset') ? $originalClass->getMethod('__unset') : null;
 
-        $this->setDocBlock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($existingMethod ? "{@inheritDoc}\n" : '') . '@param string $name');
 
-        $parentAccess = 'return parent::__unset($name);';
-
-        if (! $override) {
-            $parentAccess = PublicScopeSimulator::getPublicAccessSimulationCode(
+        $parentAccess = $existingMethod
+            ? ProxiedMethodReturnExpression::generate('parent::__unset($name)', $existingMethod)
+            : PublicScopeSimulator::getPublicAccessSimulationCode(
+                $existingMethod,
                 PublicScopeSimulator::OPERATION_UNSET,
                 'name'
             );
-        }
 
-        $this->setBody(sprintf(
-            $this->callParentTemplate,
-            '$this->' . $initializerProperty->getName() . ' && $this->' . $callInitializer->getName()
-            . '(\'__unset\', array(\'name\' => $name));',
-            $publicProperties->getName(),
-            $protectedProperties->getName(),
-            $protectedProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName(),
-            $privateProperties->getName(),
-            $parentAccess
+        $symbols = [
+            '%init'                 => '$this->' . $initializerProperty->getName()
+                . ' && $this->' . $callInitializer->getName()
+                . '(\'__unset\', array(\'name\' => $name));',
+            '%publicProperties'     => $publicProperties->getName(),
+            '%protectedProperties1' => $protectedProperties->getName(),
+            '%protectedProperties2' => $protectedProperties->getName(),
+            '%privateProperties1'   => $privateProperties->getName(),
+            '%privateProperties2'   => $privateProperties->getName(),
+            '%privateProperties3'   => $privateProperties->getName(),
+            '%parentAccess'         => $parentAccess,
+            '%voidReturn1'          => ProxiedMethodReturnExpression::generate('true', $existingMethod),
+            '%voidReturn2'          => ProxiedMethodReturnExpression::generate('true', $existingMethod),
+            '%voidReturn3'          => ProxiedMethodReturnExpression::generate('true', $existingMethod),
+            '%accessorReturn1'      => ProxiedMethodReturnExpression::generate('$accessor($this)', $existingMethod),
+            '%accessorReturn2'      => ProxiedMethodReturnExpression::generate('$accessor($this)', $existingMethod),
+        ];
+
+        $this->setBody(str_replace(
+            array_keys($symbols),
+            array_values($symbols),
+            $this->callParentTemplate
         ));
     }
 }

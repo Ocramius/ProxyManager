@@ -57,8 +57,9 @@ class MagicIsset extends MagicMethodGenerator
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
         $callParent  = '';
+        $parent      = $originalClass->hasMethod('__isset') ? $originalClass->getMethod('__isset') : null;
 
-        $this->setDocBlock(($originalClass->hasMethod('__isset') ? "{@inheritDoc}\n" : '') . '@param string $name');
+        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
@@ -67,6 +68,7 @@ class MagicIsset extends MagicMethodGenerator
         }
 
         $callParent .= PublicScopeSimulator::getPublicAccessSimulationCode(
+            $parent,
             PublicScopeSimulator::OPERATION_ISSET,
             'name',
             null,

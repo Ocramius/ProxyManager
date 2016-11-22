@@ -58,7 +58,7 @@ class MagicSet extends MagicMethodGenerator
             [new ParameterGenerator('name'), new ParameterGenerator('value')]
         );
 
-        $hasParent   = $originalClass->hasMethod('__set');
+        $hasParent   = $originalClass->hasMethod('__set') ? $originalClass->getMethod('__set') : null;
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
         $callParent  = '';
@@ -74,6 +74,7 @@ class MagicSet extends MagicMethodGenerator
         $callParent .= $hasParent
             ? 'return $this->' . $valueHolder . '->__set($name, $value);'
             : PublicScopeSimulator::getPublicAccessSimulationCode(
+                $hasParent,
                 PublicScopeSimulator::OPERATION_SET,
                 'name',
                 'value',

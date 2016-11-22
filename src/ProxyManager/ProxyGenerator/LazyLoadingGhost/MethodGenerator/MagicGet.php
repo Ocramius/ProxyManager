@@ -135,6 +135,7 @@ PHP;
 
         if (! $override) {
             $parentAccess = PublicScopeSimulator::getPublicAccessSimulationCode(
+                null,
                 PublicScopeSimulator::OPERATION_GET,
                 'name'
             );

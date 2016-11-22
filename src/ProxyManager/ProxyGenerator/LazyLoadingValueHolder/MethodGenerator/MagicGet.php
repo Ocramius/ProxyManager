@@ -54,7 +54,7 @@ class MagicGet extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__get', [new ParameterGenerator('name')]);
 
-        $hasParent = $originalClass->hasMethod('__get');
+        $hasParent = $originalClass->hasMethod('__get') ? $originalClass->getMethod('__get') : null;
 
         $this->setDocBlock(($hasParent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
@@ -78,6 +78,7 @@ class MagicGet extends MagicMethodGenerator
             $initializer,
             $valueHolder,
             $callParent . PublicScopeSimulator::getPublicAccessSimulationCode(
+                $hasParent,
                 PublicScopeSimulator::OPERATION_GET,
                 'name',
                 null,

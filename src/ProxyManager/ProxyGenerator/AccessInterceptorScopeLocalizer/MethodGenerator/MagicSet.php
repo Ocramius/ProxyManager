@@ -63,6 +63,7 @@ class MagicSet extends MagicMethodGenerator
 
         if (! $parent) {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+                $parent,
                 PublicScopeSimulator::OPERATION_SET,
                 'name',
                 'value',

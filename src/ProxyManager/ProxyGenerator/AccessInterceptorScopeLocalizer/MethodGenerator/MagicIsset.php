@@ -59,6 +59,7 @@ class MagicIsset extends MagicMethodGenerator
 
         if (! $parent) {
             $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+                $parent,
                 PublicScopeSimulator::OPERATION_ISSET,
                 'name',
                 null,

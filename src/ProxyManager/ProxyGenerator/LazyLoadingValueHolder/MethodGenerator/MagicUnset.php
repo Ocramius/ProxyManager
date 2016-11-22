@@ -54,7 +54,7 @@ class MagicUnset extends MagicMethodGenerator
     ) {
         parent::__construct($originalClass, '__unset', [new ParameterGenerator('name')]);
 
-        $hasParent   = $originalClass->hasMethod('__unset');
+        $hasParent   = $originalClass->hasMethod('__unset') ? $originalClass->getMethod('__unset') : null;
         $initializer = $initializerProperty->getName();
         $valueHolder = $valueHolderProperty->getName();
         $callParent  = '';
@@ -70,6 +70,7 @@ class MagicUnset extends MagicMethodGenerator
         $callParent .= $hasParent
             ? 'return $this->' . $valueHolder . '->__unset($name);'
             : PublicScopeSimulator::getPublicAccessSimulationCode(
+                $hasParent,
                 PublicScopeSimulator::OPERATION_UNSET,
                 'name',
                 null,

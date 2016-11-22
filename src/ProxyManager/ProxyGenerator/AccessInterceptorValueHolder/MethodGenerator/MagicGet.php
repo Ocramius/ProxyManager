@@ -64,6 +64,7 @@ class MagicGet extends MagicMethodGenerator
         $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
 
         $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
+            $parent,
             PublicScopeSimulator::OPERATION_GET,
             'name',
             'value',
