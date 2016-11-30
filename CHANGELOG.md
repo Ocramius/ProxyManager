@@ -4,6 +4,29 @@ title: Changelog
 
 This is a list of changes/improvements that were introduced in ProxyManager
 
+## 2.1.0
+
+### Improved
+
+- Introduced support for PHP 7.1, `void` and nullable (`?`)
+  types [#314](https://github.com/Ocramius/ProxyManager/issues/314)
+  [#327](https://github.com/Ocramius/ProxyManager/pull/327)
+- The test suite is now fully CI-covered by mutation testing [#348](https://github.com/Ocramius/ProxyManager/pull/348)
+- Moved all performance testing to PHPBench [#326](https://github.com/Ocramius/ProxyManager/pull/326)
+- PHP 7.0 support dropped [#327](https://github.com/Ocramius/ProxyManager/pull/327)
+
+Total issues resolved: **9**
+
+- [290: Branch-alias version bump: master bump to 3.0.x](https://github.com/Ocramius/ProxyManager/pull/290)
+- [314: Nullable params type](https://github.com/Ocramius/ProxyManager/issues/314)
+- [326: Moved performance tests to phpbench-based suite](https://github.com/Ocramius/ProxyManager/pull/326)
+- [327: PHP 7.1 support](https://github.com/Ocramius/ProxyManager/pull/327)
+- [336: Hotfix tests for php 7 support](https://github.com/Ocramius/ProxyManager/pull/336)
+- [339: Provided type ?... is invalid](https://github.com/Ocramius/ProxyManager/issues/339)
+- [343: Fix typo in ghost objects lazy loading code example](https://github.com/Ocramius/ProxyManager/pull/343)
+- [348: Introduced full mutation testing](https://github.com/Ocramius/ProxyManager/pull/348)
+- [349: install xdebug manually for php 7.1](https://github.com/Ocramius/ProxyManager/pull/349)
+
 ## 2.0.4
 
 ### Fixed
