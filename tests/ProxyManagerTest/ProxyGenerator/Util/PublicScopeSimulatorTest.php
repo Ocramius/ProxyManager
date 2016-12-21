@@ -50,8 +50,8 @@ if (! $realInstanceReflection->hasProperty($foo)) {
             'Undefined property: %s::$%s in %s on line %s',
             get_parent_class($this),
             $foo,
-            $backtrace[0]['file'],
-            $backtrace[0]['line']
+            $backtrace[0]['file'] ?? '',
+            $backtrace[0]['line'] ?? ''
         ),
         \E_USER_NOTICE
     );
