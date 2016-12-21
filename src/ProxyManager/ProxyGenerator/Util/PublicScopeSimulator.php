@@ -108,8 +108,8 @@ class PublicScopeSimulator
             . '            \'Undefined property: %s::$%s in %s on line %s\',' . "\n"
             . '            get_parent_class($this),' . "\n"
             . '            $' . $nameParameter . ',' . "\n"
-            . '            $backtrace[0][\'file\'],' . "\n"
-            . '            $backtrace[0][\'line\']' . "\n"
+            . '            $backtrace[0][\'file\'] ?? \'\',' . "\n"
+            . '            $backtrace[0][\'line\'] ?? \'\'' . "\n"
             . '        ),' . "\n"
             . '        \E_USER_NOTICE' . "\n"
             . '    );' . "\n";
