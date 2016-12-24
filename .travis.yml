@@ -5,6 +5,7 @@ sudo: false
 
 php:
   - 7.1
+  - nightly
   - hhvm
 
 env:
@@ -18,7 +19,6 @@ env:
     - secure: HUDB66EnmKFx2A+E3HxvuX/7XSjgfNy8dnzcpG+K9mf/JM5JXZflK3xO3J3LCgSQG6Ptwr2yy//7vX+PdJMdSRTmP+d/dy6v8yLRP+GvYZXLIbuKg7dQjLerOxJcy9JhU2eAEBevc002PwFqLalfhCyWLvLiCof8++E2uGbvTSU=
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION = 7.1 ]]; then git clone git://github.com/xdebug/xdebug.git && cd xdebug && phpize && ./configure --enable-xdebug  && make && make install && echo "zend_extension = xdebug.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini && cd ..; fi
   - sh .travis.install.sh
 
 script:
@@ -37,6 +37,7 @@ script:
 matrix:
   allow_failures:
     - php: hhvm
+    - php: nightly
 
 after_script:
   - sh .travis.coverage.sh
