@@ -7,8 +7,8 @@ This is a list of supported versions, with their expected release/support time-f
 # 2.0.x
 
  * Release date: 2016-01-30
- * Bug fixes: till 2017-01-29
- * Security fixes: till 2018-01-29
+ * Bug fixes: till 2017-12-31
+ * Security fixes: till 2018-12-31
 
 # 1.0.x
 
