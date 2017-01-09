@@ -42,11 +42,13 @@ class FileLocator implements FileLocatorInterface
      */
     public function __construct(string $proxiesDirectory)
     {
-        $this->proxiesDirectory = realpath($proxiesDirectory);
+        $absolutePath = realpath($proxiesDirectory);
 
-        if (false === $this->proxiesDirectory) {
+        if (false === $absolutePath) {
             throw InvalidProxyDirectoryException::proxyDirectoryNotFound($proxiesDirectory);
         }
+
+        $this->proxiesDirectory = $absolutePath;
     }
 
     /**
