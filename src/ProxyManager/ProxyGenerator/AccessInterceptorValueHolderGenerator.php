@@ -131,7 +131,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
                     ),
                     new MagicClone($originalClass, $valueHolder, $prefixInterceptors, $suffixInterceptors),
                     new MagicSleep($originalClass, $valueHolder),
-                    new MagicWakeup($originalClass, $valueHolder),
+                    new MagicWakeup($originalClass),
                 ]
             )
         );
