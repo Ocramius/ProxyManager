@@ -46,7 +46,9 @@ use Zend\Code\Generator\ClassGenerator;
 class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ProxyManager\Factory\AbstractBaseFactory
+     * Note: we mock the class in order to assert on the abstract method usage
+     *
+     * @var \ProxyManager\Factory\AbstractBaseFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 
