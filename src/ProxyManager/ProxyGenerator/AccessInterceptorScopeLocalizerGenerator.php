@@ -84,7 +84,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                     )
                 ),
                 [
-                    new StaticProxyConstructor($originalClass, $prefixInterceptors, $suffixInterceptors),
+                    new StaticProxyConstructor($originalClass),
                     new BindProxyProperties($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
                     new SetMethodSuffixInterceptor($suffixInterceptors),
