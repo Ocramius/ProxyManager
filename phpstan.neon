@@ -4,4 +4,5 @@ parameters:
         - '#Zend\\Server\\Client#'
         # https://github.com/Ocramius/ProxyManager/issues/363:
         - '#::generate\(\) invoked with#'
+        # https://github.com/phpstan/phpstan/issues/152:
         - '#\(callable\|null\) does not accept ProxyManager\\Autoloader\\Autoloader#'
