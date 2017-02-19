@@ -30,6 +30,7 @@
         "squizlabs/php_codesniffer":    "^2.7.0",
         "couscous/couscous":            "^1.5.2",
         "phpbench/phpbench":            "^0.12.2",
+        "phpstan/phpstan":              "dev-master@DEV",
         "humbug/humbug":                "dev-master@DEV"
     },
     "suggest": {
