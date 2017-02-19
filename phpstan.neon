@@ -1,0 +1,5 @@
+parameters:
+    ignoreErrors:
+        - '#Zend\\Server\\Client#'
+        - '#::generate\(\) invoked with#'
+        - '#\(callable\|null\) does not accept ProxyManager\\Autoloader\\Autoloader#'
