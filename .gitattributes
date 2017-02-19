@@ -8,6 +8,7 @@
 .travis.install.sh export-ignore
 .travis.yml export-ignore
 CONTRIBUTING.md export-ignore
+couscous.yml
 index.html export-ignore
 phpdox.xml.dist export-ignore
 phpmd.xml.dist export-ignore
