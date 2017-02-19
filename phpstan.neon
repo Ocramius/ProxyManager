@@ -1,5 +1,6 @@
 parameters:
     ignoreErrors:
         - '#Zend\\Server\\Client#'
+        # https://github.com/Ocramius/ProxyManager/issues/363
         - '#::generate\(\) invoked with#'
         - '#\(callable\|null\) does not accept ProxyManager\\Autoloader\\Autoloader#'
