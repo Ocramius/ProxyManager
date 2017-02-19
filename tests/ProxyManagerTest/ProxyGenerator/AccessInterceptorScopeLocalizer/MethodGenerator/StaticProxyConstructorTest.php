@@ -62,11 +62,8 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 
     public function testSignature() : void
     {
-        $method = new StaticProxyConstructor(
-            new ReflectionClass(ClassWithProtectedProperties::class),
-            $this->prefixInterceptors,
-            $this->suffixInterceptors
-        );
+        $method = new StaticProxyConstructor(new ReflectionClass(ClassWithProtectedProperties::class));
+
         self::assertSame('staticProxyConstructor', $method->getName());
         self::assertTrue($method->isStatic());
         self::assertSame('public', $method->getVisibility());
@@ -82,11 +79,7 @@ class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
 
     public function testBodyStructure() : void
     {
-        $method = new StaticProxyConstructor(
-            new ReflectionClass(ClassWithPublicProperties::class),
-            $this->prefixInterceptors,
-            $this->suffixInterceptors
-        );
+        $method = new StaticProxyConstructor(new ReflectionClass(ClassWithPublicProperties::class));
 
         self::assertSame(
             'static $reflection;
