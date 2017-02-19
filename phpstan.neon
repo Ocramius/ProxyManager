@@ -2,7 +2,6 @@ parameters:
     ignoreErrors:
         # We only mock this dependency, and never really require it:
         - '#Zend\\Server\\Client#'
-        - '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::call\(\)#'
         # https://github.com/Ocramius/ProxyManager/issues/363:
         - '#::generate\(\) invoked with#'
         # https://github.com/phpstan/phpstan/issues/152:
