@@ -12,4 +12,6 @@ index.html export-ignore
 phpdox.xml.dist export-ignore
 phpmd.xml.dist export-ignore
 phpunit.xml.dist export-ignore
+phpstan.neon export-ignore
+phpstan.tests.neon export-ignore
 proxy-manager.png export-ignore
