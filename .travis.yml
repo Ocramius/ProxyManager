@@ -33,6 +33,7 @@ script:
   - php examples/virtual-proxy.php
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
   - ./vendor/bin/phpstan analyse -c phpstan.neon -l 5 src
+  - ./vendor/bin/phpstan analyse -c phpstan.tests.neon -l 4 tests
   - ./vendor/bin/humbug
 
 matrix:
