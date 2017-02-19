@@ -42,6 +42,7 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function testBaseAdapter() : void
     {
+        /* @var $client \Zend\Server\Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
             ->setMethods(['call'])
@@ -76,6 +77,7 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function testBaseAdapterWithServiceMap() : void
     {
+        /* @var $client \Zend\Server\Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this
             ->getMockBuilder('Zend\Server\Client')
             ->setMethods(['call'])
