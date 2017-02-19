@@ -1,6 +1,7 @@
 parameters:
     ignoreErrors:
+        # We only mock this dependency, and never really require it:
         - '#Zend\\Server\\Client#'
-        # https://github.com/Ocramius/ProxyManager/issues/363
+        # https://github.com/Ocramius/ProxyManager/issues/363:
         - '#::generate\(\) invoked with#'
         - '#\(callable\|null\) does not accept ProxyManager\\Autoloader\\Autoloader#'
