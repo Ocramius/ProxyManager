@@ -22,6 +22,7 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\BaseAdapter;
+use Zend\Server\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\Soap}
@@ -42,9 +43,9 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function testBaseAdapter() : void
     {
-        /* @var $client \Zend\Server\Client|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this
-            ->getMockBuilder('Zend\Server\Client')
+            ->getMockBuilder(Client::class)
             ->setMethods(['call'])
             ->getMock();
 
@@ -77,9 +78,9 @@ class BaseAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function testBaseAdapterWithServiceMap() : void
     {
-        /* @var $client \Zend\Server\Client|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
         $client = $this
-            ->getMockBuilder('Zend\Server\Client')
+            ->getMockBuilder(Client::class)
             ->setMethods(['call'])
             ->getMock();
 
