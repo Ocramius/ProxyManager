@@ -66,7 +66,11 @@ if (isset(self::$%s[$name])) {
 
     $class = isset($caller['class']) ? $caller['class'] : '';
 
-    if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
+    if ($class === $expectedType
+        || 'ReflectionProperty' === $class
+        || is_subclass_of($class, $expectedType)
+        || (isset($caller['function']) && '{closure}' === $caller['function'] && defined('HHVM_VERSION'))
+    ) {
         return $this->$name;
     }
 } elseif (isset(self::$%s[$name])) {
@@ -88,7 +92,10 @@ if (isset(self::$%s[$name])) {
         return $accessor($this);
     }
 
-    if ($this->%s || 'ReflectionProperty' === $class) {
+    if ($this->%s
+        || 'ReflectionProperty' === $class
+        || (isset($caller['function']) && '{closure}' === $caller['function'] && defined('HHVM_VERSION'))
+    ) {
         $tmpClass = key(self::$%s[$name]);
         $cacheKey = $tmpClass . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
