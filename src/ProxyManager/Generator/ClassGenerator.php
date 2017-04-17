@@ -33,7 +33,7 @@ class ClassGenerator extends ZendClassGenerator
     /**
      * {@inheritDoc}
      */
-    public function setExtendedClass($extendedClass) : self
+    public function setExtendedClass($extendedClass) : parent
     {
         if ($extendedClass) {
             $extendedClass = '\\' . trim($extendedClass, '\\');

@@ -6,3 +6,5 @@ phpmd.xml
 phpdox.xml
 clover.xml
 .couscous
+humbuglog.json
+humbuglog.txt

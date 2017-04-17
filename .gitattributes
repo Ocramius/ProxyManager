@@ -8,8 +8,13 @@
 .travis.install.sh export-ignore
 .travis.yml export-ignore
 CONTRIBUTING.md export-ignore
+couscous.yml export-ignore
+humbug.json.dist export-ignore
 index.html export-ignore
+phpbench.json export-ignore
 phpdox.xml.dist export-ignore
 phpmd.xml.dist export-ignore
 phpunit.xml.dist export-ignore
+phpstan.neon export-ignore
+phpstan.tests.neon export-ignore
 proxy-manager.png export-ignore

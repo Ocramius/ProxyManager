@@ -18,7 +18,7 @@
 
 declare(strict_types=1);
 
-namespace ProxyManagerTest\ProxyGenerator;
+namespace ProxyManagerTest\ProxyGenerator\PropertyGenerator;
 
 use PHPUnit_Framework_TestCase;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;

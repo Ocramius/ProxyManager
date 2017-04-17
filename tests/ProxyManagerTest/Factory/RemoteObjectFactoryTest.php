@@ -113,7 +113,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /* @var $proxy \stdClass */
-        $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
+        $proxy   = $factory->createProxy(BaseInterface::class);
 
         self::assertInstanceOf(RemoteObjectMock::class, $proxy);
     }
@@ -182,7 +182,7 @@ class RemoteObjectFactoryTest extends PHPUnit_Framework_TestCase
         /* @var $adapter AdapterInterface */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
-        $proxy   = $factory->createProxy(BaseInterface::class, $adapter);
+        $proxy   = $factory->createProxy(BaseInterface::class);
 
         self::assertInstanceOf($proxyClassName, $proxy);
     }

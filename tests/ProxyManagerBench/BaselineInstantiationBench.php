@@ -18,7 +18,7 @@
 
 declare(strict_types=1);
 
-namespace ProxyManagerBench\Functional;
+namespace ProxyManagerBench;
 
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
