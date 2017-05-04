@@ -72,6 +72,7 @@ PHP;
         self::assertSame(
             $expected,
             PublicScopeSimulator::getPublicAccessSimulationCode(
+                null,
                 PublicScopeSimulator::OPERATION_GET,
                 'foo',
                 null,
@@ -106,6 +107,7 @@ PHP;
         self::assertSame(
             $expected,
             PublicScopeSimulator::getPublicAccessSimulationCode(
+                null,
                 PublicScopeSimulator::OPERATION_SET,
                 'foo',
                 'baz',
@@ -140,6 +142,7 @@ PHP;
         self::assertSame(
             $expected,
             PublicScopeSimulator::getPublicAccessSimulationCode(
+                null,
                 PublicScopeSimulator::OPERATION_ISSET,
                 'foo',
                 null,
@@ -174,6 +177,7 @@ PHP;
         self::assertSame(
             $expected,
             PublicScopeSimulator::getPublicAccessSimulationCode(
+                null,
                 PublicScopeSimulator::OPERATION_UNSET,
                 'foo',
                 null,
@@ -188,6 +192,7 @@ PHP;
         $this->expectException(InvalidArgumentException::class);
 
         PublicScopeSimulator::getPublicAccessSimulationCode(
+            null,
             PublicScopeSimulator::OPERATION_SET,
             'foo',
             null,
@@ -221,6 +226,7 @@ PHP;
         self::assertSame(
             $expected,
             PublicScopeSimulator::getPublicAccessSimulationCode(
+                null,
                 PublicScopeSimulator::OPERATION_SET,
                 'foo',
                 'baz',
@@ -234,7 +240,7 @@ PHP;
     {
         $this->expectException(InvalidArgumentException::class);
 
-        PublicScopeSimulator::getPublicAccessSimulationCode('invalid', 'foo');
+        PublicScopeSimulator::getPublicAccessSimulationCode(null, 'invalid', 'foo');
     }
 
     public function testWillReturnDirectlyWithNoReturnParam() : void
@@ -275,6 +281,7 @@ PHP;
         self::assertSame(
             $expected,
             PublicScopeSimulator::getPublicAccessSimulationCode(
+                null,
                 PublicScopeSimulator::OPERATION_GET,
                 'foo'
             )
