@@ -4,6 +4,19 @@ title: Changelog
 
 This is a list of changes/improvements that were introduced in ProxyManager
 
+## 2.1.1
+
+This release provides aggressive improvements in static introspection via
+[phpstan/phpstan](https://github.com/phpstan/phpstan). No functional
+changes, just removed possible bugs due to excessive parameter count
+in method calls, as well as test type hint fixes.
+
+Total issues resolved: **3**
+
+- [351: Travis already has xdebug pre-installed for PHP 7.1](https://github.com/Ocramius/ProxyManager/pull/351)
+- [358: Fix #351 - travis has xdebug pre-installed for PHP 7.1](https://github.com/Ocramius/ProxyManager/pull/358)
+- [361: PHPStan inspection fixes](https://github.com/Ocramius/ProxyManager/pull/361)
+
 ## 2.1.0
 
 ### Improved
