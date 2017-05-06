@@ -40,18 +40,11 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     protected $fileLocator;
 
     /**
-     * @var callable
-     */
-    private $emptyErrorHandler;
-
-    /**
      * @param \ProxyManager\FileLocator\FileLocatorInterface $fileLocator
      */
     public function __construct(FileLocatorInterface $fileLocator)
     {
-        $this->fileLocator       = $fileLocator;
-        $this->emptyErrorHandler = function () {
-        };
+        $this->fileLocator = $fileLocator;
     }
 
     /**
@@ -68,7 +61,8 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
         $generatedCode = $classGenerator->generate();
         $fileName      = $this->fileLocator->getProxyFileName($className);
 
-        set_error_handler($this->emptyErrorHandler);
+        set_error_handler(function () {
+        });
 
         try {
             $this->writeFile("<?php\n\n" . $generatedCode, $fileName);
