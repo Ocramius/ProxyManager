@@ -30,6 +30,7 @@
         "couscous/couscous":            "^1.5.2",
         "phpbench/phpbench":            "^0.12.2",
         "phpstan/phpstan":              "^0.7",
+        "nikic/php-parser":             "^3.0.4",
         "humbug/humbug":                "dev-master@DEV"
     },
     "suggest": {
