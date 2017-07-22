@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php":                       "^7.1.0",
+        "php":                       "^7.2.0",
         "zendframework/zend-code":   "^3.3.0",
         "ocramius/package-versions": "^1.1.3"
     },
