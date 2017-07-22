@@ -16,6 +16,7 @@ use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\IterableMethodTypeHintedInterface;
+use ProxyManagerTestAsset\ObjectMethodTypeHintedInterface;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ReturnTypeHintedInterface;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
@@ -91,6 +92,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
             [ReturnTypeHintedInterface::class],
             [VoidMethodTypeHintedInterface::class],
             [IterableMethodTypeHintedInterface::class],
+            [ObjectMethodTypeHintedInterface::class],
         ];
     }
 }

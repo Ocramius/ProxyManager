@@ -46,6 +46,10 @@ class ReturnTypeHintedClass extends EmptyClass
     {
     }
 
+    public function returnObject() : object
+    {
+    }
+
     public function returnSameClass() : ReturnTypeHintedClass
     {
     }
