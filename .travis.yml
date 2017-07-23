@@ -6,7 +6,6 @@ sudo: false
 php:
   - 7.2
   - nightly
-  - hhvm
 
 env:
   matrix:
@@ -38,7 +37,6 @@ script:
 
 matrix:
   allow_failures:
-    - php: hhvm
     - php: nightly
 
 after_script:
