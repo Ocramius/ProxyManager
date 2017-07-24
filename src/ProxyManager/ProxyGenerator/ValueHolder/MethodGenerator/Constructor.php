@@ -37,13 +37,6 @@ use Zend\Code\Reflection\MethodReflection;
 class Constructor extends MethodGenerator
 {
     /**
-     * Constructor
-     *
-     * @param ReflectionClass   $originalClass
-     * @param PropertyGenerator $valueHolder
-     *
-     * @return self
-     *
      * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder) : self

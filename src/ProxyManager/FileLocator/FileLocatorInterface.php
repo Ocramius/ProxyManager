@@ -30,10 +30,6 @@ interface FileLocatorInterface
 {
     /**
      * Retrieves the file name for the given proxy
-     *
-     * @param string $className
-     *
-     * @return string
      */
     public function getProxyFileName(string $className) : string;
 }

@@ -84,8 +84,6 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      *                              "skippedProperties" is a string[], containing a list of properties referenced
      *                              via PHP's internal property name (i.e. "\0ClassName\0propertyName")
      *
-     * @return GhostObjectInterface
-     *
      * @throws MissingSignatureException
      * @throws InvalidSignatureException
      * @throws \OutOfBoundsException

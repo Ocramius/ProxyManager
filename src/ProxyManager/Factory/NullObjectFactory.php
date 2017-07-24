@@ -42,8 +42,6 @@ class NullObjectFactory extends AbstractBaseFactory
     /**
      * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
      *
-     * @return NullObjectInterface
-     *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws \OutOfBoundsException

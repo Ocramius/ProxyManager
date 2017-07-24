@@ -62,8 +62,6 @@ class RemoteObjectFactory extends AbstractBaseFactory
     /**
      * @param string|object $instanceOrClassName
      *
-     * @return RemoteObjectInterface
-     *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws \OutOfBoundsException

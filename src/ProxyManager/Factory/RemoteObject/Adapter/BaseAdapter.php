@@ -73,11 +73,6 @@ abstract class BaseAdapter implements AdapterInterface
 
     /**
      * Get the service name will be used by the adapter
-     *
-     * @param string $wrappedClass
-     * @param string $method
-     *
-     * @return string Service name
      */
     abstract protected function getServiceName(string $wrappedClass, string $method) : string;
 }

@@ -46,8 +46,6 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      * @param \Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       after method logic is executed
      *
-     * @return AccessInterceptorValueHolderInterface
-     *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws \OutOfBoundsException

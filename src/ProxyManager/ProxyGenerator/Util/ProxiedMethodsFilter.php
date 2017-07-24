@@ -90,10 +90,6 @@ final class ProxiedMethodsFilter
 
     /**
      * Checks whether the method cannot be proxied
-     *
-     * @param ReflectionMethod $method
-     *
-     * @return bool
      */
     private static function methodCannotBeProxied(ReflectionMethod $method) : bool
     {

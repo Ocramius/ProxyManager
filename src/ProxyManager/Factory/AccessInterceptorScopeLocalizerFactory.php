@@ -46,8 +46,6 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
      * @param \Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       after method logic is executed
      *
-     * @return AccessInterceptorInterface
-     *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws \OutOfBoundsException

@@ -68,8 +68,6 @@ final class Properties
 
     /**
      * @param string[] $excludedProperties
-     *
-     * @return self
      */
     public function filter(array $excludedProperties) : self
     {
