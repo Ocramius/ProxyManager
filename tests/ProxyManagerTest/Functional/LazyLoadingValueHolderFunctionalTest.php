@@ -390,10 +390,6 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * Generates a proxy for the given class name, and retrieves its class name
-     *
-     * @param string $parentClassName
-     *
-     * @return string
      */
     private function generateProxy(string $parentClassName) : string
     {
@@ -452,8 +448,6 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * Generates a list of object | invoked method | parameters | expected result
-     *
-     * @return array
      */
     public function getProxyMethods() : array
     {

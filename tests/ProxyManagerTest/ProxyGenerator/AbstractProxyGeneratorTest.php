@@ -83,8 +83,6 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * Retrieve a new generator instance
-     *
-     * @return ProxyGeneratorInterface
      */
     abstract protected function getProxyGenerator() : ProxyGeneratorInterface;
 
@@ -95,9 +93,6 @@ abstract class AbstractProxyGeneratorTest extends PHPUnit_Framework_TestCase
      */
     abstract protected function getExpectedImplementedInterfaces() : array;
 
-    /**
-     * @return array
-     */
     public function getTestedImplementations() : array
     {
         return [

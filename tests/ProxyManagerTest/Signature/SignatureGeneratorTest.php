@@ -69,11 +69,6 @@ class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
         self::assertSame($expected, $this->signatureGenerator->generateSignatureKey($parameters));
     }
 
-    /**
-     * Data provider.
-     *
-     * @return array[]
-     */
     public function signatures() : array
     {
         return [

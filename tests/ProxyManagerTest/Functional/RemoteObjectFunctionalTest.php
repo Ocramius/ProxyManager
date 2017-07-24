@@ -48,13 +48,6 @@ use Zend\Server\Client;
  */
 class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @param mixed  $expectedValue
-     * @param string $method
-     * @param array  $params
-     *
-     * @return XmlRpcAdapter
-     */
     protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
         /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
@@ -166,8 +159,6 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
      * Generates a proxy for the given class name, and retrieves its class name
      *
      * @param string|object $parentClassName
-     *
-     * @return string
      */
     private function generateProxy($parentClassName) : string
     {
@@ -227,8 +218,6 @@ class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
-     *
-     * @return array
      */
     public function getPropertyAccessProxies() : array
     {

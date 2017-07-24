@@ -726,8 +726,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
      *
      * @param string  $parentClassName
      * @param mixed[] $proxyOptions
-     *
-     * @return string
      */
     private function generateProxy(string $parentClassName, array $proxyOptions = []) : string
     {
@@ -791,8 +789,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * Generates a list of object | invoked method | parameters | expected result
-     *
-     * @return array
      */
     public function getProxyMethods() : array
     {
@@ -894,8 +890,6 @@ class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
 
     /**
      * Generates a list of object | invoked method | parameters | expected result for methods DON'T cause lazy-loading
-     *
-     * @return array
      */
     public function getProxyNonInitializingMethods() : array
     {
