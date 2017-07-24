@@ -27,5 +27,6 @@ class GetWrappedValueHolderValue extends MethodGenerator
     {
         parent::__construct('getWrappedValueHolderValue');
         $this->setBody('return $this->' . $valueHolderProperty->getName() . ';');
+        $this->setReturnType('?object');
     }
 }
