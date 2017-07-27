@@ -28,12 +28,7 @@ namespace ProxyManagerTestAsset;
  */
 class IterableTypeHintClass
 {
-    /**
-     * @param iterable $parameter
-     *
-     * @return iterable
-     */
-    public function iterableTypeHintMethod(iterable $parameter)
+    public function iterableTypeHintMethod(iterable $parameter) : iterable
     {
         return $parameter;
     }
