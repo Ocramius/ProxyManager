@@ -125,8 +125,6 @@ PHP;
 
     /**
      * @param ReflectionProperty[] $properties
-     *
-     * @return string
      */
     private function getPropertyDefaultsAssignments(array $properties) : string
     {

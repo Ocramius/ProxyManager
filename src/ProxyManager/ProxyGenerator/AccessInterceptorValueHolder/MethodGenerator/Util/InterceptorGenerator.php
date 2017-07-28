@@ -43,8 +43,6 @@ class InterceptorGenerator
      * @param \Zend\Code\Generator\PropertyGenerator  $prefixInterceptors
      * @param \Zend\Code\Generator\PropertyGenerator  $suffixInterceptors
      * @param \ReflectionMethod|null                  $originalMethod
-     *
-     * @return string
      */
     public static function createInterceptedMethodBody(
         string $methodBody,

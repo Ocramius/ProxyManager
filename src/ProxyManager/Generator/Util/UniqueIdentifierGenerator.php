@@ -34,10 +34,6 @@ abstract class UniqueIdentifierGenerator
 
     /**
      * Generates a valid unique identifier from the given name
-     *
-     * @param string $name
-     *
-     * @return string
      */
     public static function getIdentifier(string $name) : string
     {

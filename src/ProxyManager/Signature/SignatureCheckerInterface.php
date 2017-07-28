@@ -33,9 +33,6 @@ interface SignatureCheckerInterface
     /**
      * Checks whether the given signature is valid or not
      *
-     * @param ReflectionClass $class
-     * @param array           $parameters
-     *
      * @return void
      *
      * @throws \ProxyManager\Signature\Exception\InvalidSignatureException

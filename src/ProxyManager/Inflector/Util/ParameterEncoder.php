@@ -31,10 +31,6 @@ class ParameterEncoder
     /**
      * Converts the given parameters into a set of characters that are safe to
      * use in a class name
-     *
-     * @param array $parameters
-     *
-     * @return string
      */
     public function encodeParameters(array $parameters) : string
     {

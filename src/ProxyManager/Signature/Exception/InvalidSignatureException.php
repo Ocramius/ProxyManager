@@ -31,14 +31,6 @@ use UnexpectedValueException;
  */
 class InvalidSignatureException extends UnexpectedValueException implements ExceptionInterface
 {
-    /**
-     * @param ReflectionClass $class
-     * @param array           $parameters
-     * @param string          $signature
-     * @param string          $expected
-     *
-     * @return self
-     */
     public static function fromInvalidSignature(
         ReflectionClass $class,
         array $parameters,

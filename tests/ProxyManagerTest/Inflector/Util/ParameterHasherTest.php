@@ -48,9 +48,6 @@ class ParameterHasherTest extends PHPUnit_Framework_TestCase
         self::assertSame($expectedHash, $encoder->hashParameters($parameters));
     }
 
-    /**
-     * @return array
-     */
     public function getParameters() : array
     {
         return [

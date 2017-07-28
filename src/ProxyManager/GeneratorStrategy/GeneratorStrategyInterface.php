@@ -32,10 +32,6 @@ interface GeneratorStrategyInterface
 {
     /**
      * Generate the provided class
-     *
-     * @param ClassGenerator $classGenerator
-     *
-     * @return string the class body
      */
     public function generate(ClassGenerator $classGenerator) : string;
 }

@@ -34,12 +34,6 @@ use Zend\Code\Reflection\MethodReflection;
 class LazyLoadingMethodInterceptor extends MethodGenerator
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     * @param \Zend\Code\Generator\PropertyGenerator $initializerProperty
-     * @param \Zend\Code\Generator\PropertyGenerator $valueHolderProperty
-     *
-     * @return self
-     *
      * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
      */
     public static function generateMethod(

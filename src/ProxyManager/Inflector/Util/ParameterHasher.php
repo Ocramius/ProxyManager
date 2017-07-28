@@ -30,10 +30,6 @@ class ParameterHasher
 {
     /**
      * Converts the given parameters into a likely-unique hash
-     *
-     * @param array $parameters
-     *
-     * @return string
      */
     public function hashParameters(array $parameters) : string
     {

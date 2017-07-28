@@ -62,8 +62,6 @@ abstract class AbstractBaseFactory
      * @param string  $className
      * @param mixed[] $proxyOptions
      *
-     * @return string proxy class name
-     *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws \OutOfBoundsException

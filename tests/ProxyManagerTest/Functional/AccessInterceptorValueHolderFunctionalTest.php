@@ -439,10 +439,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * Generates a proxy for the given class name, and retrieves its class name
-     *
-     * @param string $parentClassName
-     *
-     * @return string
      */
     private function generateProxy(string $parentClassName) : string
     {
@@ -515,8 +511,6 @@ class AccessInterceptorValueHolderFunctionalTest extends PHPUnit_Framework_TestC
 
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
-     *
-     * @return array
      */
     public function getPropertyAccessProxies() : array
     {

@@ -31,13 +31,6 @@ use UnexpectedValueException;
  */
 class MissingSignatureException extends UnexpectedValueException implements ExceptionInterface
 {
-    /**
-     * @param ReflectionClass $class
-     * @param array           $parameters
-     * @param string          $expected
-     *
-     * @return self
-     */
     public static function fromMissingSignature(ReflectionClass $class, array $parameters, string $expected) : self
     {
         return new self(sprintf(

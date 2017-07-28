@@ -97,9 +97,6 @@ class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
         ];
     }
 
-    /**
-     * @return array
-     */
     public function getTestedImplementations() : array
     {
         return [

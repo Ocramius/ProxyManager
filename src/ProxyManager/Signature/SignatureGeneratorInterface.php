@@ -30,19 +30,11 @@ interface SignatureGeneratorInterface
 {
     /**
      * Generates a signature to be used to verify generated code validity
-     *
-     * @param array $parameters
-     *
-     * @return string
      */
     public function generateSignature(array $parameters) : string;
 
     /**
      * Generates a signature key to be looked up when verifying generated code validity
-     *
-     * @param array $parameters
-     *
-     * @return string
      */
     public function generateSignatureKey(array $parameters) : string;
 }

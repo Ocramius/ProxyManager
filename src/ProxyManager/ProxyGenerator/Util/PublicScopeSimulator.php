@@ -50,8 +50,6 @@ class PublicScopeSimulator
      * @param string|null       $returnPropertyName name of the property to which we want to assign the result of
      *                                              the operation. Return directly if none provided
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
      */
     public static function getPublicAccessSimulationCode(
@@ -121,10 +119,6 @@ class PublicScopeSimulator
      * Note: if the object is a wrapper, the wrapped instance is accessed directly. If the object
      * is a ghost or the proxy has no wrapper, then an instance of the parent class is created via
      * on-the-fly unserialization
-     *
-     * @param string $operationType
-     *
-     * @return string
      */
     private static function getByRefReturnValue(string $operationType) : string
     {
@@ -148,21 +142,15 @@ class PublicScopeSimulator
     }
 
     /**
-     * @param string      $operationType
-     * @param string      $nameParameter
-     * @param string|null $valueParameter
-     *
-     * @return string
-     *
      * @throws \InvalidArgumentException
      */
-    private static function getOperation(string $operationType, string $nameParameter, $valueParameter) : string
+    private static function getOperation(string $operationType, string $nameParameter, ?string $valueParameter) : string
     {
         switch ($operationType) {
             case static::OPERATION_GET:
                 return 'return $targetObject->$' . $nameParameter . ';';
             case static::OPERATION_SET:
-                if (! $valueParameter) {
+                if (null === $valueParameter) {
                     throw new \InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
