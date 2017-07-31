@@ -34,7 +34,7 @@ use Zend\Code\Generator\PropertyGenerator;
 abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Verifies that a given property name is unique across two different instantiations of the property
+     * Verifies that a given property name is the same across two different instantiations of the property
      */
     public function testUniqueProperty() : void
     {
@@ -42,7 +42,7 @@ abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
         $property2 = $this->createProperty();
 
         self::assertSame($property1->getName(), $property1->getName());
-        self::assertNotEquals($property1->getName(), $property2->getName());
+        self::assertSame($property1->getName(), $property2->getName());
     }
 
     abstract protected function createProperty() : PropertyGenerator;

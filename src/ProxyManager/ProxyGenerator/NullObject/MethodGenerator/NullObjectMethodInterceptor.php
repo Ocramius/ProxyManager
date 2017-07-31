@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 use Zend\Code\Reflection\MethodReflection;
 
 /**
@@ -49,7 +49,7 @@ class NullObjectMethodInterceptor extends MethodGenerator
         }
 
         if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
+            $reference = IdentifierSuffixer::getIdentifier('ref');
 
             $method->setBody("\$$reference = null;\nreturn \$$reference;");
 

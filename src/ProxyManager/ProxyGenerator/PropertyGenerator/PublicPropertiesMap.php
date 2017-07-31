@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\PropertyGenerator;
 
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -44,7 +44,7 @@ class PublicPropertiesMap extends PropertyGenerator
      */
     public function __construct(Properties $properties)
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('publicProperties'));
+        parent::__construct(IdentifierSuffixer::getIdentifier('publicProperties'));
 
         foreach ($properties->getPublicProperties() as $publicProperty) {
             $this->publicProperties[$publicProperty->getName()] = true;
