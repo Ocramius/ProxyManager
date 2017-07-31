@@ -27,6 +27,7 @@ use PackageVersions\Versions;
  * valid class/property/method identifiers
  * with a deterministic attached suffix,
  * in order to prevent property name collisions
+ * and tampering from userland
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
