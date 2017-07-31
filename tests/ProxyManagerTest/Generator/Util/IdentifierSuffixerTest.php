@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator\Util;
 
+use PackageVersions\Versions;
 use PHPUnit_Framework_TestCase;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 
@@ -36,13 +37,22 @@ class IdentifierSuffixerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getBaseIdentifierNames
-     *
-     * @param string $name
      */
     public function testGeneratesSuffixedIdentifiers(string $name) : void
     {
         self::assertSame(
             IdentifierSuffixer::getIdentifier($name),
+            IdentifierSuffixer::getIdentifier($name)
+        );
+    }
+
+    /**
+     * @dataProvider getBaseIdentifierNames
+     */
+    public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name) : void
+    {
+        self::assertStringEndsWith(
+            \substr(sha1($name . sha1(serialize(Versions::VERSIONS))), 0, 5),
             IdentifierSuffixer::getIdentifier($name)
         );
     }
