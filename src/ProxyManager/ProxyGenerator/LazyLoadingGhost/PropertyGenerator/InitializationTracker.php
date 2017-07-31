@@ -38,7 +38,7 @@ class InitializationTracker extends PropertyGenerator
      */
     public function __construct()
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('initializationTracker'));
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('initializationTracker', true));
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setDocBlock('@var bool tracks initialization status - true while the object is initializing');

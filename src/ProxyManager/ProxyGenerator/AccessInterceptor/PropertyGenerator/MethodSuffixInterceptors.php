@@ -38,7 +38,7 @@ class MethodSuffixInterceptors extends PropertyGenerator
      */
     public function __construct()
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('methodSuffixInterceptors'));
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('methodSuffixInterceptors', true));
 
         $this->setDefaultValue([]);
         $this->setVisibility(self::VISIBILITY_PRIVATE);

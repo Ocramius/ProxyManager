@@ -58,7 +58,7 @@ Triggers initialization logic for this ghost object
 DOCBLOCK;
 
         parent::__construct(
-            UniqueIdentifierGenerator::getIdentifier('callInitializer'),
+            UniqueIdentifierGenerator::getIdentifier('callInitializer', true),
             [
                 new ParameterGenerator('methodName'),
                 new ParameterGenerator('parameters', 'array'),

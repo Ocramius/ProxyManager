@@ -32,20 +32,24 @@ abstract class UniqueIdentifierGenerator
     const VALID_IDENTIFIER_FORMAT = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/';
     const DEFAULT_IDENTIFIER = 'g';
 
+    private static $uniqId;
+
     /**
      * Generates a valid unique identifier from the given name
      */
-    public static function getIdentifier(string $name) : string
+    public static function getIdentifier(string $name, $groupByName = false) : string
     {
-        return str_replace(
-            '.',
-            '',
-            uniqid(
-                preg_match(static::VALID_IDENTIFIER_FORMAT, $name)
-                ? $name
-                : static::DEFAULT_IDENTIFIER,
-                true
-            )
-        );
+        if (null === self::$uniqId) {
+            self::$uniqId = str_replace('.', '', uniqid('', true));
+        }
+
+        if (preg_match(static::VALID_IDENTIFIER_FORMAT, $name)) {
+            $uniqId = $groupByName ? self::$uniqId : str_replace('.', '', uniqid('', true));
+        } else {
+            $name = static::DEFAULT_IDENTIFIER;
+            $uniqId = str_replace('.', '', uniqid('', true));
+        }
+
+        return $name.$uniqId;
     }
 }

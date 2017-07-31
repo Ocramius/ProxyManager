@@ -38,7 +38,7 @@ class InitializerProperty extends PropertyGenerator
      */
     public function __construct()
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('initializer'));
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('initializer', true));
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setDocBlock('@var \\Closure|null initializer responsible for generating the wrapped object');

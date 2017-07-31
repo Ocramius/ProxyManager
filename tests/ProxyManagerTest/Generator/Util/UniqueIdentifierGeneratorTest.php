@@ -52,6 +52,26 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $name
      */
+    public function testGeneratesUniqueIdentifiersByName(string $name) : void
+    {
+        if (preg_match(UniqueIdentifierGenerator::VALID_IDENTIFIER_FORMAT, $name)) {
+            self::assertSame(
+                UniqueIdentifierGenerator::getIdentifier($name, true),
+                UniqueIdentifierGenerator::getIdentifier($name, true)
+            );
+        } else {
+            self::assertNotSame(
+                UniqueIdentifierGenerator::getIdentifier($name, true),
+                UniqueIdentifierGenerator::getIdentifier($name, true)
+            );
+        }
+    }
+
+    /**
+     * @dataProvider getBaseIdentifierNames
+     *
+     * @param string $name
+     */
     public function testGeneratesValidIdentifiers(string $name) : void
     {
         self::assertRegExp(

@@ -49,7 +49,7 @@ class NullObjectMethodInterceptor extends MethodGenerator
         }
 
         if ($originalMethod->returnsReference()) {
-            $reference = UniqueIdentifierGenerator::getIdentifier('ref');
+            $reference = UniqueIdentifierGenerator::getIdentifier('ref', true);
 
             $method->setBody("\$$reference = null;\nreturn \$$reference;");
 
