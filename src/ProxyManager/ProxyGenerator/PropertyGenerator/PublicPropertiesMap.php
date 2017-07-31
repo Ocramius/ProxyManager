@@ -44,7 +44,7 @@ class PublicPropertiesMap extends PropertyGenerator
      */
     public function __construct(Properties $properties)
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('publicProperties'));
+        parent::__construct(UniqueIdentifierGenerator::getIdentifier('publicProperties', true));
 
         foreach ($properties->getPublicProperties() as $publicProperty) {
             $this->publicProperties[$publicProperty->getName()] = true;
