@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -44,7 +44,7 @@ class ProtectedPropertiesMap extends PropertyGenerator
     public function __construct(Properties $properties)
     {
         parent::__construct(
-            UniqueIdentifierGenerator::getIdentifier('protectedProperties', true)
+            IdentifierSuffixer::getIdentifier('protectedProperties')
         );
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);

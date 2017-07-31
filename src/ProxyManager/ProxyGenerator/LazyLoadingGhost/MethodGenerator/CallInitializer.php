@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionProperty;
+use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -58,7 +58,7 @@ Triggers initialization logic for this ghost object
 DOCBLOCK;
 
         parent::__construct(
-            UniqueIdentifierGenerator::getIdentifier('callInitializer', true),
+            IdentifierSuffixer::getIdentifier('callInitializer'),
             [
                 new ParameterGenerator('methodName'),
                 new ParameterGenerator('parameters', 'array'),

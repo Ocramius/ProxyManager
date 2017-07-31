@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator;
 
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -38,7 +38,7 @@ class MethodSuffixInterceptors extends PropertyGenerator
      */
     public function __construct()
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('methodSuffixInterceptors', true));
+        parent::__construct(IdentifierSuffixer::getIdentifier('methodSuffixInterceptors'));
 
         $this->setDefaultValue([]);
         $this->setVisibility(self::VISIBILITY_PRIVATE);

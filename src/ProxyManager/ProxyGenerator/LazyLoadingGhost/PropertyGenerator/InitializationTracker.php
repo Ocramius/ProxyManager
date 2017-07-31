@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -38,7 +38,7 @@ class InitializationTracker extends PropertyGenerator
      */
     public function __construct()
     {
-        parent::__construct(UniqueIdentifierGenerator::getIdentifier('initializationTracker', true));
+        parent::__construct(IdentifierSuffixer::getIdentifier('initializationTracker'));
 
         $this->setVisibility(self::VISIBILITY_PRIVATE);
         $this->setDocBlock('@var bool tracks initialization status - true while the object is initializing');
