@@ -42,7 +42,7 @@ abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
         $property2 = $this->createProperty();
 
         self::assertSame($property1->getName(), $property1->getName());
-        self::assertEquals($property1->getName(), $property2->getName());
+        self::assertSame($property1->getName(), $property2->getName());
     }
 
     abstract protected function createProperty() : PropertyGenerator;
