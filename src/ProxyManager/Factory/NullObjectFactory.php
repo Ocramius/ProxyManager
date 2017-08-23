@@ -24,7 +24,7 @@ class NullObjectFactory extends AbstractBaseFactory
     private $generator;
 
     /**
-     * @param object $instanceOrClassName the object to be wrapped or interface to transform to null object
+     * @param object|string $instanceOrClassName the object to be wrapped or interface to transform to null object
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
