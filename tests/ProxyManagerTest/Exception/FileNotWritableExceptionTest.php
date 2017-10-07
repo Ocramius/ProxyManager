@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Exception;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
 
 /**
@@ -16,7 +16,7 @@ use ProxyManager\Exception\FileNotWritableException;
  * @covers \ProxyManager\Exception\FileNotWritableException
  * @group Coverage
  */
-class FileNotWritableExceptionTest extends PHPUnit_Framework_TestCase
+class FileNotWritableExceptionTest extends TestCase
 {
     public function testFromInvalidMoveOperation() : void
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTestAsset;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Base test class to play around with final pre-existing methods
@@ -12,7 +12,7 @@ use PHPUnit_Framework_TestCase;
  * @author Jefersson Nathan <malukenho@phpse.net>
  * @license MIT
  */
-class ClassWithFinalMethods extends PHPUnit_Framework_TestCase
+class ClassWithFinalMethods extends TestCase
 {
     final public function foo()
     {

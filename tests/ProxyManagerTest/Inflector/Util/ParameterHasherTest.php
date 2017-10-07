@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Inflector\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Inflector\Util\ParameterHasher;
 
 /**
@@ -15,7 +15,7 @@ use ProxyManager\Inflector\Util\ParameterHasher;
  *
  * @group Coverage
  */
-class ParameterHasherTest extends PHPUnit_Framework_TestCase
+class ParameterHasherTest extends TestCase
 {
     /**
      * @dataProvider getParameters

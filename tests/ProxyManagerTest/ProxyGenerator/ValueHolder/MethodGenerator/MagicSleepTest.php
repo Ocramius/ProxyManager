@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
@@ -18,7 +18,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicSleepTest extends PHPUnit_Framework_TestCase
+class MagicSleepTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep::__construct

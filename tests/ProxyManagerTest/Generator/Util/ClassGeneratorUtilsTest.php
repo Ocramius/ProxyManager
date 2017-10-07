@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
@@ -22,7 +22,7 @@ use Zend\Code\Generator\MethodGenerator;
  *
  * @group Coverage
  */
-class ClassGeneratorUtilsTest extends PHPUnit_Framework_TestCase
+class ClassGeneratorUtilsTest extends TestCase
 {
     public function testCantAddAFinalMethod() : void
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
@@ -23,7 +23,7 @@ use ReflectionProperty;
  * @covers \ProxyManager\ProxyGenerator\Util\Properties
  * @group Coverage
  */
-class PropertiesTest extends PHPUnit_Framework_TestCase
+class PropertiesTest extends TestCase
 {
     public function testGetPublicProperties() : void
     {

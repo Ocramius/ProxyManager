@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AbstractBaseFactory;
@@ -27,7 +27,7 @@ use Zend\Code\Generator\ClassGenerator;
  * @covers \ProxyManager\Factory\AbstractBaseFactory
  * @group Coverage
  */
-class AbstractBaseFactoryTest extends PHPUnit_Framework_TestCase
+class AbstractBaseFactoryTest extends TestCase
 {
     /**
      * Note: we mock the class in order to assert on the abstract method usage

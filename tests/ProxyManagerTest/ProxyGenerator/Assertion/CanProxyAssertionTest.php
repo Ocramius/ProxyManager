@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\Assertion;
 
 use BadMethodCallException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion;
 use ProxyManagerTestAsset\AccessInterceptorValueHolderMock;
@@ -40,7 +40,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion
  * @group Coverage
  */
-class CanProxyAssertionTest extends PHPUnit_Framework_TestCase
+class CanProxyAssertionTest extends TestCase
 {
     public function testDeniesFinalClasses() : void
     {

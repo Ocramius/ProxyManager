@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
@@ -30,7 +30,7 @@ use Zend\Server\Client;
  * @group Functional
  * @coversNothing
  */
-class RemoteObjectFunctionalTest extends PHPUnit_Framework_TestCase
+class RemoteObjectFunctionalTest extends TestCase
 {
     protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {

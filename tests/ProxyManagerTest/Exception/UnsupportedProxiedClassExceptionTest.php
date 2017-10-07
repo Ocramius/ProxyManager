@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Exception;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionProperty;
@@ -18,7 +18,7 @@ use ReflectionProperty;
  * @covers \ProxyManager\Exception\UnsupportedProxiedClassException
  * @group Coverage
  */
-class UnsupportedProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
+class UnsupportedProxiedClassExceptionTest extends TestCase
 {
     /**
      * @covers \ProxyManager\Exception\UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty

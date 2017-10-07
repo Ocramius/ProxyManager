@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\GeneratorStrategy;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -17,7 +17,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
  *
  * @group Coverage
  */
-class EvaluatingGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class EvaluatingGeneratorStrategyTest extends TestCase
 {
     /**
      * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::generate

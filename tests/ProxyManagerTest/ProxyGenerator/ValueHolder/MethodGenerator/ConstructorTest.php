@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithVariadicConstructorArgument;
@@ -22,7 +22,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor
  * @group Coverage
  */
-class ConstructorTest extends PHPUnit_Framework_TestCase
+class ConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {

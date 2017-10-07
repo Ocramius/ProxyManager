@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\FileLocator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\InvalidProxyDirectoryException;
 use ProxyManager\FileLocator\FileLocator;
 
@@ -16,7 +16,7 @@ use ProxyManager\FileLocator\FileLocator;
  *
  * @group Coverage
  */
-class FileLocatorTest extends PHPUnit_Framework_TestCase
+class FileLocatorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\FileLocator\FileLocator::__construct

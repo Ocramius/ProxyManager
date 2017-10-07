@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Inflector\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Inflector\Util\ParameterEncoder;
 
 /**
@@ -15,7 +15,7 @@ use ProxyManager\Inflector\Util\ParameterEncoder;
  *
  * @group Coverage
  */
-class ParameterEncoderTest extends PHPUnit_Framework_TestCase
+class ParameterEncoderTest extends TestCase
 {
     /**
      * @dataProvider getParameters

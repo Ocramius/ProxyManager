@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
-class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
+class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {

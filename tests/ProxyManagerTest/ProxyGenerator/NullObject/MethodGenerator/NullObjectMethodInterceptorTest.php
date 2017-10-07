@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManagerTestAsset\BaseClass;
 use Zend\Code\Reflection\MethodReflection;
@@ -17,7 +17,7 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @group Coverage
  */
-class NullObjectMethodInterceptorTest extends PHPUnit_Framework_TestCase
+class NullObjectMethodInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor

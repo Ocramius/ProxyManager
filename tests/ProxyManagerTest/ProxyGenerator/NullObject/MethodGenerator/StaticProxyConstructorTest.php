@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
@@ -19,7 +19,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
-class StaticProxyConstructorTest extends PHPUnit_Framework_TestCase
+class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {

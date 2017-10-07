@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\PropertyGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -15,7 +15,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-abstract class AbstractUniquePropertyNameTest extends PHPUnit_Framework_TestCase
+abstract class AbstractUniquePropertyNameTest extends TestCase
 {
     /**
      * Verifies that a given property name is the same across two different instantiations of the property

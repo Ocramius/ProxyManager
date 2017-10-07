@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
@@ -18,7 +18,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicIssetTest extends PHPUnit_Framework_TestCase
+class MagicIssetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset::__construct

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -16,7 +16,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class SetMethodPrefixInterceptorTest extends PHPUnit_Framework_TestCase
+class SetMethodPrefixInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor::__construct

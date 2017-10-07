@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\EmptyClass;
@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicUnsetTest extends PHPUnit_Framework_TestCase
+class MagicUnsetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset::__construct

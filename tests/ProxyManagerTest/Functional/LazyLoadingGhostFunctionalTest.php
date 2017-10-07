@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit_Framework_MockObject_MockObject as Mock;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -44,7 +44,7 @@ use stdClass;
  * @group Functional
  * @coversNothing
  */
-class LazyLoadingGhostFunctionalTest extends PHPUnit_Framework_TestCase
+class LazyLoadingGhostFunctionalTest extends TestCase
 {
     /**
      * @dataProvider getProxyInitializingMethods

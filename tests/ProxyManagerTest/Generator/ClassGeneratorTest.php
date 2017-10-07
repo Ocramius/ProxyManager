@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Generator;
 
 use Countable;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use stdClass;
 
@@ -17,7 +17,7 @@ use stdClass;
  *
  * @group Coverage
  */
-class ClassGeneratorTest extends PHPUnit_Framework_TestCase
+class ClassGeneratorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\Generator\ClassGenerator::setExtendedClass

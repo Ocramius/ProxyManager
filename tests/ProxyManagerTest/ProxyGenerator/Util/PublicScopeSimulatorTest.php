@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use InvalidArgumentException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -18,7 +18,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator
  * @group Coverage
  */
-class PublicScopeSimulatorTest extends PHPUnit_Framework_TestCase
+class PublicScopeSimulatorTest extends TestCase
 {
     public function testSimpleGet() : void
     {

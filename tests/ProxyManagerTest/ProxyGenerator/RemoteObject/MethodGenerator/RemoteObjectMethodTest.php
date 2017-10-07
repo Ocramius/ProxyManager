@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
@@ -19,7 +19,7 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @group Coverage
  */
-class RemoteObjectMethodTest extends PHPUnit_Framework_TestCase
+class RemoteObjectMethodTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod

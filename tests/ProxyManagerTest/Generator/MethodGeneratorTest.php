@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
@@ -25,7 +25,7 @@ use Zend\Code\Reflection\MethodReflection;
  * @covers \ProxyManager\Generator\MethodGenerator
  * @group Coverage
  */
-class MethodGeneratorTest extends PHPUnit_Framework_TestCase
+class MethodGeneratorTest extends TestCase
 {
     public function testGeneratedMethodsAreAllConcrete() : void
     {

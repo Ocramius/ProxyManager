@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit_Framework_MockObject_MockObject as Mock;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -38,7 +39,7 @@ use stdClass;
  * @group Functional
  * @coversNothing
  */
-class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
+class LazyLoadingValueHolderFunctionalTest extends TestCase
 {
     /**
      * @dataProvider getProxyMethods
@@ -367,7 +368,7 @@ class LazyLoadingValueHolderFunctionalTest extends PHPUnit_Framework_TestCase
 
         self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
 
-        $this->expectException(\PHPUnit_Framework_ExpectationFailedException::class);
+        $this->expectException(ExpectationFailedException::class);
 
         self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }

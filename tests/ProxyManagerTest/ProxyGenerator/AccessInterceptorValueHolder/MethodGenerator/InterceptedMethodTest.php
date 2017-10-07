@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod;
 use ProxyManagerTestAsset\BaseClass;
@@ -20,7 +20,7 @@ use Zend\Code\Reflection\MethodReflection;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod::generateMethod
  * @group Coverage
  */
-class InterceptedMethodTest extends PHPUnit_Framework_TestCase
+class InterceptedMethodTest extends TestCase
 {
     public function testBodyStructure() : void
     {

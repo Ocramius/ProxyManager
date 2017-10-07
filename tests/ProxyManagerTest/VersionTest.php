@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Version;
 
 /**
@@ -16,7 +16,7 @@ use ProxyManager\Version;
  * @covers \ProxyManager\Version
  * @group Coverage
  */
-class VersionTest extends PHPUnit_Framework_TestCase
+class VersionTest extends TestCase
 {
     public function testGetVersion() : void
     {

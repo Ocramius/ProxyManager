@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Exception;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\InvalidProxyDirectoryException;
 
 /**
@@ -16,7 +16,7 @@ use ProxyManager\Exception\InvalidProxyDirectoryException;
  * @covers \ProxyManager\Exception\InvalidProxyDirectoryException
  * @group Coverage
  */
-class InvalidProxyDirectoryExceptionTest extends PHPUnit_Framework_TestCase
+class InvalidProxyDirectoryExceptionTest extends TestCase
 {
     /**
      * @covers \ProxyManager\Exception\InvalidProxyDirectoryException::proxyDirectoryNotFound

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\GeneratorStrategy;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\ClassGenerator;
@@ -22,7 +22,7 @@ use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
  *
  * Note: this test generates temporary files that are not deleted
  */
-class FileWriterGeneratorStrategyTest extends PHPUnit_Framework_TestCase
+class FileWriterGeneratorStrategyTest extends TestCase
 {
     public function testGenerate() : void
     {

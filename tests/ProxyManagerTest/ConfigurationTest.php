@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
@@ -22,7 +22,7 @@ use ProxyManager\Signature\SignatureGeneratorInterface;
  *
  * @group Coverage
  */
-class ConfigurationTest extends PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
     /**
      * @var \ProxyManager\Configuration

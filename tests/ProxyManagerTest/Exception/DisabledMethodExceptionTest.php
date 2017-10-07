@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Exception;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\DisabledMethodException;
 
 /**
@@ -16,7 +16,7 @@ use ProxyManager\Exception\DisabledMethodException;
  * @covers \ProxyManager\Exception\DisabledMethodException
  * @group Coverage
  */
-class DisabledMethodExceptionTest extends PHPUnit_Framework_TestCase
+class DisabledMethodExceptionTest extends TestCase
 {
     /**
      * @covers \ProxyManager\Exception\DisabledMethodException::disabledMethod

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\ExceptionInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -29,7 +29,7 @@ use ReflectionException;
  * @group Functional
  * @coversNothing
  */
-class FatalPreventionFunctionalTest extends PHPUnit_Framework_TestCase
+class FatalPreventionFunctionalTest extends TestCase
 {
     /**
      * Verifies that code generation and evaluation will not cause fatals with any given class

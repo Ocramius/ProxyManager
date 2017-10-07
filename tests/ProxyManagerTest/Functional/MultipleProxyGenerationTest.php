@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
@@ -46,7 +46,7 @@ use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
  * @group issue-10
  * @coversNothing
  */
-class MultipleProxyGenerationTest extends PHPUnit_Framework_TestCase
+class MultipleProxyGenerationTest extends TestCase
 {
     /**
      * Verifies that proxies generated from different factories will retain their specific implementation

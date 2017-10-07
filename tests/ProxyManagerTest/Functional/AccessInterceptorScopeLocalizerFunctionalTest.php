@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
@@ -37,7 +38,7 @@ use stdClass;
  * @group Functional
  * @coversNothing
  */
-class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_TestCase
+class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 {
     /**
      * @dataProvider getProxyMethods
@@ -523,7 +524,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends PHPUnit_Framework_Te
 
         self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
 
-        $this->expectException(\PHPUnit_Framework_ExpectationFailedException::class);
+        $this->expectException(ExpectationFailedException::class);
 
         self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
     }
