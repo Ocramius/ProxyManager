@@ -25,14 +25,14 @@
     },
     "require-dev": {
         "ext-phar":                     "*",
-        "phpunit/phpunit":              "^5.7.21",
-        "phpunit/phpunit-mock-objects": "^3.4.4",
+        "phpunit/phpunit":              "^6.4.1",
         "squizlabs/php_codesniffer":    "^2.7.0",
         "couscous/couscous":            "^1.5.2",
         "phpbench/phpbench":            "^0.12.2",
         "phpstan/phpstan":              "^0.8",
         "nikic/php-parser":             "^3.0.4",
-        "humbug/humbug":                "dev-master@DEV"
+        "humbug/humbug":                "1.0.0-RC.0@RC",
+        "padraic/phpunit-accelerator":  "dev-master@DEV"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",

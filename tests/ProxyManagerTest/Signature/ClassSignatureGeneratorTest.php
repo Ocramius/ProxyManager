@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Signature;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Signature\ClassSignatureGenerator;
 use ProxyManager\Signature\SignatureGeneratorInterface;
 use Zend\Code\Generator\ClassGenerator;
@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\Signature\ClassSignatureGenerator
  * @group Coverage
  */
-class ClassSignatureGeneratorTest extends PHPUnit_Framework_TestCase
+class ClassSignatureGeneratorTest extends TestCase
 {
     /**
      * @var SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject

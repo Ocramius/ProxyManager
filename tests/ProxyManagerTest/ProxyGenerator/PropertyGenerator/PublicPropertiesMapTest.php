@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\PropertyGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManager\ProxyGenerator\Util\Properties;
@@ -21,7 +21,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap
  * @group Coverage
  */
-class PublicPropertiesMapTest extends PHPUnit_Framework_TestCase
+class PublicPropertiesMapTest extends TestCase
 {
     public function testEmptyClass() : void
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor;
 use ProxyManagerTestAsset\BaseClass;
 use Zend\Code\Generator\PropertyGenerator;
@@ -18,7 +18,7 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @group Coverage
  */
-class LazyLoadingMethodInterceptorTest extends PHPUnit_Framework_TestCase
+class LazyLoadingMethodInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor

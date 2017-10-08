@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Signature\Exception;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ReflectionClass;
 
@@ -17,7 +17,7 @@ use ReflectionClass;
  * @covers \ProxyManager\Signature\Exception\InvalidSignatureException
  * @group Coverage
  */
-class InvalidSignatureExceptionTest extends PHPUnit_Framework_TestCase
+class InvalidSignatureExceptionTest extends TestCase
 {
     public function testFromInvalidSignature() : void
     {

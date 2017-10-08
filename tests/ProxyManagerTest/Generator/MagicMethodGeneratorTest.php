@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
@@ -20,7 +20,7 @@ use ReflectionClass;
  * @group Coverage
  * @covers \ProxyManager\Generator\MagicMethodGenerator
  */
-class MagicMethodGeneratorTest extends PHPUnit_Framework_TestCase
+class MagicMethodGeneratorTest extends TestCase
 {
     public function testGeneratesCorrectByRefReturnValue() : void
     {

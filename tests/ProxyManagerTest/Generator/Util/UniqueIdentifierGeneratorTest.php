@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 
 /**
@@ -16,7 +16,7 @@ use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
  * @group Coverage
  * @covers \ProxyManager\Generator\Util\UniqueIdentifierGenerator
  */
-class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
+class UniqueIdentifierGeneratorTest extends TestCase
 {
     /**
      * @dataProvider getBaseIdentifierNames

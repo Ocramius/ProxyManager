@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Signature;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Signature\SignatureGenerator;
 
 /**
@@ -16,7 +16,7 @@ use ProxyManager\Signature\SignatureGenerator;
  * @covers \ProxyManager\Signature\SignatureGenerator
  * @group Coverage
  */
-class SignatureGeneratorTest extends PHPUnit_Framework_TestCase
+class SignatureGeneratorTest extends TestCase
 {
     /**
      * @var SignatureGenerator

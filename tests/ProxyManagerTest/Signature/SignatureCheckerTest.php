@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Signature;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Signature\SignatureChecker;
@@ -20,7 +20,7 @@ use ReflectionClass;
  * @covers \ProxyManager\Signature\SignatureChecker
  * @group Coverage
  */
-class SignatureCheckerTest extends PHPUnit_Framework_TestCase
+class SignatureCheckerTest extends TestCase
 {
     /**
      * @var string

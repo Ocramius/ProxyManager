@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Autoloader;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -19,7 +19,7 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
  * @covers \ProxyManager\Autoloader\Autoloader
  * @group Coverage
  */
-class AutoloaderTest extends PHPUnit_Framework_TestCase
+class AutoloaderTest extends TestCase
 {
     /**
      * @var \ProxyManager\Autoloader\Autoloader

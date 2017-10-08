@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
@@ -27,7 +27,7 @@ use stdClass;
  *
  * @group Coverage
  */
-class AccessInterceptorScopeLocalizerFactoryTest extends PHPUnit_Framework_TestCase
+class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Generator\Util;
 
 use PackageVersions\Versions;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 
 /**
@@ -17,7 +17,7 @@ use ProxyManager\Generator\Util\IdentifierSuffixer;
  * @group Coverage
  * @covers \ProxyManager\Generator\Util\IdentifierSuffixer
  */
-class IdentifierSuffixerTest extends PHPUnit_Framework_TestCase
+class IdentifierSuffixerTest extends TestCase
 {
     /**
      * @dataProvider getBaseIdentifierNames

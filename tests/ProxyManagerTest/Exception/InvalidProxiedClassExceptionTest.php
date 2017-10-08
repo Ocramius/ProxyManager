@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Exception;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
@@ -22,7 +22,7 @@ use ReflectionClass;
  * @covers \ProxyManager\Exception\InvalidProxiedClassException
  * @group Coverage
  */
-class InvalidProxiedClassExceptionTest extends PHPUnit_Framework_TestCase
+class InvalidProxiedClassExceptionTest extends TestCase
 {
     public function testInterfaceNotSupported() : void
     {

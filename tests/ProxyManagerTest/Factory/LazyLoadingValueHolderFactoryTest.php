@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
@@ -25,7 +25,7 @@ use ProxyManagerTestAsset\LazyLoadingMock;
  *
  * @group Coverage
  */
-class LazyLoadingValueHolderFactoryTest extends PHPUnit_Framework_TestCase
+class LazyLoadingValueHolderFactoryTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject

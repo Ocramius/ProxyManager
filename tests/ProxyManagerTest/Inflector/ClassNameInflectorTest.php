@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Inflector;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Inflector\ClassNameInflector;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 
@@ -16,7 +16,7 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
  *
  * @group Coverage
  */
-class ClassNameInflectorTest extends PHPUnit_Framework_TestCase
+class ClassNameInflectorTest extends TestCase
 {
     /**
      * @dataProvider getClassNames

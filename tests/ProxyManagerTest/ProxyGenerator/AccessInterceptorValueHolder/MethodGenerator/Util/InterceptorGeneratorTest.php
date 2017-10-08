@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
@@ -21,7 +21,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @group Coverage
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator
  */
-class InterceptorGeneratorTest extends PHPUnit_Framework_TestCase
+class InterceptorGeneratorTest extends TestCase
 {
     public function testInterceptorGenerator() : void
     {

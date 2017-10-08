@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
@@ -29,7 +29,7 @@ use ReflectionClass;
  * @group Functional
  * @coversNothing
  */
-class NullObjectFunctionalTest extends PHPUnit_Framework_TestCase
+class NullObjectFunctionalTest extends TestCase
 {
     /**
      * @dataProvider getProxyMethods

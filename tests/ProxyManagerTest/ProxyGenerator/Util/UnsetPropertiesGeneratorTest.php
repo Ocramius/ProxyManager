@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -21,7 +21,7 @@ use ProxyManagerTestAsset\EmptyClass;
  * @covers \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator
  * @group Coverage
  */
-class UnsetPropertiesGeneratorTest extends PHPUnit_Framework_TestCase
+class UnsetPropertiesGeneratorTest extends TestCase
 {
     /**
      * @dataProvider classNamesProvider

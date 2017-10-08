@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 
@@ -18,7 +18,7 @@ use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
  *
  * @group Coverage
  */
-class ProxiedMethodReturnExpressionTest extends PHPUnit_Framework_TestCase
+class ProxiedMethodReturnExpressionTest extends TestCase
 {
     /**
      * @dataProvider returnExpressionsProvider

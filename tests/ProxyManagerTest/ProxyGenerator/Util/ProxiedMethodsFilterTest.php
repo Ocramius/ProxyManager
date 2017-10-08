@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithAbstractMagicMethods;
@@ -30,7 +30,7 @@ use ReflectionMethod;
  * @covers \ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter
  * @group Coverage
  */
-class ProxiedMethodsFilterTest extends PHPUnit_Framework_TestCase
+class ProxiedMethodsFilterTest extends TestCase
 {
     /**
      * @dataProvider expectedMethods

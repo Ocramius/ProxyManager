@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\Soap;
 use Zend\Server\Client;
 
@@ -16,7 +16,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class SoapTest extends PHPUnit_Framework_TestCase
+class SoapTest extends TestCase
 {
     /**
      * {@inheritDoc}

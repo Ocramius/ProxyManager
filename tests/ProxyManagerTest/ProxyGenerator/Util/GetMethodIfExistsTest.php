@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
 
 /**
@@ -16,7 +16,7 @@ use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
  * @covers \ProxyManager\ProxyGenerator\Util\GetMethodIfExists
  * @group Coverage
  */
-class GetMethodIfExistsTest extends PHPUnit_Framework_TestCase
+class GetMethodIfExistsTest extends TestCase
 {
     public function testGetExistingMethod() : void
     {
