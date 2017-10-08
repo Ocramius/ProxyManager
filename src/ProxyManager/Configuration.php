@@ -44,7 +44,7 @@ class Configuration
     protected $generatorStrategy;
 
     /**
-     * @var callable|null
+     * @var AutoloaderInterface
      */
     protected $proxyAutoloader;
 
