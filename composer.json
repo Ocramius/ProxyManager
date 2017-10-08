@@ -31,7 +31,7 @@
         "phpbench/phpbench":            "^0.12.2",
         "phpstan/phpstan":              "^0.8",
         "nikic/php-parser":             "^3.0.4",
-        "humbug/humbug":                "dev-master@DEV",
+        "humbug/humbug":                "1.0.0-RC.0@RC",
         "padraic/phpunit-accelerator":  "dev-master@DEV"
     },
     "suggest": {
