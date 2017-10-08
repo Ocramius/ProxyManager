@@ -27,7 +27,7 @@ class Constructor extends MethodGenerator
     {
         $originalConstructor = self::getConstructor($originalClass);
 
-        /* @var $constructor Constructor */
+        /* @var $constructor self */
         $constructor = $originalConstructor
             ? self::fromReflection($originalConstructor)
             : new self('__construct');
