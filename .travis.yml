@@ -22,8 +22,8 @@ before_script:
   - sh .travis.install.sh
 
 script:
-  - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --coverage-clover ./clover.xml --group=Coverage
-  - ./vendor/bin/phpunit --disallow-test-output --report-useless-tests --exclude-group=Coverage
+  - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml --group=Coverage
+  - ./vendor/bin/phpunit --disallow-test-output --exclude-group=Coverage
   - php -n ./vendor/bin/phpbench run --revs=100 --iterations=3 --warmup=1 --report=aggregate
   - echo "Running examples"
   - php examples/access-interceptor-scope-localizer.php
