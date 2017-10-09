@@ -34,7 +34,7 @@ class Configuration
     protected $proxiesTargetDir;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $proxiesNamespace = self::DEFAULT_PROXY_NAMESPACE;
 
@@ -44,7 +44,7 @@ class Configuration
     protected $generatorStrategy;
 
     /**
-     * @var AutoloaderInterface
+     * @var AutoloaderInterface|null
      */
     protected $proxyAutoloader;
 
