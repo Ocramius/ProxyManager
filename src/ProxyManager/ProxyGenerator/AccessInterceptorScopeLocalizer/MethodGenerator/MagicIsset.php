@@ -37,8 +37,6 @@ class MagicIsset extends MagicMethodGenerator
 
         $parent = GetMethodIfExists::get($originalClass, '__isset');
 
-        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
-
         $callParent = '$returnValue = & parent::__isset($name);';
 
         if (! $parent) {

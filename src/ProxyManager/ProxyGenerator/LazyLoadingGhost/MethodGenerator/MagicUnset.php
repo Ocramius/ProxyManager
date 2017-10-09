@@ -112,8 +112,6 @@ PHP;
 
         $override = $originalClass->hasMethod('__unset');
 
-        $this->setDocBlock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-
         $parentAccess = 'return parent::__unset($name);';
 
         if (! $override) {

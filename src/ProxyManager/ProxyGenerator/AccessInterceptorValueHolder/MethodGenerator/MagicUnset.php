@@ -44,8 +44,6 @@ class MagicUnset extends MagicMethodGenerator
         $parent          = GetMethodIfExists::get($originalClass, '__unset');
         $valueHolderName = $valueHolder->getName();
 
-        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
-
         $callParent = PublicScopeSimulator::getPublicAccessSimulationCode(
             PublicScopeSimulator::OPERATION_UNSET,
             'name',

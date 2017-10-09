@@ -24,9 +24,7 @@ class MagicMethodGenerator extends MethodGenerator
         parent::__construct(
             $name,
             $parameters,
-            static::FLAG_PUBLIC,
-            null,
-            $originalClass->hasMethod($name) ? '{@inheritDoc}' : null
+            static::FLAG_PUBLIC
         );
 
         $this->setReturnsReference(strtolower($name) === '__get');

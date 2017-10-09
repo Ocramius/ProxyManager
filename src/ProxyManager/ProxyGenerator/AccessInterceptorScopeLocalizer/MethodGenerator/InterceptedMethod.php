@@ -33,7 +33,6 @@ class InterceptedMethod extends MethodGenerator
             $forwardedParams[]   = ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
         }
 
-        $method->setDocBlock('{@inheritDoc}');
         $method->setBody(InterceptorGenerator::createInterceptedMethodBody(
             '$returnValue = parent::'
             . $originalMethod->getName() . '(' . implode(', ', $forwardedParams) . ');',

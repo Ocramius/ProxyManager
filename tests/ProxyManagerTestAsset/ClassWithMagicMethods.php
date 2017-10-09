@@ -12,56 +12,35 @@ namespace ProxyManagerTestAsset;
  */
 class ClassWithMagicMethods
 {
-    /**
-     * {@inheritDoc}
-     */
     public function __set($name, $value)
     {
         return [$name => $value];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __get($name)
     {
         return $name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __isset($name)
     {
         return (bool) $name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __unset($name)
     {
         return (bool) $name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __sleep()
     {
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __wakeup()
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __clone()
     {
     }

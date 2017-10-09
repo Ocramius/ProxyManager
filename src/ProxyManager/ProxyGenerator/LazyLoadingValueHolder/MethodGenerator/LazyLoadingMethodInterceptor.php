@@ -51,7 +51,6 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
                 $originalMethod
             )
         );
-        $method->setDocBlock('{@inheritDoc}');
 
         return $method;
     }

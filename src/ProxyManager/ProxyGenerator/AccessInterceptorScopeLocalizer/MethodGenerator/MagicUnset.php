@@ -37,8 +37,6 @@ class MagicUnset extends MagicMethodGenerator
 
         $parent = GetMethodIfExists::get($originalClass, '__unset');
 
-        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
-
         $callParent = '$returnValue = & parent::__unset($name);';
 
         if (! $parent) {

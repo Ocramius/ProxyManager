@@ -64,7 +64,7 @@ class MethodGeneratorTest extends TestCase
         self::assertSame(__FUNCTION__, $method->getName());
         self::assertSame(MethodGenerator::VISIBILITY_PUBLIC, $method->getVisibility());
         self::assertFalse($method->isStatic());
-        self::assertSame('Verify that building from reflection works', $method->getDocBlock()->getShortDescription());
+        self::assertNull($method->getDocBlock(), 'The docblock is ignored');
 
         $method = MethodGenerator::fromReflection(new MethodReflection(BaseClass::class, 'protectedMethod'));
 

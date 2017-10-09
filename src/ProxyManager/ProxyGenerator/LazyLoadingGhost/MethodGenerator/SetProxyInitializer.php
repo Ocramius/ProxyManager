@@ -28,8 +28,7 @@ class SetProxyInitializer extends MethodGenerator
             'setProxyInitializer',
             [(new ParameterGenerator('initializer', 'Closure'))->setDefaultValue(null)],
             self::FLAG_PUBLIC,
-            '$this->' . $initializerProperty->getName() . ' = $initializer;',
-            '{@inheritDoc}'
+            '$this->' . $initializerProperty->getName() . ' = $initializer;'
         );
     }
 }

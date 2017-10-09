@@ -12,38 +12,17 @@ namespace ProxyManagerTestAsset;
  */
 abstract class ClassWithAbstractMagicMethods
 {
-    /**
-     * {@inheritDoc}
-     */
     abstract public function __set($name, $value);
 
-    /**
-     * {@inheritDoc}
-     */
     abstract public function __get($name);
 
-    /**
-     * {@inheritDoc}
-     */
     abstract public function __isset($name);
 
-    /**
-     * {@inheritDoc}
-     */
     abstract public function __unset($name);
 
-    /**
-     * {@inheritDoc}
-     */
     abstract public function __sleep();
 
-    /**
-     * {@inheritDoc}
-     */
     abstract public function __wakeup();
 
-    /**
-     * {@inheritDoc}
-     */
     abstract public function __clone();
 }

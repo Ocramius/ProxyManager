@@ -110,8 +110,6 @@ PHP;
 
         $override = $originalClass->hasMethod('__set');
 
-        $this->setDocBlock(($override ? "{@inheritDoc}\n" : '') . '@param string $name');
-
         $parentAccess = 'return parent::__set($name, $value);';
 
         if (! $override) {
