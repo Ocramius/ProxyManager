@@ -34,7 +34,7 @@ class Configuration
     protected $proxiesTargetDir;
 
     /**
-     * @var string|null
+     * @var string
      */
     protected $proxiesNamespace = self::DEFAULT_PROXY_NAMESPACE;
 
