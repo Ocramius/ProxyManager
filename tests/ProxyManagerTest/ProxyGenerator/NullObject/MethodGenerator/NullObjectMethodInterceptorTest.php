@@ -29,7 +29,7 @@ class NullObjectMethodInterceptorTest extends TestCase
 
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
-        self::assertSame('', $method->getBody());
+        self::assertNull($method->getBody());
     }
 
     /**
@@ -43,7 +43,7 @@ class NullObjectMethodInterceptorTest extends TestCase
 
         self::assertSame('testBodyStructureWithoutParameters', $method->getName());
         self::assertCount(0, $method->getParameters());
-        self::assertSame('', $method->getBody());
+        self::assertNull($method->getBody());
     }
 
     /**

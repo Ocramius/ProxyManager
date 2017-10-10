@@ -29,7 +29,7 @@ class MethodGeneratorTest extends TestCase
 {
     public function testGeneratedMethodsAreAllConcrete() : void
     {
-        $methodGenerator = MethodGenerator::fromReflection(new MethodReflection(
+        $methodGenerator = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             ClassWithAbstractPublicMethod::class,
             'publicAbstractMethod'
         ));
@@ -59,25 +59,26 @@ class MethodGeneratorTest extends TestCase
      */
     public function testGenerateFromReflection() : void
     {
-        $method = MethodGenerator::fromReflection(new MethodReflection(__CLASS__, __FUNCTION__));
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(__CLASS__, __FUNCTION__));
 
         self::assertSame(__FUNCTION__, $method->getName());
         self::assertSame(MethodGenerator::VISIBILITY_PUBLIC, $method->getVisibility());
         self::assertFalse($method->isStatic());
         self::assertNull($method->getDocBlock(), 'The docblock is ignored');
+        self::assertNull($method->getBody(), 'The body is ignored');
 
-        $method = MethodGenerator::fromReflection(new MethodReflection(BaseClass::class, 'protectedMethod'));
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(BaseClass::class, 'protectedMethod'));
 
         self::assertSame(MethodGenerator::VISIBILITY_PROTECTED, $method->getVisibility());
 
-        $method = MethodGenerator::fromReflection(new MethodReflection(BaseClass::class, 'privateMethod'));
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(BaseClass::class, 'privateMethod'));
 
         self::assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
 
     public function testGeneratedParametersFromReflection() : void
     {
-        $method = MethodGenerator::fromReflection(new MethodReflection(
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             BaseClass::class,
             'publicTypeHintedMethod'
         ));
@@ -101,7 +102,7 @@ class MethodGeneratorTest extends TestCase
      */
     public function testGenerateMethodWithScalarTypeHinting(string $methodName, string $type) : void
     {
-        $method = MethodGenerator::fromReflection(new MethodReflection(
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             ScalarTypeHintedClass::class,
             $methodName
         ));
@@ -129,7 +130,7 @@ class MethodGeneratorTest extends TestCase
 
     public function testGenerateMethodWithVoidReturnTypeHinting() : void
     {
-        $method = MethodGenerator::fromReflection(new MethodReflection(
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             VoidMethodTypeHintedInterface::class,
             'returnVoid'
         ));
@@ -146,7 +147,7 @@ class MethodGeneratorTest extends TestCase
      */
     public function testReturnTypeHintGeneration(string $methodName, string $expectedType) : void
     {
-        $method = MethodGenerator::fromReflection(new MethodReflection(
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             ReturnTypeHintedClass::class,
             $methodName
         ));

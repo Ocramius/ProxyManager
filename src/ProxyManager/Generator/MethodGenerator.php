@@ -18,25 +18,13 @@ use Zend\Code\Reflection\MethodReflection;
 class MethodGenerator extends ZendMethodGenerator
 {
     /**
-     * {@inheritDoc}
-     */
-    public static function fromReflection(MethodReflection $reflectionMethod) : self
-    {
-        /* @var $method self */
-        $method = self::fromReflectionWithoutDocBlock($reflectionMethod);
-
-        $method->setInterface(false);
-
-        return $method;
-    }
-
-    /**
+     * Similar to fromReflection() but without copying the method body and phpdoc.
+     *
      * @see \Zend\Code\Generator\MethodGenerator::fromReflection
      */
-    private static function fromReflectionWithoutDocBlock(MethodReflection $reflectionMethod)
+    public static function fromReflectionWithoutBodyAndDocBlock(MethodReflection $reflectionMethod) : self
     {
-        $method         = new static();
-        $declaringClass = $reflectionMethod->getDeclaringClass();
+        $method = new static();
 
         $method->setSourceContent($reflectionMethod->getContents(false));
         $method->setSourceDirty(false);
@@ -52,7 +40,7 @@ class MethodGenerator extends ZendMethodGenerator
             $method->setVisibility(self::VISIBILITY_PUBLIC);
         }
 
-        $method->setInterface($declaringClass->isInterface());
+        $method->setInterface(false);
         $method->setStatic($reflectionMethod->isStatic());
         $method->setReturnsReference($reflectionMethod->returnsReference());
         $method->setName($reflectionMethod->getName());
@@ -60,8 +48,6 @@ class MethodGenerator extends ZendMethodGenerator
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $method->setParameter(ParameterGenerator::fromReflection($reflectionParameter));
         }
-
-        $method->setBody(static::clearBodyIndention($reflectionMethod->getBody()));
 
         return $method;
     }

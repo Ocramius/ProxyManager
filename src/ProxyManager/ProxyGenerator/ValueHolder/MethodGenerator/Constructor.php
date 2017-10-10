@@ -8,9 +8,9 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
-use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use Zend\Code\Reflection\ParameterReflection;
 
 /**
  * The `__construct` implementation for lazy loading proxies
@@ -29,7 +29,7 @@ class Constructor extends MethodGenerator
 
         /* @var $constructor self */
         $constructor = $originalConstructor
-            ? self::fromReflection($originalConstructor)
+            ? self::fromReflectionWithoutBodyAndDocBlock($originalConstructor)
             : new self('__construct');
 
         $constructor->setBody(
@@ -41,33 +41,25 @@ class Constructor extends MethodGenerator
             . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"
             . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'this')
             . '}'
-            . self::generateOriginalConstructorCall($originalClass, $valueHolder)
+            . ($originalConstructor ? self::generateOriginalConstructorCall($originalConstructor, $valueHolder) : '')
         );
 
         return $constructor;
     }
 
     private static function generateOriginalConstructorCall(
-        ReflectionClass $class,
+        MethodReflection $originalConstructor,
         PropertyGenerator $valueHolder
     ) : string {
-        $originalConstructor = self::getConstructor($class);
-
-        if (! $originalConstructor) {
-            return '';
-        }
-
-        $constructor = self::fromReflection($originalConstructor);
-
         return "\n\n"
-            . '$this->' . $valueHolder->getName() . '->' . $constructor->getName() . '('
+            . '$this->' . $valueHolder->getName() . '->' . $originalConstructor->getName() . '('
             . implode(
                 ', ',
                 array_map(
-                    function (ParameterGenerator $parameter) : string {
-                        return ($parameter->getVariadic() ? '...' : '') . '$' . $parameter->getName();
+                    function (ParameterReflection $parameter) : string {
+                        return ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
                     },
-                    $constructor->getParameters()
+                    $originalConstructor->getParameters()
                 )
             )
             . ');';

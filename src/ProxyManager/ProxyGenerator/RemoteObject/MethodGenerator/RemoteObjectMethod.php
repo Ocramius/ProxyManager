@@ -32,7 +32,7 @@ class RemoteObjectMethod extends MethodGenerator
         ReflectionClass $originalClass
     ) : self {
         /* @var $method self */
-        $method        = static::fromReflection($originalMethod);
+        $method        = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $list          = array_values(array_map(
             function (ParameterGenerator $parameter) : string {
                 return '$' . $parameter->getName();
