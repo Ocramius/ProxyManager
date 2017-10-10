@@ -26,10 +26,7 @@ class MethodGenerator extends ZendMethodGenerator
     {
         $method = new static();
 
-        $method->setSourceContent($reflectionMethod->getContents(false));
-        $method->setSourceDirty(false);
         $method->setReturnType(self::extractReturnTypeFromMethodReflection($reflectionMethod));
-
         $method->setFinal($reflectionMethod->isFinal());
 
         if ($reflectionMethod->isPrivate()) {

@@ -69,6 +69,8 @@ class MethodGeneratorTest extends TestCase
         self::assertFalse($method->isStatic());
         self::assertNull($method->getDocBlock(), 'The docblock is ignored');
         self::assertNull($method->getBody(), 'The body is ignored');
+        self::assertNull($method->getSourceContent(), 'The source content ignored');
+        self::assertTrue($method->isSourceDirty(), 'Dirty because the source cannot just be re-used when generating');
 
         $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             BaseClass::class,
