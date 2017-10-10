@@ -59,7 +59,10 @@ class MethodGeneratorTest extends TestCase
      */
     public function testGenerateFromReflection() : void
     {
-        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(__CLASS__, __FUNCTION__));
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
+            __CLASS__,
+            __FUNCTION__
+        ));
 
         self::assertSame(__FUNCTION__, $method->getName());
         self::assertSame(MethodGenerator::VISIBILITY_PUBLIC, $method->getVisibility());
@@ -67,11 +70,17 @@ class MethodGeneratorTest extends TestCase
         self::assertNull($method->getDocBlock(), 'The docblock is ignored');
         self::assertNull($method->getBody(), 'The body is ignored');
 
-        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(BaseClass::class, 'protectedMethod'));
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
+            BaseClass::class,
+            'protectedMethod'
+        ));
 
         self::assertSame(MethodGenerator::VISIBILITY_PROTECTED, $method->getVisibility());
 
-        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(BaseClass::class, 'privateMethod'));
+        $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
+            BaseClass::class,
+            'privateMethod'
+        ));
 
         self::assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
