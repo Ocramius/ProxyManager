@@ -26,7 +26,7 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
         PropertyGenerator $valueHolderProperty
     ) : self {
         /* @var $method self */
-        $method            = static::fromReflection($originalMethod);
+        $method            = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $initializerName   = $initializerProperty->getName();
         $valueHolderName   = $valueHolderProperty->getName();
         $parameters        = $originalMethod->getParameters();
@@ -51,7 +51,6 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
                 $originalMethod
             )
         );
-        $method->setDocBlock('{@inheritDoc}');
 
         return $method;
     }

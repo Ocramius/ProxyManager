@@ -26,14 +26,13 @@ class InterceptedMethod extends MethodGenerator
         PropertyGenerator $suffixInterceptors
     ) : self {
         /* @var $method self */
-        $method          = static::fromReflection($originalMethod);
+        $method          = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $forwardedParams = [];
 
         foreach ($originalMethod->getParameters() as $parameter) {
             $forwardedParams[]   = ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
         }
 
-        $method->setDocBlock('{@inheritDoc}');
         $method->setBody(InterceptorGenerator::createInterceptedMethodBody(
             '$returnValue = parent::'
             . $originalMethod->getName() . '(' . implode(', ', $forwardedParams) . ');',

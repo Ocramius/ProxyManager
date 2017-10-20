@@ -45,25 +45,16 @@ class AccessInterceptorValueHolderMock implements AccessInterceptorValueHolderIn
         return $selfInstance;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setMethodPrefixInterceptor(string $methodName, \Closure $prefixInterceptor = null)
     {
         // no-op (on purpose)
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setMethodSuffixInterceptor(string $methodName, \Closure $suffixInterceptor = null)
     {
         // no-op (on purpose)
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWrappedValueHolderValue()
     {
         return $this->instance;

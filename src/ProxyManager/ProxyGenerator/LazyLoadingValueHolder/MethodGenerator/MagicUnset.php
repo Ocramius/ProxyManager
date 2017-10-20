@@ -43,8 +43,6 @@ class MagicUnset extends MagicMethodGenerator
         $valueHolder = $valueHolderProperty->getName();
         $callParent  = '';
 
-        $this->setDocBlock(($hasParent ? "{@inheritDoc}\n" : '') . '@param string $name');
-
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
                 . '    unset($this->' . $valueHolder . '->$name);' . "\n\n    return;"

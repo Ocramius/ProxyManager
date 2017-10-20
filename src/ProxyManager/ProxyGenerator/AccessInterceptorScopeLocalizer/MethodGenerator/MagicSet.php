@@ -41,8 +41,6 @@ class MagicSet extends MagicMethodGenerator
 
         $parent = GetMethodIfExists::get($originalClass, '__set');
 
-        $this->setDocBlock(($parent ? "{@inheritDoc}\n" : '') . '@param string $name');
-
         $callParent = '$returnValue = & parent::__set($name, $value);';
 
         if (! $parent) {

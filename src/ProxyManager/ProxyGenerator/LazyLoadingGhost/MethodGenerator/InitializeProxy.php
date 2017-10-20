@@ -28,7 +28,6 @@ class InitializeProxy extends MethodGenerator
     public function __construct(PropertyGenerator $initializerProperty, ZendMethodGenerator $callInitializer)
     {
         parent::__construct('initializeProxy');
-        $this->setDocBlock('{@inheritDoc}');
         $this->setReturnType('bool');
 
         $this->setBody(

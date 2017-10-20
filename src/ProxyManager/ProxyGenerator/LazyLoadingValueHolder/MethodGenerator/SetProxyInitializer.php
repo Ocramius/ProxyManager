@@ -34,7 +34,6 @@ class SetProxyInitializer extends MethodGenerator
         $initializerParameter->setType(Closure::class);
         $initializerParameter->setDefaultValue(null);
         $this->setParameter($initializerParameter);
-        $this->setDocBlock('{@inheritDoc}');
         $this->setBody('$this->' . $initializerProperty->getName() . ' = $initializer;');
     }
 }
