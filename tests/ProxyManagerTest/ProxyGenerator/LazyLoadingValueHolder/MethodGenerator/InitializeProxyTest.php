@@ -47,7 +47,7 @@ class InitializeProxyTest extends PHPUnit_Framework_TestCase
         $this->assertSame('initializeProxy', $initializeProxy->getName());
         $this->assertCount(0, $initializeProxy->getParameters());
         $this->assertSame(
-            'return $this->foo && $this->foo->__invoke($this->bar, $this, \'initializeProxy\', array(), $this->foo);',
+            'return $this->foo && ($this->foo->__invoke($bar, $this, \'initializeProxy\', array(), $this->foo) || 1) && \$this->bar = \$bar;',
             $initializeProxy->getBody()
         );
     }

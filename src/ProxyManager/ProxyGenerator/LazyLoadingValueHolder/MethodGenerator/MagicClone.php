@@ -44,9 +44,9 @@ class MagicClone extends MagicMethodGenerator
         $valueHolder = $valueHolderProperty->getName();
 
         $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder
-            . ', $this, \'__clone\', array(), $this->' . $initializer . ');' . "\n\n"
+            '$this->' . $initializer . ' && ($this->' . $initializer
+            . '->__invoke($' . $valueHolder
+            . ', $this, \'__clone\', array(), $this->' . $initializer . ') || 1) && $this->' . $valueHolder . ' = $' . $valueHolder . ";\n\n"
             . '$this->' . $valueHolder . ' = clone $this->' . $valueHolder . ';'
         );
     }

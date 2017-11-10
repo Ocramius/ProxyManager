@@ -55,8 +55,8 @@ class MagicUnsetTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__unset', $magicIsset->getName());
         $this->assertCount(1, $magicIsset->getParameters());
         $this->assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__unset', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, '__unset', array('name' => \$name)"
+            . ", \$this->foo) || 1) && \$this->bar = \$bar;\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->bar->\$name);\n\n    return;\n}"
             . "%areturn %s;",
             $magicIsset->getBody()

@@ -39,11 +39,12 @@ class InitializeProxy extends MethodGenerator
         $this->setDocblock('{@inheritDoc}');
 
         $initializer = $initializerProperty->getName();
+        $valueHolder = $valueHolderProperty->getName();
 
         $this->setBody(
-            'return $this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolderProperty->getName()
-            . ', $this, \'initializeProxy\', array(), $this->' . $initializer . ');'
+            'return $this->' . $initializer . ' && ($this->' . $initializer
+            . '->__invoke($' . $valueHolder
+            . ', $this, \'initializeProxy\', array(), $this->' . $initializer . ') || 1) && $this->' . $valueHolder . ' = $' . $valueHolder . ';'
         );
     }
 }
