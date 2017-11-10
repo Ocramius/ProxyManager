@@ -46,8 +46,8 @@ class MagicSetTest extends TestCase
         self::assertSame('__set', $magicSet->getName());
         self::assertCount(2, $magicSet->getParameters());
         self::assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
-            . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, "
+            . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo) || 1) && \$this->bar = \$bar;\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return (\$this->bar->\$name = \$value);\n}"
             . '%areturn %s;',
             $magicSet->getBody()
@@ -80,8 +80,8 @@ class MagicSetTest extends TestCase
         self::assertSame('__set', $magicSet->getName());
         self::assertCount(2, $magicSet->getParameters());
         self::assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
-            . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo);\n\n"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, "
+            . "'__set', array('name' => \$name, 'value' => \$value), \$this->foo) || 1) && \$this->bar = \$bar;\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    return (\$this->bar->\$name = \$value);\n}\n\n"
             . 'return $this->bar->__set($name, $value);',
             $magicSet->getBody(),

@@ -47,8 +47,8 @@ class MagicUnsetTest extends TestCase
         self::assertSame('__unset', $magicIsset->getName());
         self::assertCount(1, $magicIsset->getParameters());
         self::assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__unset', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, '__unset', array('name' => \$name)"
+            . ", \$this->foo) || 1) && \$this->bar = \$bar;\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->bar->\$name);\n\n    return;\n}"
             . '%areturn %s;',
             $magicIsset->getBody()
@@ -81,8 +81,8 @@ class MagicUnsetTest extends TestCase
         self::assertSame('__unset', $magicIsset->getName());
         self::assertCount(1, $magicIsset->getParameters());
         self::assertStringMatchesFormat(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__unset', array('name' => \$name)"
-            . ", \$this->foo);\n\n"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, '__unset', array('name' => \$name)"
+            . ", \$this->foo) || 1) && \$this->bar = \$bar;\n\n"
             . "if (isset(self::\$bar[\$name])) {\n    unset(\$this->bar->\$name);\n\n    return;\n}\n\n"
             . 'return $this->bar->__unset($name);',
             $magicIsset->getBody(),

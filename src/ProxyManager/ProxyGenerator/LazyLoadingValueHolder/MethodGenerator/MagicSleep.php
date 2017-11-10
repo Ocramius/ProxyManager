@@ -34,9 +34,9 @@ class MagicSleep extends MagicMethodGenerator
         $valueHolder = $valueHolderProperty->getName();
 
         $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
-            . $initializer . ');' . "\n\n"
+            '$this->' . $initializer . ' && ($this->' . $initializer
+            . '->__invoke($' . $valueHolder . ', $this, \'__sleep\', array(), $this->'
+            . $initializer . ') || 1) && $this->' . $valueHolder . ' = $' . $valueHolder . ';' . "\n\n"
             . 'return array(' . var_export($valueHolder, true) . ');'
         );
     }

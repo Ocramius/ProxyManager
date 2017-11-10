@@ -39,8 +39,8 @@ class MagicSleepTest extends TestCase
         self::assertSame('__sleep', $magicSleep->getName());
         self::assertCount(0, $magicSleep->getParameters());
         self::assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__sleep', array(), \$this->foo);"
-            . "\n\nreturn array('bar');",
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, '__sleep', array(), \$this->foo) || 1)"
+            . " && \$this->bar = \$bar;\n\nreturn array('bar');",
             $magicSleep->getBody()
         );
     }

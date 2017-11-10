@@ -39,8 +39,8 @@ class LazyLoadingMethodInterceptorTest extends TestCase
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, 'publicByReferenceParameterMethod', "
-            . "array('param' => \$param, 'byRefParam' => \$byRefParam), \$this->foo);\n\n"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, 'publicByReferenceParameterMethod', "
+            . "array('param' => \$param, 'byRefParam' => \$byRefParam), \$this->foo) || 1) && \$this->bar = \$bar;\n\n"
             . "return \$this->bar->publicByReferenceParameterMethod(\$param, \$byRefParam);",
             $method->getBody()
         );
@@ -67,8 +67,8 @@ class LazyLoadingMethodInterceptorTest extends TestCase
         self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
-            . "'publicMethod', array(), \$this->foo);\n\n"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, "
+            . "'publicMethod', array(), \$this->foo) || 1) && \$this->bar = \$bar;\n\n"
             . "return \$this->bar->publicMethod();",
             $method->getBody()
         );
