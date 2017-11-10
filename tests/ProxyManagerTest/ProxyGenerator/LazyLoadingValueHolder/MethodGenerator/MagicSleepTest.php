@@ -49,7 +49,7 @@ class MagicSleepTest extends PHPUnit_Framework_TestCase
         $this->assertSame('__sleep', $magicSleep->getName());
         $this->assertCount(0, $magicSleep->getParameters());
         $this->assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, '__sleep', array(), \$this->foo);"
+            "\$this->foo && (\$this->foo->__invoke(\$bar, \$this, '__sleep', array(), \$this->foo) || 1) && \$this->bar = \$bar;"
             . "\n\nreturn array('bar');",
             $magicSleep->getBody()
         );

@@ -64,9 +64,9 @@ class MagicIsset extends MagicMethodGenerator
         );
 
         $this->setBody(
-            '$this->' . $initializer . ' && $this->' . $initializer
-            . '->__invoke($this->' . $valueHolder . ', $this, \'__isset\', array(\'name\' => $name), $this->'
-            . $initializer . ');' . "\n\n" . $callParent
+            '$this->' . $initializer . ' && ($this->' . $initializer
+            . '->__invoke($' . $valueHolder . ', $this, \'__isset\', array(\'name\' => $name), $this->'
+            . $initializer . ') || 1) && $this->' . $valueHolder . ' = $' . $valueHolder . ";\n\n" . $callParent
         );
     }
 }

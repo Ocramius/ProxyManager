@@ -59,9 +59,9 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
 
         $method->setBody(
             '$this->' . $initializerName
-            . ' && $this->' . $initializerName
-            . '->__invoke($this->' . $valueHolderName . ', $this, ' . var_export($methodName, true)
-            . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ");\n\n"
+            . ' && ($this->' . $initializerName
+            . '->__invoke($' . $valueHolderName . ', $this, ' . var_export($methodName, true)
+            . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ') || 1) && $this->' . $valueHolderName . ' = $' . $valueHolderName . ";\n\n"
             . 'return $this->' . $valueHolderName . '->'
             . $methodName . '(' . implode(', ', $forwardedParams) . ');'
         );
