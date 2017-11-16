@@ -4,6 +4,26 @@ title: Changelog
 
 This is a list of changes/improvements that were introduced in ProxyManager
 
+## 2.2.0
+
+This release provides support for the PHP 7.2 `object` type hint, as
+well as dramatic (~300%) speed improvement during proxy class generation.
+PHP 7.1 support has been dropped.
+
+Total issues resolved: **11**
+
+- [367: Property name (suffixes) differ after each generation of a proxy](https://github.com/Ocramius/ProxyManager/issues/367) thanks to @holtkamp
+- [381: Adding `object` hit based tests and test assets - preparing for PHP 7.2 compatibility](https://github.com/Ocramius/ProxyManager/pull/381) thanks to @Ocramius
+- [382: Removed redundant docblocks](https://github.com/Ocramius/ProxyManager/pull/382) thanks to @Ocramius
+- [383: PHPStan version upgrade 0.8](https://github.com/Ocramius/ProxyManager/pull/383) thanks to @Ocramius
+- [384: Group generated unique identifiers by name](https://github.com/Ocramius/ProxyManager/pull/384) thanks to @nicolas-grekas
+- [385: #384 #367 deterministic generated property suffixes for generated properties](https://github.com/Ocramius/ProxyManager/pull/385) thanks to @Ocramius
+- [386: Removed licence headers from all single source files](https://github.com/Ocramius/ProxyManager/pull/386) thanks to @Ocramius
+- [387: Correct createProxy PHPDoc](https://github.com/Ocramius/ProxyManager/pull/387) thanks to @PurpleBooth
+- [391: PHPUnit 6.x upgrade](https://github.com/Ocramius/ProxyManager/pull/391) thanks to @Ocramius
+- [392: PHPStan level 7 analysis](https://github.com/Ocramius/ProxyManager/pull/392) thanks to @snapshotpl
+- [393: remove inheritdoc &amp; body parsing from generated proxies](https://github.com/Ocramius/ProxyManager/pull/393) thanks to @Tobion
+
 ## 2.1.1
 
 This release provides aggressive improvements in static introspection via
