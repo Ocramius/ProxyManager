@@ -33,7 +33,7 @@ class ObjectTypeHintClass
      *
      * @return object
      */
-    public function iterableTypeHintMethod(object $parameter)
+    public function objectTypeHintMethod(object $parameter)
     {
         return $parameter;
     }
