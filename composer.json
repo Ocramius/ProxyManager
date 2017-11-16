@@ -29,7 +29,8 @@
         "squizlabs/php_codesniffer":    "^2.9.1",
         "couscous/couscous":            "^1.6.1",
         "phpbench/phpbench":            "^0.12.2",
-        "phpstan/phpstan":              "^0.8.5",
+        "phpstan/phpstan":              "dev-master#856eb10a81c1d27c701a83f167dc870fd8f4236a as 0.9.999",
+        "phpstan/phpstan-phpunit":      "dev-master#5629c0a1f4a9c417cb1077cf6693ad9753895761",
         "nikic/php-parser":             "^3.1.1",
         "humbug/humbug":                "1.0.0-RC.0@RC",
         "padraic/phpunit-accelerator":  "dev-master@DEV"
