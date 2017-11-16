@@ -107,14 +107,20 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->with('stdClass')
             ->will(self::returnValue(AccessInterceptorValueHolderMock::class));
 
-        $factory     = new AccessInterceptorValueHolderFactory($this->config);
+        $factory            = new AccessInterceptorValueHolderFactory($this->config);
+        $prefixInterceptors = [function () {
+            self::fail('Not supposed to be called');
+        }];
+        $suffixInterceptors = [function () {
+            self::fail('Not supposed to be called');
+        }];
         /* @var $proxy AccessInterceptorValueHolderMock */
-        $proxy       = $factory->createProxy($instance, ['foo'], ['bar']);
+        $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf(AccessInterceptorValueHolderMock::class, $proxy);
         self::assertSame($instance, $proxy->instance);
-        self::assertSame(['foo'], $proxy->prefixInterceptors);
-        self::assertSame(['bar'], $proxy->suffixInterceptors);
+        self::assertSame($prefixInterceptors, $proxy->prefixInterceptors);
+        self::assertSame($suffixInterceptors, $proxy->suffixInterceptors);
     }
 
     /**
@@ -178,13 +184,19 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
-        $factory     = new AccessInterceptorValueHolderFactory($this->config);
+        $factory            = new AccessInterceptorValueHolderFactory($this->config);
+        $prefixInterceptors = [function () {
+            self::fail('Not supposed to be called');
+        }];
+        $suffixInterceptors = [function () {
+            self::fail('Not supposed to be called');
+        }];
         /* @var $proxy AccessInterceptorValueHolderMock */
-        $proxy       = $factory->createProxy($instance, ['foo'], ['bar']);
+        $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf($proxyClassName, $proxy);
         self::assertSame($instance, $proxy->instance);
-        self::assertSame(['foo'], $proxy->prefixInterceptors);
-        self::assertSame(['bar'], $proxy->suffixInterceptors);
+        self::assertSame($prefixInterceptors, $proxy->prefixInterceptors);
+        self::assertSame($suffixInterceptors, $proxy->suffixInterceptors);
     }
 }

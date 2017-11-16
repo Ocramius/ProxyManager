@@ -2,4 +2,6 @@ parameters:
     ignoreErrors:
         # We only mock this dependency, and never really require it:
         - '#Zend\\Server\\Client#'
-        - '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::call\(\)#'
+
+includes:
+	- vendor/phpstan/phpstan-phpunit/extension.neon

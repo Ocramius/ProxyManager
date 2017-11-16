@@ -33,5 +33,6 @@ class GetWrappedValueHolderValueTest extends TestCase
         self::assertSame('getWrappedValueHolderValue', $getter->getName());
         self::assertCount(0, $getter->getParameters());
         self::assertSame('return $this->foo;', $getter->getBody());
+        self::assertSame('?object', $getter->getReturnType()->generate());
     }
 }

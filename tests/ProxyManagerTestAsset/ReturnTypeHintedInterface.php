@@ -22,6 +22,8 @@ interface ReturnTypeHintedInterface
 
     public function returnIterable() : iterable;
 
+    public function returnObject() : object;
+
     public function returnVoid() : void;
 
     public function returnSameClass() : ReturnTypeHintedInterface;

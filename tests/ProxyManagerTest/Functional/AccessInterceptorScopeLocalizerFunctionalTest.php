@@ -278,7 +278,12 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $proxy->arrayProperty = ['tab' => 'taz'];
 
         self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
-        $this->assertProxySynchronized($instance, $proxy);
+        self::assertInstanceOf(AccessInterceptorInterface::class, $proxy);
+
+        if ($proxy instanceof AccessInterceptorInterface) {
+            // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
+            $this->assertProxySynchronized($instance, $proxy);
+        }
     }
 
     /**
@@ -298,9 +303,17 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $variable = 'foo';
 
         self::assertSame('property0', $proxy->property0);
-        $this->assertProxySynchronized($instance, $proxy);
+
+        self::assertInstanceOf(AccessInterceptorInterface::class, $proxy);
+
+        if ($proxy instanceof AccessInterceptorInterface) {
+            // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
+            $this->assertProxySynchronized($instance, $proxy);
+        }
+
         self::assertSame('foo', $variable);
     }
+
 
     /**
      * Verifies that public properties references retrieved via `__get` modify in the object state
@@ -318,7 +331,14 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $variable = 'foo';
 
         self::assertSame('foo', $proxy->property0);
-        $this->assertProxySynchronized($instance, $proxy);
+
+        self::assertInstanceOf(AccessInterceptorInterface::class, $proxy);
+
+        if ($proxy instanceof AccessInterceptorInterface) {
+            // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
+            $this->assertProxySynchronized($instance, $proxy);
+        }
+
         self::assertSame('foo', $variable);
     }
 

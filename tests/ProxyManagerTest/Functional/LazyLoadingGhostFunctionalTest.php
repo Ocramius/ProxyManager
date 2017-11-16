@@ -1269,9 +1269,14 @@ class LazyLoadingGhostFunctionalTest extends TestCase
 
         $friendObject = new OtherObjectAccessClass();
 
-        self::assertSame($privatePropertyValue, $friendObject->getPrivateProperty($proxy));
-        self::assertSame($protectedPropertyValue, $friendObject->getProtectedProperty($proxy));
-        self::assertSame($publicPropertyValue, $friendObject->getPublicProperty($proxy));
+        self::assertInstanceOf(OtherObjectAccessClass::class, $proxy);
+
+        if ($proxy instanceof OtherObjectAccessClass) {
+            // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
+            self::assertSame($privatePropertyValue, $friendObject->getPrivateProperty($proxy));
+            self::assertSame($protectedPropertyValue, $friendObject->getProtectedProperty($proxy));
+            self::assertSame($publicPropertyValue, $friendObject->getPublicProperty($proxy));
+        }
     }
 
     public function testClonedSkippedPropertiesArePreserved() : void

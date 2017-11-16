@@ -4,9 +4,8 @@ cache: false
 sudo: false
 
 php:
-  - 7.1
+  - 7.2
   - nightly
-  - hhvm
 
 env:
   matrix:
@@ -38,9 +37,8 @@ script:
 
 matrix:
   allow_failures:
-    - php: hhvm
     - php: nightly
 
 after_script:
   - sh .travis.coverage.sh
-  - ./vendor/bin/couscous travis-auto-deploy --php-version=7.0
+  - ./vendor/bin/couscous travis-auto-deploy --php-version=7.2
