@@ -53,13 +53,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy AccessInterceptorInterface */
+        /** @var AccessInterceptorInterface $proxy */
         $proxy     = $proxyName::staticProxyConstructor($instance);
 
         $this->assertProxySynchronized($instance, $proxy);
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -108,9 +108,9 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     ) : void {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy AccessInterceptorInterface */
+        /** @var AccessInterceptorInterface $proxy */
         $proxy     = $proxyName::staticProxyConstructor($instance);
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener  = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -158,7 +158,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $expectedValue
     ) : void {
         $proxyName = $this->generateProxy($className);
-        /* @var $proxy AccessInterceptorInterface */
+        /** @var AccessInterceptorInterface $proxy */
         $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
@@ -183,7 +183,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     ) : void {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy AccessInterceptorInterface */
+        /** @var AccessInterceptorInterface $proxy */
         $proxy     = $proxyName::staticProxyConstructor($instance);
         $cloned    = clone $proxy;
 
@@ -268,7 +268,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $instance    = new ClassWithPublicArrayProperty();
         $className   = get_class($instance);
         $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithPublicArrayProperty|AccessInterceptorInterface */
+        /** @var ClassWithPublicArrayProperty|AccessInterceptorInterface $proxy */
         $proxy       = $proxyName::staticProxyConstructor($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
@@ -322,7 +322,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     {
         $instance    = new ClassWithPublicProperties();
         $proxyName   = $this->generateProxy(get_class($instance));
-        /* @var $proxy ClassWithPublicProperties|AccessInterceptorInterface */
+        /** @var ClassWithPublicProperties|AccessInterceptorInterface $proxy */
         $proxy       = $proxyName::staticProxyConstructor($instance);
         $variable    = & $proxy->property0;
 
@@ -358,7 +358,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $proxyName = $this->generateProxy(get_class($instance));
 
-        /* @var $proxy ClassWithCounterConstructor */
+        /** @var ClassWithCounterConstructor $proxy */
         $proxy = new $proxyName(15);
 
         self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
@@ -478,7 +478,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
         $targetObject  = new ClassWithMethodWithVariadicFunction();
 
-        /* @var $object ClassWithMethodWithVariadicFunction */
+        /** @var ClassWithMethodWithVariadicFunction $object */
         $object = $factory->createProxy(
             $targetObject,
             [
@@ -505,7 +505,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
         $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
 
-        /* @var $object ClassWithMethodWithByRefVariadicFunction */
+        /** @var ClassWithMethodWithByRefVariadicFunction $object */
         $object = $factory->createProxy(
             $targetObject,
             [
@@ -531,7 +531,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function testWillNotForwardDynamicArguments() : void
     {
-        /* @var $object ClassWithDynamicArgumentsMethod */
+        /** @var ClassWithDynamicArgumentsMethod $object */
         $object = (new AccessInterceptorScopeLocalizerFactory())
             ->createProxy(
                 new ClassWithDynamicArgumentsMethod(),
@@ -558,7 +558,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $addMore   = random_int(201, 300);
         $increment = random_int(301, 400);
 
-        /* @var $object VoidCounter */
+        /** @var VoidCounter $object */
         $object = (new AccessInterceptorScopeLocalizerFactory())
             ->createProxy(
                 new VoidCounter(),

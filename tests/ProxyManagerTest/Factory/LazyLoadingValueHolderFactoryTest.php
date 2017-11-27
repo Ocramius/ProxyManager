@@ -108,7 +108,7 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
         $factory     = new LazyLoadingValueHolderFactory($this->config);
         $initializer = function () {
         };
-        /* @var $proxy LazyLoadingMock */
+        /** @var LazyLoadingMock $proxy */
         $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf(LazyLoadingMock::class, $proxy);
@@ -176,7 +176,7 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
         $factory     = new LazyLoadingValueHolderFactory($this->config);
         $initializer = function () {
         };
-        /* @var $proxy LazyLoadingMock */
+        /** @var LazyLoadingMock $proxy */
         $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf($proxyClassName, $proxy);

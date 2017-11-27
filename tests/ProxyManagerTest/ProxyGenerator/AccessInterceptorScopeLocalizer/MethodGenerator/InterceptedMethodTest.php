@@ -24,12 +24,12 @@ use Zend\Code\Reflection\MethodReflection;
 class InterceptedMethodTest extends TestCase
 {
     /**
-     * @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
      */
     private $prefixInterceptors;
 
     /**
-     * @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
      */
     private $suffixInterceptors;
 

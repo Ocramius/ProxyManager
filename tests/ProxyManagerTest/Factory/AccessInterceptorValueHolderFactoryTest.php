@@ -114,7 +114,7 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
         $suffixInterceptors = [function () {
             self::fail('Not supposed to be called');
         }];
-        /* @var $proxy AccessInterceptorValueHolderMock */
+        /** @var AccessInterceptorValueHolderMock $proxy */
         $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf(AccessInterceptorValueHolderMock::class, $proxy);
@@ -191,7 +191,7 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
         $suffixInterceptors = [function () {
             self::fail('Not supposed to be called');
         }];
-        /* @var $proxy AccessInterceptorValueHolderMock */
+        /** @var AccessInterceptorValueHolderMock $proxy */
         $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf($proxyClassName, $proxy);
