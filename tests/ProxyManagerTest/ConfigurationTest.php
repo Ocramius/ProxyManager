@@ -98,7 +98,7 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetProxiesTargetDir() : void
     {
-        self::assertTrue(is_dir($this->configuration->getProxiesTargetDir()));
+        self::assertDirectoryExists($this->configuration->getProxiesTargetDir());
 
         $this->configuration->setProxiesTargetDir(__DIR__);
         self::assertSame(__DIR__, $this->configuration->getProxiesTargetDir());
