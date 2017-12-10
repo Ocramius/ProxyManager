@@ -48,7 +48,7 @@ $accessor = function & () use ($targetObject, $name) {
     return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true);
-$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$scopeObject = $backtrace[1]['object'] ?? new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
 PHP;
@@ -82,7 +82,7 @@ $accessor = function & () use ($targetObject, $name, $value) {
     return $targetObject->$foo = $baz;
 };
 $backtrace = debug_backtrace(true);
-$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$scopeObject = $backtrace[1]['object'] ?? new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
 PHP;
@@ -116,7 +116,7 @@ $accessor = function () use ($targetObject, $name) {
     return isset($targetObject->$foo);
 };
 $backtrace = debug_backtrace(true);
-$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$scopeObject = $backtrace[1]['object'] ?? new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = $accessor();
 PHP;
@@ -150,7 +150,7 @@ $accessor = function () use ($targetObject, $name) {
     unset($targetObject->$foo);
 };
 $backtrace = debug_backtrace(true);
-$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$scopeObject = $backtrace[1]['object'] ?? new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = $accessor();
 PHP;
@@ -197,7 +197,7 @@ $accessor = function & () use ($targetObject, $name, $value) {
     return $targetObject->$foo = $baz;
 };
 $backtrace = debug_backtrace(true);
-$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$scopeObject = $backtrace[1]['object'] ?? new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
 PHP;
@@ -249,7 +249,7 @@ $accessor = function & () use ($targetObject, $name) {
     return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true);
-$scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
+$scopeObject = $backtrace[1]['object'] ?? new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $returnValue = & $accessor();
 

@@ -63,15 +63,15 @@ if (isset(self::$bar[$name])) {
 if (isset(self::$baz[$name])) {
     // check protected property access via compatible class
     $callers      = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-    $caller       = isset($callers[1]) ? $callers[1] : [];
-    $object       = isset($caller['object']) ? $caller['object'] : '';
+    $caller       = $callers[1] ?? [];
+    $object       = $caller['object'] ?? '';
     $expectedType = self::$baz[$name];
 
     if ($object instanceof $expectedType) {
         return ($this->$name = $value);
     }
 
-    $class = isset($caller['class']) ? $caller['class'] : '';
+    $class = $caller['class'] ?? '';
 
     if ($class === $expectedType || is_subclass_of($class, $expectedType) || $class === 'ReflectionProperty') {
         return ($this->$name = $value);
@@ -79,16 +79,15 @@ if (isset(self::$baz[$name])) {
 } elseif (isset(self::$tab[$name])) {
     // check private property access via same class
     $callers = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-    $caller  = isset($callers[1]) ? $callers[1] : [];
-    $class   = isset($caller['class']) ? $caller['class'] : '';
+    $caller  = $callers[1] ?? [];
+    $class   = $caller['class'] ?? '';
 
     static $accessorCache = [];
 
     if (isset(self::$tab[$name][$class])) {
         $cacheKey = $class . '#' . $name;
-        $accessor = isset($accessorCache[$cacheKey])
-            ? $accessorCache[$cacheKey]
-            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
+        $accessor = $accessorCache[$cacheKey]
+            ?? $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
                 return ($instance->$name = $value);
             }, null, $class);
 
@@ -98,9 +97,8 @@ if (isset(self::$baz[$name])) {
     if ('ReflectionProperty' === $class) {
         $tmpClass = key(self::$tab[$name]);
         $cacheKey = $tmpClass . '#' . $name;
-        $accessor = isset($accessorCache[$cacheKey])
-            ? $accessorCache[$cacheKey]
-            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
+        $accessor = $accessorCache[$cacheKey]
+            ?? $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
                 return ($instance->$name = $value);
             }, null, $tmpClass);
 
