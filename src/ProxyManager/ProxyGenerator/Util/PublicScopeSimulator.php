@@ -156,8 +156,7 @@ class PublicScopeSimulator
     private static function getScopeReBind() : string
     {
         return '$backtrace = debug_backtrace(true);' . "\n"
-            . '$scopeObject = isset($backtrace[1][\'object\'])'
-            . ' ? $backtrace[1][\'object\'] : new \ProxyManager\Stub\EmptyClassStub();' . "\n"
+            . '$scopeObject = $backtrace[1][\'object\'] ?? new \ProxyManager\Stub\EmptyClassStub();' . "\n"
             . '$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));' . "\n";
     }
 }
