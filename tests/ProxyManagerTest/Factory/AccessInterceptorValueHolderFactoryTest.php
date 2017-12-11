@@ -99,6 +99,7 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
     public function testWillSkipAutoGeneration() : void
     {
         $instance = new stdClass();
+        $generator      = $this->createMock(GeneratorStrategyInterface::class);
 
         $this
             ->inflector
@@ -107,7 +108,17 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->with('stdClass')
             ->will(self::returnValue(AccessInterceptorValueHolderMock::class));
 
+        $generator
+            ->expects(self::once())
+            ->method('classExists')
+            ->with(
+                AccessInterceptorValueHolderMock::class,
+                $this->config
+            )
+            ->willReturn(true);
+
         $factory            = new AccessInterceptorValueHolderFactory($this->config);
+        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
         $prefixInterceptors = [function () {
             self::fail('Not supposed to be called');
         }];
