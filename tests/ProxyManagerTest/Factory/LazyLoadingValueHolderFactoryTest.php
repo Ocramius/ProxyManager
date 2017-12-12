@@ -97,7 +97,8 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
     public function testWillSkipAutoGeneration() : void
     {
         $className = UniqueIdentifierGenerator::getIdentifier('foo');
-
+        $generator      = $this->createMock(GeneratorStrategyInterface::class);
+        
         $this
             ->inflector
             ->expects(self::once())
@@ -105,6 +106,17 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
             ->with($className)
             ->will(self::returnValue(LazyLoadingMock::class));
 
+        $generator
+            ->expects(self::once())
+            ->method('classExists')
+            ->with(
+                LazyLoadingMock::class,
+                $this->config
+            )
+            ->willReturn(true);
+
+        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
+        
         $factory     = new LazyLoadingValueHolderFactory($this->config);
         $initializer = function () {
         };

@@ -86,6 +86,7 @@ class NullObjectFactoryTest extends TestCase
     public function testWillSkipAutoGeneration() : void
     {
         $instance = new stdClass();
+        $generator      = $this->createMock(GeneratorStrategyInterface::class);
 
         $this
             ->inflector
@@ -94,7 +95,19 @@ class NullObjectFactoryTest extends TestCase
             ->with('stdClass')
             ->will(self::returnValue(NullObjectMock::class));
 
+        $generator
+            ->expects(self::once())
+            ->method('classExists')
+            ->with(
+                NullObjectMock::class,
+                $this->config
+            )
+            ->willReturn(true);
+
+        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
+
         $factory    = new NullObjectFactory($this->config);
+        
         /* @var $proxy NullObjectMock */
         $proxy      = $factory->createProxy($instance);
 

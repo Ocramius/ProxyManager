@@ -86,6 +86,8 @@ class RemoteObjectFactoryTest extends TestCase
      */
     public function testWillSkipAutoGeneration() : void
     {
+        $generator      = $this->createMock(GeneratorStrategyInterface::class);
+
         $this
             ->inflector
             ->expects(self::once())
@@ -93,6 +95,17 @@ class RemoteObjectFactoryTest extends TestCase
             ->with(BaseInterface::class)
             ->will(self::returnValue(RemoteObjectMock::class));
 
+        $generator
+            ->expects(self::once())
+            ->method('classExists')
+            ->with(
+                RemoteObjectMock::class,
+                $this->config
+            )
+            ->willReturn(true);
+
+        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
+        
         /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
