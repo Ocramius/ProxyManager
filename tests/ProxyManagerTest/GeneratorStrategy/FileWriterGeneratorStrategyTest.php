@@ -243,7 +243,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
 
 
         self::assertFileExists($tmpFile);
-        $generator->classExists($proxyClassName, $configuration);
+        self::assertTrue($generator->classExists($proxyClassName, $configuration));
         unlink($tmpFile);
     }
 }
