@@ -36,6 +36,7 @@ class StaticProxyConstructor extends MethodGenerator
             Properties::fromReflectionClass($originalClass)->getPublicProperties()
         );
 
+        $this->setReturnType($originalClass->getName());
         $this->setDocBlock('Constructor for null object initialization');
         $this->setBody(
             'static $reflection;' . "\n\n"
