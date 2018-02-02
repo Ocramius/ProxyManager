@@ -1,0 +1,15 @@
+{
+    "source": {
+        "directories": [
+            "src"
+        ],
+        "exclude": [
+            "./tests/language-feature-scripts/"
+        ]
+    },
+    "timeout": 15,
+    "logs": {
+        "text": "infection.txt",
+        "json": "infection.json"
+    }
+}
