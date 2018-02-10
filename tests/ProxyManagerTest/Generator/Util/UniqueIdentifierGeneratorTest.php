@@ -39,9 +39,9 @@ class UniqueIdentifierGeneratorTest extends PHPUnit_Framework_TestCase
      *
      * @param string $name
      */
-    public function testGeneratesUniqueIdentifiers(string $name) : void
+    public function testGeneratesIdempotentIdentifiers(string $name) : void
     {
-        self::assertNotSame(
+        self::assertSame(
             UniqueIdentifierGenerator::getIdentifier($name),
             UniqueIdentifierGenerator::getIdentifier($name)
         );
