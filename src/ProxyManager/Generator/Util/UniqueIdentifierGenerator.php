@@ -41,15 +41,8 @@ abstract class UniqueIdentifierGenerator
      */
     public static function getIdentifier(string $name) : string
     {
-        return str_replace(
-            '.',
-            '',
-            uniqid(
-                preg_match(static::VALID_IDENTIFIER_FORMAT, $name)
-                ? $name
-                : static::DEFAULT_IDENTIFIER,
-                true
-            )
-        );
+        $identifier = preg_match(static::VALID_IDENTIFIER_FORMAT, $name) ? $name : static::DEFAULT_IDENTIFIER;
+
+        return $identifier . substr(hash('sha256', $identifier), 0, 14);
     }
 }
