@@ -74,7 +74,8 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      */
     private function writeFile(string $source, string $location) : void
     {
-        $tmpFileName = tempnam($location, 'temporaryProxyManagerFile');
+        $tempDir = dirname($location);
+        $tmpFileName = tempnam($tempDir, 'temporaryProxyManagerFile');
 
         file_put_contents($tmpFileName, $source);
 
