@@ -6,7 +6,7 @@ title: Tuning the ProxyManager for production
 
 By default, all proxy factories generate the required proxy classes at runtime.
 
-To generate proxies and store them as files, you need to use `FileWriterGeneratorStrategy` by passing it to the configuration before setting up other factories:
+To generate proxies and store them as files, you need to use the `FileWriterGeneratorStrategy` by configuring ProxyManager.
 
 ```php
     
@@ -18,7 +18,7 @@ $config->setGeneratorStrategy(new \ProxyManager\GeneratorStrategy\FileWriterGene
 // pass the configuration to proxymanager factory
 $factory = new ProxyManager\Factory\LazyLoadingValueHolderFactory($config);
 ```
-This will write the generated proxies in a directory which can be used directly instead of generating them again and again.
+The files generated in the directory will be needed to autoload them.
 
 Proxy generation causes I/O operations and uses a lot of reflection, so be sure to have
 generated all of your proxies **before deploying your code on a live system**, or you
