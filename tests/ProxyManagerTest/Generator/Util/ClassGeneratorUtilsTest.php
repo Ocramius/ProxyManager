@@ -26,9 +26,9 @@ class ClassGeneratorUtilsTest extends TestCase
 {
     public function testCantAddAFinalMethod() : void
     {
-        /* @var $classGenerator ClassGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $classGenerator ClassGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $classGenerator  = $this->createMock(ClassGenerator::class);
-        /* @var $methodGenerator MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $methodGenerator MethodGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator
@@ -47,9 +47,9 @@ class ClassGeneratorUtilsTest extends TestCase
 
     public function testCanAddANotFinalMethod() : void
     {
-        /* @var $classGenerator ClassGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $classGenerator ClassGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $classGenerator  = $this->createMock(ClassGenerator::class);
-        /* @var $methodGenerator MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $methodGenerator MethodGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator

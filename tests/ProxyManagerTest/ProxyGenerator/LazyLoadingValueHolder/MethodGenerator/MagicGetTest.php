@@ -28,11 +28,11 @@ class MagicGetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initializer PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $initializer      = $this->createMock(PropertyGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder      = $this->createMock(PropertyGenerator::class);
-        /* @var $publicProperties PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $publicProperties PublicPropertiesMap|\PHPUnit\Framework\MockObject\MockObject */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
@@ -63,11 +63,11 @@ class MagicGetTest extends TestCase
     public function testBodyStructureWithPreExistingGetMethod() : void
     {
         $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initializer PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $initializer      = $this->createMock(PropertyGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder      = $this->createMock(PropertyGenerator::class);
-        /* @var $publicProperties PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $publicProperties PublicPropertiesMap|\PHPUnit\Framework\MockObject\MockObject */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

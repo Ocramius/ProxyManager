@@ -34,7 +34,7 @@ class RemoteObjectFunctionalTest extends TestCase
 {
     protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
-        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $client Client|\PHPUnit\Framework\MockObject\MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
@@ -63,7 +63,7 @@ class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
-        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $client Client|\PHPUnit\Framework\MockObject\MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
@@ -234,7 +234,7 @@ class RemoteObjectFunctionalTest extends TestCase
     ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
 
-        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $adapter AdapterInterface|\PHPUnit\Framework\MockObject\MockObject */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
@@ -272,7 +272,7 @@ class RemoteObjectFunctionalTest extends TestCase
     ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
 
-        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $adapter AdapterInterface|\PHPUnit\Framework\MockObject\MockObject */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
@@ -297,7 +297,7 @@ class RemoteObjectFunctionalTest extends TestCase
     {
         $proxyName = $this->generateProxy(VoidCounter::class);
 
-        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $adapter AdapterInterface|\PHPUnit\Framework\MockObject\MockObject */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $increment = random_int(10, 1000);

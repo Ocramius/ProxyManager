@@ -27,9 +27,9 @@ class MagicIssetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection         = new ReflectionClass(EmptyClass::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
@@ -52,9 +52,9 @@ class MagicIssetTest extends TestCase
     public function testBodyStructureWithInheritedMethod() : void
     {
         $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));

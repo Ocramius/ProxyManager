@@ -23,7 +23,7 @@ class SetMethodPrefixInterceptorTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /* @var $suffix PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $suffix PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $suffix = $this->createMock(PropertyGenerator::class);
 
         $suffix->expects(self::once())->method('getName')->will(self::returnValue('foo'));

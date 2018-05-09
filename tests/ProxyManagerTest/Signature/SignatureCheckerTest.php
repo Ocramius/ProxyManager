@@ -33,7 +33,7 @@ class SignatureCheckerTest extends TestCase
     private $signatureChecker;
 
     /**
-     * @var \ProxyManager\Signature\SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\Signature\SignatureGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $signatureGenerator;
 

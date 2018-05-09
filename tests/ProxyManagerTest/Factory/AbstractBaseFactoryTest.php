@@ -32,37 +32,37 @@ class AbstractBaseFactoryTest extends TestCase
     /**
      * Note: we mock the class in order to assert on the abstract method usage
      *
-     * @var \ProxyManager\Factory\AbstractBaseFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\Factory\AbstractBaseFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     private $factory;
 
     /**
-     * @var \ProxyManager\ProxyGenerator\ProxyGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\ProxyGenerator\ProxyGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $generator;
 
     /**
-     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $classNameInflector;
 
     /**
-     * @var \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $generatorStrategy;
 
     /**
-     * @var AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AutoloaderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $proxyAutoloader;
 
     /**
-     * @var \ProxyManager\Signature\SignatureCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\Signature\SignatureCheckerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $signatureChecker;
 
     /**
-     * @var \ProxyManager\Signature\ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\Signature\ClassSignatureGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $classSignatureGenerator;
 

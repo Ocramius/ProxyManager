@@ -23,7 +23,7 @@ class GetWrappedValueHolderValueTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));

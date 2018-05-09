@@ -58,7 +58,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         self::assertSame($instance, $proxy->getWrappedValueHolderValue());
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $listener callable|\PHPUnit\Framework\MockObject\MockObject */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -108,7 +108,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
         $proxy    = $proxyName::staticProxyConstructor($instance);
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $listener callable|\PHPUnit\Framework\MockObject\MockObject */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -542,7 +542,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = $proxyName::staticProxyConstructor($realInstance);
 
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $listener callable|\PHPUnit\Framework\MockObject\MockObject */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener
@@ -585,7 +585,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
 
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $listener callable|\PHPUnit\Framework\MockObject\MockObject */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener
@@ -629,7 +629,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         /* @var $proxy OtherObjectAccessClass|AccessInterceptorValueHolderInterface */
         $proxy = clone $proxyName::staticProxyConstructor($realInstance);
 
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $listener callable|\PHPUnit\Framework\MockObject\MockObject */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener

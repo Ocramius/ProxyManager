@@ -27,9 +27,9 @@ class MagicCloneTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection  = new ReflectionClass(EmptyClass::class);
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initializer PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /* @var $initCall MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initCall MethodGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $initCall    = $this->createMock(MethodGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));

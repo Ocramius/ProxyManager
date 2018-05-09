@@ -27,12 +27,12 @@ class AutoloaderTest extends TestCase
     protected $autoloader;
 
     /**
-     * @var \ProxyManager\FileLocator\FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\FileLocator\FileLocatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $fileLocator;
 
     /**
-     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $classNameInflector;
 

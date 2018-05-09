@@ -26,7 +26,7 @@ class MagicUnsetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection   = new ReflectionClass(EmptyClass::class);
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $adapter PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $adapter      = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 

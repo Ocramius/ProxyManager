@@ -26,27 +26,27 @@ use Zend\Code\Generator\PropertyGenerator;
 class MagicUnsetTest extends TestCase
 {
     /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $initializer;
 
     /**
-     * @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var MethodGenerator|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $initMethod;
 
     /**
-     * @var PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     * @var PublicPropertiesMap|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $publicProperties;
 
     /**
-     * @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     * @var ProtectedPropertiesMap|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $protectedProperties;
 
     /**
-     * @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject
+     * @var PrivatePropertiesMap|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $privateProperties;
 

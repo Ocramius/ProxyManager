@@ -26,9 +26,9 @@ class CallInitializerTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initializer PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $initializer           = $this->createMock(PropertyGenerator::class);
-        /* @var $initializationTracker PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initializationTracker PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $initializationTracker = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('init'));

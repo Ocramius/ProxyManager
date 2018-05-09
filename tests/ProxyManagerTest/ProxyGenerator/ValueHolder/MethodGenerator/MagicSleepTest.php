@@ -26,7 +26,7 @@ class MagicSleepTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection  = new ReflectionClass(EmptyClass::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));

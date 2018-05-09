@@ -59,7 +59,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $this->assertProxySynchronized($instance, $proxy);
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $listener callable|\PHPUnit\Framework\MockObject\MockObject */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -110,7 +110,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         /* @var $proxy AccessInterceptorInterface */
         $proxy     = $proxyName::staticProxyConstructor($instance);
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $listener callable|\PHPUnit\Framework\MockObject\MockObject */
         $listener  = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())

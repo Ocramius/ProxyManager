@@ -26,7 +26,7 @@ class ConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
@@ -56,7 +56,7 @@ unset($this->bar, $this->baz);
 
     public function testBodyStructureWithoutPublicProperties() : void
     {
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
@@ -81,7 +81,7 @@ if (! $this->foo) {
 
     public function testBodyStructureWithStaticProperties() : void
     {
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
@@ -110,7 +110,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
 
     public function testBodyStructureWithVariadicArguments() : void
     {
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $valueHolder PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));

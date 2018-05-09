@@ -26,7 +26,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithParameters() : void
     {
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $adapter PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
@@ -56,7 +56,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithArrayParameter() : void
     {
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $adapter PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
@@ -83,7 +83,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithoutParameters() : void
     {
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $adapter PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 

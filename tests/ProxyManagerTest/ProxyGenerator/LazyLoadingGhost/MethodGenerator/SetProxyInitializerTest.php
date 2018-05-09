@@ -24,7 +24,7 @@ class SetProxyInitializerTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $initializer PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $initializer = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));

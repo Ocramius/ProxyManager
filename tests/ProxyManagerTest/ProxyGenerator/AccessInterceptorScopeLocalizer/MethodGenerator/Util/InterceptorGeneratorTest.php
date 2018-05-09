@@ -26,15 +26,15 @@ class InterceptorGeneratorTest extends TestCase
 {
     public function testInterceptorGenerator() : void
     {
-        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $method MethodGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $method             = $this->createMock(MethodGenerator::class);
-        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $bar ParameterGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $bar                = $this->createMock(ParameterGenerator::class);
-        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $baz ParameterGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $baz                = $this->createMock(ParameterGenerator::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -84,15 +84,15 @@ PHP;
 
     public function testInterceptorGeneratorWithVoidReturnType() : void
     {
-        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $method MethodGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $method             = $this->createMock(MethodGenerator::class);
-        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $bar ParameterGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $bar                = $this->createMock(ParameterGenerator::class);
-        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $baz ParameterGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $baz                = $this->createMock(ParameterGenerator::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -145,15 +145,15 @@ PHP;
 
     public function testInterceptorGeneratorWithExistingNonVoidMethod() : void
     {
-        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $method MethodGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $method             = $this->createMock(MethodGenerator::class);
-        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $bar ParameterGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $bar                = $this->createMock(ParameterGenerator::class);
-        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $baz ParameterGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $baz                = $this->createMock(ParameterGenerator::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));

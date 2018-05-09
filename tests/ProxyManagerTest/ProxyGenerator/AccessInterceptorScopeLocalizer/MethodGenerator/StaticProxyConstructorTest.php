@@ -23,12 +23,12 @@ use Zend\Code\Generator\PropertyGenerator;
 class StaticProxyConstructorTest extends TestCase
 {
     /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject
      */
     private $prefixInterceptors;
 
     /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var PropertyGenerator|\PHPUnit\Framework\MockObject\MockObject
      */
     private $suffixInterceptors;
 

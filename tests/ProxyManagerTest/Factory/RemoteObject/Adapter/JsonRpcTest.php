@@ -26,7 +26,7 @@ class JsonRpcTest extends TestCase
      */
     public function testCanBuildAdapterWithJsonRpcClient() : void
     {
-        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        /* @var $client Client|\PHPUnit\Framework\MockObject\MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new JsonRpc($client);

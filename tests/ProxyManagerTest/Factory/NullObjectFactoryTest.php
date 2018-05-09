@@ -28,22 +28,22 @@ use stdClass;
 class NullObjectFactoryTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $inflector;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $signatureChecker;
 
     /**
-     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClassSignatureGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $classSignatureGenerator;
 
     /**
-     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
+     * @var Configuration|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $config;
 
