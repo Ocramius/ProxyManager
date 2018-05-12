@@ -6,17 +6,15 @@ title: Lazy Loading Ghost Object Proxies
 
 A Lazy Loading Ghost is a type of proxy object.
 
-More specifically, it is a fake object that looks exactly like an object
-that you want to interact with, but is actually just an empty instance
-that gets all properties populated as soon as they are needed.
+More specifically, it is a fake object that looks exactly like an object that you want to interact with but is just an empty 
+instance that gets all properties populated as soon as they are needed.
 
-Those properties do not really exist until the ghost object is actually
-initialized.
+Those properties do not actually exist until the ghost object is initialized.
 
 ## Lazy loading with the Ghost Object
 
-In pseudo-code, in userland, [lazy loading](http://www.martinfowler.com/eaaCatalog/lazyLoad.html) in a ghost object
-looks like following:
+In pseudo-code, in userland, [lazy loading](http://www.martinfowler.com/eaaCatalog/lazyLoad.html) in a ghost object looks 
+like following:
 
 ```php
 class MyObjectProxy
@@ -46,22 +44,23 @@ class MyObjectProxy
 }
 ```
 
-Ghost objects work similarly to virtual proxies, but since they don't wrap around a "real" instance of the proxied
-subject, they are better suited for representing dataset rows.
+Ghost objects work similarly to virtual proxies, but since they do not wrap around a "real" instance of the proxied subject, 
+they are better suited for representing dataset rows.
 
 ## When do I use a ghost object?
 
-You usually need a ghost object in cases where following applies:
+You usually need a ghost object in cases where the following applies:
 
- * you are building a small data-mapper and want to lazily load data across associations in your object graph;
- * you want to initialize objects representing rows in a large dataset;
- * you want to compare instances of lazily initialized objects without the risk of comparing a proxy with a real subject;
- * you are aware of the internal state of the object and are confident in working with its internals via reflection
-   or direct property access.
+ * you are building a small data-mapper and want to lazily load data across associations in your object graph
+ * you want to initialize objects representing rows in a large dataset
+ * you want to compare instances of lazily initialized objects without the risk of comparing a proxy with a real subject
+ * you are aware of the internal state of the object and are confident in working with its internals via reflection or direct 
+   property access
 
 ## Usage examples
 
 [ProxyManager](https://github.com/Ocramius/ProxyManager) provides a factory that creates lazy loading ghost objects.
+
 To use it, follow these steps:
 
 First, define your object's logic without taking care of lazy loading:
@@ -84,8 +83,7 @@ class Customer
 }
 ```
 
-Then, use the proxy manager to create a ghost object of it.
-You will be responsible for setting its state during lazy loading:
+Then, use the proxy manager to create a ghost object of it. You will be responsible for setting its state during lazy loading:
 
 ```php
 namespace MyApp;
@@ -129,6 +127,7 @@ echo $ghostObject->getName() . ' ' . $ghostObject->getSurname(); // Agent Smith
 ## Lazy Initialization
 
 We use a closure to handle lazy initialization of the proxy instance at runtime.
+
 The initializer closure signature for ghost objects is:
 
 ```php
@@ -160,7 +159,7 @@ $initializer = function (
 ) {};
 ```
 
-The initializer closure should usually be coded like following:
+The initializer closure should usually look like:
 
 ```php
 $initializer = function (
@@ -182,12 +181,10 @@ $initializer = function (
 
 ### Lazy initialization `$properties` explained
 
-The assignments to properties in this closure use unusual `"\0"` sequences.
-This is to be consistent with how PHP represents private and protected properties when
-casting an object to an array.
-`ProxyManager` simply copies a reference to the properties into the `$properties` array passed to the
-initializer, which allows you to set the state of the object without accessing any of its public
-API. (This is a very important detail for mapper implementations!)
+The assignments to properties in this closure use unusual `"\0"` sequences. This is to be consistent with how PHP represents 
+private and protected properties when casting an object to an array. `ProxyManager` copies a reference to the properties into 
+the `$properties` array passed to the initializer, which allows you to set the state of the object without accessing any of 
+its public API. (This is a significant detail for mapper implementations!)
 
 Specifically:
 
@@ -239,19 +236,18 @@ $initializer = function (
 $instance = $factory->createProxy(\MyNamespace\MyClass::class, $initializer);
 ```
 
-This code would initialize `$property1`, `$property2` and `$property3`
-respectively to `"foo"`, `"bar"` and `"baz"`.
+This code would initialize `$property1`, `$property2` and `$property3` respectively to `"foo"`, `"bar"` and `"baz"`.
 
 You may read the default values for those properties by reading the respective array keys.
 
-Although it is possible to initialize the object by interacting with its public API, it is
-not safe to do so, because the object only contains default property values since its constructor was not called.
+Although it is possible to initialize the object by interacting with its public API, it is not safe to do so, because the 
+object only contains default property values as its constructor was not called.
 
 ## Proxy implementation
 
 The
-[`ProxyManager\Factory\LazyLoadingGhostFactory`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/LazyLoadingGhostFactory.php)
-produces proxies that implement the
+[`ProxyManager\Factory\LazyLoadingGhostFactory`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/LazyLoadingGhostFactory.php) 
+produces proxies that implement the 
 [`ProxyManager\Proxy\GhostObjectInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/GhostObjectInterface.php).
 
 At any point in time, you can set a new initializer for the proxy:
@@ -272,13 +268,13 @@ or
 $initializer = null; // if you use the initializer passed by reference to the closure
 ```
 
-Remember to call `$ghostObject->setProxyInitializer(null);`, or to set `$initializer = null` inside your
-initializer closure to disable initialization of your proxy, or else initialization will trigger
-more than once.
+Remember to call `$ghostObject->setProxyInitializer(null);`, or to set `$initializer = null` inside your initializer closure 
+to disable initialization of your proxy, otherwise initialization will trigger more than once.
 
 ## Triggering Initialization
 
 A lazy loading ghost object is initialized whenever you access any of its properties.
+
 Any of the following interactions would trigger lazy initialization:
 
 ```php
@@ -320,16 +316,14 @@ public function sayHello() : string
 
 ## Skipping properties (properties that should not be initialized)
 
-In some contexts, you may want some properties to be completely ignored by the lazy-loading
-system.
+In some contexts, you may want some properties to be ignored entirely by the lazy-loading system.
 
-An example for that (in data mappers) is entities with identifiers: an identifier is usually
+An example for that (in data mappers) is entities with identifiers: an identifier is usually:
 
  * lightweight
  * known at all times
 
-This means that it can be set in our object at all times, and we never need to lazy-load
-it. Here is a typical example:
+This means that it can be set in our object at all times, and we never need to lazy-load it. Here is a typical example:
 
 ```php
 namespace MyApp;
@@ -350,9 +344,8 @@ class User
 }
 ```
 
-If we want to skip the property `$id` from lazy-loading, we might want to tell that to
-the `LazyLoadingGhostFactory`. Here is a longer example, with a more near-real-world
-scenario:
+If we want to skip the property `$id` from lazy-loading, we might want to tell that to the `LazyLoadingGhostFactory`. Here is 
+a longer example, with a more real-world scenario:
 
 ```php
 namespace MyApp;
@@ -396,12 +389,13 @@ $idReflection->setAccessible(true);
 $idReflection->setValue($instance, 1234);
 ```
 
-In this example, we pass a `skippedProperties` array to our proxy factory. Note the use of the `"\0"` parameter syntax as described above.
+In this example, we pass a `skippedProperties` array to our proxy factory. Note the use of the `"\0"` parameter syntax as 
+described above.
 
 ## Proxying interfaces
 
-A lazy loading ghost object cannot proxy an interface directly, as it operates directly around
-the state of an object. Use a [Virtual Proxy](lazy-loading-value-holder.md) for that instead.
+A lazy loading ghost object cannot proxy an interface directly, as it operates directly around the state of an object. Use a 
+[Virtual Proxy](lazy-loading-value-holder.md) for that instead.
 
 ## Tuning performance for production
 
