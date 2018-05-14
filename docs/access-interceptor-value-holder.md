@@ -4,11 +4,9 @@ title: Access Interceptor Value Holder Proxy
 
 # Access Interceptor Value Holder Proxy
 
-An access interceptor value holder is a smart reference proxy that allows you to dynamically
-define logic to be executed before or after any of the wrapped object's methods
-logic.
+An *access interceptor value holder* is a smart reference proxy that allows you to dynamically define the logic that will be executed before or after any of the wrapped object's methods logic.
 
-It wraps around a real instance of the object to be proxied, and can be useful for things like:
+It wraps around a real instance of the object to be proxied and can be useful for things like:
 
  * caching execution of slow and heavy methods
  * log method calls
@@ -46,7 +44,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-This send something like following to your output:
+This sends something like following to your output:
 
 ```
 PreFoo!
@@ -58,8 +56,7 @@ PostFoo!
 
 A proxy produced by the
 [`ProxyManager\Factory\AccessInterceptorValueHolderFactory`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Factory/AccessInterceptorValueHolderFactory.php)
-implements the
-[`ProxyManager\Proxy\AccessInterceptorValueHolderInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/AccessInterceptorValueHolderInterface.php).
+implements the [`ProxyManager\Proxy\AccessInterceptorValueHolderInterface`](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/Proxy/AccessInterceptorValueHolderInterface.php).
 
 Therefore, you can set an access interceptor callback by calling:
 
@@ -107,10 +104,9 @@ $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue
 
 ## Known limitations
 
- * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly
-   for parameters that are not part of the proxied object interface: use 
-   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list)
-   instead.
+ * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly for parameters that are 
+   not part of the proxied object interface: use 
+   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list) instead.
 
 ## Tuning performance for production
 

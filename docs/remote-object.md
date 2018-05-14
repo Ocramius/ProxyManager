@@ -4,18 +4,18 @@ title: Remote Object Proxy
 
 # Remote Object Proxy
 
-The remote object implementation is a mechanism that enables an local object to control an other object on an other server.
-Each call method on the local object will do a network call to get information or execute operations on the remote object.
+The remote object implementation is a mechanism that enables a local object to control another object on another server. Each 
+call method on the local object will do a network call to get information or execute operations on the remote object.
 
-## What is remote object proxy ?
+## What is remote object proxy?
 
-A remote object is based on an interface. The remote interface defines the API that a consumer can call. This interface 
-must be implemented both by the client and the RPC server.
+A remote object is based on an interface. The remote interface defines the API that a consumer can call. This interface must 
+be implemented both by the client and the RPC server.
 
 ## Adapters
 
-ZendFramework's RPC components (XmlRpc, JsonRpc & Soap) can be used easily with the remote object.
-You will need to require the one you need via composer, though:
+ZendFramework's RPC components (XmlRpc, JsonRpc & Soap) can be used with the remote object. You will need to require the one 
+you need via composer:
 
 ```sh
 $ php composer.phar require zendframework/zend-xmlrpc:2.*
@@ -78,7 +78,7 @@ var_dump($proxy->foo()); // "bar remote"
 
 ## Implementing custom adapters
 
-Your adapters must implement `ProxyManager\Factory\RemoteObject\AdapterInterface` :
+Your adapters must implement `ProxyManager\Factory\RemoteObject\AdapterInterface`:
 
 ```php
 interface AdapterInterface
@@ -96,15 +96,14 @@ interface AdapterInterface
 }
 ```
 
-It is very easy to create your own implementation (for RESTful web services, for example). Simply pass
-your own adapter instance to your factory at construction time
+To create your implementation (for RESTful web services, for example), pass your adapter instance to your factory at 
+construction time.
 
 ## Known limitations
 
- * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly
-   for parameters that are not part of the proxied object interface: use 
-   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list)
-   instead.
+ * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly for parameters that are 
+ not part of the proxied object interface: use 
+ [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list) instead.
 
 ## Tuning performance for production
 

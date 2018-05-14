@@ -5,16 +5,16 @@ title: Null Object Proxy
 # Null Object Proxy
 
 A Null Object proxy is a [null object pattern](http://en.wikipedia.org/wiki/Null_Object_pattern) implementation.
-The proxy factory creates a new object with defined neutral behavior based on an other object, class name or interface.
+The proxy factory creates a new object with defined neutral behaviour based on another object, class name or interface.
 
-## What is null object proxy ?
+## What is null object proxy?
 
-In your application, when you can't return the object related to the request, the consumer of the model must check 
-for the return value and handle the failing condition gracefully, thus generating an explosion of conditionals throughout your code.
-Fortunately, this seemingly-tangled situation can be sorted out simply by creating a polymorphic implementation of the 
-domain object, which would implement the same interface as the one of the object in question, only that its methods 
-wouldn't do anything, therefore offloading client code from doing repetitive checks for ugly null values when the operation
- is executed.
+In your application, when you cannot return the object related to the request, the consumer of the model must check for the 
+return value and handle the failing condition gracefully, thus generating an explosion of conditionals throughout your code.
+
+Fortunately, this seemingly-tangled situation can be simplified by creating a polymorphic implementation of the domain object, 
+which would implement the same interface as one of the objects in question, only that its methods would not do anything, 
+therefore offloading client code from doing repetitive checks for ugly null values when the operation is executed.
 
 ## Usage examples
 
@@ -93,8 +93,8 @@ class UserMapper
 
 ## Proxying interfaces
 
-You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the
-methods defined by the interface itself, and like with the object, the methods are empty.
+You can also generate proxies from an interface FQCN. By proxying an interface, you will only be able to access the methods 
+defined by the interface itself, and like with the object, the methods are empty.
 
 ## Tuning performance for production
 

@@ -4,11 +4,11 @@ title: Access Interceptor Scope Localizer Proxy
 
 # Access Interceptor Scope Localizer Proxy
 
-An access interceptor scope localizer is a smart reference proxy that allows you to dynamically
-define logic to be executed before or after any of the proxied object's methods' logic.
+An access interceptor scope localizer is a smart reference proxy that allows you to dynamically define logic to be executed 
+before or after any of the proxied object methods' logic.
 
-It works exactly like the [access interceptor value holder](access-interceptor-value-holder.md),
-with some minor differences in behavior.
+It works exactly like the [access interceptor value holder](access-interceptor-value-holder.md), with some minor differences 
+in behaviour.
 
 The working concept of an access interceptor scope localizer is to localize scope of a proxied object:
 
@@ -41,37 +41,36 @@ class ExampleProxy extends Example
 }
 ```
 
-This allows to create a mirror copy of the real instance, where any change in the proxy or in the real
-instance is reflected in both objects.
+This allows creating a mirror copy of the real instance, where any change in the proxy or the real instance is reflected in 
+both objects.
 
-The main advantage of this approach is that the proxy is now safe against fluent interfaces, which
-would break an [access interceptor value holder](access-interceptor-value-holder.md) instead.
+The main advantage of this approach is that the proxy is now safe against fluent interfaces, which would break an 
+[access interceptor value holder](access-interceptor-value-holder.md) instead.
 
 ## Differences with [access interceptor value holder](access-interceptor-value-holder.md):
 
- * It does **NOT** implement the `ProxyManager\Proxy\ValueHolderInterface`, since the proxy itself
-   does not keep a reference to the original object being proxied
- * In all interceptor methods (see [access interceptor value holder](access-interceptor-value-holder.md)),
-   the `$instance` passed in is the proxy itself. There is no way  to gather a reference to the
-   original object right now, and that's mainly to protect from misuse.
+ * It does **NOT** implement the `ProxyManager\Proxy\ValueHolderInterface`, since the proxy itself does not keep a reference 
+   to the original object being proxied
+ * In all interceptor methods (see [access interceptor value holder](access-interceptor-value-holder.md)), the `$instance` 
+   passed in is the proxy itself. There is no way to gather a reference to the original object right now, and that is mainly 
+   to protect from misuse.
 
 ## Known limitations
 
  * It is **NOT** possible to intercept access to public properties
- * It is **NOT** possible to proxy interfaces, since this proxy relies on `parent::method()` calls.
-   Interfaces obviously don't provide a parent method implementation.
- * calling `unset` on a property of an access interceptor scope localizer (or the real instance)
-   will cause the two objects to be un-synchronized, with possible unexpected behaviour.
- * serializing or un-serializing an access interceptor scope localizer (or the real instance)
-   will not cause the real instance (or the proxy) to be serialized or un-serialized
- * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly
-   for parameters that are not part of the proxied object interface: use 
-   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list)
-   instead.
+ * It is **NOT** possible to proxy interfaces, since this proxy relies on `parent::method()` calls. Interfaces don't provide 
+   a parent method implementation.
+ * calling `unset` on a property of an access interceptor scope localizer (or the real instance) will cause the two objects 
+   to be un-synchronized, with possible unexpected behaviour.
+ * serializing or un-serializing an access interceptor scope localizer (or the real instance) will not cause the real 
+   instance (or the proxy) to be serialized or un-serialized
+ * methods using `func_get_args()`, `func_get_arg()` and `func_num_arg()` will not function properly for parameters that are 
+   not part of the proxied object interface: use 
+   [variadic arguments](http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list) instead.
 
 ## Example
 
-Here's an example of how you can create and use an access interceptor scope localizer :
+Here's an example of how you can create and use an access interceptor scope localizer:
 
 ```php
 <?php
@@ -99,7 +98,7 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-This send something like following to your output:
+This sends something like following to your output:
 
 ```
 PreFoo!
@@ -107,5 +106,4 @@ Foo!
 PostFoo!
 ```
 
-This is pretty much the same logic that you can find
-in [access interceptor value holder](access-interceptor-value-holder.md).
+This is similar logic to what you can find in [access interceptor value holder](access-interceptor-value-holder.md).
