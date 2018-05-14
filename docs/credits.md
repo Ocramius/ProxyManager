@@ -4,7 +4,7 @@ title: Credits
 
 # Credits
 
-The idea was originated by a [talk about Proxies in PHP OOP](http://marco-pivetta.com/proxy-pattern-in-php/) that I gave at 
+The idea was originated by a [talk about Proxies in PHP OOP](https://ocramius.github.io/presentations/proxy-pattern-in-php/) that I gave at 
 the [@phpugffm](https://twitter.com/phpugffm) in January 2013.
 
 ---
