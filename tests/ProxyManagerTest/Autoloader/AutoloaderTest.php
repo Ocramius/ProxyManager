@@ -39,7 +39,7 @@ class AutoloaderTest extends TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__construct
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fileLocator        = $this->createMock(FileLocatorInterface::class);
         $this->classNameInflector = $this->createMock(ClassNameInflectorInterface::class);

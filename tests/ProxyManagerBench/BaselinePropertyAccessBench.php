@@ -61,7 +61,7 @@ class BaselinePropertyAccessBench
      */
     private $accessMixedPropertiesProtected;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->privateProperties   = new ClassWithPrivateProperties();
         $this->protectedProperties = new ClassWithProtectedProperties();

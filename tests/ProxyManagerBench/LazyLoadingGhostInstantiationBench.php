@@ -50,7 +50,7 @@ class LazyLoadingGhostInstantiationBench
      */
     private $mixedPropertiesProxy;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->emptyClassProxy          = $this->generateProxy(EmptyClass::class);
         $this->privatePropertiesProxy   = $this->generateProxy(ClassWithPrivateProperties::class);
