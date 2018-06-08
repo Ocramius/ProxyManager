@@ -32,7 +32,7 @@ class ConfigurationTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->configuration = new Configuration();
     }

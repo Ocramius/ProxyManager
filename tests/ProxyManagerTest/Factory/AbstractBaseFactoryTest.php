@@ -69,7 +69,7 @@ class AbstractBaseFactoryTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $configuration                 = $this->createMock(Configuration::class);
         $this->generator               = $this->createMock(ProxyGeneratorInterface::class);

@@ -35,7 +35,7 @@ class StaticProxyConstructorTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $this->suffixInterceptors = $this->createMock(PropertyGenerator::class);
