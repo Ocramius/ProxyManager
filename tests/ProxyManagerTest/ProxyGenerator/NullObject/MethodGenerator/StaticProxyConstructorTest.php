@@ -28,6 +28,7 @@ class StaticProxyConstructorTest extends TestCase
         );
 
         self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertSame(ClassWithMixedProperties::class, (string) $constructor->getReturnType());
         self::assertTrue($constructor->isStatic());
         self::assertSame('public', $constructor->getVisibility());
         self::assertCount(0, $constructor->getParameters());
@@ -54,6 +55,7 @@ return $instance;',
 
         self::assertSame('staticProxyConstructor', $constructor->getName());
         self::assertCount(0, $constructor->getParameters());
+        self::assertSame(ClassWithPrivateProperties::class, (string) $constructor->getReturnType());
         $body = $constructor->getBody();
         self::assertSame(
             'static $reflection;
