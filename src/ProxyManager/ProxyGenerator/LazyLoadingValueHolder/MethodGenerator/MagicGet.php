@@ -55,7 +55,9 @@ class MagicGet extends MagicMethodGenerator
                 PublicScopeSimulator::OPERATION_GET,
                 'name',
                 null,
-                $valueHolderProperty
+                $valueHolderProperty,
+                null,
+                $originalClass->isInterface() ? $originalClass->getName() : null
             )
         );
     }

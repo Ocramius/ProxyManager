@@ -38,7 +38,8 @@ class MagicIsset extends MagicMethodGenerator
                 'name',
                 null,
                 null,
-                'returnValue'
+                'returnValue',
+                $originalClass->isInterface() ? $originalClass->getName() : null
             );
         }
 

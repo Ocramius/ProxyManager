@@ -47,7 +47,9 @@ class MagicUnset extends MagicMethodGenerator
                 PublicScopeSimulator::OPERATION_UNSET,
                 'name',
                 null,
-                $valueHolderProperty
+                $valueHolderProperty,
+                null,
+                $originalClass->isInterface() ? $originalClass->getName() : null
             );
 
         $this->setBody(

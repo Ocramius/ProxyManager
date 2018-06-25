@@ -44,7 +44,9 @@ class MagicIsset extends MagicMethodGenerator
             PublicScopeSimulator::OPERATION_ISSET,
             'name',
             null,
-            $valueHolderProperty
+            $valueHolderProperty,
+            null,
+            $originalClass->isInterface() ? $originalClass->getName() : null
         );
 
         $this->setBody(
