@@ -77,7 +77,9 @@ class MagicSet extends MagicMethodGenerator
                 PublicScopeSimulator::OPERATION_SET,
                 'name',
                 'value',
-                $valueHolderProperty
+                $valueHolderProperty,
+                null,
+                $originalClass->isInterface() ? $originalClass->getName() : null
             );
 
         $this->setBody(

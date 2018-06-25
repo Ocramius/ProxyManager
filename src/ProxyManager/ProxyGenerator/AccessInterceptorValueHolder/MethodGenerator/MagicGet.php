@@ -68,7 +68,8 @@ class MagicGet extends MagicMethodGenerator
             'name',
             'value',
             $valueHolder,
-            'returnValue'
+            'returnValue',
+            $originalClass->isInterface() ? $originalClass->getName() : null
         );
 
         if (! $publicProperties->isEmpty()) {
