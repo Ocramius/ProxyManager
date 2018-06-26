@@ -38,8 +38,8 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setDocBlock('Constructor for null object initialization');
         $this->setBody(
             'static $reflection;' . "\n\n"
-            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
-            . '$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();' . "\n\n"
+            . '$reflection = $reflection ?? $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$instance = $reflection->newInstanceWithoutConstructor();' . "\n\n"
             . ($nullableProperties ? implode("\n", $nullableProperties) . "\n\n" : '')
             . 'return $instance;'
         );
