@@ -45,6 +45,13 @@ class FileWriterGeneratorStrategyTest extends TestCase
         self::assertGreaterThan(0, strpos($body, $className));
         self::assertFalse(class_exists($fqcn, false));
         self::assertFileExists($tmpFile);
+        self::assertFileIsReadable($tmpFile);
+
+        // a user not on php.net recommended calling this as we have just called chmod on a file.
+        clearstatcache();
+
+        $perm = 0666 & ~umask();
+        self::assertTrue($perm === (fileperms($tmpFile) & 0644), 'File permission was not correct: ' . decoct($perm));
 
         /* @noinspection PhpIncludeInspection */
         require $tmpFile;
