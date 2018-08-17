@@ -47,7 +47,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
         self::assertFileExists($tmpFile);
         self::assertFileIsReadable($tmpFile);
 
-        // a user not on php.net recommended calling this as we have just called chmod on a file.
+        // a user note on php.net recommended calling this as we have just called chmod on a file.
         clearstatcache();
 
         // Calculate the permission that should have been set.
