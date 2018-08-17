@@ -77,6 +77,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
         assert(is_string($tmpFileName));
 
         file_put_contents($tmpFileName, $source);
+        @chmod($tmpFileName, 0666 & ~umask());
 
         if (! rename($tmpFileName, $location)) {
             unlink($tmpFileName);
