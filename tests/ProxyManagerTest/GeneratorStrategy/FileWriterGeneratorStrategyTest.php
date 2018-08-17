@@ -55,6 +55,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
         clearstatcache();
 
         // Calculate the permission that should have been set.
+        // The operators below are bit-wise "AND" (&) and "NOT" (~), read more at: http://php.net/manual/en/language.operators.bitwise.php
         $perm = 0666 & ~umask();
 
         self::assertSame($perm, fileperms($tmpFile) & 0644, 'File permission was not correct: ' . decoct($perm));
