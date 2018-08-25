@@ -17,6 +17,7 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
     /** @var LazyLoadingValueHolderGenerator|null */
     private $generator;
 
+    /** @param mixed[] $proxyOptions */
     public function createProxy(
         string $className,
         \Closure $initializer,
