@@ -12,7 +12,6 @@
     <!-- Ignore warnings and show progress of the run -->
     <arg value="np"/>
 
-    <file>./examples</file>
     <file>./src</file>
     <file>./tests/language-feature-scripts</file>
     <file>./tests/ProxyManagerBench</file>
