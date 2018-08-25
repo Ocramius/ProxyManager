@@ -29,22 +29,22 @@ use ReflectionProperty;
 class LazyLoadingGhostPropertyAccessBench
 {
     /**
-     * @var EmptyClass|GhostObjectInterface
+     * @var EmptyClass|LazyLoadingInterface
      */
     private $emptyClassProxy;
 
     /**
-     * @var EmptyClass|GhostObjectInterface
+     * @var EmptyClass|LazyLoadingInterface
      */
     private $initializedEmptyClassProxy;
 
     /**
-     * @var ClassWithPrivateProperties|GhostObjectInterface
+     * @var ClassWithPrivateProperties|LazyLoadingInterface
      */
     private $privatePropertiesProxy;
 
     /**
-     * @var ClassWithPrivateProperties|GhostObjectInterface
+     * @var ClassWithPrivateProperties|LazyLoadingInterface
      */
     private $initializedPrivatePropertiesProxy;
 
@@ -54,12 +54,12 @@ class LazyLoadingGhostPropertyAccessBench
     private $accessPrivateProperty;
 
     /**
-     * @var ClassWithProtectedProperties|GhostObjectInterface
+     * @var ClassWithProtectedProperties|LazyLoadingInterface
      */
     private $protectedPropertiesProxy;
 
     /**
-     * @var ClassWithProtectedProperties|GhostObjectInterface
+     * @var ClassWithProtectedProperties|LazyLoadingInterface
      */
     private $initializedProtectedPropertiesProxy;
 
@@ -69,22 +69,22 @@ class LazyLoadingGhostPropertyAccessBench
     private $accessProtectedProperty;
 
     /**
-     * @var ClassWithPublicProperties|GhostObjectInterface
+     * @var ClassWithPublicProperties|LazyLoadingInterface
      */
     private $publicPropertiesProxy;
 
     /**
-     * @var ClassWithPublicProperties|GhostObjectInterface
+     * @var ClassWithPublicProperties|LazyLoadingInterface
      */
     private $initializedPublicPropertiesProxy;
 
     /**
-     * @var ClassWithMixedProperties|GhostObjectInterface
+     * @var ClassWithMixedProperties|LazyLoadingInterface
      */
     private $mixedPropertiesProxy;
 
     /**
-     * @var ClassWithMixedProperties|GhostObjectInterface
+     * @var ClassWithMixedProperties|LazyLoadingInterface
      */
     private $initializedMixedPropertiesProxy;
 
