@@ -18,13 +18,13 @@ class ClassWithMethodWithVariadicFunction
     public $bar;
 
     /**
-     * @var mixed[]
+     * @var mixed
      */
     public $baz;
 
     /**
      * @param mixed $bar
-     * @param mixed ...$baz
+     * @param mixed $baz
      */
     public function foo($bar, ...$baz)
     {
