@@ -14,6 +14,18 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class MagicClone extends MagicMethodGenerator
 {
+    private const TEMPLATE = <<<'PHP'
+$this->{{$valueHolder}} = clone $this->{{$valueHolder}};
+
+foreach ($this->{{$prefix}} as $key => $value) {
+    $this->{{$prefix}}[$key] = clone $value;
+}
+
+foreach ($this->{{$suffix}} as $key => $value) {
+    $this->{{$suffix}}[$key] = clone $value;
+}
+PHP;
+
     /**
      * Constructor
      *
@@ -30,14 +42,16 @@ class MagicClone extends MagicMethodGenerator
         $prefix      = $prefixInterceptors->getName();
         $suffix      = $suffixInterceptors->getName();
 
-        $this->setBody(
-            "\$this->$valueHolder = clone \$this->$valueHolder;\n\n"
-            . "foreach (\$this->$prefix as \$key => \$value) {\n"
-            . "    \$this->$prefix" . "[\$key] = clone \$value;\n"
-            . "}\n\n"
-            . "foreach (\$this->$suffix as \$key => \$value) {\n"
-            . "    \$this->$suffix" . "[\$key] = clone \$value;\n"
-            . '}'
-        );
+        $replacements = [
+            '{{$valueHolder}}' => $valueHolder,
+            '{{$prefix}}' => $prefix,
+            '{{$suffix}}' => $suffix,
+        ];
+
+        $this->setBody(str_replace(
+            array_keys($replacements),
+            $replacements,
+            self::TEMPLATE
+        ));
     }
 }
