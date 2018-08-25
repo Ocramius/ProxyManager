@@ -20,6 +20,7 @@
     <rule ref="Doctrine">
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix"/>
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix"/>
         <!--
         <exclude name="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
         <exclude-pattern>src/DetectChanges/BCBreak/InterfaceBased/InterfaceBased.php</exclude-pattern>
