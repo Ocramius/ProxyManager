@@ -17,10 +17,10 @@
     beStrictAboutChangesToGlobalState="true"
 >
     <testsuites>
-        <testsuite name="ProxyManager tests">
+        <testsuite name="unit">
             <directory>./tests/ProxyManagerTest</directory>
         </testsuite>
-        <testsuite name="ProxyManager language integration tests">
+        <testsuite name="integration">
             <directory suffix=".phpt">./tests/language-feature-scripts</directory>
         </testsuite>
     </testsuites>
