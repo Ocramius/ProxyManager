@@ -33,7 +33,7 @@ script:
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
   - ./vendor/bin/phpstan analyse -c phpstan.neon -l 7 src
   - ./vendor/bin/phpstan analyse -c phpstan.tests.neon -l 4 tests
-  - ./vendor/bin/infection
+  - ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=99 --min-covered-msi=100
 
 matrix:
   allow_failures:
