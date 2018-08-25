@@ -68,6 +68,27 @@ final class Properties
     }
 
     /**
+     * Properties that cannot be referenced are non-nullable typed properties that aren't initialised
+     */
+    public function withoutNonReferenceableProperties() : self
+    {
+        return new self(array_filter($this->getInstanceProperties(), function (ReflectionProperty $property) : bool {
+            if (! $property->hasType()) {
+                return true;
+            }
+
+            /** @var $type \ReflectionType */
+            $type = $property->getType();
+
+            if ($type->allowsNull()) {
+                return true;
+            }
+
+            return isset($property->getDeclaringClass()->getDefaultProperties()[$property->getName()]);
+        }));
+    }
+
+    /**
      * @return ReflectionProperty[] indexed by the property internal visibility-aware name
      */
     public function getPublicProperties() : array

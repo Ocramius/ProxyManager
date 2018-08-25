@@ -126,9 +126,10 @@ PHP;
 
     private function propertiesReferenceArrayCode(Properties $properties) : string
     {
-        $assignments = [];
+        $referenceable = $properties->withoutNonReferenceableProperties();
+        $assignments   = [];
 
-        foreach ($properties->getAccessibleProperties() as $propertyInternalName => $property) {
+        foreach ($referenceable->getAccessibleProperties() as $propertyInternalName => $property) {
             $assignments[] = '    '
                 . var_export($propertyInternalName, true) . ' => & $this->' . $property->getName()
                 . ',';
@@ -137,7 +138,7 @@ PHP;
         $code = "\$properties = [\n" . implode("\n", $assignments) . "\n];\n\n";
 
         // must use assignments, as direct reference during array definition causes a fatal error (not sure why)
-        foreach ($properties->getGroupedPrivateProperties() as $className => $classPrivateProperties) {
+        foreach ($referenceable->getGroupedPrivateProperties() as $className => $classPrivateProperties) {
             $cacheKey = 'cacheFetch' . str_replace('\\', '_', $className);
 
             $code .= 'static $' . $cacheKey . ";\n\n"

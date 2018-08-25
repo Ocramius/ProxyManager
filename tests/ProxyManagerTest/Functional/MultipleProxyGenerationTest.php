@@ -9,6 +9,8 @@ use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+use ProxyManager\FileLocator\FileLocator;
+use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\ValueHolderInterface;
@@ -22,6 +24,7 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
@@ -105,6 +108,7 @@ class MultipleProxyGenerationTest extends TestCase
             [ClassWithFinalMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
             [ClassWithMixedProperties::class],
+            [ClassWithMixedTypedProperties::class],
             [ClassWithPrivateProperties::class],
             [ClassWithProtectedProperties::class],
             [ClassWithPublicProperties::class],
