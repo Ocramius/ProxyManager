@@ -23,7 +23,7 @@ interface ClassNameInflectorInterface
     /**
      * Retrieve the class name of the proxy for the given user-defined class name
      *
-     * @param array $options arbitrary options to be used for the generated class name
+     * @param mixed[] $options arbitrary options to be used for the generated class name
      */
     public function getProxyClassName(string $className, array $options = []) : string;
 
