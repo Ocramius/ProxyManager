@@ -12,18 +12,12 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
  * Tests for {@see \ProxyManager\Inflector\ClassNameInflector}
  *
  * @group Coverage
+ *
+ * @covers \ProxyManager\Inflector\ClassNameInflector
  */
 class ClassNameInflectorTest extends TestCase
 {
-    /**
-     * @dataProvider getClassNames
-     *
-     * @covers \ProxyManager\Inflector\ClassNameInflector::__construct
-     * @covers \ProxyManager\Inflector\ClassNameInflector::getUserClassName
-     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
-     * @covers \ProxyManager\Inflector\ClassNameInflector::isProxyClassName
-     *
-     */
+    /** @dataProvider getClassNames */
     public function testInflector(string $realClassName, string $proxyClassName) : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
@@ -36,9 +30,6 @@ class ClassNameInflectorTest extends TestCase
         self::assertStringMatchesFormat($realClassName, $inflector->getUserClassName($proxyClassName));
     }
 
-    /**
-     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
-     */
     public function testGeneratesSameClassNameWithSameParameters() : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
@@ -54,9 +45,6 @@ class ClassNameInflectorTest extends TestCase
         );
     }
 
-    /**
-     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
-     */
     public function testGeneratesDifferentClassNameWithDifferentParameters() : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
@@ -79,9 +67,6 @@ class ClassNameInflectorTest extends TestCase
         );
     }
 
-    /**
-     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
-     */
     public function testGeneratesCorrectClassNameWhenGivenLeadingBackslash() : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
@@ -93,11 +78,9 @@ class ClassNameInflectorTest extends TestCase
     }
 
     /**
-     * @covers \ProxyManager\Inflector\ClassNameInflector::getProxyClassName
-     *
      * @dataProvider getClassAndParametersCombinations
      *
-     * @param array $parameters
+     * @param mixed[] $parameters
      */
     public function testClassNameIsValidClassIdentifier(string $className, array $parameters) : void
     {
@@ -113,7 +96,7 @@ class ClassNameInflectorTest extends TestCase
     /**
      * Data provider.
      *
-     * @return array[]
+     * @return string[][]
      */
     public function getClassNames() : array
     {
@@ -126,7 +109,7 @@ class ClassNameInflectorTest extends TestCase
     /**
      * Data provider.
      *
-     * @return array[]
+     * @return mixed[][]
      */
     public function getClassAndParametersCombinations() : array
     {
