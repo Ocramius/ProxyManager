@@ -28,6 +28,7 @@ class ParameterHasherTest extends TestCase
         self::assertSame($expectedHash, $encoder->hashParameters($parameters));
     }
 
+    /** @return mixed[][][]|string[][] */
     public function getParameters() : array
     {
         return [
