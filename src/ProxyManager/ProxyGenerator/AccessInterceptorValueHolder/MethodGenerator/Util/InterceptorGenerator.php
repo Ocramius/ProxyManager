@@ -7,7 +7,9 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use Zend\Code\Generator\PropertyGenerator;
+use function array_keys;
 use function implode;
+use function str_replace;
 use function var_export;
 
 /**
@@ -17,6 +19,30 @@ use function var_export;
  */
 class InterceptorGenerator
 {
+    private const TEMPLATE = <<<'PHP'
+if (isset($this->{{$prefixInterceptorsName}}[{{$name}}])) {
+    $returnEarly       = false;
+    $prefixReturnValue = $this->{{$prefixInterceptorsName}}[{{$name}}]->__invoke($this, $this->{{$valueHolderName}}, {{$name}}, {{$paramsString}}, $returnEarly);
+
+    if ($returnEarly) {
+        {{$returnEarlyPrefixExpression}}
+    }
+}
+
+{{$methodBody}}
+
+if (isset($this->{{$suffixInterceptorsName}}[{{$name}}])) {
+    $returnEarly       = false;
+    $suffixReturnValue = $this->{{$suffixInterceptorsName}}[{{$name}}]->__invoke($this, $this->{{$valueHolderName}}, {{$name}}, {{$paramsString}}, $returnValue, $returnEarly);
+
+    if ($returnEarly) {
+        {{$returnEarlySuffixExpression}}
+    }
+}
+
+{{$returnExpression}}
+PHP;
+
     /**
      * @param string $methodBody the body of the previously generated code.
      *                           It MUST assign the return value to a variable
@@ -43,23 +69,19 @@ class InterceptorGenerator
 
         $paramsString = 'array(' . implode(', ', $params) . ')';
 
-        return "if (isset(\$this->$prefixInterceptorsName" . "[$name])) {\n"
-            . "    \$returnEarly       = false;\n"
-            . "    \$prefixReturnValue = \$this->$prefixInterceptorsName" . "[$name]->__invoke("
-            . "\$this, \$this->$valueHolderName, $name, $paramsString, \$returnEarly);\n\n"
-            . "    if (\$returnEarly) {\n"
-            . '        ' . ProxiedMethodReturnExpression::generate('$prefixReturnValue', $originalMethod) . "\n"
-            . "    }\n"
-            . "}\n\n"
-            . $methodBody . "\n\n"
-            . "if (isset(\$this->$suffixInterceptorsName" . "[$name])) {\n"
-            . "    \$returnEarly       = false;\n"
-            . "    \$suffixReturnValue = \$this->$suffixInterceptorsName" . "[$name]->__invoke("
-            . "\$this, \$this->$valueHolderName, $name, $paramsString, \$returnValue, \$returnEarly);\n\n"
-            . "    if (\$returnEarly) {\n"
-            . '        ' . ProxiedMethodReturnExpression::generate('$suffixReturnValue', $originalMethod) . "\n"
-            . "    }\n"
-            . "}\n\n"
-            . ProxiedMethodReturnExpression::generate('$returnValue', $originalMethod);
+        $replacements = [
+            '{{$prefixInterceptorsName}}' => $prefixInterceptorsName,
+            '{{$name}}' => $name,
+            '{{$valueHolderName}}' => $valueHolderName,
+            '{{$paramsString}}' => $paramsString,
+            '{{$returnEarlyPrefixExpression}}' => ProxiedMethodReturnExpression::generate('$prefixReturnValue', $originalMethod),
+            '{{$methodBody}}' => $methodBody,
+            '{{$suffixInterceptorsName}}' => $suffixInterceptorsName,
+            '{{$returnEarlySuffixExpression}}' => ProxiedMethodReturnExpression::generate('$suffixReturnValue', $originalMethod),
+            '{{$returnExpression}}' => ProxiedMethodReturnExpression::generate('$returnValue', $originalMethod),
+
+        ];
+
+        return str_replace(array_keys($replacements), $replacements, self::TEMPLATE);
     }
 }
