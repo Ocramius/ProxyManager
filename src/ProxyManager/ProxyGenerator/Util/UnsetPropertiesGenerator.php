@@ -45,9 +45,9 @@ PHP;
 
         $unsetClosureCalls = [];
 
-        /* @var $privateProperties \ReflectionProperty[] */
+        /* @var \ReflectionProperty[] $privateProperties */
         foreach ($groups as $privateProperties) {
-            /* @var $firstProperty \ReflectionProperty */
+            /* @var \ReflectionProperty $firstProperty */
             $firstProperty  = reset($privateProperties);
 
             $unsetClosureCalls[] = self::generateUnsetClassPrivatePropertiesBlock(
