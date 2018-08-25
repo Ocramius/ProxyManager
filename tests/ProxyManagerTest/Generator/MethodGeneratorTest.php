@@ -124,6 +124,7 @@ class MethodGeneratorTest extends TestCase
         self::assertSame($type, $param->getType());
     }
 
+    /** @return string[][] */
     public function scalarTypeHintedMethods()
     {
         return [
