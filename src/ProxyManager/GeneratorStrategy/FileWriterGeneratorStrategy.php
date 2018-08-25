@@ -76,6 +76,8 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     {
         $tmpFileName = tempnam($location, 'temporaryProxyManagerFile');
 
+        assert(is_string($tmpFileName));
+
         file_put_contents($tmpFileName, $source);
 
         if (! rename($tmpFileName, $location)) {

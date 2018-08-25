@@ -493,7 +493,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
         self::assertSame('Ocramius', $object->bar);
-        self::assertSame(['Malukenho', 'Danizord'], $object->baz);
+        self::assertSame(['Malukenho', 'Danizord'], self::getObjectAttribute($object, 'baz'));
     }
 
     /**

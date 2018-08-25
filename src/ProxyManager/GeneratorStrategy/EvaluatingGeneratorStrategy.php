@@ -42,6 +42,8 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
         if (! $this->canEval) {
             $fileName = tempnam(sys_get_temp_dir(), 'EvaluatingGeneratorStrategy.php.tmp.');
 
+            assert(is_string($fileName));
+
             file_put_contents($fileName, "<?php\n" . $code);
             /* @noinspection PhpIncludeInspection */
             require $fileName;

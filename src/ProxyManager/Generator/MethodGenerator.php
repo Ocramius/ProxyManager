@@ -12,6 +12,12 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
+ *
+ * Note: following overrides are just fixing some "lies" in the documented types in zend-code
+ *
+ * @method \Zend\Code\Generator\DocBlockGenerator|null getDocBlock()
+ * @method string|null getBody()
+ * @method string|null getSourceContent()
  */
 class MethodGenerator extends ZendMethodGenerator
 {
