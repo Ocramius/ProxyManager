@@ -1,7 +1,9 @@
 parameters:
     level: 4
     paths:
-        - tests
+        - tests/language-feature-scripts
+        - tests/ProxyManagerBench
+        - tests/ProxyManagerTest
     ignoreErrors:
         # We only mock this dependency, and never really require it:
         - '#Zend\\Server\\Client#'
