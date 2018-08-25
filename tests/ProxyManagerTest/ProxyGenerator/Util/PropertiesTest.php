@@ -216,6 +216,7 @@ class PropertiesTest extends TestCase
         self::assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());
     }
 
+    /** @return string[][] */
     public function propertiesToSkipFixture()
     {
         return [

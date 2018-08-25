@@ -74,6 +74,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      */
     abstract protected function getExpectedImplementedInterfaces() : array;
 
+    /** @return string[][] */
     public function getTestedImplementations() : array
     {
         return [
