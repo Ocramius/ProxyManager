@@ -16,6 +16,7 @@ use function var_export;
  */
 final class UnsetPropertiesGenerator
 {
+    /** @var string */
     private static $closureTemplate = <<<'PHP'
 \Closure::bind(function (\%s $instance) {
     %s
@@ -39,6 +40,7 @@ PHP;
         return self::generateUnsetStatement($accessibleProperties, $instanceName) . "\n\n";
     }
 
+    /** @param \ReflectionProperty[] $properties */
     private static function generateUnsetPrivatePropertiesCode(Properties $properties, string $instanceName) : string
     {
         $groups = $properties->getGroupedPrivateProperties();
@@ -64,6 +66,7 @@ PHP;
         return implode("\n\n", $unsetClosureCalls) . "\n\n";
     }
 
+    /** @param \ReflectionProperty[] $properties */
     private static function generateUnsetClassPrivatePropertiesBlock(
         \ReflectionClass $declaringClass,
         array $properties,
@@ -81,6 +84,7 @@ PHP;
         );
     }
 
+    /** @param \ReflectionProperty[] $properties */
     private static function generateUnsetStatement(array $properties, string $instanceName) : string
     {
         return 'unset('
