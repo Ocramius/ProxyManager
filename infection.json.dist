@@ -6,7 +6,7 @@
     },
     "timeout": 15,
     "logs": {
-        "text": "humbuglog.txt",
-        "json": "humbuglog.json"
+        "text": "infectionlog.txt",
+        "json": "infectionlog.json"
     }
 }

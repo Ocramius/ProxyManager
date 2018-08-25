@@ -9,7 +9,7 @@
 .travis.yml export-ignore
 CONTRIBUTING.md export-ignore
 couscous.yml export-ignore
-humbug.json.dist export-ignore
+infection.json.dist export-ignore
 index.html export-ignore
 phpbench.json export-ignore
 phpdox.xml.dist export-ignore
