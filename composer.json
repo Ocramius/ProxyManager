@@ -31,7 +31,8 @@
         "phpbench/phpbench":            "^0.14.0",
         "phpstan/phpstan":              "^0.10.3",
         "phpstan/phpstan-phpunit":      "^0.10",
-        "infection/infection":          "^0.10.1"
+        "infection/infection":          "^0.10.1",
+        "symfony/console":              "^3.4.14"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
