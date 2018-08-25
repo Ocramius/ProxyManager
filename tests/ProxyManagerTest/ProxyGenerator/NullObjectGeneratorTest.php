@@ -92,6 +92,7 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         ];
     }
 
+    /** @return string[][] */
     public function getTestedImplementations() : array
     {
         return [
