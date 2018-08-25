@@ -26,7 +26,7 @@ $factory = new \ProxyManager\Factory\LazyLoadingGhostFactory($configuration);
 var_dump($factory->createProxy(Kitchen::class, function () {})->hasSweet());
 var_dump($factory->createProxy(Kitchen::class, function () {})->hasSour());
 
-/* @var $kitchen Kitchen */
+/** @var Kitchen $kitchen */
 $kitchen = $factory->createProxy(Kitchen::class, function () {});
 
 var_dump($kitchen->hasSweet());

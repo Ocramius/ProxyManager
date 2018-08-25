@@ -371,7 +371,7 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
 
     private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null) : callable
     {
-        /** @var $initializerMatcher callable|Mock */
+        /** @var callable|Mock $initializerMatcher */
         if (! $initializerMatcher) {
             $initializerMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
