@@ -370,7 +370,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * Generates a list of object | invoked method | parameters | expected result
      *
-     * @return array
+     * @return string[][]|object[][]|mixed[][][]
      */
     public function getProxyMethods() : array
     {

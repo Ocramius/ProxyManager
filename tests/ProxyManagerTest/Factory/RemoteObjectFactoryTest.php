@@ -85,7 +85,7 @@ class RemoteObjectFactoryTest extends TestCase
         /** @var AdapterInterface|\PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
-        /** @var \stdClass $proxy */
+        /** @var \stdClass|RemoteObjectMock $proxy */
         $proxy = $factory->createProxy(BaseInterface::class);
 
         self::assertInstanceOf(RemoteObjectMock::class, $proxy);

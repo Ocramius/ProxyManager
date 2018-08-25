@@ -30,7 +30,7 @@ class ProxiedMethodReturnExpressionTest extends TestCase
         self::assertSame($expectedGeneratedCode, ProxiedMethodReturnExpression::generate($expression, $originalMethod));
     }
 
-    /** @return string[][]|null[][]|ReflectionMethod[] */
+    /** @return array<string, array<int, string|ReflectionMethod|null>>*/
     public function returnExpressionsProvider() : array
     {
         return [
