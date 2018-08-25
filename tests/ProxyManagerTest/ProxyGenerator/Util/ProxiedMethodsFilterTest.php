@@ -94,7 +94,7 @@ class ProxiedMethodsFilterTest extends TestCase
     /**
      * Data provider
      *
-     * @return array[][]
+     * @return ReflectionClass[][]|null[][]|string[][][]
      */
     public function expectedMethods() : array
     {
@@ -214,7 +214,7 @@ class ProxiedMethodsFilterTest extends TestCase
     /**
      * Data provider
      *
-     * @return array[][]
+     * @return ReflectionClass[][]|null[][]|string[][][]
      */
     public function expectedAbstractPublicMethods() : array
     {
