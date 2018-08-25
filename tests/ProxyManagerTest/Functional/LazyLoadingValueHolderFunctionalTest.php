@@ -405,7 +405,9 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
     }
 
     /**
-     * Generates a list of object | invoked method | parameters | expected result
+     * Generates a list of object, invoked method, parameters, expected result
+     *
+     * @return string[][]|object[][]|bool[][]|mixed[][][]
      */
     public function getProxyMethods() : array
     {
