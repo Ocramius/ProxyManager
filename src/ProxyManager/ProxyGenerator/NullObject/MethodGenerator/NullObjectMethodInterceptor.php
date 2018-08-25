@@ -26,7 +26,7 @@ class NullObjectMethodInterceptor extends MethodGenerator
         if ($originalMethod->returnsReference()) {
             $reference = IdentifierSuffixer::getIdentifier('ref');
 
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
+            $method->setBody("\$reference = null;\nreturn \$" . $reference . ';');
         }
 
         return $method;

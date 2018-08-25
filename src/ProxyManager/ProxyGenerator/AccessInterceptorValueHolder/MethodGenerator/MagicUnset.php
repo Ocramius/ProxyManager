@@ -49,7 +49,7 @@ class MagicUnset extends MagicMethodGenerator
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
                 . '    unset($this->' . $valueHolderName . '->$name);'
-                . "\n} else {\n    $callParent\n}\n\n";
+                . "\n} else {\n    " . $callParent . "\n}\n\n";
         }
 
         $callParent .= '$returnValue = false;';

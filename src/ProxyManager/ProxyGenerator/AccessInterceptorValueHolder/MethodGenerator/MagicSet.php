@@ -53,7 +53,7 @@ class MagicSet extends MagicMethodGenerator
         if (! $publicProperties->isEmpty()) {
             $callParent = 'if (isset(self::$' . $publicProperties->getName() . "[\$name])) {\n"
                 . '    $returnValue = ($this->' . $valueHolderName . '->$name = $value);'
-                . "\n} else {\n    $callParent\n}\n\n";
+                . "\n} else {\n    " . $callParent . "\n}\n\n";
         }
 
         $this->setBody(InterceptorGenerator::createInterceptedMethodBody(
