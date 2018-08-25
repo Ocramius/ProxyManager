@@ -16,12 +16,14 @@
     beStrictAboutResourceUsageDuringSmallTests="true"
     beStrictAboutChangesToGlobalState="true"
 >
-    <testsuite name="ProxyManager tests">
-        <directory>./tests/ProxyManagerTest</directory>
-    </testsuite>
-    <testsuite name="ProxyManager language integration tests">
-        <directory suffix=".phpt">./tests/language-feature-scripts</directory>
-    </testsuite>
+    <testsuites>
+        <testsuite name="ProxyManager tests">
+            <directory>./tests/ProxyManagerTest</directory>
+        </testsuite>
+        <testsuite name="ProxyManager language integration tests">
+            <directory suffix=".phpt">./tests/language-feature-scripts</directory>
+        </testsuite>
+    </testsuites>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
