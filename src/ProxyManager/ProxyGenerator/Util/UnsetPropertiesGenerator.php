@@ -40,7 +40,6 @@ PHP;
         return self::generateUnsetStatement($accessibleProperties, $instanceName) . "\n\n";
     }
 
-    /** @param \ReflectionProperty[] $properties */
     private static function generateUnsetPrivatePropertiesCode(Properties $properties, string $instanceName) : string
     {
         $groups = $properties->getGroupedPrivateProperties();
