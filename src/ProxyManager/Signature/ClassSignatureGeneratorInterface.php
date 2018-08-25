@@ -14,6 +14,8 @@ interface ClassSignatureGeneratorInterface
 {
     /**
      * Applies a signature to a given class generator
+     *
+     * @param mixed[] $parameters
      */
     public function addSignature(ClassGenerator $classGenerator, array $parameters) : ClassGenerator;
 }
