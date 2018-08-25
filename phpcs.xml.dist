@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ruleset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
+    name="OcramiusProxyManager"
+>
+    <arg name="basepath" value="."/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="80"/>
+    <arg name="colors"/>
+
+    <!-- Ignore warnings and show progress of the run -->
+    <arg value="np"/>
+
+    <file>./examples</file>
+    <file>./src</file>
+    <file>./tests/language-feature-scripts</file>
+    <file>./tests/ProxyManagerBench</file>
+    <file>./tests/ProxyManagerTest</file>
+
+    <rule ref="Doctrine">
+        <!--
+        <exclude name="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
+        <exclude-pattern>src/DetectChanges/BCBreak/InterfaceBased/InterfaceBased.php</exclude-pattern>
+        <exclude-pattern>test/unit/Formatter/ReflectionFunctionAbstractNameTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/ParameterByReferenceChangedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/RequiredParameterAmountIncreasedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/ParameterTypeChangedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/ReturnTypeChangedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/ReturnTypeByReferenceChangedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/ReturnTypeCovarianceChangedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/ParameterDefaultValueChangedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/ClassConstantBased/ClassConstantVisibilityReducedTest.php</exclude-pattern>
+        <exclude-pattern>test/unit/DetectChanges/BCBreak/FunctionBased/ParameterTypeContravarianceChangedTest.php</exclude-pattern>
+        -->
+    </rule>
+    <!--<rule ref="PSR2">
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>-->
+</ruleset>

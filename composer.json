@@ -27,6 +27,7 @@
         "ext-phar":                     "*",
         "phpunit/phpunit":              "^7.3.2",
         "squizlabs/php_codesniffer":    "^3.3.1",
+        "doctrine/coding-standard":     "^4.0.0",
         "couscous/couscous":            "^1.6.1",
         "phpbench/phpbench":            "^0.14.0",
         "phpstan/phpstan":              "^0.10.3",
