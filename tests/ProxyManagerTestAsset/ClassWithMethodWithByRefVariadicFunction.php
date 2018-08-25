@@ -13,9 +13,9 @@ namespace ProxyManagerTestAsset;
 class ClassWithMethodWithByRefVariadicFunction
 {
     /**
-     * @param mixed & ...$fooz
+     * @param array<int, mixed> $fooz
      *
-     * @return mixed[]
+     * @return array<int, mixed>
      */
     public function tuz(& ...$fooz)
     {
