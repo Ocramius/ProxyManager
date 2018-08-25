@@ -27,12 +27,16 @@ use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
+use function call_user_func_array;
+use function get_class;
+use function random_int;
+use function serialize;
+use function ucfirst;
+use function uniqid;
+use function unserialize;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Functional
  * @coversNothing
@@ -42,23 +46,20 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string  $className
-     * @param object  $instance
-     * @param string  $method
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCalls(string $className, $instance, string $method, $params, $expectedValue) : void
+    public function testMethodCalls(string $className, object $instance, string $method, $params, $expectedValue) : void
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
-        $proxy     = $proxyName::staticProxyConstructor($instance);
+        /** @var AccessInterceptorValueHolderInterface $proxy */
+        $proxy = $proxyName::staticProxyConstructor($instance);
 
         self::assertSame($instance, $proxy->getWrappedValueHolderValue());
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -67,7 +68,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
                 $listener($proxy, $instance, $method, $params, $returnEarly);
             }
         );
@@ -91,24 +92,21 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string  $className
-     * @param object  $instance
-     * @param string  $method
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
     public function testMethodCallsWithSuffixListener(
         string $className,
-        $instance,
+        object $instance,
         string $method,
         $params,
         $expectedValue
     ) : void {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
-        /* @var $listener callable|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var AccessInterceptorValueHolderInterface $proxy */
+        $proxy = $proxyName::staticProxyConstructor($instance);
+        /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -117,7 +115,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodSuffixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) {
+            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) : void {
                 $listener($proxy, $instance, $method, $params, $returnValue, $returnEarly);
             }
         );
@@ -141,22 +139,19 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string  $className
-     * @param object  $instance
-     * @param string  $method
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
     public function testMethodCallsAfterUnSerialization(
         string $className,
-        $instance,
+        object $instance,
         string $method,
         $params,
         $expectedValue
     ) : void {
         $proxyName = $this->generateProxy($className);
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
-        $proxy     = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
+        /** @var AccessInterceptorValueHolderInterface $proxy */
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
@@ -165,24 +160,21 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string  $className
-     * @param object  $instance
-     * @param string  $method
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
     public function testMethodCallsAfterCloning(
         string $className,
-        $instance,
+        object $instance,
         string $method,
         $params,
         $expectedValue
     ) : void {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy \ProxyManager\Proxy\AccessInterceptorValueHolderInterface */
-        $proxy     = $proxyName::staticProxyConstructor($instance);
-        $cloned    = clone $proxy;
+        /** @var AccessInterceptorValueHolderInterface $proxy */
+        $proxy  = $proxyName::staticProxyConstructor($instance);
+        $cloned = clone $proxy;
 
         self::assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
         self::assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
@@ -192,13 +184,10 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                $instance
-     * @param AccessInterceptorValueHolderInterface $proxy
-     * @param string                                $publicProperty
-     * @param mixed                                 $propertyValue
+     * @param mixed $propertyValue
      */
     public function testPropertyReadAccess(
-        $instance,
+        object $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty,
         $propertyValue
@@ -210,12 +199,9 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                $instance
-     * @param AccessInterceptorValueHolderInterface $proxy
-     * @param string                                $publicProperty
      */
     public function testPropertyWriteAccess(
-        $instance,
+        object $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
     ) : void {
@@ -229,12 +215,9 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                $instance
-     * @param AccessInterceptorValueHolderInterface $proxy
-     * @param string                                $publicProperty
      */
     public function testPropertyExistence(
-        $instance,
+        object $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
     ) : void {
@@ -248,12 +231,9 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param object                                $instance
-     * @param AccessInterceptorValueHolderInterface $proxy
-     * @param string                                $publicProperty
      */
     public function testPropertyUnset(
-        $instance,
+        object $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
     ) : void {
@@ -269,11 +249,11 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testCanWriteToArrayKeysInPublicProperty() : void
     {
-        $instance    = new ClassWithPublicArrayProperty();
-        $className   = get_class($instance);
-        $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithPublicArrayProperty */
-        $proxy       = $proxyName::staticProxyConstructor($instance);
+        $instance  = new ClassWithPublicArrayProperty();
+        $className = get_class($instance);
+        $proxyName = $this->generateProxy($className);
+        /** @var ClassWithPublicArrayProperty $proxy */
+        $proxy = $proxyName::staticProxyConstructor($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -289,12 +269,12 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testWillNotModifyRetrievedPublicProperties() : void
     {
-        $instance    = new ClassWithPublicProperties();
-        $className   = get_class($instance);
-        $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithPublicProperties */
-        $proxy       = $proxyName::staticProxyConstructor($instance);
-        $variable    = $proxy->property0;
+        $instance  = new ClassWithPublicProperties();
+        $className = get_class($instance);
+        $proxyName = $this->generateProxy($className);
+        /** @var ClassWithPublicProperties $proxy */
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $variable = $proxy->property0;
 
         self::assertSame('property0', $variable);
 
@@ -309,12 +289,12 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testWillModifyByRefRetrievedPublicProperties() : void
     {
-        $instance    = new ClassWithPublicProperties();
-        $className   = get_class($instance);
-        $proxyName   = $this->generateProxy($className);
-        /* @var $proxy ClassWithPublicProperties */
-        $proxy       = $proxyName::staticProxyConstructor($instance);
-        $variable    = & $proxy->property0;
+        $instance  = new ClassWithPublicProperties();
+        $className = get_class($instance);
+        $proxyName = $this->generateProxy($className);
+        /** @var ClassWithPublicProperties $proxy */
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $variable = & $proxy->property0;
 
         self::assertSame('property0', $variable);
 
@@ -340,7 +320,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxyName = $this->generateProxy(get_class($instance));
 
-        /* @var $proxy ClassWithCounterConstructor */
+        /** @var ClassWithCounterConstructor $proxy */
         $proxy = new $proxyName(15);
 
         self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
@@ -352,8 +332,8 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
     public function testWillForwardVariadicArguments() : void
     {
-        $factory       = new AccessInterceptorValueHolderFactory();
-        $targetObject  = new ClassWithMethodWithVariadicFunction();
+        $factory      = new AccessInterceptorValueHolderFactory();
+        $targetObject = new ClassWithMethodWithVariadicFunction();
 
         /** @var ClassWithMethodWithVariadicFunction $object */
         $object = $factory->createProxy(
@@ -378,8 +358,8 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testWillForwardVariadicByRefArguments() : void
     {
-        $factory       = new AccessInterceptorValueHolderFactory();
-        $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
+        $factory      = new AccessInterceptorValueHolderFactory();
+        $targetObject = new ClassWithMethodWithByRefVariadicFunction();
 
         /** @var ClassWithMethodWithByRefVariadicFunction $object */
         $object = $factory->createProxy(
@@ -454,42 +434,42 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
                 new BaseClass(),
                 'publicMethod',
                 [],
-                'publicMethodDefault'
+                'publicMethodDefault',
             ],
             [
                 BaseClass::class,
                 new BaseClass(),
                 'publicTypeHintedMethod',
                 ['param' => new stdClass()],
-                'publicTypeHintedMethodDefault'
+                'publicTypeHintedMethodDefault',
             ],
             [
                 BaseClass::class,
                 new BaseClass(),
                 'publicByReferenceMethod',
                 [],
-                'publicByReferenceMethodDefault'
+                'publicByReferenceMethodDefault',
             ],
             [
                 BaseInterface::class,
                 new BaseClass(),
                 'publicMethod',
                 [],
-                'publicMethodDefault'
+                'publicMethodDefault',
             ],
             [
                 ClassWithSelfHint::class,
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
-                $selfHintParam
+                $selfHintParam,
             ],
             [
                 ClassWithParentHint::class,
                 new ClassWithParentHint(),
                 'parentHintMethod',
                 ['parameter' => $empty],
-                $empty
+                $empty,
             ],
         ];
     }
@@ -525,15 +505,10 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      *
-     * @param object $callerObject
-     * @param object $realInstance
-     * @param string $method
-     * @param string $expectedValue
-     * @param string $propertyName
      */
     public function testWillInterceptAccessToPropertiesViaFriendClassAccess(
-        $callerObject,
-        $realInstance,
+        object $callerObject,
+        object $realInstance,
         string $method,
         string $expectedValue,
         string $propertyName
@@ -552,7 +527,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             '__get',
-            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
                 $listener($proxy, $instance, $method, $params, $returnEarly);
             }
         );
@@ -568,15 +543,10 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      *
-     * @param object $callerObject
-     * @param object $realInstance
-     * @param string $method
-     * @param string $expectedValue
-     * @param string $propertyName
      */
     public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfDeSerialized(
-        $callerObject,
-        $realInstance,
+        object $callerObject,
+        object $realInstance,
         string $method,
         string $expectedValue,
         string $propertyName
@@ -595,12 +565,12 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             '__get',
-            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
                 $listener($proxy, $instance, $method, $params, $returnEarly);
             }
         );
 
-        /* @var $accessor callable */
+        /** @var callable $accessor */
         $accessor = [$callerObject, $method];
 
         self::assertSame($expectedValue, $accessor($proxy));
@@ -612,15 +582,10 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      *
-     * @param object $callerObject
-     * @param object $realInstance
-     * @param string $method
-     * @param string $expectedValue
-     * @param string $propertyName
      */
     public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfCloned(
-        $callerObject,
-        $realInstance,
+        object $callerObject,
+        object $realInstance,
         string $method,
         string $expectedValue,
         string $propertyName
@@ -639,7 +604,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             '__get',
-            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) {
+            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
                 $listener($proxy, $instance, $method, $params, $returnEarly);
             }
         );
@@ -710,9 +675,11 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
                     array $params,
                     ?bool & $returnEarly
                 ) use ($skip) : void {
-                    if ($skip === $params['amount']) {
-                        $returnEarly = true;
+                    if ($skip !== $params['amount']) {
+                        return;
                     }
+
+                    $returnEarly = true;
                 },
             ],
             [
@@ -723,9 +690,11 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
                     array $params,
                     ?bool & $returnEarly
                 ) use ($addMore) : void {
-                    if ($addMore === $params['amount']) {
-                        $instance->counter += 1;
+                    if ($addMore !== $params['amount']) {
+                        return;
                     }
+
+                    $instance->counter += 1;
                 },
             ]
         );

@@ -31,16 +31,17 @@ use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolde
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use function array_map;
+use function array_merge;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\VirtualProxyInterface}
  *
  * {@inheritDoc}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 {
@@ -48,15 +49,15 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
      * {@inheritDoc}
      *
      * @throws InvalidProxiedClassException
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces          = [VirtualProxyInterface::class];
-        $publicProperties    = new PublicPropertiesMap(Properties::fromReflectionClass($originalClass));
+        $interfaces       = [VirtualProxyInterface::class];
+        $publicProperties = new PublicPropertiesMap(Properties::fromReflectionClass($originalClass));
 
         if ($originalClass->isInterface()) {
             $interfaces[] = $originalClass->getName();
@@ -70,7 +71,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(

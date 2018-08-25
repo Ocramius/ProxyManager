@@ -34,12 +34,10 @@ use ProxyManagerTestAsset\ObjectTypeHintClass;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
+use function get_class;
 
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @link https://github.com/Ocramius/ProxyManager/issues/10
  *
@@ -55,7 +53,6 @@ class MultipleProxyGenerationTest extends TestCase
      *
      * @dataProvider getTestedClasses
      *
-     * @param string $className
      */
     public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className) : void
     {
@@ -63,7 +60,7 @@ class MultipleProxyGenerationTest extends TestCase
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
-        $initializer                            = function () {
+        $initializer                            = function () : void {
         };
 
         $generated = [
@@ -86,7 +83,7 @@ class MultipleProxyGenerationTest extends TestCase
 
             $proxyClass = get_class($proxy);
 
-            self::assertInstanceOf($proxyClass, new $proxyClass, 'Proxy can be instantiated via normal constructor');
+            self::assertInstanceOf($proxyClass, new $proxyClass(), 'Proxy can be instantiated via normal constructor');
         }
 
         self::assertInstanceOf(GhostObjectInterface::class, $generated[0]);

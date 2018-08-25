@@ -10,9 +10,6 @@ use ProxyManager\Inflector\Util\ParameterHasher;
 /**
  * Tests for {@see \ProxyManager\Inflector\Util\ParameterHasher}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class ParameterHasherTest extends TestCase
@@ -23,7 +20,6 @@ class ParameterHasherTest extends TestCase
      * @covers \ProxyManager\Inflector\Util\ParameterHasher::hashParameters
      *
      * @param mixed[] $parameters
-     * @param string  $expectedHash
      */
     public function testGeneratesValidClassName(array $parameters, string $expectedHash) : void
     {

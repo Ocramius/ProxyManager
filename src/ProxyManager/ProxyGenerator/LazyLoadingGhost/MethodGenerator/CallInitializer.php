@@ -10,22 +10,22 @@ use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionProperty;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use function array_map;
+use function implode;
+use function sprintf;
+use function str_replace;
+use function var_export;
 
 /**
  * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::isProxyInitialized}
  * for lazy loading value holder objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class CallInitializer extends MethodGenerator
 {
     /**
      * Constructor
      *
-     * @param PropertyGenerator $initializerProperty
-     * @param PropertyGenerator $initTracker
-     * @param Properties        $properties
      */
     public function __construct(
         PropertyGenerator $initializerProperty,
@@ -138,14 +138,14 @@ PHP;
 
         // must use assignments, as direct reference during array definition causes a fatal error (not sure why)
         foreach ($properties->getGroupedPrivateProperties() as $className => $classPrivateProperties) {
-            $cacheKey  = 'cacheFetch' . str_replace('\\', '_', $className);
+            $cacheKey = 'cacheFetch' . str_replace('\\', '_', $className);
 
             $code .= 'static $' . $cacheKey . ";\n\n"
                 . '$' . $cacheKey . ' ?: $' . $cacheKey
                 . " = \\Closure::bind(function (\$instance, array & \$properties) {\n"
                 . $this->generatePrivatePropertiesAssignmentsCode($classPrivateProperties)
-                . "}, \$this, " . var_export($className, true) . ");\n\n"
-                . '$' . $cacheKey . "(\$this, \$properties);";
+                . '}, $this, ' . var_export($className, true) . ");\n\n"
+                . '$' . $cacheKey . '($this, $properties);';
         }
 
         return $code;
@@ -154,7 +154,6 @@ PHP;
     /**
      * @param ReflectionProperty[] $properties indexed by internal name
      *
-     * @return string
      */
     private function generatePrivatePropertiesAssignmentsCode(array $properties) : string
     {

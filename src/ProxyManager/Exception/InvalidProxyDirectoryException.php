@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace ProxyManager\Exception;
 
 use InvalidArgumentException;
+use function sprintf;
 
 /**
  * Exception for invalid directories
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {

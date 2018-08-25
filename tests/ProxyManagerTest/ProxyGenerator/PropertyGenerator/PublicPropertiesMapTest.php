@@ -6,17 +6,14 @@ namespace ProxyManagerTest\ProxyGenerator\PropertyGenerator;
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
-use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap
  * @group Coverage

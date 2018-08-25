@@ -10,9 +10,6 @@ use ProxyManager\Version;
 /**
  * Tests for {@see \ProxyManager\Version}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Version
  * @group Coverage
  */

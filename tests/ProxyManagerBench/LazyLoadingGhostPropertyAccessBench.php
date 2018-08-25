@@ -7,7 +7,6 @@ namespace ProxyManagerBench;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
@@ -17,78 +16,52 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 use ReflectionProperty;
+use function class_exists;
 
 /**
  * Benchmark that provides results for simple initialization/state access for lazy loading ghost proxies
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @BeforeMethods({"setUp"})
  */
 class LazyLoadingGhostPropertyAccessBench
 {
-    /**
-     * @var EmptyClass|LazyLoadingInterface
-     */
+    /** @var EmptyClass|LazyLoadingInterface */
     private $emptyClassProxy;
 
-    /**
-     * @var EmptyClass|LazyLoadingInterface
-     */
+    /** @var EmptyClass|LazyLoadingInterface */
     private $initializedEmptyClassProxy;
 
-    /**
-     * @var ClassWithPrivateProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithPrivateProperties|LazyLoadingInterface */
     private $privatePropertiesProxy;
 
-    /**
-     * @var ClassWithPrivateProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithPrivateProperties|LazyLoadingInterface */
     private $initializedPrivatePropertiesProxy;
 
-    /**
-     * @var ReflectionProperty
-     */
+    /** @var ReflectionProperty */
     private $accessPrivateProperty;
 
-    /**
-     * @var ClassWithProtectedProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithProtectedProperties|LazyLoadingInterface */
     private $protectedPropertiesProxy;
 
-    /**
-     * @var ClassWithProtectedProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithProtectedProperties|LazyLoadingInterface */
     private $initializedProtectedPropertiesProxy;
 
-    /**
-     * @var ReflectionProperty
-     */
+    /** @var ReflectionProperty */
     private $accessProtectedProperty;
 
-    /**
-     * @var ClassWithPublicProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithPublicProperties|LazyLoadingInterface */
     private $publicPropertiesProxy;
 
-    /**
-     * @var ClassWithPublicProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithPublicProperties|LazyLoadingInterface */
     private $initializedPublicPropertiesProxy;
 
-    /**
-     * @var ClassWithMixedProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithMixedProperties|LazyLoadingInterface */
     private $mixedPropertiesProxy;
 
-    /**
-     * @var ClassWithMixedProperties|LazyLoadingInterface
-     */
+    /** @var ClassWithMixedProperties|LazyLoadingInterface */
     private $initializedMixedPropertiesProxy;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->emptyClassProxy          = $this->buildProxy(EmptyClass::class);
         $this->privatePropertiesProxy   = $this->buildProxy(ClassWithPrivateProperties::class);
@@ -312,7 +285,7 @@ class LazyLoadingGhostPropertyAccessBench
             return $generatedClassName;
         }
 
-        $generatedClass     = new ClassGenerator($generatedClassName);
+        $generatedClass = new ClassGenerator($generatedClassName);
 
         (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($originalClassName), $generatedClass, []);
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);

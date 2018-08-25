@@ -6,12 +6,12 @@ namespace ProxyManagerTest\Exception;
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
+use function mkdir;
+use function sys_get_temp_dir;
+use function uniqid;
 
 /**
  * Tests for {@see \ProxyManager\Exception\FileNotWritableException}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\Exception\FileNotWritableException
  * @group Coverage

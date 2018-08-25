@@ -11,9 +11,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class GetWrappedValueHolderValueTest extends TestCase
@@ -23,7 +20,7 @@ class GetWrappedValueHolderValueTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));

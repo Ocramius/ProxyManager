@@ -7,21 +7,17 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
+use function var_export;
 
 /**
  * Magic `__sleep` for lazy loading value holder objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class MagicSleep extends MagicMethodGenerator
 {
     /**
      * Constructor
      *
-     * @param ReflectionClass   $originalClass
-     * @param PropertyGenerator $initializerProperty
-     * @param PropertyGenerator $valueHolderProperty
      */
     public function __construct(
         ReflectionClass $originalClass,

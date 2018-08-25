@@ -6,12 +6,11 @@ namespace ProxyManager\Exception;
 
 use LogicException;
 use ReflectionProperty;
+use function sprintf;
 
 /**
  * Exception for invalid proxied classes
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class UnsupportedProxiedClassException extends LogicException implements ExceptionInterface
 {

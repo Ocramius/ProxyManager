@@ -12,9 +12,6 @@ use ReflectionProperty;
 /**
  * Tests for {@see \ProxyManager\Exception\UnsupportedProxiedClassException}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Exception\UnsupportedProxiedClassException
  * @group Coverage
  */

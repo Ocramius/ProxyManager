@@ -10,9 +10,6 @@ use ProxyManager\Exception\DisabledMethodException;
 /**
  * Tests for {@see \ProxyManager\Exception\DisabledMethodException}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Exception\DisabledMethodException
  * @group Coverage
  */

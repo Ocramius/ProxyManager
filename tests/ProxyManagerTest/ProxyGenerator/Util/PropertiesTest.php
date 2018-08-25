@@ -17,9 +17,6 @@ use ReflectionProperty;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\Properties}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\Util\Properties
  * @group Coverage
  */

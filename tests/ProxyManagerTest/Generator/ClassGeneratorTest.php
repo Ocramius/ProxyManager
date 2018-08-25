@@ -12,9 +12,6 @@ use stdClass;
 /**
  * Tests for {@see \ProxyManager\Generator\ClassGenerator}
  *
- * @author Gordon Stratton <gordon.stratton@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class ClassGeneratorTest extends TestCase

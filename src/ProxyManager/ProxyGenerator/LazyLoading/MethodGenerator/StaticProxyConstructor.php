@@ -7,24 +7,21 @@ namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for lazy loading proxies
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Static constructor
      *
-     * @param PropertyGenerator $initializerProperty
-     * @param Properties        $properties
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(PropertyGenerator $initializerProperty, Properties $properties)
     {

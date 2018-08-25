@@ -13,9 +13,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicClone}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class MagicCloneTest extends TestCase
@@ -25,10 +22,10 @@ class MagicCloneTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection  = new ReflectionClass(EmptyClass::class);
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $reflection = new ReflectionClass(EmptyClass::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
@@ -39,7 +36,7 @@ class MagicCloneTest extends TestCase
         self::assertSame('__clone', $magicClone->getName());
         self::assertCount(0, $magicClone->getParameters());
         self::assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
+            '$this->foo && $this->foo->__invoke($this->bar, $this, '
             . "'__clone', array(), \$this->foo);\n\n\$this->bar = clone \$this->bar;",
             $magicClone->getBody()
         );

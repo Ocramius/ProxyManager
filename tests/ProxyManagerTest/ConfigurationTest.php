@@ -7,26 +7,22 @@ namespace ProxyManagerTest;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
-use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManager\Signature\SignatureGeneratorInterface;
+use function is_dir;
 
 /**
  * Tests for {@see \ProxyManager\Configuration}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  */
 class ConfigurationTest extends TestCase
 {
-    /**
-     * @var \ProxyManager\Configuration
-     */
+    /** @var Configuration */
     protected $configuration;
 
     /**
@@ -61,7 +57,7 @@ class ConfigurationTest extends TestCase
     {
         self::assertInstanceOf(ClassNameInflectorInterface::class, $this->configuration->getClassNameInflector());
 
-        /* @var $inflector \ProxyManager\Inflector\ClassNameInflectorInterface */
+        /** @var ClassNameInflectorInterface $inflector */
         $inflector = $this->createMock(ClassNameInflectorInterface::class);
 
         $this->configuration->setClassNameInflector($inflector);
@@ -82,10 +78,9 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetGeneratorStrategy() : void
     {
-
         self::assertInstanceOf(GeneratorStrategyInterface::class, $this->configuration->getGeneratorStrategy());
 
-        /* @var $strategy \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface */
+        /** @var GeneratorStrategyInterface $strategy */
         $strategy = $this->createMock(GeneratorStrategyInterface::class);
 
         $this->configuration->setGeneratorStrategy($strategy);
@@ -112,7 +107,7 @@ class ConfigurationTest extends TestCase
     {
         self::assertInstanceOf(AutoloaderInterface::class, $this->configuration->getProxyAutoloader());
 
-        /* @var $autoloader \ProxyManager\Autoloader\AutoloaderInterface */
+        /** @var AutoloaderInterface $autoloader */
         $autoloader = $this->createMock(AutoloaderInterface::class);
 
         $this->configuration->setProxyAutoloader($autoloader);
@@ -127,7 +122,7 @@ class ConfigurationTest extends TestCase
     {
         self::assertInstanceOf(SignatureGeneratorInterface::class, $this->configuration->getSignatureGenerator());
 
-        /* @var $signatureGenerator \ProxyManager\Signature\SignatureGeneratorInterface */
+        /** @var SignatureGeneratorInterface $signatureGenerator */
         $signatureGenerator = $this->createMock(SignatureGeneratorInterface::class);
 
         $this->configuration->setSignatureGenerator($signatureGenerator);
@@ -142,7 +137,7 @@ class ConfigurationTest extends TestCase
     {
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
 
-        /* @var $signatureChecker \ProxyManager\Signature\SignatureCheckerInterface */
+        /** @var SignatureCheckerInterface $signatureChecker */
         $signatureChecker = $this->createMock(SignatureCheckerInterface::class);
 
         $this->configuration->setSignatureChecker($signatureChecker);
@@ -160,7 +155,7 @@ class ConfigurationTest extends TestCase
             $this->configuration->getClassSignatureGenerator()
         );
 
-        /* @var $classSignatureGenerator \ProxyManager\Signature\ClassSignatureGeneratorInterface */
+        /** @var ClassSignatureGeneratorInterface $classSignatureGenerator */
         $classSignatureGenerator = $this->createMock(ClassSignatureGeneratorInterface::class);
 
         $this->configuration->setClassSignatureGenerator($classSignatureGenerator);

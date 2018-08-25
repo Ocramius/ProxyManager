@@ -14,9 +14,6 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\Generator\MagicMethodGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  * @covers \ProxyManager\Generator\MagicMethodGenerator
  */

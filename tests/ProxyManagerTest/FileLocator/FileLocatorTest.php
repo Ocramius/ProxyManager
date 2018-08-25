@@ -7,12 +7,10 @@ namespace ProxyManagerTest\FileLocator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\InvalidProxyDirectoryException;
 use ProxyManager\FileLocator\FileLocator;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Tests for {@see \ProxyManager\FileLocator\FileLocator}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  */

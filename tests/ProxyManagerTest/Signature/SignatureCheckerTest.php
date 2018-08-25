@@ -14,27 +14,18 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\Signature\SignatureChecker}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Signature\SignatureChecker
  * @group Coverage
  */
 class SignatureCheckerTest extends TestCase
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $signatureExample = 'valid-signature';
 
-    /**
-     * @var SignatureChecker
-     */
+    /** @var SignatureChecker */
     private $signatureChecker;
 
-    /**
-     * @var \ProxyManager\Signature\SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $signatureGenerator;
 
     /**

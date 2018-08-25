@@ -10,9 +10,6 @@ use ProxyManager\Inflector\Util\ParameterEncoder;
 /**
  * Tests for {@see \ProxyManager\Inflector\Util\ParameterEncoder}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class ParameterEncoderTest extends TestCase

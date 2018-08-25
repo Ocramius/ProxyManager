@@ -14,17 +14,22 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
+use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManager\Signature\ClassSignatureGenerator;
 use ProxyManager\Signature\SignatureGenerator;
 use ReflectionClass;
 use ReflectionException;
+use function array_filter;
+use function array_map;
+use function call_user_func_array;
+use function get_declared_classes;
+use function realpath;
+use function strpos;
+use function uniqid;
 
 /**
  * Verifies that proxy-manager will not attempt to `eval()` code that will cause fatal errors
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Functional
  * @coversNothing
@@ -42,15 +47,15 @@ class FatalPreventionFunctionalTest extends TestCase
      */
     public function testCodeGeneration(string $generatorClass, string $className) : void
     {
-        $generatedClass          = new ClassGenerator(uniqid('generated'));
-        $generatorStrategy       = new EvaluatingGeneratorStrategy();
-        /* @var $classGenerator \ProxyManager\ProxyGenerator\ProxyGeneratorInterface */
-        $classGenerator          = new $generatorClass;
+        $generatedClass    = new ClassGenerator(uniqid('generated'));
+        $generatorStrategy = new EvaluatingGeneratorStrategy();
+        /** @var ProxyGeneratorInterface $classGenerator */
+        $classGenerator          = new $generatorClass();
         $classSignatureGenerator = new ClassSignatureGenerator(new SignatureGenerator());
 
         try {
             $classGenerator->generate(new ReflectionClass($className), $generatedClass);
-            $classSignatureGenerator->addSignature($generatedClass, array('eval tests'));
+            $classSignatureGenerator->addSignature($generatedClass, ['eval tests']);
             $generatorStrategy->generate($generatedClass);
         } catch (ExceptionInterface $e) {
             // empty catch: this is actually a supported failure
@@ -121,7 +126,7 @@ class FatalPreventionFunctionalTest extends TestCase
                 $realPath = realpath($fileName);
 
                 foreach ($skippedPaths as $skippedPath) {
-                    if (0 === strpos($realPath, $skippedPath)) {
+                    if (strpos($realPath, $skippedPath) === 0) {
                         // skip classes defined within ProxyManager, vendor or the test suite
                         return false;
                     }

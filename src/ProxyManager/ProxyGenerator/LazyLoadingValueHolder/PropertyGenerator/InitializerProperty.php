@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator;
 
 use ProxyManager\Generator\Util\IdentifierSuffixer;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the initializer for a lazy object
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class InitializerProperty extends PropertyGenerator
 {
     /**
      * Constructor
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct()
     {

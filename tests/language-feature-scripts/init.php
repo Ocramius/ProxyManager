@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 

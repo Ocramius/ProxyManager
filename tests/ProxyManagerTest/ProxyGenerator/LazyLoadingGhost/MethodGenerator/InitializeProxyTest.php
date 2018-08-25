@@ -12,9 +12,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\InitializeProxy}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class InitializeProxyTest extends TestCase
@@ -24,10 +21,10 @@ class InitializeProxyTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /* @var $initCall MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initCall    = $this->createMock(MethodGenerator::class);
+        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $initCall */
+        $initCall = $this->createMock(MethodGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
         $initCall->expects(self::any())->method('getName')->will(self::returnValue('bar'));

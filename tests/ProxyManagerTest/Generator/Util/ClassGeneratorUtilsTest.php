@@ -15,9 +15,6 @@ use Zend\Code\Generator\MethodGenerator;
 /**
  * Test to {@see ProxyManager\Generator\Util\ClassGeneratorUtils}
  *
- * @author Jefersson Nathan <malukenho@phpse.net>
- * @license MIT
- *
  * @covers ProxyManager\Generator\Util\ClassGeneratorUtils
  *
  * @group Coverage
@@ -26,9 +23,9 @@ class ClassGeneratorUtilsTest extends TestCase
 {
     public function testCantAddAFinalMethod() : void
     {
-        /* @var $classGenerator ClassGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $classGenerator  = $this->createMock(ClassGenerator::class);
-        /* @var $methodGenerator MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var ClassGenerator|\PHPUnit_Framework_MockObject_MockObject $classGenerator */
+        $classGenerator = $this->createMock(ClassGenerator::class);
+        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $methodGenerator */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator
@@ -47,9 +44,9 @@ class ClassGeneratorUtilsTest extends TestCase
 
     public function testCanAddANotFinalMethod() : void
     {
-        /* @var $classGenerator ClassGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $classGenerator  = $this->createMock(ClassGenerator::class);
-        /* @var $methodGenerator MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var ClassGenerator|\PHPUnit_Framework_MockObject_MockObject $classGenerator */
+        $classGenerator = $this->createMock(ClassGenerator::class);
+        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $methodGenerator */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator

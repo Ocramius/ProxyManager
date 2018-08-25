@@ -6,18 +6,15 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
+use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
-use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap
  * @group Coverage
@@ -42,15 +39,9 @@ class PrivatePropertiesMapTest extends AbstractUniquePropertyNameTest
 
         self::assertSame(
             [
-                'privateProperty0' => [
-                    ClassWithMixedProperties::class => true,
-                ],
-                'privateProperty1' => [
-                    ClassWithMixedProperties::class => true,
-                ],
-                'privateProperty2' => [
-                    ClassWithMixedProperties::class => true,
-                ],
+                'privateProperty0' => [ClassWithMixedProperties::class => true],
+                'privateProperty1' => [ClassWithMixedProperties::class => true],
+                'privateProperty2' => [ClassWithMixedProperties::class => true],
             ],
             $map->getDefaultValue()->getValue()
         );

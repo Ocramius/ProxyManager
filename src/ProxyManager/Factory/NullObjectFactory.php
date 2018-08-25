@@ -9,18 +9,16 @@ use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
+use function get_class;
+use function is_object;
 
 /**
  * Factory responsible of producing proxy objects
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
  */
 class NullObjectFactory extends AbstractBaseFactory
 {
-    /**
-     * @var \ProxyManager\ProxyGenerator\NullObjectGenerator|null
-     */
+    /** @var NullObjectGenerator|null */
     private $generator;
 
     /**

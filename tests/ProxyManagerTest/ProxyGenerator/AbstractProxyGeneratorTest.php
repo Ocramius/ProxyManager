@@ -26,9 +26,6 @@ use ReflectionClass;
 /**
  * Base test for proxy generators
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 abstract class AbstractProxyGeneratorTest extends TestCase
@@ -38,7 +35,6 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      *
      * Verifies that generated code is valid and implements expected interfaces
      *
-     * @param string $className
      */
     public function testGeneratesValidCode(string $className) : void
     {

@@ -14,22 +14,15 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\StaticProxyConstructor}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
 class StaticProxyConstructorTest extends TestCase
 {
-    /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
     private $prefixInterceptors;
 
-    /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
     private $suffixInterceptors;
 
     /**

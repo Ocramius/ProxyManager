@@ -7,12 +7,13 @@ namespace ProxyManagerTest\Generator\Util;
 use PackageVersions\Versions;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
+use function serialize;
+use function sha1;
+use function strlen;
+use function substr;
 
 /**
  * Tests for {@see \ProxyManager\Generator\Util\IdentifierSuffixer}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  * @covers \ProxyManager\Generator\Util\IdentifierSuffixer
@@ -36,7 +37,7 @@ class IdentifierSuffixerTest extends TestCase
     public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name) : void
     {
         self::assertStringEndsWith(
-            \substr(sha1($name . sha1(serialize(Versions::VERSIONS))), 0, 5),
+            substr(sha1($name . sha1(serialize(Versions::VERSIONS))), 0, 5),
             IdentifierSuffixer::getIdentifier($name)
         );
     }
@@ -44,7 +45,6 @@ class IdentifierSuffixerTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      *
-     * @param string $name
      */
     public function testGeneratesValidIdentifiers(string $name) : void
     {
@@ -57,7 +57,6 @@ class IdentifierSuffixerTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      *
-     * @param string $name
      */
     public function testGeneratedIdentifierSuffix(string $name) : void
     {

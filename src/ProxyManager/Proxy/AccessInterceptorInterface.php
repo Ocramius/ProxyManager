@@ -7,8 +7,6 @@ namespace ProxyManager\Proxy;
 /**
  * Access interceptor object marker
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 interface AccessInterceptorInterface extends ProxyInterface
 {
@@ -26,9 +24,8 @@ interface AccessInterceptorInterface extends ProxyInterface
      * @param string        $methodName        name of the intercepted method
      * @param \Closure|null $prefixInterceptor interceptor closure or null to unset the currently active interceptor
      *
-     * @return void
      */
-    public function setMethodPrefixInterceptor(string $methodName, \Closure $prefixInterceptor = null);
+    public function setMethodPrefixInterceptor(string $methodName, ?\Closure $prefixInterceptor = null) : void;
 
     /**
      * Set or remove the suffix interceptor for a method
@@ -44,7 +41,6 @@ interface AccessInterceptorInterface extends ProxyInterface
      * @param string        $methodName        name of the intercepted method
      * @param \Closure|null $suffixInterceptor interceptor closure or null to unset the currently active interceptor
      *
-     * @return void
      */
-    public function setMethodSuffixInterceptor(string $methodName, \Closure $suffixInterceptor = null);
+    public function setMethodSuffixInterceptor(string $methodName, ?\Closure $suffixInterceptor = null) : void;
 }

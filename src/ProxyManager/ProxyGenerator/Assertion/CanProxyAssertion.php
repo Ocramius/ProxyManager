@@ -8,12 +8,11 @@ use BadMethodCallException;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ReflectionClass;
 use ReflectionMethod;
+use function array_filter;
 
 /**
  * Assertion that verifies that a class can be proxied
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 final class CanProxyAssertion
 {
@@ -28,8 +27,6 @@ final class CanProxyAssertion
     }
 
     /**
-     * @param ReflectionClass $originalClass
-     * @param bool            $allowInterfaces
      *
      * @throws InvalidProxiedClassException
      */
@@ -38,13 +35,14 @@ final class CanProxyAssertion
         self::isNotFinal($originalClass);
         self::hasNoAbstractProtectedMethods($originalClass);
 
-        if (! $allowInterfaces) {
-            self::isNotInterface($originalClass);
+        if ($allowInterfaces) {
+            return;
         }
+
+        self::isNotInterface($originalClass);
     }
 
     /**
-     * @param ReflectionClass $originalClass
      *
      * @throws InvalidProxiedClassException
      */
@@ -56,7 +54,6 @@ final class CanProxyAssertion
     }
 
     /**
-     * @param ReflectionClass $originalClass
      *
      * @throws InvalidProxiedClassException
      */
@@ -75,7 +72,6 @@ final class CanProxyAssertion
     }
 
     /**
-     * @param ReflectionClass $originalClass
      *
      * @throws InvalidProxiedClassException
      */

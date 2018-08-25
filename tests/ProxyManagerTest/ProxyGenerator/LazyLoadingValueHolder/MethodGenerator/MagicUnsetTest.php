@@ -15,9 +15,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicUnset}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  *
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicUnset
@@ -26,12 +23,12 @@ class MagicUnsetTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        $reflection       = new ReflectionClass(EmptyClass::class);
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer      = $this->createMock(PropertyGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder      = $this->createMock(PropertyGenerator::class);
-        /* @var $publicProperties PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
+        $reflection = new ReflectionClass(EmptyClass::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $initializer */
+        $initializer = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        $valueHolder = $this->createMock(PropertyGenerator::class);
+        /** @var PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
@@ -60,12 +57,12 @@ class MagicUnsetTest extends TestCase
      */
     public function testBodyStructureWithPreExistingMagicMethod() : void
     {
-        $reflection       = new ReflectionClass(ClassWithMagicMethods::class);
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer      = $this->createMock(PropertyGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder      = $this->createMock(PropertyGenerator::class);
-        /* @var $publicProperties PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
+        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $initializer */
+        $initializer = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        $valueHolder = $this->createMock(PropertyGenerator::class);
+        /** @var PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

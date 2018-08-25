@@ -6,20 +6,19 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the remote object adapter
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
  */
 class AdapterProperty extends PropertyGenerator
 {
     /**
      * Constructor
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct()
     {

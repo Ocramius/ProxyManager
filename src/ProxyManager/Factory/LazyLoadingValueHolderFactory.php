@@ -11,14 +11,10 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 /**
  * Factory responsible of producing virtual proxy instances
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class LazyLoadingValueHolderFactory extends AbstractBaseFactory
 {
-    /**
-     * @var \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator|null
-     */
+    /** @var LazyLoadingValueHolderGenerator|null */
     private $generator;
 
     public function createProxy(

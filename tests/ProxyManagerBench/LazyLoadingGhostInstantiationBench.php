@@ -14,43 +14,31 @@ use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
+use function class_exists;
 
 /**
  * Benchmark that provides results for simple object instantiation for lazy loading ghost proxies
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @BeforeMethods({"setUp"})
  */
 class LazyLoadingGhostInstantiationBench
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $emptyClassProxy;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $privatePropertiesProxy;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $protectedPropertiesProxy;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $publicPropertiesProxy;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $mixedPropertiesProxy;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->emptyClassProxy          = $this->generateProxy(EmptyClass::class);
         $this->privatePropertiesProxy   = $this->generateProxy(ClassWithPrivateProperties::class);
@@ -61,56 +49,56 @@ class LazyLoadingGhostInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfEmptyObject() : void
     {
-        new $this->emptyClassProxy;
+        new $this->emptyClassProxy();
     }
 
     public function benchInstantiationOfEmptyObject() : void
     {
-        ($this->emptyClassProxy)::staticProxyConstructor(function () {
+        ($this->emptyClassProxy)::staticProxyConstructor(function () : void {
         });
     }
 
     public function benchOriginalConstructorInstantiationOfObjectWithPrivateProperties() : void
     {
-        new $this->privatePropertiesProxy;
+        new $this->privatePropertiesProxy();
     }
 
     public function benchInstantiationOfObjectWithPrivateProperties() : void
     {
-        ($this->privatePropertiesProxy)::staticProxyConstructor(function () {
+        ($this->privatePropertiesProxy)::staticProxyConstructor(function () : void {
         });
     }
 
     public function benchOriginalConstructorInstantiationOfObjectWithProtectedProperties() : void
     {
-        new $this->protectedPropertiesProxy;
+        new $this->protectedPropertiesProxy();
     }
 
     public function benchInstantiationOfObjectWithProtectedProperties() : void
     {
-        ($this->protectedPropertiesProxy)::staticProxyConstructor(function () {
+        ($this->protectedPropertiesProxy)::staticProxyConstructor(function () : void {
         });
     }
 
     public function benchOriginalConstructorInstantiationOfObjectWithPublicProperties() : void
     {
-        new $this->publicPropertiesProxy;
+        new $this->publicPropertiesProxy();
     }
 
     public function benchInstantiationOfObjectWithPublicProperties() : void
     {
-        ($this->publicPropertiesProxy)::staticProxyConstructor(function () {
+        ($this->publicPropertiesProxy)::staticProxyConstructor(function () : void {
         });
     }
 
     public function benchOriginalConstructorInstantiationOfObjectWithMixedProperties() : void
     {
-        new $this->mixedPropertiesProxy;
+        new $this->mixedPropertiesProxy();
     }
 
     public function benchInstantiationOfObjectWithMixedProperties() : void
     {
-        ($this->mixedPropertiesProxy)::staticProxyConstructor(function () {
+        ($this->mixedPropertiesProxy)::staticProxyConstructor(function () : void {
         });
     }
 
@@ -122,7 +110,7 @@ class LazyLoadingGhostInstantiationBench
             return $generatedClassName;
         }
 
-        $generatedClass     = new ClassGenerator($generatedClassName);
+        $generatedClass = new ClassGenerator($generatedClassName);
 
         (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($originalClass), $generatedClass, []);
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);

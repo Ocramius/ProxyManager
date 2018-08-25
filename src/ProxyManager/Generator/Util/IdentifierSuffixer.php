@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace ProxyManager\Generator\Util;
 
 use PackageVersions\Versions;
+use function preg_match;
+use function serialize;
+use function sha1;
+use function substr;
 
 /**
  * Utility class capable of generating
@@ -13,13 +17,11 @@ use PackageVersions\Versions;
  * in order to prevent property name collisions
  * and tampering from userland
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 abstract class IdentifierSuffixer
 {
-    const VALID_IDENTIFIER_FORMAT = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/';
-    const DEFAULT_IDENTIFIER = 'g';
+    public const VALID_IDENTIFIER_FORMAT = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/';
+    public const DEFAULT_IDENTIFIER      = 'g';
 
     final private function __construct()
     {
@@ -34,7 +36,7 @@ abstract class IdentifierSuffixer
         static $salt;
 
         $salt   = $salt ?? $salt = self::loadBaseHashSalt();
-        $suffix = \substr(\sha1($name . $salt), 0, 5);
+        $suffix = substr(sha1($name . $salt), 0, 5);
 
         if (! preg_match(self::VALID_IDENTIFIER_FORMAT, $name)) {
             return self::DEFAULT_IDENTIFIER . $suffix;
@@ -45,6 +47,6 @@ abstract class IdentifierSuffixer
 
     private static function loadBaseHashSalt() : string
     {
-        return \sha1(\serialize(Versions::VERSIONS));
+        return sha1(serialize(Versions::VERSIONS));
     }
 }

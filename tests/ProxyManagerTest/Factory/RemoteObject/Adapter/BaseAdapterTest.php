@@ -11,9 +11,6 @@ use Zend\Server\Client;
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\Soap}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class BaseAdapterTest extends TestCase
@@ -27,7 +24,7 @@ class BaseAdapterTest extends TestCase
      */
     public function testBaseAdapter() : void
     {
-        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var Client|\PHPUnit_Framework_MockObject_MockObject $client */
         $client = $this
             ->getMockBuilder(Client::class)
             ->setMethods(['call'])
@@ -62,7 +59,7 @@ class BaseAdapterTest extends TestCase
      */
     public function testBaseAdapterWithServiceMap() : void
     {
-        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var Client|\PHPUnit_Framework_MockObject_MockObject $client */
         $client = $this
             ->getMockBuilder(Client::class)
             ->setMethods(['call'])

@@ -13,9 +13,6 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */

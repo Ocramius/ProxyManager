@@ -6,6 +6,7 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use Closure;
 use ProxyManager\Generator\MethodGenerator;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -13,17 +14,14 @@ use Zend\Code\Generator\PropertyGenerator;
  * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::setProxyInitializer}
  * for lazy loading value holder objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class SetProxyInitializer extends MethodGenerator
 {
     /**
      * Constructor
      *
-     * @param PropertyGenerator $initializerProperty
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(PropertyGenerator $initializerProperty)
     {

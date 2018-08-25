@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace ProxyManager\Inflector\Util;
 
+use function base64_encode;
+use function serialize;
+
 /**
  * Encodes parameters into a class-name safe string
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class ParameterEncoder
 {

@@ -6,12 +6,10 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
+use function uniqid;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\GetMethodIfExists}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\Util\GetMethodIfExists
  * @group Coverage

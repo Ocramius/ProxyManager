@@ -11,9 +11,6 @@ use Zend\Server\Client;
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class JsonRpcTest extends TestCase
@@ -26,7 +23,7 @@ class JsonRpcTest extends TestCase
      */
     public function testCanBuildAdapterWithJsonRpcClient() : void
     {
-        /* @var $client Client|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var Client|\PHPUnit_Framework_MockObject_MockObject $client */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new JsonRpc($client);

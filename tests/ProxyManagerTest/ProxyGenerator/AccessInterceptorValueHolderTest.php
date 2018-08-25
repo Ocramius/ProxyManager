@@ -13,9 +13,6 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator
  * @group Coverage
  */

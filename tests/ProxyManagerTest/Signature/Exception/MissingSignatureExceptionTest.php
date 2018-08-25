@@ -11,9 +11,6 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\Signature\Exception\MissingSignatureException}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Signature\Exception\MissingSignatureException
  * @group Coverage
  */

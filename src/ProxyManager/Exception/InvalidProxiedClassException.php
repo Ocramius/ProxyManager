@@ -7,12 +7,14 @@ namespace ProxyManager\Exception;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
+use function array_filter;
+use function array_map;
+use function implode;
+use function sprintf;
 
 /**
  * Exception for invalid proxied classes
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class InvalidProxiedClassException extends InvalidArgumentException implements ExceptionInterface
 {

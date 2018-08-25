@@ -12,15 +12,12 @@ use ReflectionClass;
 /**
  * Magic `__wakeup` for lazy loading value holder objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class MagicWakeup extends MagicMethodGenerator
 {
     /**
      * Constructor
      *
-     * @param ReflectionClass $originalClass
      */
     public function __construct(ReflectionClass $originalClass)
     {

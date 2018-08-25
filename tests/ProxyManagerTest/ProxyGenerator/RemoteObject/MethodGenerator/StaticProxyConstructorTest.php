@@ -13,9 +13,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
@@ -23,7 +20,7 @@ class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
 
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));

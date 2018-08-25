@@ -18,12 +18,10 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
 use ReflectionMethod;
+use function call_user_func;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator}
- *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\NullObjectGenerator
  * @group Coverage
@@ -35,7 +33,6 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      *
      * Verifies that generated code is valid and implements expected interfaces
      *
-     * @param string $className
      */
     public function testGeneratesValidCode(string $className) : void
     {
@@ -69,9 +66,11 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         }
 
         foreach ($generatedReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if (! ($method->getNumberOfParameters() || $method->isStatic())) {
-                self::assertNull(call_user_func([$proxy, $method->getName()]));
+            if ($method->getNumberOfParameters() || $method->isStatic()) {
+                continue;
             }
+
+            self::assertNull(call_user_func([$proxy, $method->getName()]));
         }
     }
 

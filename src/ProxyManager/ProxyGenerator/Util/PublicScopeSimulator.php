@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\Util;
 
 use Zend\Code\Generator\PropertyGenerator;
+use function sprintf;
 
 /**
  * Generates code necessary to simulate a fatal error in case of unauthorized
  * access to class members in magic methods even when in child classes and dealing
  * with protected members.
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class PublicScopeSimulator
 {
-    const OPERATION_SET   = 'set';
-    const OPERATION_GET   = 'get';
-    const OPERATION_ISSET = 'isset';
-    const OPERATION_UNSET = 'unset';
+    public const OPERATION_SET   = 'set';
+    public const OPERATION_GET   = 'get';
+    public const OPERATION_ISSET = 'isset';
+    public const OPERATION_UNSET = 'unset';
 
     /**
      * Generates code for simulating access to a property from the scope that is accessing a proxy.
@@ -39,12 +38,12 @@ class PublicScopeSimulator
     public static function getPublicAccessSimulationCode(
         string $operationType,
         string $nameParameter,
-        $valueParameter = null,
-        PropertyGenerator $valueHolder = null,
-        $returnPropertyName = null
+        ?string $valueParameter = null,
+        ?PropertyGenerator $valueHolder = null,
+        ?string $returnPropertyName = null
     ) : string {
         $byRef  = self::getByRefReturnValue($operationType);
-        $value  = static::OPERATION_SET === $operationType ? ', $value' : '';
+        $value  = $operationType === static::OPERATION_SET ? ', $value' : '';
         $target = '$this';
 
         if ($valueHolder) {
@@ -52,7 +51,7 @@ class PublicScopeSimulator
         }
 
         return '$realInstanceReflection = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
-            . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {'   . "\n"
+            . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {' . "\n"
             . '    $targetObject = ' . $target . ';' . "\n\n"
             . self::getUndefinedPropertyNotice($operationType, $nameParameter)
             . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
@@ -73,14 +72,11 @@ class PublicScopeSimulator
     /**
      * This will generate code that triggers a notice if access is attempted on a non-existing property
      *
-     * @param string $operationType
-     * @param string $nameParameter
      *
-     * @return string
      */
     private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter) : string
     {
-        if (static::OPERATION_GET !== $operationType) {
+        if ($operationType !== static::OPERATION_GET) {
             return '';
         }
 
@@ -106,17 +102,15 @@ class PublicScopeSimulator
      */
     private static function getByRefReturnValue(string $operationType) : string
     {
-        return (static::OPERATION_GET === $operationType || static::OPERATION_SET === $operationType) ? '& ' : '';
+        return ($operationType === static::OPERATION_GET || $operationType === static::OPERATION_SET) ? '& ' : '';
     }
 
     /**
      * Retrieves the logic to fetch the object on which access should be attempted
      *
-     * @param PropertyGenerator $valueHolder
      *
-     * @return string
      */
-    private static function getTargetObject(PropertyGenerator $valueHolder = null) : string
+    private static function getTargetObject(?PropertyGenerator $valueHolder = null) : string
     {
         if ($valueHolder) {
             return '$this->' . $valueHolder->getName();
@@ -134,7 +128,7 @@ class PublicScopeSimulator
             case static::OPERATION_GET:
                 return 'return $targetObject->$' . $nameParameter . ';';
             case static::OPERATION_SET:
-                if (null === $valueParameter) {
+                if ($valueParameter === null) {
                     throw new \InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
@@ -151,7 +145,6 @@ class PublicScopeSimulator
     /**
      * Generates code to bind operations to the parent scope
      *
-     * @return string
      */
     private static function getScopeReBind() : string
     {

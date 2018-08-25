@@ -8,12 +8,13 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use function class_exists;
+use function ini_get;
+use function strpos;
+use function uniqid;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  */

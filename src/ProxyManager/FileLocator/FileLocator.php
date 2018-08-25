@@ -5,30 +5,28 @@ declare(strict_types=1);
 namespace ProxyManager\FileLocator;
 
 use ProxyManager\Exception\InvalidProxyDirectoryException;
+use const DIRECTORY_SEPARATOR;
+use function realpath;
+use function str_replace;
 
 /**
  * {@inheritDoc}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class FileLocator implements FileLocatorInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $proxiesDirectory;
 
     /**
-     * @param string $proxiesDirectory
      *
-     * @throws \ProxyManager\Exception\InvalidProxyDirectoryException
+     * @throws InvalidProxyDirectoryException
      */
     public function __construct(string $proxiesDirectory)
     {
         $absolutePath = realpath($proxiesDirectory);
 
-        if (false === $absolutePath) {
+        if ($absolutePath === false) {
             throw InvalidProxyDirectoryException::proxyDirectoryNotFound($proxiesDirectory);
         }
 

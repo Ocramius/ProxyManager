@@ -14,9 +14,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicClone}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class MagicCloneTest extends TestCase
@@ -26,11 +23,11 @@ class MagicCloneTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection  = new ReflectionClass(EmptyClass::class);
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $reflection = new ReflectionClass(EmptyClass::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /* @var $initCall MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initCall    = $this->createMock(MethodGenerator::class);
+        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $initCall */
+        $initCall = $this->createMock(MethodGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
         $initCall->expects(self::any())->method('getName')->will(self::returnValue('bar'));

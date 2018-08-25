@@ -11,9 +11,6 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator
  * @group Coverage
  */

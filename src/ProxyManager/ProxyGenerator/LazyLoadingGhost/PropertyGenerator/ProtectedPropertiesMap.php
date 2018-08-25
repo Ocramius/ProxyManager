@@ -6,24 +6,22 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the protected instance lazy-loadable properties of an object
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class ProtectedPropertiesMap extends PropertyGenerator
 {
-    const KEY_DEFAULT_VALUE = 'defaultValue';
+    public const KEY_DEFAULT_VALUE = 'defaultValue';
 
     /**
      * Constructor
      *
-     * @param Properties $properties
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(Properties $properties)
     {

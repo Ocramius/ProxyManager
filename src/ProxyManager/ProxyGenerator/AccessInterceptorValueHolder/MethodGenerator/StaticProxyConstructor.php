@@ -8,26 +8,21 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for access interceptor value holders
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
      *
-     * @param ReflectionClass   $originalClass
-     * @param PropertyGenerator $valueHolder
-     * @param PropertyGenerator $prefixInterceptors
-     * @param PropertyGenerator $suffixInterceptors
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -52,7 +47,7 @@ class StaticProxyConstructor extends MethodGenerator
 
         $this->setDocBlock(
             "Constructor to setup interceptors\n\n"
-            . "@param \\" . $originalClass->getName() . " \$wrappedObject\n"
+            . '@param \\' . $originalClass->getName() . " \$wrappedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
             . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
             . '@return self'

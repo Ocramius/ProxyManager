@@ -40,7 +40,7 @@ class LazyLoadingMock implements VirtualProxyInterface, GhostObjectInterface
         $this->initializer = $initializer;
     }
 
-    public function getProxyInitializer()
+    public function getProxyInitializer() : ?\Closure
     {
         return $this->initializer;
     }
@@ -61,7 +61,7 @@ class LazyLoadingMock implements VirtualProxyInterface, GhostObjectInterface
      *
      * @throws BadMethodCallException
      */
-    public function getWrappedValueHolderValue()
+    public function getWrappedValueHolderValue() : ?object
     {
         // we're not supposed to call this
         throw new BadMethodCallException('Not implemented');

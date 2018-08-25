@@ -9,14 +9,12 @@ namespace ProxyManager\Generator\Util;
  *
  * This is required since return expressions may be forbidden by the method signature (void).
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 final class ProxiedMethodReturnExpression
 {
     public static function generate(string $returnedValueExpression, ?\ReflectionMethod $originalMethod) : string
     {
-        if ($originalMethod && 'void' === (string) $originalMethod->getReturnType()) {
+        if ($originalMethod && (string) $originalMethod->getReturnType() === 'void') {
             return $returnedValueExpression . ";\nreturn;";
         }
 

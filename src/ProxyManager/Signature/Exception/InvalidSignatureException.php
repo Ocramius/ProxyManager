@@ -6,12 +6,12 @@ namespace ProxyManager\Signature\Exception;
 
 use ReflectionClass;
 use UnexpectedValueException;
+use function count;
+use function sprintf;
 
 /**
  * Exception for invalid provided signatures
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class InvalidSignatureException extends UnexpectedValueException implements ExceptionInterface
 {

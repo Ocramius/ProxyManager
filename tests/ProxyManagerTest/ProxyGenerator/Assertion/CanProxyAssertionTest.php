@@ -34,9 +34,6 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion
  * @group Coverage
  */
@@ -77,7 +74,6 @@ class CanProxyAssertionTest extends TestCase
     }
 
     /**
-     * @param string $className
      *
      * @dataProvider validClasses
      */

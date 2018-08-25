@@ -5,18 +5,21 @@ declare(strict_types=1);
 namespace ProxyManager\GeneratorStrategy;
 
 use Zend\Code\Generator\ClassGenerator;
+use function assert;
+use function file_put_contents;
+use function ini_get;
+use function is_string;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
 
 /**
  * Generator strategy that produces the code and evaluates it at runtime
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
 {
-    /**
-     * @var bool flag indicating whether {@see eval} can be used
-     */
+    /** @var bool flag indicating whether {@see eval} can be used */
     private $canEval = true;
 
     /**

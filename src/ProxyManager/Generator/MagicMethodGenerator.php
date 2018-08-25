@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace ProxyManager\Generator;
 
 use ReflectionClass;
+use function strtolower;
 
 /**
  * Method generator for magic methods
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class MagicMethodGenerator extends MethodGenerator
 {
     /**
-     * @param ReflectionClass $originalClass
-     * @param string          $name
-     * @param array           $parameters
+     * @param array $parameters
      */
     public function __construct(ReflectionClass $originalClass, string $name, array $parameters = [])
     {
@@ -29,8 +26,10 @@ class MagicMethodGenerator extends MethodGenerator
 
         $this->setReturnsReference(strtolower($name) === '__get');
 
-        if ($originalClass->hasMethod($name)) {
-            $this->setReturnsReference($originalClass->getMethod($name)->returnsReference());
+        if (! $originalClass->hasMethod($name)) {
+            return;
         }
+
+        $this->setReturnsReference($originalClass->getMethod($name)->returnsReference());
     }
 }

@@ -21,31 +21,20 @@ use ProxyManagerTestAsset\RemoteProxy\RemoteObjectMock;
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObjectFactory}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class RemoteObjectFactoryTest extends TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $inflector;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $signatureChecker;
 
-    /**
-     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
-    /**
-     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Configuration|\PHPUnit_Framework_MockObject_MockObject */
     protected $config;
 
     /**
@@ -93,11 +82,11 @@ class RemoteObjectFactoryTest extends TestCase
             ->with(BaseInterface::class)
             ->will(self::returnValue(RemoteObjectMock::class));
 
-        /* @var $adapter AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var AdapterInterface|\PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
-        /* @var $proxy \stdClass */
-        $proxy   = $factory->createProxy(BaseInterface::class);
+        /** @var \stdClass $proxy */
+        $proxy = $factory->createProxy(BaseInterface::class);
 
         self::assertInstanceOf(RemoteObjectMock::class, $proxy);
     }
@@ -163,7 +152,7 @@ class RemoteObjectFactoryTest extends TestCase
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
-        /* @var $adapter AdapterInterface */
+        /** @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         $proxy   = $factory->createProxy(BaseInterface::class);

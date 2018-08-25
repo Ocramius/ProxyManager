@@ -9,8 +9,6 @@ use Zend\Code\Generator\ClassGenerator;
 /**
  * Generator strategy that generates the class body
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class BaseGeneratorStrategy implements GeneratorStrategyInterface
 {

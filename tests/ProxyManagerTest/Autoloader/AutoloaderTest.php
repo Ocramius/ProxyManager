@@ -9,37 +9,35 @@ use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
+use function class_exists;
+use function file_put_contents;
+use function spl_autoload_register;
+use function spl_autoload_unregister;
+use function sprintf;
+use function sys_get_temp_dir;
+use function uniqid;
 
 /**
  * Tests for {@see \ProxyManager\Autoloader\Autoloader}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\Autoloader\Autoloader
  * @group Coverage
  */
 class AutoloaderTest extends TestCase
 {
-    /**
-     * @var \ProxyManager\Autoloader\Autoloader
-     */
+    /** @var Autoloader */
     protected $autoloader;
 
-    /**
-     * @var \ProxyManager\FileLocator\FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $fileLocator;
 
-    /**
-     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $classNameInflector;
 
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__construct
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->fileLocator        = $this->createMock(FileLocatorInterface::class);
         $this->classNameInflector = $this->createMock(ClassNameInflectorInterface::class);

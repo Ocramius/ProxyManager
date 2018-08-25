@@ -5,27 +5,25 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
+use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use function sprintf;
 
 /**
  * Magic `__get` for lazy loading ghost objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class MagicGet extends MagicMethodGenerator
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $callParentTemplate =  <<<'PHP'
 $this->%s && ! $this->%s && $this->%s('__get', array('name' => $name));
 
@@ -89,15 +87,8 @@ if (isset(self::$%s[$name])) {
 PHP;
 
     /**
-     * @param ReflectionClass        $originalClass
-     * @param PropertyGenerator      $initializerProperty
-     * @param MethodGenerator        $callInitializer
-     * @param PublicPropertiesMap    $publicProperties
-     * @param ProtectedPropertiesMap $protectedProperties
-     * @param PrivatePropertiesMap   $privateProperties
-     * @param InitializationTracker  $initializationTracker
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
      */
     public function __construct(

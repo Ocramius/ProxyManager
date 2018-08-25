@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace ProxyManager\Exception;
 
 use UnexpectedValueException;
+use function implode;
+use function is_file;
+use function is_writable;
+use function realpath;
+use function sprintf;
 
 /**
  * Exception for non writable files
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class FileNotWritableException extends UnexpectedValueException implements ExceptionInterface
 {

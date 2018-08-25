@@ -16,35 +16,25 @@ use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\LazyLoadingMock;
+use function get_class;
 
 /**
  * Tests for {@see \ProxyManager\Factory\LazyLoadingValueHolderFactory}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  */
 class LazyLoadingValueHolderFactoryTest extends TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $inflector;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $signatureChecker;
 
-    /**
-     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
-    /**
-     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Configuration|\PHPUnit_Framework_MockObject_MockObject */
     protected $config;
 
     /**
@@ -106,10 +96,10 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
             ->will(self::returnValue(LazyLoadingMock::class));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = function () {
+        $initializer = function () : void {
         };
         /** @var LazyLoadingMock $proxy */
-        $proxy       = $factory->createProxy($className, $initializer);
+        $proxy = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf(LazyLoadingMock::class, $proxy);
         self::assertSame($initializer, $proxy->initializer);
@@ -174,10 +164,10 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = function () {
+        $initializer = function () : void {
         };
         /** @var LazyLoadingMock $proxy */
-        $proxy       = $factory->createProxy($className, $initializer);
+        $proxy = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf($proxyClassName, $proxy);
         self::assertSame($proxyClassName, get_class($proxy));

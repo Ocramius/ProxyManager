@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace ProxyManager\Inflector\Util;
 
+use function md5;
+use function serialize;
+
 /**
  * Converts given parameters into a likely unique hash
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class ParameterHasher
 {
