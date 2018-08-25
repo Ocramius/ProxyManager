@@ -14,7 +14,7 @@ use function strtolower;
 class MagicMethodGenerator extends MethodGenerator
 {
     /**
-     * @param array $parameters
+     * @param mixed[] $parameters
      */
     public function __construct(ReflectionClass $originalClass, string $name, array $parameters = [])
     {
