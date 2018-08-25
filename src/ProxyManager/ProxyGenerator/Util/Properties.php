@@ -7,6 +7,7 @@ namespace ProxyManager\ProxyGenerator\Util;
 use ReflectionClass;
 use ReflectionProperty;
 use function array_filter;
+use function array_map;
 use function array_merge;
 use function array_values;
 
