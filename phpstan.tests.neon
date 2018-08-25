@@ -1,4 +1,7 @@
 parameters:
+    level: 4
+    paths:
+        - tests
     ignoreErrors:
         # We only mock this dependency, and never really require it:
         - '#Zend\\Server\\Client#'

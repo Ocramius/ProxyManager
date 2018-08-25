@@ -31,8 +31,8 @@ script:
   - php examples/smart-reference.php
   - php examples/virtual-proxy.php
   - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
-  - ./vendor/bin/phpstan analyse -c phpstan.neon -l 7 src
-  - ./vendor/bin/phpstan analyse -c phpstan.tests.neon -l 4 tests
+  - ./vendor/bin/phpstan analyse -c phpstan.neon
+  - ./vendor/bin/phpstan analyse -c phpstan.tests.neon
   - ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=99 --min-covered-msi=100
 
 matrix:
