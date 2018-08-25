@@ -13,7 +13,7 @@ interface AdapterInterface
     /**
      * Call remote object
      *
-     * @param array $params
+     * @param mixed[] $params
      *
      * @return mixed
      */
