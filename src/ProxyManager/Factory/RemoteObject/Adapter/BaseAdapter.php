@@ -31,7 +31,7 @@ abstract class BaseAdapter implements AdapterInterface
     /**
      * Constructor
      *
-     * @param array $map map of service names to their aliases
+     * @param string[] $map map of service names to their aliases
      */
     public function __construct(Client $client, array $map = [])
     {
