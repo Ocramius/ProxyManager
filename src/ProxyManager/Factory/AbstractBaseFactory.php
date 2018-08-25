@@ -83,8 +83,8 @@ abstract class AbstractBaseFactory
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
      *
-     * @param array   $proxyParameters
-     * @param mixed[] $proxyOptions
+     * @param string[] $proxyParameters
+     * @param mixed[]  $proxyOptions
      */
     private function generateProxyClass(
         string $proxyClassName,
