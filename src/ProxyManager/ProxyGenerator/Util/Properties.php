@@ -30,23 +30,26 @@ final class Properties
 
     public static function fromReflectionClass(ReflectionClass $reflection) : self
     {
-        $class      = $reflection;
-        $properties = [];
+        $class         = $reflection;
+        $parentClasses = [];
 
         do {
-            $properties = array_merge(
-                $properties,
-                array_values(array_filter(
+            $parentClasses[] = $class;
+
+            $class = $class->getParentClass();
+        } while ($class);
+
+        return new self(array_merge(
+            ...array_map(function (ReflectionClass $class) : array {
+                return array_values(array_filter(
                     $class->getProperties(),
                     function (ReflectionProperty $property) use ($class) : bool {
                         return $class->getName() === $property->getDeclaringClass()->getName()
                             && ! $property->isStatic();
                     }
-                ))
-            );
-        } while ($class = $class->getParentClass());
-
-        return new self($properties);
+                ));
+            }, $parentClasses)
+        ));
     }
 
     /**
@@ -135,7 +138,7 @@ final class Properties
         $propertiesMap = [];
 
         foreach ($this->getPrivateProperties() as $property) {
-            $class = & $propertiesMap[$property->getDeclaringClass()->getName()];
+            $class = &$propertiesMap[$property->getDeclaringClass()->getName()];
 
             $class[$property->getName()] = $property;
         }
