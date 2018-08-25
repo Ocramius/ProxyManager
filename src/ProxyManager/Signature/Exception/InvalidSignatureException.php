@@ -15,6 +15,7 @@ use function sprintf;
  */
 class InvalidSignatureException extends UnexpectedValueException implements ExceptionInterface
 {
+    /** @param mixed[] $parameters */
     public static function fromInvalidSignature(
         ReflectionClass $class,
         array $parameters,
