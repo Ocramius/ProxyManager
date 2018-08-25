@@ -37,7 +37,7 @@ class ProtectedPropertiesMap extends PropertyGenerator
         $this->setDefaultValue($this->getMap($properties));
     }
 
-    /** @return array<string, string> */
+    /** @return string[] */
     private function getMap(Properties $properties) : array
     {
         $map = [];
