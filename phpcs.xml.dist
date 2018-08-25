@@ -19,6 +19,7 @@
     <file>./tests/ProxyManagerTest</file>
 
     <rule ref="Doctrine">
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix"/>
         <!--
         <exclude name="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
         <exclude-pattern>src/DetectChanges/BCBreak/InterfaceBased/InterfaceBased.php</exclude-pattern>
