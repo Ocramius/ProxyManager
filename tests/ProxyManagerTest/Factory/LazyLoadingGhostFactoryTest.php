@@ -107,7 +107,7 @@ class LazyLoadingGhostFactoryTest extends TestCase
         $factory     = new LazyLoadingGhostFactory($this->config);
         $initializer = function () {
         };
-        /* @var $proxy LazyLoadingMock */
+        /** @var LazyLoadingMock $proxy */
         $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf(LazyLoadingMock::class, $proxy);
@@ -175,7 +175,7 @@ class LazyLoadingGhostFactoryTest extends TestCase
         $factory     = new LazyLoadingGhostFactory($this->config);
         $initializer = function () {
         };
-        /* @var $proxy LazyLoadingMock */
+        /** @var LazyLoadingMock $proxy */
         $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf($proxyClassName, $proxy);

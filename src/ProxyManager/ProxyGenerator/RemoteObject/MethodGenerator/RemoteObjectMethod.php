@@ -31,7 +31,7 @@ class RemoteObjectMethod extends MethodGenerator
         PropertyGenerator $adapterProperty,
         ReflectionClass $originalClass
     ) : self {
-        /* @var $method self */
+        /** @var self $method */
         $method        = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $list          = array_values(array_map(
             function (ParameterGenerator $parameter) : string {

@@ -20,7 +20,7 @@ class MethodGenerator extends ZendMethodGenerator
      */
     public static function fromReflectionWithoutBodyAndDocBlock(MethodReflection $reflectionMethod) : self
     {
-        /* @var $method self */
+        /** @var self $method */
         $method = parent::copyMethodSignature($reflectionMethod);
 
         $method->setInterface(false);
