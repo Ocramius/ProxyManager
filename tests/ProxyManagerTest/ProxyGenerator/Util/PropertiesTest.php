@@ -217,7 +217,7 @@ class PropertiesTest extends TestCase
     }
 
     /** @return string[][] */
-    public function propertiesToSkipFixture()
+    public function propertiesToSkipFixture() : array
     {
         return [
             ['publicProperty0'],

@@ -125,7 +125,7 @@ class MethodGeneratorTest extends TestCase
     }
 
     /** @return string[][] */
-    public function scalarTypeHintedMethods()
+    public function scalarTypeHintedMethods() : array
     {
         return [
             ['acceptString', 'string'],

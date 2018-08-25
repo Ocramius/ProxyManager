@@ -512,7 +512,7 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
      *
-     * @return array
+     * @return string[][]|object[][]|VirtualProxyInterface[][]
      */
     public function getPropertyAccessProxies() : array
     {
@@ -662,10 +662,7 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
         }
     }
 
-    /**
-     * @param array $values
-     *
-     */
+    /** @param mixed[] $values */
     private function buildInstanceWithValues(object $instance, array $values) : object
     {
         foreach ($values as $property => $value) {

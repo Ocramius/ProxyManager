@@ -160,7 +160,7 @@ class RemoteObjectFunctionalTest extends TestCase
     /**
      * Generates a list of object | invoked method | parameters | expected result
      *
-     * @return array
+     * @return array<array<string|object|array<mixed>>>
      */
     public function getProxyMethods() : array
     {

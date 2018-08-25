@@ -34,8 +34,8 @@ class ProxiedMethodsFilterTest extends TestCase
     /**
      * @dataProvider expectedMethods
      *
-     * @param array|null $excludes
-     * @param array      $expectedMethods
+     * @param string[]|null $excludes
+     * @param string[]      $expectedMethods
      */
     public function testFiltering(ReflectionClass $reflectionClass, ?array $excludes, array $expectedMethods) : void
     {
@@ -61,8 +61,8 @@ class ProxiedMethodsFilterTest extends TestCase
     /**
      * @dataProvider expectedAbstractPublicMethods
      *
-     * @param array|null $excludes
-     * @param array      $expectedMethods
+     * @param string[]|null $excludes
+     * @param string[]      $expectedMethods
      */
     public function testFilteringOfAbstractPublic(
         ReflectionClass $reflectionClass,

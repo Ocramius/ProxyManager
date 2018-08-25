@@ -744,6 +744,8 @@ class LazyLoadingGhostFunctionalTest extends TestCase
 
     /**
      * Generates a list of object | invoked method | parameters | expected result
+     *
+     * @return null[][]|string[][]|object[][]|mixed[][][]
      */
     public function getProxyMethods() : array
     {
@@ -807,7 +809,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
      * Generates a list of object | invoked method | parameters | expected result for methods that cause lazy-loading
      * of a ghost object
      *
-     * @return array
+     * @return string[][]|object[][]|mixed[][][]|null[][]
      */
     public function getProxyInitializingMethods() : array
     {
@@ -845,6 +847,8 @@ class LazyLoadingGhostFunctionalTest extends TestCase
 
     /**
      * Generates a list of object | invoked method | parameters | expected result for methods DON'T cause lazy-loading
+     *
+     * @return null[][]|string[][]|object[][]|mixed[][][]
      */
     public function getProxyNonInitializingMethods() : array
     {
@@ -854,7 +858,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
      *
-     * @return array
+     * @return string[][]|object[][]
      */
     public function getPropertyAccessProxies() : array
     {
@@ -1127,6 +1131,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
+    /** @return string[][]|object[][] */
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : array
     {
         $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);

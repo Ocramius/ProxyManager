@@ -137,7 +137,7 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * Generates a list of object | invoked method | parameters | expected result
      *
-     * @return array
+     * @return string[][]|null[][]|mixed[][][]|object[][]
      */
     public function getProxyMethods() : array
     {
@@ -204,6 +204,8 @@ class NullObjectFunctionalTest extends TestCase
 
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
+     *
+     * @return NullObjectInterface[][]|string[][]
      */
     public function getPropertyAccessProxies() : array
     {
@@ -225,7 +227,7 @@ class NullObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @param array $parameters
+     * @param mixed[] $parameters
      */
     private function assertNullMethodCall(NullObjectInterface $proxy, string $methodName, array $parameters) : void
     {

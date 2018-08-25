@@ -49,7 +49,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCalls(string $className, object $instance, string $method, $params, $expectedValue) : void
+    public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -99,7 +99,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $className,
         object $instance,
         string $method,
-        $params,
+        array $params,
         $expectedValue
     ) : void {
         $proxyName = $this->generateProxy($className);
@@ -122,7 +122,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
 
-        $random = uniqid();
+        $random = uniqid('', true);
 
         $proxy->setMethodSuffixInterceptor(
             $method,
@@ -146,7 +146,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $className,
         object $instance,
         string $method,
-        $params,
+        array $params,
         $expectedValue
     ) : void {
         $proxyName = $this->generateProxy($className);
@@ -167,7 +167,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $className,
         object $instance,
         string $method,
-        $params,
+        array $params,
         $expectedValue
     ) : void {
         $proxyName = $this->generateProxy($className);
@@ -421,7 +421,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * Generates a list of object | invoked method | parameters | expected result
      *
-     * @return array
+     * @return string[][]|object[][]|mixed[][]
      */
     public function getProxyMethods() : array
     {
@@ -476,6 +476,8 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
+     *
+     * @return string[][]|object[][]|AccessInterceptorValueHolderInterface[][]
      */
     public function getPropertyAccessProxies() : array
     {

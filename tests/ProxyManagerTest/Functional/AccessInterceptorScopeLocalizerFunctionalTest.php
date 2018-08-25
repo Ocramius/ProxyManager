@@ -418,6 +418,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
+     *
+     * @return object[][]|AccessInterceptorInterface[][]|string[][]
      */
     public function getPropertyAccessProxies() : array
     {

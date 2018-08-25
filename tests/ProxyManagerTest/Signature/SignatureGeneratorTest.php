@@ -27,7 +27,7 @@ class SignatureGeneratorTest extends TestCase
     }
 
     /**
-     * @param array $parameters
+     * @param string[][] $parameters
      *
      * @dataProvider signatures
      */
@@ -37,7 +37,7 @@ class SignatureGeneratorTest extends TestCase
     }
 
     /**
-     * @param array $parameters
+     * @param string[][] $parameters
      *
      * @dataProvider signatureKeys
      */
@@ -46,6 +46,7 @@ class SignatureGeneratorTest extends TestCase
         self::assertSame($expected, $this->signatureGenerator->generateSignatureKey($parameters));
     }
 
+    /** @return string[][]|string[][][] */
     public function signatures() : array
     {
         return [
@@ -72,11 +73,7 @@ class SignatureGeneratorTest extends TestCase
         ];
     }
 
-    /**
-     * Data provider.
-     *
-     * @return array[]
-     */
+    /** @return string[][]|string[][][] */
     public function signatureKeys() : array
     {
         return [
