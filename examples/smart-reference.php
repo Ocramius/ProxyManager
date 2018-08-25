@@ -8,7 +8,7 @@ use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 
 class Foo
 {
-    public function doFoo()
+    public function doFoo() : void
     {
         echo "Foo!\n";
     }
@@ -18,8 +18,16 @@ $factory = new AccessInterceptorValueHolderFactory();
 
 $proxy = $factory->createProxy(
     new Foo(),
-    ['doFoo' => function () { echo "pre-foo!\n"; }],
-    ['doFoo' => function () { echo "post-foo!\n"; }]
+    [
+        'doFoo' => function () : void {
+            echo "pre-foo!\n";
+        },
+    ],
+    [
+        'doFoo' => function () : void {
+            echo "post-foo!\n";
+        },
+    ]
 );
 
 $proxy->doFoo();

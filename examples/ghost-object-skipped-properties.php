@@ -23,11 +23,11 @@ class User
     }
 }
 
-/* @var $proxy User */
+/** @var User $proxy */
 $proxy = (new LazyLoadingGhostFactory())->createProxy(
     User::class,
     function (GhostObjectInterface $proxy, string $method, array $parameters, & $initializer, array $properties) {
-        $initializer   = null;
+        $initializer = null;
 
         var_dump('Triggered lazy-loading!');
 
@@ -36,13 +36,11 @@ $proxy = (new LazyLoadingGhostFactory())->createProxy(
         return true;
     },
     [
-        'skippedProperties' => [
-            "\0User\0id",
-        ],
+        'skippedProperties' => ["\0User\0id"],
     ]
 );
 
-$idReflection = new \ReflectionProperty(User::class, 'id');
+$idReflection = new ReflectionProperty(User::class, 'id');
 
 $idReflection->setAccessible(true);
 $idReflection->setValue($proxy, 123);
