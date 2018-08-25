@@ -54,7 +54,7 @@ class LazyLoadingValueHolderPropertyAccessBench
      */
     private $initializedMixedPropertiesProxy;
 
-    protected function setUp()
+    public function setUp()
     {
         $this->emptyClassProxy          = $this->buildProxy(EmptyClass::class);
         $this->publicPropertiesProxy    = $this->buildProxy(ClassWithPublicProperties::class);
