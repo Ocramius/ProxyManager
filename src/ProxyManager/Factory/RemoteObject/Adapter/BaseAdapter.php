@@ -41,6 +41,8 @@ abstract class BaseAdapter implements AdapterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed[] $params
      */
     public function call(string $wrappedClass, string $method, array $params = [])
     {
