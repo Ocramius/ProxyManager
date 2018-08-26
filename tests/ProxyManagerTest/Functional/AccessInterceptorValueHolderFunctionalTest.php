@@ -184,7 +184,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         /** @var AccessInterceptorValueHolderInterface $proxy */
         $proxy    = $proxyName::staticProxyConstructor($instance);
         $cloned   = clone $proxy;
-        $callback = [$proxy, $method];
+        $callback = [$cloned, $method];
 
         self::assertInternalType('callable', $callback);
         self::assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
