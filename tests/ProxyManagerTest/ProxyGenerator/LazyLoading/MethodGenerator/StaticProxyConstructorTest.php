@@ -42,8 +42,8 @@ class StaticProxyConstructorTest extends TestCase
         self::assertStringMatchesFormat(
             'static $reflection;
 
-$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
-$instance = (new \ReflectionClass(get_class()))->newInstanceWithoutConstructor();
+$reflection = $reflection ?? $reflection = new \ReflectionClass(__CLASS__);
+$instance = $reflection->newInstanceWithoutConstructor();
 
 unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
             . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
