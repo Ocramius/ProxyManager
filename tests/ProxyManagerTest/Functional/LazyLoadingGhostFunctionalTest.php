@@ -1242,7 +1242,6 @@ class LazyLoadingGhostFunctionalTest extends TestCase
             return;
         }
 
-        // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
         self::assertSame($privatePropertyValue, $friendObject->getPrivateProperty($proxy));
         self::assertSame($protectedPropertyValue, $friendObject->getProtectedProperty($proxy));
         self::assertSame($publicPropertyValue, $friendObject->getPublicProperty($proxy));

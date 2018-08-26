@@ -28,6 +28,7 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
+use function array_values;
 use function call_user_func_array;
 use function get_class;
 use function random_int;
@@ -57,7 +58,11 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $proxy = $proxyName::staticProxyConstructor($instance);
 
         $this->assertProxySynchronized($instance, $proxy);
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+
+        $callback = [$proxy, $method];
+
+        self::assertInternalType('callable', $callback);
+        self::assertSame($expectedValue, $callback(...array_values($params)));
 
         /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
@@ -73,7 +78,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, $callback(...array_values($params)));
 
         $random = uniqid('', true);
 
@@ -86,7 +91,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, $callback(...array_values($params)));
+
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -106,7 +112,11 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($className);
 
         /** @var AccessInterceptorInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $callback = [$proxy, $method];
+
+        self::assertInternalType('callable', $callback);
+
         /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
@@ -121,7 +131,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, $callback(...array_values($params)));
 
         $random = uniqid('', true);
 
@@ -134,7 +144,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, $callback(...array_values($params)));
+
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -155,7 +166,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         /** @var AccessInterceptorInterface $proxy */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
 
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        $callback = [$proxy, $method];
+
+        self::assertInternalType('callable', $callback);
+        self::assertSame($expectedValue, $callback(...array_values($params)));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -175,11 +189,13 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($className);
 
         /** @var AccessInterceptorInterface $proxy */
-        $proxy  = $proxyName::staticProxyConstructor($instance);
-        $cloned = clone $proxy;
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $cloned   = clone $proxy;
+        $callback = [$cloned, $method];
 
         $this->assertProxySynchronized($instance, $proxy);
-        self::assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
+        self::assertInternalType('callable', $callback);
+        self::assertSame($expectedValue, $callback(...array_values($params)));
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -250,6 +266,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         /** @var ClassWithPublicArrayProperty|AccessInterceptorInterface $proxy */
         $proxy = $proxyName::staticProxyConstructor($instance);
 
+        self::assertInstanceOf(ClassWithPublicArrayProperty::class, $proxy);
+
         $proxy->arrayProperty['foo'] = 'bar';
 
         self::assertSame('bar', $proxy->arrayProperty['foo']);
@@ -259,11 +277,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
         self::assertInstanceOf(AccessInterceptorInterface::class, $proxy);
 
-        if (! ($proxy instanceof AccessInterceptorInterface)) {
-            return;
-        }
-
-        // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
         $this->assertProxySynchronized($instance, $proxy);
     }
 
@@ -277,6 +290,9 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($className);
         /** @var ClassWithPublicProperties|AccessInterceptorInterface $proxy */
         $proxy    = $proxyName::staticProxyConstructor($instance);
+
+        self::assertInstanceOf(ClassWithPublicProperties::class, $proxy);
+
         $variable = $proxy->property0;
 
         self::assertSame('property0', $variable);
@@ -287,10 +303,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         self::assertInstanceOf(AccessInterceptorInterface::class, $proxy);
 
-        if ($proxy instanceof AccessInterceptorInterface) {
-            // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
-            $this->assertProxySynchronized($instance, $proxy);
-        }
+        $this->assertProxySynchronized($instance, $proxy);
 
         self::assertSame('foo', $variable);
     }
@@ -305,6 +318,9 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $proxyName = $this->generateProxy(get_class($instance));
         /** @var ClassWithPublicProperties|AccessInterceptorInterface $proxy */
         $proxy    = $proxyName::staticProxyConstructor($instance);
+
+        self::assertInstanceOf(ClassWithPublicProperties::class, $proxy);
+
         $variable = & $proxy->property0;
 
         self::assertSame('property0', $variable);
@@ -315,10 +331,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         self::assertInstanceOf(AccessInterceptorInterface::class, $proxy);
 
-        if ($proxy instanceof AccessInterceptorInterface) {
-            // @TODO use intersection types when available - ref https://twitter.com/Ocramius/status/931252644190015489
-            $this->assertProxySynchronized($instance, $proxy);
-        }
+        $this->assertProxySynchronized($instance, $proxy);
 
         self::assertSame('foo', $variable);
     }
