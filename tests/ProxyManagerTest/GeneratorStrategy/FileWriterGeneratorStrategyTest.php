@@ -11,11 +11,15 @@ use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use function class_exists;
+use function clearstatcache;
+use function decoct;
+use function fileperms;
 use function mkdir;
 use function rmdir;
 use function scandir;
 use function strpos;
 use function sys_get_temp_dir;
+use function umask;
 use function uniqid;
 
 /**
@@ -49,6 +53,16 @@ class FileWriterGeneratorStrategyTest extends TestCase
         self::assertGreaterThan(0, strpos($body, $className));
         self::assertFalse(class_exists($fqcn, false));
         self::assertFileExists($tmpFile);
+        self::assertFileIsReadable($tmpFile);
+
+        // a user note on php.net recommended calling this as we have just called chmod on a file.
+        clearstatcache();
+
+        // Calculate the permission that should have been set.
+        // The operators below are bit-wise "AND" (&) and "NOT" (~), read more at: http://php.net/manual/en/language.operators.bitwise.php
+        $perm = 0666 & ~umask();
+
+        self::assertSame($perm, fileperms($tmpFile) & 0644, 'File permission was not correct: ' . decoct($perm));
 
         /* @noinspection PhpIncludeInspection */
         require $tmpFile;

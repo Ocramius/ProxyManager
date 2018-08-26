@@ -8,6 +8,7 @@ use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use Zend\Code\Generator\ClassGenerator;
 use function assert;
+use function chmod;
 use function file_put_contents;
 use function is_string;
 use function rename;
@@ -15,6 +16,7 @@ use function restore_error_handler;
 use function set_error_handler;
 use function tempnam;
 use function trim;
+use function umask;
 use function unlink;
 
 /**
@@ -77,6 +79,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
         assert(is_string($tmpFileName));
 
         file_put_contents($tmpFileName, $source);
+        chmod($tmpFileName, 0666 & ~umask());
 
         if (! rename($tmpFileName, $location)) {
             unlink($tmpFileName);
