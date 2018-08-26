@@ -93,9 +93,11 @@ class RemoteObjectFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($instanceOrClassName);
 
         /** @var RemoteObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
+        $proxy    = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
+        $callback = [$proxy, $method];
 
-        self::assertSame($expectedValue, ([$proxy, $method])(...$params));
+        self::assertInternalType('callable', $callback);
+        self::assertSame($expectedValue, $callback(...$params));
     }
 
     /**
@@ -111,8 +113,10 @@ class RemoteObjectFunctionalTest extends TestCase
 
         /** @var RemoteObjectInterface $proxy */
         $proxy = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
+        $callback = [$proxy, $method];
 
-        self::assertSame($expectedValue, ([$proxy, $method])(...$params));
+        self::assertInternalType('callable', $callback);
+        self::assertSame($expectedValue, $callback(...$params));
     }
 
     /**
