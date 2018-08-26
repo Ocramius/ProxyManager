@@ -29,7 +29,6 @@ use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 use function array_values;
-use function call_user_func_array;
 use function get_class;
 use function random_int;
 use function serialize;
@@ -50,7 +49,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @param mixed[] $params
      * @param mixed   $expectedValue
      */
-    public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue) : void
+    public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue
+    ) : void
     {
         $proxyName = $this->generateProxy($className);
 
@@ -218,7 +218,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @dataProvider getPropertyAccessProxies
      *
      */
-    public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
+    public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
+    ) : void
     {
         $newValue               = uniqid();
         $proxy->$publicProperty = $newValue;
@@ -231,7 +232,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @dataProvider getPropertyAccessProxies
      *
      */
-    public function testPropertyExistence(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
+    public function testPropertyExistence(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
+    ) : void
     {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
@@ -245,7 +247,8 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @dataProvider getPropertyAccessProxies
      *
      */
-    public function testPropertyUnset(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
+    public function testPropertyUnset(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
+    ) : void
     {
         self::markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);
@@ -289,7 +292,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $className = get_class($instance);
         $proxyName = $this->generateProxy($className);
         /** @var ClassWithPublicProperties|AccessInterceptorInterface $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $proxy = $proxyName::staticProxyConstructor($instance);
 
         self::assertInstanceOf(ClassWithPublicProperties::class, $proxy);
 
@@ -308,7 +311,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertSame('foo', $variable);
     }
 
-
     /**
      * Verifies that public properties references retrieved via `__get` modify in the object state
      */
@@ -317,11 +319,11 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $instance  = new ClassWithPublicProperties();
         $proxyName = $this->generateProxy(get_class($instance));
         /** @var ClassWithPublicProperties|AccessInterceptorInterface $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $proxy = $proxyName::staticProxyConstructor($instance);
 
         self::assertInstanceOf(ClassWithPublicProperties::class, $proxy);
 
-        $variable = & $proxy->property0;
+        $variable = &$proxy->property0;
 
         self::assertSame('property0', $variable);
 

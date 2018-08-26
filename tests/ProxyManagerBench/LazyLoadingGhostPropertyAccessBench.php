@@ -64,11 +64,11 @@ class LazyLoadingGhostPropertyAccessBench
 
     public function setUp() : void
     {
-        $emptyClassProxy          = $this->buildProxy(EmptyClass::class);
-        $privatePropertiesProxy   = $this->buildProxy(ClassWithPrivateProperties::class);
-        $protectedPropertiesProxy = $this->buildProxy(ClassWithProtectedProperties::class);
-        $publicPropertiesProxy    = $this->buildProxy(ClassWithPublicProperties::class);
-        $mixedPropertiesProxy     = $this->buildProxy(ClassWithMixedProperties::class);
+        $emptyClassProxy                     = $this->buildProxy(EmptyClass::class);
+        $privatePropertiesProxy              = $this->buildProxy(ClassWithPrivateProperties::class);
+        $protectedPropertiesProxy            = $this->buildProxy(ClassWithProtectedProperties::class);
+        $publicPropertiesProxy               = $this->buildProxy(ClassWithPublicProperties::class);
+        $mixedPropertiesProxy                = $this->buildProxy(ClassWithMixedProperties::class);
         $initializedEmptyClassProxy          = $this->buildProxy(EmptyClass::class);
         $initializedPrivatePropertiesProxy   = $this->buildProxy(ClassWithPrivateProperties::class);
         $initializedProtectedPropertiesProxy = $this->buildProxy(ClassWithProtectedProperties::class);

@@ -112,7 +112,7 @@ class RemoteObjectFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($instanceOrClassName);
 
         /** @var RemoteObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
+        $proxy    = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
         $callback = [$proxy, $method];
 
         self::assertInternalType('callable', $callback);

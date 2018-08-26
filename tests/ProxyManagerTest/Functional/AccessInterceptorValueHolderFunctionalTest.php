@@ -28,7 +28,6 @@ use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 use function array_values;
-use function call_user_func_array;
 use function get_class;
 use function random_int;
 use function serialize;
@@ -305,7 +304,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($className);
         /** @var ClassWithPublicProperties $proxy */
         $proxy    = $proxyName::staticProxyConstructor($instance);
-        $variable = & $proxy->property0;
+        $variable = &$proxy->property0;
 
         self::assertSame('property0', $variable);
 
@@ -514,7 +513,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     }
 
     /**
-     * @group 276
+     * @group        276
      *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      *
@@ -552,7 +551,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     }
 
     /**
-     * @group 276
+     * @group        276
      *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      *
@@ -589,9 +588,8 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         self::assertSame($expectedValue, $accessor($proxy));
     }
 
-
     /**
-     * @group 276
+     * @group        276
      *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      *

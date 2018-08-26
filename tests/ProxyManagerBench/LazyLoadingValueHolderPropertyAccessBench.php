@@ -43,9 +43,9 @@ class LazyLoadingValueHolderPropertyAccessBench
 
     public function setUp() : void
     {
-        $emptyClassProxy       = $this->buildProxy(EmptyClass::class);
-        $publicPropertiesProxy = $this->buildProxy(ClassWithPublicProperties::class);
-        $mixedPropertiesProxy  = $this->buildProxy(ClassWithMixedProperties::class);
+        $emptyClassProxy                  = $this->buildProxy(EmptyClass::class);
+        $publicPropertiesProxy            = $this->buildProxy(ClassWithPublicProperties::class);
+        $mixedPropertiesProxy             = $this->buildProxy(ClassWithMixedProperties::class);
         $initializedEmptyClassProxy       = $this->buildProxy(EmptyClass::class);
         $initializedPublicPropertiesProxy = $this->buildProxy(ClassWithPublicProperties::class);
         $initializedMixedPropertiesProxy  = $this->buildProxy(ClassWithMixedProperties::class);
