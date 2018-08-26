@@ -7,6 +7,7 @@ namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Generator\TypeGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue}
@@ -30,6 +31,6 @@ class GetWrappedValueHolderValueTest extends TestCase
         self::assertSame('getWrappedValueHolderValue', $getter->getName());
         self::assertCount(0, $getter->getParameters());
         self::assertSame('return $this->foo;', $getter->getBody());
-        self::assertSame('?object', $getter->getReturnType()->generate());
+        self::assertEquals(TypeGenerator::fromTypeString('?object'), $getter->getReturnType());
     }
 }
