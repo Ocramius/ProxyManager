@@ -6,12 +6,10 @@ namespace ProxyManagerTest\Generator\Util;
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+use function strlen;
 
 /**
  * Tests for {@see \ProxyManager\Generator\Util\UniqueIdentifierGenerator}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  * @covers \ProxyManager\Generator\Util\UniqueIdentifierGenerator
@@ -21,7 +19,6 @@ class UniqueIdentifierGeneratorTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      *
-     * @param string $name
      */
     public function testGeneratesUniqueIdentifiers(string $name) : void
     {
@@ -34,7 +31,6 @@ class UniqueIdentifierGeneratorTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      *
-     * @param string $name
      */
     public function testGeneratesValidIdentifiers(string $name) : void
     {
@@ -47,7 +43,6 @@ class UniqueIdentifierGeneratorTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      *
-     * @param string $name
      */
     public function testGeneratedIdentifierEntropy(string $name) : void
     {

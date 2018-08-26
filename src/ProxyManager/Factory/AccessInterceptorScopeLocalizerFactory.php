@@ -9,18 +9,15 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
+use function get_class;
 
 /**
  * Factory responsible of producing proxy objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
 {
-    /**
-     * @var \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator|null
-     */
+    /** @var AccessInterceptorScopeLocalizerGenerator|null */
     private $generator;
 
     /**
@@ -35,7 +32,7 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
      * @throws \OutOfBoundsException
      */
     public function createProxy(
-        $instance,
+        object $instance,
         array $prefixInterceptors = [],
         array $suffixInterceptors = []
     ) : AccessInterceptorInterface {

@@ -7,8 +7,6 @@ namespace ProxyManager\Proxy;
 /**
  * Lazy loading object identifier
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 interface LazyLoadingInterface extends ProxyInterface
 {
@@ -23,16 +21,12 @@ interface LazyLoadingInterface extends ProxyInterface
      * $initializer = function (& $wrappedObject, $proxy, string $method, array $parameters, & $initializer) {};
      * </code>
      *
-     * @param \Closure|null $initializer
      *
      * @return mixed
      */
-    public function setProxyInitializer(\Closure $initializer = null);
+    public function setProxyInitializer(?\Closure $initializer = null);
 
-    /**
-     * @return \Closure|null
-     */
-    public function getProxyInitializer();
+    public function getProxyInitializer() : ?\Closure;
 
     /**
      * Force initialization of the proxy

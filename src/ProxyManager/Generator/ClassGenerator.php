@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace ProxyManager\Generator;
 
 use Zend\Code\Generator\ClassGenerator as ZendClassGenerator;
+use function trim;
 
 /**
  * Class generator that ensures that interfaces/classes that are implemented/extended are FQCNs
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class ClassGenerator extends ZendClassGenerator
 {

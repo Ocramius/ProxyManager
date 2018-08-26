@@ -16,12 +16,10 @@ use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
+use function array_diff;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObjectGenerator}
- *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\RemoteObjectGenerator
  * @group Coverage
@@ -33,7 +31,6 @@ class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
      *
      * Verifies that generated code is valid and implements expected interfaces
      *
-     * @param string $className
      */
     public function testGeneratesValidCode(string $className) : void
     {
@@ -81,6 +78,7 @@ class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
         ];
     }
 
+    /** @return string[][] */
     public function getTestedImplementations() : array
     {
         return [

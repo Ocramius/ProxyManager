@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace ProxyManager\Signature;
 
+use ProxyManager\Signature\Exception\InvalidSignatureException;
+use ProxyManager\Signature\Exception\MissingSignatureException;
 use ReflectionClass;
 
 /**
  * Generator for signatures to be used to check the validity of generated code
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 interface SignatureCheckerInterface
 {
     /**
      * Checks whether the given signature is valid or not
      *
-     * @return void
+     * @param mixed[] $parameters
      *
-     * @throws \ProxyManager\Signature\Exception\InvalidSignatureException
-     * @throws \ProxyManager\Signature\Exception\MissingSignatureException
+     * @throws InvalidSignatureException
+     * @throws MissingSignatureException
      */
-    public function checkSignature(ReflectionClass $class, array $parameters);
+    public function checkSignature(ReflectionClass $class, array $parameters) : void;
 }

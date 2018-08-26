@@ -6,18 +6,19 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use ReflectionClass;
 use ReflectionMethod;
+use function array_filter;
+use function array_flip;
+use function array_key_exists;
+use function array_map;
+use function strtolower;
 
 /**
  * Utility class used to filter methods that can be proxied
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 final class ProxiedMethodsFilter
 {
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private static $defaultExcluded = [
         '__get',
         '__set',
@@ -34,9 +35,9 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getProxiedMethods(ReflectionClass $class, array $excluded = null) : array
+    public static function getProxiedMethods(ReflectionClass $class, ?array $excluded = null) : array
     {
-        return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded);
+        return self::doFilter($class, ($excluded === null) ? self::$defaultExcluded : $excluded);
     }
 
     /**
@@ -45,15 +46,13 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getAbstractProxiedMethods(ReflectionClass $class, array $excluded = null) : array
+    public static function getAbstractProxiedMethods(ReflectionClass $class, ?array $excluded = null) : array
     {
-        return self::doFilter($class, (null === $excluded) ? self::$defaultExcluded : $excluded, true);
+        return self::doFilter($class, ($excluded === null) ? self::$defaultExcluded : $excluded, true);
     }
 
     /**
-     * @param ReflectionClass $class
-     * @param string[]        $excluded
-     * @param bool            $requireAbstract
+     * @param string[] $excluded
      *
      * @return ReflectionMethod[]
      */
@@ -65,7 +64,7 @@ final class ProxiedMethodsFilter
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
             function (ReflectionMethod $method) use ($ignored, $requireAbstract) : bool {
                 return (! $requireAbstract || $method->isAbstract()) && ! (
-                    \array_key_exists(strtolower($method->getName()), $ignored)
+                    array_key_exists(strtolower($method->getName()), $ignored)
                     || self::methodCannotBeProxied($method)
                 );
             }

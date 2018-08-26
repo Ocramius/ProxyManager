@@ -10,9 +10,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Base test for unique property names
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 abstract class AbstractUniquePropertyNameTest extends TestCase

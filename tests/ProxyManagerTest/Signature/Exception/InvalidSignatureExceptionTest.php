@@ -11,9 +11,6 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\Signature\Exception\InvalidSignatureException}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Signature\Exception\InvalidSignatureException
  * @group Coverage
  */

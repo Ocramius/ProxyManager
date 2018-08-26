@@ -18,41 +18,26 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicIsset}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class MagicIssetTest extends TestCase
 {
-    /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
     protected $initializer;
 
-    /**
-     * @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
     protected $initMethod;
 
-    /**
-     * @var PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
     protected $publicProperties;
 
-    /**
-     * @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
     protected $protectedProperties;
 
-    /**
-     * @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
     protected $privateProperties;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $expectedCode = <<<'PHP'
 $this->foo && $this->baz('__isset', array('name' => $name));
 
@@ -115,9 +100,9 @@ PHP;
      */
     protected function setUp()
     {
-        $this->initializer      = $this->createMock(PropertyGenerator::class);
-        $this->initMethod       = $this->createMock(MethodGenerator::class);
-        $this->publicProperties = $this
+        $this->initializer         = $this->createMock(PropertyGenerator::class);
+        $this->initMethod          = $this->createMock(MethodGenerator::class);
+        $this->publicProperties    = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -125,7 +110,7 @@ PHP;
             ->getMockBuilder(ProtectedPropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->privateProperties = $this
+        $this->privateProperties   = $this
             ->getMockBuilder(PrivatePropertiesMap::class)
             ->disableOriginalConstructor()
             ->getMock();

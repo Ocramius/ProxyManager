@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace ProxyManager\Exception;
 
 use UnexpectedValueException;
+use function sprintf;
 
 /**
  * Exception for non writable files
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class FileNotWritableException extends UnexpectedValueException implements ExceptionInterface
 {
@@ -22,28 +21,5 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
             $fromPath,
             $toPath
         ));
-    }
-
-    /**
-     * @deprecated this method is unused, and will be removed in ProxyManager 3.0.0
-     */
-    public static function fromNonWritableLocation($path) : self
-    {
-        $messages    = [];
-        $destination = realpath($path);
-
-        if (! $destination) {
-            $messages[] = 'path does not exist';
-        }
-
-        if ($destination && ! is_file($destination)) {
-            $messages[] = 'exists and is not a file';
-        }
-
-        if ($destination && ! is_writable($destination)) {
-            $messages[] = 'is not writable';
-        }
-
-        return new self(sprintf('Could not write to path "%s": %s', $path, implode(', ', $messages)));
     }
 }

@@ -13,56 +13,64 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
+use function assert;
+use function class_exists;
 
 /**
  * Benchmark that provides results for state access/initialization time for lazy loading value holder proxies
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @BeforeMethods({"setUp"})
  */
 class LazyLoadingValueHolderPropertyAccessBench
 {
-    /**
-     * @var EmptyClass|VirtualProxyInterface
-     */
+    /** @var EmptyClass&VirtualProxyInterface */
     private $emptyClassProxy;
 
-    /**
-     * @var EmptyClass|VirtualProxyInterface
-     */
+    /** @var EmptyClass&VirtualProxyInterface */
     private $initializedEmptyClassProxy;
 
-    /**
-     * @var ClassWithPublicProperties|VirtualProxyInterface
-     */
+    /** @var ClassWithPublicProperties&VirtualProxyInterface */
     private $publicPropertiesProxy;
 
-    /**
-     * @var ClassWithPublicProperties|VirtualProxyInterface
-     */
+    /** @var ClassWithPublicProperties&VirtualProxyInterface */
     private $initializedPublicPropertiesProxy;
 
-    /**
-     * @var ClassWithMixedProperties|VirtualProxyInterface
-     */
+    /** @var ClassWithMixedProperties&VirtualProxyInterface */
     private $mixedPropertiesProxy;
 
-    /**
-     * @var ClassWithMixedProperties|VirtualProxyInterface
-     */
+    /** @var ClassWithMixedProperties&VirtualProxyInterface */
     private $initializedMixedPropertiesProxy;
 
-    public function setUp()
+    public function setUp() : void
     {
-        $this->emptyClassProxy          = $this->buildProxy(EmptyClass::class);
-        $this->publicPropertiesProxy    = $this->buildProxy(ClassWithPublicProperties::class);
-        $this->mixedPropertiesProxy     = $this->buildProxy(ClassWithMixedProperties::class);
+        $emptyClassProxy                  = $this->buildProxy(EmptyClass::class);
+        $publicPropertiesProxy            = $this->buildProxy(ClassWithPublicProperties::class);
+        $mixedPropertiesProxy             = $this->buildProxy(ClassWithMixedProperties::class);
+        $initializedEmptyClassProxy       = $this->buildProxy(EmptyClass::class);
+        $initializedPublicPropertiesProxy = $this->buildProxy(ClassWithPublicProperties::class);
+        $initializedMixedPropertiesProxy  = $this->buildProxy(ClassWithMixedProperties::class);
 
-        $this->initializedEmptyClassProxy          = $this->buildProxy(EmptyClass::class);
-        $this->initializedPublicPropertiesProxy    = $this->buildProxy(ClassWithPublicProperties::class);
-        $this->initializedMixedPropertiesProxy     = $this->buildProxy(ClassWithMixedProperties::class);
+        assert($emptyClassProxy instanceof VirtualProxyInterface);
+        assert($publicPropertiesProxy instanceof VirtualProxyInterface);
+        assert($mixedPropertiesProxy instanceof VirtualProxyInterface);
+        assert($initializedEmptyClassProxy instanceof VirtualProxyInterface);
+        assert($initializedPublicPropertiesProxy instanceof VirtualProxyInterface);
+        assert($initializedMixedPropertiesProxy instanceof VirtualProxyInterface);
+
+        assert($emptyClassProxy instanceof EmptyClass);
+        assert($publicPropertiesProxy instanceof ClassWithPublicProperties);
+        assert($mixedPropertiesProxy instanceof ClassWithMixedProperties);
+        assert($initializedEmptyClassProxy instanceof EmptyClass);
+        assert($initializedPublicPropertiesProxy instanceof ClassWithPublicProperties);
+        assert($initializedMixedPropertiesProxy instanceof ClassWithMixedProperties);
+
+        $this->emptyClassProxy       = $emptyClassProxy;
+        $this->publicPropertiesProxy = $publicPropertiesProxy;
+        $this->mixedPropertiesProxy  = $mixedPropertiesProxy;
+
+        $this->initializedEmptyClassProxy       = $initializedEmptyClassProxy;
+        $this->initializedPublicPropertiesProxy = $initializedPublicPropertiesProxy;
+        $this->initializedMixedPropertiesProxy  = $initializedMixedPropertiesProxy;
 
         $this->initializedEmptyClassProxy->initializeProxy();
         $this->initializedPublicPropertiesProxy->initializeProxy();
@@ -213,7 +221,7 @@ class LazyLoadingValueHolderPropertyAccessBench
             return $generatedClassName;
         }
 
-        $generatedClass     = new ClassGenerator($generatedClassName);
+        $generatedClass = new ClassGenerator($generatedClassName);
 
         (new LazyLoadingValueHolderGenerator())->generate(new ReflectionClass($originalClassName), $generatedClass);
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);

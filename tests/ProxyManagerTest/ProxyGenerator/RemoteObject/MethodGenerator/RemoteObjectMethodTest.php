@@ -14,9 +14,6 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class RemoteObjectMethodTest extends TestCase
@@ -26,7 +23,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithParameters() : void
     {
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
@@ -56,7 +53,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithArrayParameter() : void
     {
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
@@ -83,7 +80,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithoutParameters() : void
     {
-        /* @var $adapter PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 

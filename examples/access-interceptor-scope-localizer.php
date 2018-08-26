@@ -24,13 +24,21 @@ class FluentCounter
 }
 
 $factory = new AccessInterceptorScopeLocalizerFactory();
-$foo = new FluentCounter();
+$foo     = new FluentCounter();
 
-/* @var $proxy FluentCounter */
+/** @var FluentCounter $proxy */
 $proxy = $factory->createProxy(
     $foo,
-    ['fluentMethod' => function ($proxy) { echo "pre-fluentMethod #{$proxy->counter}!\n"; }],
-    ['fluentMethod' => function ($proxy) { echo "post-fluentMethod #{$proxy->counter}!\n"; }]
+    [
+        'fluentMethod' => function ($proxy) : void {
+            echo "pre-fluentMethod #{$proxy->counter}!\n";
+        },
+    ],
+    [
+        'fluentMethod' => function ($proxy) : void {
+            echo "post-fluentMethod #{$proxy->counter}!\n";
+        },
+    ]
 );
 
 $proxy->fluentMethod()->fluentMethod()->fluentMethod()->fluentMethod();

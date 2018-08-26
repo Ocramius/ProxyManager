@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ruleset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
+    name="OcramiusProxyManager"
+>
+    <arg name="basepath" value="."/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="80"/>
+    <arg name="colors"/>
+
+    <!-- Ignore warnings and show progress of the run -->
+    <arg value="np"/>
+
+    <file>./src</file>
+    <file>./tests/language-feature-scripts</file>
+    <file>./tests/ProxyManagerBench</file>
+    <file>./tests/ProxyManagerTest</file>
+
+    <rule ref="Doctrine">
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix"/>
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix"/>
+    </rule>
+</ruleset>

@@ -17,7 +17,7 @@ class Foo
         sleep(5);
     }
 
-    public function setFoo($foo)
+    public function setFoo($foo) : void
     {
         $this->foo = (string) $foo;
     }
@@ -35,7 +35,7 @@ for ($i = 0; $i < 1000; $i += 1) {
     $proxy = $factory->createProxy(
         Foo::class,
         function (GhostObjectInterface $proxy, string $method, array $parameters, & $initializer, array $properties) {
-            $initializer   = null;
+            $initializer = null;
 
             $properties["\0Foo\0foo"] = 'Hello World!';
 

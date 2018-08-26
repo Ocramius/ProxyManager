@@ -13,9 +13,6 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class LazyLoadingMethodInterceptorTest extends TestCase
@@ -25,10 +22,10 @@ class LazyLoadingMethodInterceptorTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer      = $this->createMock(PropertyGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder      = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $initializer */
+        $initializer = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -41,7 +38,7 @@ class LazyLoadingMethodInterceptorTest extends TestCase
         self::assertSame(
             "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, 'publicByReferenceParameterMethod', "
             . "array('param' => \$param, 'byRefParam' => \$byRefParam), \$this->foo);\n\n"
-            . "return \$this->bar->publicByReferenceParameterMethod(\$param, \$byRefParam);",
+            . 'return $this->bar->publicByReferenceParameterMethod($param, $byRefParam);',
             $method->getBody()
         );
     }
@@ -52,10 +49,10 @@ class LazyLoadingMethodInterceptorTest extends TestCase
     public function testBodyStructureWithoutParameters() : void
     {
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicMethod');
-        /* @var $initializer PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $initializer      = $this->createMock(PropertyGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder      = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $initializer */
+        $initializer = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -67,9 +64,9 @@ class LazyLoadingMethodInterceptorTest extends TestCase
         self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
-            "\$this->foo && \$this->foo->__invoke(\$this->bar, \$this, "
+            '$this->foo && $this->foo->__invoke($this->bar, $this, '
             . "'publicMethod', array(), \$this->foo);\n\n"
-            . "return \$this->bar->publicMethod();",
+            . 'return $this->bar->publicMethod();',
             $method->getBody()
         );
     }

@@ -13,9 +13,9 @@ class Foo
         sleep(1);
     }
 
-    public function doFoo()
+    public function doFoo() : void
     {
-        echo "Foo!";
+        echo 'Foo!';
     }
 }
 

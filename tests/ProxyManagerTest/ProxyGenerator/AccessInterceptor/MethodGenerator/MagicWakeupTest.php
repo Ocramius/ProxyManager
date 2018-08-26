@@ -14,9 +14,6 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup
@@ -25,7 +22,7 @@ class MagicWakeupTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        $reflection  = new ReflectionClass(
+        $reflection = new ReflectionClass(
             ClassWithTwoPublicProperties::class
         );
 

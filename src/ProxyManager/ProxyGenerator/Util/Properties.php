@@ -6,19 +6,19 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use ReflectionClass;
 use ReflectionProperty;
+use function array_filter;
+use function array_map;
+use function array_merge;
+use function array_values;
 
 /**
  * DTO containing the list of all non-static proxy properties and utility methods to access them
  * in various formats/collections
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 final class Properties
 {
-    /**
-     * @var array|\ReflectionProperty[]
-     */
+    /** @var array|\ReflectionProperty[] */
     private $properties;
 
     /**
@@ -31,23 +31,26 @@ final class Properties
 
     public static function fromReflectionClass(ReflectionClass $reflection) : self
     {
-        $class      = $reflection;
-        $properties = [];
+        $class         = $reflection;
+        $parentClasses = [];
 
         do {
-            $properties = array_merge(
-                $properties,
-                array_values(array_filter(
+            $parentClasses[] = $class;
+
+            $class = $class->getParentClass();
+        } while ($class);
+
+        return new self(array_merge(
+            ...array_map(function (ReflectionClass $class) : array {
+                return array_values(array_filter(
                     $class->getProperties(),
                     function (ReflectionProperty $property) use ($class) : bool {
                         return $class->getName() === $property->getDeclaringClass()->getName()
                             && ! $property->isStatic();
                     }
-                ))
-            );
-        } while ($class = $class->getParentClass());
-
-        return new self($properties);
+                ));
+            }, $parentClasses)
+        ));
     }
 
     /**
@@ -72,9 +75,11 @@ final class Properties
         $publicProperties = [];
 
         foreach ($this->properties as $property) {
-            if ($property->isPublic()) {
-                $publicProperties[$property->getName()] = $property;
+            if (! $property->isPublic()) {
+                continue;
             }
+
+            $publicProperties[$property->getName()] = $property;
         }
 
         return $publicProperties;
@@ -88,9 +93,11 @@ final class Properties
         $protectedProperties = [];
 
         foreach ($this->properties as $property) {
-            if ($property->isProtected()) {
-                $protectedProperties["\0*\0" . $property->getName()] = $property;
+            if (! $property->isProtected()) {
+                continue;
             }
+
+            $protectedProperties["\0*\0" . $property->getName()] = $property;
         }
 
         return $protectedProperties;
@@ -104,11 +111,13 @@ final class Properties
         $privateProperties = [];
 
         foreach ($this->properties as $property) {
-            if ($property->isPrivate()) {
-                $declaringClass = $property->getDeclaringClass()->getName();
-
-                $privateProperties["\0" . $declaringClass . "\0" . $property->getName()] = $property;
+            if (! $property->isPrivate()) {
+                continue;
             }
+
+            $declaringClass = $property->getDeclaringClass()->getName();
+
+            $privateProperties["\0" . $declaringClass . "\0" . $property->getName()] = $property;
         }
 
         return $privateProperties;
@@ -130,7 +139,7 @@ final class Properties
         $propertiesMap = [];
 
         foreach ($this->getPrivateProperties() as $property) {
-            $class = & $propertiesMap[$property->getDeclaringClass()->getName()];
+            $class = &$propertiesMap[$property->getDeclaringClass()->getName()];
 
             $class[$property->getName()] = $property;
         }

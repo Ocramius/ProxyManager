@@ -11,9 +11,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty
  * @group Coverage
  */

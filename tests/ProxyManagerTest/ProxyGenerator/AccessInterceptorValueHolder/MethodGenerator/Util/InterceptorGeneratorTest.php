@@ -6,17 +6,14 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGen
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use Zend\Code\Generator\ParameterGenerator;
-use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator
@@ -25,17 +22,17 @@ class InterceptorGeneratorTest extends TestCase
 {
     public function testInterceptorGenerator() : void
     {
-        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $method             = $this->createMock(MethodGenerator::class);
-        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $bar                = $this->createMock(ParameterGenerator::class);
-        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $baz                = $this->createMock(ParameterGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder        = $this->createMock(PropertyGenerator::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $method */
+        $method = $this->createMock(MethodGenerator::class);
+        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $bar */
+        $bar = $this->createMock(ParameterGenerator::class);
+        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $baz */
+        $baz = $this->createMock(ParameterGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        $valueHolder = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -87,17 +84,17 @@ PHP;
 
     public function testInterceptorGeneratorWithVoidMethod() : void
     {
-        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $method             = $this->createMock(MethodGenerator::class);
-        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $bar                = $this->createMock(ParameterGenerator::class);
-        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $baz                = $this->createMock(ParameterGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder        = $this->createMock(PropertyGenerator::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $method */
+        $method = $this->createMock(MethodGenerator::class);
+        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $bar */
+        $bar = $this->createMock(ParameterGenerator::class);
+        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $baz */
+        $baz = $this->createMock(ParameterGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        $valueHolder = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -152,17 +149,17 @@ PHP;
 
     public function testInterceptorGeneratorWithNonVoidOriginalMethod() : void
     {
-        /* @var $method MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $method             = $this->createMock(MethodGenerator::class);
-        /* @var $bar ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $bar                = $this->createMock(ParameterGenerator::class);
-        /* @var $baz ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $baz                = $this->createMock(ParameterGenerator::class);
-        /* @var $valueHolder PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
-        $valueHolder        = $this->createMock(PropertyGenerator::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $method */
+        $method = $this->createMock(MethodGenerator::class);
+        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $bar */
+        $bar = $this->createMock(ParameterGenerator::class);
+        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $baz */
+        $baz = $this->createMock(ParameterGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        $valueHolder = $this->createMock(PropertyGenerator::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));

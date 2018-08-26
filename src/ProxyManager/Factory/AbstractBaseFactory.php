@@ -11,18 +11,17 @@ use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Version;
 use ReflectionClass;
+use function array_key_exists;
+use function class_exists;
+use function get_class;
 
 /**
  * Base factory common logic
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 abstract class AbstractBaseFactory
 {
-    /**
-     * @var \ProxyManager\Configuration
-     */
+    /** @var Configuration */
     protected $configuration;
 
     /**
@@ -32,10 +31,7 @@ abstract class AbstractBaseFactory
      */
     private $checkedClasses = [];
 
-    /**
-     * @param \ProxyManager\Configuration $configuration
-     */
-    public function __construct(Configuration $configuration = null)
+    public function __construct(?Configuration $configuration = null)
     {
         $this->configuration = $configuration ?: new Configuration();
     }
@@ -43,7 +39,6 @@ abstract class AbstractBaseFactory
     /**
      * Generate a proxy from a class name
      *
-     * @param string  $className
      * @param mixed[] $proxyOptions
      *
      * @throws InvalidSignatureException
@@ -52,7 +47,7 @@ abstract class AbstractBaseFactory
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
-        if (\array_key_exists($className, $this->checkedClasses)) {
+        if (array_key_exists($className, $this->checkedClasses)) {
             return $this->checkedClasses[$className];
         }
 
@@ -88,10 +83,8 @@ abstract class AbstractBaseFactory
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
      *
-     * @param string  $proxyClassName
-     * @param string  $className
-     * @param array   $proxyParameters
-     * @param mixed[] $proxyOptions
+     * @param string[] $proxyParameters
+     * @param mixed[]  $proxyOptions
      */
     private function generateProxyClass(
         string $proxyClassName,

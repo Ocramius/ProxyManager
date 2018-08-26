@@ -6,6 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc;
 use ProxyManager\Factory\RemoteObjectFactory;
+use Zend\Http\Client\Adapter\Exception\RuntimeException;
 use Zend\XmlRpc\Client;
 
 if (! class_exists('Zend\XmlRpc\Client')) {
@@ -27,11 +28,11 @@ class Foo
 $factory = new RemoteObjectFactory(
     new XmlRpc(new Client('http://localhost:9876/remote-proxy/remote-proxy-server.php'))
 );
-$proxy = $factory->createProxy(Foo::class);
+$proxy   = $factory->createProxy(Foo::class);
 
 try {
     var_dump($proxy->bar()); // bar remote !
-} catch (\Zend\Http\Client\Adapter\Exception\RuntimeException $error) {
+} catch (RuntimeException $error) {
     echo "To run this example, please following before:\n\n\$ php -S localhost:9876 -t \"" . __DIR__ . "\"\n";
 
     exit(2);

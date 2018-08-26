@@ -12,9 +12,6 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class NullObjectMethodInterceptorTest extends TestCase
@@ -29,7 +26,7 @@ class NullObjectMethodInterceptorTest extends TestCase
 
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
-        self::assertNull($method->getBody());
+        self::assertSame('', $method->getBody());
     }
 
     /**
@@ -43,7 +40,7 @@ class NullObjectMethodInterceptorTest extends TestCase
 
         self::assertSame('testBodyStructureWithoutParameters', $method->getName());
         self::assertCount(0, $method->getParameters());
-        self::assertNull($method->getBody());
+        self::assertSame('', $method->getBody());
     }
 
     /**

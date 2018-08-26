@@ -22,31 +22,20 @@ use stdClass;
 /**
  * Tests for {@see \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $inflector;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $signatureChecker;
 
-    /**
-     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
-    /**
-     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Configuration|\PHPUnit_Framework_MockObject_MockObject */
     protected $config;
 
     /**
@@ -109,14 +98,16 @@ class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
             ->will(self::returnValue(AccessInterceptorValueHolderMock::class));
 
         $factory            = new AccessInterceptorScopeLocalizerFactory($this->config);
-        $prefixInterceptors = [function () {
+        $prefixInterceptors = [function () : void {
             self::fail('Not supposed to be called');
-        }];
-        $suffixInterceptors = [function () {
+        },
+        ];
+        $suffixInterceptors = [function () : void {
             self::fail('Not supposed to be called');
-        }];
+        },
+        ];
         /** @var AccessInterceptorValueHolderMock $proxy */
-        $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
+        $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf(AccessInterceptorValueHolderMock::class, $proxy);
         self::assertSame($instance, $proxy->instance);
@@ -186,14 +177,16 @@ class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory            = new AccessInterceptorScopeLocalizerFactory($this->config);
-        $prefixInterceptors = [function () {
+        $prefixInterceptors = [function () : void {
             self::fail('Not supposed to be called');
-        }];
-        $suffixInterceptors = [function () {
+        },
+        ];
+        $suffixInterceptors = [function () : void {
             self::fail('Not supposed to be called');
-        }];
+        },
+        ];
         /** @var AccessInterceptorValueHolderMock $proxy */
-        $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
+        $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf($proxyClassName, $proxy);
         self::assertSame($instance, $proxy->instance);

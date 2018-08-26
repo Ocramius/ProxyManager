@@ -15,22 +15,15 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod
  * @group Coverage
  */
 class InterceptedMethodTest extends TestCase
 {
-    /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
     private $prefixInterceptors;
 
-    /**
-     * @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
     private $suffixInterceptors;
 
     /**

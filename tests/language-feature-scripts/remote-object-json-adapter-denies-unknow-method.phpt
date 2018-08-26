@@ -31,7 +31,7 @@ class CustomAdapter implements AdapterInterface
 }
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory(new CustomAdapter(), $configuration);
-/* @var $proxy FooServiceInterface */
+/** @var FooServiceInterface $proxy */
 $proxy   = $factory->createProxy(FooServiceInterface::class);
 
 echo $proxy->fooBar() . "\n";

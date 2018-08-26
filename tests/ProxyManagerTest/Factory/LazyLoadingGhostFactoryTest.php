@@ -19,31 +19,20 @@ use ProxyManagerTestAsset\LazyLoadingMock;
 /**
  * Tests for {@see \ProxyManager\Factory\LazyLoadingGhostFactory}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class LazyLoadingGhostFactoryTest extends TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $inflector;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $signatureChecker;
 
-    /**
-     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
-    /**
-     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Configuration|\PHPUnit_Framework_MockObject_MockObject */
     protected $config;
 
     /**
@@ -105,10 +94,10 @@ class LazyLoadingGhostFactoryTest extends TestCase
             ->will(self::returnValue(LazyLoadingMock::class));
 
         $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = function () {
+        $initializer = function () : void {
         };
         /** @var LazyLoadingMock $proxy */
-        $proxy       = $factory->createProxy($className, $initializer);
+        $proxy = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf(LazyLoadingMock::class, $proxy);
         self::assertSame($initializer, $proxy->initializer);
@@ -173,10 +162,10 @@ class LazyLoadingGhostFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = function () {
+        $initializer = function () : void {
         };
         /** @var LazyLoadingMock $proxy */
-        $proxy       = $factory->createProxy($className, $initializer);
+        $proxy = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf($proxyClassName, $proxy);
         self::assertSame($initializer, $proxy->initializer);

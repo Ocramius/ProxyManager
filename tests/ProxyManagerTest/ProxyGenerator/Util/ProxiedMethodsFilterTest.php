@@ -20,12 +20,11 @@ use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\LazyLoadingMock;
 use ReflectionClass;
 use ReflectionMethod;
+use function array_map;
+use function sort;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter
  * @group Coverage
@@ -35,11 +34,10 @@ class ProxiedMethodsFilterTest extends TestCase
     /**
      * @dataProvider expectedMethods
      *
-     * @param ReflectionClass $reflectionClass
-     * @param array|null      $excludes
-     * @param array           $expectedMethods
+     * @param string[]|null $excludes
+     * @param string[]      $expectedMethods
      */
-    public function testFiltering(ReflectionClass $reflectionClass, $excludes, array $expectedMethods) : void
+    public function testFiltering(ReflectionClass $reflectionClass, ?array $excludes, array $expectedMethods) : void
     {
         $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
 
@@ -63,9 +61,8 @@ class ProxiedMethodsFilterTest extends TestCase
     /**
      * @dataProvider expectedAbstractPublicMethods
      *
-     * @param ReflectionClass $reflectionClass
-     * @param array|null      $excludes
-     * @param array           $expectedMethods
+     * @param string[]|null $excludes
+     * @param string[]      $expectedMethods
      */
     public function testFilteringOfAbstractPublic(
         ReflectionClass $reflectionClass,
@@ -201,13 +198,13 @@ class ProxiedMethodsFilterTest extends TestCase
             'final magic methods' => [
                 new ReflectionClass(ClassWithFinalMagicMethods::class),
                 null,
-                []
+                [],
             ],
             'non-final constructor is to be skipped' => [
                 new ReflectionClass(ClassWithCounterConstructor::class),
                 null,
-                ['getAmount']
-            ]
+                ['getAmount'],
+            ],
         ];
     }
 

@@ -14,54 +14,35 @@ use ReflectionProperty;
 /**
  * Benchmark that provides baseline results for simple object state interactions
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @BeforeMethods({"setUp"})
  */
 class BaselinePropertyAccessBench
 {
-    /**
-     * @var ClassWithPrivateProperties
-     */
+    /** @var ClassWithPrivateProperties */
     private $privateProperties;
 
-    /**
-     * @var ReflectionProperty
-     */
+    /** @var ReflectionProperty */
     private $accessPrivateProperty;
 
-    /**
-     * @var ClassWithProtectedProperties
-     */
+    /** @var ClassWithProtectedProperties */
     private $protectedProperties;
 
-    /**
-     * @var ReflectionProperty
-     */
+    /** @var ReflectionProperty */
     private $accessProtectedProperty;
 
-    /**
-     * @var ClassWithPublicProperties
-     */
+    /** @var ClassWithPublicProperties */
     private $publicProperties;
 
-    /**
-     * @var ClassWithMixedProperties
-     */
+    /** @var ClassWithMixedProperties */
     private $mixedProperties;
 
-    /**
-     * @var ReflectionProperty
-     */
+    /** @var ReflectionProperty */
     private $accessMixedPropertiesPrivate;
 
-    /**
-     * @var ReflectionProperty
-     */
+    /** @var ReflectionProperty */
     private $accessMixedPropertiesProtected;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->privateProperties   = new ClassWithPrivateProperties();
         $this->protectedProperties = new ClassWithProtectedProperties();

@@ -17,55 +17,38 @@ use ProxyManager\Signature\SignatureChecker;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManager\Signature\SignatureGenerator;
 use ProxyManager\Signature\SignatureGeneratorInterface;
+use function sys_get_temp_dir;
 
 /**
  * Base configuration class for the proxy manager - serves as micro disposable DIC/facade
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class Configuration
 {
-    const DEFAULT_PROXY_NAMESPACE = 'ProxyManagerGeneratedProxy';
+    public const DEFAULT_PROXY_NAMESPACE = 'ProxyManagerGeneratedProxy';
 
-    /**
-     * @var string|null
-     */
+    /** @var string|null */
     protected $proxiesTargetDir;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $proxiesNamespace = self::DEFAULT_PROXY_NAMESPACE;
 
-    /**
-     * @var GeneratorStrategyInterface|null
-     */
+    /** @var GeneratorStrategyInterface|null */
     protected $generatorStrategy;
 
-    /**
-     * @var AutoloaderInterface|null
-     */
+    /** @var AutoloaderInterface|null */
     protected $proxyAutoloader;
 
-    /**
-     * @var ClassNameInflectorInterface|null
-     */
+    /** @var ClassNameInflectorInterface|null */
     protected $classNameInflector;
 
-    /**
-     * @var SignatureGeneratorInterface|null
-     */
+    /** @var SignatureGeneratorInterface|null */
     protected $signatureGenerator;
 
-    /**
-     * @var SignatureCheckerInterface|null
-     */
+    /** @var SignatureCheckerInterface|null */
     protected $signatureChecker;
 
-    /**
-     * @var ClassSignatureGeneratorInterface|null
-     */
+    /** @var ClassSignatureGeneratorInterface|null */
     protected $classSignatureGenerator;
 
     public function setProxyAutoloader(AutoloaderInterface $proxyAutoloader) : void

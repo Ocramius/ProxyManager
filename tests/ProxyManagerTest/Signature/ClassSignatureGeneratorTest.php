@@ -13,22 +13,15 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\Signature\ClassSignatureGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Signature\ClassSignatureGenerator
  * @group Coverage
  */
 class ClassSignatureGeneratorTest extends TestCase
 {
-    /**
-     * @var SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $signatureGenerator;
 
-    /**
-     * @var ClassSignatureGenerator
-     */
+    /** @var ClassSignatureGenerator */
     private $classSignatureGenerator;
 
     /**
@@ -42,7 +35,7 @@ class ClassSignatureGeneratorTest extends TestCase
 
     public function testAddSignature() : void
     {
-        /* @var $classGenerator \PHPUnit_Framework_MockObject_MockObject|ClassGenerator */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|ClassGenerator $classGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);
 
         $classGenerator

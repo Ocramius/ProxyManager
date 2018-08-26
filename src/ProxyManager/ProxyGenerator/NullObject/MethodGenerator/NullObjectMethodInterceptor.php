@@ -11,13 +11,10 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Method decorator for null objects
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
  */
 class NullObjectMethodInterceptor extends MethodGenerator
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
      *
      * @return self|static
      */
@@ -29,7 +26,7 @@ class NullObjectMethodInterceptor extends MethodGenerator
         if ($originalMethod->returnsReference()) {
             $reference = IdentifierSuffixer::getIdentifier('ref');
 
-            $method->setBody("\$$reference = null;\nreturn \$$reference;");
+            $method->setBody("\$reference = null;\nreturn \$" . $reference . ';');
         }
 
         return $method;

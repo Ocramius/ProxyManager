@@ -6,19 +6,20 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use function implode;
+use function var_export;
 
 /**
  * Method decorator for lazy loading value holder objects
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class LazyLoadingMethodInterceptor extends MethodGenerator
 {
     /**
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function generateMethod(
         MethodReflection $originalMethod,
@@ -45,7 +46,7 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
             '$this->' . $initializerName
             . ' && $this->' . $initializerName
             . '->__invoke($this->' . $valueHolderName . ', $this, ' . var_export($methodName, true)
-            . ', array(' . implode(', ', $initializerParams) .  '), $this->' . $initializerName . ");\n\n"
+            . ', array(' . implode(', ', $initializerParams) . '), $this->' . $initializerName . ");\n\n"
             . ProxiedMethodReturnExpression::generate(
                 '$this->' . $valueHolderName . '->' . $methodName . '(' . implode(', ', $forwardedParams) . ')',
                 $originalMethod

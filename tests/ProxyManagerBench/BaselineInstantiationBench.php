@@ -13,8 +13,6 @@ use ProxyManagerTestAsset\EmptyClass;
 /**
  * Benchmark that provides baseline results for simple object instantiation
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class BaselineInstantiationBench
 {

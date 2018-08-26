@@ -19,9 +19,6 @@ use Zend\Code\Reflection\MethodReflection;
 /**
  * Tests for {@see \ProxyManager\Generator\MethodGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Generator\MethodGenerator
  * @group Coverage
  */
@@ -68,7 +65,7 @@ class MethodGeneratorTest extends TestCase
         self::assertSame(MethodGenerator::VISIBILITY_PUBLIC, $method->getVisibility());
         self::assertFalse($method->isStatic());
         self::assertNull($method->getDocBlock(), 'The docblock is ignored');
-        self::assertNull($method->getBody(), 'The body is ignored');
+        self::assertSame('', $method->getBody(), 'The body is ignored');
         self::assertNull($method->getSourceContent(), 'The source content ignored');
         self::assertTrue($method->isSourceDirty(), 'Dirty because the source cannot just be re-used when generating');
 
@@ -106,8 +103,6 @@ class MethodGeneratorTest extends TestCase
     }
 
     /**
-     * @param string $methodName
-     * @param string $type
      *
      * @dataProvider scalarTypeHintedMethods
      */
@@ -129,7 +124,8 @@ class MethodGeneratorTest extends TestCase
         self::assertSame($type, $param->getType());
     }
 
-    public function scalarTypeHintedMethods()
+    /** @return string[][] */
+    public function scalarTypeHintedMethods() : array
     {
         return [
             ['acceptString', 'string'],
@@ -153,8 +149,6 @@ class MethodGeneratorTest extends TestCase
     /**
      * @dataProvider returnTypeHintsProvider
      *
-     * @param string $methodName
-     * @param string $expectedType
      */
     public function testReturnTypeHintGeneration(string $methodName, string $expectedType) : void
     {

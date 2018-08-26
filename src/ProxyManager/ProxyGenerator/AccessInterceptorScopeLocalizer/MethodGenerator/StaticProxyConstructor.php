@@ -5,23 +5,21 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
 use ReflectionClass;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
+use Zend\Code\Generator\ParameterGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for an access interceptor scope localizer proxy
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
      *
-     * @param ReflectionClass $originalClass
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(ReflectionClass $originalClass)
     {
@@ -44,7 +42,7 @@ class StaticProxyConstructor extends MethodGenerator
 
         $this->setDocBlock(
             "Constructor to setup interceptors\n\n"
-            . "@param \\" . $originalClass->getName() . " \$localizedObject\n"
+            . '@param \\' . $originalClass->getName() . " \$localizedObject\n"
             . "@param \\Closure[] \$prefixInterceptors method interceptors to be used before method logic\n"
             . "@param \\Closure[] \$suffixInterceptors method interceptors to be used before method logic\n\n"
             . '@return self'

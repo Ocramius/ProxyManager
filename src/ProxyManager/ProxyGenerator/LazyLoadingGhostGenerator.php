@@ -31,16 +31,17 @@ use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use function array_map;
+use function array_merge;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\GhostObjectInterface}
  *
  * {@inheritDoc}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 {
@@ -48,10 +49,10 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      * {@inheritDoc}
      *
      * @throws InvalidProxiedClassException
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = [])
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = []) : void
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 
@@ -64,7 +65,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
         $classGenerator->setExtendedClass($originalClass->getName());
         $classGenerator->setImplementedInterfaces([GhostObjectInterface::class]);
-        $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
+        $classGenerator->addPropertyFromGenerator($initializer           = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($initializationTracker = new InitializationTracker());
         $classGenerator->addPropertyFromGenerator($publicProperties);
         $classGenerator->addPropertyFromGenerator($privateProperties);
@@ -73,7 +74,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $init = new CallInitializer($initializer, $initializationTracker, $filteredProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) {
+            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -128,7 +129,6 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     /**
      * Retrieves all abstract methods to be proxied
      *
-     * @param ReflectionClass $originalClass
      *
      * @return MethodGenerator[]
      */

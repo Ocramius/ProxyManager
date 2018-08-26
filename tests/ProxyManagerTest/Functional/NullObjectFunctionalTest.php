@@ -19,12 +19,14 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
+use function array_values;
+use function random_int;
+use function serialize;
+use function uniqid;
+use function unserialize;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator} produced objects
- *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
  *
  * @group Functional
  * @coversNothing
@@ -34,15 +36,13 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string  $className
-     * @param string  $method
      * @param mixed[] $params
      */
     public function testMethodCalls(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy NullObjectInterface */
+        /** @var NullObjectInterface $proxy */
         $proxy = $proxyName::staticProxyConstructor();
 
         $this->assertNullMethodCall($proxy, $method, $params);
@@ -51,15 +51,13 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string  $className
-     * @param string  $method
      * @param mixed[] $params
      */
     public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
-        /* @var $proxy NullObjectInterface */
-        $proxy     = unserialize(serialize($proxyName::staticProxyConstructor()));
+        /** @var NullObjectInterface $proxy */
+        $proxy = unserialize(serialize($proxyName::staticProxyConstructor()));
 
         $this->assertNullMethodCall($proxy, $method, $params);
     }
@@ -67,16 +65,14 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getProxyMethods
      *
-     * @param string  $className
-     * @param string  $method
      * @param mixed[] $params
      */
     public function testMethodCallsAfterCloning(string $className, string $method, array $params) : void
     {
         $proxyName = $this->generateProxy($className);
 
-        /* @var $proxy NullObjectInterface */
-        $proxy     = $proxyName::staticProxyConstructor();
+        /** @var NullObjectInterface $proxy */
+        $proxy = $proxyName::staticProxyConstructor();
 
         $this->assertNullMethodCall(clone $proxy, $method, $params);
     }
@@ -84,8 +80,6 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param NullObjectInterface $proxy
-     * @param string              $publicProperty
      */
     public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -95,8 +89,6 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param NullObjectInterface $proxy
-     * @param string              $publicProperty
      */
     public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -109,8 +101,6 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param NullObjectInterface $proxy
-     * @param string              $publicProperty
      */
     public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -120,8 +110,6 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      *
-     * @param NullObjectInterface $proxy
-     * @param string              $publicProperty
      */
     public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -149,7 +137,7 @@ class NullObjectFunctionalTest extends TestCase
     /**
      * Generates a list of object | invoked method | parameters | expected result
      *
-     * @return array
+     * @return string[][]|null[][]|mixed[][][]|object[][]
      */
     public function getProxyMethods() : array
     {
@@ -161,61 +149,63 @@ class NullObjectFunctionalTest extends TestCase
                 BaseClass::class,
                 'publicMethod',
                 [],
-                'publicMethodDefault'
+                'publicMethodDefault',
             ],
             [
                 BaseClass::class,
                 'publicTypeHintedMethod',
                 ['param' => new \stdClass()],
-                'publicTypeHintedMethodDefault'
+                'publicTypeHintedMethodDefault',
             ],
             [
                 BaseClass::class,
                 'publicByReferenceMethod',
                 [],
-                'publicByReferenceMethodDefault'
+                'publicByReferenceMethodDefault',
             ],
             [
                 BaseInterface::class,
                 'publicMethod',
                 [],
-                'publicMethodDefault'
+                'publicMethodDefault',
             ],
             [
                 ClassWithSelfHint::class,
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
-                $selfHintParam
+                $selfHintParam,
             ],
             [
                 ClassWithParentHint::class,
                 'parentHintMethod',
                 ['parameter' => $empty],
-                $empty
+                $empty,
             ],
             [
                 ClassWithMethodWithVariadicFunction::class,
                 'buz',
                 ['Ocramius', 'Malukenho'],
-                null
+                null,
             ],
             [
                 ClassWithMethodWithByRefVariadicFunction::class,
                 'tuz',
                 ['Ocramius', 'Malukenho'],
-                null
+                null,
             ],
             [
                 VoidCounter::class,
                 'increment',
                 [random_int(10, 1000)],
-                null
+                null,
             ],
         ];
     }
 
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
+     *
+     * @return NullObjectInterface[][]|string[][]
      */
     public function getPropertyAccessProxies() : array
     {
@@ -237,13 +227,11 @@ class NullObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @param NullObjectInterface $proxy
-     * @param string              $methodName
-     * @param array               $parameters
+     * @param mixed[] $parameters
      */
-    private function assertNullMethodCall(NullObjectInterface $proxy, string $methodName, array $parameters)
+    private function assertNullMethodCall(NullObjectInterface $proxy, string $methodName, array $parameters) : void
     {
-        /* @var callable $method */
+        /** @var callable $method */
         $method = [$proxy, $methodName];
 
         self::assertInternalType('callable', $method);

@@ -20,31 +20,20 @@ use stdClass;
 /**
  * Tests for {@see \ProxyManager\Factory\NullObjectFactory}
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class NullObjectFactoryTest extends TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $inflector;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $signatureChecker;
 
-    /**
-     * @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
-    /**
-     * @var Configuration|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Configuration|\PHPUnit_Framework_MockObject_MockObject */
     protected $config;
 
     /**
@@ -94,9 +83,9 @@ class NullObjectFactoryTest extends TestCase
             ->with('stdClass')
             ->will(self::returnValue(NullObjectMock::class));
 
-        $factory    = new NullObjectFactory($this->config);
-        /* @var $proxy NullObjectMock */
-        $proxy      = $factory->createProxy($instance);
+        $factory = new NullObjectFactory($this->config);
+        /** @var NullObjectMock $proxy */
+        $proxy = $factory->createProxy($instance);
 
         self::assertInstanceOf(NullObjectMock::class, $proxy);
     }
@@ -159,9 +148,9 @@ class NullObjectFactoryTest extends TestCase
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
-        $factory    = new NullObjectFactory($this->config);
-        /* @var $proxy NullObjectMock */
-        $proxy      = $factory->createProxy($instance);
+        $factory = new NullObjectFactory($this->config);
+        /** @var NullObjectMock $proxy */
+        $proxy = $factory->createProxy($instance);
 
         self::assertInstanceOf($proxyClassName, $proxy);
     }

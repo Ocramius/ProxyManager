@@ -15,9 +15,6 @@ use ProxyManagerTestAsset\EmptyClass;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator
  * @group Coverage
  */
@@ -26,9 +23,6 @@ class UnsetPropertiesGeneratorTest extends TestCase
     /**
      * @dataProvider classNamesProvider
      *
-     * @param string $className
-     * @param string $expectedCode
-     * @param string $instanceName
      */
     public function testGeneratedCode(string $className, string $expectedCode, string $instanceName) : void
     {

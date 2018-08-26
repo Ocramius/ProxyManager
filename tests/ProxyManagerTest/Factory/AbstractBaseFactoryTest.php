@@ -17,12 +17,10 @@ use ProxyManager\Signature\SignatureCheckerInterface;
 use ReflectionMethod;
 use stdClass;
 use Zend\Code\Generator\ClassGenerator;
+use function class_exists;
 
 /**
  * Tests for {@see \ProxyManager\Factory\AbstractBaseFactory}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @covers \ProxyManager\Factory\AbstractBaseFactory
  * @group Coverage
@@ -32,38 +30,26 @@ class AbstractBaseFactoryTest extends TestCase
     /**
      * Note: we mock the class in order to assert on the abstract method usage
      *
-     * @var \ProxyManager\Factory\AbstractBaseFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractBaseFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 
-    /**
-     * @var \ProxyManager\ProxyGenerator\ProxyGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ProxyGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $generator;
 
-    /**
-     * @var \ProxyManager\Inflector\ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $classNameInflector;
 
-    /**
-     * @var \ProxyManager\GeneratorStrategy\GeneratorStrategyInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var GeneratorStrategyInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $generatorStrategy;
 
-    /**
-     * @var AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $proxyAutoloader;
 
-    /**
-     * @var \ProxyManager\Signature\SignatureCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var SignatureCheckerInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $signatureChecker;
 
-    /**
-     * @var \ProxyManager\Signature\ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
     /**

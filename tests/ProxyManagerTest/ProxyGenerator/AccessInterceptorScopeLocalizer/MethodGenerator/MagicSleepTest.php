@@ -14,9 +14,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicSleep}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @group Coverage
  */
 class MagicSleepTest extends TestCase
@@ -26,10 +23,10 @@ class MagicSleepTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection         = new ReflectionClass(EmptyClass::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $reflection = new ReflectionClass(EmptyClass::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
@@ -51,10 +48,10 @@ class MagicSleepTest extends TestCase
      */
     public function testBodyStructureWithInheritedMethod() : void
     {
-        $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
-        /* @var $prefixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /* @var $suffixInterceptors PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));

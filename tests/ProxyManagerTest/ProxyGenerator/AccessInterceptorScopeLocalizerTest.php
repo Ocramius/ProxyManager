@@ -15,9 +15,6 @@ use Zend\Code\Generator\ClassGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator
  * @group Coverage
  */

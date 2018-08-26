@@ -8,12 +8,10 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
+use function strpos;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy}
- *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  *
  * @group Coverage
  */

@@ -16,9 +16,6 @@ use ReflectionClass;
 /**
  * Tests for {@see \ProxyManager\Exception\InvalidProxiedClassException}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Exception\InvalidProxiedClassException
  * @group Coverage
  */

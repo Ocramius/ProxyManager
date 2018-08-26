@@ -17,9 +17,6 @@ use ReflectionProperty;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\Properties}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\Util\Properties
  * @group Coverage
  */
@@ -219,7 +216,8 @@ class PropertiesTest extends TestCase
         self::assertArrayNotHasKey("\0*\0protectedProperty0", $filteredProperties->getInstanceProperties());
     }
 
-    public function propertiesToSkipFixture()
+    /** @return string[][] */
+    public function propertiesToSkipFixture() : array
     {
         return [
             ['publicProperty0'],

@@ -7,34 +7,34 @@ namespace ProxyManager\GeneratorStrategy;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use Zend\Code\Generator\ClassGenerator;
+use function assert;
+use function file_put_contents;
+use function is_string;
+use function rename;
+use function restore_error_handler;
+use function set_error_handler;
+use function tempnam;
+use function trim;
+use function unlink;
 
 /**
  * Generator strategy that writes the generated classes to disk while generating them
  *
  * {@inheritDoc}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
 {
-    /**
-     * @var \ProxyManager\FileLocator\FileLocatorInterface
-     */
+    /** @var FileLocatorInterface */
     protected $fileLocator;
 
-    /**
-     * @var callable
-     */
+    /** @var callable */
     private $emptyErrorHandler;
 
-    /**
-     * @param \ProxyManager\FileLocator\FileLocatorInterface $fileLocator
-     */
     public function __construct(FileLocatorInterface $fileLocator)
     {
         $this->fileLocator       = $fileLocator;
-        $this->emptyErrorHandler = function () {
+        $this->emptyErrorHandler = function () : void {
         };
     }
 
@@ -67,8 +67,6 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      * Writes the source file in such a way that race conditions are avoided when the same file is written
      * multiple times in a short time period
      *
-     * @param string $source
-     * @param string $location
      *
      * @throws FileNotWritableException
      */

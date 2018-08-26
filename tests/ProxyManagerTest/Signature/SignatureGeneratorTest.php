@@ -10,17 +10,12 @@ use ProxyManager\Signature\SignatureGenerator;
 /**
  * Tests for {@see \ProxyManager\Signature\SignatureGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\Signature\SignatureGenerator
  * @group Coverage
  */
 class SignatureGeneratorTest extends TestCase
 {
-    /**
-     * @var SignatureGenerator
-     */
+    /** @var SignatureGenerator */
     private $signatureGenerator;
 
     /**
@@ -28,12 +23,11 @@ class SignatureGeneratorTest extends TestCase
      */
     protected function setUp()
     {
-        $this->signatureGenerator = new SignatureGenerator;
+        $this->signatureGenerator = new SignatureGenerator();
     }
 
     /**
-     * @param array  $parameters
-     * @param string $expected
+     * @param string[][] $parameters
      *
      * @dataProvider signatures
      */
@@ -43,8 +37,7 @@ class SignatureGeneratorTest extends TestCase
     }
 
     /**
-     * @param array  $parameters
-     * @param string $expected
+     * @param string[][] $parameters
      *
      * @dataProvider signatureKeys
      */
@@ -53,37 +46,34 @@ class SignatureGeneratorTest extends TestCase
         self::assertSame($expected, $this->signatureGenerator->generateSignatureKey($parameters));
     }
 
+    /** @return string[][]|string[][][] */
     public function signatures() : array
     {
         return [
             [
                 [],
-                'YTowOnt9'
+                'YTowOnt9',
             ],
             [
                 ['foo' => 'bar'],
-                'YToxOntzOjM6ImZvbyI7czozOiJiYXIiO30='
+                'YToxOntzOjM6ImZvbyI7czozOiJiYXIiO30=',
             ],
             [
                 ['foo' => 'bar', 'baz' => 'tab'],
-                'YToyOntzOjM6ImZvbyI7czozOiJiYXIiO3M6MzoiYmF6IjtzOjM6InRhYiI7fQ=='
+                'YToyOntzOjM6ImZvbyI7czozOiJiYXIiO3M6MzoiYmF6IjtzOjM6InRhYiI7fQ==',
             ],
             [
                 ['bar'],
-                'YToxOntpOjA7czozOiJiYXIiO30='
+                'YToxOntpOjA7czozOiJiYXIiO30=',
             ],
             [
                 ['bar', 'baz'],
-                'YToyOntpOjA7czozOiJiYXIiO2k6MTtzOjM6ImJheiI7fQ=='
+                'YToyOntpOjA7czozOiJiYXIiO2k6MTtzOjM6ImJheiI7fQ==',
             ],
         ];
     }
 
-    /**
-     * Data provider.
-     *
-     * @return array[]
-     */
+    /** @return string[][]|string[][][] */
     public function signatureKeys() : array
     {
         return [

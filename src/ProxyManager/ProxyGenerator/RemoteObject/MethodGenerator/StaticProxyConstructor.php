@@ -15,9 +15,6 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * The `staticProxyConstructor` implementation for remote object proxies
  *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class StaticProxyConstructor extends MethodGenerator
 {

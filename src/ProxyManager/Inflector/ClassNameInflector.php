@@ -5,38 +5,29 @@ declare(strict_types=1);
 namespace ProxyManager\Inflector;
 
 use ProxyManager\Inflector\Util\ParameterHasher;
+use function ltrim;
+use function strlen;
+use function strrpos;
+use function substr;
 
 /**
  * {@inheritDoc}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 final class ClassNameInflector implements ClassNameInflectorInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $proxyNamespace;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $proxyMarkerLength;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $proxyMarker;
 
-    /**
-     * @var \ProxyManager\Inflector\Util\ParameterHasher
-     */
+    /** @var ParameterHasher */
     private $parameterHasher;
 
-    /**
-     * @param string $proxyNamespace
-     */
     public function __construct(string $proxyNamespace)
     {
         $this->proxyNamespace    = $proxyNamespace;
@@ -51,8 +42,9 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     public function getUserClassName(string $className) : string
     {
         $className = ltrim($className, '\\');
+        $position  = strrpos($className, $this->proxyMarker);
 
-        if (false === $position = strrpos($className, $this->proxyMarker)) {
+        if ($position === false) {
             return $className;
         }
 
@@ -79,6 +71,6 @@ final class ClassNameInflector implements ClassNameInflectorInterface
      */
     public function isProxyClassName(string $className) : bool
     {
-        return false !== strrpos($className, $this->proxyMarker);
+        return strrpos($className, $this->proxyMarker) !== false;
     }
 }

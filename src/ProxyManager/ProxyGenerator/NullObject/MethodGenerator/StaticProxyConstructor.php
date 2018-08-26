@@ -8,12 +8,13 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
+use Zend\Code\Generator\Exception\InvalidArgumentException;
+use function array_map;
+use function implode;
 
 /**
  * The `staticProxyConstructor` implementation for null object proxies
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 class StaticProxyConstructor extends MethodGenerator
 {
@@ -22,7 +23,7 @@ class StaticProxyConstructor extends MethodGenerator
      *
      * @param ReflectionClass $originalClass Reflection of the class to proxy
      *
-     * @throws \Zend\Code\Generator\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(ReflectionClass $originalClass)
     {

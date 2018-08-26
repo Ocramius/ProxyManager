@@ -16,9 +16,6 @@ use Zend\Code\Generator\ClassGenerator;
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator}
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
- *
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator
  * @group Coverage
  */

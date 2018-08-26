@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\Util;
 
+use function array_map;
+use function implode;
+use function reset;
+use function sprintf;
+use function var_export;
+
 /**
  * Generates code necessary to unset all the given properties from a particular given instance string name
  *
- * @author Marco Pivetta <ocramius@gmail.com>
- * @license MIT
  */
 final class UnsetPropertiesGenerator
 {
+    /** @var string */
     private static $closureTemplate = <<<'PHP'
 \Closure::bind(function (\%s $instance) {
     %s
@@ -32,7 +37,7 @@ PHP;
             return '';
         }
 
-        return  self::generateUnsetStatement($accessibleProperties, $instanceName) . "\n\n";
+        return self::generateUnsetStatement($accessibleProperties, $instanceName) . "\n\n";
     }
 
     private static function generateUnsetPrivatePropertiesCode(Properties $properties, string $instanceName) : string
@@ -48,7 +53,7 @@ PHP;
         /** @var \ReflectionProperty[] $privateProperties */
         foreach ($groups as $privateProperties) {
             /** @var \ReflectionProperty $firstProperty */
-            $firstProperty  = reset($privateProperties);
+            $firstProperty = reset($privateProperties);
 
             $unsetClosureCalls[] = self::generateUnsetClassPrivatePropertiesBlock(
                 $firstProperty->getDeclaringClass(),
@@ -60,6 +65,7 @@ PHP;
         return implode("\n\n", $unsetClosureCalls) . "\n\n";
     }
 
+    /** @param \ReflectionProperty[] $properties */
     private static function generateUnsetClassPrivatePropertiesBlock(
         \ReflectionClass $declaringClass,
         array $properties,
@@ -77,6 +83,7 @@ PHP;
         );
     }
 
+    /** @param \ReflectionProperty[] $properties */
     private static function generateUnsetStatement(array $properties, string $instanceName) : string
     {
         return 'unset('
