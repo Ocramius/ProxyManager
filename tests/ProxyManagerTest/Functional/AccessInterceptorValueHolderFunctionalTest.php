@@ -27,6 +27,7 @@ use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
+use function array_values;
 use function call_user_func_array;
 use function get_class;
 use function random_int;
@@ -54,10 +55,12 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($className);
 
         /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $callback = [$proxy, $method];
 
+        self::assertInternalType('callable', $callback);
         self::assertSame($instance, $proxy->getWrappedValueHolderValue());
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, $callback(...array_values($params)));
 
         /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
@@ -73,7 +76,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, $callback(...array_values($params)));
 
         $random = uniqid('', true);
 
@@ -86,7 +89,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, $callback(...array_values($params)));
     }
 
     /**
@@ -105,7 +108,11 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($className);
 
         /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $callback = [$proxy, $method];
+
+        self::assertInternalType('callable', $callback);
+
         /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
@@ -120,7 +127,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($expectedValue, $callback(...array_values($params)));
 
         $random = uniqid('', true);
 
@@ -133,7 +140,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
             }
         );
 
-        self::assertSame($random, call_user_func_array([$proxy, $method], $params));
+        self::assertSame($random, $callback(...array_values($params)));
     }
 
     /**
@@ -151,9 +158,11 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
     ) : void {
         $proxyName = $this->generateProxy($className);
         /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
+        $proxy    = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
+        $callback = [$proxy, $method];
 
-        self::assertSame($expectedValue, call_user_func_array([$proxy, $method], $params));
+        self::assertInternalType('callable', $callback);
+        self::assertSame($expectedValue, $callback(...array_values($params)));
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
 
@@ -173,11 +182,13 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxyName = $this->generateProxy($className);
 
         /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy  = $proxyName::staticProxyConstructor($instance);
-        $cloned = clone $proxy;
+        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $cloned   = clone $proxy;
+        $callback = [$proxy, $method];
 
+        self::assertInternalType('callable', $callback);
         self::assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
-        self::assertSame($expectedValue, call_user_func_array([$cloned, $method], $params));
+        self::assertSame($expectedValue, $callback(...array_values($params)));
         self::assertEquals($instance, $cloned->getWrappedValueHolderValue());
     }
 
@@ -516,7 +527,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $propertyName
     ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
-        /** @var OtherObjectAccessClass|AccessInterceptorValueHolderInterface $proxy */
+        /** @var AccessInterceptorValueHolderInterface $proxy */
         $proxy = $proxyName::staticProxyConstructor($realInstance);
 
         /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
@@ -554,7 +565,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $propertyName
     ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
-        /** @var OtherObjectAccessClass|AccessInterceptorValueHolderInterface $proxy */
+        /** @var AccessInterceptorValueHolderInterface $proxy */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
 
         /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
@@ -593,7 +604,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $propertyName
     ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
-        /** @var OtherObjectAccessClass|AccessInterceptorValueHolderInterface $proxy */
+        /** @var AccessInterceptorValueHolderInterface $proxy */
         $proxy = clone $proxyName::staticProxyConstructor($realInstance);
 
         /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
