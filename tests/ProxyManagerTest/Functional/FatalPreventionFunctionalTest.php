@@ -22,7 +22,7 @@ use ReflectionClass;
 use ReflectionException;
 use function array_filter;
 use function array_map;
-use function call_user_func_array;
+use function array_merge;
 use function get_declared_classes;
 use function realpath;
 use function strpos;
@@ -73,9 +73,9 @@ class FatalPreventionFunctionalTest extends TestCase
     {
         $that = $this;
 
-        return call_user_func_array(
-            'array_merge',
-            array_map(
+        return array_merge(
+            [],
+            ...array_map(
                 function ($generator) use ($that) : array {
                     return array_map(
                         function ($class) use ($generator) : array {
@@ -124,6 +124,8 @@ class FatalPreventionFunctionalTest extends TestCase
                 }
 
                 $realPath = realpath($fileName);
+
+                self::assertInternalType('string', $realPath);
 
                 foreach ($skippedPaths as $skippedPath) {
                     if (strpos($realPath, $skippedPath) === 0) {
