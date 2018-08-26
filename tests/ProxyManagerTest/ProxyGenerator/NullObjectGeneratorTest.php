@@ -18,7 +18,6 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
 use ReflectionMethod;
-use function call_user_func;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator}
@@ -70,7 +69,10 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
                 continue;
             }
 
-            self::assertNull(call_user_func([$proxy, $method->getName()]));
+            $callback = [$proxy, $method->getName()];
+
+            self::assertInternalType('callable', $callback);
+            self::assertNull($callback());
         }
     }
 
