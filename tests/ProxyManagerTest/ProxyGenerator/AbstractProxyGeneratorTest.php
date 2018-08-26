@@ -52,7 +52,10 @@ abstract class AbstractProxyGeneratorTest extends TestCase
         if ($originalClass->isInterface()) {
             self::assertTrue($generatedReflection->implementsInterface($className));
         } else {
-            self::assertSame($originalClass->getName(), $generatedReflection->getParentClass()->getName());
+            $parentClass = $generatedReflection->getParentClass();
+
+            self::assertInstanceOf(ReflectionClass::class, $parentClass);
+            self::assertSame($originalClass->getName(), $parentClass->getName());
         }
 
         self::assertSame($generatedClassName, $generatedReflection->getName());
