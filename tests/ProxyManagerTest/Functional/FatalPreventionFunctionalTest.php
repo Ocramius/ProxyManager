@@ -104,9 +104,9 @@ class FatalPreventionFunctionalTest extends TestCase
     public function getProxyTestedClasses() : array
     {
         $skippedPaths = [
-            realpath(__DIR__ . '/../../src'),
-            realpath(__DIR__ . '/../../vendor'),
-            realpath(__DIR__ . '/../../tests/ProxyManagerTest'),
+            realpath(__DIR__ . '/../../../src'),
+            realpath(__DIR__ . '/../../../vendor'),
+            realpath(__DIR__ . '/../../ProxyManagerTest'),
         ];
 
         return array_filter(
@@ -128,6 +128,8 @@ class FatalPreventionFunctionalTest extends TestCase
                 self::assertInternalType('string', $realPath);
 
                 foreach ($skippedPaths as $skippedPath) {
+                    self::assertInternalType('string', $skippedPath);
+
                     if (strpos($realPath, $skippedPath) === 0) {
                         // skip classes defined within ProxyManager, vendor or the test suite
                         return false;
