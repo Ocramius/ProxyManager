@@ -11,11 +11,15 @@ use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use function class_exists;
+use function clearstatcache;
+use function decoct;
+use function fileperms;
 use function mkdir;
 use function rmdir;
 use function scandir;
 use function strpos;
 use function sys_get_temp_dir;
+use function umask;
 use function uniqid;
 
 /**
