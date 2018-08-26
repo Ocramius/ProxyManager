@@ -30,7 +30,7 @@ script:
   - php examples/ghost-object-skipped-properties.php
   - php examples/smart-reference.php
   - php examples/virtual-proxy.php
-  - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/
+  - ./vendor/bin/phpcs
   - ./vendor/bin/phpstan analyse
   - ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=99 --min-covered-msi=100
 
