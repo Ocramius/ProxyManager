@@ -68,7 +68,7 @@ class StaticProxyConstructorTest extends TestCase
         self::assertSame(
             'static $reflection;
 
-$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);
+$reflection = $reflection ?? $reflection = new \ReflectionClass(__CLASS__);
 $instance   = $reflection->newInstanceWithoutConstructor();
 
 $instance->bindProxyProperties($localizedObject, $prefixInterceptors, $suffixInterceptors);

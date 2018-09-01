@@ -51,7 +51,7 @@ class StaticProxyConstructor extends MethodGenerator
         );
         $this->setBody(
             'static $reflection;' . "\n\n"
-            . '$reflection = $reflection ?: $reflection = new \ReflectionClass(__CLASS__);' . "\n"
+            . '$reflection = $reflection ?? new \ReflectionClass(__CLASS__);' . "\n"
             . '$instance   = $reflection->newInstanceWithoutConstructor();' . "\n\n"
             . '$instance->bindProxyProperties($localizedObject, $prefixInterceptors, $suffixInterceptors);' . "\n\n"
             . 'return $instance;'
