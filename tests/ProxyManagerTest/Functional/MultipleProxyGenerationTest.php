@@ -25,6 +25,8 @@ use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\ClassWithTypedMagicMethods;
+use ProxyManagerTestAsset\ClassWithVoidReturningMethods;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\IterableTypeHintClass;
@@ -111,6 +113,8 @@ class MultipleProxyGenerationTest extends TestCase
             [ClassWithCollidingPrivateInheritedProperties::class],
             [ClassWithMethodWithVariadicFunction::class],
             [ClassWithMethodWithByRefVariadicFunction::class],
+            [ClassWithVoidReturningMethods::class],
+            [ClassWithTypedMagicMethods::class],
             [ScalarTypeHintedClass::class],
             [IterableTypeHintClass::class],
             [ObjectTypeHintClass::class],
