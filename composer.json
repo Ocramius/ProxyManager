@@ -43,15 +43,15 @@
         "zendframework/zend-soap":     "To have the Soap adapter (Remote Object feature)"
     },
     "autoload": {
-        "psr-0": {
-            "ProxyManager\\": "src"
+        "psr-4": {
+            "ProxyManager\\": "src/ProxyManager"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "ProxyManagerBench\\": "tests",
-            "ProxyManagerTest\\": "tests",
-            "ProxyManagerTestAsset\\": "tests"
+        "psr-4": {
+            "ProxyManagerBench\\": "tests/ProxyManagerBench",
+            "ProxyManagerTest\\": "tests/ProxyManagerTest",
+            "ProxyManagerTestAsset\\": "tests/ProxyManagerTestAsset"
         }
     },
     "extra": {
