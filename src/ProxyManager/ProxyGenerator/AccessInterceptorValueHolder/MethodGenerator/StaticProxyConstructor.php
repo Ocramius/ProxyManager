@@ -56,7 +56,7 @@ class StaticProxyConstructor extends MethodGenerator
         $this->setBody(
             'static $reflection;' . "\n\n"
             . '$reflection = $reflection ?? new \ReflectionClass(__CLASS__);' . "\n"
-            . '$instance = $reflection->newInstanceWithoutConstructor();' . "\n\n"
+            . '$instance   = $reflection->newInstanceWithoutConstructor();' . "\n\n"
             . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'instance')
             . '$instance->' . $valueHolder->getName() . " = \$wrappedObject;\n"
             . '$instance->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
