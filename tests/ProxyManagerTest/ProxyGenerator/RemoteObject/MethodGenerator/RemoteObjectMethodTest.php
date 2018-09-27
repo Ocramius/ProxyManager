@@ -42,7 +42,7 @@ class RemoteObjectMethodTest extends TestCase
         self::assertCount(2, $method->getParameters());
         self::assertSame(
             '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicByReferenceParameterMethod\', array($param, $byRefParam));'
+            . '\'publicByReferenceParameterMethod\', \func_get_args());'
             . "\n\nreturn \$return;",
             $method->getBody()
         );
@@ -69,7 +69,7 @@ class RemoteObjectMethodTest extends TestCase
         self::assertCount(1, $method->getParameters());
         self::assertSame(
             '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicArrayHintedMethod\', array($param));'
+            . '\'publicArrayHintedMethod\', \func_get_args());'
             . "\n\nreturn \$return;",
             $method->getBody()
         );
@@ -96,7 +96,7 @@ class RemoteObjectMethodTest extends TestCase
         self::assertCount(0, $method->getParameters());
         self::assertSame(
             '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicMethod\', array());'
+            . '\'publicMethod\', \func_get_args());'
             . "\n\nreturn \$return;",
             $method->getBody()
         );

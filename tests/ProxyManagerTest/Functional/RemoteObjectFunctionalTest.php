@@ -19,6 +19,7 @@ use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\BazServiceInterface;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
+use ProxyManagerTestAsset\RemoteProxy\VariadicArgumentsServiceInterface;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use Zend\Server\Client;
@@ -193,6 +194,12 @@ class RemoteObjectFunctionalTest extends TestCase
                 'selfHintMethod',
                 [$selfHintParam],
                 $selfHintParam,
+            ],
+            [
+                VariadicArgumentsServiceInterface::class,
+                'method',
+                ['aaa', 1, 2, 3, 4, 5],
+                true,
             ],
         ];
     }
