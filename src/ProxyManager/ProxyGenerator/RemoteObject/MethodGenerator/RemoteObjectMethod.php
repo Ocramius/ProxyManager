@@ -7,24 +7,16 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionClass;
-use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
-use function array_map;
-use function array_values;
-use function implode;
 use function var_export;
 
 /**
  * Method decorator for remote objects
- *
  */
 class RemoteObjectMethod extends MethodGenerator
 {
-    /**
-     *
-     * @return self|static
-     */
+    /** @return self|static */
     public static function generateMethod(
         MethodReflection $originalMethod,
         PropertyGenerator $adapterProperty,
