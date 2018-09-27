@@ -32,17 +32,11 @@ class RemoteObjectMethod extends MethodGenerator
     ) : self {
         /** @var self $method */
         $method = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
-        $list   = array_values(array_map(
-            function (ParameterGenerator $parameter) : string {
-                return '$' . $parameter->getName();
-            },
-            $method->getParameters()
-        ));
 
         $method->setBody(
             '$return = $this->' . $adapterProperty->getName()
             . '->call(' . var_export($originalClass->getName(), true)
-            . ', ' . var_export($originalMethod->getName(), true) . ', array(' . implode(', ', $list) . '));' . "\n\n"
+            . ', ' . var_export($originalMethod->getName(), true) . ', \func_get_args());' . "\n\n"
             . ProxiedMethodReturnExpression::generate('$return', $originalMethod)
         );
 
