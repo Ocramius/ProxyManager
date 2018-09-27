@@ -7,22 +7,16 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionClass;
-use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
+use function var_export;
 
 /**
  * Method decorator for remote objects
- *
- * @author Vincent Blanchon <blanchon.vincent@gmail.com>
- * @license MIT
  */
 class RemoteObjectMethod extends MethodGenerator
 {
     /**
-     * @param \Zend\Code\Reflection\MethodReflection $originalMethod
-     * @param \Zend\Code\Generator\PropertyGenerator $adapterProperty
-     * @param \ReflectionClass                       $originalClass
      *
      * @return self|static
      */
@@ -31,19 +25,13 @@ class RemoteObjectMethod extends MethodGenerator
         PropertyGenerator $adapterProperty,
         ReflectionClass $originalClass
     ) : self {
-        /* @var $method self */
-        $method        = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
-        $list          = array_values(array_map(
-            function (ParameterGenerator $parameter) : string {
-                return '$' . $parameter->getName();
-            },
-            $method->getParameters()
-        ));
+        /** @var self $method */
+        $method = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
 
         $method->setBody(
             '$return = $this->' . $adapterProperty->getName()
             . '->call(' . var_export($originalClass->getName(), true)
-            . ', ' . var_export($originalMethod->getName(), true) . ', array('. implode(', ', $list) .'));' . "\n\n"
+            . ', ' . var_export($originalMethod->getName(), true) . ', \func_get_args());' . "\n\n"
             . ProxiedMethodReturnExpression::generate('$return', $originalMethod)
         );
 
