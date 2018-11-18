@@ -30,6 +30,7 @@ use function uniqid;
  *
  * @group Coverage
  * @covers \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy
+ * @runTestsInSeparateProcesses
  *
  * Note: this test generates temporary files that are not deleted
  */
