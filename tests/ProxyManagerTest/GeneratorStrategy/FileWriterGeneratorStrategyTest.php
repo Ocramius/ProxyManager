@@ -10,10 +10,13 @@ use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
+use const PATH_SEPARATOR;
 use function class_exists;
 use function clearstatcache;
 use function decoct;
 use function fileperms;
+use function ini_set;
+use function is_dir;
 use function mkdir;
 use function rmdir;
 use function scandir;
@@ -32,12 +35,26 @@ use function uniqid;
  */
 class FileWriterGeneratorStrategyTest extends TestCase
 {
+    /** @var string */
+    private $tempDir;
+
+    protected function setUp() : void
+    {
+        $this->tempDir = sys_get_temp_dir() . '/' . self::class;
+
+        if (! is_dir($this->tempDir)) {
+            mkdir($this->tempDir);
+        }
+
+        ini_set('open_basedir', __DIR__ . '/../../..' . PATH_SEPARATOR . $this->tempDir);
+    }
+
     public function testGenerate() : void
     {
         /** @var FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject $locator */
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
-        $tmpFile   = sys_get_temp_dir() . '/' . uniqid('FileWriterGeneratorStrategyTest', true) . '.php';
+        $tmpFile   = $this->tempDir . '/' . uniqid('FileWriterGeneratorStrategyTest', true) . '.php';
         $namespace = 'Foo';
         $className = UniqueIdentifierGenerator::getIdentifier('Bar');
         $fqcn      = $namespace . '\\' . $className;
@@ -72,8 +89,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
 
     public function testGenerateWillFailIfTmpFileCannotBeWrittenToDisk() : void
     {
-        $tmpDirPath = sys_get_temp_dir() . '/' . uniqid('nonWritable', true);
-
+        $tmpDirPath = $this->tempDir . '/' . uniqid('nonWritable', true);
         mkdir($tmpDirPath, 0555, true);
 
         /** @var FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject $locator */
@@ -99,7 +115,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
         /** @var FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject $locator */
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
-        $tmpFile   = sys_get_temp_dir() . '/' . uniqid('FileWriterGeneratorStrategyFailedFileMoveTest', true) . '.php';
+        $tmpFile   = $this->tempDir . '/' . uniqid('FileWriterGeneratorStrategyFailedFileMoveTest', true) . '.php';
         $namespace = 'Foo';
         $className = UniqueIdentifierGenerator::getIdentifier('Bar');
         $fqcn      = $namespace . '\\' . $className;
@@ -118,7 +134,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
 
     public function testWhenFailingAllTemporaryFilesAreRemoved() : void
     {
-        $tmpDirPath = sys_get_temp_dir() . '/' . uniqid('noTempFilesLeftBehind', true);
+        $tmpDirPath = $this->tempDir . '/' . uniqid('noTempFilesLeftBehind', true);
 
         mkdir($tmpDirPath);
 
