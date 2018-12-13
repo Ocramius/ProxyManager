@@ -26,4 +26,16 @@ class FileNotWritableExceptionTest extends TestCase
             $exception->getMessage()
         );
     }
+
+    public function testFromNotWritableDirectory() : void
+    {
+        $exception = FileNotWritableException::fromNotWritableDirectory('/tmp/a');
+
+        self::assertInstanceOf(FileNotWritableException::class, $exception);
+        self::assertSame(
+            'Could not create temp file in directory "/tmp/a" '
+            . 'either the directory does not exist, or it is not writable',
+            $exception->getMessage()
+        );
+    }
 }
