@@ -41,7 +41,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
 
     protected function setUp() : void
     {
-        $this->tempDir = sys_get_temp_dir() . '/' . self::class;
+        $this->tempDir = sys_get_temp_dir() . '/' . uniqid('FileWriterGeneratorStrategyTest', true);
 
         if (! is_dir($this->tempDir)) {
             mkdir($this->tempDir);
