@@ -22,9 +22,12 @@ This library aims to provide abstraction for generating various kinds of
 You can learn about the proxy pattern and how to use the **ProxyManager** in the [docs](docs), which are also
 [compiled to HTML](http://ocramius.github.io/ProxyManager).
 
-## Help/Support
+## Professional Support
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ocramius/ProxyManager?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[Professionally supported `ocramius/proxy-manager` is available through Tidelift](https://tidelift.com/subscription/pkg/packagist-ocramius-proxy-manager?utm_source=packagist-ocramius-proxy-manager&utm_medium=referral&utm_campaign=readme) .
+
+You can also contact the maintainer at ocramius@gmail.com for looking into issues related to this package
+in your private projects.
 
 ## Installation
 
