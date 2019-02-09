@@ -22,4 +22,13 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
             $toPath
         ));
     }
+
+    public static function fromNotWritableDirectory(string $directory) : self
+    {
+        return new self(sprintf(
+            'Could not create temp file in directory "%s" '
+            . 'either the directory does not exist, or it is not writable',
+            $directory
+        ));
+    }
 }
