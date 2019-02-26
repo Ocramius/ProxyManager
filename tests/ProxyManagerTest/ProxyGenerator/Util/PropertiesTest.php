@@ -10,6 +10,7 @@ use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 use ReflectionProperty;
@@ -51,6 +52,37 @@ class PropertiesTest extends TestCase
         self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty0"]);
         self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty1"]);
         self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty2"]);
+    }
+
+    public function testGetNullablePublicProperties() : void
+    {
+        $properties       = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class));
+        $publicProperties = $properties->nullablePublicProperties();
+
+        self::assertCount(16, $publicProperties);
+        self::assertSame(
+            [
+                'publicUnTypedProperty',
+                'publicUnTypedPropertyWithoutDefaultValue',
+                'publicNullableBoolProperty',
+                'publicNullableBoolPropertyWithoutDefaultValue',
+                'publicNullableIntProperty',
+                'publicNullableIntPropertyWithoutDefaultValue',
+                'publicNullableFloatProperty',
+                'publicNullableFloatPropertyWithoutDefaultValue',
+                'publicNullableStringProperty',
+                'publicNullableStringPropertyWithoutDefaultValue',
+                'publicNullableArrayProperty',
+                'publicNullableArrayPropertyWithoutDefaultValue',
+                'publicNullableIterableProperty',
+                'publicNullableIterablePropertyWithoutDefaultValue',
+                'publicNullableObjectProperty',
+                'publicNullableClassProperty',
+            ],
+            array_values(array_map(static function (ReflectionProperty $property) : string {
+                return $property->getName();
+            }, $publicProperties))
+        );
     }
 
     public function testGetProtectedPropertiesSkipsAbstractMethods() : void

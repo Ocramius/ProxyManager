@@ -61,7 +61,7 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 
         self::assertInstanceOf($className, $proxy);
 
-        foreach (Properties::fromReflectionClass($generatedReflection)->getPublicProperties() as $property) {
+        foreach (Properties::fromReflectionClass($generatedReflection)->nullablePublicProperties() as $property) {
             self::assertNull($proxy->{$property->getName()});
         }
 
