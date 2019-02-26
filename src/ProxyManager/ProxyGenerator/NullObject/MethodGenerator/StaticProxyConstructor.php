@@ -33,7 +33,10 @@ class StaticProxyConstructor extends MethodGenerator
             function (ReflectionProperty $publicProperty) : string {
                 return '$instance->' . $publicProperty->getName() . ' = null;';
             },
-            Properties::fromReflectionClass($originalClass)->nullablePublicProperties()
+            Properties
+                ::fromReflectionClass($originalClass)
+                ->onlyNullableProperties()
+                ->getPublicProperties()
         );
 
         $this->setReturnType($originalClass->getName());

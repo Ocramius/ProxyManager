@@ -88,14 +88,16 @@ final class Properties
         }));
     }
 
-    /** @return ReflectionProperty[] */
-    public function nullablePublicProperties() : array
+    public function onlyNullableProperties() : self
     {
-        return array_filter($this->getPublicProperties(), static function (ReflectionProperty $property) : bool {
-            $type = $property->getType();
+        return new self(array_filter(
+            $this->properties,
+            static function (ReflectionProperty $property) : bool {
+                $type = $property->getType();
 
-            return null === $type || $type->allowsNull();
-        });
+                return null === $type || $type->allowsNull();
+            }
+        ));
     }
 
     /**
