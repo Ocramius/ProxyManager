@@ -107,7 +107,7 @@ PHP;
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->initializer           = $this->createMock(PropertyGenerator::class);
         $this->initMethod            = $this->createMock(MethodGenerator::class);

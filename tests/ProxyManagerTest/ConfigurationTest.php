@@ -28,7 +28,7 @@ class ConfigurationTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->configuration = new Configuration();
     }

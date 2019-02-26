@@ -29,7 +29,7 @@ class BindProxyPropertiesTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $this->suffixInterceptors = $this->createMock(PropertyGenerator::class);

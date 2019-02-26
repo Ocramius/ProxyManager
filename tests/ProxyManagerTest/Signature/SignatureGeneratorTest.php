@@ -21,7 +21,7 @@ class SignatureGeneratorTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->signatureGenerator = new SignatureGenerator();
     }
