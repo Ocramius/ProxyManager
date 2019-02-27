@@ -50,21 +50,18 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will(self::returnValue($this->inflector));
+            ->willReturn($this->inflector);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will(self::returnValue($this->signatureChecker));
+            ->willReturn($this->signatureChecker);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will(self::returnValue($this->classSignatureGenerator));
+            ->willReturn($this->classSignatureGenerator);
     }
 
     /**
@@ -95,7 +92,7 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will(self::returnValue(AccessInterceptorValueHolderMock::class));
+            ->willReturn(AccessInterceptorValueHolderMock::class);
 
         $factory            = new AccessInterceptorValueHolderFactory($this->config);
         $prefixInterceptors = [static function () : void {
@@ -131,8 +128,8 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->createMock(AutoloaderInterface::class);
 
-        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
-        $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
+        $this->config->method('getGeneratorStrategy')->will(self::returnValue($generator));
+        $this->config->method('getProxyAutoloader')->will(self::returnValue($autoloader));
 
         $generator
             ->expects(self::once())
@@ -164,14 +161,14 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will(self::returnValue($proxyClassName));
+            ->willReturn($proxyClassName);
 
         $this
             ->inflector
             ->expects(self::once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will(self::returnValue(EmptyClass::class));
+            ->willReturn(EmptyClass::class);
 
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));

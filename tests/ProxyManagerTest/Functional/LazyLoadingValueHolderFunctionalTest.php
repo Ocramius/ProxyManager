@@ -97,7 +97,7 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
-        self::assertInternalType('callable', $callProxyMethod);
+        self::assertIsCallable($callProxyMethod);
 
         self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
@@ -129,7 +129,7 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
         $callProxyMethod = [$cloned, $method];
         $parameterValues = array_values($params);
 
-        self::assertInternalType('callable', $callProxyMethod);
+        self::assertIsCallable($callProxyMethod);
 
         self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         self::assertEquals($instance, $cloned->getWrappedValueHolderValue());
@@ -385,7 +385,7 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
                 );
         }
 
-        self::assertInternalType('callable', $initializerMatcher);
+        self::assertIsCallable($initializerMatcher);
 
         return static function (
             & $wrappedObject,
@@ -557,7 +557,7 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
 
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
+        self::assertIsCallable($accessor);
         self::assertFalse($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
         self::assertTrue($proxy->isProxyInitialized());

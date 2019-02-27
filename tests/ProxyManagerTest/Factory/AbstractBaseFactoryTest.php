@@ -68,39 +68,33 @@ class AbstractBaseFactoryTest extends TestCase
         $this->classSignatureGenerator = $this->createMock(ClassSignatureGeneratorInterface::class);
 
         $configuration
-            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will(self::returnValue($this->classNameInflector));
+            ->willReturn($this->classNameInflector);
 
         $configuration
-            ->expects(self::any())
             ->method('getGeneratorStrategy')
-            ->will(self::returnValue($this->generatorStrategy));
+            ->willReturn($this->generatorStrategy);
 
         $configuration
-            ->expects(self::any())
             ->method('getProxyAutoloader')
-            ->will(self::returnValue($this->proxyAutoloader));
+            ->willReturn($this->proxyAutoloader);
 
         $configuration
-            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will(self::returnValue($this->signatureChecker));
+            ->willReturn($this->signatureChecker);
 
         $configuration
-            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will(self::returnValue($this->classSignatureGenerator));
+            ->willReturn($this->classSignatureGenerator);
 
         $this
             ->classNameInflector
-            ->expects(self::any())
             ->method('getUserClassName')
-            ->will(self::returnValue('stdClass'));
+            ->willReturn('stdClass');
 
         $this->factory = $this->getMockForAbstractClass(AbstractBaseFactory::class, [$configuration]);
 
-        $this->factory->expects(self::any())->method('getGenerator')->will(self::returnValue($this->generator));
+        $this->factory->method('getGenerator')->willReturn($this->generator);
     }
 
     public function testGeneratesClass() : void
@@ -112,10 +106,9 @@ class AbstractBaseFactoryTest extends TestCase
 
         $this
             ->classNameInflector
-            ->expects(self::any())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will(self::returnValue($generatedClass));
+            ->willReturn($generatedClass);
 
         $this
             ->generatorStrategy

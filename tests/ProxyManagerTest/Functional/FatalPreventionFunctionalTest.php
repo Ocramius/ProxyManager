@@ -47,7 +47,7 @@ class FatalPreventionFunctionalTest extends TestCase
      */
     public function testCodeGeneration(string $generatorClass, string $className) : void
     {
-        $generatedClass    = new ClassGenerator(uniqid('generated'));
+        $generatedClass    = new ClassGenerator(uniqid('generated', true));
         $generatorStrategy = new EvaluatingGeneratorStrategy();
         /** @var ProxyGeneratorInterface $classGenerator */
         $classGenerator          = new $generatorClass();
@@ -125,10 +125,10 @@ class FatalPreventionFunctionalTest extends TestCase
 
                 $realPath = realpath($fileName);
 
-                self::assertInternalType('string', $realPath);
+                self::assertIsString($realPath);
 
                 foreach ($skippedPaths as $skippedPath) {
-                    self::assertInternalType('string', $skippedPath);
+                    self::assertIsString($skippedPath);
 
                     if (strpos($realPath, $skippedPath) === 0) {
                         // skip classes defined within ProxyManager, vendor or the test suite

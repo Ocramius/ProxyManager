@@ -24,7 +24,7 @@ class IsProxyInitializedTest extends TestCase
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $valueHolder->method('getName')->willReturn('bar');
 
         $isProxyInitialized = new IsProxyInitialized($valueHolder);
 

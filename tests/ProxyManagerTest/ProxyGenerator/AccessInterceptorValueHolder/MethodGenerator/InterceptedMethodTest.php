@@ -30,9 +30,9 @@ class InterceptedMethodTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $valueHolder->method('getName')->willReturn('foo');
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $method = InterceptedMethod::generateMethod(
             new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod'),

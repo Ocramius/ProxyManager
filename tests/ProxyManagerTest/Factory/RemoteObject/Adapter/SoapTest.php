@@ -33,7 +33,7 @@ class SoapTest extends TestCase
             ->expects(self::once())
             ->method('call')
             ->with('bar', ['tab' => 'taz'])
-            ->will(self::returnValue('baz'));
+            ->willReturn('baz');
 
         self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }

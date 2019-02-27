@@ -30,9 +30,9 @@ class StaticProxyConstructorTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $valueHolder->method('getName')->willReturn('foo');
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(
@@ -73,9 +73,9 @@ return $instance;',
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $valueHolder->method('getName')->willReturn('foo');
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(EmptyClass::class),
@@ -111,9 +111,9 @@ return $instance;',
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $valueHolder->method('getName')->willReturn('foo');
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(ClassWithMixedProperties::class),

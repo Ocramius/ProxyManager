@@ -24,8 +24,6 @@ class MissingSignatureExceptionTest extends TestCase
             'expected-signature'
         );
 
-        self::assertInstanceOf(MissingSignatureException::class, $exception);
-
         self::assertSame(
             'No signature found for class "'
             . self::class

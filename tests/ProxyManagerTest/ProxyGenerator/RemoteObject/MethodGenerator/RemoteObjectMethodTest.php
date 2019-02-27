@@ -26,7 +26,7 @@ class RemoteObjectMethodTest extends TestCase
     {
         /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
-        $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
+        $adapter->method('getName')->willReturn('adapter');
 
         $reflectionMethod = new MethodReflection(
             BaseClass::class,
@@ -56,7 +56,7 @@ class RemoteObjectMethodTest extends TestCase
     {
         /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
-        $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
+        $adapter->method('getName')->willReturn('adapter');
 
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicArrayHintedMethod');
 
@@ -83,7 +83,7 @@ class RemoteObjectMethodTest extends TestCase
     {
         /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
-        $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
+        $adapter->method('getName')->willReturn('adapter');
 
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicMethod');
 

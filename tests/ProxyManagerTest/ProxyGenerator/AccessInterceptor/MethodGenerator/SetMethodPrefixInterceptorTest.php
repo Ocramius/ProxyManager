@@ -25,7 +25,7 @@ class SetMethodPrefixInterceptorTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffix */
         $suffix = $this->createMock(PropertyGenerator::class);
 
-        $suffix->expects(self::once())->method('getName')->will(self::returnValue('foo'));
+        $suffix->expects(self::once())->method('getName')->willReturn('foo');
 
         $setter = new SetMethodPrefixInterceptor($suffix);
 

@@ -28,8 +28,8 @@ class LazyLoadingMethodInterceptorTest extends TestCase
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $initializer->method('getName')->willReturn('foo');
+        $valueHolder->method('getName')->willReturn('bar');
 
         $reflection = new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = LazyLoadingMethodInterceptor::generateMethod($reflection, $initializer, $valueHolder);
@@ -55,10 +55,10 @@ class LazyLoadingMethodInterceptorTest extends TestCase
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $initializer->method('getName')->willReturn('foo');
+        $valueHolder->method('getName')->willReturn('bar');
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $initializer->method('getName')->willReturn('foo');
 
         $method = LazyLoadingMethodInterceptor::generateMethod($reflectionMethod, $initializer, $valueHolder);
 

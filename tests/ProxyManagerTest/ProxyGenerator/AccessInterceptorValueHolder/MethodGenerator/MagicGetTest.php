@@ -37,10 +37,10 @@ class MagicGetTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
-        $publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
+        $valueHolder->method('getName')->willReturn('bar');
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
+        $publicProperties->method('isEmpty')->willReturn(false);
 
         $magicGet = new MagicGet(
             $reflection,

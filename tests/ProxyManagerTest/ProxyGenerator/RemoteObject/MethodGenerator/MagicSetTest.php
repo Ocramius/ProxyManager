@@ -26,7 +26,7 @@ class MagicSetTest extends TestCase
         $reflection = new ReflectionClass(EmptyClass::class);
         /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
-        $adapter->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $adapter->method('getName')->willReturn('foo');
 
         $magicGet = new MagicSet($reflection, $adapter);
 

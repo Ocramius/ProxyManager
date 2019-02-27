@@ -30,8 +30,8 @@ class MagicCloneTest extends TestCase
         /** @var MethodGenerator|MockObject $initCall */
         $initCall = $this->createMock(MethodGenerator::class);
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $initCall->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $initializer->method('getName')->willReturn('foo');
+        $initCall->method('getName')->willReturn('bar');
 
         $magicClone = new MagicClone($reflection, $initializer, $initCall);
 

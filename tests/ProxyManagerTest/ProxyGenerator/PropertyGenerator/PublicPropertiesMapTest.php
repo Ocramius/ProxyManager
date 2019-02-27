@@ -26,7 +26,7 @@ class PublicPropertiesMapTest extends TestCase
             Properties::fromReflectionClass(new ReflectionClass(EmptyClass::class))
         );
 
-        self::assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
+        self::assertIsArray($publicProperties->getDefaultValue()->getValue());
         self::assertEmpty($publicProperties->getDefaultValue()->getValue());
         self::assertTrue($publicProperties->isStatic());
         self::assertSame('private', $publicProperties->getVisibility());
@@ -39,7 +39,7 @@ class PublicPropertiesMapTest extends TestCase
             Properties::fromReflectionClass(new ReflectionClass(ClassWithPublicProperties::class))
         );
 
-        self::assertInternalType('array', $publicProperties->getDefaultValue()->getValue());
+        self::assertIsArray($publicProperties->getDefaultValue()->getValue());
         self::assertCount(10, $publicProperties->getDefaultValue()->getValue());
         self::assertTrue($publicProperties->isStatic());
         self::assertSame('private', $publicProperties->getVisibility());

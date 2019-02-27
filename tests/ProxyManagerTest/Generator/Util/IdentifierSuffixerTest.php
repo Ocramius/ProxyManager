@@ -56,7 +56,7 @@ class IdentifierSuffixerTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public function testGeneratedIdentifierSuffix(string $name) : void
+    public static function testGeneratedIdentifierSuffix(string $name) : void
     {
         // 5 generated characters are enough to keep idiots from tampering with these properties "the easy way"
         self::assertGreaterThan(5, strlen(IdentifierSuffixer::getIdentifier($name)));
@@ -67,7 +67,7 @@ class IdentifierSuffixerTest extends TestCase
      *
      * @return string[][]
      */
-    public function getBaseIdentifierNames() : array
+    public static function getBaseIdentifierNames() : array
     {
         return [
             [''],

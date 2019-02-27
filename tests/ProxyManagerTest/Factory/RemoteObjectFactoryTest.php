@@ -51,21 +51,18 @@ class RemoteObjectFactoryTest extends TestCase
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will(self::returnValue($this->inflector));
+            ->willReturn($this->inflector);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will(self::returnValue($this->signatureChecker));
+            ->willReturn($this->signatureChecker);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will(self::returnValue($this->classSignatureGenerator));
+            ->willReturn($this->classSignatureGenerator);
     }
 
     /**
@@ -82,7 +79,7 @@ class RemoteObjectFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with(BaseInterface::class)
-            ->will(self::returnValue(RemoteObjectMock::class));
+            ->willReturn(RemoteObjectMock::class);
 
         /** @var AdapterInterface|MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -108,8 +105,8 @@ class RemoteObjectFactoryTest extends TestCase
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->createMock(AutoloaderInterface::class);
 
-        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
-        $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
+        $this->config->method('getGeneratorStrategy')->willReturn($generator);
+        $this->config->method('getProxyAutoloader')->willReturn($autoloader);
 
         $generator
             ->expects(self::once())
@@ -142,14 +139,14 @@ class RemoteObjectFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with(BaseInterface::class)
-            ->will(self::returnValue($proxyClassName));
+            ->willReturn($proxyClassName);
 
         $this
             ->inflector
             ->expects(self::once())
             ->method('getUserClassName')
             ->with(BaseInterface::class)
-            ->will(self::returnValue('stdClass'));
+            ->willReturn('stdClass');
 
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
@@ -157,8 +154,6 @@ class RemoteObjectFactoryTest extends TestCase
         /** @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
-        $proxy   = $factory->createProxy(BaseInterface::class);
-
-        self::assertInstanceOf($proxyClassName, $proxy);
+        $factory->createProxy(BaseInterface::class);
     }
 }

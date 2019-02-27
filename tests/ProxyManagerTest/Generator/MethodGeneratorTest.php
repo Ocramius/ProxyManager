@@ -162,7 +162,7 @@ class MethodGeneratorTest extends TestCase
     /**
      * @return string[][]
      */
-    public function returnTypeHintsProvider() : array
+    public static function returnTypeHintsProvider() : array
     {
         return [
             ['returnString', 'string'],

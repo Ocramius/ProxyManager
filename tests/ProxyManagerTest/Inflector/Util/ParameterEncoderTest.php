@@ -32,7 +32,7 @@ class ParameterEncoderTest extends TestCase
     }
 
     /** @return mixed[][] */
-    public function getParameters() : array
+    public static function getParameters() : array
     {
         return [
             [[]],

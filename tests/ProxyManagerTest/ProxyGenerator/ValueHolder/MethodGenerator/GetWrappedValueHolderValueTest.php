@@ -25,7 +25,7 @@ class GetWrappedValueHolderValueTest extends TestCase
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->method('getName')->willReturn('foo');
 
         $getter = new GetWrappedValueHolderValue($valueHolder);
 

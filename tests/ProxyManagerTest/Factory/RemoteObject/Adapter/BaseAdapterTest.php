@@ -40,13 +40,13 @@ class BaseAdapterTest extends TestCase
             ->expects(self::once())
             ->method('call')
             ->with('foobarbaz', ['tab' => 'taz'])
-            ->will(self::returnValue('baz'));
+            ->willReturn('baz');
 
         $adapter
             ->expects(self::once())
             ->method('getServiceName')
             ->with('foo', 'bar')
-            ->will(self::returnValue('foobarbaz'));
+            ->willReturn('foobarbaz');
 
         self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
@@ -75,13 +75,13 @@ class BaseAdapterTest extends TestCase
             ->expects(self::once())
             ->method('call')
             ->with('mapped', ['tab' => 'taz'])
-            ->will(self::returnValue('baz'));
+            ->willReturn('baz');
 
         $adapter
             ->expects(self::once())
             ->method('getServiceName')
             ->with('foo', 'bar')
-            ->will(self::returnValue('foobarbaz'));
+            ->willReturn('foobarbaz');
 
         self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }
