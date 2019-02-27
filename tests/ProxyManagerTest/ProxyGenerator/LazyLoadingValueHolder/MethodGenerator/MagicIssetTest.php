@@ -35,10 +35,10 @@ class MagicIssetTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
-        $publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
-        $publicProperties->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $initializer->method('getName')->willReturn('foo');
+        $valueHolder->method('getName')->willReturn('bar');
+        $publicProperties->method('isEmpty')->willReturn(false);
+        $publicProperties->method('getName')->willReturn('bar');
 
         $magicIsset = new MagicIsset($reflection, $initializer, $valueHolder, $publicProperties);
 

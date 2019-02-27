@@ -25,8 +25,6 @@ class InvalidSignatureExceptionTest extends TestCase
             'expected-signature'
         );
 
-        self::assertInstanceOf(InvalidSignatureException::class, $exception);
-
         self::assertSame(
             'Found signature "blah" for class "'
             . self::class

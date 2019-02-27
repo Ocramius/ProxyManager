@@ -62,7 +62,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertSame($expectedValue, $callback(...array_values($params)));
 
         /** @var callable|MockObject $listener */
@@ -116,7 +116,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $proxy    = $proxyName::staticProxyConstructor($instance);
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
 
         /** @var callable|MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
@@ -169,7 +169,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertSame($expectedValue, $callback(...array_values($params)));
         $this->assertProxySynchronized($instance, $proxy);
     }
@@ -195,7 +195,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $callback = [$cloned, $method];
 
         $this->assertProxySynchronized($instance, $proxy);
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertSame($expectedValue, $callback(...array_values($params)));
         $this->assertProxySynchronized($instance, $proxy);
     }
@@ -221,7 +221,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
     ) : void
     {
-        $newValue               = uniqid();
+        $newValue               = uniqid('value', true);
         $proxy->$publicProperty = $newValue;
 
         self::assertSame($newValue, $proxy->$publicProperty);
@@ -385,7 +385,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @return string[][]|object[][]|mixed[][][]
      */
-    public function getProxyMethods() : array
+    public static function getProxyMethods() : array
     {
         $selfHintParam = new ClassWithSelfHint();
         $empty         = new EmptyClass();

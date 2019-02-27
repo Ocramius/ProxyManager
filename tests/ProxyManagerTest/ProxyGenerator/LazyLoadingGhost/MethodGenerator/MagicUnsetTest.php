@@ -122,12 +122,12 @@ PHP;
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $this->initMethod->expects(self::any())->method('getName')->will(self::returnValue('baz'));
-        $this->publicProperties->expects(self::any())->method('isEmpty')->will(self::returnValue(false));
-        $this->publicProperties->expects(self::any())->method('getName')->will(self::returnValue('bar'));
-        $this->protectedProperties->expects(self::any())->method('getName')->will(self::returnValue('baz'));
-        $this->privateProperties->expects(self::any())->method('getName')->will(self::returnValue('tab'));
+        $this->initializer->method('getName')->willReturn('foo');
+        $this->initMethod->method('getName')->willReturn('baz');
+        $this->publicProperties->method('isEmpty')->willReturn(false);
+        $this->publicProperties->method('getName')->willReturn('bar');
+        $this->protectedProperties->method('getName')->willReturn('baz');
+        $this->privateProperties->method('getName')->willReturn('tab');
     }
 
     /**

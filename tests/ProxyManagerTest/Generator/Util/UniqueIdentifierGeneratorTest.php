@@ -51,7 +51,7 @@ class UniqueIdentifierGeneratorTest extends TestCase
      *
      * @return string[][]
      */
-    public function getBaseIdentifierNames() : array
+    public static function getBaseIdentifierNames() : array
     {
         return [
             [''],

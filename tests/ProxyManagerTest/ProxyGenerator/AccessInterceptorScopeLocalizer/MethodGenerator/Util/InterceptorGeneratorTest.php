@@ -35,12 +35,12 @@ class InterceptorGeneratorTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
-        $baz->expects(self::any())->method('getName')->will(self::returnValue('baz'));
-        $method->expects(self::any())->method('getName')->will(self::returnValue('fooMethod'));
-        $method->expects(self::any())->method('getParameters')->will(self::returnValue([$bar, $baz]));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $bar->method('getName')->willReturn('bar');
+        $baz->method('getName')->willReturn('baz');
+        $method->method('getName')->willReturn('fooMethod');
+        $method->method('getParameters')->will(self::returnValue([$bar, $baz]));
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         // @codingStandardsIgnoreStart
         $expected = <<<'PHP'
@@ -93,12 +93,12 @@ PHP;
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
-        $baz->expects(self::any())->method('getName')->will(self::returnValue('baz'));
-        $method->expects(self::any())->method('getName')->will(self::returnValue('fooMethod'));
-        $method->expects(self::any())->method('getParameters')->will(self::returnValue([$bar, $baz]));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $bar->method('getName')->willReturn('bar');
+        $baz->method('getName')->willReturn('baz');
+        $method->method('getName')->willReturn('fooMethod');
+        $method->method('getParameters')->will(self::returnValue([$bar, $baz]));
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         // @codingStandardsIgnoreStart
         $expected = <<<'PHP'
@@ -154,12 +154,12 @@ PHP;
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
-        $baz->expects(self::any())->method('getName')->will(self::returnValue('baz'));
-        $method->expects(self::any())->method('getName')->will(self::returnValue('fooMethod'));
-        $method->expects(self::any())->method('getParameters')->will(self::returnValue([$bar, $baz]));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $bar->method('getName')->willReturn('bar');
+        $baz->method('getName')->willReturn('baz');
+        $method->method('getName')->willReturn('fooMethod');
+        $method->method('getParameters')->will(self::returnValue([$bar, $baz]));
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         // @codingStandardsIgnoreStart
         $expected = <<<'PHP'

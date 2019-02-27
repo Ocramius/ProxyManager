@@ -79,7 +79,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
-        self::assertInternalType('callable', $callProxyMethod);
+        self::assertIsCallable($callProxyMethod);
         self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         self::assertTrue($proxy->isProxyInitialized());
     }
@@ -113,7 +113,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
-        self::assertInternalType('callable', $callProxyMethod);
+        self::assertIsCallable($callProxyMethod);
         self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
         self::assertFalse($proxy->isProxyInitialized());
     }
@@ -144,7 +144,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
-        self::assertInternalType('callable', $callProxyMethod);
+        self::assertIsCallable($callProxyMethod);
         self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
     }
 
@@ -173,7 +173,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
-        self::assertInternalType('callable', $callProxyMethod);
+        self::assertIsCallable($callProxyMethod);
         self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
     }
 
@@ -748,7 +748,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
                 ));
         }
 
-        self::assertInternalType('callable', $initializerMatcher);
+        self::assertIsCallable($initializerMatcher);
 
         return static function (
             GhostObjectInterface $proxy,
@@ -1102,7 +1102,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
 
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
+        self::assertIsCallable($accessor);
 
         self::assertFalse($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
@@ -1134,7 +1134,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
 
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
+        self::assertIsCallable($accessor);
 
         self::assertTrue($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
@@ -1165,7 +1165,7 @@ class LazyLoadingGhostFunctionalTest extends TestCase
 
         $accessor = [$callerObject, $method];
 
-        self::assertInternalType('callable', $accessor);
+        self::assertIsCallable($accessor);
 
         self::assertTrue($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));

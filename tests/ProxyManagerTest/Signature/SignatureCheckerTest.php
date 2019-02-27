@@ -45,13 +45,13 @@ class SignatureCheckerTest extends TestCase
             ->expects(self::atLeastOnce())
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('Example'));
+            ->willReturn('Example');
         $this
             ->signatureGenerator
             ->expects(self::atLeastOnce())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('valid-signature'));
+            ->willReturn('valid-signature');
 
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }
@@ -60,16 +60,15 @@ class SignatureCheckerTest extends TestCase
     {
         $this
             ->signatureGenerator
-            ->expects(self::any())
+
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('InvalidKey'));
+            ->willReturn('InvalidKey');
         $this
             ->signatureGenerator
-            ->expects(self::any())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('valid-signature'));
+            ->willReturn('valid-signature');
 
         $this->expectException(MissingSignatureException::class);
 
@@ -80,16 +79,14 @@ class SignatureCheckerTest extends TestCase
     {
         $this
             ->signatureGenerator
-            ->expects(self::any())
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('Example'));
+            ->willReturn('Example');
         $this
             ->signatureGenerator
-            ->expects(self::any())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('invalid-signature'));
+            ->willReturn('invalid-signature');
 
         $this->expectException(InvalidSignatureException::class);
 

@@ -27,7 +27,7 @@ class ConstructorTest extends TestCase
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->method('getName')->willReturn('foo');
 
         $constructor = Constructor::generateMethod(
             new ReflectionClass(
@@ -57,7 +57,7 @@ unset($this->bar, $this->baz);
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->method('getName')->willReturn('foo');
 
         $constructor = Constructor::generateMethod(
             new ReflectionClass(EmptyClass::class),
@@ -82,7 +82,7 @@ if (! $this->foo) {
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->method('getName')->willReturn('foo');
 
         $constructor = Constructor::generateMethod(new ReflectionClass(ClassWithMixedProperties::class), $valueHolder);
 
@@ -111,7 +111,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $valueHolder->method('getName')->willReturn('foo');
 
         $constructor = Constructor::generateMethod(
             new ReflectionClass(ClassWithVariadicConstructorArgument::class),

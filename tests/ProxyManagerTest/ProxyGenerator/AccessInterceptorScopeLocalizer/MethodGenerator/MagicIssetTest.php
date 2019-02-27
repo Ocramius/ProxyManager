@@ -30,8 +30,8 @@ class MagicIssetTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $magicIsset = new MagicIsset(
             $reflection,
@@ -55,8 +55,8 @@ class MagicIssetTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $magicIsset = new MagicIsset(
             $reflection,

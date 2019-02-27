@@ -24,7 +24,7 @@ class StaticProxyConstructorTest extends TestCase
         /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
 
-        $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
+        $adapter->method('getName')->willReturn('adapter');
 
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(ClassWithMixedProperties::class),

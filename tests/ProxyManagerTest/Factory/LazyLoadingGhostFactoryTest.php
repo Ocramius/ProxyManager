@@ -48,21 +48,18 @@ class LazyLoadingGhostFactoryTest extends TestCase
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will(self::returnValue($this->inflector));
+            ->willReturn($this->inflector);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will(self::returnValue($this->signatureChecker));
+            ->willReturn($this->signatureChecker);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will(self::returnValue($this->classSignatureGenerator));
+            ->willReturn($this->classSignatureGenerator);
     }
 
     /**
@@ -92,7 +89,7 @@ class LazyLoadingGhostFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with($className)
-            ->will(self::returnValue(LazyLoadingMock::class));
+            ->willReturn(LazyLoadingMock::class);
 
         $factory     = new LazyLoadingGhostFactory($this->config);
         $initializer = static function () : void {
@@ -120,8 +117,8 @@ class LazyLoadingGhostFactoryTest extends TestCase
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->createMock(AutoloaderInterface::class);
 
-        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
-        $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
+        $this->config->method('getGeneratorStrategy')->willReturn($generator);
+        $this->config->method('getProxyAutoloader')->willReturn($autoloader);
 
         $generator
             ->expects(self::once())
@@ -150,14 +147,14 @@ class LazyLoadingGhostFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with($className)
-            ->will(self::returnValue($proxyClassName));
+            ->willReturn($proxyClassName);
 
         $this
             ->inflector
             ->expects(self::once())
             ->method('getUserClassName')
             ->with($className)
-            ->will(self::returnValue(LazyLoadingMock::class));
+            ->willReturn(LazyLoadingMock::class);
 
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
@@ -168,7 +165,6 @@ class LazyLoadingGhostFactoryTest extends TestCase
         /** @var LazyLoadingMock $proxy */
         $proxy = $factory->createProxy($className, $initializer);
 
-        self::assertInstanceOf($proxyClassName, $proxy);
         self::assertSame($initializer, $proxy->initializer);
     }
 }

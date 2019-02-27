@@ -97,7 +97,7 @@ class ClassNameInflectorTest extends TestCase
      *
      * @return string[][]
      */
-    public function getClassNames() : array
+    public static function getClassNames() : array
     {
         return [
             ['Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\%s'],
@@ -110,7 +110,7 @@ class ClassNameInflectorTest extends TestCase
      *
      * @return mixed[][]
      */
-    public function getClassAndParametersCombinations() : array
+    public static function getClassAndParametersCombinations() : array
     {
         return [
             ['Foo', []],

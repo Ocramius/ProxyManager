@@ -19,7 +19,6 @@ class FileNotWritableExceptionTest extends TestCase
     {
         $exception = FileNotWritableException::fromInvalidMoveOperation('/tmp/a', '/tmp/b');
 
-        self::assertInstanceOf(FileNotWritableException::class, $exception);
         self::assertSame(
             'Could not move file "/tmp/a" to location "/tmp/b": either the source file is not readable,'
             . ' or the destination is not writable',
@@ -31,7 +30,6 @@ class FileNotWritableExceptionTest extends TestCase
     {
         $exception = FileNotWritableException::fromNotWritableDirectory('/tmp/a');
 
-        self::assertInstanceOf(FileNotWritableException::class, $exception);
         self::assertSame(
             'Could not create temp file in directory "/tmp/a" '
             . 'either the directory does not exist, or it is not writable',

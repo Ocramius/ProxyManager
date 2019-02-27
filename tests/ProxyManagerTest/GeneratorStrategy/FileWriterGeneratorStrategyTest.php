@@ -12,6 +12,7 @@ use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use const PATH_SEPARATOR;
+use const SCANDIR_SORT_ASCENDING;
 use function class_exists;
 use function clearstatcache;
 use function decoct;
@@ -62,7 +63,6 @@ class FileWriterGeneratorStrategyTest extends TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
             ->will(self::returnValue($tmpFile));
@@ -103,10 +103,9 @@ class FileWriterGeneratorStrategyTest extends TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
-            ->will(self::returnValue($tmpFile));
+            ->willReturn($tmpFile);
 
         $this->expectException(FileNotWritableException::class);
         $generator->generate(new ClassGenerator($fqcn));
@@ -123,10 +122,9 @@ class FileWriterGeneratorStrategyTest extends TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
-            ->will(self::returnValue($tmpFile));
+            ->willReturn($tmpFile);
 
         mkdir($tmpFile);
 
@@ -149,10 +147,9 @@ class FileWriterGeneratorStrategyTest extends TestCase
         $fqcn      = $namespace . '\\' . $className;
 
         $locator
-            ->expects(self::any())
             ->method('getProxyFileName')
             ->with($fqcn)
-            ->will(self::returnValue($tmpFile));
+            ->willReturn($tmpFile);
 
         mkdir($tmpFile);
 
@@ -163,7 +160,7 @@ class FileWriterGeneratorStrategyTest extends TestCase
         } catch (FileNotWritableException $exception) {
             rmdir($tmpFile);
 
-            self::assertEquals(['.', '..'], scandir($tmpDirPath));
+            self::assertEquals(['.', '..'], scandir($tmpDirPath, SCANDIR_SORT_ASCENDING));
         }
     }
 }

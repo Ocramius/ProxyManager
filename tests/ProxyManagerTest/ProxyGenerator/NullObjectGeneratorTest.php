@@ -74,7 +74,7 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 
             $callback = [$proxy, $method->getName()];
 
-            self::assertInternalType('callable', $callback);
+            self::assertIsCallable($callback);
             self::assertNull($callback());
         }
     }

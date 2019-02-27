@@ -30,8 +30,8 @@ class MagicSleepTest extends TestCase
         /** @var MethodGenerator|MockObject $initMethod */
         $initMethod = $this->createMock(MethodGenerator::class);
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $initMethod->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $initializer->method('getName')->willReturn('foo');
+        $initMethod->method('getName')->willReturn('bar');
 
         $magicSleep = new MagicSleep($reflection, $initializer, $initMethod);
 

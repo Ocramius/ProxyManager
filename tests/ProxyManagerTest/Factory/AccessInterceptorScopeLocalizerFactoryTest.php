@@ -51,21 +51,18 @@ class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassNameInflector')
-            ->will(self::returnValue($this->inflector));
+            ->willReturn($this->inflector);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getSignatureChecker')
-            ->will(self::returnValue($this->signatureChecker));
+            ->willReturn($this->signatureChecker);
 
         $this
             ->config
-            ->expects(self::any())
             ->method('getClassSignatureGenerator')
-            ->will(self::returnValue($this->classSignatureGenerator));
+            ->willReturn($this->classSignatureGenerator);
     }
 
     /**
@@ -96,7 +93,7 @@ class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will(self::returnValue(AccessInterceptorValueHolderMock::class));
+            ->willReturn(AccessInterceptorValueHolderMock::class);
 
         $factory            = new AccessInterceptorScopeLocalizerFactory($this->config);
         $prefixInterceptors = [static function () : void {
@@ -132,8 +129,8 @@ class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->createMock(AutoloaderInterface::class);
 
-        $this->config->expects(self::any())->method('getGeneratorStrategy')->will(self::returnValue($generator));
-        $this->config->expects(self::any())->method('getProxyAutoloader')->will(self::returnValue($autoloader));
+        $this->config->method('getGeneratorStrategy')->willReturn($generator);
+        $this->config->method('getProxyAutoloader')->willReturn($autoloader);
 
         $generator
             ->expects(self::once())
@@ -165,14 +162,14 @@ class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getProxyClassName')
             ->with('stdClass')
-            ->will(self::returnValue($proxyClassName));
+            ->willReturn($proxyClassName);
 
         $this
             ->inflector
             ->expects(self::once())
             ->method('getUserClassName')
             ->with('stdClass')
-            ->will(self::returnValue(LazyLoadingMock::class));
+            ->willReturn(LazyLoadingMock::class);
 
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
@@ -189,7 +186,9 @@ class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
         /** @var AccessInterceptorValueHolderMock $proxy */
         $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
+        /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf($proxyClassName, $proxy);
+
         self::assertSame($instance, $proxy->instance);
         self::assertSame($prefixInterceptors, $proxy->prefixInterceptors);
         self::assertSame($suffixInterceptors, $proxy->suffixInterceptors);

@@ -13,7 +13,6 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManager\Signature\SignatureGeneratorInterface;
-use function is_dir;
 
 /**
  * Tests for {@see \ProxyManager\Configuration}
@@ -55,6 +54,7 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetClassNameInflector() : void
     {
+        /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(ClassNameInflectorInterface::class, $this->configuration->getClassNameInflector());
 
         /** @var ClassNameInflectorInterface $inflector */
@@ -78,6 +78,7 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetGeneratorStrategy() : void
     {
+        /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(GeneratorStrategyInterface::class, $this->configuration->getGeneratorStrategy());
 
         /** @var GeneratorStrategyInterface $strategy */
@@ -93,7 +94,7 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetProxiesTargetDir() : void
     {
-        self::assertTrue(is_dir($this->configuration->getProxiesTargetDir()));
+        self::assertDirectoryExists($this->configuration->getProxiesTargetDir());
 
         $this->configuration->setProxiesTargetDir(__DIR__);
         self::assertSame(__DIR__, $this->configuration->getProxiesTargetDir());
@@ -105,6 +106,7 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetProxyAutoloader() : void
     {
+        /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(AutoloaderInterface::class, $this->configuration->getProxyAutoloader());
 
         /** @var AutoloaderInterface $autoloader */
@@ -120,7 +122,8 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetSignatureGenerator() : void
     {
-        self::assertInstanceOf(SignatureGeneratorInterface::class, $this->configuration->getSignatureGenerator());
+        /** @noinspection UnnecessaryAssertionInspection */
+        self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
 
         /** @var SignatureGeneratorInterface $signatureGenerator */
         $signatureGenerator = $this->createMock(SignatureGeneratorInterface::class);
@@ -135,6 +138,7 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetSignatureChecker() : void
     {
+        /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
 
         /** @var SignatureCheckerInterface $signatureChecker */
@@ -150,11 +154,11 @@ class ConfigurationTest extends TestCase
      */
     public function testSetGetClassSignatureGenerator() : void
     {
+        /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(
             ClassSignatureGeneratorInterface::class,
             $this->configuration->getClassSignatureGenerator()
         );
-
         /** @var ClassSignatureGeneratorInterface $classSignatureGenerator */
         $classSignatureGenerator = $this->createMock(ClassSignatureGeneratorInterface::class);
 

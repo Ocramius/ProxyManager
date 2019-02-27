@@ -51,17 +51,15 @@ class ClassSignatureGeneratorTest extends TestCase
 
         $this
             ->signatureGenerator
-            ->expects(self::any())
             ->method('generateSignature')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('valid-signature'));
+            ->willReturn('valid-signature');
 
         $this
             ->signatureGenerator
-            ->expects(self::any())
             ->method('generateSignatureKey')
             ->with(['foo' => 'bar'])
-            ->will(self::returnValue('PropertyName'));
+            ->willReturn('PropertyName');
 
         $this->classSignatureGenerator->addSignature($classGenerator, ['foo' => 'bar']);
     }

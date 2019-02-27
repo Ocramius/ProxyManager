@@ -231,7 +231,7 @@ class NullObjectFunctionalTest extends TestCase
         /** @var callable $method */
         $method = [$proxy, $methodName];
 
-        self::assertInternalType('callable', $method);
+        self::assertIsCallable($method);
 
         $parameterValues = array_values($parameters);
 

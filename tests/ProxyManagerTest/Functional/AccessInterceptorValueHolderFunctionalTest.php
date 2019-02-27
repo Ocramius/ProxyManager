@@ -59,7 +59,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxy    = $proxyName::staticProxyConstructor($instance);
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertSame($instance, $proxy->getWrappedValueHolderValue());
         self::assertSame($expectedValue, $callback(...array_values($params)));
 
@@ -112,7 +112,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxy    = $proxyName::staticProxyConstructor($instance);
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
 
         /** @var callable|MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
@@ -162,7 +162,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxy    = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertSame($expectedValue, $callback(...array_values($params)));
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
     }
@@ -187,7 +187,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $cloned   = clone $proxy;
         $callback = [$cloned, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertNotSame($proxy->getWrappedValueHolderValue(), $cloned->getWrappedValueHolderValue());
         self::assertSame($expectedValue, $callback(...array_values($params)));
         self::assertEquals($instance, $cloned->getWrappedValueHolderValue());
@@ -698,6 +698,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
                         return;
                     }
 
+                    /** @noinspection IncrementDecrementOperationEquivalentInspection */
                     $instance->counter += 1;
                 },
             ]

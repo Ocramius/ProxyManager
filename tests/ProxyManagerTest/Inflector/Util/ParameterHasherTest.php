@@ -28,7 +28,7 @@ class ParameterHasherTest extends TestCase
     }
 
     /** @return mixed[][][]|string[][] */
-    public function getParameters() : array
+    public static function getParameters() : array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

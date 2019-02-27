@@ -33,7 +33,7 @@ class XmlRpcTest extends TestCase
             ->expects(self::once())
             ->method('call')
             ->with('foo.bar', ['tab' => 'taz'])
-            ->will(self::returnValue('baz'));
+            ->willReturn('baz');
 
         self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
     }

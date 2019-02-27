@@ -30,8 +30,8 @@ class MagicUnsetTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $magicGet = new MagicUnset(
             $reflection,
@@ -55,8 +55,8 @@ class MagicUnsetTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $magicGet = new MagicUnset(
             $reflection,

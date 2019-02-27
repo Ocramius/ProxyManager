@@ -47,7 +47,7 @@ class SignatureGeneratorTest extends TestCase
     }
 
     /** @return string[][]|string[][][] */
-    public function signatures() : array
+    public static function signatures() : array
     {
         return [
             [
@@ -74,7 +74,7 @@ class SignatureGeneratorTest extends TestCase
     }
 
     /** @return string[][]|string[][][] */
-    public function signatureKeys() : array
+    public static function signatureKeys() : array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

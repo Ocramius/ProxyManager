@@ -28,8 +28,8 @@ class CallInitializerTest extends TestCase
         /** @var PropertyGenerator|MockObject $initializationTracker */
         $initializationTracker = $this->createMock(PropertyGenerator::class);
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('init'));
-        $initializationTracker->expects(self::any())->method('getName')->will(self::returnValue('track'));
+        $initializer->method('getName')->willReturn('init');
+        $initializationTracker->method('getName')->willReturn('track');
 
         $callInitializer = new CallInitializer(
             $initializer,
@@ -105,8 +105,8 @@ return $result;';
         /** @var PropertyGenerator|MockObject $initializationTracker */
         $initializationTracker = $this->createMock(PropertyGenerator::class);
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('init'));
-        $initializationTracker->expects(self::any())->method('getName')->will(self::returnValue('track'));
+        $initializer->method('getName')->willReturn('init');
+        $initializationTracker->method('getName')->willReturn('track');
 
         $callInitializer = new CallInitializer(
             $initializer,

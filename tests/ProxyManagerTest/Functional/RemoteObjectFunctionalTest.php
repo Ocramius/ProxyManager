@@ -47,10 +47,9 @@ class RemoteObjectFunctionalTest extends TestCase
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
-            ->expects(self::any())
             ->method('call')
             ->with(self::stringEndsWith($method), $params)
-            ->will(self::returnValue($expectedValue));
+            ->willReturn($expectedValue);
 
         return new XmlRpcAdapter(
             $client,
@@ -68,10 +67,9 @@ class RemoteObjectFunctionalTest extends TestCase
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
-            ->expects(self::any())
             ->method('call')
             ->with(self::stringEndsWith($method), $params)
-            ->will(self::returnValue($expectedValue));
+            ->willReturn($expectedValue);
 
         return new JsonRpcAdapter(
             $client,
@@ -94,7 +92,7 @@ class RemoteObjectFunctionalTest extends TestCase
         $proxy    = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertSame($expectedValue, $callback(...$params));
     }
 
@@ -113,7 +111,7 @@ class RemoteObjectFunctionalTest extends TestCase
         $proxy    = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
         $callback = [$proxy, $method];
 
-        self::assertInternalType('callable', $callback);
+        self::assertIsCallable($callback);
         self::assertSame($expectedValue, $callback(...$params));
     }
 

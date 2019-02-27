@@ -29,8 +29,8 @@ class MagicSleepTest extends TestCase
         /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
-        $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
+        $initializer->method('getName')->willReturn('foo');
+        $valueHolder->method('getName')->willReturn('bar');
 
         $magicSleep = new MagicSleep($reflection, $initializer, $valueHolder);
 

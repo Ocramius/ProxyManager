@@ -56,7 +56,7 @@ class AutoloaderTest extends TestCase
             ->expects(self::once())
             ->method('isProxyClassName')
             ->with($className)
-            ->will(self::returnValue(false));
+            ->willReturn(false);
 
         self::assertFalse($this->autoloadWithoutFurtherAutoloaders($className));
     }
@@ -72,12 +72,12 @@ class AutoloaderTest extends TestCase
             ->expects(self::once())
             ->method('isProxyClassName')
             ->with($className)
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $this
             ->fileLocator
             ->expects(self::once())
             ->method('getProxyFileName')
-            ->will(self::returnValue(__DIR__ . '/non-existing'));
+            ->willReturn(__DIR__ . '/non-existing');
 
         self::assertFalse($this->autoloadWithoutFurtherAutoloaders($className));
     }
@@ -98,7 +98,7 @@ class AutoloaderTest extends TestCase
         $namespace = 'Foo';
         $className = UniqueIdentifierGenerator::getIdentifier('Bar');
         $fqcn      = $namespace . '\\' . $className;
-        $fileName  = sys_get_temp_dir() . '/foo_' . uniqid() . '.php';
+        $fileName  = sys_get_temp_dir() . '/foo_' . uniqid('file', true) . '.php';
 
         file_put_contents($fileName, '<?php namespace ' . $namespace . '; class ' . $className . '{}');
 
@@ -107,12 +107,12 @@ class AutoloaderTest extends TestCase
             ->expects(self::once())
             ->method('isProxyClassName')
             ->with($fqcn)
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $this
             ->fileLocator
             ->expects(self::once())
             ->method('getProxyFileName')
-            ->will(self::returnValue($fileName));
+            ->willReturn($fileName);
 
         self::assertTrue($this->autoloadWithoutFurtherAutoloaders($fqcn));
         self::assertTrue(class_exists($fqcn, false));

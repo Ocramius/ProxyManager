@@ -15,11 +15,11 @@ use ProxyManager\Version;
  */
 class VersionTest extends TestCase
 {
-    public function testGetVersion() : void
+    public static function testGetVersion() : void
     {
         $version = Version::getVersion();
 
-        self::assertInternalType('string', $version);
+        self::assertIsString($version);
         self::assertNotEmpty($version);
         self::assertStringMatchesFormat('%A@%A', $version);
     }

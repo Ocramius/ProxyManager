@@ -31,9 +31,9 @@ class MagicCloneTest extends TestCase
         /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));
-        $prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $valueHolder->method('getName')->willReturn('bar');
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
 
         $magicClone = new MagicClone($reflection, $valueHolder, $prefixInterceptors, $suffixInterceptors);
 

@@ -37,8 +37,8 @@ class InterceptedMethodTest extends TestCase
         $this->prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $this->suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
-        $this->prefixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('pre'));
-        $this->suffixInterceptors->expects(self::any())->method('getName')->will(self::returnValue('post'));
+        $this->prefixInterceptors->method('getName')->willReturn('pre');
+        $this->suffixInterceptors->method('getName')->willReturn('post');
     }
 
     public function testBodyStructure() : void
