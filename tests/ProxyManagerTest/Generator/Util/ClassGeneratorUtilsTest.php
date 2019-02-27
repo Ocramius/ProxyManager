@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator\Util;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
@@ -23,9 +23,9 @@ class ClassGeneratorUtilsTest extends TestCase
 {
     public function testCantAddAFinalMethod() : void
     {
-        /** @var ClassGenerator|PHPUnit_Framework_MockObject_MockObject $classGenerator */
+        /** @var ClassGenerator|MockObject $classGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);
-        /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject $methodGenerator */
+        /** @var MethodGenerator|MockObject $methodGenerator */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator
@@ -44,9 +44,9 @@ class ClassGeneratorUtilsTest extends TestCase
 
     public function testCanAddANotFinalMethod() : void
     {
-        /** @var ClassGenerator|PHPUnit_Framework_MockObject_MockObject $classGenerator */
+        /** @var ClassGenerator|MockObject $classGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);
-        /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject $methodGenerator */
+        /** @var MethodGenerator|MockObject $methodGenerator */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator

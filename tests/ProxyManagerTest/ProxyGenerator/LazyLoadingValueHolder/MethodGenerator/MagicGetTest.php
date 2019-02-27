@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
@@ -26,11 +26,11 @@ class MagicGetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializer */
+        /** @var PropertyGenerator|MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap|PHPUnit_Framework_MockObject_MockObject $publicProperties */
+        /** @var PublicPropertiesMap|MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
@@ -61,11 +61,11 @@ class MagicGetTest extends TestCase
     public function testBodyStructureWithPreExistingGetMethod() : void
     {
         $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializer */
+        /** @var PropertyGenerator|MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap|PHPUnit_Framework_MockObject_MockObject $publicProperties */
+        /** @var PublicPropertiesMap|MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

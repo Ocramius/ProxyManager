@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
@@ -27,16 +27,16 @@ use stdClass;
  */
 class RemoteObjectFactoryTest extends TestCase
 {
-    /** @var PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     protected $inflector;
 
-    /** @var PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     protected $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassSignatureGeneratorInterface|MockObject */
     private $classSignatureGenerator;
 
-    /** @var Configuration|PHPUnit_Framework_MockObject_MockObject */
+    /** @var Configuration|MockObject */
     protected $config;
 
     /**
@@ -84,7 +84,7 @@ class RemoteObjectFactoryTest extends TestCase
             ->with(BaseInterface::class)
             ->will(self::returnValue(RemoteObjectMock::class));
 
-        /** @var AdapterInterface|PHPUnit_Framework_MockObject_MockObject $adapter */
+        /** @var AdapterInterface|MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /** @var stdClass|RemoteObjectMock $proxy */

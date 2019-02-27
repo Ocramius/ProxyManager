@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap;
@@ -23,19 +23,19 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class MagicUnsetTest extends TestCase
 {
-    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|MockObject */
     protected $initializer;
 
-    /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject */
+    /** @var MethodGenerator|MockObject */
     protected $initMethod;
 
-    /** @var PublicPropertiesMap|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PublicPropertiesMap|MockObject */
     protected $publicProperties;
 
-    /** @var ProtectedPropertiesMap|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ProtectedPropertiesMap|MockObject */
     protected $protectedProperties;
 
-    /** @var PrivatePropertiesMap|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PrivatePropertiesMap|MockObject */
     protected $privateProperties;
 
     /** @var string */

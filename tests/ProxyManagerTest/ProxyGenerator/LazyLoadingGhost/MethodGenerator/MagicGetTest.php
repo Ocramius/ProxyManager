@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
@@ -24,22 +24,22 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class MagicGetTest extends TestCase
 {
-    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|MockObject */
     protected $initializer;
 
-    /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject */
+    /** @var MethodGenerator|MockObject */
     protected $initMethod;
 
-    /** @var PublicPropertiesMap|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PublicPropertiesMap|MockObject */
     protected $publicProperties;
 
-    /** @var ProtectedPropertiesMap|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ProtectedPropertiesMap|MockObject */
     protected $protectedProperties;
 
-    /** @var PrivatePropertiesMap|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PrivatePropertiesMap|MockObject */
     protected $privateProperties;
 
-    /** @var InitializationTracker|PHPUnit_Framework_MockObject_MockObject */
+    /** @var InitializationTracker|MockObject */
     protected $initializationTracker;
 
     /** @var string */

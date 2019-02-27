@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Autoloader;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -29,10 +29,10 @@ class AutoloaderTest extends TestCase
     /** @var Autoloader */
     protected $autoloader;
 
-    /** @var FileLocatorInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var FileLocatorInterface|MockObject */
     protected $fileLocator;
 
-    /** @var ClassNameInflectorInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassNameInflectorInterface|MockObject */
     protected $classNameInflector;
 
     /**

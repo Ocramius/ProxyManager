@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Functional;
 
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Configuration;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
@@ -65,7 +65,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertInternalType('callable', $callback);
         self::assertSame($expectedValue, $callback(...array_values($params)));
 
-        /** @var callable|PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var callable|MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -118,7 +118,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         self::assertInternalType('callable', $callback);
 
-        /** @var callable|PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var callable|MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())

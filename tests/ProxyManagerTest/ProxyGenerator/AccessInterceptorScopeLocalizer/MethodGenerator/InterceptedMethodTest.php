@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod;
 use ProxyManagerTestAsset\BaseClass;
@@ -21,10 +21,10 @@ use Zend\Code\Reflection\MethodReflection;
  */
 class InterceptedMethodTest extends TestCase
 {
-    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|MockObject */
     private $prefixInterceptors;
 
-    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|MockObject */
     private $suffixInterceptors;
 
     /**
