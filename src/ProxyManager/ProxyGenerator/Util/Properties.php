@@ -75,13 +75,6 @@ final class Properties
                 return false;
             }
 
-            /** @var $type \ReflectionType */
-            $type = $property->getType();
-
-            if ($type->allowsNull()) {
-                return false;
-            }
-
             return ! array_key_exists(
                 $property->getName(),
                 // https://bugs.php.net/bug.php?id=77673

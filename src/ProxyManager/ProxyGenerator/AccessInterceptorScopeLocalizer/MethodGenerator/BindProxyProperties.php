@@ -56,13 +56,15 @@ class BindProxyProperties extends MethodGenerator
             );
         }
 
-        foreach ($properties->getAccessibleProperties() as $property) {
+        $propertiesThatCanBeReferenced = $properties->onlyPropertiesThatCanBeUnset();
+
+        foreach ($propertiesThatCanBeReferenced->getAccessibleProperties() as $property) {
             $propertyName = $property->getName();
 
             $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ';';
         }
 
-        foreach ($properties->getPrivateProperties() as $property) {
+        foreach ($propertiesThatCanBeReferenced->getPrivateProperties() as $property) {
             $propertyName = $property->getName();
 
             $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "

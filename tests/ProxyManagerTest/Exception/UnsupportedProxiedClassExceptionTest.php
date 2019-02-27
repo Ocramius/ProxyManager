@@ -38,17 +38,28 @@ class UnsupportedProxiedClassExceptionTest extends TestCase
         self::assertSame(
             'Cannot create references for following properties of class '
             . ClassWithMixedTypedProperties::class
-            . ': publicBoolPropertyWithoutDefaultValue, publicIntPropertyWithoutDefaultValue, '
-            . 'publicFloatPropertyWithoutDefaultValue, publicStringPropertyWithoutDefaultValue, '
-            . 'publicArrayPropertyWithoutDefaultValue, publicIterablePropertyWithoutDefaultValue, '
-            . 'publicObjectProperty, publicClassProperty, protectedBoolPropertyWithoutDefaultValue, '
-            . 'protectedIntPropertyWithoutDefaultValue, protectedFloatPropertyWithoutDefaultValue, '
-            . 'protectedStringPropertyWithoutDefaultValue, protectedArrayPropertyWithoutDefaultValue, '
-            . 'protectedIterablePropertyWithoutDefaultValue, protectedObjectProperty, protectedClassProperty, '
-            . 'privateBoolPropertyWithoutDefaultValue, privateIntPropertyWithoutDefaultValue, '
-            . 'privateFloatPropertyWithoutDefaultValue, privateStringPropertyWithoutDefaultValue, '
-            . 'privateArrayPropertyWithoutDefaultValue, privateIterablePropertyWithoutDefaultValue, '
-            . 'privateObjectProperty, privateClassProperty',
+            . ': publicBoolPropertyWithoutDefaultValue, publicNullableBoolPropertyWithoutDefaultValue, '
+            . 'publicIntPropertyWithoutDefaultValue, publicNullableIntPropertyWithoutDefaultValue, '
+            . 'publicFloatPropertyWithoutDefaultValue, publicNullableFloatPropertyWithoutDefaultValue, '
+            . 'publicStringPropertyWithoutDefaultValue, publicNullableStringPropertyWithoutDefaultValue, '
+            . 'publicArrayPropertyWithoutDefaultValue, publicNullableArrayPropertyWithoutDefaultValue, '
+            . 'publicIterablePropertyWithoutDefaultValue, publicNullableIterablePropertyWithoutDefaultValue, '
+            . 'publicObjectProperty, publicNullableObjectProperty, publicClassProperty, publicNullableClassProperty, '
+            . 'protectedBoolPropertyWithoutDefaultValue, protectedNullableBoolPropertyWithoutDefaultValue, '
+            . 'protectedIntPropertyWithoutDefaultValue, protectedNullableIntPropertyWithoutDefaultValue, '
+            . 'protectedFloatPropertyWithoutDefaultValue, protectedNullableFloatPropertyWithoutDefaultValue, '
+            . 'protectedStringPropertyWithoutDefaultValue, protectedNullableStringPropertyWithoutDefaultValue, '
+            . 'protectedArrayPropertyWithoutDefaultValue, protectedNullableArrayPropertyWithoutDefaultValue, '
+            . 'protectedIterablePropertyWithoutDefaultValue, protectedNullableIterablePropertyWithoutDefaultValue, '
+            . 'protectedObjectProperty, protectedNullableObjectProperty, protectedClassProperty, '
+            . 'protectedNullableClassProperty, privateBoolPropertyWithoutDefaultValue, '
+            . 'privateNullableBoolPropertyWithoutDefaultValue, privateIntPropertyWithoutDefaultValue, '
+            . 'privateNullableIntPropertyWithoutDefaultValue, privateFloatPropertyWithoutDefaultValue, '
+            . 'privateNullableFloatPropertyWithoutDefaultValue, privateStringPropertyWithoutDefaultValue, '
+            . 'privateNullableStringPropertyWithoutDefaultValue, privateArrayPropertyWithoutDefaultValue, '
+            . 'privateNullableArrayPropertyWithoutDefaultValue, privateIterablePropertyWithoutDefaultValue, '
+            . 'privateNullableIterablePropertyWithoutDefaultValue, privateObjectProperty, '
+            . 'privateNullableObjectProperty, privateClassProperty, privateNullableClassProperty',
             UnsupportedProxiedClassException::nonReferenceableLocalizedReflectionProperties(
                 $reflectionClass,
                 Properties

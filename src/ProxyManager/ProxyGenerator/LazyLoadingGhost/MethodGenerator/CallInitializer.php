@@ -23,10 +23,6 @@ use function var_export;
  */
 class CallInitializer extends MethodGenerator
 {
-    /**
-     * Constructor
-     *
-     */
     public function __construct(
         PropertyGenerator $initializerProperty,
         PropertyGenerator $initTracker,
@@ -71,13 +67,15 @@ $this->%s = false;
 return $result;
 PHP;
 
+        $referenceableProperties = $properties->onlyPropertiesThatCanBeUnset();
+
         $this->setBody(sprintf(
             $bodyTemplate,
             $initialization,
             $initializer,
             $initialization,
-            $this->propertiesInitializationCode($properties),
-            $this->propertiesReferenceArrayCode($properties),
+            $this->propertiesInitializationCode($referenceableProperties),
+            $this->propertiesReferenceArrayCode($referenceableProperties),
             $initializer,
             $initializer,
             $initialization
@@ -126,10 +124,9 @@ PHP;
 
     private function propertiesReferenceArrayCode(Properties $properties) : string
     {
-        $referenceable = $properties->withoutNonReferenceableProperties();
-        $assignments   = [];
+        $assignments = [];
 
-        foreach ($referenceable->getAccessibleProperties() as $propertyInternalName => $property) {
+        foreach ($properties->getAccessibleProperties() as $propertyInternalName => $property) {
             $assignments[] = '    '
                 . var_export($propertyInternalName, true) . ' => & $this->' . $property->getName()
                 . ',';
@@ -138,7 +135,7 @@ PHP;
         $code = "\$properties = [\n" . implode("\n", $assignments) . "\n];\n\n";
 
         // must use assignments, as direct reference during array definition causes a fatal error (not sure why)
-        foreach ($referenceable->getGroupedPrivateProperties() as $className => $classPrivateProperties) {
+        foreach ($properties->getGroupedPrivateProperties() as $className => $classPrivateProperties) {
             $cacheKey = 'cacheFetch' . str_replace('\\', '_', $className);
 
             $code .= 'static $' . $cacheKey . ";\n\n"
