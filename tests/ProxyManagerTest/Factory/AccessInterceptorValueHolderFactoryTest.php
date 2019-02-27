@@ -15,6 +15,7 @@ use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
+use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\AccessInterceptorValueHolderMock;
 use ProxyManagerTestAsset\EmptyClass;
 use stdClass;
@@ -69,11 +70,13 @@ class AccessInterceptorValueHolderFactoryTest extends TestCase
      *
      * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory::__construct
      */
-    public function testWithOptionalFactory() : void
+    public static function testWithOptionalFactory() : void
     {
-        $factory = new AccessInterceptorValueHolderFactory();
-        self::assertAttributeNotEmpty('configuration', $factory);
-        self::assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
+        $factory       = new AccessInterceptorValueHolderFactory();
+        $configuration = Assert::readAttribute($factory, 'configuration');
+
+        self::assertNotEmpty($configuration);
+        self::assertInstanceOf(Configuration::class, $configuration);
     }
 
     /**

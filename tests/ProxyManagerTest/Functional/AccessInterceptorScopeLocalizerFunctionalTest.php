@@ -16,6 +16,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
+use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
@@ -485,7 +486,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $object->foo('Ocramius', 'Malukenho', 'Danizord');
         self::assertSame('Ocramius', $object->bar);
-        self::assertSame(['Malukenho', 'Danizord'], self::getObjectAttribute($object, 'baz'));
+        self::assertSame(['Malukenho', 'Danizord'], Assert::readAttribute($object, 'baz'));
     }
 
     /**

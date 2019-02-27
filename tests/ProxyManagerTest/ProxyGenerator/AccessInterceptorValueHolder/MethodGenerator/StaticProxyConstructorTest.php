@@ -122,7 +122,7 @@ return $instance;',
             $suffixInterceptors
         );
 
-        self::assertContains(
+        self::assertStringContainsString(
             'unset($instance->publicProperty0, $instance->publicProperty1, $instance->publicProperty2, '
             . '$instance->protectedProperty0, $instance->protectedProperty1, $instance->protectedProperty2);
 
