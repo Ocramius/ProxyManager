@@ -33,6 +33,7 @@
         "slevomat/coding-standard":     "^4.8.7",
         "doctrine/coding-standard":     "^5.0.1",
         "couscous/couscous":            "^1.7.0",
+        "nikic/php-parser":             "^4.2.1",
         "phpbench/phpbench":            "^0.15",
         "phpstan/phpstan":              "^0.11.2",
         "phpstan/phpstan-phpunit":      "^0.11",
