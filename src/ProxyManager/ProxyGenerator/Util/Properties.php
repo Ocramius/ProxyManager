@@ -90,12 +90,27 @@ final class Properties
         }));
     }
 
+    public function onlyPropertiesThatCanBeUnset() : self
+    {
+        return new self(array_filter($this->properties, function (ReflectionProperty $property) : bool {
+            if (! $property->hasType()) {
+                return true;
+            }
+
+            return array_key_exists(
+                $property->getName(),
+                // https://bugs.php.net/bug.php?id=77673
+                array_flip(array_keys($property->getDeclaringClass()->getDefaultProperties()))
+            );
+        }));
+    }
+
     /**
      * Properties that cannot be referenced are non-nullable typed properties that aren't initialised
      */
     public function withoutNonReferenceableProperties() : self
     {
-        return new self(array_filter($this->getInstanceProperties(), function (ReflectionProperty $property) : bool {
+        return new self(array_filter($this->properties, function (ReflectionProperty $property) : bool {
             if (! $property->hasType()) {
                 return true;
             }
@@ -107,7 +122,11 @@ final class Properties
                 return true;
             }
 
-            return isset($property->getDeclaringClass()->getDefaultProperties()[$property->getName()]);
+            return array_key_exists(
+                $property->getName(),
+                // https://bugs.php.net/bug.php?id=77673
+                array_flip(array_keys($property->getDeclaringClass()->getDefaultProperties()))
+            );
         }));
     }
 

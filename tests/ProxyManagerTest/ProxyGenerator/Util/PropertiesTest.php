@@ -120,6 +120,65 @@ class PropertiesTest extends TestCase
         );
     }
 
+    public function testOnlyPropertiesThatCanBeUnset() : void
+    {
+        $nonReferenceableProperties = Properties
+            ::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+            ->onlyPropertiesThatCanBeUnset()
+            ->getInstanceProperties();
+
+        self::assertCount(42, $nonReferenceableProperties);
+        self::assertSame(
+            [
+                'publicUnTypedProperty',
+                'publicUnTypedPropertyWithoutDefaultValue',
+                'publicBoolProperty',
+                'publicNullableBoolProperty',
+                'publicIntProperty',
+                'publicNullableIntProperty',
+                'publicFloatProperty',
+                'publicNullableFloatProperty',
+                'publicStringProperty',
+                'publicNullableStringProperty',
+                'publicArrayProperty',
+                'publicNullableArrayProperty',
+                'publicIterableProperty',
+                'publicNullableIterableProperty',
+                'protectedUnTypedProperty',
+                'protectedUnTypedPropertyWithoutDefaultValue',
+                'protectedBoolProperty',
+                'protectedNullableBoolProperty',
+                'protectedIntProperty',
+                'protectedNullableIntProperty',
+                'protectedFloatProperty',
+                'protectedNullableFloatProperty',
+                'protectedStringProperty',
+                'protectedNullableStringProperty',
+                'protectedArrayProperty',
+                'protectedNullableArrayProperty',
+                'protectedIterableProperty',
+                'protectedNullableIterableProperty',
+                'privateUnTypedProperty',
+                'privateUnTypedPropertyWithoutDefaultValue',
+                'privateBoolProperty',
+                'privateNullableBoolProperty',
+                'privateIntProperty',
+                'privateNullableIntProperty',
+                'privateFloatProperty',
+                'privateNullableFloatProperty',
+                'privateStringProperty',
+                'privateNullableStringProperty',
+                'privateArrayProperty',
+                'privateNullableArrayProperty',
+                'privateIterableProperty',
+                'privateNullableIterableProperty',
+            ],
+            array_values(array_map(static function (ReflectionProperty $property) : string {
+                return $property->getName();
+            }, $nonReferenceableProperties))
+        );
+    }
+
     public function testOnlyNonReferenceableProperties() : void
     {
         self::assertTrue(
