@@ -23,6 +23,9 @@
         "zendframework/zend-code":   "^3.3.1",
         "ocramius/package-versions": "^1.3.0"
     },
+    "conflict": {
+        "zendframework/zend-stdlib": "<3.2.1"
+    },
     "require-dev": {
         "ext-phar":                     "*",
         "phpunit/phpunit":              "^7.5.6",
