@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use InvalidArgumentException;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
@@ -30,7 +31,6 @@ use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 use function array_map;
@@ -47,9 +47,8 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
     /**
      * {@inheritDoc}
      *
-     * @throws \InvalidArgumentException
-     * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
+     * @throws InvalidProxiedClassException
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
     {
