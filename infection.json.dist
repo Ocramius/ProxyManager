@@ -6,7 +6,6 @@
     },
     "timeout": 15,
     "logs": {
-        "text": "infectionlog.txt",
-        "json": "infectionlog.json"
+        "text": "infectionlog.txt"
     }
 }
