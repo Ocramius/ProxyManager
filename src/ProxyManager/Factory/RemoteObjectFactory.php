@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Factory;
 
+use OutOfBoundsException;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Proxy\RemoteObjectInterface;
@@ -16,7 +17,6 @@ use function is_object;
 
 /**
  * Factory responsible of producing remote proxy objects
- *
  */
 class RemoteObjectFactory extends AbstractBaseFactory
 {
@@ -44,7 +44,7 @@ class RemoteObjectFactory extends AbstractBaseFactory
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
-     * @throws \OutOfBoundsException
+     * @throws OutOfBoundsException
      */
     public function createProxy($instanceOrClassName) : RemoteObjectInterface
     {

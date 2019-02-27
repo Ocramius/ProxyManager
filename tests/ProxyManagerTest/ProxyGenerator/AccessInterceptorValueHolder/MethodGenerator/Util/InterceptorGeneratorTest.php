@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
+use ReflectionMethod;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -22,17 +24,17 @@ class InterceptorGeneratorTest extends TestCase
 {
     public function testInterceptorGenerator() : void
     {
-        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $method */
+        /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject $method */
         $method = $this->createMock(MethodGenerator::class);
-        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $bar */
+        /** @var ParameterGenerator|PHPUnit_Framework_MockObject_MockObject $bar */
         $bar = $this->createMock(ParameterGenerator::class);
-        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $baz */
+        /** @var ParameterGenerator|PHPUnit_Framework_MockObject_MockObject $baz */
         $baz = $this->createMock(ParameterGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -84,17 +86,17 @@ PHP;
 
     public function testInterceptorGeneratorWithVoidMethod() : void
     {
-        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $method */
+        /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject $method */
         $method = $this->createMock(MethodGenerator::class);
-        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $bar */
+        /** @var ParameterGenerator|PHPUnit_Framework_MockObject_MockObject $bar */
         $bar = $this->createMock(ParameterGenerator::class);
-        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $baz */
+        /** @var ParameterGenerator|PHPUnit_Framework_MockObject_MockObject $baz */
         $baz = $this->createMock(ParameterGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -142,24 +144,24 @@ PHP;
                 $valueHolder,
                 $prefixInterceptors,
                 $suffixInterceptors,
-                new \ReflectionMethod(VoidMethodTypeHintedInterface::class, 'returnVoid')
+                new ReflectionMethod(VoidMethodTypeHintedInterface::class, 'returnVoid')
             )
         );
     }
 
     public function testInterceptorGeneratorWithNonVoidOriginalMethod() : void
     {
-        /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject $method */
+        /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject $method */
         $method = $this->createMock(MethodGenerator::class);
-        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $bar */
+        /** @var ParameterGenerator|PHPUnit_Framework_MockObject_MockObject $bar */
         $bar = $this->createMock(ParameterGenerator::class);
-        /** @var ParameterGenerator|\PHPUnit_Framework_MockObject_MockObject $baz */
+        /** @var ParameterGenerator|PHPUnit_Framework_MockObject_MockObject $baz */
         $baz = $this->createMock(ParameterGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $bar->expects(self::any())->method('getName')->will(self::returnValue('bar'));
@@ -204,7 +206,7 @@ PHP;
                 $valueHolder,
                 $prefixInterceptors,
                 $suffixInterceptors,
-                new \ReflectionMethod(BaseClass::class, 'publicMethod')
+                new ReflectionMethod(BaseClass::class, 'publicMethod')
             )
         );
     }

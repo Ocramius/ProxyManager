@@ -12,7 +12,6 @@ use function str_replace;
 
 /**
  * Magic `__clone` for lazy loading value holder objects
- *
  */
 class MagicClone extends MagicMethodGenerator
 {
@@ -30,7 +29,6 @@ PHP;
 
     /**
      * Constructor
-     *
      */
     public function __construct(
         ReflectionClass $originalClass,

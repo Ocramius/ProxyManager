@@ -19,7 +19,6 @@ use function var_export;
 /**
  * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::isProxyInitialized}
  * for lazy loading value holder objects
- *
  */
 class CallInitializer extends MethodGenerator
 {
@@ -151,7 +150,6 @@ PHP;
 
     /**
      * @param ReflectionProperty[] $properties indexed by internal name
-     *
      */
     private function generatePrivatePropertiesAssignmentsCode(array $properties) : string
     {

@@ -14,7 +14,6 @@ use function sprintf;
 
 /**
  * Exception for invalid proxied classes
- *
  */
 class UnsupportedProxiedClassException extends LogicException implements ExceptionInterface
 {
@@ -36,7 +35,7 @@ class UnsupportedProxiedClassException extends LogicException implements Excepti
         return new self(sprintf(
             'Cannot create references for following properties of class %s: %s',
             $class->getName(),
-            implode(', ', array_map(function (ReflectionProperty $property) : string {
+            implode(', ', array_map(static function (ReflectionProperty $property) : string {
                 return $property->getName();
             }, $properties->getInstanceProperties()))
         ));

@@ -19,7 +19,6 @@ use function sprintf;
 
 /**
  * Magic `__get` for lazy loading ghost objects
- *
  */
 class MagicGet extends MagicMethodGenerator
 {
@@ -87,7 +86,6 @@ if (isset(self::$%s[$name])) {
 PHP;
 
     /**
-     *
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
      */

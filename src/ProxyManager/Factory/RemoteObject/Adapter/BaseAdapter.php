@@ -10,7 +10,6 @@ use function array_key_exists;
 
 /**
  * Remote Object base adapter
- *
  */
 abstract class BaseAdapter implements AdapterInterface
 {

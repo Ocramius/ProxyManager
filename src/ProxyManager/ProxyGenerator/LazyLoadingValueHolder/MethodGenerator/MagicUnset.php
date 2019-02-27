@@ -14,13 +14,11 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__unset` method for lazy loading value holder objects
- *
  */
 class MagicUnset extends MagicMethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException

@@ -36,7 +36,6 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     *
      */
     public function testGeneratesValidCode(string $className) : void
     {

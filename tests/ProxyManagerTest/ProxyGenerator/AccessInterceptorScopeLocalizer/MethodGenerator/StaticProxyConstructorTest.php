@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\StaticProxyConstructor;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -19,10 +20,10 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class StaticProxyConstructorTest extends TestCase
 {
-    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
     private $prefixInterceptors;
 
-    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
     private $suffixInterceptors;
 
     /**

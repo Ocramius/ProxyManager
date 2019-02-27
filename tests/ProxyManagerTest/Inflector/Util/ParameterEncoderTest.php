@@ -15,11 +15,10 @@ use ProxyManager\Inflector\Util\ParameterEncoder;
 class ParameterEncoderTest extends TestCase
 {
     /**
-     * @dataProvider getParameters
-     *
-     * @covers \ProxyManager\Inflector\Util\ParameterEncoder::encodeParameters
-     *
      * @param mixed[] $parameters
+     *
+     * @dataProvider getParameters
+     * @covers \ProxyManager\Inflector\Util\ParameterEncoder::encodeParameters
      */
     public function testGeneratesValidClassName(array $parameters) : void
     {

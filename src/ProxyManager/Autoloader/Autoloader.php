@@ -11,7 +11,6 @@ use function file_exists;
 
 /**
  * {@inheritDoc}
- *
  */
 class Autoloader implements AutoloaderInterface
 {

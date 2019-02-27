@@ -6,7 +6,6 @@ namespace ProxyManager\Inflector;
 
 /**
  * Interface for a proxy- to user-class and user- to proxy-class name inflector
- *
  */
 interface ClassNameInflectorInterface
 {

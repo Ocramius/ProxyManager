@@ -11,7 +11,6 @@ use function sprintf;
 
 /**
  * Exception for invalid provided signatures
- *
  */
 class InvalidSignatureException extends UnexpectedValueException implements ExceptionInterface
 {

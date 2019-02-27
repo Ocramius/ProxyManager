@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\Factory;
 
 use Closure;
+use OutOfBoundsException;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -13,7 +14,6 @@ use ProxyManager\Signature\Exception\MissingSignatureException;
 
 /**
  * Factory responsible of producing ghost instances
- *
  */
 class LazyLoadingGhostFactory extends AbstractBaseFactory
 {
@@ -58,7 +58,6 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      *                               - $properties a by-ref map of the properties of the object, indexed by PHP
      *                                             internal property name. Assign values to it to initialize the
      *                                             object state
-     *
      * @param mixed[] $proxyOptions a set of options to be used when generating the proxy. Currently supports only
      *                              key "skippedProperties", which allows to skip lazy-loading of some properties.
      *                              "skippedProperties" is a string[], containing a list of properties referenced
@@ -66,7 +65,7 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      *
      * @throws MissingSignatureException
      * @throws InvalidSignatureException
-     * @throws \OutOfBoundsException
+     * @throws OutOfBoundsException
      */
     public function createProxy(
         string $className,

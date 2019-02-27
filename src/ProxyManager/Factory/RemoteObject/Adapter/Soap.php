@@ -6,7 +6,6 @@ namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 /**
  * Remote Object SOAP adapter
- *
  */
 class Soap extends BaseAdapter
 {

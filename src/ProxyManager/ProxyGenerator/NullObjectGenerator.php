@@ -20,7 +20,6 @@ use Zend\Code\Reflection\MethodReflection;
  * Generator for proxies implementing {@see \ProxyManager\Proxy\NullObjectInterface}
  *
  * {@inheritDoc}
- *
  */
 class NullObjectGenerator implements ProxyGeneratorInterface
 {

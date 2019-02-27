@@ -14,7 +14,6 @@ use function var_export;
 
 /**
  * Method decorator for lazy loading value holder objects
- *
  */
 class LazyLoadingMethodInterceptor extends MethodGenerator
 {

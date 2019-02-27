@@ -11,7 +11,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the initializer for a lazy object
- *
  */
 class PrivatePropertiesMap extends PropertyGenerator
 {
@@ -19,7 +18,6 @@ class PrivatePropertiesMap extends PropertyGenerator
 
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */
@@ -38,7 +36,6 @@ class PrivatePropertiesMap extends PropertyGenerator
     }
 
     /**
-     *
      * @return int[][]|mixed[][]
      */
     private function getMap(Properties $properties) : array

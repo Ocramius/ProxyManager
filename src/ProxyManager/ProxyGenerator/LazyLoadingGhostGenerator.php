@@ -41,7 +41,6 @@ use function array_merge;
  * Generator for proxies implementing {@see \ProxyManager\Proxy\GhostObjectInterface}
  *
  * {@inheritDoc}
- *
  */
 class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 {
@@ -74,7 +73,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $init = new CallInitializer($initializer, $initializationTracker, $filteredProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -129,13 +128,12 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     /**
      * Retrieves all abstract methods to be proxied
      *
-     *
      * @return MethodGenerator[]
      */
     private function getAbstractProxiedMethods(ReflectionClass $originalClass) : array
     {
         return array_map(
-            function (ReflectionMethod $method) : ProxyManagerMethodGenerator {
+            static function (ReflectionMethod $method) : ProxyManagerMethodGenerator {
                 $generated = ProxyManagerMethodGenerator::fromReflectionWithoutBodyAndDocBlock(
                     new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
                 );

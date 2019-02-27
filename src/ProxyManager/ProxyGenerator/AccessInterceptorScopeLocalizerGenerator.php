@@ -36,7 +36,6 @@ use function array_merge;
  * and localizing scope of the proxied object at instantiation
  *
  * {@inheritDoc}
- *
  */
 class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterface
 {
@@ -57,7 +56,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodSuffixInterceptors());
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -88,7 +87,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         MethodPrefixInterceptors $prefixInterceptors,
         MethodSuffixInterceptors $suffixInterceptors
     ) : callable {
-        return function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors) : InterceptedMethod {
+        return static function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors) : InterceptedMethod {
             return InterceptedMethod::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $prefixInterceptors,

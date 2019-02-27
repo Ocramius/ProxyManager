@@ -11,7 +11,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the protected instance lazy-loadable properties of an object
- *
  */
 class ProtectedPropertiesMap extends PropertyGenerator
 {
@@ -19,7 +18,6 @@ class ProtectedPropertiesMap extends PropertyGenerator
 
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */

@@ -11,7 +11,6 @@ use function uniqid;
 /**
  * Utility class capable of generating unique
  * valid class/property/method identifiers
- *
  */
 abstract class UniqueIdentifierGenerator
 {

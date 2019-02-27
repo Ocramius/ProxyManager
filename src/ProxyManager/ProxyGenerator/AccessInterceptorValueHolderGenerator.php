@@ -41,7 +41,6 @@ use function array_merge;
  * and {@see \ProxyManager\Proxy\AccessInterceptorInterface}
  *
  * {@inheritDoc}
- *
  */
 class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
 {
@@ -72,7 +71,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -127,7 +126,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         MethodSuffixInterceptors $suffixes,
         ValueHolderProperty $valueHolder
     ) : callable {
-        return function (ReflectionMethod $method) use ($prefixes, $suffixes, $valueHolder) : InterceptedMethod {
+        return static function (ReflectionMethod $method) use ($prefixes, $suffixes, $valueHolder) : InterceptedMethod {
             return InterceptedMethod::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $valueHolder,

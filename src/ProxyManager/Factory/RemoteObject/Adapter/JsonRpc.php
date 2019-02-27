@@ -6,7 +6,6 @@ namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 /**
  * Remote Object JSON RPC adapter
- *
  */
 class JsonRpc extends BaseAdapter
 {

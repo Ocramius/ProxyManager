@@ -34,7 +34,7 @@ class NullObjectMethodInterceptorTest extends TestCase
      */
     public function testBodyStructureWithoutParameters() : void
     {
-        $reflectionMethod = new MethodReflection(__CLASS__, 'testBodyStructureWithoutParameters');
+        $reflectionMethod = new MethodReflection(self::class, 'testBodyStructureWithoutParameters');
 
         $method = NullObjectMethodInterceptor::generateMethod($reflectionMethod);
 

@@ -6,7 +6,6 @@ namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 /**
  * Remote Object XML RPC adapter
- *
  */
 class XmlRpc extends BaseAdapter
 {

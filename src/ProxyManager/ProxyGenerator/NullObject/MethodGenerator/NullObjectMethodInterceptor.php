@@ -10,12 +10,10 @@ use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Method decorator for null objects
- *
  */
 class NullObjectMethodInterceptor extends MethodGenerator
 {
     /**
-     *
      * @return self|static
      */
     public static function generateMethod(MethodReflection $originalMethod) : self

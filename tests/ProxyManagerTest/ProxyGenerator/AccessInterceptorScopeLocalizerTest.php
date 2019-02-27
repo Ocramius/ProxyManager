@@ -49,7 +49,7 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
 
         $this
             ->getProxyGenerator()
-            ->generate(new \ReflectionClass(BaseInterface::class), new ClassGenerator());
+            ->generate(new ReflectionClass(BaseInterface::class), new ClassGenerator());
     }
 
     /**

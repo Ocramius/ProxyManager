@@ -13,7 +13,6 @@ use function implode;
 
 /**
  * Method with additional pre- and post- interceptor logic in the body
- *
  */
 class InterceptedMethod extends MethodGenerator
 {

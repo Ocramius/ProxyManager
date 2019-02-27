@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Generator\TypeGenerator;
@@ -21,7 +22,7 @@ class SetMethodSuffixInterceptorTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $suffix */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $suffix */
         $suffix = $this->createMock(PropertyGenerator::class);
 
         $suffix->expects(self::once())->method('getName')->will(self::returnValue('foo'));

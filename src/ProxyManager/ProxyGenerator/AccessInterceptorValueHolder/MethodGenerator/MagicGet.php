@@ -16,13 +16,11 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__get` for method interceptor value holder objects
- *
  */
 class MagicGet extends MagicMethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException

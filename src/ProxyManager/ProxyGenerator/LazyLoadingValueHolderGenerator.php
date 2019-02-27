@@ -41,7 +41,6 @@ use function array_merge;
  * Generator for proxies implementing {@see \ProxyManager\Proxy\VirtualProxyInterface}
  *
  * {@inheritDoc}
- *
  */
 class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 {
@@ -71,7 +70,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -103,7 +102,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         InitializerProperty $initializer,
         ValueHolderProperty $valueHolder
     ) : callable {
-        return function (ReflectionMethod $method) use ($initializer, $valueHolder) : LazyLoadingMethodInterceptor {
+        return static function (ReflectionMethod $method) use ($initializer, $valueHolder) : LazyLoadingMethodInterceptor {
             return LazyLoadingMethodInterceptor::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $initializer,

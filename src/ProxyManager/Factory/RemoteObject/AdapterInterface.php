@@ -6,7 +6,6 @@ namespace ProxyManager\Factory\RemoteObject;
 
 /**
  * Remote Object adapter interface
- *
  */
 interface AdapterInterface
 {

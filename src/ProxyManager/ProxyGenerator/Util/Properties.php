@@ -6,8 +6,11 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use ReflectionClass;
 use ReflectionProperty;
+use ReflectionType;
 use function array_filter;
+use function array_flip;
 use function array_key_exists;
+use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_values;
@@ -15,11 +18,10 @@ use function array_values;
 /**
  * DTO containing the list of all non-static proxy properties and utility methods to access them
  * in various formats/collections
- *
  */
 final class Properties
 {
-    /** @var array|\ReflectionProperty[] */
+    /** @var array|ReflectionProperty[] */
     private $properties;
 
     /**
@@ -42,10 +44,10 @@ final class Properties
         } while ($class);
 
         return new self(array_merge(
-            ...array_map(function (ReflectionClass $class) : array {
+            ...array_map(static function (ReflectionClass $class) : array {
                 return array_values(array_filter(
                     $class->getProperties(),
-                    function (ReflectionProperty $property) use ($class) : bool {
+                    static function (ReflectionProperty $property) use ($class) : bool {
                         return $class->getName() === $property->getDeclaringClass()->getName()
                             && ! $property->isStatic();
                     }
@@ -70,7 +72,7 @@ final class Properties
 
     public function onlyNonReferenceableProperties() : self
     {
-        return new self(array_filter($this->properties, function (ReflectionProperty $property) : bool {
+        return new self(array_filter($this->properties, static function (ReflectionProperty $property) : bool {
             if (! $property->hasType()) {
                 return false;
             }
@@ -85,7 +87,7 @@ final class Properties
 
     public function onlyPropertiesThatCanBeUnset() : self
     {
-        return new self(array_filter($this->properties, function (ReflectionProperty $property) : bool {
+        return new self(array_filter($this->properties, static function (ReflectionProperty $property) : bool {
             if (! $property->hasType()) {
                 return true;
             }
@@ -103,12 +105,12 @@ final class Properties
      */
     public function withoutNonReferenceableProperties() : self
     {
-        return new self(array_filter($this->properties, function (ReflectionProperty $property) : bool {
+        return new self(array_filter($this->properties, static function (ReflectionProperty $property) : bool {
             if (! $property->hasType()) {
                 return true;
             }
 
-            /** @var $type \ReflectionType */
+            /** @var ReflectionType $type */
             $type = $property->getType();
 
             if ($type->allowsNull()) {
@@ -130,7 +132,7 @@ final class Properties
             static function (ReflectionProperty $property) : bool {
                 $type = $property->getType();
 
-                return null === $type || $type->allowsNull();
+                return $type === null || $type->allowsNull();
             }
         ));
     }
@@ -142,7 +144,7 @@ final class Properties
 
     public function empty() : bool
     {
-        return [] === $this->properties;
+        return $this->properties === [];
     }
 
     /**

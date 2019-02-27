@@ -10,7 +10,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the interceptor for operations to be executed after method execution
- *
  */
 class MethodSuffixInterceptors extends PropertyGenerator
 {

@@ -11,7 +11,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the remote object adapter
- *
  */
 class AdapterProperty extends PropertyGenerator
 {

@@ -33,7 +33,6 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     *
      */
     public function testGeneratesValidCode(string $className) : void
     {
@@ -62,12 +61,9 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 
         self::assertInstanceOf($className, $proxy);
 
-        foreach (
-            Properties
-                ::fromReflectionClass($generatedReflection)
+        foreach (Properties::fromReflectionClass($generatedReflection)
                 ->onlyNullableProperties()
-                ->getPublicProperties() as $property
-        ) {
+                ->getPublicProperties() as $property) {
             self::assertNull($proxy->{$property->getName()});
         }
 

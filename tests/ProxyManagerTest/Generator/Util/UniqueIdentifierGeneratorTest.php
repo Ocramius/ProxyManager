@@ -18,7 +18,6 @@ class UniqueIdentifierGeneratorTest extends TestCase
 {
     /**
      * @dataProvider getBaseIdentifierNames
-     *
      */
     public function testGeneratesUniqueIdentifiers(string $name) : void
     {
@@ -30,7 +29,6 @@ class UniqueIdentifierGeneratorTest extends TestCase
 
     /**
      * @dataProvider getBaseIdentifierNames
-     *
      */
     public function testGeneratesValidIdentifiers(string $name) : void
     {
@@ -42,7 +40,6 @@ class UniqueIdentifierGeneratorTest extends TestCase
 
     /**
      * @dataProvider getBaseIdentifierNames
-     *
      */
     public function testGeneratedIdentifierEntropy(string $name) : void
     {

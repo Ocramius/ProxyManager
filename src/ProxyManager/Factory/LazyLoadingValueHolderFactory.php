@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace ProxyManager\Factory;
 
+use Closure;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Factory responsible of producing virtual proxy instances
- *
  */
 class LazyLoadingValueHolderFactory extends AbstractBaseFactory
 {
@@ -20,7 +20,7 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
     /** @param mixed[] $proxyOptions */
     public function createProxy(
         string $className,
-        \Closure $initializer,
+        Closure $initializer,
         array $proxyOptions = []
     ) : VirtualProxyInterface {
         $proxyClassName = $this->generateProxy($className, $proxyOptions);

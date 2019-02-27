@@ -6,7 +6,6 @@ namespace ProxyManager\FileLocator;
 
 /**
  * Basic autoloader utilities required to work with proxy files
- *
  */
 interface FileLocatorInterface
 {

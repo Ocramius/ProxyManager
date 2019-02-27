@@ -13,14 +13,12 @@ use ReflectionMethod;
  * Test to {@see ProxyManager\Generator\Util\ProxiedMethodReturnExpression}
  *
  * @covers \ProxyManager\Generator\Util\ProxiedMethodReturnExpression
- *
  * @group Coverage
  */
 class ProxiedMethodReturnExpressionTest extends TestCase
 {
     /**
      * @dataProvider returnExpressionsProvider
-     *
      */
     public function testGeneratedReturnExpression(
         string $expression,

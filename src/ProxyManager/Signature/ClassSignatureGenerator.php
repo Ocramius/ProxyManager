@@ -10,7 +10,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Applies a signature to a given class generator
- *
  */
 final class ClassSignatureGenerator implements ClassSignatureGeneratorInterface
 {

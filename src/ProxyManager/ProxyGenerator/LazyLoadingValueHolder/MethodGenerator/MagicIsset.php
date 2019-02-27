@@ -14,13 +14,11 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__isset` method for lazy loading value holder objects
- *
  */
 class MagicIsset extends MagicMethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException

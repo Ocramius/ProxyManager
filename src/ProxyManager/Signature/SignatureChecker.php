@@ -11,7 +11,6 @@ use function array_key_exists;
 
 /**
  * Generator for signatures to be used to check the validity of generated code
- *
  */
 final class SignatureChecker implements SignatureCheckerInterface
 {

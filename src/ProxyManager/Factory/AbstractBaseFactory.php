@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Factory;
 
+use OutOfBoundsException;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -13,11 +14,9 @@ use ProxyManager\Version;
 use ReflectionClass;
 use function array_key_exists;
 use function class_exists;
-use function get_class;
 
 /**
  * Base factory common logic
- *
  */
 abstract class AbstractBaseFactory
 {
@@ -43,7 +42,7 @@ abstract class AbstractBaseFactory
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
-     * @throws \OutOfBoundsException
+     * @throws OutOfBoundsException
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
@@ -53,7 +52,7 @@ abstract class AbstractBaseFactory
 
         $proxyParameters = [
             'className'           => $className,
-            'factory'             => get_class($this),
+            'factory'             => static::class,
             'proxyManagerVersion' => Version::getVersion(),
         ];
         $proxyClassName  = $this

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\BindProxyProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
-use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ReflectionClass;
@@ -22,10 +22,10 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class BindProxyPropertiesTest extends TestCase
 {
-    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
     private $prefixInterceptors;
 
-    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
     private $suffixInterceptors;
 
     /**

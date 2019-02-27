@@ -15,13 +15,11 @@ use function var_export;
 
 /**
  * The `bindProxyProperties` method implementation for access interceptor scope localizers
- *
  */
 class BindProxyProperties extends MethodGenerator
 {
     /**
      * Constructor
-     *
      */
     public function __construct(
         ReflectionClass $originalClass,

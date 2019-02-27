@@ -16,7 +16,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__unset` for method interceptor value holder objects
- *
  */
 class MagicUnset extends MagicMethodGenerator
 {

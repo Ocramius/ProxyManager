@@ -44,7 +44,7 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
 
         $this
             ->getProxyGenerator()
-            ->generate(new \ReflectionClass(BaseInterface::class), new ClassGenerator());
+            ->generate(new ReflectionClass(BaseInterface::class), new ClassGenerator());
     }
 
     public function testAllAbstractMethodsWillBeMadeConcrete() : void
@@ -53,7 +53,7 @@ class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
 
         $this
             ->getProxyGenerator()
-            ->generate(new \ReflectionClass(ClassWithAbstractPublicMethod::class), $classGenerator);
+            ->generate(new ReflectionClass(ClassWithAbstractPublicMethod::class), $classGenerator);
 
         foreach ($classGenerator->getMethods() as $method) {
             self::assertFalse($method->isAbstract());

@@ -10,7 +10,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the wrapped value of a lazy loading proxy
- *
  */
 class ValueHolderProperty extends PropertyGenerator
 {

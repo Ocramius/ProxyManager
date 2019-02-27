@@ -18,7 +18,6 @@ use function sprintf;
 
 /**
  * Magic `__unset` method for lazy loading ghost objects
- *
  */
 class MagicUnset extends MagicMethodGenerator
 {
@@ -88,7 +87,6 @@ if (isset(self::$%s[$name])) {
 PHP;
 
     /**
-     *
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
      */

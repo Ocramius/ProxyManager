@@ -15,7 +15,6 @@ use function unlink;
 
 /**
  * Generator strategy that produces the code and evaluates it at runtime
- *
  */
 class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
 {

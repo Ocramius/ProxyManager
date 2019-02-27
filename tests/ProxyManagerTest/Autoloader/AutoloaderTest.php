@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Autoloader;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
@@ -28,10 +29,10 @@ class AutoloaderTest extends TestCase
     /** @var Autoloader */
     protected $autoloader;
 
-    /** @var FileLocatorInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var FileLocatorInterface|PHPUnit_Framework_MockObject_MockObject */
     protected $fileLocator;
 
-    /** @var ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassNameInflectorInterface|PHPUnit_Framework_MockObject_MockObject */
     protected $classNameInflector;
 
     /**
@@ -86,7 +87,7 @@ class AutoloaderTest extends TestCase
      */
     public function testWillNotAutoloadExistingClass() : void
     {
-        self::assertFalse($this->autoloadWithoutFurtherAutoloaders(__CLASS__));
+        self::assertFalse($this->autoloadWithoutFurtherAutoloaders(self::class));
     }
 
     /**

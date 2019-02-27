@@ -11,7 +11,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Map of public properties that exist in the class being proxied
- *
  */
 class PublicPropertiesMap extends PropertyGenerator
 {
@@ -19,7 +18,6 @@ class PublicPropertiesMap extends PropertyGenerator
     private $publicProperties = [];
 
     /**
-     *
      * @throws InvalidArgumentException
      */
     public function __construct(Properties $properties)

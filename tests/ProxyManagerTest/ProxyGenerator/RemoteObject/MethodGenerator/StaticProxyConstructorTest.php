@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
@@ -20,7 +21,7 @@ class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $adapter */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
 
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));

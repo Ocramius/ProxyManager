@@ -6,7 +6,6 @@ namespace ProxyManager\Proxy;
 
 /**
  * Smart reference object marker
- *
  */
 interface SmartReferenceInterface extends ProxyInterface
 {

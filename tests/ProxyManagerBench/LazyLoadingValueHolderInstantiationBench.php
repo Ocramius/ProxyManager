@@ -54,7 +54,7 @@ class LazyLoadingValueHolderInstantiationBench
 
     public function benchInstantiationOfEmptyObject() : void
     {
-        ($this->emptyClassProxy)::staticProxyConstructor(function () : void {
+        $this->emptyClassProxy::staticProxyConstructor(static function () : void {
         });
     }
 
@@ -65,7 +65,7 @@ class LazyLoadingValueHolderInstantiationBench
 
     public function benchInstantiationOfObjectWithPrivateProperties() : void
     {
-        ($this->privatePropertiesProxy)::staticProxyConstructor(function () : void {
+        $this->privatePropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
 
@@ -76,7 +76,7 @@ class LazyLoadingValueHolderInstantiationBench
 
     public function benchInstantiationOfObjectWithProtectedProperties() : void
     {
-        ($this->protectedPropertiesProxy)::staticProxyConstructor(function () : void {
+        $this->protectedPropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
 
@@ -87,7 +87,7 @@ class LazyLoadingValueHolderInstantiationBench
 
     public function benchInstantiationOfObjectWithPublicProperties() : void
     {
-        ($this->publicPropertiesProxy)::staticProxyConstructor(function () : void {
+        $this->publicPropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
 
@@ -98,13 +98,13 @@ class LazyLoadingValueHolderInstantiationBench
 
     public function benchInstantiationOfObjectWithMixedProperties() : void
     {
-        ($this->mixedPropertiesProxy)::staticProxyConstructor(function () : void {
+        $this->mixedPropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
 
     private function generateProxy(string $originalClass) : string
     {
-        $generatedClassName = __CLASS__ . '\\' . $originalClass;
+        $generatedClassName = self::class . '\\' . $originalClass;
 
         if (class_exists($generatedClassName)) {
             return $generatedClassName;

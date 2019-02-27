@@ -9,11 +9,10 @@ use function sprintf;
 
 /**
  * Exception for forcefully disabled methods
- *
  */
 class DisabledMethodException extends BadMethodCallException implements ExceptionInterface
 {
-    public const NAME = __CLASS__;
+    public const NAME = self::class;
 
     public static function disabledMethod(string $method) : self
     {

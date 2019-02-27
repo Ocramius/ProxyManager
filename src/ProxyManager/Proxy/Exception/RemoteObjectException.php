@@ -8,7 +8,6 @@ use RuntimeException;
 
 /**
  * Remote object exception
- *
  */
 class RemoteObjectException extends RuntimeException
 {

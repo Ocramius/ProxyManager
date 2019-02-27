@@ -50,7 +50,6 @@ class MultipleProxyGenerationTest extends TestCase
      * and won't conflict
      *
      * @dataProvider getTestedClasses
-     *
      */
     public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className) : void
     {
@@ -58,7 +57,7 @@ class MultipleProxyGenerationTest extends TestCase
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
-        $initializer                            = function () : void {
+        $initializer                            = static function () : void {
         };
 
         $generated = [

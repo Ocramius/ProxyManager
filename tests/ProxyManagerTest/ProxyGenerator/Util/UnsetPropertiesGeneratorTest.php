@@ -12,6 +12,7 @@ use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\EmptyClass;
+use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator}
@@ -23,14 +24,13 @@ class UnsetPropertiesGeneratorTest extends TestCase
 {
     /**
      * @dataProvider classNamesProvider
-     *
      */
     public function testGeneratedCode(string $className, string $expectedCode, string $instanceName) : void
     {
         self::assertSame(
             $expectedCode,
             UnsetPropertiesGenerator::generateSnippet(
-                Properties::fromReflectionClass(new \ReflectionClass($className)),
+                Properties::fromReflectionClass(new ReflectionClass($className)),
                 $instanceName
             )
         );

@@ -32,10 +32,10 @@ use function sort;
 class ProxiedMethodsFilterTest extends TestCase
 {
     /**
-     * @dataProvider expectedMethods
-     *
      * @param string[]|null $excludes
      * @param string[]      $expectedMethods
+     *
+     * @dataProvider expectedMethods
      */
     public function testFiltering(ReflectionClass $reflectionClass, ?array $excludes, array $expectedMethods) : void
     {
@@ -46,7 +46,7 @@ class ProxiedMethodsFilterTest extends TestCase
         }
 
         $keys = array_map(
-            function (ReflectionMethod $method) : string {
+            static function (ReflectionMethod $method) : string {
                 return $method->getName();
             },
             $filtered
@@ -59,10 +59,10 @@ class ProxiedMethodsFilterTest extends TestCase
     }
 
     /**
-     * @dataProvider expectedAbstractPublicMethods
-     *
      * @param string[]|null $excludes
      * @param string[]      $expectedMethods
+     *
+     * @dataProvider expectedAbstractPublicMethods
      */
     public function testFilteringOfAbstractPublic(
         ReflectionClass $reflectionClass,
@@ -76,7 +76,7 @@ class ProxiedMethodsFilterTest extends TestCase
         }
 
         $keys = array_map(
-            function (ReflectionMethod $method) : string {
+            static function (ReflectionMethod $method) : string {
                 return $method->getName();
             },
             $filtered

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManager\Factory;
 
+use Closure;
+use OutOfBoundsException;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -13,7 +15,6 @@ use function get_class;
 
 /**
  * Factory responsible of producing proxy objects
- *
  */
 class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
 {
@@ -21,15 +22,15 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
     private $generator;
 
     /**
-     * @param object     $instance           the object to be localized within the access interceptor
-     * @param \Closure[] $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
+     * @param object    $instance           the object to be localized within the access interceptor
+     * @param Closure[] $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       before method logic is executed
-     * @param \Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
+     * @param Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       after method logic is executed
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
-     * @throws \OutOfBoundsException
+     * @throws OutOfBoundsException
      */
     public function createProxy(
         object $instance,

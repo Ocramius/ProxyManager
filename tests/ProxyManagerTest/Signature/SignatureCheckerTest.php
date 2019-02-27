@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Signature;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Signature\SignatureChecker;
@@ -25,7 +26,7 @@ class SignatureCheckerTest extends TestCase
     /** @var SignatureChecker */
     private $signatureChecker;
 
-    /** @var SignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var SignatureGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $signatureGenerator;
 
     /**

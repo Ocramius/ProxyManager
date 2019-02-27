@@ -8,6 +8,7 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
+use ReflectionMethod;
 use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\PropertyGenerator;
 use Zend\Code\Reflection\MethodReflection;
@@ -20,7 +21,6 @@ use function var_export;
 
 /**
  * The `__construct` implementation for lazy loading proxies
- *
  */
 class Constructor extends MethodGenerator
 {
@@ -60,7 +60,7 @@ class Constructor extends MethodGenerator
             . implode(
                 ', ',
                 array_map(
-                    function (ParameterReflection $parameter) : string {
+                    static function (ParameterReflection $parameter) : string {
                         return ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
                     },
                     $originalConstructor->getParameters()
@@ -72,7 +72,7 @@ class Constructor extends MethodGenerator
     private static function getConstructor(ReflectionClass $class) : ?MethodReflection
     {
         $constructors = array_map(
-            function (\ReflectionMethod $method) : MethodReflection {
+            static function (ReflectionMethod $method) : MethodReflection {
                 return new MethodReflection(
                     $method->getDeclaringClass()->getName(),
                     $method->getName()
@@ -80,7 +80,7 @@ class Constructor extends MethodGenerator
             },
             array_filter(
                 $class->getMethods(),
-                function (\ReflectionMethod $method) : bool {
+                static function (ReflectionMethod $method) : bool {
                     return $method->isConstructor();
                 }
             )

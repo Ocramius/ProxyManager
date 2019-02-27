@@ -197,8 +197,8 @@ class LazyLoadingValueHolderPropertyAccessBench
 
     private function buildProxy(string $originalClass) : VirtualProxyInterface
     {
-        return ($this->generateProxyClass($originalClass))::staticProxyConstructor(
-            function (
+        return $this->generateProxyClass($originalClass)::staticProxyConstructor(
+            static function (
                 & $valueHolder,
                 VirtualProxyInterface $proxy,
                 string $method,
@@ -215,7 +215,7 @@ class LazyLoadingValueHolderPropertyAccessBench
 
     private function generateProxyClass(string $originalClassName) : string
     {
-        $generatedClassName = __CLASS__ . '\\' . $originalClassName;
+        $generatedClassName = self::class . '\\' . $originalClassName;
 
         if (class_exists($generatedClassName)) {
             return $generatedClassName;

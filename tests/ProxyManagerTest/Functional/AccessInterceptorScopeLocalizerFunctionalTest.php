@@ -6,6 +6,7 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Configuration;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
@@ -44,10 +45,10 @@ use function unserialize;
 class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 {
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param mixed[] $params
      * @param mixed   $expectedValue
+     *
+     * @dataProvider getProxyMethods
      */
     public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue
     ) : void
@@ -64,7 +65,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertInternalType('callable', $callback);
         self::assertSame($expectedValue, $callback(...array_values($params)));
 
-        /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var callable|PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -73,7 +74,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
+            static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
                 $listener($proxy, $instance, $method, $params, $returnEarly);
             }
         );
@@ -84,7 +85,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             $method,
-            function ($proxy, $instance, string $method, $params, & $returnEarly) use ($random) : string {
+            static function ($proxy, $instance, string $method, $params, & $returnEarly) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -97,10 +98,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param mixed[] $params
      * @param mixed   $expectedValue
+     *
+     * @dataProvider getProxyMethods
      */
     public function testMethodCallsWithSuffixListener(
         string $className,
@@ -117,7 +118,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         self::assertInternalType('callable', $callback);
 
-        /** @var callable|\PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var callable|PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -126,7 +127,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $proxy->setMethodSuffixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) : void {
+            static function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) : void {
                 $listener($proxy, $instance, $method, $params, $returnValue, $returnEarly);
             }
         );
@@ -137,7 +138,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $proxy->setMethodSuffixInterceptor(
             $method,
-            function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($random) : string {
+            static function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -150,10 +151,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param mixed[] $params
      * @param mixed   $expectedValue
+     *
+     * @dataProvider getProxyMethods
      */
     public function testMethodCallsAfterUnSerialization(
         string $className,
@@ -174,10 +175,10 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param mixed[] $params
      * @param mixed   $expectedValue
+     *
+     * @dataProvider getProxyMethods
      */
     public function testMethodCallsAfterCloning(
         string $className,
@@ -200,9 +201,9 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getPropertyAccessProxies
-     *
      * @param mixed $propertyValue
+     *
+     * @dataProvider getPropertyAccessProxies
      */
     public function testPropertyReadAccess(
         object $instance,
@@ -216,7 +217,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
-     *
      */
     public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
     ) : void
@@ -230,7 +230,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
-     *
      */
     public function testPropertyExistence(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
     ) : void
@@ -245,7 +244,6 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
-     *
      */
     public function testPropertyUnset(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
     ) : void
@@ -476,7 +474,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                function () : string {
+                static function () : string {
                     return 'Foo Baz';
                 },
             ]
@@ -503,7 +501,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                function () : string {
+                static function () : string {
                     return 'Foo Baz';
                 },
             ]
@@ -530,7 +528,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
             ->createProxy(
                 new ClassWithDynamicArgumentsMethod(),
                 [
-                    'dynamicArgumentsMethod' => function () : string {
+                    'dynamicArgumentsMethod' => static function () : string {
                         return 'Foo Baz';
                     },
                 ]
@@ -557,7 +555,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
             ->createProxy(
                 new VoidCounter(),
                 [
-                    'increment' => function (
+                    'increment' => static function (
                         VoidCounter $proxy,
                         VoidCounter $instance,
                         string $method,
@@ -572,7 +570,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                     },
                 ],
                 [
-                    'increment' => function (
+                    'increment' => static function (
                         VoidCounter $proxy,
                         VoidCounter $instance,
                         string $method,

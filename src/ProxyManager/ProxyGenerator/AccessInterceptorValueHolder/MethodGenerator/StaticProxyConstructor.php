@@ -14,13 +14,11 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for access interceptor value holders
- *
  */
 class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */

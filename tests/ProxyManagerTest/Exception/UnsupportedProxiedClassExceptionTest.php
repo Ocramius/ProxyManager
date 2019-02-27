@@ -62,8 +62,7 @@ class UnsupportedProxiedClassExceptionTest extends TestCase
             . 'privateNullableObjectProperty, privateClassProperty, privateNullableClassProperty',
             UnsupportedProxiedClassException::nonReferenceableLocalizedReflectionProperties(
                 $reflectionClass,
-                Properties
-                    ::fromReflectionClass($reflectionClass)
+                Properties::fromReflectionClass($reflectionClass)
                     ->onlyNonReferenceableProperties()
                     ->onlyInstanceProperties()
             )->getMessage()

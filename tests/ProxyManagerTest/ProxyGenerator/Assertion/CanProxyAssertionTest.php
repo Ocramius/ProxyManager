@@ -74,7 +74,6 @@ class CanProxyAssertionTest extends TestCase
     }
 
     /**
-     *
      * @dataProvider validClasses
      */
     public function testAllowedClass(string $className) : void

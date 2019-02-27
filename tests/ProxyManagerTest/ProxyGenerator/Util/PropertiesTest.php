@@ -15,6 +15,8 @@ use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 use ReflectionProperty;
+use function array_map;
+use function array_values;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\Properties}
@@ -57,8 +59,7 @@ class PropertiesTest extends TestCase
 
     public function testOnlyNullableProperties() : void
     {
-        $nullablePublicProperties = Properties
-            ::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+        $nullablePublicProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
             ->onlyNullableProperties()
             ->getInstanceProperties();
 
@@ -122,8 +123,7 @@ class PropertiesTest extends TestCase
 
     public function testOnlyPropertiesThatCanBeUnset() : void
     {
-        $nonReferenceableProperties = Properties
-            ::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+        $nonReferenceableProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
             ->onlyPropertiesThatCanBeUnset()
             ->getInstanceProperties();
 
@@ -182,14 +182,12 @@ class PropertiesTest extends TestCase
     public function testOnlyNonReferenceableProperties() : void
     {
         self::assertTrue(
-            Properties
-                ::fromReflectionClass(new ReflectionClass(ClassWithMixedReferenceableTypedProperties::class))
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedReferenceableTypedProperties::class))
                 ->onlyNonReferenceableProperties()
                 ->empty()
         );
 
-        $nonReferenceableProperties = Properties
-            ::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+        $nonReferenceableProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
             ->onlyNonReferenceableProperties()
             ->getInstanceProperties();
 
@@ -370,9 +368,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @dataProvider propertiesToSkipFixture
-     *
      * @param string $propertyName with property name
+     *
+     * @dataProvider propertiesToSkipFixture
      */
     public function testSkipPropertiesByFiltering(string $propertyName) : void
     {

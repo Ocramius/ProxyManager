@@ -16,7 +16,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__isset` for method interceptor value holder objects
- *
  */
 class MagicIsset extends MagicMethodGenerator
 {

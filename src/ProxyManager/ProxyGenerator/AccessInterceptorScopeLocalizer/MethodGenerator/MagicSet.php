@@ -15,12 +15,10 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__set` for lazy loading ghost objects
- *
  */
 class MagicSet extends MagicMethodGenerator
 {
     /**
-     *
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
      */

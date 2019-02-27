@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\Util;
 
+use InvalidArgumentException;
 use Zend\Code\Generator\PropertyGenerator;
 use function sprintf;
 
@@ -11,7 +12,6 @@ use function sprintf;
  * Generates code necessary to simulate a fatal error in case of unauthorized
  * access to class members in magic methods even when in child classes and dealing
  * with protected members.
- *
  */
 class PublicScopeSimulator
 {
@@ -33,7 +33,7 @@ class PublicScopeSimulator
      * @param string|null       $returnPropertyName name of the property to which we want to assign the result of
      *                                              the operation. Return directly if none provided
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function getPublicAccessSimulationCode(
         string $operationType,
@@ -71,8 +71,6 @@ class PublicScopeSimulator
 
     /**
      * This will generate code that triggers a notice if access is attempted on a non-existing property
-     *
-     *
      */
     private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter) : string
     {
@@ -102,13 +100,11 @@ class PublicScopeSimulator
      */
     private static function getByRefReturnValue(string $operationType) : string
     {
-        return ($operationType === static::OPERATION_GET || $operationType === static::OPERATION_SET) ? '& ' : '';
+        return $operationType === static::OPERATION_GET || $operationType === static::OPERATION_SET ? '& ' : '';
     }
 
     /**
      * Retrieves the logic to fetch the object on which access should be attempted
-     *
-     *
      */
     private static function getTargetObject(?PropertyGenerator $valueHolder = null) : string
     {
@@ -120,7 +116,7 @@ class PublicScopeSimulator
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private static function getOperation(string $operationType, string $nameParameter, ?string $valueParameter) : string
     {
@@ -129,7 +125,7 @@ class PublicScopeSimulator
                 return 'return $targetObject->$' . $nameParameter . ';';
             case static::OPERATION_SET:
                 if ($valueParameter === null) {
-                    throw new \InvalidArgumentException('Parameter $valueParameter not provided');
+                    throw new InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
                 return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter . ';';
@@ -139,12 +135,11 @@ class PublicScopeSimulator
                 return 'unset($targetObject->$' . $nameParameter . ');';
         }
 
-        throw new \InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
+        throw new InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));
     }
 
     /**
      * Generates code to bind operations to the parent scope
-     *
      */
     private static function getScopeReBind() : string
     {

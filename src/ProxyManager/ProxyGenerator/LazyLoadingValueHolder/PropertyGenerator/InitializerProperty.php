@@ -10,7 +10,6 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the initializer for a lazy object
- *
  */
 class InitializerProperty extends PropertyGenerator
 {

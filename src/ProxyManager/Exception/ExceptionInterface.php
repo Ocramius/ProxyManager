@@ -6,7 +6,6 @@ namespace ProxyManager\Exception;
 
 /**
  * Base exception class for the proxy manager
- *
  */
 interface ExceptionInterface
 {

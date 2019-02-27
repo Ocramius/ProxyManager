@@ -18,7 +18,6 @@ use function sprintf;
 
 /**
  * Magic `__isset` method for lazy loading ghost objects
- *
  */
 class MagicIsset extends MagicMethodGenerator
 {
@@ -82,7 +81,6 @@ if (isset(self::$%s[$name])) {
 PHP;
 
     /**
-     *
      * @throws InvalidArgumentException
      * @throws \InvalidArgumentException
      */

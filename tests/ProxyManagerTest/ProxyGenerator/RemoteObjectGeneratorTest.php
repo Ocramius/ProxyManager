@@ -32,7 +32,6 @@ class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     *
      */
     public function testGeneratesValidCode(string $className) : void
     {

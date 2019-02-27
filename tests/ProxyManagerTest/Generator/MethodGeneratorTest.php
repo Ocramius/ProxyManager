@@ -57,7 +57,7 @@ class MethodGeneratorTest extends TestCase
     public function testGenerateFromReflection() : void
     {
         $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
-            __CLASS__,
+            self::class,
             __FUNCTION__
         ));
 
@@ -103,7 +103,6 @@ class MethodGeneratorTest extends TestCase
     }
 
     /**
-     *
      * @dataProvider scalarTypeHintedMethods
      */
     public function testGenerateMethodWithScalarTypeHinting(string $methodName, string $type) : void
@@ -148,7 +147,6 @@ class MethodGeneratorTest extends TestCase
 
     /**
      * @dataProvider returnTypeHintsProvider
-     *
      */
     public function testReturnTypeHintGeneration(string $methodName, string $expectedType) : void
     {
