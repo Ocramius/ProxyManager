@@ -10,7 +10,7 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithMixedTypedProperties
+class ClassWithMixedReferenceableTypedProperties
 {
     public static $publicStaticUnTypedProperty =  'publicStaticUnTypedProperty';
     public static $publicStaticUnTypedPropertyWithoutDefaultValue;
@@ -106,95 +106,68 @@ class ClassWithMixedTypedProperties
     private static ?EmptyClass $privateStaticNullableClassProperty;
 
     public $publicUnTypedProperty =  'publicUnTypedProperty';
-    public $publicUnTypedPropertyWithoutDefaultValue;
     public bool $publicBoolProperty =  true;
-    public bool $publicBoolPropertyWithoutDefaultValue;
     public ?bool $publicNullableBoolProperty =  true;
     public ?bool $publicNullableBoolPropertyWithoutDefaultValue;
     public int $publicIntProperty =  123;
-    public int $publicIntPropertyWithoutDefaultValue;
     public ?int $publicNullableIntProperty =  123;
     public ?int $publicNullableIntPropertyWithoutDefaultValue;
     public float $publicFloatProperty =  123.456;
-    public float $publicFloatPropertyWithoutDefaultValue;
     public ?float $publicNullableFloatProperty =  123.456;
     public ?float $publicNullableFloatPropertyWithoutDefaultValue;
     public string $publicStringProperty =  'publicStringProperty';
-    public string $publicStringPropertyWithoutDefaultValue;
     public ?string $publicNullableStringProperty =  'publicStringProperty';
     public ?string $publicNullableStringPropertyWithoutDefaultValue;
     public array $publicArrayProperty =  ['publicArrayProperty'];
-    public array $publicArrayPropertyWithoutDefaultValue;
     public ?array $publicNullableArrayProperty =  ['publicArrayProperty'];
     public ?array $publicNullableArrayPropertyWithoutDefaultValue;
     public iterable $publicIterableProperty =  ['publicIterableProperty'];
-    public iterable $publicIterablePropertyWithoutDefaultValue;
     public ?iterable $publicNullableIterableProperty =  ['publicIterableProperty'];
     public ?iterable $publicNullableIterablePropertyWithoutDefaultValue;
-    public object $publicObjectProperty;
     public ?object $publicNullableObjectProperty;
-    public EmptyClass $publicClassProperty;
     public ?EmptyClass $publicNullableClassProperty;
 
     protected $protectedUnTypedProperty =  'protectedUnTypedProperty';
-    protected $protectedUnTypedPropertyWithoutDefaultValue;
     protected bool $protectedBoolProperty =  true;
-    protected bool $protectedBoolPropertyWithoutDefaultValue;
     protected ?bool $protectedNullableBoolProperty =  true;
     protected ?bool $protectedNullableBoolPropertyWithoutDefaultValue;
     protected int $protectedIntProperty =  123;
-    protected int $protectedIntPropertyWithoutDefaultValue;
     protected ?int $protectedNullableIntProperty =  123;
     protected ?int $protectedNullableIntPropertyWithoutDefaultValue;
     protected float $protectedFloatProperty =  123.456;
-    protected float $protectedFloatPropertyWithoutDefaultValue;
     protected ?float $protectedNullableFloatProperty =  123.456;
     protected ?float $protectedNullableFloatPropertyWithoutDefaultValue;
     protected string $protectedStringProperty =  'protectedStringProperty';
-    protected string $protectedStringPropertyWithoutDefaultValue;
     protected ?string $protectedNullableStringProperty =  'protectedStringProperty';
     protected ?string $protectedNullableStringPropertyWithoutDefaultValue;
     protected array $protectedArrayProperty =  ['protectedArrayProperty'];
-    protected array $protectedArrayPropertyWithoutDefaultValue;
     protected ?array $protectedNullableArrayProperty =  ['protectedArrayProperty'];
     protected ?array $protectedNullableArrayPropertyWithoutDefaultValue;
     protected iterable $protectedIterableProperty =  ['protectedIterableProperty'];
-    protected iterable $protectedIterablePropertyWithoutDefaultValue;
     protected ?iterable $protectedNullableIterableProperty =  ['protectedIterableProperty'];
     protected ?iterable $protectedNullableIterablePropertyWithoutDefaultValue;
-    protected object $protectedObjectProperty;
     protected ?object $protectedNullableObjectProperty;
-    protected EmptyClass $protectedClassProperty;
     protected ?EmptyClass $protectedNullableClassProperty;
 
     private $privateUnTypedProperty =  'privateUnTypedProperty';
-    private $privateUnTypedPropertyWithoutDefaultValue;
     private bool $privateBoolProperty =  true;
-    private bool $privateBoolPropertyWithoutDefaultValue;
     private ?bool $privateNullableBoolProperty =  true;
     private ?bool $privateNullableBoolPropertyWithoutDefaultValue;
     private int $privateIntProperty =  123;
-    private int $privateIntPropertyWithoutDefaultValue;
     private ?int $privateNullableIntProperty =  123;
     private ?int $privateNullableIntPropertyWithoutDefaultValue;
     private float $privateFloatProperty =  123.456;
-    private float $privateFloatPropertyWithoutDefaultValue;
     private ?float $privateNullableFloatProperty =  123.456;
     private ?float $privateNullableFloatPropertyWithoutDefaultValue;
     private string $privateStringProperty =  'privateStringProperty';
-    private string $privateStringPropertyWithoutDefaultValue;
     private ?string $privateNullableStringProperty =  'privateStringProperty';
     private ?string $privateNullableStringPropertyWithoutDefaultValue;
     private array $privateArrayProperty =  ['privateArrayProperty'];
-    private array $privateArrayPropertyWithoutDefaultValue;
     private ?array $privateNullableArrayProperty =  ['privateArrayProperty'];
     private ?array $privateNullableArrayPropertyWithoutDefaultValue;
     private iterable $privateIterableProperty =  ['privateIterableProperty'];
-    private iterable $privateIterablePropertyWithoutDefaultValue;
     private ?iterable $privateNullableIterableProperty =  ['privateIterableProperty'];
     private ?iterable $privateNullableIterablePropertyWithoutDefaultValue;
-    private object $privateObjectProperty;
     private ?object $privateNullableObjectProperty;
-    private EmptyClass $privateClassProperty;
     private ?EmptyClass $privateNullableClassProperty;
 }

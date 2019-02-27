@@ -24,6 +24,7 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
@@ -70,8 +71,11 @@ class MultipleProxyGenerationTest extends TestCase
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
-            $accessInterceptorScopeLocalizerFactory->createProxy(new $className()),
         ];
+
+        if ($className !== ClassWithMixedTypedProperties::class) {
+            $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy(new $className());
+        }
 
         foreach ($generated as $key => $proxy) {
             self::assertInstanceOf($className, $proxy);
@@ -88,12 +92,6 @@ class MultipleProxyGenerationTest extends TestCase
 
             self::assertInstanceOf($proxyClass, new $proxyClass(), 'Proxy can be instantiated via normal constructor');
         }
-
-        self::assertInstanceOf(GhostObjectInterface::class, $generated[0]);
-        self::assertInstanceOf(VirtualProxyInterface::class, $generated[1]);
-        self::assertInstanceOf(AccessInterceptorInterface::class, $generated[2]);
-        self::assertInstanceOf(ValueHolderInterface::class, $generated[2]);
-        self::assertInstanceOf(AccessInterceptorInterface::class, $generated[3]);
     }
 
     /**
@@ -109,6 +107,7 @@ class MultipleProxyGenerationTest extends TestCase
             [ClassWithByRefMagicMethods::class],
             [ClassWithMixedProperties::class],
             [ClassWithMixedTypedProperties::class],
+            [ClassWithMixedReferenceableTypedProperties::class],
             [ClassWithPrivateProperties::class],
             [ClassWithProtectedProperties::class],
             [ClassWithPublicProperties::class],

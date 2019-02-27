@@ -10,6 +10,7 @@ use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
@@ -116,6 +117,54 @@ class PropertiesTest extends TestCase
             array_values(array_map(static function (ReflectionProperty $property) : string {
                 return $property->getName();
             }, $nullablePublicProperties))
+        );
+    }
+
+    public function testOnlyNonReferenceableProperties() : void
+    {
+        self::assertTrue(
+            Properties
+                ::fromReflectionClass(new ReflectionClass(ClassWithMixedReferenceableTypedProperties::class))
+                ->onlyNonReferenceableProperties()
+                ->empty()
+        );
+
+        $nonReferenceableProperties = Properties
+            ::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+            ->onlyNonReferenceableProperties()
+            ->getInstanceProperties();
+
+        self::assertCount(24, $nonReferenceableProperties);
+        self::assertSame(
+            [
+                'publicBoolPropertyWithoutDefaultValue',
+                'publicIntPropertyWithoutDefaultValue',
+                'publicFloatPropertyWithoutDefaultValue',
+                'publicStringPropertyWithoutDefaultValue',
+                'publicArrayPropertyWithoutDefaultValue',
+                'publicIterablePropertyWithoutDefaultValue',
+                'publicObjectProperty',
+                'publicClassProperty',
+                'protectedBoolPropertyWithoutDefaultValue',
+                'protectedIntPropertyWithoutDefaultValue',
+                'protectedFloatPropertyWithoutDefaultValue',
+                'protectedStringPropertyWithoutDefaultValue',
+                'protectedArrayPropertyWithoutDefaultValue',
+                'protectedIterablePropertyWithoutDefaultValue',
+                'protectedObjectProperty',
+                'protectedClassProperty',
+                'privateBoolPropertyWithoutDefaultValue',
+                'privateIntPropertyWithoutDefaultValue',
+                'privateFloatPropertyWithoutDefaultValue',
+                'privateStringPropertyWithoutDefaultValue',
+                'privateArrayPropertyWithoutDefaultValue',
+                'privateIterablePropertyWithoutDefaultValue',
+                'privateObjectProperty',
+                'privateClassProperty',
+            ],
+            array_values(array_map(static function (ReflectionProperty $property) : string {
+                return $property->getName();
+            }, $nonReferenceableProperties))
         );
     }
 

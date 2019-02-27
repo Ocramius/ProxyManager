@@ -16,6 +16,7 @@ use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
 use ReflectionMethod;
@@ -109,6 +110,7 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithByRefMagicMethods::class],
             [ClassWithMixedProperties::class],
             [ClassWithMixedTypedProperties::class],
+            [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
         ];
     }

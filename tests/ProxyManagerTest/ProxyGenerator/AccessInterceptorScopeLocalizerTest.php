@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator;
 
 use ProxyManager\Exception\InvalidProxiedClassException;
+use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
 use Zend\Code\Generator\ClassGenerator;
 
@@ -32,6 +34,10 @@ class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
         if ($reflectionClass->isInterface()) {
             // @todo interfaces *may* be proxied by deferring property localization to the constructor (no hardcoding)
             $this->expectException(InvalidProxiedClassException::class);
+        }
+
+        if ($reflectionClass->getName() === ClassWithMixedTypedProperties::class) {
+            $this->expectException(UnsupportedProxiedClassException::class);
         }
 
         parent::testGeneratesValidCode($className);

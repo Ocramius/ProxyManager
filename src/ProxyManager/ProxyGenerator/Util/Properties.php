@@ -7,6 +7,7 @@ namespace ProxyManager\ProxyGenerator\Util;
 use ReflectionClass;
 use ReflectionProperty;
 use function array_filter;
+use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function array_values;
@@ -67,6 +68,28 @@ final class Properties
         return new self($properties);
     }
 
+    public function onlyNonReferenceableProperties() : self
+    {
+        return new self(array_filter($this->properties, function (ReflectionProperty $property) : bool {
+            if (! $property->hasType()) {
+                return false;
+            }
+
+            /** @var $type \ReflectionType */
+            $type = $property->getType();
+
+            if ($type->allowsNull()) {
+                return false;
+            }
+
+            return ! array_key_exists(
+                $property->getName(),
+                // https://bugs.php.net/bug.php?id=77673
+                array_flip(array_keys($property->getDeclaringClass()->getDefaultProperties()))
+            );
+        }));
+    }
+
     /**
      * Properties that cannot be referenced are non-nullable typed properties that aren't initialised
      */
@@ -98,6 +121,16 @@ final class Properties
                 return null === $type || $type->allowsNull();
             }
         ));
+    }
+
+    public function onlyInstanceProperties() : self
+    {
+        return new self(array_values(array_merge($this->getAccessibleProperties(), $this->getPrivateProperties())));
+    }
+
+    public function empty() : bool
+    {
+        return [] === $this->properties;
     }
 
     /**

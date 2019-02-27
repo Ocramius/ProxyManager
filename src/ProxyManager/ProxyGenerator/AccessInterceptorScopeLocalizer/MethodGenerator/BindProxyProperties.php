@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
+use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
@@ -42,9 +43,18 @@ class BindProxyProperties extends MethodGenerator
             . '@param \\Closure[] $suffixInterceptors method interceptors to be used before method logic'
         );
 
-        $localizedProperties = [];
+        $localizedProperties        = [];
+        $properties                 = Properties::fromReflectionClass($originalClass);
+        $nonReferenceableProperties = $properties
+            ->onlyNonReferenceableProperties()
+            ->onlyInstanceProperties();
 
-        $properties = Properties::fromReflectionClass($originalClass);
+        if (! $nonReferenceableProperties->empty()) {
+            throw UnsupportedProxiedClassException::nonReferenceableLocalizedReflectionProperties(
+                $originalClass,
+                $nonReferenceableProperties
+            );
+        }
 
         foreach ($properties->getAccessibleProperties() as $property) {
             $propertyName = $property->getName();
