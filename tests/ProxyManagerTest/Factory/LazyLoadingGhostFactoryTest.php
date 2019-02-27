@@ -15,6 +15,7 @@ use ProxyManager\GeneratorStrategy\GeneratorStrategyInterface;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
+use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\LazyLoadingMock;
 
 /**
@@ -67,11 +68,14 @@ class LazyLoadingGhostFactoryTest extends TestCase
      *
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
      */
-    public function testWithOptionalFactory() : void
+    public static function testWithOptionalFactory() : void
     {
         $factory = new LazyLoadingGhostFactory();
-        self::assertAttributeNotEmpty('configuration', $factory);
-        self::assertAttributeInstanceOf(Configuration::class, 'configuration', $factory);
+
+        $configuration = Assert::readAttribute($factory, 'configuration');
+
+        self::assertNotEmpty($configuration);
+        self::assertInstanceOf(Configuration::class, $configuration);
     }
 
     /**
