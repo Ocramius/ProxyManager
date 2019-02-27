@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
@@ -26,16 +26,16 @@ use stdClass;
  */
 class AccessInterceptorValueHolderFactoryTest extends TestCase
 {
-    /** @var PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     protected $inflector;
 
-    /** @var PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     protected $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassSignatureGeneratorInterface|MockObject */
     private $classSignatureGenerator;
 
-    /** @var Configuration|PHPUnit_Framework_MockObject_MockObject */
+    /** @var Configuration|MockObject */
     protected $config;
 
     /**

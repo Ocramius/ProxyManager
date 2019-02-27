@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Factory\RemoteObject\Adapter\Soap;
 use Zend\Server\Client;
 
@@ -24,7 +24,7 @@ class SoapTest extends TestCase
      */
     public function testCanBuildAdapterWithSoapRpcClient() : void
     {
-        /** @var Client|PHPUnit_Framework_MockObject_MockObject $client */
+        /** @var Client|MockObject $client */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new Soap($client);

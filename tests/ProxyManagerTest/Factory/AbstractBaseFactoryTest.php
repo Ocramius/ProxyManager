@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AbstractBaseFactory;
@@ -32,26 +32,26 @@ class AbstractBaseFactoryTest extends TestCase
     /**
      * Note: we mock the class in order to assert on the abstract method usage
      *
-     * @var AbstractBaseFactory|PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractBaseFactory|MockObject
      */
     private $factory;
 
-    /** @var ProxyGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ProxyGeneratorInterface|MockObject */
     private $generator;
 
-    /** @var ClassNameInflectorInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassNameInflectorInterface|MockObject */
     private $classNameInflector;
 
-    /** @var GeneratorStrategyInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var GeneratorStrategyInterface|MockObject */
     private $generatorStrategy;
 
-    /** @var AutoloaderInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var AutoloaderInterface|MockObject */
     private $proxyAutoloader;
 
-    /** @var SignatureCheckerInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var SignatureCheckerInterface|MockObject */
     private $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassSignatureGeneratorInterface|MockObject */
     private $classSignatureGenerator;
 
     /**

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\EmptyClass;
@@ -26,13 +26,13 @@ class MagicSetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
+        /** @var PropertyGenerator|MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
+        /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap|PHPUnit_Framework_MockObject_MockObject $publicProperties */
+        /** @var PublicPropertiesMap|MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

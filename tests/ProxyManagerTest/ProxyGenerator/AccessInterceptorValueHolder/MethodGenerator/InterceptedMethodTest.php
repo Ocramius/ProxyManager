@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod;
 use ProxyManagerTestAsset\BaseClass;
@@ -23,11 +23,11 @@ class InterceptedMethodTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $prefixInterceptors */
+        /** @var PropertyGenerator|MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $suffixInterceptors */
+        /** @var PropertyGenerator|MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('foo'));

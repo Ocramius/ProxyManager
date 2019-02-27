@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\ValueHolder\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
@@ -24,7 +24,7 @@ class MagicSleepTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $valueHolder */
+        /** @var PropertyGenerator|MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->expects(self::any())->method('getName')->will(self::returnValue('bar'));

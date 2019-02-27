@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
@@ -24,7 +24,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithParameters() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $adapter */
+        /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
@@ -54,7 +54,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithArrayParameter() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $adapter */
+        /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 
@@ -81,7 +81,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithoutParameters() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $adapter */
+        /** @var PropertyGenerator|MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('adapter'));
 

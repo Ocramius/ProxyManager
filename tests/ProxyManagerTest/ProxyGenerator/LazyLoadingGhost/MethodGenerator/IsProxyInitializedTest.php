@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\IsProxyInitialized;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -21,7 +21,7 @@ class IsProxyInitializedTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializer */
+        /** @var PropertyGenerator|MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));

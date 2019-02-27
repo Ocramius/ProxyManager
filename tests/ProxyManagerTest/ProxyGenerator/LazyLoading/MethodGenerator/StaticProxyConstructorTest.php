@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoading\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
@@ -22,7 +22,7 @@ class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializer */
+        /** @var PropertyGenerator|MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('foo'));

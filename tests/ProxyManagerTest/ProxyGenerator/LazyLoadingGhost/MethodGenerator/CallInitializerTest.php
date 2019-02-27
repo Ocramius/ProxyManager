@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
@@ -23,9 +23,9 @@ class CallInitializerTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializer */
+        /** @var PropertyGenerator|MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializationTracker */
+        /** @var PropertyGenerator|MockObject $initializationTracker */
         $initializationTracker = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('init'));
@@ -100,9 +100,9 @@ return $result;';
 
     public function testBodyStructureWithTypedProperties() : void
     {
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializer */
+        /** @var PropertyGenerator|MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $initializationTracker */
+        /** @var PropertyGenerator|MockObject $initializationTracker */
         $initializationTracker = $this->createMock(PropertyGenerator::class);
 
         $initializer->expects(self::any())->method('getName')->will(self::returnValue('init'));
