@@ -25,8 +25,10 @@ PHP;
 
     public static function generateSnippet(Properties $properties, string $instanceName) : string
     {
-        return self::generateUnsetAccessiblePropertiesCode($properties, $instanceName)
-            . self::generateUnsetPrivatePropertiesCode($properties, $instanceName);
+        $unsettableProperties = $properties->onlyPropertiesThatCanBeUnset();
+
+        return self::generateUnsetAccessiblePropertiesCode($unsettableProperties, $instanceName)
+            . self::generateUnsetPrivatePropertiesCode($unsettableProperties, $instanceName);
     }
 
     private static function generateUnsetAccessiblePropertiesCode(Properties $properties, string $instanceName) : string

@@ -10,6 +10,7 @@ use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 
 /**
@@ -83,6 +84,19 @@ class UnsetPropertiesGeneratorTest extends TestCase
 }, $bar, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke($bar);
 
 ',
+                'bar',
+            ],
+            ClassWithMixedTypedProperties::class => [
+                ClassWithMixedTypedProperties::class,
+                <<<'PHP'
+unset($bar->publicUnTypedProperty, $bar->publicUnTypedPropertyWithoutDefaultValue, $bar->publicBoolProperty, $bar->publicNullableBoolProperty, $bar->publicIntProperty, $bar->publicNullableIntProperty, $bar->publicFloatProperty, $bar->publicNullableFloatProperty, $bar->publicStringProperty, $bar->publicNullableStringProperty, $bar->publicArrayProperty, $bar->publicNullableArrayProperty, $bar->publicIterableProperty, $bar->publicNullableIterableProperty, $bar->protectedUnTypedProperty, $bar->protectedUnTypedPropertyWithoutDefaultValue, $bar->protectedBoolProperty, $bar->protectedNullableBoolProperty, $bar->protectedIntProperty, $bar->protectedNullableIntProperty, $bar->protectedFloatProperty, $bar->protectedNullableFloatProperty, $bar->protectedStringProperty, $bar->protectedNullableStringProperty, $bar->protectedArrayProperty, $bar->protectedNullableArrayProperty, $bar->protectedIterableProperty, $bar->protectedNullableIterableProperty);
+
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedTypedProperties $instance) {
+    unset($instance->privateUnTypedProperty, $instance->privateUnTypedPropertyWithoutDefaultValue, $instance->privateBoolProperty, $instance->privateNullableBoolProperty, $instance->privateIntProperty, $instance->privateNullableIntProperty, $instance->privateFloatProperty, $instance->privateNullableFloatProperty, $instance->privateStringProperty, $instance->privateNullableStringProperty, $instance->privateArrayProperty, $instance->privateNullableArrayProperty, $instance->privateIterableProperty, $instance->privateNullableIterableProperty);
+}, $bar, 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties')->__invoke($bar);
+
+
+PHP,
                 'bar',
             ],
         ];
