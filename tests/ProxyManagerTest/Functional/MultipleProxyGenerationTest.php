@@ -9,10 +9,6 @@ use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
-use ProxyManager\Proxy\AccessInterceptorInterface;
-use ProxyManager\Proxy\GhostObjectInterface;
-use ProxyManager\Proxy\ValueHolderInterface;
-use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
@@ -22,6 +18,8 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
@@ -52,7 +50,6 @@ class MultipleProxyGenerationTest extends TestCase
      * and won't conflict
      *
      * @dataProvider getTestedClasses
-     *
      */
     public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className) : void
     {
@@ -60,15 +57,18 @@ class MultipleProxyGenerationTest extends TestCase
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
-        $initializer                            = function () : void {
+        $initializer                            = static function () : void {
         };
 
         $generated = [
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
             $accessInterceptorFactory->createProxy(new $className()),
-            $accessInterceptorScopeLocalizerFactory->createProxy(new $className()),
         ];
+
+        if ($className !== ClassWithMixedTypedProperties::class) {
+            $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy(new $className());
+        }
 
         foreach ($generated as $key => $proxy) {
             self::assertInstanceOf($className, $proxy);
@@ -85,12 +85,6 @@ class MultipleProxyGenerationTest extends TestCase
 
             self::assertInstanceOf($proxyClass, new $proxyClass(), 'Proxy can be instantiated via normal constructor');
         }
-
-        self::assertInstanceOf(GhostObjectInterface::class, $generated[0]);
-        self::assertInstanceOf(VirtualProxyInterface::class, $generated[1]);
-        self::assertInstanceOf(AccessInterceptorInterface::class, $generated[2]);
-        self::assertInstanceOf(ValueHolderInterface::class, $generated[2]);
-        self::assertInstanceOf(AccessInterceptorInterface::class, $generated[3]);
     }
 
     /**
@@ -105,6 +99,8 @@ class MultipleProxyGenerationTest extends TestCase
             [ClassWithFinalMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
             [ClassWithMixedProperties::class],
+            [ClassWithMixedTypedProperties::class],
+            [ClassWithMixedReferenceableTypedProperties::class],
             [ClassWithPrivateProperties::class],
             [ClassWithProtectedProperties::class],
             [ClassWithPublicProperties::class],

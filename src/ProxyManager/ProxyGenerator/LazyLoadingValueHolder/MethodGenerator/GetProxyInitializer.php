@@ -11,13 +11,11 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::getProxyInitializer}
  * for lazy loading value holder objects
- *
  */
 class GetProxyInitializer extends MethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */

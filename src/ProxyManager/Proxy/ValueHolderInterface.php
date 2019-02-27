@@ -6,7 +6,6 @@ namespace ProxyManager\Proxy;
 
 /**
  * Value holder marker
- *
  */
 interface ValueHolderInterface extends ProxyInterface
 {

@@ -9,7 +9,6 @@ use ProxyManager\Inflector\Util\ParameterHasher;
 
 /**
  * {@inheritDoc}
- *
  */
 final class SignatureGenerator implements SignatureGeneratorInterface
 {

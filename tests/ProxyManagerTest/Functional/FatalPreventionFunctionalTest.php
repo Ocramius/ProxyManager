@@ -76,9 +76,9 @@ class FatalPreventionFunctionalTest extends TestCase
         return array_merge(
             [],
             ...array_map(
-                function ($generator) use ($that) : array {
+                static function ($generator) use ($that) : array {
                     return array_map(
-                        function ($class) use ($generator) : array {
+                        static function ($class) use ($generator) : array {
                             return [$generator, $class];
                         },
                         $that->getProxyTestedClasses()
@@ -97,9 +97,9 @@ class FatalPreventionFunctionalTest extends TestCase
     }
 
     /**
-     * @private (public only for PHP 5.3 compatibility)
-     *
      * @return string[]
+     *
+     * @private (public only for PHP 5.3 compatibility)
      */
     public function getProxyTestedClasses() : array
     {
@@ -111,7 +111,7 @@ class FatalPreventionFunctionalTest extends TestCase
 
         return array_filter(
             get_declared_classes(),
-            function ($className) use ($skippedPaths) : bool {
+            static function ($className) use ($skippedPaths) : bool {
                 $reflectionClass = new ReflectionClass($className);
                 $fileName        = $reflectionClass->getFileName();
 

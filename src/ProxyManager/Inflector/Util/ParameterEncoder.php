@@ -9,7 +9,6 @@ use function serialize;
 
 /**
  * Encodes parameters into a class-name safe string
- *
  */
 class ParameterEncoder
 {

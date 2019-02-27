@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\Util;
 
+use ReflectionClass;
+use ReflectionProperty;
 use function array_map;
 use function implode;
 use function reset;
@@ -12,7 +14,6 @@ use function var_export;
 
 /**
  * Generates code necessary to unset all the given properties from a particular given instance string name
- *
  */
 final class UnsetPropertiesGenerator
 {
@@ -25,8 +26,10 @@ PHP;
 
     public static function generateSnippet(Properties $properties, string $instanceName) : string
     {
-        return self::generateUnsetAccessiblePropertiesCode($properties, $instanceName)
-            . self::generateUnsetPrivatePropertiesCode($properties, $instanceName);
+        $unsettableProperties = $properties->onlyPropertiesThatCanBeUnset();
+
+        return self::generateUnsetAccessiblePropertiesCode($unsettableProperties, $instanceName)
+            . self::generateUnsetPrivatePropertiesCode($unsettableProperties, $instanceName);
     }
 
     private static function generateUnsetAccessiblePropertiesCode(Properties $properties, string $instanceName) : string
@@ -50,9 +53,9 @@ PHP;
 
         $unsetClosureCalls = [];
 
-        /** @var \ReflectionProperty[] $privateProperties */
+        /** @var ReflectionProperty[] $privateProperties */
         foreach ($groups as $privateProperties) {
-            /** @var \ReflectionProperty $firstProperty */
+            /** @var ReflectionProperty $firstProperty */
             $firstProperty = reset($privateProperties);
 
             $unsetClosureCalls[] = self::generateUnsetClassPrivatePropertiesBlock(
@@ -65,9 +68,9 @@ PHP;
         return implode("\n\n", $unsetClosureCalls) . "\n\n";
     }
 
-    /** @param \ReflectionProperty[] $properties */
+    /** @param ReflectionProperty[] $properties */
     private static function generateUnsetClassPrivatePropertiesBlock(
-        \ReflectionClass $declaringClass,
+        ReflectionClass $declaringClass,
         array $properties,
         string $instanceName
     ) : string {
@@ -83,14 +86,14 @@ PHP;
         );
     }
 
-    /** @param \ReflectionProperty[] $properties */
+    /** @param ReflectionProperty[] $properties */
     private static function generateUnsetStatement(array $properties, string $instanceName) : string
     {
         return 'unset('
             . implode(
                 ', ',
                 array_map(
-                    function (\ReflectionProperty $property) use ($instanceName) : string {
+                    static function (ReflectionProperty $property) use ($instanceName) : string {
                         return '$' . $instanceName . '->' . $property->getName();
                     },
                     $properties

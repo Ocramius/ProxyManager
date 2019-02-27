@@ -15,6 +15,8 @@ use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
 use function array_diff;
 
@@ -30,7 +32,6 @@ class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     *
      */
     public function testGeneratesValidCode(string $className) : void
     {
@@ -86,6 +87,8 @@ class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
             [ClassWithMixedProperties::class],
+            [ClassWithMixedTypedProperties::class],
+            [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
         ];
     }

@@ -21,7 +21,6 @@ use function sys_get_temp_dir;
 
 /**
  * Base configuration class for the proxy manager - serves as micro disposable DIC/facade
- *
  */
 class Configuration
 {

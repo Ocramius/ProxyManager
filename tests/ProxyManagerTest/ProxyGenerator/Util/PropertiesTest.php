@@ -10,9 +10,13 @@ use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 use ReflectionProperty;
+use function array_map;
+use function array_values;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\Properties}
@@ -51,6 +55,198 @@ class PropertiesTest extends TestCase
         self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty0"]);
         self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty1"]);
         self::assertInstanceOf(ReflectionProperty::class, $protectedProperties["\0*\0protectedProperty2"]);
+    }
+
+    public function testOnlyNullableProperties() : void
+    {
+        $nullablePublicProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+            ->onlyNullableProperties()
+            ->getInstanceProperties();
+
+        self::assertCount(48, $nullablePublicProperties);
+        self::assertSame(
+            [
+                'publicUnTypedProperty',
+                'publicUnTypedPropertyWithoutDefaultValue',
+                'publicNullableBoolProperty',
+                'publicNullableBoolPropertyWithoutDefaultValue',
+                'publicNullableIntProperty',
+                'publicNullableIntPropertyWithoutDefaultValue',
+                'publicNullableFloatProperty',
+                'publicNullableFloatPropertyWithoutDefaultValue',
+                'publicNullableStringProperty',
+                'publicNullableStringPropertyWithoutDefaultValue',
+                'publicNullableArrayProperty',
+                'publicNullableArrayPropertyWithoutDefaultValue',
+                'publicNullableIterableProperty',
+                'publicNullableIterablePropertyWithoutDefaultValue',
+                'publicNullableObjectProperty',
+                'publicNullableClassProperty',
+                'protectedUnTypedProperty',
+                'protectedUnTypedPropertyWithoutDefaultValue',
+                'protectedNullableBoolProperty',
+                'protectedNullableBoolPropertyWithoutDefaultValue',
+                'protectedNullableIntProperty',
+                'protectedNullableIntPropertyWithoutDefaultValue',
+                'protectedNullableFloatProperty',
+                'protectedNullableFloatPropertyWithoutDefaultValue',
+                'protectedNullableStringProperty',
+                'protectedNullableStringPropertyWithoutDefaultValue',
+                'protectedNullableArrayProperty',
+                'protectedNullableArrayPropertyWithoutDefaultValue',
+                'protectedNullableIterableProperty',
+                'protectedNullableIterablePropertyWithoutDefaultValue',
+                'protectedNullableObjectProperty',
+                'protectedNullableClassProperty',
+                'privateUnTypedProperty',
+                'privateUnTypedPropertyWithoutDefaultValue',
+                'privateNullableBoolProperty',
+                'privateNullableBoolPropertyWithoutDefaultValue',
+                'privateNullableIntProperty',
+                'privateNullableIntPropertyWithoutDefaultValue',
+                'privateNullableFloatProperty',
+                'privateNullableFloatPropertyWithoutDefaultValue',
+                'privateNullableStringProperty',
+                'privateNullableStringPropertyWithoutDefaultValue',
+                'privateNullableArrayProperty',
+                'privateNullableArrayPropertyWithoutDefaultValue',
+                'privateNullableIterableProperty',
+                'privateNullableIterablePropertyWithoutDefaultValue',
+                'privateNullableObjectProperty',
+                'privateNullableClassProperty',
+            ],
+            array_values(array_map(static function (ReflectionProperty $property) : string {
+                return $property->getName();
+            }, $nullablePublicProperties))
+        );
+    }
+
+    public function testOnlyPropertiesThatCanBeUnset() : void
+    {
+        $nonReferenceableProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+            ->onlyPropertiesThatCanBeUnset()
+            ->getInstanceProperties();
+
+        self::assertCount(42, $nonReferenceableProperties);
+        self::assertSame(
+            [
+                'publicUnTypedProperty',
+                'publicUnTypedPropertyWithoutDefaultValue',
+                'publicBoolProperty',
+                'publicNullableBoolProperty',
+                'publicIntProperty',
+                'publicNullableIntProperty',
+                'publicFloatProperty',
+                'publicNullableFloatProperty',
+                'publicStringProperty',
+                'publicNullableStringProperty',
+                'publicArrayProperty',
+                'publicNullableArrayProperty',
+                'publicIterableProperty',
+                'publicNullableIterableProperty',
+                'protectedUnTypedProperty',
+                'protectedUnTypedPropertyWithoutDefaultValue',
+                'protectedBoolProperty',
+                'protectedNullableBoolProperty',
+                'protectedIntProperty',
+                'protectedNullableIntProperty',
+                'protectedFloatProperty',
+                'protectedNullableFloatProperty',
+                'protectedStringProperty',
+                'protectedNullableStringProperty',
+                'protectedArrayProperty',
+                'protectedNullableArrayProperty',
+                'protectedIterableProperty',
+                'protectedNullableIterableProperty',
+                'privateUnTypedProperty',
+                'privateUnTypedPropertyWithoutDefaultValue',
+                'privateBoolProperty',
+                'privateNullableBoolProperty',
+                'privateIntProperty',
+                'privateNullableIntProperty',
+                'privateFloatProperty',
+                'privateNullableFloatProperty',
+                'privateStringProperty',
+                'privateNullableStringProperty',
+                'privateArrayProperty',
+                'privateNullableArrayProperty',
+                'privateIterableProperty',
+                'privateNullableIterableProperty',
+            ],
+            array_values(array_map(static function (ReflectionProperty $property) : string {
+                return $property->getName();
+            }, $nonReferenceableProperties))
+        );
+    }
+
+    public function testOnlyNonReferenceableProperties() : void
+    {
+        self::assertTrue(
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedReferenceableTypedProperties::class))
+                ->onlyNonReferenceableProperties()
+                ->empty()
+        );
+
+        $nonReferenceableProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+            ->onlyNonReferenceableProperties()
+            ->getInstanceProperties();
+
+        self::assertCount(48, $nonReferenceableProperties);
+        self::assertSame(
+            [
+                'publicBoolPropertyWithoutDefaultValue',
+                'publicNullableBoolPropertyWithoutDefaultValue',
+                'publicIntPropertyWithoutDefaultValue',
+                'publicNullableIntPropertyWithoutDefaultValue',
+                'publicFloatPropertyWithoutDefaultValue',
+                'publicNullableFloatPropertyWithoutDefaultValue',
+                'publicStringPropertyWithoutDefaultValue',
+                'publicNullableStringPropertyWithoutDefaultValue',
+                'publicArrayPropertyWithoutDefaultValue',
+                'publicNullableArrayPropertyWithoutDefaultValue',
+                'publicIterablePropertyWithoutDefaultValue',
+                'publicNullableIterablePropertyWithoutDefaultValue',
+                'publicObjectProperty',
+                'publicNullableObjectProperty',
+                'publicClassProperty',
+                'publicNullableClassProperty',
+                'protectedBoolPropertyWithoutDefaultValue',
+                'protectedNullableBoolPropertyWithoutDefaultValue',
+                'protectedIntPropertyWithoutDefaultValue',
+                'protectedNullableIntPropertyWithoutDefaultValue',
+                'protectedFloatPropertyWithoutDefaultValue',
+                'protectedNullableFloatPropertyWithoutDefaultValue',
+                'protectedStringPropertyWithoutDefaultValue',
+                'protectedNullableStringPropertyWithoutDefaultValue',
+                'protectedArrayPropertyWithoutDefaultValue',
+                'protectedNullableArrayPropertyWithoutDefaultValue',
+                'protectedIterablePropertyWithoutDefaultValue',
+                'protectedNullableIterablePropertyWithoutDefaultValue',
+                'protectedObjectProperty',
+                'protectedNullableObjectProperty',
+                'protectedClassProperty',
+                'protectedNullableClassProperty',
+                'privateBoolPropertyWithoutDefaultValue',
+                'privateNullableBoolPropertyWithoutDefaultValue',
+                'privateIntPropertyWithoutDefaultValue',
+                'privateNullableIntPropertyWithoutDefaultValue',
+                'privateFloatPropertyWithoutDefaultValue',
+                'privateNullableFloatPropertyWithoutDefaultValue',
+                'privateStringPropertyWithoutDefaultValue',
+                'privateNullableStringPropertyWithoutDefaultValue',
+                'privateArrayPropertyWithoutDefaultValue',
+                'privateNullableArrayPropertyWithoutDefaultValue',
+                'privateIterablePropertyWithoutDefaultValue',
+                'privateNullableIterablePropertyWithoutDefaultValue',
+                'privateObjectProperty',
+                'privateNullableObjectProperty',
+                'privateClassProperty',
+                'privateNullableClassProperty',
+            ],
+            array_values(array_map(static function (ReflectionProperty $property) : string {
+                return $property->getName();
+            }, $nonReferenceableProperties))
+        );
     }
 
     public function testGetProtectedPropertiesSkipsAbstractMethods() : void
@@ -172,9 +368,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @dataProvider propertiesToSkipFixture
-     *
      * @param string $propertyName with property name
+     *
+     * @dataProvider propertiesToSkipFixture
      */
     public function testSkipPropertiesByFiltering(string $propertyName) : void
     {

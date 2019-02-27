@@ -12,7 +12,6 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
  * Tests for {@see \ProxyManager\Inflector\ClassNameInflector}
  *
  * @group Coverage
- *
  * @covers \ProxyManager\Inflector\ClassNameInflector
  */
 class ClassNameInflectorTest extends TestCase
@@ -78,9 +77,9 @@ class ClassNameInflectorTest extends TestCase
     }
 
     /**
-     * @dataProvider getClassAndParametersCombinations
-     *
      * @param mixed[] $parameters
+     *
+     * @dataProvider getClassAndParametersCombinations
      */
     public function testClassNameIsValidClassIdentifier(string $className, array $parameters) : void
     {

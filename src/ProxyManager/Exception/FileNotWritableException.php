@@ -9,7 +9,6 @@ use function sprintf;
 
 /**
  * Exception for non writable files
- *
  */
 class FileNotWritableException extends UnexpectedValueException implements ExceptionInterface
 {

@@ -13,7 +13,6 @@ use function var_export;
 
 /**
  * Magic `__set` for remote objects
- *
  */
 class MagicSet extends MagicMethodGenerator
 {

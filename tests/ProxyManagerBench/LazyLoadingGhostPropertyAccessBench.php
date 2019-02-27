@@ -302,8 +302,8 @@ class LazyLoadingGhostPropertyAccessBench
 
     private function buildProxy(string $originalClass) : LazyLoadingInterface
     {
-        return ($this->generateProxyClass($originalClass))::staticProxyConstructor(
-            function ($proxy, string $method, $params, & $initializer) : bool {
+        return $this->generateProxyClass($originalClass)::staticProxyConstructor(
+            static function ($proxy, string $method, $params, & $initializer) : bool {
                 $initializer = null;
 
                 return true;
@@ -313,7 +313,7 @@ class LazyLoadingGhostPropertyAccessBench
 
     private function generateProxyClass(string $originalClassName) : string
     {
-        $generatedClassName = __CLASS__ . '\\' . $originalClassName;
+        $generatedClassName = self::class . '\\' . $originalClassName;
 
         if (class_exists($generatedClassName)) {
             return $generatedClassName;

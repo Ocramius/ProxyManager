@@ -9,7 +9,6 @@ use function serialize;
 
 /**
  * Converts given parameters into a likely unique hash
- *
  */
 class ParameterHasher
 {

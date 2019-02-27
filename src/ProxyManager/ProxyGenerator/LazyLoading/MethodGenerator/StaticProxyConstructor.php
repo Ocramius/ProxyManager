@@ -13,13 +13,11 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for lazy loading proxies
- *
  */
 class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Static constructor
-     *
      *
      * @throws InvalidArgumentException
      */

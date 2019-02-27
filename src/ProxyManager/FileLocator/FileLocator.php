@@ -11,7 +11,6 @@ use function str_replace;
 
 /**
  * {@inheritDoc}
- *
  */
 class FileLocator implements FileLocatorInterface
 {
@@ -19,7 +18,6 @@ class FileLocator implements FileLocatorInterface
     protected $proxiesDirectory;
 
     /**
-     *
      * @throws InvalidProxyDirectoryException
      */
     public function __construct(string $proxiesDirectory)

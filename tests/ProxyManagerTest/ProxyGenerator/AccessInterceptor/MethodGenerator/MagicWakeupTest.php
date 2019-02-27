@@ -15,7 +15,6 @@ use ReflectionClass;
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup}
  *
  * @group Coverage
- *
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup
  */
 class MagicWakeupTest extends TestCase

@@ -6,7 +6,6 @@ namespace ProxyManager\Signature;
 
 /**
  * Generator for signatures to be used to check the validity of generated code
- *
  */
 interface SignatureGeneratorInterface
 {

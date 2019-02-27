@@ -8,7 +8,6 @@ use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Applies a signature to a given class generator
- *
  */
 interface ClassSignatureGeneratorInterface
 {

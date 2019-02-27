@@ -12,13 +12,11 @@ use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__sleep` for lazy loading ghost objects
- *
  */
 class MagicSleep extends MagicMethodGenerator
 {
     /**
      * Constructor
-     *
      */
     public function __construct(
         ReflectionClass $originalClass,

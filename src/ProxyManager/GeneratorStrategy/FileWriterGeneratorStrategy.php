@@ -22,7 +22,6 @@ use function unlink;
  * Generator strategy that writes the generated classes to disk while generating them
  *
  * {@inheritDoc}
- *
  */
 class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
 {
@@ -35,7 +34,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     public function __construct(FileLocatorInterface $fileLocator)
     {
         $this->fileLocator       = $fileLocator;
-        $this->emptyErrorHandler = function () : void {
+        $this->emptyErrorHandler = static function () : void {
         };
     }
 
@@ -67,7 +66,6 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     /**
      * Writes the source file in such a way that race conditions are avoided when the same file is written
      * multiple times in a short time period
-     *
      *
      * @throws FileNotWritableException
      */

@@ -6,7 +6,6 @@ namespace ProxyManager\Proxy;
 
 /**
  * Base proxy marker
- *
  */
 interface ProxyInterface
 {

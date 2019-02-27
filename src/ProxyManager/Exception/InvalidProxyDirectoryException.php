@@ -9,7 +9,6 @@ use function sprintf;
 
 /**
  * Exception for invalid directories
- *
  */
 class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {

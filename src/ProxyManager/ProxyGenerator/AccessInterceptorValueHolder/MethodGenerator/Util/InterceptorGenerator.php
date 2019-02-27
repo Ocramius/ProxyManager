@@ -6,6 +6,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
+use ReflectionMethod;
 use Zend\Code\Generator\PropertyGenerator;
 use function array_keys;
 use function implode;
@@ -54,7 +55,7 @@ PHP;
         PropertyGenerator $valueHolder,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors,
-        ?\ReflectionMethod $originalMethod
+        ?ReflectionMethod $originalMethod
     ) : string {
         $name                   = var_export($method->getName(), true);
         $valueHolderName        = $valueHolder->getName();

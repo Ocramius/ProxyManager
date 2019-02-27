@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Factory;
 
+use OutOfBoundsException;
 use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -14,7 +15,6 @@ use function is_object;
 
 /**
  * Factory responsible of producing proxy objects
- *
  */
 class NullObjectFactory extends AbstractBaseFactory
 {
@@ -26,7 +26,7 @@ class NullObjectFactory extends AbstractBaseFactory
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
-     * @throws \OutOfBoundsException
+     * @throws OutOfBoundsException
      */
     public function createProxy($instanceOrClassName) : NullObjectInterface
     {

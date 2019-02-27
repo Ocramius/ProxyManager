@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicIsset;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
@@ -23,7 +24,7 @@ class MagicIssetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject $adapter */
+        /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->expects(self::any())->method('getName')->will(self::returnValue('foo'));
 

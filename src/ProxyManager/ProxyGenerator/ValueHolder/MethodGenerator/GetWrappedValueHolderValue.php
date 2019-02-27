@@ -11,13 +11,11 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Implementation for {@see \ProxyManager\Proxy\ValueHolderInterface::getWrappedValueHolderValue}
  * for lazy loading value holder objects
- *
  */
 class GetWrappedValueHolderValue extends MethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */

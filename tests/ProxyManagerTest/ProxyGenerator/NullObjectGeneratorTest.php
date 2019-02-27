@@ -16,6 +16,8 @@ use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -31,7 +33,6 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     *
      */
     public function testGeneratesValidCode(string $className) : void
     {
@@ -60,7 +61,9 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 
         self::assertInstanceOf($className, $proxy);
 
-        foreach (Properties::fromReflectionClass($generatedReflection)->getPublicProperties() as $property) {
+        foreach (Properties::fromReflectionClass($generatedReflection)
+                ->onlyNullableProperties()
+                ->getPublicProperties() as $property) {
             self::assertNull($proxy->{$property->getName()});
         }
 
@@ -102,6 +105,8 @@ class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
             [ClassWithMixedProperties::class],
+            [ClassWithMixedTypedProperties::class],
+            [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
         ];
     }

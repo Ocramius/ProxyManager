@@ -19,7 +19,7 @@ class InvalidSignatureExceptionTest extends TestCase
     public function testFromInvalidSignature() : void
     {
         $exception = InvalidSignatureException::fromInvalidSignature(
-            new ReflectionClass(__CLASS__),
+            new ReflectionClass(self::class),
             ['foo' => 'bar', 'baz' => 'tab'],
             'blah',
             'expected-signature'
@@ -29,7 +29,7 @@ class InvalidSignatureExceptionTest extends TestCase
 
         self::assertSame(
             'Found signature "blah" for class "'
-            . __CLASS__
+            . self::class
             . '" does not correspond to expected signature "expected-signature" for 2 parameters',
             $exception->getMessage()
         );

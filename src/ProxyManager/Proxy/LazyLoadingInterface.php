@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\Proxy;
 
+use Closure;
+
 /**
  * Lazy loading object identifier
- *
  */
 interface LazyLoadingInterface extends ProxyInterface
 {
@@ -21,12 +22,11 @@ interface LazyLoadingInterface extends ProxyInterface
      * $initializer = function (& $wrappedObject, $proxy, string $method, array $parameters, & $initializer) {};
      * </code>
      *
-     *
      * @return mixed
      */
-    public function setProxyInitializer(?\Closure $initializer = null);
+    public function setProxyInitializer(?Closure $initializer = null);
 
-    public function getProxyInitializer() : ?\Closure;
+    public function getProxyInitializer() : ?Closure;
 
     /**
      * Force initialization of the proxy

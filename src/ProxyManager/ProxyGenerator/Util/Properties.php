@@ -6,7 +6,11 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use ReflectionClass;
 use ReflectionProperty;
+use ReflectionType;
 use function array_filter;
+use function array_flip;
+use function array_key_exists;
+use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_values;
@@ -14,11 +18,10 @@ use function array_values;
 /**
  * DTO containing the list of all non-static proxy properties and utility methods to access them
  * in various formats/collections
- *
  */
 final class Properties
 {
-    /** @var array|\ReflectionProperty[] */
+    /** @var array|ReflectionProperty[] */
     private $properties;
 
     /**
@@ -41,10 +44,10 @@ final class Properties
         } while ($class);
 
         return new self(array_merge(
-            ...array_map(function (ReflectionClass $class) : array {
+            ...array_map(static function (ReflectionClass $class) : array {
                 return array_values(array_filter(
                     $class->getProperties(),
-                    function (ReflectionProperty $property) use ($class) : bool {
+                    static function (ReflectionProperty $property) use ($class) : bool {
                         return $class->getName() === $property->getDeclaringClass()->getName()
                             && ! $property->isStatic();
                     }
@@ -65,6 +68,83 @@ final class Properties
         }
 
         return new self($properties);
+    }
+
+    public function onlyNonReferenceableProperties() : self
+    {
+        return new self(array_filter($this->properties, static function (ReflectionProperty $property) : bool {
+            if (! $property->hasType()) {
+                return false;
+            }
+
+            return ! array_key_exists(
+                $property->getName(),
+                // https://bugs.php.net/bug.php?id=77673
+                array_flip(array_keys($property->getDeclaringClass()->getDefaultProperties()))
+            );
+        }));
+    }
+
+    public function onlyPropertiesThatCanBeUnset() : self
+    {
+        return new self(array_filter($this->properties, static function (ReflectionProperty $property) : bool {
+            if (! $property->hasType()) {
+                return true;
+            }
+
+            return array_key_exists(
+                $property->getName(),
+                // https://bugs.php.net/bug.php?id=77673
+                array_flip(array_keys($property->getDeclaringClass()->getDefaultProperties()))
+            );
+        }));
+    }
+
+    /**
+     * Properties that cannot be referenced are non-nullable typed properties that aren't initialised
+     */
+    public function withoutNonReferenceableProperties() : self
+    {
+        return new self(array_filter($this->properties, static function (ReflectionProperty $property) : bool {
+            if (! $property->hasType()) {
+                return true;
+            }
+
+            /** @var ReflectionType $type */
+            $type = $property->getType();
+
+            if ($type->allowsNull()) {
+                return true;
+            }
+
+            return array_key_exists(
+                $property->getName(),
+                // https://bugs.php.net/bug.php?id=77673
+                array_flip(array_keys($property->getDeclaringClass()->getDefaultProperties()))
+            );
+        }));
+    }
+
+    public function onlyNullableProperties() : self
+    {
+        return new self(array_filter(
+            $this->properties,
+            static function (ReflectionProperty $property) : bool {
+                $type = $property->getType();
+
+                return $type === null || $type->allowsNull();
+            }
+        ));
+    }
+
+    public function onlyInstanceProperties() : self
+    {
+        return new self(array_values(array_merge($this->getAccessibleProperties(), $this->getPrivateProperties())));
+    }
+
+    public function empty() : bool
+    {
+        return $this->properties === [];
     }
 
     /**

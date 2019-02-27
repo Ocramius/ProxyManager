@@ -9,7 +9,6 @@ use function strtolower;
 
 /**
  * Method generator for magic methods
- *
  */
 class MagicMethodGenerator extends MethodGenerator
 {

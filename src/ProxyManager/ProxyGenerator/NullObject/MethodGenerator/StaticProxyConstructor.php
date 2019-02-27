@@ -14,7 +14,6 @@ use function implode;
 
 /**
  * The `staticProxyConstructor` implementation for null object proxies
- *
  */
 class StaticProxyConstructor extends MethodGenerator
 {
@@ -30,10 +29,12 @@ class StaticProxyConstructor extends MethodGenerator
         parent::__construct('staticProxyConstructor', [], static::FLAG_PUBLIC | static::FLAG_STATIC);
 
         $nullableProperties = array_map(
-            function (ReflectionProperty $publicProperty) : string {
+            static function (ReflectionProperty $publicProperty) : string {
                 return '$instance->' . $publicProperty->getName() . ' = null;';
             },
-            Properties::fromReflectionClass($originalClass)->getPublicProperties()
+            Properties::fromReflectionClass($originalClass)
+                ->onlyNullableProperties()
+                ->getPublicProperties()
         );
 
         $this->setReturnType($originalClass->getName());

@@ -7,6 +7,7 @@ namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 
@@ -62,6 +63,42 @@ $instance   = $reflection->newInstanceWithoutConstructor();
 
 return $instance;',
             $body
+        );
+    }
+    public function testBodyStructureWithTypedProperties() : void
+    {
+        $constructor = new StaticProxyConstructor(new ReflectionClass(ClassWithMixedTypedProperties::class));
+
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertSame(ClassWithMixedTypedProperties::class, (string) $constructor->getReturnType());
+        self::assertTrue($constructor->isStatic());
+        self::assertSame('public', $constructor->getVisibility());
+        self::assertCount(0, $constructor->getParameters());
+        self::assertSame(
+            'static $reflection;
+
+$reflection = $reflection ?? new \ReflectionClass(__CLASS__);
+$instance   = $reflection->newInstanceWithoutConstructor();
+
+$instance->publicUnTypedProperty = null;
+$instance->publicUnTypedPropertyWithoutDefaultValue = null;
+$instance->publicNullableBoolProperty = null;
+$instance->publicNullableBoolPropertyWithoutDefaultValue = null;
+$instance->publicNullableIntProperty = null;
+$instance->publicNullableIntPropertyWithoutDefaultValue = null;
+$instance->publicNullableFloatProperty = null;
+$instance->publicNullableFloatPropertyWithoutDefaultValue = null;
+$instance->publicNullableStringProperty = null;
+$instance->publicNullableStringPropertyWithoutDefaultValue = null;
+$instance->publicNullableArrayProperty = null;
+$instance->publicNullableArrayPropertyWithoutDefaultValue = null;
+$instance->publicNullableIterableProperty = null;
+$instance->publicNullableIterablePropertyWithoutDefaultValue = null;
+$instance->publicNullableObjectProperty = null;
+$instance->publicNullableClassProperty = null;
+
+return $instance;',
+            $constructor->getBody()
         );
     }
 }

@@ -13,13 +13,11 @@ use Zend\Code\Generator\PropertyGenerator;
 /**
  * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodPrefixInterceptor}
  * for access interceptor objects
- *
  */
 class SetMethodPrefixInterceptor extends MethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */

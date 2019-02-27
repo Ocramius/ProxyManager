@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\NullObjectFactory;
@@ -24,22 +25,22 @@ use stdClass;
  */
 class NullObjectFactoryTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var PHPUnit_Framework_MockObject_MockObject */
     protected $inflector;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var PHPUnit_Framework_MockObject_MockObject */
     protected $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassSignatureGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
-    /** @var Configuration|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var Configuration|PHPUnit_Framework_MockObject_MockObject */
     protected $config;
 
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->config                  = $this->createMock(Configuration::class);
         $this->inflector               = $this->createMock(ClassNameInflectorInterface::class);
@@ -114,7 +115,7 @@ class NullObjectFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
+                    static function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -125,7 +126,7 @@ class NullObjectFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->willReturnCallback(function () use ($proxyClassName) : bool {
+            ->willReturnCallback(static function () use ($proxyClassName) : bool {
                 eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\NullObjectMock {}');
 
                 return true;

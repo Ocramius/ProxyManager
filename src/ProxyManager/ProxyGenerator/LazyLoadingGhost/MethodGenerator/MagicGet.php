@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
+use InvalidArgumentException;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
@@ -11,7 +12,6 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedProp
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
@@ -19,7 +19,6 @@ use function sprintf;
 
 /**
  * Magic `__get` for lazy loading ghost objects
- *
  */
 class MagicGet extends MagicMethodGenerator
 {
@@ -87,9 +86,7 @@ if (isset(self::$%s[$name])) {
 PHP;
 
     /**
-     *
      * @throws InvalidArgumentException
-     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,

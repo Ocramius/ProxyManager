@@ -15,11 +15,10 @@ use ProxyManager\Inflector\Util\ParameterHasher;
 class ParameterHasherTest extends TestCase
 {
     /**
-     * @dataProvider getParameters
-     *
-     * @covers \ProxyManager\Inflector\Util\ParameterHasher::hashParameters
-     *
      * @param mixed[] $parameters
+     *
+     * @dataProvider getParameters
+     * @covers \ProxyManager\Inflector\Util\ParameterHasher::hashParameters
      */
     public function testGeneratesValidClassName(array $parameters, string $expectedHash) : void
     {

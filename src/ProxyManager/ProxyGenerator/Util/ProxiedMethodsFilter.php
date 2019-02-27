@@ -14,7 +14,6 @@ use function strtolower;
 
 /**
  * Utility class used to filter methods that can be proxied
- *
  */
 final class ProxiedMethodsFilter
 {
@@ -37,7 +36,7 @@ final class ProxiedMethodsFilter
      */
     public static function getProxiedMethods(ReflectionClass $class, ?array $excluded = null) : array
     {
-        return self::doFilter($class, ($excluded === null) ? self::$defaultExcluded : $excluded);
+        return self::doFilter($class, $excluded ?? self::$defaultExcluded);
     }
 
     /**
@@ -48,7 +47,7 @@ final class ProxiedMethodsFilter
      */
     public static function getAbstractProxiedMethods(ReflectionClass $class, ?array $excluded = null) : array
     {
-        return self::doFilter($class, ($excluded === null) ? self::$defaultExcluded : $excluded, true);
+        return self::doFilter($class, $excluded ?? self::$defaultExcluded, true);
     }
 
     /**
@@ -62,7 +61,7 @@ final class ProxiedMethodsFilter
 
         return array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (ReflectionMethod $method) use ($ignored, $requireAbstract) : bool {
+            static function (ReflectionMethod $method) use ($ignored, $requireAbstract) : bool {
                 return (! $requireAbstract || $method->isAbstract()) && ! (
                     array_key_exists(strtolower($method->getName()), $ignored)
                     || self::methodCannotBeProxied($method)

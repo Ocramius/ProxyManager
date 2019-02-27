@@ -12,7 +12,6 @@ use function substr;
 
 /**
  * {@inheritDoc}
- *
  */
 final class ClassNameInflector implements ClassNameInflectorInterface
 {

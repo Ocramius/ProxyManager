@@ -44,7 +44,6 @@ class IdentifierSuffixerTest extends TestCase
 
     /**
      * @dataProvider getBaseIdentifierNames
-     *
      */
     public function testGeneratesValidIdentifiers(string $name) : void
     {
@@ -56,7 +55,6 @@ class IdentifierSuffixerTest extends TestCase
 
     /**
      * @dataProvider getBaseIdentifierNames
-     *
      */
     public function testGeneratedIdentifierSuffix(string $name) : void
     {

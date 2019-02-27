@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use InvalidArgumentException;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\VirtualProxyInterface;
@@ -31,7 +32,6 @@ use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolde
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 use function array_map;
@@ -41,7 +41,6 @@ use function array_merge;
  * Generator for proxies implementing {@see \ProxyManager\Proxy\VirtualProxyInterface}
  *
  * {@inheritDoc}
- *
  */
 class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 {
@@ -50,7 +49,6 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
      *
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
-     * @throws \InvalidArgumentException
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
     {
@@ -71,7 +69,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -103,7 +101,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         InitializerProperty $initializer,
         ValueHolderProperty $valueHolder
     ) : callable {
-        return function (ReflectionMethod $method) use ($initializer, $valueHolder) : LazyLoadingMethodInterceptor {
+        return static function (ReflectionMethod $method) use ($initializer, $valueHolder) : LazyLoadingMethodInterceptor {
             return LazyLoadingMethodInterceptor::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $initializer,

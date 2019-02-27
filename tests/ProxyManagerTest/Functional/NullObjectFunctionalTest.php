@@ -19,6 +19,7 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
+use stdClass;
 use function array_values;
 use function random_int;
 use function serialize;
@@ -34,9 +35,9 @@ use function unserialize;
 class NullObjectFunctionalTest extends TestCase
 {
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param mixed[] $params
+     *
+     * @dataProvider getProxyMethods
      */
     public function testMethodCalls(string $className, string $method, array $params) : void
     {
@@ -49,9 +50,9 @@ class NullObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param mixed[] $params
+     *
+     * @dataProvider getProxyMethods
      */
     public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params) : void
     {
@@ -63,9 +64,9 @@ class NullObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param mixed[] $params
+     *
+     * @dataProvider getProxyMethods
      */
     public function testMethodCallsAfterCloning(string $className, string $method, array $params) : void
     {
@@ -79,7 +80,6 @@ class NullObjectFunctionalTest extends TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
-     *
      */
     public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -88,7 +88,6 @@ class NullObjectFunctionalTest extends TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
-     *
      */
     public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -100,7 +99,6 @@ class NullObjectFunctionalTest extends TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
-     *
      */
     public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -109,7 +107,6 @@ class NullObjectFunctionalTest extends TestCase
 
     /**
      * @dataProvider getPropertyAccessProxies
-     *
      */
     public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty) : void
     {
@@ -154,7 +151,7 @@ class NullObjectFunctionalTest extends TestCase
             [
                 BaseClass::class,
                 'publicTypeHintedMethod',
-                ['param' => new \stdClass()],
+                ['param' => new stdClass()],
                 'publicTypeHintedMethodDefault',
             ],
             [

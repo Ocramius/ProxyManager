@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Factory;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AbstractBaseFactory;
@@ -14,6 +15,7 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
+use ReflectionClass;
 use ReflectionMethod;
 use stdClass;
 use Zend\Code\Generator\ClassGenerator;
@@ -30,32 +32,32 @@ class AbstractBaseFactoryTest extends TestCase
     /**
      * Note: we mock the class in order to assert on the abstract method usage
      *
-     * @var AbstractBaseFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractBaseFactory|PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 
-    /** @var ProxyGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ProxyGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $generator;
 
-    /** @var ClassNameInflectorInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassNameInflectorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $classNameInflector;
 
-    /** @var GeneratorStrategyInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var GeneratorStrategyInterface|PHPUnit_Framework_MockObject_MockObject */
     private $generatorStrategy;
 
-    /** @var AutoloaderInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var AutoloaderInterface|PHPUnit_Framework_MockObject_MockObject */
     private $proxyAutoloader;
 
-    /** @var SignatureCheckerInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var SignatureCheckerInterface|PHPUnit_Framework_MockObject_MockObject */
     private $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassSignatureGeneratorInterface|PHPUnit_Framework_MockObject_MockObject */
     private $classSignatureGenerator;
 
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $configuration                 = $this->createMock(Configuration::class);
         $this->generator               = $this->createMock(ProxyGeneratorInterface::class);
@@ -125,7 +127,7 @@ class AbstractBaseFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($generatedClass)
-            ->will(self::returnCallback(function ($className) : bool {
+            ->will(self::returnCallback(static function ($className) : bool {
                 eval('class ' . $className . ' {}');
 
                 return true;
@@ -138,7 +140,7 @@ class AbstractBaseFactoryTest extends TestCase
             ->expects(self::once())
             ->method('generate')
             ->with(
-                self::callback(function (\ReflectionClass $reflectionClass) : bool {
+                self::callback(static function (ReflectionClass $reflectionClass) : bool {
                     return $reflectionClass->getName() === 'stdClass';
                 }),
                 self::isInstanceOf(ClassGenerator::class),

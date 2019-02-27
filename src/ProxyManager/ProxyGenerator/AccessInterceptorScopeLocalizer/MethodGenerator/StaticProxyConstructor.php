@@ -11,13 +11,11 @@ use Zend\Code\Generator\ParameterGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for an access interceptor scope localizer proxy
- *
  */
 class StaticProxyConstructor extends MethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\Proxy;
 
+use Closure;
+
 /**
  * Access interceptor object marker
- *
  */
 interface AccessInterceptorInterface extends ProxyInterface
 {
@@ -21,11 +22,10 @@ interface AccessInterceptorInterface extends ProxyInterface
      * $interceptor = function ($proxy, $instance, string $method, array $params, & $returnEarly) {};
      * </code>
      *
-     * @param string        $methodName        name of the intercepted method
-     * @param \Closure|null $prefixInterceptor interceptor closure or null to unset the currently active interceptor
-     *
+     * @param string       $methodName        name of the intercepted method
+     * @param Closure|null $prefixInterceptor interceptor closure or null to unset the currently active interceptor
      */
-    public function setMethodPrefixInterceptor(string $methodName, ?\Closure $prefixInterceptor = null) : void;
+    public function setMethodPrefixInterceptor(string $methodName, ?Closure $prefixInterceptor = null) : void;
 
     /**
      * Set or remove the suffix interceptor for a method
@@ -38,9 +38,8 @@ interface AccessInterceptorInterface extends ProxyInterface
      * $interceptor = function ($proxy, $instance, string $method, array $params, $returnValue, & $returnEarly) {};
      * </code>
      *
-     * @param string        $methodName        name of the intercepted method
-     * @param \Closure|null $suffixInterceptor interceptor closure or null to unset the currently active interceptor
-     *
+     * @param string       $methodName        name of the intercepted method
+     * @param Closure|null $suffixInterceptor interceptor closure or null to unset the currently active interceptor
      */
-    public function setMethodSuffixInterceptor(string $methodName, ?\Closure $suffixInterceptor = null) : void;
+    public function setMethodSuffixInterceptor(string $methodName, ?Closure $suffixInterceptor = null) : void;
 }

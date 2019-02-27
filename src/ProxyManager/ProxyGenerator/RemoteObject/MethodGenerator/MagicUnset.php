@@ -13,13 +13,11 @@ use function var_export;
 
 /**
  * Magic `__unset` method for remote objects
- *
  */
 class MagicUnset extends MagicMethodGenerator
 {
     /**
      * Constructor
-     *
      *
      * @throws InvalidArgumentException
      */

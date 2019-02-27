@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
+use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
@@ -14,13 +15,11 @@ use function var_export;
 
 /**
  * The `bindProxyProperties` method implementation for access interceptor scope localizers
- *
  */
 class BindProxyProperties extends MethodGenerator
 {
     /**
      * Constructor
-     *
      */
     public function __construct(
         ReflectionClass $originalClass,
@@ -42,17 +41,28 @@ class BindProxyProperties extends MethodGenerator
             . '@param \\Closure[] $suffixInterceptors method interceptors to be used before method logic'
         );
 
-        $localizedProperties = [];
+        $localizedProperties        = [];
+        $properties                 = Properties::fromReflectionClass($originalClass);
+        $nonReferenceableProperties = $properties
+            ->onlyNonReferenceableProperties()
+            ->onlyInstanceProperties();
 
-        $properties = Properties::fromReflectionClass($originalClass);
+        if (! $nonReferenceableProperties->empty()) {
+            throw UnsupportedProxiedClassException::nonReferenceableLocalizedReflectionProperties(
+                $originalClass,
+                $nonReferenceableProperties
+            );
+        }
 
-        foreach ($properties->getAccessibleProperties() as $property) {
+        $propertiesThatCanBeReferenced = $properties->onlyPropertiesThatCanBeUnset();
+
+        foreach ($propertiesThatCanBeReferenced->getAccessibleProperties() as $property) {
             $propertyName = $property->getName();
 
             $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ';';
         }
 
-        foreach ($properties->getPrivateProperties() as $property) {
+        foreach ($propertiesThatCanBeReferenced->getPrivateProperties() as $property) {
             $propertyName = $property->getName();
 
             $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "

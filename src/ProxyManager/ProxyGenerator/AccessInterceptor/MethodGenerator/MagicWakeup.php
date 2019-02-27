@@ -11,13 +11,11 @@ use ReflectionClass;
 
 /**
  * Magic `__wakeup` for lazy loading value holder objects
- *
  */
 class MagicWakeup extends MagicMethodGenerator
 {
     /**
      * Constructor
-     *
      */
     public function __construct(ReflectionClass $originalClass)
     {

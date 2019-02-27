@@ -8,7 +8,6 @@ use Zend\Code\Generator\ClassGenerator;
 
 /**
  * Generator strategy that generates the class body
- *
  */
 class BaseGeneratorStrategy implements GeneratorStrategyInterface
 {

@@ -14,7 +14,6 @@ use function sprintf;
 
 /**
  * Exception for invalid proxied classes
- *
  */
 class InvalidProxiedClassException extends InvalidArgumentException implements ExceptionInterface
 {
@@ -36,12 +35,12 @@ class InvalidProxiedClassException extends InvalidArgumentException implements E
             implode(
                 "\n",
                 array_map(
-                    function (ReflectionMethod $reflectionMethod) : string {
+                    static function (ReflectionMethod $reflectionMethod) : string {
                         return $reflectionMethod->getDeclaringClass()->getName() . '::' . $reflectionMethod->getName();
                     },
                     array_filter(
                         $reflection->getMethods(),
-                        function (ReflectionMethod $method) : bool {
+                        static function (ReflectionMethod $method) : bool {
                             return $method->isAbstract() && $method->isProtected();
                         }
                     )

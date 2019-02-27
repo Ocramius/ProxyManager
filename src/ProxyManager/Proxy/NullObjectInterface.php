@@ -6,7 +6,6 @@ namespace ProxyManager\Proxy;
 
 /**
  * Null object marker
- *
  */
 interface NullObjectInterface extends ProxyInterface
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use InvalidArgumentException;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\MethodGenerator as ProxyManagerMethodGenerator;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
@@ -31,7 +32,6 @@ use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 use function array_map;
@@ -41,7 +41,6 @@ use function array_merge;
  * Generator for proxies implementing {@see \ProxyManager\Proxy\GhostObjectInterface}
  *
  * {@inheritDoc}
- *
  */
 class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 {
@@ -50,7 +49,6 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      *
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
-     * @throws \InvalidArgumentException
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = []) : void
     {
@@ -74,7 +72,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $init = new CallInitializer($initializer, $initializationTracker, $filteredProperties);
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -129,13 +127,12 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     /**
      * Retrieves all abstract methods to be proxied
      *
-     *
      * @return MethodGenerator[]
      */
     private function getAbstractProxiedMethods(ReflectionClass $originalClass) : array
     {
         return array_map(
-            function (ReflectionMethod $method) : ProxyManagerMethodGenerator {
+            static function (ReflectionMethod $method) : ProxyManagerMethodGenerator {
                 $generated = ProxyManagerMethodGenerator::fromReflectionWithoutBodyAndDocBlock(
                     new MethodReflection($method->getDeclaringClass()->getName(), $method->getName())
                 );

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
@@ -23,22 +24,22 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class MagicGetTest extends TestCase
 {
-    /** @var PropertyGenerator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var PropertyGenerator|PHPUnit_Framework_MockObject_MockObject */
     protected $initializer;
 
-    /** @var MethodGenerator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var MethodGenerator|PHPUnit_Framework_MockObject_MockObject */
     protected $initMethod;
 
-    /** @var PublicPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var PublicPropertiesMap|PHPUnit_Framework_MockObject_MockObject */
     protected $publicProperties;
 
-    /** @var ProtectedPropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ProtectedPropertiesMap|PHPUnit_Framework_MockObject_MockObject */
     protected $protectedProperties;
 
-    /** @var PrivatePropertiesMap|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var PrivatePropertiesMap|PHPUnit_Framework_MockObject_MockObject */
     protected $privateProperties;
 
-    /** @var InitializationTracker|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var InitializationTracker|PHPUnit_Framework_MockObject_MockObject */
     protected $initializationTracker;
 
     /** @var string */
@@ -107,7 +108,7 @@ PHP;
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->initializer           = $this->createMock(PropertyGenerator::class);
         $this->initMethod            = $this->createMock(MethodGenerator::class);

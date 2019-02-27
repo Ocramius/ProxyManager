@@ -6,6 +6,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
+use ReflectionMethod;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 use function array_keys;
@@ -55,7 +56,7 @@ PHP;
         MethodGenerator $method,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors,
-        ?\ReflectionMethod $originalMethod
+        ?ReflectionMethod $originalMethod
     ) : string {
         $replacements = [
             '{{$name}}'                        => var_export($method->getName(), true),
@@ -65,7 +66,7 @@ PHP;
             '{{$suffixInterceptorsName}}'      => $suffixInterceptors->getName(),
             '{{$suffixEarlyReturnExpression}}' => ProxiedMethodReturnExpression::generate('$suffixReturnValue', $originalMethod),
             '{{$returnExpression}}'            => ProxiedMethodReturnExpression::generate('$returnValue', $originalMethod),
-            '{{$paramsString}}'                => 'array(' . implode(', ', array_map(function (ParameterGenerator $parameter) : string {
+            '{{$paramsString}}'                => 'array(' . implode(', ', array_map(static function (ParameterGenerator $parameter) : string {
                 return var_export($parameter->getName(), true) . ' => $' . $parameter->getName();
             }, $method->getParameters())) . ')',
         ];

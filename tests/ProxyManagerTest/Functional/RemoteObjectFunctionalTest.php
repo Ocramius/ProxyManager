@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
+use Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
@@ -51,12 +52,10 @@ class RemoteObjectFunctionalTest extends TestCase
             ->with(self::stringEndsWith($method), $params)
             ->will(self::returnValue($expectedValue));
 
-        $adapter = new XmlRpcAdapter(
+        return new XmlRpcAdapter(
             $client,
             ['ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo']
         );
-
-        return $adapter;
     }
 
     /**
@@ -74,20 +73,18 @@ class RemoteObjectFunctionalTest extends TestCase
             ->with(self::stringEndsWith($method), $params)
             ->will(self::returnValue($expectedValue));
 
-        $adapter = new JsonRpcAdapter(
+        return new JsonRpcAdapter(
             $client,
             ['ProxyManagerTestAsset\RemoteProxy\Foo.foo' => 'ProxyManagerTestAsset\RemoteProxy\FooServiceInterface.foo']
         );
-
-        return $adapter;
     }
 
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param string|object $instanceOrClassName
      * @param mixed[]       $params
      * @param mixed         $expectedValue
+     *
+     * @dataProvider getProxyMethods
      */
     public function testXmlRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
     {
@@ -102,11 +99,11 @@ class RemoteObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getProxyMethods
-     *
      * @param string|object $instanceOrClassName
      * @param mixed[]       $params
      * @param mixed         $expectedValue
+     *
+     * @dataProvider getProxyMethods
      */
     public function testJsonRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
     {
@@ -121,9 +118,9 @@ class RemoteObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @dataProvider getPropertyAccessProxies
-     *
      * @param string|object $instanceOrClassName
+     *
+     * @dataProvider getPropertyAccessProxies
      */
     public function testJsonRpcPropertyReadAccess($instanceOrClassName, string $publicProperty, $propertyValue) : void
     {
@@ -158,7 +155,7 @@ class RemoteObjectFunctionalTest extends TestCase
     /**
      * Generates a list of object | invoked method | parameters | expected result
      *
-     * @return string[][]|object[][]|mixed[][][]
+     * @return string[][]|bool[][]|object[][]|mixed[][][]
      */
     public function getProxyMethods() : array
     {
@@ -222,7 +219,6 @@ class RemoteObjectFunctionalTest extends TestCase
 
     /**
      * @group        276
-     *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      */
     public function testWillInterceptAccessToPropertiesViaFriendClassAccess(
@@ -254,7 +250,6 @@ class RemoteObjectFunctionalTest extends TestCase
 
     /**
      * @group        276
-     *
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
      */
     public function testWillInterceptAccessToPropertiesViaFriendClassAccessEvenIfCloned(
@@ -308,9 +303,9 @@ class RemoteObjectFunctionalTest extends TestCase
         $proxy->increment($increment);
     }
 
-    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : \Generator
+    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : Generator
     {
-        foreach ((new \ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
+        foreach ((new ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
             $property->setAccessible(true);
 
             $propertyName  = $property->getName();

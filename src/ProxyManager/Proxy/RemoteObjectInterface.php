@@ -6,7 +6,6 @@ namespace ProxyManager\Proxy;
 
 /**
  * Remote object marker
- *
  */
 interface RemoteObjectInterface extends ProxyInterface
 {

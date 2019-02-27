@@ -19,14 +19,9 @@ use function var_export;
 /**
  * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::isProxyInitialized}
  * for lazy loading value holder objects
- *
  */
 class CallInitializer extends MethodGenerator
 {
-    /**
-     * Constructor
-     *
-     */
     public function __construct(
         PropertyGenerator $initializerProperty,
         PropertyGenerator $initTracker,
@@ -71,13 +66,15 @@ $this->%s = false;
 return $result;
 PHP;
 
+        $referenceableProperties = $properties->onlyPropertiesThatCanBeUnset();
+
         $this->setBody(sprintf(
             $bodyTemplate,
             $initialization,
             $initializer,
             $initialization,
-            $this->propertiesInitializationCode($properties),
-            $this->propertiesReferenceArrayCode($properties),
+            $this->propertiesInitializationCode($referenceableProperties),
+            $this->propertiesReferenceArrayCode($referenceableProperties),
             $initializer,
             $initializer,
             $initialization
@@ -153,7 +150,6 @@ PHP;
 
     /**
      * @param ReflectionProperty[] $properties indexed by internal name
-     *
      */
     private function generatePrivatePropertiesAssignmentsCode(array $properties) : string
     {

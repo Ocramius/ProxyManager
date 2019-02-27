@@ -6,7 +6,6 @@ namespace ProxyManager\Proxy;
 
 /**
  * Ghost object marker
- *
  */
 interface GhostObjectInterface extends LazyLoadingInterface
 {

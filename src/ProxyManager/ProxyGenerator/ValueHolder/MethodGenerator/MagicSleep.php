@@ -11,13 +11,11 @@ use function var_export;
 
 /**
  * Magic `__sleep` for value holder objects
- *
  */
 class MagicSleep extends MagicMethodGenerator
 {
     /**
      * Constructor
-     *
      */
     public function __construct(ReflectionClass $originalClass, PropertyGenerator $valueHolderProperty)
     {

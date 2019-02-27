@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator;
 
+use InvalidArgumentException;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__set` for method interceptor value holder objects
- *
  */
 class MagicSet extends MagicMethodGenerator
 {
@@ -24,7 +23,6 @@ class MagicSet extends MagicMethodGenerator
      * Constructor
      *
      * @throws InvalidArgumentException
-     * @throws \InvalidArgumentException
      */
     public function __construct(
         ReflectionClass $originalClass,

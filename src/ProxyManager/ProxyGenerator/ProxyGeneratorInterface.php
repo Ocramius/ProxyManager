@@ -10,7 +10,6 @@ use Zend\Code\Generator\ClassGenerator;
 /**
  * Base interface for proxy generators - describes how a proxy generator should use
  * reflection classes to modify given class generators
- *
  */
 interface ProxyGeneratorInterface
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use InvalidArgumentException;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\AccessInterceptorInterface;
@@ -25,7 +26,6 @@ use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
 use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\MethodGenerator;
 use Zend\Code\Reflection\MethodReflection;
 use function array_map;
@@ -36,16 +36,14 @@ use function array_merge;
  * and localizing scope of the proxied object at instantiation
  *
  * {@inheritDoc}
- *
  */
 class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterface
 {
     /**
      * {@inheritDoc}
      *
-     * @throws \InvalidArgumentException
-     * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
+     * @throws InvalidProxiedClassException
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
     {
@@ -57,7 +55,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         $classGenerator->addPropertyFromGenerator($suffixInterceptors = new MethodSuffixInterceptors());
 
         array_map(
-            function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -88,7 +86,7 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         MethodPrefixInterceptors $prefixInterceptors,
         MethodSuffixInterceptors $suffixInterceptors
     ) : callable {
-        return function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors) : InterceptedMethod {
+        return static function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors) : InterceptedMethod {
             return InterceptedMethod::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $prefixInterceptors,
