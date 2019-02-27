@@ -32,7 +32,7 @@ script:
   - php examples/virtual-proxy.php
   - ./vendor/bin/phpcs
   - ./vendor/bin/phpstan analyse
-  - ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=99 --min-covered-msi=100
+  - ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
 
 matrix:
   allow_failures:
