@@ -64,7 +64,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         }
 
         $classGenerator->setImplementedInterfaces($interfaces);
-        $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty());
+        $classGenerator->addPropertyFromGenerator($valueHolder = new ValueHolderProperty($originalClass));
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($publicProperties);
 

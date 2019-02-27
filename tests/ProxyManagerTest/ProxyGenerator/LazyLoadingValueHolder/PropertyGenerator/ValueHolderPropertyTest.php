@@ -6,6 +6,7 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerat
 
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
+use ReflectionClass;
 use Zend\Code\Generator\PropertyGenerator;
 
 /**
@@ -21,6 +22,21 @@ class ValueHolderPropertyTest extends AbstractUniquePropertyNameTest
      */
     protected function createProperty() : PropertyGenerator
     {
-        return new ValueHolderProperty();
+        return new ValueHolderProperty(new ReflectionClass(self::class));
+    }
+
+    /** @group #400 */
+    public function testWillDocumentPropertyType() : void
+    {
+        self::assertEquals(
+            <<<'PHPDOC'
+/**
+ * @var \ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderPropertyTest|null wrapped object, if the proxy is initialized
+ */
+
+PHPDOC
+            ,
+            (new ValueHolderProperty(new ReflectionClass(self::class)))->getDocBlock()->generate()
+        );
     }
 }

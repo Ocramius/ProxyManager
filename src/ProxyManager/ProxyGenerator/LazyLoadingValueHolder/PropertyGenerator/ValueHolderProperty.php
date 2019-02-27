@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator;
 
 use ProxyManager\Generator\Util\IdentifierSuffixer;
+use ReflectionClass;
+use Zend\Code\Generator\DocBlockGenerator;
 use Zend\Code\Generator\Exception\InvalidArgumentException;
 use Zend\Code\Generator\PropertyGenerator;
 
@@ -18,11 +20,15 @@ class ValueHolderProperty extends PropertyGenerator
      *
      * @throws InvalidArgumentException
      */
-    public function __construct()
+    public function __construct(ReflectionClass $type)
     {
         parent::__construct(IdentifierSuffixer::getIdentifier('valueHolder'));
 
+        $docBlock = new DocBlockGenerator();
+
+        $docBlock->setWordWrap(false);
+        $docBlock->setLongDescription('@var \\' . $type->getName() . '|null wrapped object, if the proxy is initialized');
+        $this->setDocBlock($docBlock);
         $this->setVisibility(self::VISIBILITY_PRIVATE);
-        $this->setDocBlock('@var \\Closure|null initializer responsible for generating the wrapped object');
     }
 }
