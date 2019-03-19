@@ -49,8 +49,10 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
      *
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 

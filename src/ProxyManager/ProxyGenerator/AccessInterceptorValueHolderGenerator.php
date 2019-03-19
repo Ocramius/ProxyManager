@@ -49,8 +49,10 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
      *
      * @throws InvalidArgumentException
      * @throws InvalidProxiedClassException
+     *
+     * @return void
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
