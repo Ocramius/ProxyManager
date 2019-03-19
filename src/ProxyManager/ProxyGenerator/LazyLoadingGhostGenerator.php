@@ -47,10 +47,10 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
     /**
      * {@inheritDoc}
      *
+     * @return void
+     *
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
-     *
-     * @return void
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = [])
     {

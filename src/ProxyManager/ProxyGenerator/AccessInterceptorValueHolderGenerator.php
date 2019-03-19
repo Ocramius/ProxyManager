@@ -47,10 +47,10 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
     /**
      * {@inheritDoc}
      *
+     * @return void
+     *
      * @throws InvalidArgumentException
      * @throws InvalidProxiedClassException
-     *
-     * @return void
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
