@@ -113,7 +113,8 @@ class FatalPreventionFunctionalTest extends TestCase
             get_declared_classes(),
             static function ($className) use ($skippedPaths) : bool {
                 $reflectionClass = new ReflectionClass($className);
-                $fileName        = $reflectionClass->getFileName();
+
+                $fileName = $reflectionClass->getFileName();
 
                 if (! $fileName) {
                     return false;

@@ -65,6 +65,7 @@ return $instance;',
             $body
         );
     }
+
     public function testBodyStructureWithTypedProperties() : void
     {
         $constructor = new StaticProxyConstructor(new ReflectionClass(ClassWithMixedTypedProperties::class));

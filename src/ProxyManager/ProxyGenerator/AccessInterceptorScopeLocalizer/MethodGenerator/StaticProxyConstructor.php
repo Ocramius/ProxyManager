@@ -21,7 +21,7 @@ class StaticProxyConstructor extends MethodGenerator
      */
     public function __construct(ReflectionClass $originalClass)
     {
-        parent::__construct('staticProxyConstructor', [], static::FLAG_PUBLIC | static::FLAG_STATIC);
+        parent::__construct('staticProxyConstructor', [], self::FLAG_PUBLIC | self::FLAG_STATIC);
 
         $localizedObject = new ParameterGenerator('localizedObject');
         $prefix          = new ParameterGenerator('prefixInterceptors');

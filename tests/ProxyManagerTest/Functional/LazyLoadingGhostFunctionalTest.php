@@ -759,7 +759,8 @@ class LazyLoadingGhostFunctionalTest extends TestCase
             $initializerMatcher,
             $realInstance
         ) : bool {
-            $initializer     = null;
+            $initializer = null;
+
             $reflectionClass = new ReflectionClass($realInstance);
 
             foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {

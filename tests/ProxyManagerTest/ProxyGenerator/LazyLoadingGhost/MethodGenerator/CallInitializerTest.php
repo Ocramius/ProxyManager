@@ -97,7 +97,6 @@ return $result;';
         );
     }
 
-
     public function testBodyStructureWithTypedProperties() : void
     {
         /** @var PropertyGenerator|MockObject $initializer */

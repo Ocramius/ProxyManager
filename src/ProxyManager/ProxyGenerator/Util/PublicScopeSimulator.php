@@ -43,7 +43,7 @@ class PublicScopeSimulator
         ?string $returnPropertyName = null
     ) : string {
         $byRef  = self::getByRefReturnValue($operationType);
-        $value  = $operationType === static::OPERATION_SET ? ', $value' : '';
+        $value  = $operationType === self::OPERATION_SET ? ', $value' : '';
         $target = '$this';
 
         if ($valueHolder) {
@@ -74,7 +74,7 @@ class PublicScopeSimulator
      */
     private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter) : string
     {
-        if ($operationType !== static::OPERATION_GET) {
+        if ($operationType !== self::OPERATION_GET) {
             return '';
         }
 
@@ -100,7 +100,7 @@ class PublicScopeSimulator
      */
     private static function getByRefReturnValue(string $operationType) : string
     {
-        return $operationType === static::OPERATION_GET || $operationType === static::OPERATION_SET ? '& ' : '';
+        return $operationType === self::OPERATION_GET || $operationType === self::OPERATION_SET ? '& ' : '';
     }
 
     /**
@@ -121,17 +121,17 @@ class PublicScopeSimulator
     private static function getOperation(string $operationType, string $nameParameter, ?string $valueParameter) : string
     {
         switch ($operationType) {
-            case static::OPERATION_GET:
+            case self::OPERATION_GET:
                 return 'return $targetObject->$' . $nameParameter . ';';
-            case static::OPERATION_SET:
+            case self::OPERATION_SET:
                 if ($valueParameter === null) {
                     throw new InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
                 return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter . ';';
-            case static::OPERATION_ISSET:
+            case self::OPERATION_ISSET:
                 return 'return isset($targetObject->$' . $nameParameter . ');';
-            case static::OPERATION_UNSET:
+            case self::OPERATION_UNSET:
                 return 'unset($targetObject->$' . $nameParameter . ');';
         }
 

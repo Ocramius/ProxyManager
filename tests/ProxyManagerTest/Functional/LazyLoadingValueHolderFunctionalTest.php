@@ -397,7 +397,8 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
             $initializerMatcher,
             $realInstance
         ) : void {
-            $initializer   = null;
+            $initializer = null;
+
             $wrappedObject = $realInstance;
 
             $initializerMatcher($proxy, $wrappedObject, $method, $params);

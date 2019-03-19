@@ -206,6 +206,7 @@ class LazyLoadingValueHolderPropertyAccessBench
                 & $initializer
             ) use ($originalClass) : bool {
                 $initializer = null;
+
                 $valueHolder = new $originalClass();
 
                 return true;
