@@ -122,6 +122,6 @@ class Configuration
     public function getClassSignatureGenerator() : ClassSignatureGeneratorInterface
     {
         return $this->classSignatureGenerator
-            ?? new ClassSignatureGenerator($this->getSignatureGenerator());
+            ?? $this->classSignatureGenerator = new ClassSignatureGenerator($this->getSignatureGenerator());
     }
 }
