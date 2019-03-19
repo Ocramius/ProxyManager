@@ -43,7 +43,7 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
-        /** @var Client|MockObject $client_Framework_MockObject_MockObject */
+        /** @var Client&MockObject $client_Framework_MockObject_MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
@@ -63,7 +63,7 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
-        /** @var Client|MockObject $client_Framework_MockObject_MockObject */
+        /** @var Client&MockObject $client_Framework_MockObject_MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
@@ -228,7 +228,7 @@ final class RemoteObjectFunctionalTest extends TestCase
     ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
 
-        /** @var AdapterInterface|MockObject $adapter */
+        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
@@ -259,7 +259,7 @@ final class RemoteObjectFunctionalTest extends TestCase
     ) : void {
         $proxyName = $this->generateProxy(get_class($realInstance));
 
-        /** @var AdapterInterface|MockObject $adapter */
+        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
@@ -284,7 +284,7 @@ final class RemoteObjectFunctionalTest extends TestCase
     {
         $proxyName = $this->generateProxy(VoidCounter::class);
 
-        /** @var AdapterInterface|MockObject $adapter */
+        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $increment = random_int(10, 1000);

@@ -21,7 +21,7 @@ final class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $adapter */
+        /** @var PropertyGenerator&MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
 
         $adapter->method('getName')->willReturn('adapter');

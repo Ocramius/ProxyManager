@@ -24,7 +24,7 @@ final class SoapTest extends TestCase
      */
     public function testCanBuildAdapterWithSoapRpcClient() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new Soap($client);

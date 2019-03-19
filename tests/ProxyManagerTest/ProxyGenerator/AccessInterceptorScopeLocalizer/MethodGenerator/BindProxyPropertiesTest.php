@@ -22,10 +22,10 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 final class BindProxyPropertiesTest extends TestCase
 {
-    /** @var PropertyGenerator|MockObject */
+    /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $prefixInterceptors;
 
-    /** @var PropertyGenerator|MockObject */
+    /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $suffixInterceptors;
 
     /**

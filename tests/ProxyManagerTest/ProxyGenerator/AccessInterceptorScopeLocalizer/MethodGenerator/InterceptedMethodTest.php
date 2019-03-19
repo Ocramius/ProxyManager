@@ -21,10 +21,10 @@ use Zend\Code\Reflection\MethodReflection;
  */
 final class InterceptedMethodTest extends TestCase
 {
-    /** @var PropertyGenerator|MockObject */
+    /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $prefixInterceptors;
 
-    /** @var PropertyGenerator|MockObject */
+    /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $suffixInterceptors;
 
     /**

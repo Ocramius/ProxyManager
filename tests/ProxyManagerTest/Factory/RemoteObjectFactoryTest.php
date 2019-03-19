@@ -27,16 +27,16 @@ use stdClass;
  */
 final class RemoteObjectFactoryTest extends TestCase
 {
-    /** @var ClassNameInflectorInterface|MockObject */
+    /** @var ClassNameInflectorInterface&MockObject */
     private ClassNameInflectorInterface $inflector;
 
-    /** @var SignatureCheckerInterface|MockObject */
+    /** @var SignatureCheckerInterface&MockObject */
     private SignatureCheckerInterface $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|MockObject */
+    /** @var ClassSignatureGeneratorInterface&MockObject */
     private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
-    /** @var Configuration|MockObject */
+    /** @var Configuration&MockObject */
     private Configuration $config;
 
     /**
@@ -81,7 +81,7 @@ final class RemoteObjectFactoryTest extends TestCase
             ->with(BaseInterface::class)
             ->willReturn(RemoteObjectMock::class);
 
-        /** @var AdapterInterface|MockObject $adapter */
+        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /** @var stdClass|RemoteObjectMock $proxy */

@@ -25,16 +25,16 @@ use stdClass;
  */
 final class NullObjectFactoryTest extends TestCase
 {
-    /** @var ClassNameInflectorInterface|MockObject */
+    /** @var ClassNameInflectorInterface&MockObject */
     private ClassNameInflectorInterface $inflector;
 
-    /** @var SignatureCheckerInterface|MockObject */
+    /** @var SignatureCheckerInterface&MockObject */
     private SignatureCheckerInterface $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|MockObject */
+    /** @var ClassSignatureGeneratorInterface&MockObject */
     private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
-    /** @var Configuration|MockObject */
+    /** @var Configuration&MockObject */
     private Configuration $config;
 
     /**

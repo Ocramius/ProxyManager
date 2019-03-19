@@ -21,7 +21,7 @@ final class IsProxyInitializedTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('bar');

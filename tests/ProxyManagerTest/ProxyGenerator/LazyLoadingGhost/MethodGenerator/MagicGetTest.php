@@ -24,22 +24,22 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 final class MagicGetTest extends TestCase
 {
-    /** @var PropertyGenerator|MockObject */
+    /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $initializer;
 
-    /** @var MethodGenerator|MockObject */
+    /** @var MethodGenerator&MockObject */
     private MethodGenerator $initMethod;
 
-    /** @var PublicPropertiesMap|MockObject */
+    /** @var PublicPropertiesMap&MockObject */
     private PublicPropertiesMap $publicProperties;
 
-    /** @var ProtectedPropertiesMap|MockObject */
+    /** @var ProtectedPropertiesMap&MockObject */
     private ProtectedPropertiesMap $protectedProperties;
 
-    /** @var PrivatePropertiesMap|MockObject */
+    /** @var PrivatePropertiesMap&MockObject */
     private PrivatePropertiesMap $privateProperties;
 
-    /** @var InitializationTracker|MockObject */
+    /** @var InitializationTracker&MockObject */
     private InitializationTracker $initializationTracker;
 
     /** @var string */

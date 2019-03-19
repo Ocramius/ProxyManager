@@ -23,11 +23,11 @@ final class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $prefixInterceptors */
+        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $suffixInterceptors */
+        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');
@@ -66,11 +66,11 @@ return $instance;',
 
     public function testBodyStructureWithoutPublicProperties() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $prefixInterceptors */
+        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $suffixInterceptors */
+        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');
@@ -104,11 +104,11 @@ return $instance;',
      */
     public function testUnsetsPrivatePropertiesAsWell() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $prefixInterceptors */
+        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $suffixInterceptors */
+        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');

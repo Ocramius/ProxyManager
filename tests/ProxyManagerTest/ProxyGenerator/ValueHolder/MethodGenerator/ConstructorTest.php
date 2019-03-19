@@ -24,7 +24,7 @@ final class ConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');
@@ -54,7 +54,7 @@ unset($this->bar, $this->baz);
 
     public function testBodyStructureWithoutPublicProperties() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');
@@ -79,7 +79,7 @@ if (! $this->foo) {
 
     public function testBodyStructureWithStaticProperties() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');
@@ -108,7 +108,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
 
     public function testBodyStructureWithVariadicArguments() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');

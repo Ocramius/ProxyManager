@@ -23,7 +23,7 @@ final class SignatureCheckerTest extends TestCase
     private string $signatureExample = 'valid-signature';
     private SignatureChecker $signatureChecker;
 
-    /** @var SignatureGeneratorInterface|MockObject */
+    /** @var SignatureGeneratorInterface&MockObject */
     private SignatureGeneratorInterface $signatureGenerator;
 
     /**

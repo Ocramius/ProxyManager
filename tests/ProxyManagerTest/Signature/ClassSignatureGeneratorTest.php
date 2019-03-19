@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 final class ClassSignatureGeneratorTest extends TestCase
 {
-    /** @var SignatureGeneratorInterface|MockObject */
+    /** @var SignatureGeneratorInterface&MockObject */
     private SignatureGeneratorInterface $signatureGenerator;
     private ClassSignatureGenerator $classSignatureGenerator;
 
@@ -34,7 +34,7 @@ final class ClassSignatureGeneratorTest extends TestCase
 
     public function testAddSignature() : void
     {
-        /** @var MockObject|ClassGenerator $classGenerator */
+        /** @var ClassGenerator&MockObject $classGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);
 
         $classGenerator

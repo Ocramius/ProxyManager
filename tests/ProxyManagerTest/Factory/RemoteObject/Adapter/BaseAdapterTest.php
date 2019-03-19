@@ -25,7 +25,7 @@ final class BaseAdapterTest extends TestCase
      */
     public function testBaseAdapter() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this
             ->getMockBuilder(Client::class)
             ->setMethods(['call'])
@@ -60,7 +60,7 @@ final class BaseAdapterTest extends TestCase
      */
     public function testBaseAdapterWithServiceMap() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this
             ->getMockBuilder(Client::class)
             ->setMethods(['call'])

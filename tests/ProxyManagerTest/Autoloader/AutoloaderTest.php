@@ -28,10 +28,10 @@ final class AutoloaderTest extends TestCase
 {
     private Autoloader $autoloader;
 
-    /** @var FileLocatorInterface|MockObject */
+    /** @var FileLocatorInterface&MockObject */
     private FileLocatorInterface $fileLocator;
 
-    /** @var ClassNameInflectorInterface|MockObject */
+    /** @var ClassNameInflectorInterface&MockObject */
     private ClassNameInflectorInterface $classNameInflector;
 
     /**
