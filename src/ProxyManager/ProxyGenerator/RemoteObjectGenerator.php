@@ -35,10 +35,12 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
     /**
      * {@inheritDoc}
      *
+     * @return void
+     *
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 

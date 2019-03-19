@@ -42,10 +42,12 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
     /**
      * {@inheritDoc}
      *
+     * @return void
+     *
      * @throws InvalidArgumentException
      * @throws InvalidProxiedClassException
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator)
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass, false);
 

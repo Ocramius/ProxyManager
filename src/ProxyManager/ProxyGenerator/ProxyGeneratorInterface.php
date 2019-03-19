@@ -15,6 +15,8 @@ interface ProxyGeneratorInterface
 {
     /**
      * Apply modifications to the provided $classGenerator to proxy logic from $originalClass
+     *
+     * @return void
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void;
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator);
 }
