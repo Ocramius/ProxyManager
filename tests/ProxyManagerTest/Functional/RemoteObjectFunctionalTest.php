@@ -117,6 +117,7 @@ final class RemoteObjectFunctionalTest extends TestCase
 
     /**
      * @param string|object $instanceOrClassName
+     * @param mixed         $propertyValue
      *
      * @dataProvider getPropertyAccessProxies
      */
