@@ -15,8 +15,7 @@ use ProxyManager\Signature\SignatureGenerator;
  */
 final class SignatureGeneratorTest extends TestCase
 {
-    /** @var SignatureGenerator */
-    private $signatureGenerator;
+    private SignatureGenerator $signatureGenerator;
 
     /**
      * {@inheritDoc}

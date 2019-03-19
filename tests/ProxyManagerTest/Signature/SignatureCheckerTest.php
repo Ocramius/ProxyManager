@@ -20,14 +20,11 @@ use ReflectionClass;
  */
 final class SignatureCheckerTest extends TestCase
 {
-    /** @var string */
-    protected $signatureExample = 'valid-signature';
-
-    /** @var SignatureChecker */
-    private $signatureChecker;
+    private string $signatureExample = 'valid-signature';
+    private SignatureChecker $signatureChecker;
 
     /** @var SignatureGeneratorInterface|MockObject */
-    private $signatureGenerator;
+    private SignatureGeneratorInterface $signatureGenerator;
 
     /**
      * {@inheritDoc}

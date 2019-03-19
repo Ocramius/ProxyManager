@@ -38,8 +38,7 @@ use function uniqid;
  */
 final class FileWriterGeneratorStrategyTest extends TestCase
 {
-    /** @var string */
-    private $tempDir;
+    private string $tempDir;
 
     protected function setUp() : void
     {

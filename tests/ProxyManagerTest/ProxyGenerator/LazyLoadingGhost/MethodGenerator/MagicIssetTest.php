@@ -24,22 +24,21 @@ use Zend\Code\Generator\PropertyGenerator;
 final class MagicIssetTest extends TestCase
 {
     /** @var PropertyGenerator|MockObject */
-    protected $initializer;
+    private PropertyGenerator $initializer;
 
     /** @var MethodGenerator|MockObject */
-    protected $initMethod;
+    private MethodGenerator $initMethod;
 
     /** @var PublicPropertiesMap|MockObject */
-    protected $publicProperties;
+    private PublicPropertiesMap $publicProperties;
 
     /** @var ProtectedPropertiesMap|MockObject */
-    protected $protectedProperties;
+    private ProtectedPropertiesMap $protectedProperties;
 
     /** @var PrivatePropertiesMap|MockObject */
-    protected $privateProperties;
+    private PrivatePropertiesMap $privateProperties;
 
-    /** @var string */
-    private $expectedCode = <<<'PHP'
+    private string $expectedCode = <<<'PHP'
 $this->foo && $this->baz('__isset', array('name' => $name));
 
 if (isset(self::$bar[$name])) {

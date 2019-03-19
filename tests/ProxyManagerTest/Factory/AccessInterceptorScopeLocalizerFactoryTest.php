@@ -28,17 +28,17 @@ use stdClass;
  */
 final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
 {
-    /** @var MockObject */
-    protected $inflector;
+    /** @var ClassNameInflectorInterface&MockObject */
+    private ClassNameInflectorInterface $inflector;
 
-    /** @var MockObject */
-    protected $signatureChecker;
+    /** @var SignatureCheckerInterface&MockObject */
+    private SignatureCheckerInterface $signatureChecker;
 
     /** @var ClassSignatureGeneratorInterface|MockObject */
-    private $classSignatureGenerator;
+    private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
     /** @var Configuration|MockObject */
-    protected $config;
+    private Configuration $config;
 
     /**
      * {@inheritDoc}

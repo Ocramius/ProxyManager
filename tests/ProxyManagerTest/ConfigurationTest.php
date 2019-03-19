@@ -21,8 +21,7 @@ use ProxyManager\Signature\SignatureGeneratorInterface;
  */
 final class ConfigurationTest extends TestCase
 {
-    /** @var Configuration */
-    protected $configuration;
+    private Configuration $configuration;
 
     /**
      * {@inheritDoc}

@@ -26,14 +26,13 @@ use function uniqid;
  */
 final class AutoloaderTest extends TestCase
 {
-    /** @var Autoloader */
-    protected $autoloader;
+    private Autoloader $autoloader;
 
     /** @var FileLocatorInterface|MockObject */
-    protected $fileLocator;
+    private FileLocatorInterface $fileLocator;
 
     /** @var ClassNameInflectorInterface|MockObject */
-    protected $classNameInflector;
+    private ClassNameInflectorInterface $classNameInflector;
 
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__construct

@@ -20,10 +20,8 @@ use Zend\Code\Generator\PropertyGenerator;
 final class ClassSignatureGeneratorTest extends TestCase
 {
     /** @var SignatureGeneratorInterface|MockObject */
-    private $signatureGenerator;
-
-    /** @var ClassSignatureGenerator */
-    private $classSignatureGenerator;
+    private SignatureGeneratorInterface $signatureGenerator;
+    private ClassSignatureGenerator $classSignatureGenerator;
 
     /**
      * {@inheritDoc}
