@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\Factory;
 
 use OutOfBoundsException;
+use ProxyManager\Configuration;
 use ProxyManager\Proxy\NullObjectInterface;
 use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -18,8 +19,14 @@ use function is_object;
  */
 class NullObjectFactory extends AbstractBaseFactory
 {
-    /** @var NullObjectGenerator|null */
-    private $generator;
+    private NullObjectGenerator $generator;
+
+    public function __construct(?Configuration $configuration = null)
+    {
+        parent::__construct($configuration);
+
+        $this->generator = new NullObjectGenerator();
+    }
 
     /**
      * @param object|string $instanceOrClassName the object to be wrapped or interface to transform to null object
@@ -41,6 +48,6 @@ class NullObjectFactory extends AbstractBaseFactory
      */
     protected function getGenerator() : ProxyGeneratorInterface
     {
-        return $this->generator ?: $this->generator = new NullObjectGenerator();
+        return $this->generator;
     }
 }

@@ -20,11 +20,8 @@ use function is_object;
  */
 class RemoteObjectFactory extends AbstractBaseFactory
 {
-    /** @var AdapterInterface */
-    protected $adapter;
-
-    /** @var RemoteObjectGenerator|null */
-    private $generator;
+    protected AdapterInterface $adapter;
+    private RemoteObjectGenerator $generator;
 
     /**
      * {@inheritDoc}
@@ -36,7 +33,8 @@ class RemoteObjectFactory extends AbstractBaseFactory
     {
         parent::__construct($configuration);
 
-        $this->adapter = $adapter;
+        $this->adapter   = $adapter;
+        $this->generator = new RemoteObjectGenerator();
     }
 
     /**

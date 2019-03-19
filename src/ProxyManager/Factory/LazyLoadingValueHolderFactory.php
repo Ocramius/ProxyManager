@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\Factory;
 
 use Closure;
+use ProxyManager\Configuration;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -14,8 +15,14 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
  */
 class LazyLoadingValueHolderFactory extends AbstractBaseFactory
 {
-    /** @var LazyLoadingValueHolderGenerator|null */
-    private $generator;
+    private LazyLoadingValueHolderGenerator $generator;
+
+    public function __construct(?Configuration $configuration = null)
+    {
+        parent::__construct($configuration);
+
+        $this->generator = new LazyLoadingValueHolderGenerator();
+    }
 
     /** @param mixed[] $proxyOptions */
     public function createProxy(
@@ -33,6 +40,6 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
      */
     protected function getGenerator() : ProxyGeneratorInterface
     {
-        return $this->generator ?: $this->generator = new LazyLoadingValueHolderGenerator();
+        return $this->generator;
     }
 }

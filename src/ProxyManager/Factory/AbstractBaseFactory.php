@@ -20,15 +20,14 @@ use function class_exists;
  */
 abstract class AbstractBaseFactory
 {
-    /** @var Configuration */
-    protected $configuration;
+    protected Configuration $configuration;
 
     /**
      * Cached checked class names
      *
      * @var string[]
      */
-    private $checkedClasses = [];
+    private array $checkedClasses = [];
 
     public function __construct(?Configuration $configuration = null)
     {

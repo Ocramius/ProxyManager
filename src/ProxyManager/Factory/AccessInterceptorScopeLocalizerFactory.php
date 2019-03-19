@@ -6,6 +6,7 @@ namespace ProxyManager\Factory;
 
 use Closure;
 use OutOfBoundsException;
+use ProxyManager\Configuration;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -18,8 +19,14 @@ use function get_class;
  */
 class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
 {
-    /** @var AccessInterceptorScopeLocalizerGenerator|null */
-    private $generator;
+    private AccessInterceptorScopeLocalizerGenerator $generator;
+
+    public function __construct(?Configuration $configuration = null)
+    {
+        parent::__construct($configuration);
+
+        $this->generator = new AccessInterceptorScopeLocalizerGenerator();
+    }
 
     /**
      * @param object    $instance           the object to be localized within the access interceptor
@@ -47,6 +54,6 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
      */
     protected function getGenerator() : ProxyGeneratorInterface
     {
-        return $this->generator ?: $this->generator = new AccessInterceptorScopeLocalizerGenerator();
+        return $this->generator;
     }
 }

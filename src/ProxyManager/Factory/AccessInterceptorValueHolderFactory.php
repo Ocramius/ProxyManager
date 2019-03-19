@@ -6,6 +6,7 @@ namespace ProxyManager\Factory;
 
 use Closure;
 use OutOfBoundsException;
+use ProxyManager\Configuration;
 use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -18,8 +19,14 @@ use function get_class;
  */
 class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
 {
-    /** @var AccessInterceptorValueHolderGenerator|null */
-    private $generator;
+    private AccessInterceptorValueHolderGenerator $generator;
+
+    public function __construct(?Configuration $configuration = null)
+    {
+        parent::__construct($configuration);
+
+        $this->generator = new AccessInterceptorValueHolderGenerator();
+    }
 
     /**
      * @param object    $instance           the object to be wrapped within the value holder
@@ -47,6 +54,6 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      */
     protected function getGenerator() : ProxyGeneratorInterface
     {
-        return $this->generator ?: $this->generator = new AccessInterceptorValueHolderGenerator();
+        return $this->generator;
     }
 }

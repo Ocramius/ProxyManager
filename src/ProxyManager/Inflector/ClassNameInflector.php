@@ -15,17 +15,10 @@ use function substr;
  */
 final class ClassNameInflector implements ClassNameInflectorInterface
 {
-    /** @var string */
-    protected $proxyNamespace;
-
-    /** @var int */
-    private $proxyMarkerLength;
-
-    /** @var string */
-    private $proxyMarker;
-
-    /** @var ParameterHasher */
-    private $parameterHasher;
+    protected string $proxyNamespace;
+    private int $proxyMarkerLength;
+    private string $proxyMarker;
+    private ParameterHasher $parameterHasher;
 
     public function __construct(string $proxyNamespace)
     {

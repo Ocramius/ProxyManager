@@ -13,19 +13,14 @@ use function array_key_exists;
  */
 abstract class BaseAdapter implements AdapterInterface
 {
-    /**
-     * Adapter client
-     *
-     * @var Client
-     */
-    protected $client;
+    protected Client $client;
 
     /**
      * Service name mapping
      *
      * @var string[]
      */
-    protected $map = [];
+    protected array $map = [];
 
     /**
      * Constructor

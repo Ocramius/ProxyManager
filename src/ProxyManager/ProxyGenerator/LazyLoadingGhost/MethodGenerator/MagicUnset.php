@@ -21,8 +21,7 @@ use function sprintf;
  */
 class MagicUnset extends MagicMethodGenerator
 {
-    /** @var string */
-    private $callParentTemplate = <<<'PHP'
+    private string $callParentTemplate = <<<'PHP'
 %s
 
 if (isset(self::$%s[$name])) {

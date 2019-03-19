@@ -21,8 +21,8 @@ use function array_values;
  */
 final class Properties
 {
-    /** @var array|ReflectionProperty[] */
-    private $properties;
+    /** @var ReflectionProperty[] */
+    private array $properties;
 
     /**
      * @param ReflectionProperty[] $properties
