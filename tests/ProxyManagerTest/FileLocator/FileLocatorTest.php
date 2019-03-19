@@ -14,7 +14,7 @@ use const DIRECTORY_SEPARATOR;
  *
  * @group Coverage
  */
-class FileLocatorTest extends TestCase
+final class FileLocatorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\FileLocator\FileLocator::__construct

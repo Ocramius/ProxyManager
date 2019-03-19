@@ -19,7 +19,7 @@ use function strpos;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod::generateMethod
  * @group Coverage
  */
-class InterceptedMethodTest extends TestCase
+final class InterceptedMethodTest extends TestCase
 {
     public function testBodyStructure() : void
     {

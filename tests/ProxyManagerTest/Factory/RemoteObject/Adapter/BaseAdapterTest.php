@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class BaseAdapterTest extends TestCase
+final class BaseAdapterTest extends TestCase
 {
     /**
      * {@inheritDoc}

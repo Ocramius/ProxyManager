@@ -25,7 +25,7 @@ use stdClass;
  *
  * @group Coverage
  */
-class RemoteObjectFactoryTest extends TestCase
+final class RemoteObjectFactoryTest extends TestCase
 {
     /** @var MockObject */
     protected $inflector;

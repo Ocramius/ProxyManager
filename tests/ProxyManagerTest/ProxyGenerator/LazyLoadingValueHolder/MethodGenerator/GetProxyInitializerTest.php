@@ -15,7 +15,7 @@ use Zend\Code\Generator\TypeGenerator;
  *
  * @group Coverage
  */
-class GetProxyInitializerTest extends TestCase
+final class GetProxyInitializerTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\GetProxyInitializer::__construct

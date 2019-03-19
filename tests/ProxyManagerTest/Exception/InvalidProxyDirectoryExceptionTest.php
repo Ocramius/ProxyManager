@@ -13,7 +13,7 @@ use ProxyManager\Exception\InvalidProxyDirectoryException;
  * @covers \ProxyManager\Exception\InvalidProxyDirectoryException
  * @group Coverage
  */
-class InvalidProxyDirectoryExceptionTest extends TestCase
+final class InvalidProxyDirectoryExceptionTest extends TestCase
 {
     /**
      * @covers \ProxyManager\Exception\InvalidProxyDirectoryException::proxyDirectoryNotFound

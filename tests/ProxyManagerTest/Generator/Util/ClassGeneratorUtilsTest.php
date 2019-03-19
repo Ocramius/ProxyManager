@@ -19,7 +19,7 @@ use Zend\Code\Generator\MethodGenerator;
  * @covers ProxyManager\Generator\Util\ClassGeneratorUtils
  * @group Coverage
  */
-class ClassGeneratorUtilsTest extends TestCase
+final class ClassGeneratorUtilsTest extends TestCase
 {
     public function testCantAddAFinalMethod() : void
     {

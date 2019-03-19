@@ -18,7 +18,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedPropertiesMap
  * @group Coverage
  */
-class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
+final class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
 {
     /**
      * {@inheritDoc}

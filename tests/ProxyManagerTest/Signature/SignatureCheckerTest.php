@@ -18,7 +18,7 @@ use ReflectionClass;
  * @covers \ProxyManager\Signature\SignatureChecker
  * @group Coverage
  */
-class SignatureCheckerTest extends TestCase
+final class SignatureCheckerTest extends TestCase
 {
     /** @var string */
     protected $signatureExample = 'valid-signature';

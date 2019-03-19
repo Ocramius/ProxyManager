@@ -25,7 +25,7 @@ use function get_class;
  *
  * @group Coverage
  */
-class LazyLoadingValueHolderFactoryTest extends TestCase
+final class LazyLoadingValueHolderFactoryTest extends TestCase
 {
     /** @var MockObject */
     protected $inflector;

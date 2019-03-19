@@ -22,7 +22,7 @@ use Zend\Code\Reflection\MethodReflection;
  * @covers \ProxyManager\Generator\MethodGenerator
  * @group Coverage
  */
-class MethodGeneratorTest extends TestCase
+final class MethodGeneratorTest extends TestCase
 {
     public function testGeneratedMethodsAreAllConcrete() : void
     {

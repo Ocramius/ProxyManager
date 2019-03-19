@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class XmlRpcTest extends TestCase
+final class XmlRpcTest extends TestCase
 {
     /**
      * {@inheritDoc}

@@ -15,7 +15,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator
  * @group Coverage
  */
-class PublicScopeSimulatorTest extends TestCase
+final class PublicScopeSimulatorTest extends TestCase
 {
     public function testSimpleGet() : void
     {

@@ -20,7 +20,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @group Coverage
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Util\InterceptorGenerator
  */
-class InterceptorGeneratorTest extends TestCase
+final class InterceptorGeneratorTest extends TestCase
 {
     public function testInterceptorGenerator() : void
     {

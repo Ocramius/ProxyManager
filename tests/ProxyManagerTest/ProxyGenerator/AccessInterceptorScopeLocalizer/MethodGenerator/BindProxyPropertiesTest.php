@@ -20,7 +20,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\BindProxyProperties
  * @group Coverage
  */
-class BindProxyPropertiesTest extends TestCase
+final class BindProxyPropertiesTest extends TestCase
 {
     /** @var PropertyGenerator|MockObject */
     private $prefixInterceptors;

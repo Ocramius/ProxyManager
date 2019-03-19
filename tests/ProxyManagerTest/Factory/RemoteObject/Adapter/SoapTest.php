@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class SoapTest extends TestCase
+final class SoapTest extends TestCase
 {
     /**
      * {@inheritDoc}

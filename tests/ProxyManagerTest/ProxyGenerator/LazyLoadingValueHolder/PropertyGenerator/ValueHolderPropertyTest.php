@@ -15,7 +15,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty
  * @group Coverage
  */
-class ValueHolderPropertyTest extends AbstractUniquePropertyNameTest
+final class ValueHolderPropertyTest extends AbstractUniquePropertyNameTest
 {
     /**
      * {@inheritDoc}

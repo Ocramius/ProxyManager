@@ -16,7 +16,7 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @group Coverage
  */
-class LazyLoadingMethodInterceptorTest extends TestCase
+final class LazyLoadingMethodInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor

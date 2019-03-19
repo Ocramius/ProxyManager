@@ -23,7 +23,7 @@ use stdClass;
  *
  * @group Coverage
  */
-class NullObjectFactoryTest extends TestCase
+final class NullObjectFactoryTest extends TestCase
 {
     /** @var MockObject */
     protected $inflector;

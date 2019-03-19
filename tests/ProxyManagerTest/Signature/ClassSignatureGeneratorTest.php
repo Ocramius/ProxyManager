@@ -17,7 +17,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\Signature\ClassSignatureGenerator
  * @group Coverage
  */
-class ClassSignatureGeneratorTest extends TestCase
+final class ClassSignatureGeneratorTest extends TestCase
 {
     /** @var SignatureGeneratorInterface|MockObject */
     private $signatureGenerator;

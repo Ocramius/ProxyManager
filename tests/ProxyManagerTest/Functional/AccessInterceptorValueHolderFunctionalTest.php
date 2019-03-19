@@ -44,7 +44,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class AccessInterceptorValueHolderFunctionalTest extends TestCase
+final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params

@@ -43,7 +43,7 @@ use function get_class;
  * @group issue-10
  * @coversNothing
  */
-class MultipleProxyGenerationTest extends TestCase
+final class MultipleProxyGenerationTest extends TestCase
 {
     /**
      * Verifies that proxies generated from different factories will retain their specific implementation

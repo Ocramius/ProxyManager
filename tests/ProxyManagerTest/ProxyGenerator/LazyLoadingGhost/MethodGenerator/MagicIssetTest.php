@@ -21,7 +21,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicIssetTest extends TestCase
+final class MagicIssetTest extends TestCase
 {
     /** @var PropertyGenerator|MockObject */
     protected $initializer;

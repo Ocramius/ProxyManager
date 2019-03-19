@@ -21,7 +21,7 @@ use function class_exists;
  *
  * @BeforeMethods({"setUp"})
  */
-class LazyLoadingValueHolderInstantiationBench
+final class LazyLoadingValueHolderInstantiationBench
 {
     /** @var string */
     private $emptyClassProxy;

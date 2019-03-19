@@ -25,7 +25,7 @@ use stdClass;
  *
  * @group Coverage
  */
-class AccessInterceptorValueHolderFactoryTest extends TestCase
+final class AccessInterceptorValueHolderFactoryTest extends TestCase
 {
     /** @var MockObject */
     protected $inflector;

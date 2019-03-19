@@ -53,7 +53,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class LazyLoadingGhostFunctionalTest extends TestCase
+final class LazyLoadingGhostFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params

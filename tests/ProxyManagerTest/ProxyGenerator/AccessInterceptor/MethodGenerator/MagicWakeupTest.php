@@ -17,7 +17,7 @@ use ReflectionClass;
  * @group Coverage
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\MagicWakeup
  */
-class MagicWakeupTest extends TestCase
+final class MagicWakeupTest extends TestCase
 {
     public function testBodyStructure() : void
     {

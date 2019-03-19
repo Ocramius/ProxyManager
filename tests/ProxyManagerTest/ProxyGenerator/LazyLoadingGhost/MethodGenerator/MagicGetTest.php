@@ -22,7 +22,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicGetTest extends TestCase
+final class MagicGetTest extends TestCase
 {
     /** @var PropertyGenerator|MockObject */
     protected $initializer;

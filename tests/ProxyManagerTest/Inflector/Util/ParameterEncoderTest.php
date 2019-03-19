@@ -12,7 +12,7 @@ use ProxyManager\Inflector\Util\ParameterEncoder;
  *
  * @group Coverage
  */
-class ParameterEncoderTest extends TestCase
+final class ParameterEncoderTest extends TestCase
 {
     /**
      * @param mixed[] $parameters

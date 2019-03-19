@@ -24,7 +24,7 @@ use function array_values;
  * @covers \ProxyManager\ProxyGenerator\Util\Properties
  * @group Coverage
  */
-class PropertiesTest extends TestCase
+final class PropertiesTest extends TestCase
 {
     public function testGetPublicProperties() : void
     {

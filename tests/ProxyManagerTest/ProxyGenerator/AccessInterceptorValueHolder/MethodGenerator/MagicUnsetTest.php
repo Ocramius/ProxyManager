@@ -18,7 +18,7 @@ use function strpos;
  *
  * @group Coverage
  */
-class MagicUnsetTest extends TestCase
+final class MagicUnsetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset::__construct

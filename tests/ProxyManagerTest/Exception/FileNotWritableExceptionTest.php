@@ -13,7 +13,7 @@ use ProxyManager\Exception\FileNotWritableException;
  * @covers \ProxyManager\Exception\FileNotWritableException
  * @group Coverage
  */
-class FileNotWritableExceptionTest extends TestCase
+final class FileNotWritableExceptionTest extends TestCase
 {
     public function testFromInvalidMoveOperation() : void
     {

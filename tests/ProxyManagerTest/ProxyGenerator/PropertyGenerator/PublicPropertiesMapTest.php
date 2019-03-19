@@ -18,7 +18,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap
  * @group Coverage
  */
-class PublicPropertiesMapTest extends TestCase
+final class PublicPropertiesMapTest extends TestCase
 {
     public function testEmptyClass() : void
     {

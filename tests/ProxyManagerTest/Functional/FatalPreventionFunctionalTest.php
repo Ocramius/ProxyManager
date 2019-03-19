@@ -34,7 +34,7 @@ use function uniqid;
  * @group Functional
  * @coversNothing
  */
-class FatalPreventionFunctionalTest extends TestCase
+final class FatalPreventionFunctionalTest extends TestCase
 {
     /**
      * Verifies that code generation and evaluation will not cause fatals with any given class

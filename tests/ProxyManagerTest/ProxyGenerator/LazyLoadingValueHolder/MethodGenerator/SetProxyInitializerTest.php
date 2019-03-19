@@ -16,7 +16,7 @@ use function array_shift;
  *
  * @group Coverage
  */
-class SetProxyInitializerTest extends TestCase
+final class SetProxyInitializerTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer::__construct

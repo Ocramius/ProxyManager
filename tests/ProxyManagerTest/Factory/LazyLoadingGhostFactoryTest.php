@@ -23,7 +23,7 @@ use ProxyManagerTestAsset\LazyLoadingMock;
  *
  * @group Coverage
  */
-class LazyLoadingGhostFactoryTest extends TestCase
+final class LazyLoadingGhostFactoryTest extends TestCase
 {
     /** @var MockObject */
     protected $inflector;

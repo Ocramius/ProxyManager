@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
-class StaticProxyConstructorTest extends TestCase
+final class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {

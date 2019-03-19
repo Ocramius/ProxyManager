@@ -19,7 +19,7 @@ use ProxyManager\Signature\SignatureGeneratorInterface;
  *
  * @group Coverage
  */
-class ConfigurationTest extends TestCase
+final class ConfigurationTest extends TestCase
 {
     /** @var Configuration */
     protected $configuration;

@@ -19,7 +19,7 @@ use ReflectionClass;
  * @covers \ProxyManager\Exception\InvalidProxiedClassException
  * @group Coverage
  */
-class InvalidProxiedClassExceptionTest extends TestCase
+final class InvalidProxiedClassExceptionTest extends TestCase
 {
     public function testInterfaceNotSupported() : void
     {

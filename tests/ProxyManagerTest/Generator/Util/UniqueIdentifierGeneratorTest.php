@@ -14,7 +14,7 @@ use function strlen;
  * @group Coverage
  * @covers \ProxyManager\Generator\Util\UniqueIdentifierGenerator
  */
-class UniqueIdentifierGeneratorTest extends TestCase
+final class UniqueIdentifierGeneratorTest extends TestCase
 {
     /**
      * @dataProvider getBaseIdentifierNames

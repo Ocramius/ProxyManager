@@ -21,7 +21,7 @@ use function class_exists;
  *
  * @BeforeMethods({"setUp"})
  */
-class LazyLoadingValueHolderPropertyAccessBench
+final class LazyLoadingValueHolderPropertyAccessBench
 {
     /** @var EmptyClass&VirtualProxyInterface */
     private $emptyClassProxy;

@@ -43,7 +43,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
+final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params

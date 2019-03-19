@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @group Coverage
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicSet
  */
-class MagicSetTest extends TestCase
+final class MagicSetTest extends TestCase
 {
     public function testBodyStructure() : void
     {

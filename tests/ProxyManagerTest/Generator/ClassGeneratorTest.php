@@ -14,7 +14,7 @@ use stdClass;
  *
  * @group Coverage
  */
-class ClassGeneratorTest extends TestCase
+final class ClassGeneratorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\Generator\ClassGenerator::setExtendedClass

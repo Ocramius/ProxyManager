@@ -36,7 +36,7 @@ use function uniqid;
  *
  * Note: this test generates temporary files that are not deleted
  */
-class FileWriterGeneratorStrategyTest extends TestCase
+final class FileWriterGeneratorStrategyTest extends TestCase
 {
     /** @var string */
     private $tempDir;

@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class JsonRpcTest extends TestCase
+final class JsonRpcTest extends TestCase
 {
     /**
      * {@inheritDoc}

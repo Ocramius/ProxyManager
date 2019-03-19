@@ -16,7 +16,7 @@ use ReflectionProperty;
  *
  * @BeforeMethods({"setUp"})
  */
-class BaselinePropertyAccessBench
+final class BaselinePropertyAccessBench
 {
     /** @var ClassWithPrivateProperties */
     private $privateProperties;

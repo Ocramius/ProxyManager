@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @group Coverage
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicUnset
  */
-class MagicUnsetTest extends TestCase
+final class MagicUnsetTest extends TestCase
 {
     public function testBodyStructure() : void
     {

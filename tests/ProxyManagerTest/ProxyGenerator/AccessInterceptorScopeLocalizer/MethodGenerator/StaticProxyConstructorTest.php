@@ -18,7 +18,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
-class StaticProxyConstructorTest extends TestCase
+final class StaticProxyConstructorTest extends TestCase
 {
     /** @var PropertyGenerator|MockObject */
     private $prefixInterceptors;

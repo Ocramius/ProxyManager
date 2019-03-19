@@ -14,7 +14,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors
  * @group Coverage
  */
-class MethodPrefixInterceptorsTest extends AbstractUniquePropertyNameTest
+final class MethodPrefixInterceptorsTest extends AbstractUniquePropertyNameTest
 {
     /**
      * {@inheritDoc}

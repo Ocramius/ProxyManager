@@ -24,7 +24,7 @@ use function class_exists;
  *
  * @BeforeMethods({"setUp"})
  */
-class LazyLoadingGhostPropertyAccessBench
+final class LazyLoadingGhostPropertyAccessBench
 {
     /** @var EmptyClass&LazyLoadingInterface */
     private $emptyClassProxy;

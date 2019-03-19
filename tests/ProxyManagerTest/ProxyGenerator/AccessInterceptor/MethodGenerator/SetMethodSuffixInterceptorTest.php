@@ -15,7 +15,7 @@ use Zend\Code\Generator\TypeGenerator;
  *
  * @group Coverage
  */
-class SetMethodSuffixInterceptorTest extends TestCase
+final class SetMethodSuffixInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor::__construct

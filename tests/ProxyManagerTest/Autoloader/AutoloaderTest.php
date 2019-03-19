@@ -24,7 +24,7 @@ use function uniqid;
  * @covers \ProxyManager\Autoloader\Autoloader
  * @group Coverage
  */
-class AutoloaderTest extends TestCase
+final class AutoloaderTest extends TestCase
 {
     /** @var Autoloader */
     protected $autoloader;

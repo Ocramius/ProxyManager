@@ -45,7 +45,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class LazyLoadingValueHolderFunctionalTest extends TestCase
+final class LazyLoadingValueHolderFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params

@@ -35,7 +35,7 @@ use function uniqid;
  * @group Functional
  * @coversNothing
  */
-class RemoteObjectFunctionalTest extends TestCase
+final class RemoteObjectFunctionalTest extends TestCase
 {
     /**
      * @param mixed   $expectedValue

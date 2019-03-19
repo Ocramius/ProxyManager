@@ -20,7 +20,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor
  * @group Coverage
  */
-class ConstructorTest extends TestCase
+final class ConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {

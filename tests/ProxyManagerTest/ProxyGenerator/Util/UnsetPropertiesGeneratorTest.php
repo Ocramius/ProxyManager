@@ -20,7 +20,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator
  * @group Coverage
  */
-class UnsetPropertiesGeneratorTest extends TestCase
+final class UnsetPropertiesGeneratorTest extends TestCase
 {
     /**
      * @dataProvider classNamesProvider

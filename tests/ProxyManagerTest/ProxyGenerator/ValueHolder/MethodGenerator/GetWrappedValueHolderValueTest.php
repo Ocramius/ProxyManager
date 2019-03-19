@@ -15,7 +15,7 @@ use Zend\Code\Generator\TypeGenerator;
  *
  * @group Coverage
  */
-class GetWrappedValueHolderValueTest extends TestCase
+final class GetWrappedValueHolderValueTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue::__construct

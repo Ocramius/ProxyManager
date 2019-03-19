@@ -18,7 +18,7 @@ use function substr;
  * @group Coverage
  * @covers \ProxyManager\Generator\Util\IdentifierSuffixer
  */
-class IdentifierSuffixerTest extends TestCase
+final class IdentifierSuffixerTest extends TestCase
 {
     /**
      * @dataProvider getBaseIdentifierNames

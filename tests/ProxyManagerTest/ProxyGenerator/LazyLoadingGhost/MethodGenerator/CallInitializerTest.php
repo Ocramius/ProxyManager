@@ -19,7 +19,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @group Coverage
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
  */
-class CallInitializerTest extends TestCase
+final class CallInitializerTest extends TestCase
 {
     public function testBodyStructure() : void
     {
