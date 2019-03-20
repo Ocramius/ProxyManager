@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace ProxyManager\Generator;
 
 use ReflectionClass;
+use ReflectionMethod;
+use ReflectionParameter;
+use Zend\Code\Generator\ParameterGenerator;
 use function strtolower;
 
 /**
@@ -29,6 +32,38 @@ class MagicMethodGenerator extends MethodGenerator
             return;
         }
 
-        $this->setReturnsReference($originalClass->getMethod($name)->returnsReference());
+        $this->mirrorParentMethodSignature($originalClass->getMethod($name));
+    }
+
+    private function mirrorParentMethodSignature(ReflectionMethod $parentMethod) : void
+    {
+        $returnType = $parentMethod->getReturnType();
+
+        if ($returnType !== null) {
+            $this->setReturnType(($returnType->allowsNull() ? '?' : '') . $returnType->getName());
+        }
+
+        $this->setReturnsReference($parentMethod->returnsReference());
+
+        foreach (array_values($parentMethod->getParameters()) as $index => $parentParameter) {
+            $this->mirrorParentMethodParameterType($parentParameter, array_values($this->parameters)[$index]);
+        }
+    }
+
+    private function mirrorParentMethodParameterType(
+        ReflectionParameter $parentParameter,
+        ParameterGenerator $parameter
+    ) : void {
+        $parameter->setVariadic($parentParameter->isVariadic());
+
+        $type = $parentParameter->getType();
+
+        if ($type !== null) {
+            $parameter->setType(($type->allowsNull() ? '?' : '') . $type->getName());
+        }
+
+        if ($parentParameter->isDefaultValueAvailable()) {
+            $parameter->setDefaultValue($parentParameter->getDefaultValue());
+        }
     }
 }
