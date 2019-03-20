@@ -9,8 +9,8 @@ use ProxyManager\Proxy\GhostObjectInterface;
 
 class User
 {
-    private $id;
-    private $username;
+    private ?int $id = null;
+    private ?string $username = null;
 
     public function getId() : int
     {

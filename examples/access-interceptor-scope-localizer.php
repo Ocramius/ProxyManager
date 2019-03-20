@@ -13,7 +13,7 @@ use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 
 class FluentCounter
 {
-    public $counter = 0;
+    public int $counter = 0;
 
     public function fluentMethod() : self
     {

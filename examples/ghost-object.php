@@ -9,7 +9,7 @@ use ProxyManager\Proxy\GhostObjectInterface;
 
 class Foo
 {
-    private $foo = '';
+    private string $foo = '';
 
     public function __construct()
     {
