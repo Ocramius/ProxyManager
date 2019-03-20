@@ -16,6 +16,7 @@ use function substr;
 final class ClassNameInflector implements ClassNameInflectorInterface
 {
     protected string $proxyNamespace;
+    /** @var int @TODO annotation still needed for phpstan to understand this */
     private int $proxyMarkerLength;
     private string $proxyMarker;
     private ParameterHasher $parameterHasher;
