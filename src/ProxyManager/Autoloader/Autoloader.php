@@ -14,11 +14,8 @@ use function file_exists;
  */
 class Autoloader implements AutoloaderInterface
 {
-    /** @var FileLocatorInterface */
-    protected $fileLocator;
-
-    /** @var ClassNameInflectorInterface */
-    protected $classNameInflector;
+    protected FileLocatorInterface $fileLocator;
+    protected ClassNameInflectorInterface $classNameInflector;
 
     public function __construct(FileLocatorInterface $fileLocator, ClassNameInflectorInterface $classNameInflector)
     {

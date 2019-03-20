@@ -19,13 +19,13 @@ use Zend\Code\Reflection\MethodReflection;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod
  * @group Coverage
  */
-class InterceptedMethodTest extends TestCase
+final class InterceptedMethodTest extends TestCase
 {
-    /** @var PropertyGenerator|MockObject */
-    private $prefixInterceptors;
+    /** @var PropertyGenerator&MockObject */
+    private PropertyGenerator $prefixInterceptors;
 
-    /** @var PropertyGenerator|MockObject */
-    private $suffixInterceptors;
+    /** @var PropertyGenerator&MockObject */
+    private PropertyGenerator $suffixInterceptors;
 
     /**
      * {@inheritDoc}

@@ -12,7 +12,7 @@ use ProxyManager\Inflector\Util\ParameterHasher;
  *
  * @group Coverage
  */
-class ParameterHasherTest extends TestCase
+final class ParameterHasherTest extends TestCase
 {
     /**
      * @param mixed[] $parameters

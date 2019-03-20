@@ -13,7 +13,7 @@ use ProxyManager\Version;
  * @covers \ProxyManager\Version
  * @group Coverage
  */
-class VersionTest extends TestCase
+final class VersionTest extends TestCase
 {
     public static function testGetVersion() : void
     {

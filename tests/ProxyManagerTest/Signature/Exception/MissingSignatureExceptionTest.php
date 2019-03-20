@@ -14,7 +14,7 @@ use ReflectionClass;
  * @covers \ProxyManager\Signature\Exception\MissingSignatureException
  * @group Coverage
  */
-class MissingSignatureExceptionTest extends TestCase
+final class MissingSignatureExceptionTest extends TestCase
 {
     public function testFromMissingSignature() : void
     {

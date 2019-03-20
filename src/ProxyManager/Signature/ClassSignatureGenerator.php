@@ -13,8 +13,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 final class ClassSignatureGenerator implements ClassSignatureGeneratorInterface
 {
-    /** @var SignatureGeneratorInterface */
-    private $signatureGenerator;
+    private SignatureGeneratorInterface $signatureGenerator;
 
     public function __construct(SignatureGeneratorInterface $signatureGenerator)
     {

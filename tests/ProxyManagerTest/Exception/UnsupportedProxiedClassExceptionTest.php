@@ -18,7 +18,7 @@ use ReflectionProperty;
  * @covers \ProxyManager\Exception\UnsupportedProxiedClassException
  * @group Coverage
  */
-class UnsupportedProxiedClassExceptionTest extends TestCase
+final class UnsupportedProxiedClassExceptionTest extends TestCase
 {
     public function testUnsupportedLocalizedReflectionProperty() : void
     {

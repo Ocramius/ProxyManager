@@ -17,7 +17,7 @@ use ReflectionClass;
  * @group Coverage
  * @covers \ProxyManager\Generator\MagicMethodGenerator
  */
-class MagicMethodGeneratorTest extends TestCase
+final class MagicMethodGeneratorTest extends TestCase
 {
     public function testGeneratesCorrectByRefReturnValue() : void
     {

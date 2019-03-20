@@ -17,14 +17,14 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @group Coverage
  */
-class RemoteObjectMethodTest extends TestCase
+final class RemoteObjectMethodTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
     public function testBodyStructureWithParameters() : void
     {
-        /** @var PropertyGenerator|MockObject $adapter */
+        /** @var PropertyGenerator&MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
 
@@ -54,7 +54,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithArrayParameter() : void
     {
-        /** @var PropertyGenerator|MockObject $adapter */
+        /** @var PropertyGenerator&MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
 
@@ -81,7 +81,7 @@ class RemoteObjectMethodTest extends TestCase
      */
     public function testBodyStructureWithoutParameters() : void
     {
-        /** @var PropertyGenerator|MockObject $adapter */
+        /** @var PropertyGenerator&MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
 

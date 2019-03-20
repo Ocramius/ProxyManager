@@ -45,7 +45,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class LazyLoadingValueHolderFunctionalTest extends TestCase
+final class LazyLoadingValueHolderFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
@@ -397,7 +397,8 @@ class LazyLoadingValueHolderFunctionalTest extends TestCase
             $initializerMatcher,
             $realInstance
         ) : void {
-            $initializer   = null;
+            $initializer = null;
+
             $wrappedObject = $realInstance;
 
             $initializerMatcher($proxy, $wrappedObject, $method, $params);

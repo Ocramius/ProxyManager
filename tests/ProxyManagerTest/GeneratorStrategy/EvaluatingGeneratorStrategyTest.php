@@ -18,7 +18,7 @@ use function uniqid;
  *
  * @group Coverage
  */
-class EvaluatingGeneratorStrategyTest extends TestCase
+final class EvaluatingGeneratorStrategyTest extends TestCase
 {
     /**
      * @covers \ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy::generate

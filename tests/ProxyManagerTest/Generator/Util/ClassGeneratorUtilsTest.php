@@ -19,13 +19,13 @@ use Zend\Code\Generator\MethodGenerator;
  * @covers ProxyManager\Generator\Util\ClassGeneratorUtils
  * @group Coverage
  */
-class ClassGeneratorUtilsTest extends TestCase
+final class ClassGeneratorUtilsTest extends TestCase
 {
     public function testCantAddAFinalMethod() : void
     {
-        /** @var ClassGenerator|MockObject $classGenerator */
+        /** @var ClassGenerator&MockObject $classGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);
-        /** @var MethodGenerator|MockObject $methodGenerator */
+        /** @var MethodGenerator&MockObject $methodGenerator */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator
@@ -44,9 +44,9 @@ class ClassGeneratorUtilsTest extends TestCase
 
     public function testCanAddANotFinalMethod() : void
     {
-        /** @var ClassGenerator|MockObject $classGenerator */
+        /** @var ClassGenerator&MockObject $classGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);
-        /** @var MethodGenerator|MockObject $methodGenerator */
+        /** @var MethodGenerator&MockObject $methodGenerator */
         $methodGenerator = $this->createMock(MethodGenerator::class);
 
         $methodGenerator

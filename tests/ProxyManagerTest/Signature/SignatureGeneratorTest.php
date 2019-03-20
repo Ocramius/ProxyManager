@@ -13,10 +13,9 @@ use ProxyManager\Signature\SignatureGenerator;
  * @covers \ProxyManager\Signature\SignatureGenerator
  * @group Coverage
  */
-class SignatureGeneratorTest extends TestCase
+final class SignatureGeneratorTest extends TestCase
 {
-    /** @var SignatureGenerator */
-    private $signatureGenerator;
+    private SignatureGenerator $signatureGenerator;
 
     /**
      * {@inheritDoc}

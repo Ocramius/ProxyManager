@@ -27,7 +27,7 @@ use ReflectionMethod;
  * @covers \ProxyManager\ProxyGenerator\NullObjectGenerator
  * @group Coverage
  */
-class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
+final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * @dataProvider getTestedImplementations

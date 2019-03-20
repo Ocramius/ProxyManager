@@ -24,43 +24,39 @@ use function class_exists;
  *
  * @BeforeMethods({"setUp"})
  */
-class LazyLoadingGhostPropertyAccessBench
+final class LazyLoadingGhostPropertyAccessBench
 {
     /** @var EmptyClass&LazyLoadingInterface */
-    private $emptyClassProxy;
+    private EmptyClass $emptyClassProxy;
 
     /** @var EmptyClass&LazyLoadingInterface */
-    private $initializedEmptyClassProxy;
+    private EmptyClass $initializedEmptyClassProxy;
 
     /** @var ClassWithPrivateProperties&LazyLoadingInterface */
-    private $privatePropertiesProxy;
+    private ClassWithPrivateProperties $privatePropertiesProxy;
 
     /** @var ClassWithPrivateProperties&LazyLoadingInterface */
-    private $initializedPrivatePropertiesProxy;
-
-    /** @var ReflectionProperty */
-    private $accessPrivateProperty;
+    private ClassWithPrivateProperties $initializedPrivatePropertiesProxy;
+    private ReflectionProperty $accessPrivateProperty;
 
     /** @var ClassWithProtectedProperties&LazyLoadingInterface */
-    private $protectedPropertiesProxy;
+    private ClassWithProtectedProperties $protectedPropertiesProxy;
 
     /** @var ClassWithProtectedProperties&LazyLoadingInterface */
-    private $initializedProtectedPropertiesProxy;
-
-    /** @var ReflectionProperty */
-    private $accessProtectedProperty;
+    private ClassWithProtectedProperties $initializedProtectedPropertiesProxy;
+    private ReflectionProperty $accessProtectedProperty;
 
     /** @var ClassWithPublicProperties&LazyLoadingInterface */
-    private $publicPropertiesProxy;
+    private ClassWithPublicProperties $publicPropertiesProxy;
 
     /** @var ClassWithPublicProperties&LazyLoadingInterface */
-    private $initializedPublicPropertiesProxy;
+    private ClassWithPublicProperties $initializedPublicPropertiesProxy;
 
     /** @var ClassWithMixedProperties&LazyLoadingInterface */
-    private $mixedPropertiesProxy;
+    private ClassWithMixedProperties $mixedPropertiesProxy;
 
     /** @var ClassWithMixedProperties&LazyLoadingInterface */
-    private $initializedMixedPropertiesProxy;
+    private ClassWithMixedProperties $initializedMixedPropertiesProxy;
 
     public function setUp() : void
     {

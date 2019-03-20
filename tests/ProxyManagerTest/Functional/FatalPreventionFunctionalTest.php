@@ -34,7 +34,7 @@ use function uniqid;
  * @group Functional
  * @coversNothing
  */
-class FatalPreventionFunctionalTest extends TestCase
+final class FatalPreventionFunctionalTest extends TestCase
 {
     /**
      * Verifies that code generation and evaluation will not cause fatals with any given class
@@ -113,7 +113,8 @@ class FatalPreventionFunctionalTest extends TestCase
             get_declared_classes(),
             static function ($className) use ($skippedPaths) : bool {
                 $reflectionClass = new ReflectionClass($className);
-                $fileName        = $reflectionClass->getFileName();
+
+                $fileName = $reflectionClass->getFileName();
 
                 if (! $fileName) {
                     return false;

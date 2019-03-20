@@ -14,8 +14,7 @@ use function str_replace;
  */
 class FileLocator implements FileLocatorInterface
 {
-    /** @var string */
-    protected $proxiesDirectory;
+    protected string $proxiesDirectory;
 
     /**
      * @throws InvalidProxyDirectoryException

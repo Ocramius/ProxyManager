@@ -16,7 +16,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicSetTest extends TestCase
+final class MagicSetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet::__construct
@@ -24,7 +24,7 @@ class MagicSetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|MockObject $adapter */
+        /** @var PropertyGenerator&MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('foo');
 

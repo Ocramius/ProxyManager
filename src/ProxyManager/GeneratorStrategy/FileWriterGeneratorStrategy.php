@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\GeneratorStrategy;
 
+use Closure;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use Zend\Code\Generator\ClassGenerator;
@@ -25,11 +26,8 @@ use function unlink;
  */
 class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
 {
-    /** @var FileLocatorInterface */
-    protected $fileLocator;
-
-    /** @var callable */
-    private $emptyErrorHandler;
+    protected FileLocatorInterface $fileLocator;
+    private Closure $emptyErrorHandler;
 
     public function __construct(FileLocatorInterface $fileLocator)
     {

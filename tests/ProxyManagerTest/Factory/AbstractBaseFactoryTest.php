@@ -27,32 +27,32 @@ use function class_exists;
  * @covers \ProxyManager\Factory\AbstractBaseFactory
  * @group Coverage
  */
-class AbstractBaseFactoryTest extends TestCase
+final class AbstractBaseFactoryTest extends TestCase
 {
     /**
      * Note: we mock the class in order to assert on the abstract method usage
      *
      * @var AbstractBaseFactory|MockObject
      */
-    private $factory;
+    private AbstractBaseFactory $factory;
 
-    /** @var ProxyGeneratorInterface|MockObject */
-    private $generator;
+    /** @var ProxyGeneratorInterface&MockObject */
+    private ProxyGeneratorInterface $generator;
 
-    /** @var ClassNameInflectorInterface|MockObject */
-    private $classNameInflector;
+    /** @var ClassNameInflectorInterface&MockObject */
+    private ClassNameInflectorInterface $classNameInflector;
 
-    /** @var GeneratorStrategyInterface|MockObject */
-    private $generatorStrategy;
+    /** @var GeneratorStrategyInterface&MockObject */
+    private GeneratorStrategyInterface $generatorStrategy;
 
-    /** @var AutoloaderInterface|MockObject */
-    private $proxyAutoloader;
+    /** @var AutoloaderInterface&MockObject */
+    private AutoloaderInterface $proxyAutoloader;
 
-    /** @var SignatureCheckerInterface|MockObject */
-    private $signatureChecker;
+    /** @var SignatureCheckerInterface&MockObject */
+    private SignatureCheckerInterface $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|MockObject */
-    private $classSignatureGenerator;
+    /** @var ClassSignatureGeneratorInterface&MockObject */
+    private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
     /**
      * {@inheritDoc}

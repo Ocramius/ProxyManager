@@ -43,7 +43,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
+final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
@@ -66,7 +66,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertIsCallable($callback);
         self::assertSame($expectedValue, $callback(...array_values($params)));
 
-        /** @var callable|MockObject $listener */
+        /** @var callable&MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -119,7 +119,7 @@ class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         self::assertIsCallable($callback);
 
-        /** @var callable|MockObject $listener */
+        /** @var callable&MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())

@@ -42,7 +42,7 @@ DOCBLOCK;
                 new ParameterGenerator('methodName'),
                 new ParameterGenerator('parameters', 'array'),
             ],
-            static::FLAG_PRIVATE,
+            self::FLAG_PRIVATE,
             null,
             $docBlock
         );

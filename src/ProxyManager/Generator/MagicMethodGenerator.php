@@ -20,7 +20,7 @@ class MagicMethodGenerator extends MethodGenerator
         parent::__construct(
             $name,
             $parameters,
-            static::FLAG_PUBLIC
+            self::FLAG_PUBLIC
         );
 
         $this->setReturnsReference(strtolower($name) === '__get');

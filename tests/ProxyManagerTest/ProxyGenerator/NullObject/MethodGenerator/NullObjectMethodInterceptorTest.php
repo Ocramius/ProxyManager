@@ -14,7 +14,7 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @group Coverage
  */
-class NullObjectMethodInterceptorTest extends TestCase
+final class NullObjectMethodInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor

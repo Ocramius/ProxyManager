@@ -23,19 +23,19 @@ use ProxyManagerTestAsset\LazyLoadingMock;
  *
  * @group Coverage
  */
-class LazyLoadingGhostFactoryTest extends TestCase
+final class LazyLoadingGhostFactoryTest extends TestCase
 {
-    /** @var MockObject */
-    protected $inflector;
+    /** @var ClassNameInflectorInterface&MockObject */
+    protected ClassNameInflectorInterface $inflector;
 
-    /** @var MockObject */
-    protected $signatureChecker;
+    /** @var SignatureCheckerInterface&MockObject */
+    protected SignatureCheckerInterface $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|MockObject */
-    private $classSignatureGenerator;
+    /** @var ClassSignatureGeneratorInterface&MockObject */
+    private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
-    /** @var Configuration|MockObject */
-    protected $config;
+    /** @var Configuration&MockObject */
+    protected Configuration $config;
 
     /**
      * {@inheritDoc}

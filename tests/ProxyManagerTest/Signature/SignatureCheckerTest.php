@@ -18,16 +18,13 @@ use ReflectionClass;
  * @covers \ProxyManager\Signature\SignatureChecker
  * @group Coverage
  */
-class SignatureCheckerTest extends TestCase
+final class SignatureCheckerTest extends TestCase
 {
-    /** @var string */
-    protected $signatureExample = 'valid-signature';
+    private string $signatureExample = 'valid-signature';
+    private SignatureChecker $signatureChecker;
 
-    /** @var SignatureChecker */
-    private $signatureChecker;
-
-    /** @var SignatureGeneratorInterface|MockObject */
-    private $signatureGenerator;
+    /** @var SignatureGeneratorInterface&MockObject */
+    private SignatureGeneratorInterface $signatureGenerator;
 
     /**
      * {@inheritDoc}

@@ -17,7 +17,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
-class StaticProxyConstructorTest extends TestCase
+final class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
@@ -65,6 +65,7 @@ return $instance;',
             $body
         );
     }
+
     public function testBodyStructureWithTypedProperties() : void
     {
         $constructor = new StaticProxyConstructor(new ReflectionClass(ClassWithMixedTypedProperties::class));

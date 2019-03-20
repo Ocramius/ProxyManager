@@ -15,14 +15,14 @@ use Zend\Code\Generator\TypeGenerator;
  *
  * @group Coverage
  */
-class GetProxyInitializerTest extends TestCase
+final class GetProxyInitializerTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\GetProxyInitializer::__construct
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $initializer */
+        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');

@@ -13,7 +13,7 @@ use ProxyManager\Exception\DisabledMethodException;
  * @covers \ProxyManager\Exception\DisabledMethodException
  * @group Coverage
  */
-class DisabledMethodExceptionTest extends TestCase
+final class DisabledMethodExceptionTest extends TestCase
 {
     /**
      * @covers \ProxyManager\Exception\DisabledMethodException::disabledMethod

@@ -14,7 +14,7 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
  * @group Coverage
  * @covers \ProxyManager\Inflector\ClassNameInflector
  */
-class ClassNameInflectorTest extends TestCase
+final class ClassNameInflectorTest extends TestCase
 {
     /** @dataProvider getClassNames */
     public function testInflector(string $realClassName, string $proxyClassName) : void

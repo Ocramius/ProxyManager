@@ -18,7 +18,7 @@ use function strpos;
  *
  * @group Coverage
  */
-class MagicUnsetTest extends TestCase
+final class MagicUnsetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicUnset::__construct
@@ -26,13 +26,13 @@ class MagicUnsetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $prefixInterceptors */
+        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $suffixInterceptors */
+        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap|MockObject $publicProperties */
+        /** @var PublicPropertiesMap&MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

@@ -25,19 +25,19 @@ use stdClass;
  *
  * @group Coverage
  */
-class RemoteObjectFactoryTest extends TestCase
+final class RemoteObjectFactoryTest extends TestCase
 {
-    /** @var MockObject */
-    protected $inflector;
+    /** @var ClassNameInflectorInterface&MockObject */
+    private ClassNameInflectorInterface $inflector;
 
-    /** @var MockObject */
-    protected $signatureChecker;
+    /** @var SignatureCheckerInterface&MockObject */
+    private SignatureCheckerInterface $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|MockObject */
-    private $classSignatureGenerator;
+    /** @var ClassSignatureGeneratorInterface&MockObject */
+    private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
-    /** @var Configuration|MockObject */
-    protected $config;
+    /** @var Configuration&MockObject */
+    private Configuration $config;
 
     /**
      * {@inheritDoc}
@@ -81,7 +81,7 @@ class RemoteObjectFactoryTest extends TestCase
             ->with(BaseInterface::class)
             ->willReturn(RemoteObjectMock::class);
 
-        /** @var AdapterInterface|MockObject $adapter */
+        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         /** @var stdClass|RemoteObjectMock $proxy */

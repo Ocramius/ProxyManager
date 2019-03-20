@@ -37,7 +37,7 @@ use ReflectionClass;
  * @covers \ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion
  * @group Coverage
  */
-class CanProxyAssertionTest extends TestCase
+final class CanProxyAssertionTest extends TestCase
 {
     public function testDeniesFinalClasses() : void
     {

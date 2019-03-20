@@ -15,14 +15,14 @@ use Zend\Code\Generator\TypeGenerator;
  *
  * @group Coverage
  */
-class GetWrappedValueHolderValueTest extends TestCase
+final class GetWrappedValueHolderValueTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue::__construct
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');

@@ -17,11 +17,11 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\StaticProxyConstructor
  * @group Coverage
  */
-class StaticProxyConstructorTest extends TestCase
+final class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $adapter */
+        /** @var PropertyGenerator&MockObject $adapter */
         $adapter = $this->createMock(PropertyGenerator::class);
 
         $adapter->method('getName')->willReturn('adapter');

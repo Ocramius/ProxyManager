@@ -19,15 +19,15 @@ use function strpos;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod::generateMethod
  * @group Coverage
  */
-class InterceptedMethodTest extends TestCase
+final class InterceptedMethodTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $prefixInterceptors */
+        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $suffixInterceptors */
+        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');

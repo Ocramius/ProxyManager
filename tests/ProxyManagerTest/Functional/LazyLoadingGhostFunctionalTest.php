@@ -53,7 +53,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class LazyLoadingGhostFunctionalTest extends TestCase
+final class LazyLoadingGhostFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
@@ -759,7 +759,8 @@ class LazyLoadingGhostFunctionalTest extends TestCase
             $initializerMatcher,
             $realInstance
         ) : bool {
-            $initializer     = null;
+            $initializer = null;
+
             $reflectionClass = new ReflectionClass($realInstance);
 
             foreach (Properties::fromReflectionClass($reflectionClass)->getInstanceProperties() as $property) {

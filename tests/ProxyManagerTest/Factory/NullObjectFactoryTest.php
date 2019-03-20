@@ -23,19 +23,19 @@ use stdClass;
  *
  * @group Coverage
  */
-class NullObjectFactoryTest extends TestCase
+final class NullObjectFactoryTest extends TestCase
 {
-    /** @var MockObject */
-    protected $inflector;
+    /** @var ClassNameInflectorInterface&MockObject */
+    private ClassNameInflectorInterface $inflector;
 
-    /** @var MockObject */
-    protected $signatureChecker;
+    /** @var SignatureCheckerInterface&MockObject */
+    private SignatureCheckerInterface $signatureChecker;
 
-    /** @var ClassSignatureGeneratorInterface|MockObject */
-    private $classSignatureGenerator;
+    /** @var ClassSignatureGeneratorInterface&MockObject */
+    private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
-    /** @var Configuration|MockObject */
-    protected $config;
+    /** @var Configuration&MockObject */
+    private Configuration $config;
 
     /**
      * {@inheritDoc}

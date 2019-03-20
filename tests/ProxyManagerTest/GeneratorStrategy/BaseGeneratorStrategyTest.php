@@ -15,7 +15,7 @@ use function strpos;
  *
  * @group Coverage
  */
-class BaseGeneratorStrategyTest extends TestCase
+final class BaseGeneratorStrategyTest extends TestCase
 {
     /**
      * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate

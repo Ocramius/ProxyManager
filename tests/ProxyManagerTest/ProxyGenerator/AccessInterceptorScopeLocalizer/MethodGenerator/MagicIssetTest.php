@@ -17,7 +17,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicIssetTest extends TestCase
+final class MagicIssetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicIsset::__construct
@@ -25,9 +25,9 @@ class MagicIssetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|MockObject $prefixInterceptors */
+        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $suffixInterceptors */
+        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->method('getName')->willReturn('pre');
@@ -50,9 +50,9 @@ class MagicIssetTest extends TestCase
     public function testBodyStructureWithInheritedMethod() : void
     {
         $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        /** @var PropertyGenerator|MockObject $prefixInterceptors */
+        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $suffixInterceptors */
+        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->method('getName')->willReturn('pre');

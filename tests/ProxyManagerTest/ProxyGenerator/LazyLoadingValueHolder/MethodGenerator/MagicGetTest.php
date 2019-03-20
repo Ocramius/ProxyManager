@@ -18,7 +18,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicGetTest extends TestCase
+final class MagicGetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet::__construct
@@ -26,11 +26,11 @@ class MagicGetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|MockObject $initializer */
+        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap|MockObject $publicProperties */
+        /** @var PublicPropertiesMap&MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()
@@ -61,11 +61,11 @@ class MagicGetTest extends TestCase
     public function testBodyStructureWithPreExistingGetMethod() : void
     {
         $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        /** @var PropertyGenerator|MockObject $initializer */
+        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap|MockObject $publicProperties */
+        /** @var PublicPropertiesMap&MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

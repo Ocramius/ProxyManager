@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class BaseAdapterTest extends TestCase
+final class BaseAdapterTest extends TestCase
 {
     /**
      * {@inheritDoc}
@@ -25,7 +25,7 @@ class BaseAdapterTest extends TestCase
      */
     public function testBaseAdapter() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this
             ->getMockBuilder(Client::class)
             ->setMethods(['call'])
@@ -60,7 +60,7 @@ class BaseAdapterTest extends TestCase
      */
     public function testBaseAdapterWithServiceMap() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this
             ->getMockBuilder(Client::class)
             ->setMethods(['call'])

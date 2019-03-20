@@ -14,8 +14,7 @@ use function array_key_exists;
  */
 final class SignatureChecker implements SignatureCheckerInterface
 {
-    /** @var SignatureGeneratorInterface */
-    private $signatureGenerator;
+    private SignatureGeneratorInterface $signatureGenerator;
 
     public function __construct(SignatureGeneratorInterface $signatureGenerator)
     {

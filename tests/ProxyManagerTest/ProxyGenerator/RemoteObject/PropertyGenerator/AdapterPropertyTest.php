@@ -14,7 +14,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty
  * @group Coverage
  */
-class AdapterPropertyTest extends AbstractUniquePropertyNameTest
+final class AdapterPropertyTest extends AbstractUniquePropertyNameTest
 {
     /**
      * {@inheritDoc}

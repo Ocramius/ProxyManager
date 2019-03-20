@@ -19,7 +19,7 @@ use function unlink;
 class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
 {
     /** @var bool flag indicating whether {@see eval} can be used */
-    private $canEval = true;
+    private bool $canEval = true;
 
     /**
      * Constructor

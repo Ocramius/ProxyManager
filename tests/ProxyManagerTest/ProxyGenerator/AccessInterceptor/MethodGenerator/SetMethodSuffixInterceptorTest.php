@@ -15,14 +15,14 @@ use Zend\Code\Generator\TypeGenerator;
  *
  * @group Coverage
  */
-class SetMethodSuffixInterceptorTest extends TestCase
+final class SetMethodSuffixInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffixInterceptor::__construct
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $suffix */
+        /** @var PropertyGenerator&MockObject $suffix */
         $suffix = $this->createMock(PropertyGenerator::class);
 
         $suffix->expects(self::once())->method('getName')->willReturn('foo');

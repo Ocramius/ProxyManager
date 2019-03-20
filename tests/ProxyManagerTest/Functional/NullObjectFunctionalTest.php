@@ -32,7 +32,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class NullObjectFunctionalTest extends TestCase
+final class NullObjectFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params

@@ -14,7 +14,7 @@ use Zend\Code\Generator\PropertyGenerator;
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker
  * @group Coverage
  */
-class InitializationTrackerTest extends AbstractUniquePropertyNameTest
+final class InitializationTrackerTest extends AbstractUniquePropertyNameTest
 {
     /**
      * {@inheritDoc}

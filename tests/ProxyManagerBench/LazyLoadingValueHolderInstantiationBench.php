@@ -21,22 +21,13 @@ use function class_exists;
  *
  * @BeforeMethods({"setUp"})
  */
-class LazyLoadingValueHolderInstantiationBench
+final class LazyLoadingValueHolderInstantiationBench
 {
-    /** @var string */
-    private $emptyClassProxy;
-
-    /** @var string */
-    private $privatePropertiesProxy;
-
-    /** @var string */
-    private $protectedPropertiesProxy;
-
-    /** @var string */
-    private $publicPropertiesProxy;
-
-    /** @var string */
-    private $mixedPropertiesProxy;
+    private string $emptyClassProxy;
+    private string $privatePropertiesProxy;
+    private string $protectedPropertiesProxy;
+    private string $publicPropertiesProxy;
+    private string $mixedPropertiesProxy;
 
     public function setUp() : void
     {

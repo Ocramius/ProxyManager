@@ -19,7 +19,7 @@ use Zend\Code\Generator\ClassGenerator;
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator
  * @group Coverage
  */
-class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
+final class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * @dataProvider getTestedImplementations

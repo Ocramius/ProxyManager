@@ -14,7 +14,7 @@ use ReflectionClass;
  * @covers \ProxyManager\Signature\Exception\InvalidSignatureException
  * @group Coverage
  */
-class InvalidSignatureExceptionTest extends TestCase
+final class InvalidSignatureExceptionTest extends TestCase
 {
     public function testFromInvalidSignature() : void
     {

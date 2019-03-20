@@ -16,16 +16,16 @@ use Zend\Code\Reflection\MethodReflection;
  *
  * @group Coverage
  */
-class LazyLoadingMethodInterceptorTest extends TestCase
+final class LazyLoadingMethodInterceptorTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $initializer */
+        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');
@@ -50,9 +50,9 @@ class LazyLoadingMethodInterceptorTest extends TestCase
     public function testBodyStructureWithoutParameters() : void
     {
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicMethod');
-        /** @var PropertyGenerator|MockObject $initializer */
+        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');

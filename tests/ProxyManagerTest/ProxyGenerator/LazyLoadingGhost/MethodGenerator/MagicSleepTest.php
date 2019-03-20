@@ -17,7 +17,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicSleepTest extends TestCase
+final class MagicSleepTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep::__construct
@@ -25,9 +25,9 @@ class MagicSleepTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|MockObject $initializer */
+        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var MethodGenerator|MockObject $initMethod */
+        /** @var MethodGenerator&MockObject $initMethod */
         $initMethod = $this->createMock(MethodGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');

@@ -44,7 +44,7 @@ use function unserialize;
  * @group Functional
  * @coversNothing
  */
-class AccessInterceptorValueHolderFunctionalTest extends TestCase
+final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
@@ -64,7 +64,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         self::assertSame($instance, $proxy->getWrappedValueHolderValue());
         self::assertSame($expectedValue, $callback(...array_values($params)));
 
-        /** @var callable|MockObject $listener */
+        /** @var callable&MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -115,7 +115,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         self::assertIsCallable($callback);
 
-        /** @var callable|MockObject $listener */
+        /** @var callable&MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
         $listener
             ->expects(self::once())
@@ -527,7 +527,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         /** @var AccessInterceptorValueHolderInterface $proxy */
         $proxy = $proxyName::staticProxyConstructor($realInstance);
 
-        /** @var callable|MockObject $listener */
+        /** @var callable&MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener
@@ -563,7 +563,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         /** @var AccessInterceptorValueHolderInterface $proxy */
         $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
 
-        /** @var callable|MockObject $listener */
+        /** @var callable&MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener
@@ -599,7 +599,7 @@ class AccessInterceptorValueHolderFunctionalTest extends TestCase
         /** @var AccessInterceptorValueHolderInterface $proxy */
         $proxy = clone $proxyName::staticProxyConstructor($realInstance);
 
-        /** @var callable|MockObject $listener */
+        /** @var callable&MockObject $listener */
         $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
 
         $listener

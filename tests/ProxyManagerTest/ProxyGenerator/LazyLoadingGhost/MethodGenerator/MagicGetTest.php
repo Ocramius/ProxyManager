@@ -22,28 +22,28 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicGetTest extends TestCase
+final class MagicGetTest extends TestCase
 {
-    /** @var PropertyGenerator|MockObject */
-    protected $initializer;
+    /** @var PropertyGenerator&MockObject */
+    private PropertyGenerator $initializer;
 
-    /** @var MethodGenerator|MockObject */
-    protected $initMethod;
+    /** @var MethodGenerator&MockObject */
+    private MethodGenerator $initMethod;
 
-    /** @var PublicPropertiesMap|MockObject */
-    protected $publicProperties;
+    /** @var PublicPropertiesMap&MockObject */
+    private PublicPropertiesMap $publicProperties;
 
-    /** @var ProtectedPropertiesMap|MockObject */
-    protected $protectedProperties;
+    /** @var ProtectedPropertiesMap&MockObject */
+    private ProtectedPropertiesMap $protectedProperties;
 
-    /** @var PrivatePropertiesMap|MockObject */
-    protected $privateProperties;
+    /** @var PrivatePropertiesMap&MockObject */
+    private PrivatePropertiesMap $privateProperties;
 
-    /** @var InitializationTracker|MockObject */
-    protected $initializationTracker;
+    /** @var InitializationTracker&MockObject */
+    private InitializationTracker $initializationTracker;
 
     /** @var string */
-    private $expectedCode = <<<'PHP'
+    private string $expectedCode = <<<'PHP'
 $this->foo && ! $this->init && $this->baz('__get', array('name' => $name));
 
 if (isset(self::$bar[$name])) {

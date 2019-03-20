@@ -14,14 +14,14 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class IsProxyInitializedTest extends TestCase
+final class IsProxyInitializedTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\IsProxyInitialized::__construct
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('bar');

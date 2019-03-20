@@ -20,7 +20,7 @@ use Zend\Code\Generator\ClassGenerator;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator
  * @group Coverage
  */
-class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
+final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTest
 {
     /**
      * @dataProvider getTestedImplementations

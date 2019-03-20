@@ -24,16 +24,15 @@ use function uniqid;
  * @covers \ProxyManager\Autoloader\Autoloader
  * @group Coverage
  */
-class AutoloaderTest extends TestCase
+final class AutoloaderTest extends TestCase
 {
-    /** @var Autoloader */
-    protected $autoloader;
+    private Autoloader $autoloader;
 
-    /** @var FileLocatorInterface|MockObject */
-    protected $fileLocator;
+    /** @var FileLocatorInterface&MockObject */
+    private FileLocatorInterface $fileLocator;
 
-    /** @var ClassNameInflectorInterface|MockObject */
-    protected $classNameInflector;
+    /** @var ClassNameInflectorInterface&MockObject */
+    private ClassNameInflectorInterface $classNameInflector;
 
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__construct

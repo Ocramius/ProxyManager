@@ -26,9 +26,9 @@ abstract class UniqueIdentifierGenerator
             '.',
             '',
             uniqid(
-                preg_match(static::VALID_IDENTIFIER_FORMAT, $name)
+                preg_match(self::VALID_IDENTIFIER_FORMAT, $name)
                 ? $name
-                : static::DEFAULT_IDENTIFIER,
+                : self::DEFAULT_IDENTIFIER,
                 true
             )
         );

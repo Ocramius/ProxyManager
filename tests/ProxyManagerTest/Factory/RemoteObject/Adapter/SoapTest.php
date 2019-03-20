@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class SoapTest extends TestCase
+final class SoapTest extends TestCase
 {
     /**
      * {@inheritDoc}
@@ -24,7 +24,7 @@ class SoapTest extends TestCase
      */
     public function testCanBuildAdapterWithSoapRpcClient() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new Soap($client);

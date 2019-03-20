@@ -33,7 +33,7 @@ class BindProxyProperties extends MethodGenerator
                 new ParameterGenerator('prefixInterceptors', 'array', []),
                 new ParameterGenerator('suffixInterceptors', 'array', []),
             ],
-            static::FLAG_PRIVATE,
+            self::FLAG_PRIVATE,
             null,
             "@override constructor to setup interceptors\n\n"
             . '@param \\' . $originalClass->getName() . " \$localizedObject\n"

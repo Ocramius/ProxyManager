@@ -15,22 +15,16 @@ use function substr;
  */
 final class ClassNameInflector implements ClassNameInflectorInterface
 {
-    /** @var string */
-    protected $proxyNamespace;
-
-    /** @var int */
-    private $proxyMarkerLength;
-
-    /** @var string */
-    private $proxyMarker;
-
-    /** @var ParameterHasher */
-    private $parameterHasher;
+    protected string $proxyNamespace;
+    /** @var int @TODO annotation still needed for phpstan to understand this */
+    private int $proxyMarkerLength;
+    private string $proxyMarker;
+    private ParameterHasher $parameterHasher;
 
     public function __construct(string $proxyNamespace)
     {
         $this->proxyNamespace    = $proxyNamespace;
-        $this->proxyMarker       = '\\' . static::PROXY_MARKER . '\\';
+        $this->proxyMarker       = '\\' . self::PROXY_MARKER . '\\';
         $this->proxyMarkerLength = strlen($this->proxyMarker);
         $this->parameterHasher   = new ParameterHasher();
     }

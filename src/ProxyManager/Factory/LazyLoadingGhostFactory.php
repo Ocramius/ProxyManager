@@ -6,6 +6,7 @@ namespace ProxyManager\Factory;
 
 use Closure;
 use OutOfBoundsException;
+use ProxyManager\Configuration;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -17,15 +18,21 @@ use ProxyManager\Signature\Exception\MissingSignatureException;
  */
 class LazyLoadingGhostFactory extends AbstractBaseFactory
 {
-    /** @var LazyLoadingGhostGenerator|null */
-    private $generator;
+    private LazyLoadingGhostGenerator $generator;
+
+    public function __construct(?Configuration $configuration = null)
+    {
+        parent::__construct($configuration);
+
+        $this->generator = new LazyLoadingGhostGenerator();
+    }
 
     /**
      * {@inheritDoc}
      */
     protected function getGenerator() : ProxyGeneratorInterface
     {
-        return $this->generator ?: $this->generator = new LazyLoadingGhostGenerator();
+        return $this->generator;
     }
 
     /**

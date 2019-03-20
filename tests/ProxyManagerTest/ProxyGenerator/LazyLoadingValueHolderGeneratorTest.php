@@ -14,7 +14,7 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
  * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator
  * @group Coverage
  */
-class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
+final class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * {@inheritDoc}

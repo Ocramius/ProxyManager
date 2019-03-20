@@ -29,7 +29,7 @@ use function sort;
  * @covers \ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter
  * @group Coverage
  */
-class ProxiedMethodsFilterTest extends TestCase
+final class ProxiedMethodsFilterTest extends TestCase
 {
     /**
      * @param string[]|null $excludes

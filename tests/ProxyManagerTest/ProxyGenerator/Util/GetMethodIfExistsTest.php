@@ -16,7 +16,7 @@ use function uniqid;
  * @covers \ProxyManager\ProxyGenerator\Util\GetMethodIfExists
  * @group Coverage
  */
-class GetMethodIfExistsTest extends TestCase
+final class GetMethodIfExistsTest extends TestCase
 {
     public function testGetExistingMethod() : void
     {

@@ -15,7 +15,7 @@ use ReflectionMethod;
  * @covers \ProxyManager\Generator\Util\ProxiedMethodReturnExpression
  * @group Coverage
  */
-class ProxiedMethodReturnExpressionTest extends TestCase
+final class ProxiedMethodReturnExpressionTest extends TestCase
 {
     /**
      * @dataProvider returnExpressionsProvider

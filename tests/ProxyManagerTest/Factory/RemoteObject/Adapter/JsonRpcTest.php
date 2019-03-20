@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class JsonRpcTest extends TestCase
+final class JsonRpcTest extends TestCase
 {
     /**
      * {@inheritDoc}
@@ -24,7 +24,7 @@ class JsonRpcTest extends TestCase
      */
     public function testCanBuildAdapterWithJsonRpcClient() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new JsonRpc($client);

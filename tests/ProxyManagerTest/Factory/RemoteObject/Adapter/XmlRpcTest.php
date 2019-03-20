@@ -14,7 +14,7 @@ use Zend\Server\Client;
  *
  * @group Coverage
  */
-class XmlRpcTest extends TestCase
+final class XmlRpcTest extends TestCase
 {
     /**
      * {@inheritDoc}
@@ -24,7 +24,7 @@ class XmlRpcTest extends TestCase
      */
     public function testCanBuildAdapterWithXmlRpcClient() : void
     {
-        /** @var Client|MockObject $client */
+        /** @var Client&MockObject $client */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new XmlRpc($client);

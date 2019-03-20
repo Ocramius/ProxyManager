@@ -17,7 +17,7 @@ use Zend\Code\Generator\PropertyGenerator;
  *
  * @group Coverage
  */
-class MagicIssetTest extends TestCase
+final class MagicIssetTest extends TestCase
 {
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicIsset::__construct
@@ -25,11 +25,11 @@ class MagicIssetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator|MockObject $initializer */
+        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator|MockObject $valueHolder */
+        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap|MockObject $publicProperties */
+        /** @var PublicPropertiesMap&MockObject $publicProperties */
         $publicProperties = $this
             ->getMockBuilder(PublicPropertiesMap::class)
             ->disableOriginalConstructor()

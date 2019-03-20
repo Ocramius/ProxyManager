@@ -16,31 +16,16 @@ use ReflectionProperty;
  *
  * @BeforeMethods({"setUp"})
  */
-class BaselinePropertyAccessBench
+final class BaselinePropertyAccessBench
 {
-    /** @var ClassWithPrivateProperties */
-    private $privateProperties;
-
-    /** @var ReflectionProperty */
-    private $accessPrivateProperty;
-
-    /** @var ClassWithProtectedProperties */
-    private $protectedProperties;
-
-    /** @var ReflectionProperty */
-    private $accessProtectedProperty;
-
-    /** @var ClassWithPublicProperties */
-    private $publicProperties;
-
-    /** @var ClassWithMixedProperties */
-    private $mixedProperties;
-
-    /** @var ReflectionProperty */
-    private $accessMixedPropertiesPrivate;
-
-    /** @var ReflectionProperty */
-    private $accessMixedPropertiesProtected;
+    private ClassWithPrivateProperties $privateProperties;
+    private ReflectionProperty $accessPrivateProperty;
+    private ClassWithProtectedProperties $protectedProperties;
+    private ReflectionProperty $accessProtectedProperty;
+    private ClassWithPublicProperties $publicProperties;
+    private ClassWithMixedProperties $mixedProperties;
+    private ReflectionProperty $accessMixedPropertiesPrivate;
+    private ReflectionProperty $accessMixedPropertiesProtected;
 
     public function setUp() : void
     {

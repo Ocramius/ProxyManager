@@ -21,25 +21,25 @@ use function class_exists;
  *
  * @BeforeMethods({"setUp"})
  */
-class LazyLoadingValueHolderPropertyAccessBench
+final class LazyLoadingValueHolderPropertyAccessBench
 {
     /** @var EmptyClass&VirtualProxyInterface */
-    private $emptyClassProxy;
+    private EmptyClass $emptyClassProxy;
 
     /** @var EmptyClass&VirtualProxyInterface */
-    private $initializedEmptyClassProxy;
+    private EmptyClass $initializedEmptyClassProxy;
 
     /** @var ClassWithPublicProperties&VirtualProxyInterface */
-    private $publicPropertiesProxy;
+    private ClassWithPublicProperties $publicPropertiesProxy;
 
     /** @var ClassWithPublicProperties&VirtualProxyInterface */
-    private $initializedPublicPropertiesProxy;
+    private ClassWithPublicProperties $initializedPublicPropertiesProxy;
 
     /** @var ClassWithMixedProperties&VirtualProxyInterface */
-    private $mixedPropertiesProxy;
+    private ClassWithMixedProperties $mixedPropertiesProxy;
 
     /** @var ClassWithMixedProperties&VirtualProxyInterface */
-    private $initializedMixedPropertiesProxy;
+    private ClassWithMixedProperties $initializedMixedPropertiesProxy;
 
     public function setUp() : void
     {
@@ -206,6 +206,7 @@ class LazyLoadingValueHolderPropertyAccessBench
                 & $initializer
             ) use ($originalClass) : bool {
                 $initializer = null;
+
                 $valueHolder = new $originalClass();
 
                 return true;

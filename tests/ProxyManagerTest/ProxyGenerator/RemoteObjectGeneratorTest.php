@@ -26,7 +26,7 @@ use function array_diff;
  * @covers \ProxyManager\ProxyGenerator\RemoteObjectGenerator
  * @group Coverage
  */
-class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
+final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
      * @dataProvider getTestedImplementations

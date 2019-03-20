@@ -16,7 +16,7 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
  * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator
  * @group Coverage
  */
-class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
+final class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
 {
     /**
      * {@inheritDoc}
