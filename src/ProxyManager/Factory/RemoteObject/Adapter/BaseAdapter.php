@@ -18,14 +18,14 @@ abstract class BaseAdapter implements AdapterInterface
     /**
      * Service name mapping
      *
-     * @var string[]
+     * @var array<string, string>
      */
     protected array $map = [];
 
     /**
      * Constructor
      *
-     * @param string[] $map map of service names to their aliases
+     * @param array<string, string> $map map of service names to their aliases
      */
     public function __construct(Client $client, array $map = [])
     {
@@ -36,7 +36,7 @@ abstract class BaseAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      *
-     * @param mixed[] $params
+     * @param array<int, string> $params
      */
     public function call(string $wrappedClass, string $method, array $params = [])
     {

@@ -16,7 +16,7 @@ class ParameterEncoder
      * Converts the given parameters into a set of characters that are safe to
      * use in a class name
      *
-     * @param mixed[] $parameters
+     * @param array<string, mixed> $parameters
      */
     public function encodeParameters(array $parameters) : string
     {

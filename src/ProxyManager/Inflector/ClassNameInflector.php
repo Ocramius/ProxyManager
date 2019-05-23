@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Inflector;
 
+use function is_int;
 use ProxyManager\Inflector\Util\ParameterHasher;
 use function ltrim;
 use function strlen;
@@ -37,14 +38,14 @@ final class ClassNameInflector implements ClassNameInflectorInterface
         $className = ltrim($className, '\\');
         $position  = strrpos($className, $this->proxyMarker);
 
-        if ($position === false) {
+        if (! is_int($position)) {
             return $className;
         }
 
         return substr(
             $className,
             $this->proxyMarkerLength + $position,
-            strrpos($className, '\\') - ($position + $this->proxyMarkerLength)
+            ((int) strrpos($className, '\\')) - ($position + $this->proxyMarkerLength)
         );
     }
 

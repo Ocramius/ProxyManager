@@ -73,6 +73,13 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      * @throws MissingSignatureException
      * @throws InvalidSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType
+     *
+     * @psalm-param class-string<RealObjectType> $className
+     * @psalm-param array{?skippedProperties: array<int, string>}
+     *
+     * @psalm-return RealObjectType&GhostObjectInterface
      */
     public function createProxy(
         string $className,

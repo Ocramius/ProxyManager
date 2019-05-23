@@ -24,7 +24,15 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
         $this->generator = new LazyLoadingValueHolderGenerator();
     }
 
-    /** @param mixed[] $proxyOptions */
+    /**
+     * @param array<string, mixed> $proxyOptions
+     *
+     * @psalm-template RealObjectType
+     *
+     * @psalm-param class-string<RealObjectType> $className
+     *
+     * @psalm-return RealObjectType&VirtualProxyInterface
+     */
     public function createProxy(
         string $className,
         Closure $initializer,

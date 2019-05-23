@@ -17,7 +17,7 @@ use function strtolower;
  */
 final class ProxiedMethodsFilter
 {
-    /** @var string[] */
+    /** @var array<int, string> */
     private static $defaultExcluded = [
         '__get',
         '__set',
@@ -30,7 +30,7 @@ final class ProxiedMethodsFilter
 
     /**
      * @param ReflectionClass $class    reflection class from which methods should be extracted
-     * @param string[]        $excluded methods to be ignored
+     * @param array<int, string>        $excluded methods to be ignored
      *
      * @return ReflectionMethod[]
      */
@@ -41,7 +41,7 @@ final class ProxiedMethodsFilter
 
     /**
      * @param ReflectionClass $class    reflection class from which methods should be extracted
-     * @param string[]        $excluded methods to be ignored
+     * @param array<int, string>        $excluded methods to be ignored
      *
      * @return ReflectionMethod[]
      */
@@ -51,9 +51,9 @@ final class ProxiedMethodsFilter
     }
 
     /**
-     * @param string[] $excluded
+     * @param array<int, string> $excluded
      *
-     * @return ReflectionMethod[]
+     * @return array<int, ReflectionMethod>
      */
     private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false) : array
     {

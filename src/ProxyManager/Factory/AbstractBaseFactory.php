@@ -25,7 +25,9 @@ abstract class AbstractBaseFactory
     /**
      * Cached checked class names
      *
-     * @var string[]
+     * @var array<string, string>
+     *
+     * @psalm-var array<string, class-string>
      */
     private array $checkedClasses = [];
 
@@ -37,11 +39,17 @@ abstract class AbstractBaseFactory
     /**
      * Generate a proxy from a class name
      *
-     * @param mixed[] $proxyOptions
+     * @param array<string, mixed> $proxyOptions
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType of object
+     *
+     * @psalm-param class-string<RealObjectType> $className
+     *
+     * @psalm-return class-string<RealObjectType>
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
@@ -82,7 +90,9 @@ abstract class AbstractBaseFactory
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
      *
      * @param string[] $proxyParameters
-     * @param mixed[]  $proxyOptions
+     * @param array<string, mixed>  $proxyOptions
+     *
+     * @psalm-param class-string $className
      */
     private function generateProxyClass(
         string $proxyClassName,

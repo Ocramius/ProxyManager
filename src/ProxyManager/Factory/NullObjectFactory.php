@@ -34,6 +34,12 @@ class NullObjectFactory extends AbstractBaseFactory
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType of object
+     *
+     * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
+     *
+     * @psalm-return RealObjectType&NullObjectInterface
      */
     public function createProxy($instanceOrClassName) : NullObjectInterface
     {

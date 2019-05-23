@@ -14,7 +14,7 @@ use Zend\Code\Generator\PropertyGenerator;
  */
 class PublicPropertiesMap extends PropertyGenerator
 {
-    /** @var bool[] */
+    /** @var array<string, bool> */
     private array $publicProperties = [];
 
     /**

@@ -21,7 +21,7 @@ use function is_object;
 class RemoteObjectFactory extends AbstractBaseFactory
 {
     protected AdapterInterface $adapter;
-    private RemoteObjectGenerator $generator;
+    private ?RemoteObjectGenerator $generator;
 
     /**
      * {@inheritDoc}
@@ -43,6 +43,12 @@ class RemoteObjectFactory extends AbstractBaseFactory
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType of object
+     *
+     * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
+     *
+     * @psalm-return RealObjectType&RemoteObjectInterface
      */
     public function createProxy($instanceOrClassName) : RemoteObjectInterface
     {
@@ -58,6 +64,6 @@ class RemoteObjectFactory extends AbstractBaseFactory
      */
     protected function getGenerator() : ProxyGeneratorInterface
     {
-        return $this->generator ?: $this->generator = new RemoteObjectGenerator();
+        return $this->generator ?? $this->generator = new RemoteObjectGenerator();
     }
 }

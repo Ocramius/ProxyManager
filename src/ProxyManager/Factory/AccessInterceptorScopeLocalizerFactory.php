@@ -30,14 +30,35 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
 
     /**
      * @param object    $instance           the object to be localized within the access interceptor
-     * @param Closure[] $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
+     * @param array<string, Closure> $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       before method logic is executed
-     * @param Closure[] $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
+     * @param array<string, Closure> $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       after method logic is executed
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType of object
+     *
+     * @psalm-param RealObjectType $instance
+     * @psalm-param array<string, callable (
+     *   RealObjectType&AccessInterceptorInterface=,
+     *   RealObjectType=,
+     *   string=
+     *   array<string, mixed>=,
+     *   & bool=
+     * ) : mixed> $prefixInterceptors
+     * @psalm-param array<string, callable (
+     *   RealObjectType&AccessInterceptorInterface=,
+     *   RealObjectType=,
+     *   string=
+     *   array<string, mixed>=,
+     *   mixed=,
+     *   & bool=
+     * ) : mixed> $suffixInterceptors
+     *
+     * @psalm-return RealObjectType&AccessInterceptorInterface
      */
     public function createProxy(
         object $instance,
