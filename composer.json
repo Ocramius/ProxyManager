@@ -39,7 +39,7 @@
         "phpstan/phpstan-phpunit":      "^0.11",
         "infection/infection":          "^0.12.2",
         "symfony/console":              "^4.2.4",
-        "vimeo/psalm": "^3.3"
+        "vimeo/psalm": "dev-master"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",

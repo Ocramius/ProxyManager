@@ -7,14 +7,14 @@ namespace ProxyManager\Proxy;
 /**
  * Value holder marker
  *
- * @psalm-template WrappedValueType of object
+ * @psalm-template WrappedValueHolderType of object
  */
 interface ValueHolderInterface extends ProxyInterface
 {
     /**
      * @return object|null the wrapped value
      *
-     * @psalm-return WrappedValueType|null
+     * @psalm-return WrappedValueHolderType|null
      */
     public function getWrappedValueHolderValue() : ?object;
 }

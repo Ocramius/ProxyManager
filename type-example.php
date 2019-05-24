@@ -18,6 +18,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 class MyProxiedClass
 {
+    /** @return string */
     public function sayHello()
     {
         return 'Hello!';
@@ -27,7 +28,8 @@ class MyProxiedClass
 echo (new AccessInterceptorScopeLocalizerFactory())
     ->createProxy(
         new MyProxiedClass(),
-        ['sayHello' => static function (string $foo) { 'ha'; }]
+        // @TODO wrongs
+        //['sayHello' => static function (string $foo) { 'ha'; }]
     )
     ->sayHello();
 
@@ -71,8 +73,7 @@ $valueHolder = (new LazyLoadingValueHolderFactory())
 
 $valueHolder->initializeProxy();
 
-$wrappedValue = $valueHolder
-    ->getWrappedValueHolderValue();
+$wrappedValue = $valueHolder->getWrappedValueHolderValue();
 
 assert(null !== $wrappedValue);
 

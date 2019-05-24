@@ -9,6 +9,7 @@ use ProxyManager\Configuration;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
 
 /**
  * Factory responsible of producing virtual proxy instances
@@ -27,11 +28,16 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
     /**
      * @param array<string, mixed> $proxyOptions
      *
-     * @psalm-template RealObjectType
+     * @psalm-template RealObjectType of object
      *
      * @psalm-param class-string<RealObjectType> $className
      *
-     * @psalm-return RealObjectType&VirtualProxyInterface
+     * @disabled-psalm-return RealObjectType&VirtualProxyInterface&ValueHolderInterface<RealObjectType>
+     * @psalm-return RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface
+     * @disabled-psalm-return \Foo\MyProxiedClass&VirtualProxyInterface&ValueHolderInterface<\Foo\MyProxiedClass>
+     * @disabled-psalm-return \Foo\MyProxiedClass&ValueHolderInterface<\Foo\MyProxiedClass>
+     * @disabled-psalm-return \Foo\MyProxiedClass&ValueHolderInterface<\Foo\MyProxiedClass>&VirtualProxyInterface
+     * @disabled-psalm-return \Foo\MyProxiedClass&VirtualProxyInterface&ValueHolderInterface<\Foo\MyProxiedClass>
      */
     public function createProxy(
         string $className,
