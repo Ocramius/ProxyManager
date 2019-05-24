@@ -18,7 +18,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 class MyProxiedClass
 {
-    public function sayHello() : string
+    public function sayHello()
     {
         return 'Hello!';
     }
@@ -58,6 +58,25 @@ echo (new LazyLoadingValueHolderFactory())
         return true;
     })
     ->sayHello();
+
+$valueHolder = (new LazyLoadingValueHolderFactory())
+    ->createProxy(MyProxiedClass::class, static function (
+        & $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, & $initializer
+    ) : bool {
+        $initializer   = null; // disable initialization
+        $wrappedObject = new MyProxiedClass();
+
+        return true;
+    });
+
+$valueHolder->initializeProxy();
+
+$wrappedValue = $valueHolder
+    ->getWrappedValueHolderValue();
+
+assert(null !== $wrappedValue);
+
+echo $wrappedValue->sayHello();
 
 echo (new NullObjectFactory())
     ->createProxy(MyProxiedClass::class)
