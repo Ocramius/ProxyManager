@@ -77,7 +77,7 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      * @psalm-template RealObjectType
      *
      * @psalm-param class-string<RealObjectType> $className
-     * @psalm-param array{?skippedProperties: array<int, string>}
+     * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
      *
      * @psalm-return RealObjectType&GhostObjectInterface
      */
