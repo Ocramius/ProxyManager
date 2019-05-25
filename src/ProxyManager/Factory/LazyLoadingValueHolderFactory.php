@@ -31,13 +31,15 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
      * @psalm-template RealObjectType of object
      *
      * @psalm-param class-string<RealObjectType> $className
+     * @psalm-param null|callable(
+     *   object|null=,
+     *   RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface=,
+     *   string=,
+     *   array<string, mixed>=,
+     *   ?Closure=
+     * ) : bool $initializer
      *
-     * @disabled-psalm-return RealObjectType&VirtualProxyInterface&ValueHolderInterface<RealObjectType>
      * @psalm-return RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface
-     * @disabled-psalm-return \Foo\MyProxiedClass&VirtualProxyInterface&ValueHolderInterface<\Foo\MyProxiedClass>
-     * @disabled-psalm-return \Foo\MyProxiedClass&ValueHolderInterface<\Foo\MyProxiedClass>
-     * @disabled-psalm-return \Foo\MyProxiedClass&ValueHolderInterface<\Foo\MyProxiedClass>&VirtualProxyInterface
-     * @disabled-psalm-return \Foo\MyProxiedClass&VirtualProxyInterface&ValueHolderInterface<\Foo\MyProxiedClass>
      */
     public function createProxy(
         string $className,

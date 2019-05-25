@@ -8,6 +8,8 @@ use Closure;
 
 /**
  * Lazy loading object identifier
+ *
+ * @psalm-template LazilyLoadedObjectType of object
  */
 interface LazyLoadingInterface extends ProxyInterface
 {
@@ -19,13 +21,39 @@ interface LazyLoadingInterface extends ProxyInterface
      * An initializer should have a signature like following:
      *
      * <code>
-     * $initializer = function (& $wrappedObject, $proxy, string $method, array $parameters, & $initializer) {};
+     * $initializer = function (
+     *   & ?object $wrappedObject,
+     *   LazyLoadingInterface $proxy,
+     *   string $calledMethod,
+     *   array $callParameters,
+     *   & ?\Closure $initializer,
+     *   array $propertiesToBeSet = [] // works only on ghost objects
+     * ) {};
      * </code>
      *
      * @return void
+     *
+     * @psalm-param null|callable(
+     *   LazilyLoadedObjectType|null=,
+     *   LazilyLoadedObjectType&self=,
+     *   string=,
+     *   array<string, mixed>=,
+     *   ?Closure=,
+     *   array<string, mixed>=
+     * ) : bool $initializer
      */
     public function setProxyInitializer(?Closure $initializer = null);
 
+    /**
+     * @psalm-return null|callable(
+     *   LazilyLoadedObjectType|null=,
+     *   LazilyLoadedObjectType&self=,
+     *   string,
+     *   array<string, mixed>=,
+     *   ?Closure=,
+     *   array<string, mixed>=
+     * ) : bool
+     */
     public function getProxyInitializer() : ?Closure;
 
     /**

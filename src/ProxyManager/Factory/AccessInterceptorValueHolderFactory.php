@@ -7,7 +7,9 @@ namespace ProxyManager\Factory;
 use Closure;
 use OutOfBoundsException;
 use ProxyManager\Configuration;
+use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
@@ -42,23 +44,23 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      * @psalm-template RealObjectType of object
      *
      * @psalm-param RealObjectType $instance
-     * @psalm-param array<string, callable (
-     *   RealObjectType&AccessInterceptorInterface=,
+     * @psalm-param array<string, callable(
+     *   RealObjectType&AccessInterceptorInterface<RealObjectType>=,
      *   RealObjectType=,
-     *   string=
+     *   string=,
      *   array<string, mixed>=,
-     *   & bool=
+     *   bool=
      * ) : mixed> $prefixInterceptors
-     * @psalm-param array<string, callable (
-     *   RealObjectType&AccessInterceptorInterface=,
+     * @psalm-param array<string, callable(
+     *   RealObjectType&AccessInterceptorInterface<RealObjectType>=,
      *   RealObjectType=,
-     *   string=
+     *   string=,
      *   array<string, mixed>=,
      *   mixed=,
-     *   & bool=
+     *   bool=
      * ) : mixed> $suffixInterceptors
      *
-     * @psalm-return RealObjectType&AccessInterceptorValueHolderInterface
+     * @psalm-return RealObjectType&AccessInterceptorInterface<RealObjectType>&ValueHolderInterface<RealObjectType>
      */
     public function createProxy(
         object $instance,

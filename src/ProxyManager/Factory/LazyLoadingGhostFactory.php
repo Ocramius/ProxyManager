@@ -8,6 +8,7 @@ use Closure;
 use OutOfBoundsException;
 use ProxyManager\Configuration;
 use ProxyManager\Proxy\GhostObjectInterface;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
@@ -74,12 +75,20 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      * @throws InvalidSignatureException
      * @throws OutOfBoundsException
      *
-     * @psalm-template RealObjectType
+     * @psalm-template RealObjectType as object
      *
      * @psalm-param class-string<RealObjectType> $className
+     * @psalm-param Closure(
+     *   object|null=,
+     *   RealObjectType&GhostObjectInterface&LazyLoadingInterface<RealObjectType>=,
+     *   string=,
+     *   array<string, mixed>=,
+     *   ?Closure=,
+     *   array<string, mixed>=
+     * ) : bool $initializer
      * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
      *
-     * @psalm-return RealObjectType&GhostObjectInterface
+     * @psalm-return RealObjectType&GhostObjectInterface&LazyLoadingInterface<RealObjectType>
      */
     public function createProxy(
         string $className,

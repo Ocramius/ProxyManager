@@ -28,42 +28,202 @@ class MyProxiedClass
 echo (new AccessInterceptorScopeLocalizerFactory())
     ->createProxy(
         new MyProxiedClass(),
-        // @TODO wrongs
-        //['sayHello' => static function (string $foo) { 'ha'; }]
+        [
+            'sayHello' => static function (
+                object $proxy,
+                MyProxiedClass $realInstance,
+                string $method,
+                array $parameters,
+                bool & $returnEarly
+            ) {
+                echo 'pre-';
+            },
+        ],
+        [
+            'sayHello' =>
+            /** @param mixed $returnValue */
+                static function (
+                    object $proxy,
+                    MyProxiedClass $realInstance,
+                    string $method,
+                    array $parameters,
+                    & $returnValue,
+                    bool & $overrideReturnValue
+                ) {
+                    echo 'post-';
+                },
+        ]
     )
     ->sayHello();
 
+$localizedAccessInterceptor = (new AccessInterceptorScopeLocalizerFactory())
+    ->createProxy(new MyProxiedClass());
+
+$localizedAccessInterceptor->setMethodPrefixInterceptor(
+    'sayHello',
+    static function (
+        object $proxy,
+        MyProxiedClass $realInstance,
+        string $method,
+        array $parameters,
+        bool & $returnEarly
+    ) {
+        echo 'pre-';
+    }
+);
+
+$localizedAccessInterceptor->setMethodSuffixInterceptor(
+    'sayHello',
+    /** @param mixed $returnValue */
+    static function (
+        object $proxy,
+        MyProxiedClass $realInstance,
+        string $method,
+        array $parameters,
+        & $returnValue,
+        bool & $returnEarly
+    ) {
+        echo 'post-';
+    }
+);
+
+echo $localizedAccessInterceptor->sayHello();
+
 echo (new AccessInterceptorValueHolderFactory())
-    ->createProxy(new MyProxiedClass())
+    ->createProxy(
+        new MyProxiedClass(),
+        [
+            'sayHello' => static function (
+                object $proxy,
+                MyProxiedClass $realInstance,
+                string $method,
+                array $parameters,
+                bool & $returnEarly
+            ) {
+                echo 'pre-';
+            },
+        ],
+        [
+            'sayHello' =>
+            /** @param mixed $returnValue */
+                static function (
+                    object $proxy,
+                    MyProxiedClass $realInstance,
+                    string $method,
+                    array $parameters,
+                    & $returnValue,
+                    bool & $overrideReturnValue
+                ) {
+                    echo 'post-';
+                },
+        ]
+    )
     ->sayHello();
+
+$valueHolderInterceptor = (new AccessInterceptorValueHolderFactory())
+    ->createProxy(new MyProxiedClass());
+
+$valueHolderInterceptor->setMethodPrefixInterceptor(
+    'sayHello',
+    static function (
+        object $proxy,
+        MyProxiedClass $realInstance,
+        string $method,
+        array $parameters,
+        bool & $returnEarly
+    ) {
+        echo 'pre-';
+    }
+);
+
+$valueHolderInterceptor->setMethodSuffixInterceptor(
+    'sayHello',
+    /** @param mixed $returnValue */
+    static function (
+        object $proxy,
+        MyProxiedClass $realInstance,
+        string $method,
+        array $parameters,
+        & $returnValue,
+        bool & $returnEarly
+    ) {
+        echo 'post-';
+    }
+);
+
+echo $valueHolderInterceptor->sayHello();
+
+$interceptedValue = $valueHolderInterceptor
+    ->getWrappedValueHolderValue();
+
+assert($interceptedValue !== null);
+
+echo $interceptedValue->sayHello();
 
 echo (new LazyLoadingGhostFactory())
-    ->createProxy(MyProxiedClass::class,
-        $initializer = function (
-            GhostObjectInterface $proxy,
+    ->createProxy(
+        MyProxiedClass::class,
+        static function (
+            ?object & $instance,
+            LazyLoadingInterface $proxy,
             string $method,
             array $parameters,
-            & $initializer,
+            ?\Closure & $initializer,
             array $properties
-        ) {
+        ) : bool {
             $initializer = null; // disable initialization
-        })
+
+            return true;
+        }
+    )
     ->sayHello();
 
-echo (new LazyLoadingValueHolderFactory())
-    ->createProxy(MyProxiedClass::class, static function (
-        & $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, & $initializer
-    ) : bool {
-        $initializer   = null; // disable initialization
-        $wrappedObject = new MyProxiedClass();
+$lazyLoadingGhost = (new LazyLoadingGhostFactory())
+    ->createProxy(
+        MyProxiedClass::class,
+        static function () : bool {
+            return true;
+        }
+    );
 
-        return true;
-    })
+$lazyLoadingGhost->setProxyInitializer(static function (
+    ?object & $instance,
+    LazyLoadingInterface $proxy,
+    string $method,
+    array $parameters,
+    ?\Closure & $initializer,
+    array $properties
+) : bool {
+    $initializer = null; // disable initialization
+
+    return true;
+});
+
+echo (new LazyLoadingValueHolderFactory())
+    ->createProxy(
+        MyProxiedClass::class,
+        static function (
+            ?object & $instance,
+            LazyLoadingInterface $proxy,
+            string $method,
+            array $parameters,
+            ?\Closure & $initializer
+        ) : bool {
+            $instance    = new MyProxiedClass();
+            $initializer = null; // disable initialization
+
+            return true;
+        }
+    )
     ->sayHello();
 
 $valueHolder = (new LazyLoadingValueHolderFactory())
     ->createProxy(MyProxiedClass::class, static function (
-        & $wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, & $initializer
+        ?object & $wrappedObject,
+        LazyLoadingInterface $proxy,
+        string $method,
+        array $parameters,
+        ?\Closure & $initializer
     ) : bool {
         $initializer   = null; // disable initialization
         $wrappedObject = new MyProxiedClass();
@@ -78,6 +238,19 @@ $wrappedValue = $valueHolder->getWrappedValueHolderValue();
 assert(null !== $wrappedValue);
 
 echo $wrappedValue->sayHello();
+
+$valueHolder->setProxyInitializer(static function (
+    ?object & $instance,
+    LazyLoadingInterface $proxy,
+    string $method,
+    array $parameters,
+    ?\Closure & $initializer
+) : bool {
+    $instance    = new MyProxiedClass();
+    $initializer = null; // disable initialization
+
+    return true;
+});
 
 echo (new NullObjectFactory())
     ->createProxy(MyProxiedClass::class)

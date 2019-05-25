@@ -8,6 +8,8 @@ use Closure;
 
 /**
  * Access interceptor object marker
+ *
+ * @psalm-template InterceptedObjectType of object
  */
 interface AccessInterceptorInterface extends ProxyInterface
 {
@@ -24,6 +26,14 @@ interface AccessInterceptorInterface extends ProxyInterface
      *
      * @param string       $methodName        name of the intercepted method
      * @param Closure|null $prefixInterceptor interceptor closure or null to unset the currently active interceptor
+     *
+     * @psalm-param null|callable(
+     *   InterceptedObjectType&AccessInterceptorInterface=,
+     *   InterceptedObjectType=,
+     *   string=,
+     *   array<string, mixed>=,
+     *   bool=
+     * ) : mixed $prefixInterceptor
      */
     public function setMethodPrefixInterceptor(string $methodName, ?Closure $prefixInterceptor = null) : void;
 
@@ -40,6 +50,15 @@ interface AccessInterceptorInterface extends ProxyInterface
      *
      * @param string       $methodName        name of the intercepted method
      * @param Closure|null $suffixInterceptor interceptor closure or null to unset the currently active interceptor
+     *
+     * @psalm-param null|callable(
+     *   InterceptedObjectType&AccessInterceptorInterface=,
+     *   InterceptedObjectType=,
+     *   string=,
+     *   array<string, mixed>=,
+     *   mixed=,
+     *   bool=
+     * ) : mixed $suffixInterceptor
      */
     public function setMethodSuffixInterceptor(string $methodName, ?Closure $suffixInterceptor = null) : void;
 }

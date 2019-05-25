@@ -42,23 +42,23 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
      * @psalm-template RealObjectType of object
      *
      * @psalm-param RealObjectType $instance
-     * @psalm-param array<string, callable (
-     *   RealObjectType&AccessInterceptorInterface=,
+     * @psalm-param array<string, callable(
+     *   RealObjectType&AccessInterceptorInterface<RealObjectType>=,
      *   RealObjectType=,
-     *   string=
+     *   string=,
      *   array<string, mixed>=,
-     *   & bool=
+     *   bool=
      * ) : mixed> $prefixInterceptors
-     * @psalm-param array<string, callable (
-     *   RealObjectType&AccessInterceptorInterface=,
+     * @psalm-param array<string, callable(
+     *   RealObjectType&AccessInterceptorInterface<RealObjectType>=,
      *   RealObjectType=,
-     *   string=
+     *   string=,
      *   array<string, mixed>=,
      *   mixed=,
-     *   & bool=
+     *   bool=
      * ) : mixed> $suffixInterceptors
      *
-     * @psalm-return RealObjectType&AccessInterceptorInterface
+     * @psalm-return RealObjectType&AccessInterceptorInterface<RealObjectType>
      */
     public function createProxy(
         object $instance,
