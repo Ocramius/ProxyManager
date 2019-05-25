@@ -25,5 +25,7 @@ class SetProxyInitializer extends MethodGenerator
             self::FLAG_PUBLIC,
             '$this->' . $initializerProperty->getName() . ' = $initializer;'
         );
+
+        $this->setReturnType('void');
     }
 }

@@ -35,7 +35,7 @@ class LazyLoadingMock implements VirtualProxyInterface, GhostObjectInterface
         return $instance;
     }
 
-    public function setProxyInitializer(\Closure $initializer = null)
+    public function setProxyInitializer(\Closure $initializer = null) : void
     {
         $this->initializer = $initializer;
     }

@@ -22,7 +22,7 @@ interface LazyLoadingInterface extends ProxyInterface
      * $initializer = function (& $wrappedObject, $proxy, string $method, array $parameters, & $initializer) {};
      * </code>
      *
-     * @return mixed
+     * @return void
      */
     public function setProxyInitializer(?Closure $initializer = null);
 

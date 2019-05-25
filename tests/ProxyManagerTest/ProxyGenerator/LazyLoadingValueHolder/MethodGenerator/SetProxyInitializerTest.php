@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer;
 use Zend\Code\Generator\ParameterGenerator;
 use Zend\Code\Generator\PropertyGenerator;
+use Zend\Code\Generator\TypeGenerator;
 use function array_shift;
 
 /**
@@ -40,5 +41,6 @@ final class SetProxyInitializerTest extends TestCase
         self::assertInstanceOf(ParameterGenerator::class, $initializer);
         self::assertSame('initializer', $initializer->getName());
         self::assertSame('$this->foo = $initializer;', $setter->getBody());
+        self::assertEquals(TypeGenerator::fromTypeString('void'), $setter->getReturnType());
     }
 }
