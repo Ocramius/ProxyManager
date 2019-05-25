@@ -25,10 +25,17 @@ class Autoloader implements AutoloaderInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress DocblockTypeContradiction class-string has still to be checked in an autoloader
      */
     public function __invoke(string $className) : bool
     {
-        if (class_exists($className, false) || ! $this->classNameInflector->isProxyClassName($className)) {
+        if (class_exists($className, false)) {
+            return false;
+        }
+
+        /** @psalm-var class-string $className */
+        if (! $this->classNameInflector->isProxyClassName($className)) {
             return false;
         }
 

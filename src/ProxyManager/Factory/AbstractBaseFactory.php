@@ -92,6 +92,7 @@ abstract class AbstractBaseFactory
      * @param array<string, mixed> $proxyParameters
      * @param array<string, mixed> $proxyOptions
      *
+     * @psalm-param class-string $proxyClassName
      * @psalm-param class-string $className
      */
     private function generateProxyClass(

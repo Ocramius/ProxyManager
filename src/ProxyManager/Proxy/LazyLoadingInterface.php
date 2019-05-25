@@ -35,7 +35,7 @@ interface LazyLoadingInterface extends ProxyInterface
      *
      * @psalm-param null|Closure(
      *   LazilyLoadedObjectType|null=,
-     *   LazilyLoadedObjectType&self=,
+     *   LazilyLoadedObjectType&LazyLoadingInterface<LazilyLoadedObjectType>=,
      *   string=,
      *   array<string, mixed>=,
      *   ?Closure=,
@@ -47,7 +47,7 @@ interface LazyLoadingInterface extends ProxyInterface
     /**
      * @psalm-return null|Closure(
      *   LazilyLoadedObjectType|null=,
-     *   LazilyLoadedObjectType&self=,
+     *   LazilyLoadedObjectType&LazyLoadingInterface<LazilyLoadedObjectType>=,
      *   string,
      *   array<string, mixed>=,
      *   ?Closure=,
