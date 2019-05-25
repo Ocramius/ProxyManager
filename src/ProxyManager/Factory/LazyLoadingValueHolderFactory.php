@@ -31,7 +31,7 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
      * @psalm-template RealObjectType of object
      *
      * @psalm-param class-string<RealObjectType> $className
-     * @psalm-param null|callable(
+     * @psalm-param Closure(
      *   object|null=,
      *   RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface=,
      *   string=,
@@ -40,6 +40,9 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
      * ) : bool $initializer
      *
      * @psalm-return RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface
+     *
+     * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
+     *                                         interfaced (by design)
      */
     public function createProxy(
         string $className,
@@ -48,6 +51,12 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
     ) : VirtualProxyInterface {
         $proxyClassName = $this->generateProxy($className, $proxyOptions);
 
+        /**
+         * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
         return $proxyClassName::staticProxyConstructor($initializer);
     }
 

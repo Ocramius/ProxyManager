@@ -30,7 +30,7 @@ final class SignatureChecker implements SignatureCheckerInterface
         $signature         = $this->signatureGenerator->generateSignature($parameters);
         $defaultProperties = $class->getDefaultProperties();
 
-        if (! array_key_exists($propertyName, $defaultProperties)) {
+        if (! (array_key_exists($propertyName, $defaultProperties) && \is_string($defaultProperties[$propertyName]))) {
             throw MissingSignatureException::fromMissingSignature($class, $parameters, $signature);
         }
 

@@ -16,6 +16,9 @@ class BaseGeneratorStrategy implements GeneratorStrategyInterface
      */
     public function generate(ClassGenerator $classGenerator) : string
     {
-        return $classGenerator->generate();
+        /** @var string $code need to specify type due to missing upstream declaration */
+        $code = $classGenerator->generate();
+
+        return $code;
     }
 }

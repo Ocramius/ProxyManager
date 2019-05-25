@@ -49,6 +49,9 @@ class RemoteObjectFactory extends AbstractBaseFactory
      * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
      *
      * @psalm-return RealObjectType&RemoteObjectInterface
+     *
+     * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
+     *                                         interfaced (by design)
      */
     public function createProxy($instanceOrClassName) : RemoteObjectInterface
     {
@@ -56,6 +59,12 @@ class RemoteObjectFactory extends AbstractBaseFactory
             is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName
         );
 
+        /**
+         * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
         return $proxyClassName::staticProxyConstructor($this->adapter);
     }
 

@@ -32,6 +32,8 @@ final class ClassNameInflector implements ClassNameInflectorInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress MoreSpecificReturnType we ignore these issues because classes may not have been loaded yet
      */
     public function getUserClassName(string $className) : string
     {
@@ -39,9 +41,11 @@ final class ClassNameInflector implements ClassNameInflectorInterface
         $position  = strrpos($className, $this->proxyMarker);
 
         if (! is_int($position)) {
+            /** @psalm-suppress LessSpecificReturnStatement */
             return $className;
         }
 
+        /** @psalm-suppress LessSpecificReturnStatement */
         return substr(
             $className,
             $this->proxyMarkerLength + $position,
@@ -51,9 +55,12 @@ final class ClassNameInflector implements ClassNameInflectorInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress MoreSpecificReturnType we ignore these issues because classes may not have been loaded yet
      */
     public function getProxyClassName(string $className, array $options = []) : string
     {
+        /** @psalm-suppress LessSpecificReturnStatement */
         return $this->proxyNamespace
             . $this->proxyMarker
             . $this->getUserClassName($className)

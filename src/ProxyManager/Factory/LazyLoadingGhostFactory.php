@@ -89,6 +89,9 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
      *
      * @psalm-return RealObjectType&GhostObjectInterface&LazyLoadingInterface<RealObjectType>
+     *
+     * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
+     *                                         interfaced (by design)
      */
     public function createProxy(
         string $className,
@@ -97,6 +100,12 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
     ) : GhostObjectInterface {
         $proxyClassName = $this->generateProxy($className, $proxyOptions);
 
+        /**
+         * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
         return $proxyClassName::staticProxyConstructor($initializer);
     }
 }

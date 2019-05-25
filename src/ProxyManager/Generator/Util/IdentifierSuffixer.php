@@ -32,6 +32,7 @@ abstract class IdentifierSuffixer
      */
     public static function getIdentifier(string $name) : string
     {
+        /** @var string|null $salt */
         static $salt;
 
         $salt   = $salt ?? $salt = self::loadBaseHashSalt();

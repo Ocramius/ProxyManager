@@ -59,7 +59,7 @@ final class ProxiedMethodsFilter
     {
         $ignored = array_flip(array_map('strtolower', $excluded));
 
-        return array_filter(
+        return array_values(array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
             static function (ReflectionMethod $method) use ($ignored, $requireAbstract) : bool {
                 return (! $requireAbstract || $method->isAbstract()) && ! (
@@ -67,7 +67,7 @@ final class ProxiedMethodsFilter
                     || self::methodCannotBeProxied($method)
                 );
             }
-        );
+        ));
     }
 
     /**

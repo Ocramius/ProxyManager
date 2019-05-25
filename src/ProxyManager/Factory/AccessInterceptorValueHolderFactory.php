@@ -60,7 +60,10 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *   bool=
      * ) : mixed> $suffixInterceptors
      *
-     * @psalm-return RealObjectType&AccessInterceptorInterface<RealObjectType>&ValueHolderInterface<RealObjectType>
+     * @psalm-return RealObjectType&AccessInterceptorInterface<RealObjectType>&ValueHolderInterface<RealObjectType>&AccessInterceptorValueHolderInterface
+     *
+     * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
+     *                                         interfaced (by design)
      */
     public function createProxy(
         object $instance,
@@ -69,6 +72,12 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
     ) : AccessInterceptorValueHolderInterface {
         $proxyClassName = $this->generateProxy(get_class($instance));
 
+        /**
+         * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
         return $proxyClassName::staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors);
     }
 

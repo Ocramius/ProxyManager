@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<psalm
+    totallyTyped="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="src" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <UndefinedClass errorLevel="info"/>
+        <LessSpecificReturnType errorLevel="info" />
+
+        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
+
+        <DeprecatedMethod errorLevel="suppress" />
+        <DeprecatedProperty errorLevel="suppress" />
+        <DeprecatedClass errorLevel="suppress" />
+        <DeprecatedConstant errorLevel="suppress" />
+        <DeprecatedInterface errorLevel="suppress" />
+        <DeprecatedTrait errorLevel="suppress" />
+
+        <InternalMethod errorLevel="suppress" />
+        <InternalProperty errorLevel="suppress" />
+        <InternalClass errorLevel="suppress" />
+
+        <MissingClosureReturnType errorLevel="info" />
+        <MissingReturnType errorLevel="info" />
+        <MissingPropertyType errorLevel="error" />
+        <InvalidDocblock errorLevel="error" />
+        <MisplacedRequiredParam errorLevel="error" />
+
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+        <MissingConstructor errorLevel="error" />
+        <MissingClosureParamType errorLevel="info" />
+        <MissingParamType errorLevel="info" />
+
+        <RedundantCondition errorLevel="suppress" />
+
+        <DocblockTypeContradiction errorLevel="error" />
+        <RedundantConditionGivenDocblockType errorLevel="error" />
+
+        <UnresolvableInclude errorLevel="suppress" />
+
+        <RawObjectIteration errorLevel="error" />
+
+        <InvalidStringClass errorLevel="error" />
+    </issueHandlers>
+</psalm>

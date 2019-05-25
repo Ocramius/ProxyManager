@@ -21,7 +21,7 @@ interface ClassNameInflectorInterface
      *
      * @psalm-template RealClassName
      *
-     * @psalm-param class-string<RealClassName|ProxyInterface> $className
+     * @psalm-param class-string<RealClassName>|class-string<ProxyInterface<RealClassName>> $className
      *
      * @psalm-return class-string<RealClassName>
      */
@@ -34,7 +34,7 @@ interface ClassNameInflectorInterface
      *
      * @psalm-template RealClassName
      *
-     * @psalm-param class-string<RealClassName> $className
+     * @psalm-param class-string<RealClassName>|class-string<ProxyInterface<RealClassName>> $className
      *
      * @psalm-return class-string<RealClassName&ProxyInterface>
      */
@@ -45,7 +45,7 @@ interface ClassNameInflectorInterface
      *
      * @psalm-template RealClassName
      *
-     * @psalm-param class-string<RealClassName|ProxyInterface> $className
+     * @psalm-param class-string<RealClassName>|class-string<ProxyInterface<RealClassName>> $className
      */
     public function isProxyClassName(string $className) : bool;
 }

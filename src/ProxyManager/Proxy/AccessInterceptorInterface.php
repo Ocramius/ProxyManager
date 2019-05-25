@@ -27,7 +27,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      * @param string       $methodName        name of the intercepted method
      * @param Closure|null $prefixInterceptor interceptor closure or null to unset the currently active interceptor
      *
-     * @psalm-param null|callable(
+     * @psalm-param null|Closure(
      *   InterceptedObjectType&AccessInterceptorInterface=,
      *   InterceptedObjectType=,
      *   string=,
@@ -51,7 +51,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      * @param string       $methodName        name of the intercepted method
      * @param Closure|null $suffixInterceptor interceptor closure or null to unset the currently active interceptor
      *
-     * @psalm-param null|callable(
+     * @psalm-param null|Closure(
      *   InterceptedObjectType&AccessInterceptorInterface=,
      *   InterceptedObjectType=,
      *   string=,

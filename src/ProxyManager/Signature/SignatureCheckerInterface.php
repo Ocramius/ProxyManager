@@ -16,7 +16,7 @@ interface SignatureCheckerInterface
     /**
      * Checks whether the given signature is valid or not
      *
-     * @param mixed[] $parameters
+     * @param array<string, mixed> $parameters
      *
      * @return void
      *

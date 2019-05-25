@@ -89,8 +89,8 @@ abstract class AbstractBaseFactory
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
      *
-     * @param string[] $proxyParameters
-     * @param array<string, mixed>  $proxyOptions
+     * @param array<string, mixed> $proxyParameters
+     * @param array<string, mixed> $proxyOptions
      *
      * @psalm-param class-string $className
      */
@@ -103,10 +103,12 @@ abstract class AbstractBaseFactory
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 
+        /** @psalm-suppress TooManyArguments - generator interface was not updated due to BC compliance */
         $this->getGenerator()->generate(new ReflectionClass($className), $phpClass, $proxyOptions);
 
         $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
 
+        /** @psalm-suppress TooManyArguments - generator interface was not updated due to BC compliance */
         $this->configuration->getGeneratorStrategy()->generate($phpClass, $proxyOptions);
 
         $autoloader = $this->configuration->getProxyAutoloader();

@@ -130,6 +130,7 @@ final class Properties
         return new self(array_filter(
             $this->properties,
             static function (ReflectionProperty $property) : bool {
+                /** @var \ReflectionType|null $type */
                 $type = $property->getType();
 
                 return $type === null || $type->allowsNull();

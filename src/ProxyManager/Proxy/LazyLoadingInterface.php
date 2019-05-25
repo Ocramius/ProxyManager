@@ -33,7 +33,7 @@ interface LazyLoadingInterface extends ProxyInterface
      *
      * @return void
      *
-     * @psalm-param null|callable(
+     * @psalm-param null|Closure(
      *   LazilyLoadedObjectType|null=,
      *   LazilyLoadedObjectType&self=,
      *   string=,
@@ -45,7 +45,7 @@ interface LazyLoadingInterface extends ProxyInterface
     public function setProxyInitializer(?Closure $initializer = null);
 
     /**
-     * @psalm-return null|callable(
+     * @psalm-return null|Closure(
      *   LazilyLoadedObjectType|null=,
      *   LazilyLoadedObjectType&self=,
      *   string,
