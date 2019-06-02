@@ -26,8 +26,6 @@ abstract class BaseAdapter implements AdapterInterface
      * Constructor
      *
      * @param array<string, string> $map map of service names to their aliases
-     *
-     * @psalm-suppress UndefinedClass - zend-server is not a direct dependency of this package
      */
     public function __construct(Client $client, array $map = [])
     {
@@ -46,7 +44,6 @@ abstract class BaseAdapter implements AdapterInterface
             $serviceName = $this->map[$serviceName];
         }
 
-        /** @psalm-suppress UndefinedClass - zend-server is not a direct dependency of this package */
         return $this->client->call($serviceName, $params);
     }
 

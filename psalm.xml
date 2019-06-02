@@ -14,7 +14,12 @@
     </projectFiles>
 
     <issueHandlers>
-        <UndefinedClass errorLevel="info"/>
+        <UndefinedClass>
+            <errorLevel type="info">
+                <!-- zendframework/zend-server is not a direct package nor build dependency, and it should stay that way -->
+                <referencedClass name="Zend\Server\Client"/>
+            </errorLevel>
+        </UndefinedClass>
         <LessSpecificReturnType errorLevel="info" />
 
         <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
