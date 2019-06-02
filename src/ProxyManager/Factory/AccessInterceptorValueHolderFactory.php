@@ -60,7 +60,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *   bool=
      * ) : mixed> $suffixInterceptors
      *
-     * @psalm-return RealObjectType&AccessInterceptorInterface<RealObjectType>&ValueHolderInterface<RealObjectType>
+     * @psalm-return RealObjectType&AccessInterceptorInterface<RealObjectType>&ValueHolderInterface<RealObjectType>&AccessInterceptorValueHolderInterface<RealObjectType>
      *
      * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
      *                                         interfaced (by design)
