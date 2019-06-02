@@ -31,7 +31,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
     }
 
     /**
-     * @param object    $instance           the object to be wrapped within the value holder
+     * @param object                 $instance           the object to be wrapped within the value holder
      * @param array<string, Closure> $prefixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       before method logic is executed
      * @param array<string, Closure> $suffixInterceptors an array (indexed by method name) of interceptor closures to be called

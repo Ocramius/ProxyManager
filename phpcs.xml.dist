@@ -24,5 +24,9 @@
 
         <!-- we cannot enforce the " : void" return type hint due to BC compliance, for now -->
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint"/>
+        <!-- use statements also affect @psalm-* type declarations, and cannot therefore be dropped -->
+        <exclude name="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse"/>
+        <!-- enforced types are now declared via psalm's "totallyTyped" restrictions -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
     </rule>
 </ruleset>

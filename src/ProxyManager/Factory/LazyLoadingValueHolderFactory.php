@@ -6,10 +6,10 @@ namespace ProxyManager\Factory;
 
 use Closure;
 use ProxyManager\Configuration;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
-use ProxyManager\Proxy\ValueHolderInterface;
 
 /**
  * Factory responsible of producing virtual proxy instances

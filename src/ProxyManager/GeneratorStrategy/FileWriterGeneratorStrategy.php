@@ -45,7 +45,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      */
     public function generate(ClassGenerator $classGenerator) : string
     {
-        $className     = trim($classGenerator->getNamespaceName(), '\\')
+        $className = trim($classGenerator->getNamespaceName(), '\\')
             . '\\' . trim($classGenerator->getName(), '\\');
         /** @var string $generatedCode */
         $generatedCode = $classGenerator->generate();

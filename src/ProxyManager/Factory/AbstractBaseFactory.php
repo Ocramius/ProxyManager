@@ -26,7 +26,6 @@ abstract class AbstractBaseFactory
      * Cached checked class names
      *
      * @var array<string, string>
-     *
      * @psalm-var array<string, class-string>
      */
     private array $checkedClasses = [];
