@@ -15,7 +15,7 @@ class ParameterHasher
     /**
      * Converts the given parameters into a likely-unique hash
      *
-     * @param array<string, mixed> $parameters
+     * @param mixed[] $parameters
      */
     public function hashParameters(array $parameters) : string
     {

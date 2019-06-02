@@ -13,12 +13,12 @@ class BaseGeneratorStrategy implements GeneratorStrategyInterface
 {
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress MixedInferredReturnType upstream has no declared type
      */
     public function generate(ClassGenerator $classGenerator) : string
     {
-        /** @var string $code need to specify type due to missing upstream declaration */
-        $code = $classGenerator->generate();
-
-        return $code;
+        /** @psalm-suppress MixedReturnStatement upstream has no declared type */
+        return $classGenerator->generate();
     }
 }

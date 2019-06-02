@@ -10,6 +10,7 @@ use function array_filter;
 use function array_flip;
 use function array_key_exists;
 use function array_map;
+use function array_values;
 use function strtolower;
 
 /**

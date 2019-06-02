@@ -8,6 +8,7 @@ use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ReflectionClass;
 use function array_key_exists;
+use function is_string;
 
 /**
  * Generator for signatures to be used to check the validity of generated code
@@ -30,7 +31,7 @@ final class SignatureChecker implements SignatureCheckerInterface
         $signature         = $this->signatureGenerator->generateSignature($parameters);
         $defaultProperties = $class->getDefaultProperties();
 
-        if (! (array_key_exists($propertyName, $defaultProperties) && \is_string($defaultProperties[$propertyName]))) {
+        if (! (array_key_exists($propertyName, $defaultProperties) && is_string($defaultProperties[$propertyName]))) {
             throw MissingSignatureException::fromMissingSignature($class, $parameters, $signature);
         }
 
