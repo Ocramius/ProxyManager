@@ -6,10 +6,13 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="src" />
-        <directory name="tests/static-analysis" />
+        <directory name="examples"/>
+        <directory name="src"/>
+        <directory name="tests/static-analysis"/>
         <ignoreFiles>
-            <directory name="vendor" />
+            <directory name="vendor"/>
+            <!-- uses dependencies that are not available while testing: -->
+            <file name="examples/remote-proxy.php"/>
         </ignoreFiles>
     </projectFiles>
 
@@ -17,44 +20,49 @@
         <UndefinedClass>
             <errorLevel type="suppress">
                 <!-- zendframework/zend-server is not a direct package nor build dependency, and it should stay that way -->
+                <referencedClass name="Zend\Http\Client\Adapter\Exception\RuntimeException"/>
                 <referencedClass name="Zend\Server\Client"/>
+                <referencedClass name="Zend\XmlRpc\Server"/>
+                <referencedClass name="Zend\XmlRpc\Client"/>
             </errorLevel>
         </UndefinedClass>
-        <LessSpecificReturnType errorLevel="info" />
+        <LessSpecificReturnType errorLevel="info"/>
 
         <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
 
-        <DeprecatedMethod errorLevel="suppress" />
-        <DeprecatedProperty errorLevel="suppress" />
-        <DeprecatedClass errorLevel="suppress" />
-        <DeprecatedConstant errorLevel="suppress" />
-        <DeprecatedInterface errorLevel="suppress" />
-        <DeprecatedTrait errorLevel="suppress" />
+        <DeprecatedMethod errorLevel="suppress"/>
+        <DeprecatedProperty errorLevel="suppress"/>
+        <DeprecatedClass errorLevel="suppress"/>
+        <DeprecatedConstant errorLevel="suppress"/>
+        <DeprecatedInterface errorLevel="suppress"/>
+        <DeprecatedTrait errorLevel="suppress"/>
 
-        <InternalMethod errorLevel="suppress" />
-        <InternalProperty errorLevel="suppress" />
-        <InternalClass errorLevel="suppress" />
+        <ForbiddenCode errorLevel="suppress"/>
 
-        <MissingClosureReturnType errorLevel="info" />
-        <MissingReturnType errorLevel="info" />
-        <MissingPropertyType errorLevel="error" />
-        <InvalidDocblock errorLevel="error" />
-        <MisplacedRequiredParam errorLevel="error" />
+        <InternalMethod errorLevel="suppress"/>
+        <InternalProperty errorLevel="suppress"/>
+        <InternalClass errorLevel="suppress"/>
 
-        <PropertyNotSetInConstructor errorLevel="suppress" />
-        <MissingConstructor errorLevel="error" />
-        <MissingClosureParamType errorLevel="info" />
-        <MissingParamType errorLevel="info" />
+        <MissingClosureReturnType errorLevel="info"/>
+        <MissingReturnType errorLevel="info"/>
+        <MissingPropertyType errorLevel="error"/>
+        <InvalidDocblock errorLevel="error"/>
+        <MisplacedRequiredParam errorLevel="error"/>
 
-        <RedundantCondition errorLevel="suppress" />
+        <PropertyNotSetInConstructor errorLevel="suppress"/>
+        <MissingConstructor errorLevel="error"/>
+        <MissingClosureParamType errorLevel="info"/>
+        <MissingParamType errorLevel="info"/>
 
-        <DocblockTypeContradiction errorLevel="error" />
-        <RedundantConditionGivenDocblockType errorLevel="error" />
+        <RedundantCondition errorLevel="suppress"/>
 
-        <UnresolvableInclude errorLevel="suppress" />
+        <DocblockTypeContradiction errorLevel="error"/>
+        <RedundantConditionGivenDocblockType errorLevel="error"/>
 
-        <RawObjectIteration errorLevel="error" />
+        <UnresolvableInclude errorLevel="suppress"/>
 
-        <InvalidStringClass errorLevel="error" />
+        <RawObjectIteration errorLevel="error"/>
+
+        <InvalidStringClass errorLevel="error"/>
     </issueHandlers>
 </psalm>

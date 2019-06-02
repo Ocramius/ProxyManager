@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace ProxyManager\Example\SmartReference;
 
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class Foo
 {
@@ -14,20 +16,22 @@ class Foo
     }
 }
 
-$factory = new AccessInterceptorValueHolderFactory();
+(static function () : void {
+    $factory = new AccessInterceptorValueHolderFactory();
 
-$proxy = $factory->createProxy(
-    new Foo(),
-    [
-        'doFoo' => function () : void {
-            echo "pre-foo!\n";
-        },
-    ],
-    [
-        'doFoo' => function () : void {
-            echo "post-foo!\n";
-        },
-    ]
-);
+    $proxy = $factory->createProxy(
+        new Foo(),
+        [
+            'doFoo' => function () : void {
+                echo "pre-foo!\n";
+            },
+        ],
+        [
+            'doFoo' => function () : void {
+                echo "post-foo!\n";
+            },
+        ]
+    );
 
-$proxy->doFoo();
+    $proxy->doFoo();
+})();

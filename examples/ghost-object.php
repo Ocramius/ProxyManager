@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace ProxyManager\Example\GhostObject;
 
+use Closure;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Proxy\GhostObjectInterface;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class Foo
 {
@@ -17,9 +20,9 @@ class Foo
         sleep(5);
     }
 
-    public function setFoo($foo) : void
+    public function setFoo(string $foo) : void
     {
-        $this->foo = (string) $foo;
+        $this->foo = $foo;
     }
 
     public function getFoo() : string
@@ -28,24 +31,35 @@ class Foo
     }
 }
 
-$startTime = microtime(true);
-$factory   = new LazyLoadingGhostFactory();
+(static function () : void {
+    $startTime = microtime(true);
+    $factory   = new LazyLoadingGhostFactory();
+    $i         = 0;
 
-for ($i = 0; $i < 1000; $i += 1) {
-    $proxy = $factory->createProxy(
-        Foo::class,
-        function (GhostObjectInterface $proxy, string $method, array $parameters, & $initializer, array $properties) {
-            $initializer = null;
+    do {
+        $proxy = $factory->createProxy(
+            Foo::class,
+            function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $parameters,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer = null;
 
-            $properties["\0Foo\0foo"] = 'Hello World!';
+                $properties["\0Foo\0foo"] = 'Hello World!';
 
-            return true;
-        }
-    );
-}
+                return true;
+            }
+        );
 
-var_dump('time after 1000 instantiations: ' . (microtime(true) - $startTime));
+        $i += 1;
+    } while ($i < 1000);
 
-echo $proxy->getFoo() . "\n";
+    var_dump('time after 1000 instantiations: ' . (microtime(true) - $startTime));
 
-var_dump('time after single call to doFoo: ' . (microtime(true) - $startTime));
+    echo $proxy->getFoo() . "\n";
+
+    var_dump('time after single call to doFoo: ' . (microtime(true) - $startTime));
+})();

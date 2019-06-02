@@ -2,21 +2,25 @@
 
 declare(strict_types=1);
 
+namespace ProxyManager\Example\RemoteProxyServer;
+
 use Zend\XmlRpc\Server;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 class Foo
 {
-    public function bar()
+    public function bar() : string
     {
         return 'bar remote!';
     }
 }
 
-$server = new Server();
+(static function () : void {
+    $server = new Server();
 
-$server->setClass(new Foo(), 'Foo');
-$server->setReturnResponse(false);
+    $server->setClass(new Foo(), 'Foo');
+    $server->setReturnResponse(false);
 
-$server->handle();
+    $server->handle();
+})();
