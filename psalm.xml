@@ -15,7 +15,7 @@
 
     <issueHandlers>
         <UndefinedClass>
-            <errorLevel type="info">
+            <errorLevel type="suppress">
                 <!-- zendframework/zend-server is not a direct package nor build dependency, and it should stay that way -->
                 <referencedClass name="Zend\Server\Client"/>
             </errorLevel>
