@@ -80,7 +80,7 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      * @psalm-param class-string<RealObjectType> $className
      * @psalm-param Closure(
      *   object|null=,
-     *   RealObjectType&GhostObjectInterface&LazyLoadingInterface<RealObjectType>=,
+     *   RealObjectType&GhostObjectInterface<RealObjectType>=,
      *   string=,
      *   array<string, mixed>=,
      *   ?Closure=,
@@ -88,7 +88,7 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      * ) : bool $initializer
      * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
      *
-     * @psalm-return RealObjectType&GhostObjectInterface&LazyLoadingInterface<RealObjectType>
+     * @psalm-return RealObjectType&GhostObjectInterface<RealObjectType>
      *
      * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
      *                                         interfaced (by design)

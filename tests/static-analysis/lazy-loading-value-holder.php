@@ -15,55 +15,57 @@ class MyProxiedClass
     }
 }
 
-echo (new LazyLoadingValueHolderFactory())
-    ->createProxy(
-        MyProxiedClass::class,
-        static function (
-            ?object & $instance,
+(static function () : void {
+    echo (new LazyLoadingValueHolderFactory())
+        ->createProxy(
+            MyProxiedClass::class,
+            static function (
+                ?object & $instance,
+                LazyLoadingInterface $proxy,
+                string $method,
+                array $parameters,
+                ?\Closure & $initializer
+            ) : bool {
+                $instance    = new MyProxiedClass();
+                $initializer = null; // disable initialization
+
+                return true;
+            }
+        )
+        ->sayHello();
+
+    $valueHolder = (new LazyLoadingValueHolderFactory())
+        ->createProxy(MyProxiedClass::class, static function (
+            ?object & $wrappedObject,
             LazyLoadingInterface $proxy,
             string $method,
             array $parameters,
             ?\Closure & $initializer
         ) : bool {
-            $instance    = new MyProxiedClass();
-            $initializer = null; // disable initialization
+            $initializer   = null; // disable initialization
+            $wrappedObject = new MyProxiedClass();
 
             return true;
-        }
-    )
-    ->sayHello();
+        });
 
-$valueHolder = (new LazyLoadingValueHolderFactory())
-    ->createProxy(MyProxiedClass::class, static function (
-        ?object & $wrappedObject,
+    $valueHolder->initializeProxy();
+
+    $wrappedValue = $valueHolder->getWrappedValueHolderValue();
+
+    assert(null !== $wrappedValue);
+
+    echo $wrappedValue->sayHello();
+
+    $valueHolder->setProxyInitializer(static function (
+        ?object & $instance,
         LazyLoadingInterface $proxy,
         string $method,
         array $parameters,
         ?\Closure & $initializer
     ) : bool {
-        $initializer   = null; // disable initialization
-        $wrappedObject = new MyProxiedClass();
+        $instance    = new MyProxiedClass();
+        $initializer = null; // disable initialization
 
         return true;
     });
-
-$valueHolder->initializeProxy();
-
-$wrappedValue = $valueHolder->getWrappedValueHolderValue();
-
-assert(null !== $wrappedValue);
-
-echo $wrappedValue->sayHello();
-
-$valueHolder->setProxyInitializer(static function (
-    ?object & $instance,
-    LazyLoadingInterface $proxy,
-    string $method,
-    array $parameters,
-    ?\Closure & $initializer
-) : bool {
-    $instance    = new MyProxiedClass();
-    $initializer = null; // disable initialization
-
-    return true;
-});
+})();

@@ -9,47 +9,49 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 class MyProxiedClass
 {
+    private string $hello = 'Hello!';
+
     public function sayHello() : string
     {
-        return 'Hello!';
+        return $this->hello;
     }
 }
 
-echo (new LazyLoadingGhostFactory())
-    ->createProxy(
-        MyProxiedClass::class,
-        static function (
-            ?object & $instance,
-            LazyLoadingInterface $proxy,
-            string $method,
-            array $parameters,
-            ?\Closure & $initializer,
-            array $properties
-        ) : bool {
-            $initializer = null; // disable initialization
+(static function () : void {
+    echo (new LazyLoadingGhostFactory())
+        ->createProxy(
+            MyProxiedClass::class,
+            static function (
+                LazyLoadingInterface $proxy,
+                string $method,
+                array $parameters,
+                ?\Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer = null; // disable initialization
 
-            return true;
-        }
-    )
-    ->sayHello();
+                return true;
+            }
+        )
+        ->sayHello();
 
-$lazyLoadingGhost = (new LazyLoadingGhostFactory())
-    ->createProxy(
-        MyProxiedClass::class,
-        static function () : bool {
-            return true;
-        }
-    );
+    $lazyLoadingGhost = (new LazyLoadingGhostFactory())
+        ->createProxy(
+            MyProxiedClass::class,
+            static function () : bool {
+                return true;
+            }
+        );
 
-$lazyLoadingGhost->setProxyInitializer(static function (
-    ?object & $instance,
-    LazyLoadingInterface $proxy,
-    string $method,
-    array $parameters,
-    ?\Closure & $initializer,
-    array $properties
-) : bool {
-    $initializer = null; // disable initialization
+    $lazyLoadingGhost->setProxyInitializer(static function (
+        LazyLoadingInterface $proxy,
+        string $method,
+        array $parameters,
+        ?\Closure & $initializer,
+        array $properties
+    ) : bool {
+        $initializer = null; // disable initialization
 
-    return true;
-});
+        return true;
+    });
+})();
