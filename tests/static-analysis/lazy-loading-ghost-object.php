@@ -3,7 +3,7 @@
 namespace StaticAnalysis\LazyLoadingGhostObject;
 
 use ProxyManager\Factory\LazyLoadingGhostFactory;
-use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\GhostObjectInterface;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -22,7 +22,7 @@ class MyProxiedClass
         ->createProxy(
             MyProxiedClass::class,
             static function (
-                LazyLoadingInterface $proxy,
+                GhostObjectInterface $proxy,
                 string $method,
                 array $parameters,
                 ?\Closure & $initializer,
@@ -44,7 +44,7 @@ class MyProxiedClass
         );
 
     $lazyLoadingGhost->setProxyInitializer(static function (
-        LazyLoadingInterface $proxy,
+        GhostObjectInterface $proxy,
         string $method,
         array $parameters,
         ?\Closure & $initializer,

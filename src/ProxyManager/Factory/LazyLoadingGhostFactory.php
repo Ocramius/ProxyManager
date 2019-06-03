@@ -79,7 +79,6 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      *
      * @psalm-param class-string<RealObjectType> $className
      * @psalm-param Closure(
-     *   object|null=,
      *   RealObjectType&GhostObjectInterface<RealObjectType>=,
      *   string=,
      *   array<string, mixed>=,
