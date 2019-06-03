@@ -10,7 +10,8 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 class MyProxiedClass
 {
-    public function sayHello() : ?string
+    /** @return string|null return type cannot be enforced on a null object - nothing is ever returned */
+    public function sayHello()
     {
         return 'Hello!';
     }
