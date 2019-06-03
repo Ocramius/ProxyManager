@@ -37,7 +37,7 @@
         "phpbench/phpbench":            "^0.16.9",
         "infection/infection":          "^0.12.2",
         "symfony/console":              "^4.2.4",
-        "vimeo/psalm":                  "dev-master"
+        "vimeo/psalm":                  "^3.4.0"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
