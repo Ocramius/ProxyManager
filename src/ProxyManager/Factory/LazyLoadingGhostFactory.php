@@ -8,6 +8,7 @@ use Closure;
 use OutOfBoundsException;
 use ProxyManager\Configuration;
 use ProxyManager\Proxy\GhostObjectInterface;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
@@ -73,6 +74,23 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
      * @throws MissingSignatureException
      * @throws InvalidSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType as object
+     *
+     * @psalm-param class-string<RealObjectType> $className
+     * @psalm-param Closure(
+     *   RealObjectType&GhostObjectInterface<RealObjectType>=,
+     *   string=,
+     *   array<string, mixed>=,
+     *   ?Closure=,
+     *   array<string, mixed>=
+     * ) : bool $initializer
+     * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
+     *
+     * @psalm-return RealObjectType&GhostObjectInterface<RealObjectType>
+     *
+     * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
+     *                                         interfaced (by design)
      */
     public function createProxy(
         string $className,
@@ -81,6 +99,12 @@ class LazyLoadingGhostFactory extends AbstractBaseFactory
     ) : GhostObjectInterface {
         $proxyClassName = $this->generateProxy($className, $proxyOptions);
 
+        /**
+         * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
         return $proxyClassName::staticProxyConstructor($initializer);
     }
 }

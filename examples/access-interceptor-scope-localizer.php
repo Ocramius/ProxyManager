@@ -7,9 +7,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace ProxyManager\Example\AccessInterceptorScopeLocalizer;
 
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
+use ProxyManager\Proxy\AccessInterceptorInterface;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class FluentCounter
 {
@@ -23,25 +26,25 @@ class FluentCounter
     }
 }
 
-$factory = new AccessInterceptorScopeLocalizerFactory();
-$foo     = new FluentCounter();
+(static function () : void {
+    $factory = new AccessInterceptorScopeLocalizerFactory();
+    $foo     = new FluentCounter();
+    $proxy   = $factory->createProxy(
+        $foo,
+        [
+            'fluentMethod' => static function (AccessInterceptorInterface $proxy, FluentCounter $realInstance) : void {
+                echo "pre-fluentMethod #{$realInstance->counter}!\n";
+            },
+        ],
+        [
+            'fluentMethod' => static function (AccessInterceptorInterface $proxy, FluentCounter $realInstance) : void {
+                echo "post-fluentMethod #{$realInstance->counter}!\n";
+            },
+        ]
+    );
 
-/** @var FluentCounter $proxy */
-$proxy = $factory->createProxy(
-    $foo,
-    [
-        'fluentMethod' => function ($proxy) : void {
-            echo "pre-fluentMethod #{$proxy->counter}!\n";
-        },
-    ],
-    [
-        'fluentMethod' => function ($proxy) : void {
-            echo "post-fluentMethod #{$proxy->counter}!\n";
-        },
-    ]
-);
+    $proxy->fluentMethod()->fluentMethod()->fluentMethod()->fluentMethod();
 
-$proxy->fluentMethod()->fluentMethod()->fluentMethod()->fluentMethod();
-
-echo 'The proxy counter is now at ' . $proxy->counter . "\n";
-echo 'The real instance counter is now at ' . $foo->counter . "\n";
+    echo 'The proxy counter is now at ' . $proxy->counter . "\n";
+    echo 'The real instance counter is now at ' . $foo->counter . "\n";
+})();

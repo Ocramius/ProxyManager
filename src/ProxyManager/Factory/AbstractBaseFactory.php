@@ -25,7 +25,8 @@ abstract class AbstractBaseFactory
     /**
      * Cached checked class names
      *
-     * @var string[]
+     * @var array<string, string>
+     * @psalm-var array<string, class-string>
      */
     private array $checkedClasses = [];
 
@@ -37,11 +38,17 @@ abstract class AbstractBaseFactory
     /**
      * Generate a proxy from a class name
      *
-     * @param mixed[] $proxyOptions
+     * @param array<string, mixed> $proxyOptions
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType of object
+     *
+     * @psalm-param class-string<RealObjectType> $className
+     *
+     * @psalm-return class-string<RealObjectType>
      */
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
@@ -81,8 +88,11 @@ abstract class AbstractBaseFactory
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
      *
-     * @param string[] $proxyParameters
-     * @param mixed[]  $proxyOptions
+     * @param array<string, mixed> $proxyParameters
+     * @param array<string, mixed> $proxyOptions
+     *
+     * @psalm-param class-string $proxyClassName
+     * @psalm-param class-string $className
      */
     private function generateProxyClass(
         string $proxyClassName,
@@ -93,10 +103,12 @@ abstract class AbstractBaseFactory
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 
+        /** @psalm-suppress TooManyArguments - generator interface was not updated due to BC compliance */
         $this->getGenerator()->generate(new ReflectionClass($className), $phpClass, $proxyOptions);
 
         $phpClass = $this->configuration->getClassSignatureGenerator()->addSignature($phpClass, $proxyParameters);
 
+        /** @psalm-suppress TooManyArguments - generator interface was not updated due to BC compliance */
         $this->configuration->getGeneratorStrategy()->generate($phpClass, $proxyOptions);
 
         $autoloader = $this->configuration->getProxyAutoloader();

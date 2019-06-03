@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace ProxyManager\Example\VirtualProxy;
 
+use Closure;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class Foo
 {
@@ -19,23 +22,30 @@ class Foo
     }
 }
 
-$startTime = microtime(true);
-$factory   = new LazyLoadingValueHolderFactory();
+(static function () : void {
+    $startTime = microtime(true);
+    $factory   = new LazyLoadingValueHolderFactory();
+    $i         = 0;
 
-for ($i = 0; $i < 1000; $i += 1) {
-    $proxy = $factory->createProxy(
-        Foo::class,
-        function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
-            $initializer   = null;
-            $wrappedObject = new Foo();
+    do {
+        $proxy = $factory->createProxy(
+            Foo::class,
+            static function (
+                ?object & $wrappedObject, ?object $proxy, string $method, array $parameters, ?Closure & $initializer
+            ) {
+                $initializer = null;
+                $wrappedObject = new Foo();
 
-            return true;
-        }
-    );
-}
+                return true;
+            }
+        );
 
-var_dump('time after 1000 instantiations: ' . (microtime(true) - $startTime));
+        $i += 1;
+    } while ($i < 1000);
 
-$proxy->doFoo();
+    var_dump('time after 1000 instantiations: ' . (microtime(true) - $startTime));
 
-var_dump('time after single call to doFoo: ' . (microtime(true) - $startTime));
+    $proxy->doFoo();
+
+    var_dump('time after single call to doFoo: ' . (microtime(true) - $startTime));
+})();

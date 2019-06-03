@@ -38,6 +38,7 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
      */
     public function generate(ClassGenerator $classGenerator) : string
     {
+        /** @var string $code */
         $code = $classGenerator->generate();
 
         // @codeCoverageIgnoreStart

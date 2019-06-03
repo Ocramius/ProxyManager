@@ -57,7 +57,7 @@ final class Properties
     }
 
     /**
-     * @param string[] $excludedProperties
+     * @param array<int, string> $excludedProperties
      */
     public function filter(array $excludedProperties) : self
     {
@@ -130,6 +130,7 @@ final class Properties
         return new self(array_filter(
             $this->properties,
             static function (ReflectionProperty $property) : bool {
+                /** @var ReflectionType|null $type */
                 $type = $property->getType();
 
                 return $type === null || $type->allowsNull();
@@ -148,7 +149,7 @@ final class Properties
     }
 
     /**
-     * @return ReflectionProperty[] indexed by the property internal visibility-aware name
+     * @return array<string, ReflectionProperty> indexed by the property internal visibility-aware name
      */
     public function getPublicProperties() : array
     {
@@ -166,7 +167,7 @@ final class Properties
     }
 
     /**
-     * @return ReflectionProperty[] indexed by the property internal visibility-aware name (\0*\0propertyName)
+     * @return array<string, ReflectionProperty> indexed by the property internal visibility-aware name (\0*\0propertyName)
      */
     public function getProtectedProperties() : array
     {
@@ -184,7 +185,7 @@ final class Properties
     }
 
     /**
-     * @return ReflectionProperty[] indexed by the property internal visibility-aware name (\0ClassName\0propertyName)
+     * @return array<string, ReflectionProperty> indexed by the property internal visibility-aware name (\0ClassName\0propertyName)
      */
     public function getPrivateProperties() : array
     {
@@ -204,7 +205,7 @@ final class Properties
     }
 
     /**
-     * @return ReflectionProperty[] indexed by the property internal visibility-aware name (\0*\0propertyName)
+     * @return array<string, ReflectionProperty> indexed by the property internal visibility-aware name (\0*\0propertyName)
      */
     public function getAccessibleProperties() : array
     {
@@ -212,23 +213,21 @@ final class Properties
     }
 
     /**
-     * @return ReflectionProperty[][] indexed by class name and property name
+     * @return array<class-string, array<string, ReflectionProperty>> indexed by class name and property name
      */
     public function getGroupedPrivateProperties() : array
     {
         $propertiesMap = [];
 
         foreach ($this->getPrivateProperties() as $property) {
-            $class = &$propertiesMap[$property->getDeclaringClass()->getName()];
-
-            $class[$property->getName()] = $property;
+            $propertiesMap[$property->getDeclaringClass()->getName()][$property->getName()] = $property;
         }
 
         return $propertiesMap;
     }
 
     /**
-     * @return ReflectionProperty[] indexed by the property internal visibility-aware name (\0*\0propertyName)
+     * @return array<string, ReflectionProperty> indexed by the property internal visibility-aware name (\0*\0propertyName)
      */
     public function getInstanceProperties() : array
     {

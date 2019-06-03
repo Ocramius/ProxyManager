@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\Generator;
 
 use Zend\Code\Generator\ClassGenerator as ZendClassGenerator;
+use function array_map;
 use function trim;
 
 /**
@@ -15,7 +16,7 @@ class ClassGenerator extends ZendClassGenerator
     /**
      * {@inheritDoc}
      */
-    public function setExtendedClass($extendedClass) : parent
+    public function setExtendedClass($extendedClass) : ZendClassGenerator
     {
         if ($extendedClass) {
             $extendedClass = '\\' . trim($extendedClass, '\\');
@@ -26,13 +27,18 @@ class ClassGenerator extends ZendClassGenerator
 
     /**
      * {@inheritDoc}
+     *
+     * @param array<int, string> $interfaces
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType parent interface does not specify type of array values
      */
-    public function setImplementedInterfaces(array $interfaces) : parent
+    public function setImplementedInterfaces(array $interfaces) : ZendClassGenerator
     {
-        foreach ($interfaces as & $interface) {
-            $interface = '\\' . trim($interface, '\\');
-        }
-
-        return parent::setImplementedInterfaces($interfaces);
+        return parent::setImplementedInterfaces(array_map(
+            static function (string $interface) : string {
+                return '\\' . trim($interface, '\\');
+            },
+            $interfaces
+        ));
     }
 }

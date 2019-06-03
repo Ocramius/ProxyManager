@@ -31,5 +31,6 @@ class SetProxyInitializer extends MethodGenerator
         $initializerParameter->setDefaultValue(null);
         $this->setParameter($initializerParameter);
         $this->setBody('$this->' . $initializerProperty->getName() . ' = $initializer;');
+        $this->setReturnType('void');
     }
 }

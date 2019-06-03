@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<psalm
+    totallyTyped="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="examples"/>
+        <directory name="src"/>
+        <directory name="tests/static-analysis"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <!-- uses dependencies that are not available while testing: -->
+            <file name="examples/remote-proxy.php"/>
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <!-- zendframework/zend-server is not a direct package nor build dependency, and it should stay that way -->
+                <referencedClass name="Zend\Http\Client\Adapter\Exception\RuntimeException"/>
+                <referencedClass name="Zend\Server\Client"/>
+                <referencedClass name="Zend\XmlRpc\Server"/>
+                <referencedClass name="Zend\XmlRpc\Client"/>
+            </errorLevel>
+        </UndefinedClass>
+        <LessSpecificReturnType errorLevel="error"/>
+
+        <DeprecatedMethod errorLevel="error"/>
+        <DeprecatedProperty errorLevel="error"/>
+        <DeprecatedClass errorLevel="error"/>
+        <DeprecatedConstant errorLevel="error"/>
+        <DeprecatedInterface errorLevel="error"/>
+        <DeprecatedTrait errorLevel="error"/>
+
+        <ForbiddenCode errorLevel="suppress"/>
+
+        <InternalMethod errorLevel="error"/>
+        <InternalProperty errorLevel="error"/>
+        <InternalClass errorLevel="error"/>
+
+        <MissingClosureReturnType errorLevel="error"/>
+        <MissingReturnType errorLevel="error"/>
+        <MissingPropertyType errorLevel="error"/>
+        <InvalidDocblock errorLevel="error"/>
+        <MisplacedRequiredParam errorLevel="error"/>
+
+        <PropertyNotSetInConstructor errorLevel="suppress"/>
+        <MissingConstructor errorLevel="error"/>
+        <MissingClosureParamType errorLevel="error"/>
+        <MissingParamType errorLevel="error"/>
+        <RedundantCondition errorLevel="error"/>
+        <DocblockTypeContradiction errorLevel="error"/>
+        <RedundantConditionGivenDocblockType errorLevel="error"/>
+        <RawObjectIteration errorLevel="error"/>
+        <InvalidStringClass errorLevel="error"/>
+
+        <UnresolvableInclude errorLevel="suppress"/>
+    </issueHandlers>
+</psalm>

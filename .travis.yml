@@ -30,8 +30,14 @@ script:
   - php examples/ghost-object-skipped-properties.php
   - php examples/smart-reference.php
   - php examples/virtual-proxy.php
+  - php tests/static-analysis/access-interceptor-scope-localizer.php
+  - php tests/static-analysis/lazy-loading-ghost-object.php
+  - php tests/static-analysis/null-object.php
+  - php tests/static-analysis/access-interceptor-value-holder.php
+  - php tests/static-analysis/lazy-loading-value-holder.php
+  - php tests/static-analysis/remote-object.php
   - ./vendor/bin/phpcs
-  - ./vendor/bin/phpstan analyse
+  - ./vendor/bin/psalm
   - ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
 
 matrix:

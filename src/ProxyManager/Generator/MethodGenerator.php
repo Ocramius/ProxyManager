@@ -10,9 +10,6 @@ use Zend\Code\Reflection\MethodReflection;
 
 /**
  * Method generator that fixes minor quirks in ZF2's method generator
- *
- * @method DocBlockGenerator|null getDocBlock()
- * @method string|null getSourceContent()
  */
 class MethodGenerator extends ZendMethodGenerator
 {
@@ -28,5 +25,21 @@ class MethodGenerator extends ZendMethodGenerator
         $method->setBody('');
 
         return $method;
+    }
+
+    /**
+     * {@inheritDoc} override needed to specify type in more detail
+     */
+    public function getDocBlock() : ?DocBlockGenerator
+    {
+        return parent::getDocBlock();
+    }
+
+    /**
+     * {@inheritDoc} override needed to specify type in more detail
+     */
+    public function getSourceContent() : ?string
+    {
+        return parent::getSourceContent();
     }
 }

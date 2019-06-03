@@ -53,7 +53,6 @@ PHP;
 
         $unsetClosureCalls = [];
 
-        /** @var ReflectionProperty[] $privateProperties */
         foreach ($groups as $privateProperties) {
             /** @var ReflectionProperty $firstProperty */
             $firstProperty = reset($privateProperties);
@@ -68,7 +67,7 @@ PHP;
         return implode("\n\n", $unsetClosureCalls) . "\n\n";
     }
 
-    /** @param ReflectionProperty[] $properties */
+    /** @param array<string, ReflectionProperty> $properties */
     private static function generateUnsetClassPrivatePropertiesBlock(
         ReflectionClass $declaringClass,
         array $properties,
@@ -86,7 +85,7 @@ PHP;
         );
     }
 
-    /** @param ReflectionProperty[] $properties */
+    /** @param array<string, ReflectionProperty> $properties */
     private static function generateUnsetStatement(array $properties, string $instanceName) : string
     {
         return 'unset('

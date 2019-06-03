@@ -6,6 +6,7 @@ namespace ProxyManager\Factory;
 
 use Closure;
 use ProxyManager\Configuration;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -24,7 +25,25 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
         $this->generator = new LazyLoadingValueHolderGenerator();
     }
 
-    /** @param mixed[] $proxyOptions */
+    /**
+     * @param array<string, mixed> $proxyOptions
+     *
+     * @psalm-template RealObjectType of object
+     *
+     * @psalm-param class-string<RealObjectType> $className
+     * @psalm-param Closure(
+     *   object|null=,
+     *   RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface=,
+     *   string=,
+     *   array<string, mixed>=,
+     *   ?Closure=
+     * ) : bool $initializer
+     *
+     * @psalm-return RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface
+     *
+     * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
+     *                                         interfaced (by design)
+     */
     public function createProxy(
         string $className,
         Closure $initializer,
@@ -32,6 +51,12 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
     ) : VirtualProxyInterface {
         $proxyClassName = $this->generateProxy($className, $proxyOptions);
 
+        /**
+         * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
         return $proxyClassName::staticProxyConstructor($initializer);
     }
 

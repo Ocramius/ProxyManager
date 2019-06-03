@@ -36,16 +36,14 @@ class PrivatePropertiesMap extends PropertyGenerator
     }
 
     /**
-     * @return int[][]|mixed[][]
+     * @return array<string, array<class-string, bool>>
      */
     private function getMap(Properties $properties) : array
     {
         $map = [];
 
         foreach ($properties->getPrivateProperties() as $property) {
-            $propertyKey = & $map[$property->getName()];
-
-            $propertyKey[$property->getDeclaringClass()->getName()] = true;
+            $map[$property->getName()][$property->getDeclaringClass()->getName()] = true;
         }
 
         return $map;

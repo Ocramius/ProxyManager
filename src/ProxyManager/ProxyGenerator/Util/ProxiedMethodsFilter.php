@@ -10,6 +10,7 @@ use function array_filter;
 use function array_flip;
 use function array_key_exists;
 use function array_map;
+use function array_values;
 use function strtolower;
 
 /**
@@ -17,7 +18,7 @@ use function strtolower;
  */
 final class ProxiedMethodsFilter
 {
-    /** @var string[] */
+    /** @var array<int, string> */
     private static $defaultExcluded = [
         '__get',
         '__set',
@@ -29,8 +30,8 @@ final class ProxiedMethodsFilter
     ];
 
     /**
-     * @param ReflectionClass $class    reflection class from which methods should be extracted
-     * @param string[]        $excluded methods to be ignored
+     * @param ReflectionClass    $class    reflection class from which methods should be extracted
+     * @param array<int, string> $excluded methods to be ignored
      *
      * @return ReflectionMethod[]
      */
@@ -40,8 +41,8 @@ final class ProxiedMethodsFilter
     }
 
     /**
-     * @param ReflectionClass $class    reflection class from which methods should be extracted
-     * @param string[]        $excluded methods to be ignored
+     * @param ReflectionClass    $class    reflection class from which methods should be extracted
+     * @param array<int, string> $excluded methods to be ignored
      *
      * @return ReflectionMethod[]
      */
@@ -51,15 +52,15 @@ final class ProxiedMethodsFilter
     }
 
     /**
-     * @param string[] $excluded
+     * @param array<int, string> $excluded
      *
-     * @return ReflectionMethod[]
+     * @return array<int, ReflectionMethod>
      */
     private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false) : array
     {
         $ignored = array_flip(array_map('strtolower', $excluded));
 
-        return array_filter(
+        return array_values(array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
             static function (ReflectionMethod $method) use ($ignored, $requireAbstract) : bool {
                 return (! $requireAbstract || $method->isAbstract()) && ! (
@@ -67,7 +68,7 @@ final class ProxiedMethodsFilter
                     || self::methodCannotBeProxied($method)
                 );
             }
-        );
+        ));
     }
 
     /**

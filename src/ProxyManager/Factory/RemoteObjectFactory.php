@@ -21,7 +21,7 @@ use function is_object;
 class RemoteObjectFactory extends AbstractBaseFactory
 {
     protected AdapterInterface $adapter;
-    private RemoteObjectGenerator $generator;
+    private ?RemoteObjectGenerator $generator;
 
     /**
      * {@inheritDoc}
@@ -43,6 +43,15 @@ class RemoteObjectFactory extends AbstractBaseFactory
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType of object
+     *
+     * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
+     *
+     * @psalm-return RealObjectType&RemoteObjectInterface
+     *
+     * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
+     *                                         interfaced (by design)
      */
     public function createProxy($instanceOrClassName) : RemoteObjectInterface
     {
@@ -50,6 +59,12 @@ class RemoteObjectFactory extends AbstractBaseFactory
             is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName
         );
 
+        /**
+         * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)
+         *
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
         return $proxyClassName::staticProxyConstructor($this->adapter);
     }
 
@@ -58,6 +73,6 @@ class RemoteObjectFactory extends AbstractBaseFactory
      */
     protected function getGenerator() : ProxyGeneratorInterface
     {
-        return $this->generator ?: $this->generator = new RemoteObjectGenerator();
+        return $this->generator ?? $this->generator = new RemoteObjectGenerator();
     }
 }

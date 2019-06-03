@@ -51,6 +51,8 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      *
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
+     *
+     * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = [])
     {

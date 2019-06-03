@@ -149,7 +149,7 @@ PHP;
     }
 
     /**
-     * @param ReflectionProperty[] $properties indexed by internal name
+     * @param array<string, ReflectionProperty> $properties indexed by internal name
      */
     private function generatePrivatePropertiesAssignmentsCode(array $properties) : string
     {
