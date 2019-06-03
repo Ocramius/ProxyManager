@@ -26,43 +26,37 @@
                 <referencedClass name="Zend\XmlRpc\Client"/>
             </errorLevel>
         </UndefinedClass>
-        <LessSpecificReturnType errorLevel="info"/>
+        <LessSpecificReturnType errorLevel="error"/>
 
-        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
-
-        <DeprecatedMethod errorLevel="suppress"/>
-        <DeprecatedProperty errorLevel="suppress"/>
-        <DeprecatedClass errorLevel="suppress"/>
-        <DeprecatedConstant errorLevel="suppress"/>
-        <DeprecatedInterface errorLevel="suppress"/>
-        <DeprecatedTrait errorLevel="suppress"/>
+        <DeprecatedMethod errorLevel="error"/>
+        <DeprecatedProperty errorLevel="error"/>
+        <DeprecatedClass errorLevel="error"/>
+        <DeprecatedConstant errorLevel="error"/>
+        <DeprecatedInterface errorLevel="error"/>
+        <DeprecatedTrait errorLevel="error"/>
 
         <ForbiddenCode errorLevel="suppress"/>
 
-        <InternalMethod errorLevel="suppress"/>
-        <InternalProperty errorLevel="suppress"/>
-        <InternalClass errorLevel="suppress"/>
+        <InternalMethod errorLevel="error"/>
+        <InternalProperty errorLevel="error"/>
+        <InternalClass errorLevel="error"/>
 
-        <MissingClosureReturnType errorLevel="info"/>
-        <MissingReturnType errorLevel="info"/>
+        <MissingClosureReturnType errorLevel="error"/>
+        <MissingReturnType errorLevel="error"/>
         <MissingPropertyType errorLevel="error"/>
         <InvalidDocblock errorLevel="error"/>
         <MisplacedRequiredParam errorLevel="error"/>
 
         <PropertyNotSetInConstructor errorLevel="suppress"/>
         <MissingConstructor errorLevel="error"/>
-        <MissingClosureParamType errorLevel="info"/>
-        <MissingParamType errorLevel="info"/>
-
-        <RedundantCondition errorLevel="suppress"/>
-
+        <MissingClosureParamType errorLevel="error"/>
+        <MissingParamType errorLevel="error"/>
+        <RedundantCondition errorLevel="error"/>
         <DocblockTypeContradiction errorLevel="error"/>
         <RedundantConditionGivenDocblockType errorLevel="error"/>
+        <RawObjectIteration errorLevel="error"/>
+        <InvalidStringClass errorLevel="error"/>
 
         <UnresolvableInclude errorLevel="suppress"/>
-
-        <RawObjectIteration errorLevel="error"/>
-
-        <InvalidStringClass errorLevel="error"/>
     </issueHandlers>
 </psalm>
