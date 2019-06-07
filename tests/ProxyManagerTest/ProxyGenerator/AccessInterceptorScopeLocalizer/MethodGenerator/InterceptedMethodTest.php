@@ -49,8 +49,6 @@ final class InterceptedMethodTest extends TestCase
             $this->suffixInterceptors
         );
 
-        self::assertInstanceOf(MethodGenerator::class, $method);
-
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertStringMatchesFormat(
@@ -66,8 +64,6 @@ final class InterceptedMethodTest extends TestCase
             $this->prefixInterceptors,
             $this->suffixInterceptors
         );
-
-        self::assertInstanceOf(MethodGenerator::class, $method);
 
         self::assertSame('foo', $method->getName());
         self::assertCount(2, $method->getParameters());

@@ -16,7 +16,12 @@ use ProxyManager\Inflector\ClassNameInflectorInterface;
  */
 final class ClassNameInflectorTest extends TestCase
 {
-    /** @dataProvider getClassNames */
+    /**
+     * @param class-string $realClassName
+     * @param class-string $proxyClassName
+     *
+     * @dataProvider getClassNames
+     */
     public function testInflector(string $realClassName, string $proxyClassName) : void
     {
         $inflector = new ClassNameInflector('ProxyNS');
@@ -31,53 +36,62 @@ final class ClassNameInflectorTest extends TestCase
 
     public function testGeneratesSameClassNameWithSameParameters() : void
     {
+        /** @var class-string $fooBar */
+        $fooBar = 'Foo\\Bar';
         $inflector = new ClassNameInflector('ProxyNS');
 
-        self::assertSame($inflector->getProxyClassName('Foo\\Bar'), $inflector->getProxyClassName('Foo\\Bar'));
+        self::assertSame($inflector->getProxyClassName($fooBar), $inflector->getProxyClassName($fooBar));
         self::assertSame(
-            $inflector->getProxyClassName('Foo\\Bar', ['baz' => 'tab']),
-            $inflector->getProxyClassName('Foo\\Bar', ['baz' => 'tab'])
+            $inflector->getProxyClassName($fooBar, ['baz' => 'tab']),
+            $inflector->getProxyClassName($fooBar, ['baz' => 'tab'])
         );
         self::assertSame(
-            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz']),
-            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz'])
+            $inflector->getProxyClassName($fooBar, ['tab' => 'baz']),
+            $inflector->getProxyClassName($fooBar, ['tab' => 'baz'])
         );
     }
 
     public function testGeneratesDifferentClassNameWithDifferentParameters() : void
     {
+        /** @var class-string $fooBar */
+        $fooBar = 'Foo\\Bar';
         $inflector = new ClassNameInflector('ProxyNS');
 
         self::assertNotSame(
-            $inflector->getProxyClassName('Foo\\Bar'),
-            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar'])
+            $inflector->getProxyClassName($fooBar),
+            $inflector->getProxyClassName($fooBar, ['foo' => 'bar'])
         );
         self::assertNotSame(
-            $inflector->getProxyClassName('Foo\\Bar', ['baz' => 'tab']),
-            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz'])
+            $inflector->getProxyClassName($fooBar, ['baz' => 'tab']),
+            $inflector->getProxyClassName($fooBar, ['tab' => 'baz'])
         );
         self::assertNotSame(
-            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar', 'tab' => 'baz']),
-            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar'])
+            $inflector->getProxyClassName($fooBar, ['foo' => 'bar', 'tab' => 'baz']),
+            $inflector->getProxyClassName($fooBar, ['foo' => 'bar'])
         );
         self::assertNotSame(
-            $inflector->getProxyClassName('Foo\\Bar', ['foo' => 'bar', 'tab' => 'baz']),
-            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz', 'foo' => 'bar'])
+            $inflector->getProxyClassName($fooBar, ['foo' => 'bar', 'tab' => 'baz']),
+            $inflector->getProxyClassName($fooBar, ['tab' => 'baz', 'foo' => 'bar'])
         );
     }
 
     public function testGeneratesCorrectClassNameWhenGivenLeadingBackslash() : void
     {
+        /** @var class-string $fooBar */
+        $fooBar = 'Foo\\Bar';
+        /** @var class-string $fooBarPrefixed */
+        $fooBarPrefixed = '\\Foo\\Bar';
         $inflector = new ClassNameInflector('ProxyNS');
 
         self::assertSame(
-            $inflector->getProxyClassName('\\Foo\\Bar', ['tab' => 'baz']),
-            $inflector->getProxyClassName('Foo\\Bar', ['tab' => 'baz'])
+            $inflector->getProxyClassName($fooBarPrefixed, ['tab' => 'baz']),
+            $inflector->getProxyClassName($fooBar, ['tab' => 'baz'])
         );
     }
 
     /**
-     * @param mixed[] $parameters
+     * @param class-string $className
+     * @param array<string, mixed> $parameters
      *
      * @dataProvider getClassAndParametersCombinations
      */

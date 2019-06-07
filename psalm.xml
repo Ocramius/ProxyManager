@@ -10,6 +10,26 @@
         <directory name="src"/>
         <directory name="tests/static-analysis"/>
         <directory name="tests/ProxyManagerBench"/>
+        <directory name="tests/ProxyManagerTest/Autoloader"/>
+        <directory name="tests/ProxyManagerTest/Exception"/>
+        <!-- @TODO Factory/RemoteObject -->
+        <file name="tests/ProxyManagerTest/Factory/AbstractBaseFactoryTest.php"/>
+        <file name="tests/ProxyManagerTest/Factory/AccessInterceptorScopeLocalizerFactoryTest.php"/>
+        <file name="tests/ProxyManagerTest/Factory/AccessInterceptorValueHolderFactoryTest.php"/>
+        <file name="tests/ProxyManagerTest/Factory/LazyLoadingGhostFactoryTest.php"/>
+        <file name="tests/ProxyManagerTest/Factory/LazyLoadingValueHolderFactoryTest.php"/>
+        <file name="tests/ProxyManagerTest/Factory/NullObjectFactoryTest.php"/>
+        <file name="tests/ProxyManagerTest/Factory/RemoteObjectFactoryTest.php"/>
+        <directory name="tests/ProxyManagerTest/FileLocator"/>
+        <!-- @TODO Functional -->
+        <directory name="tests/ProxyManagerTest/Generator"/>
+        <directory name="tests/ProxyManagerTest/GeneratorStrategy"/>
+        <directory name="tests/ProxyManagerTest/Inflector"/>
+        <directory name="tests/ProxyManagerTest/ProxyGenerator"/>
+        <directory name="tests/ProxyManagerTest/Signature"/>
+        <file name="tests/ProxyManagerTest/Assert.php"/>
+        <file name="tests/ProxyManagerTest/ConfigurationTest.php"/>
+        <file name="tests/ProxyManagerTest/VersionTest.php"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <!-- uses dependencies that are not available while testing: -->
@@ -38,7 +58,7 @@
 
         <ForbiddenCode errorLevel="suppress"/>
 
-        <InternalMethod errorLevel="error"/>
+        <InternalMethod errorLevel="suppress"/>
         <InternalProperty errorLevel="error"/>
         <InternalClass errorLevel="error"/>
 

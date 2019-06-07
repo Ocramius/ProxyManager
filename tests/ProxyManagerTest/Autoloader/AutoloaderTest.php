@@ -49,6 +49,7 @@ final class AutoloaderTest extends TestCase
      */
     public function testWillNotAutoloadUserClasses() : void
     {
+        /** @var class-string $className */
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
             ->classNameInflector
@@ -65,6 +66,7 @@ final class AutoloaderTest extends TestCase
      */
     public function testWillNotAutoloadNonExistingClass() : void
     {
+        /** @var class-string $className */
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
         $this
             ->classNameInflector
@@ -96,6 +98,7 @@ final class AutoloaderTest extends TestCase
     {
         $namespace = 'Foo';
         $className = UniqueIdentifierGenerator::getIdentifier('Bar');
+        /** @var class-string $fqcn */
         $fqcn      = $namespace . '\\' . $className;
         $fileName  = sys_get_temp_dir() . '/foo_' . uniqid('file', true) . '.php';
 
@@ -117,6 +120,7 @@ final class AutoloaderTest extends TestCase
         self::assertTrue(class_exists($fqcn, false));
     }
 
+    /** @psalm-param class-string $className */
     private function autoloadWithoutFurtherAutoloaders(string $className) : bool
     {
         $failingAutoloader = null;

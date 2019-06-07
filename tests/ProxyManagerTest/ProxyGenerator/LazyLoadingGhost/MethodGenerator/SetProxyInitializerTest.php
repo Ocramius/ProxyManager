@@ -35,10 +35,8 @@ final class SetProxyInitializerTest extends TestCase
         self::assertSame('setProxyInitializer', $setter->getName());
         self::assertCount(1, $parameters);
 
-        /** @var ParameterGenerator $initializer */
         $initializer = array_shift($parameters);
 
-        self::assertInstanceOf(ParameterGenerator::class, $initializer);
         self::assertSame('initializer', $initializer->getName());
         self::assertSame('$this->foo = $initializer;', $setter->getBody());
         self::assertEquals(TypeGenerator::fromTypeString('void'), $setter->getReturnType());

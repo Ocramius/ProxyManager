@@ -81,11 +81,7 @@ final class NullObjectFactoryTest extends TestCase
             ->with('stdClass')
             ->willReturn(NullObjectMock::class);
 
-        $factory = new NullObjectFactory($this->config);
-        /** @var NullObjectMock $proxy */
-        $proxy = $factory->createProxy($instance);
-
-        self::assertInstanceOf(NullObjectMock::class, $proxy);
+        (new NullObjectFactory($this->config))->createProxy($instance);
     }
 
     /**

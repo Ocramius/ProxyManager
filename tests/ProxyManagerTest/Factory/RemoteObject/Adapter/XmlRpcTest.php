@@ -24,7 +24,6 @@ final class XmlRpcTest extends TestCase
      */
     public function testCanBuildAdapterWithXmlRpcClient() : void
     {
-        /** @var Client&MockObject $client */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $adapter = new XmlRpc($client);
@@ -32,9 +31,9 @@ final class XmlRpcTest extends TestCase
         $client
             ->expects(self::once())
             ->method('call')
-            ->with('foo.bar', ['tab' => 'taz'])
+            ->with('foo.bar', ['taz'])
             ->willReturn('baz');
 
-        self::assertSame('baz', $adapter->call('foo', 'bar', ['tab' => 'taz']));
+        self::assertSame('baz', $adapter->call('foo', 'bar', ['taz']));
     }
 }

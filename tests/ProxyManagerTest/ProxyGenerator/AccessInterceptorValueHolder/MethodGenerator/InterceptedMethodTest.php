@@ -41,8 +41,6 @@ final class InterceptedMethodTest extends TestCase
             $suffixInterceptors
         );
 
-        self::assertInstanceOf(MethodGenerator::class, $method);
-
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertGreaterThan(
