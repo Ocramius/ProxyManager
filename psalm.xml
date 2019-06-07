@@ -9,6 +9,7 @@
         <directory name="examples"/>
         <directory name="src"/>
         <directory name="tests/static-analysis"/>
+        <directory name="tests/ProxyManagerBench"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <!-- uses dependencies that are not available while testing: -->

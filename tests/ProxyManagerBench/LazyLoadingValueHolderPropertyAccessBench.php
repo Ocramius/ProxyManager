@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace ProxyManagerBench;
 
+use Closure;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
@@ -195,15 +197,26 @@ final class LazyLoadingValueHolderPropertyAccessBench
         unset($this->initializedMixedPropertiesProxy->publicProperty0);
     }
 
+    /**
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $originalClass
+     * @psalm-return RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface
+     *
+     * @psalm-suppress MixedInferredReturnType
+     */
     private function buildProxy(string $originalClass) : VirtualProxyInterface
     {
+        /**
+         * @psalm-suppress MixedReturnStatement
+         * @psalm-suppress MixedMethodCall
+         */
         return $this->generateProxyClass($originalClass)::staticProxyConstructor(
             static function (
-                & $valueHolder,
+                ?object & $valueHolder,
                 VirtualProxyInterface $proxy,
                 string $method,
-                $params,
-                & $initializer
+                array $params,
+                ?Closure & $initializer
             ) use ($originalClass) : bool {
                 $initializer = null;
 
@@ -214,6 +227,13 @@ final class LazyLoadingValueHolderPropertyAccessBench
         );
     }
 
+    /**
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $originalClassName
+     * @psalm-return class-string<OriginalClass>
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     */
     private function generateProxyClass(string $originalClassName) : string
     {
         $generatedClassName = self::class . '\\' . $originalClassName;
@@ -227,6 +247,7 @@ final class LazyLoadingValueHolderPropertyAccessBench
         (new LazyLoadingValueHolderGenerator())->generate(new ReflectionClass($originalClassName), $generatedClass);
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);
 
+        /** @psalm-suppress LessSpecificReturnStatement */
         return $generatedClassName;
     }
 }

@@ -23,10 +23,15 @@ use function class_exists;
  */
 final class LazyLoadingGhostInstantiationBench
 {
+    /** @psalm-var class-string<EmptyClass> */
     private string $emptyClassProxy;
+    /** @psalm-var class-string<ClassWithPrivateProperties> */
     private string $privatePropertiesProxy;
+    /** @psalm-var class-string<ClassWithProtectedProperties> */
     private string $protectedPropertiesProxy;
+    /** @psalm-var class-string<ClassWithPublicProperties> */
     private string $publicPropertiesProxy;
+    /** @psalm-var class-string<ClassWithMixedProperties> */
     private string $mixedPropertiesProxy;
 
     public function setUp() : void
@@ -45,6 +50,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchInstantiationOfEmptyObject() : void
     {
+        /** @psalm-suppress UndefinedMethod */
         $this->emptyClassProxy::staticProxyConstructor(static function () : void {
         });
     }
@@ -56,6 +62,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchInstantiationOfObjectWithPrivateProperties() : void
     {
+        /** @psalm-suppress UndefinedMethod */
         $this->privatePropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
@@ -67,6 +74,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchInstantiationOfObjectWithProtectedProperties() : void
     {
+        /** @psalm-suppress UndefinedMethod */
         $this->protectedPropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
@@ -78,6 +86,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchInstantiationOfObjectWithPublicProperties() : void
     {
+        /** @psalm-suppress UndefinedMethod */
         $this->publicPropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
@@ -89,10 +98,18 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchInstantiationOfObjectWithMixedProperties() : void
     {
+        /** @psalm-suppress UndefinedMethod */
         $this->mixedPropertiesProxy::staticProxyConstructor(static function () : void {
         });
     }
 
+    /**
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $originalClass
+     * @psalm-return class-string<OriginalClass>
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     */
     private function generateProxy(string $originalClass) : string
     {
         $generatedClassName = self::class . '\\' . $originalClass;
@@ -106,6 +123,7 @@ final class LazyLoadingGhostInstantiationBench
         (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($originalClass), $generatedClass, []);
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);
 
+        /** @psalm-suppress LessSpecificReturnStatement */
         return $generatedClassName;
     }
 }

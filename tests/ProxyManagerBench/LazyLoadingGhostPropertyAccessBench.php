@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace ProxyManagerBench;
 
+use Closure;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
@@ -296,10 +298,21 @@ final class LazyLoadingGhostPropertyAccessBench
         unset($this->initializedMixedPropertiesProxy->publicProperty0);
     }
 
-    private function buildProxy(string $originalClass) : LazyLoadingInterface
+    /**
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $originalClass
+     * @psalm-return OriginalClass&GhostObjectInterface<OriginalClass>
+     *
+     * @psalm-suppress MixedInferredReturnType
+     */
+    private function buildProxy(string $originalClass) : GhostObjectInterface
     {
+        /**
+         * @psalm-suppress MixedReturnStatement
+         * @psalm-suppress MixedMethodCall
+         */
         return $this->generateProxyClass($originalClass)::staticProxyConstructor(
-            static function ($proxy, string $method, $params, & $initializer) : bool {
+            static function (object $proxy, string $method, array $params, ?Closure & $initializer) : bool {
                 $initializer = null;
 
                 return true;
@@ -307,6 +320,13 @@ final class LazyLoadingGhostPropertyAccessBench
         );
     }
 
+    /**
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $originalClass
+     * @psalm-return class-string<OriginalClass>
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     */
     private function generateProxyClass(string $originalClassName) : string
     {
         $generatedClassName = self::class . '\\' . $originalClassName;
@@ -320,6 +340,7 @@ final class LazyLoadingGhostPropertyAccessBench
         (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($originalClassName), $generatedClass, []);
         (new EvaluatingGeneratorStrategy())->generate($generatedClass);
 
+        /** @psalm-suppress LessSpecificReturnStatement */
         return $generatedClassName;
     }
 }
