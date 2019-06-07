@@ -37,7 +37,7 @@ final class ClassNameInflectorTest extends TestCase
     public function testGeneratesSameClassNameWithSameParameters() : void
     {
         /** @var class-string $fooBar */
-        $fooBar = 'Foo\\Bar';
+        $fooBar    = 'Foo\\Bar';
         $inflector = new ClassNameInflector('ProxyNS');
 
         self::assertSame($inflector->getProxyClassName($fooBar), $inflector->getProxyClassName($fooBar));
@@ -54,7 +54,7 @@ final class ClassNameInflectorTest extends TestCase
     public function testGeneratesDifferentClassNameWithDifferentParameters() : void
     {
         /** @var class-string $fooBar */
-        $fooBar = 'Foo\\Bar';
+        $fooBar    = 'Foo\\Bar';
         $inflector = new ClassNameInflector('ProxyNS');
 
         self::assertNotSame(
@@ -81,7 +81,7 @@ final class ClassNameInflectorTest extends TestCase
         $fooBar = 'Foo\\Bar';
         /** @var class-string $fooBarPrefixed */
         $fooBarPrefixed = '\\Foo\\Bar';
-        $inflector = new ClassNameInflector('ProxyNS');
+        $inflector      = new ClassNameInflector('ProxyNS');
 
         self::assertSame(
             $inflector->getProxyClassName($fooBarPrefixed, ['tab' => 'baz']),
@@ -90,7 +90,7 @@ final class ClassNameInflectorTest extends TestCase
     }
 
     /**
-     * @param class-string $className
+     * @param class-string         $className
      * @param array<string, mixed> $parameters
      *
      * @dataProvider getClassAndParametersCombinations

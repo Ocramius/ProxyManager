@@ -97,15 +97,17 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->willReturn(AccessInterceptorValueHolderMock::class);
 
         $factory            = new AccessInterceptorValueHolderFactory($this->config);
-        $prefixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $prefixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
-        $suffixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $suffixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
-        $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
+        $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertSame($instance, $proxy->instance);
         self::assertSame($prefixInterceptors, $proxy->prefixInterceptors);
@@ -123,7 +125,7 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
      */
     public function testWillTryAutoGeneration() : void
     {
-        $instance       = new stdClass();
+        $instance = new stdClass();
         /** @var class-string $proxyClassName */
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
@@ -175,13 +177,15 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory            = new AccessInterceptorValueHolderFactory($this->config);
-        $prefixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $prefixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
-        $suffixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $suffixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
         /** @var AccessInterceptorValueHolderMock $proxy */
         $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);

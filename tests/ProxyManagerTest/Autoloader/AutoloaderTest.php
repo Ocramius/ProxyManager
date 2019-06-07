@@ -99,8 +99,8 @@ final class AutoloaderTest extends TestCase
         $namespace = 'Foo';
         $className = UniqueIdentifierGenerator::getIdentifier('Bar');
         /** @var class-string $fqcn */
-        $fqcn      = $namespace . '\\' . $className;
-        $fileName  = sys_get_temp_dir() . '/foo_' . uniqid('file', true) . '.php';
+        $fqcn     = $namespace . '\\' . $className;
+        $fileName = sys_get_temp_dir() . '/foo_' . uniqid('file', true) . '.php';
 
         file_put_contents($fileName, '<?php namespace ' . $namespace . '; class ' . $className . '{}');
 

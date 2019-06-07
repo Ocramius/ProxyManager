@@ -100,7 +100,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
         $initializer = static function () : bool {
             return true;
         };
-        $proxy = $factory->createProxy($className, $initializer);
+        $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertSame($initializer, $proxy->initializer);
     }
@@ -117,7 +117,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
     public function testWillTryAutoGeneration() : void
     {
         /** @var class-string $className */
-        $className      = UniqueIdentifierGenerator::getIdentifier('foo');
+        $className = UniqueIdentifierGenerator::getIdentifier('foo');
         /** @var class-string $proxyClassName */
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
@@ -169,7 +169,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
         $initializer = static function () : bool {
             return true;
         };
-        $proxy = $factory->createProxy($className, $initializer);
+        $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf($proxyClassName, $proxy);
 

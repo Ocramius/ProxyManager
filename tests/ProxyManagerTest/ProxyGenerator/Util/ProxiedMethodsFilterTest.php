@@ -33,7 +33,7 @@ final class ProxiedMethodsFilterTest extends TestCase
 {
     /**
      * @param array<int, string>|null $excludes
-     * @param string[]      $expectedMethods
+     * @param string[]                $expectedMethods
      *
      * @dataProvider expectedMethods
      */
@@ -56,7 +56,7 @@ final class ProxiedMethodsFilterTest extends TestCase
 
     /**
      * @param array<int, string>|null $excludes
-     * @param string[]      $expectedMethods
+     * @param string[]                $expectedMethods
      *
      * @dataProvider expectedAbstractPublicMethods
      */

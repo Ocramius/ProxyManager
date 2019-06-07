@@ -77,7 +77,8 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
 
         self::assertInstanceOf(
             Configuration::class,
-            Assert::readAttribute(new AccessInterceptorValueHolderFactory(),
+            Assert::readAttribute(
+                new AccessInterceptorValueHolderFactory(),
                 'configuration'
             )
         );
@@ -102,13 +103,15 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
             ->willReturn(AccessInterceptorValueHolderMock::class);
 
         $factory            = new AccessInterceptorScopeLocalizerFactory($this->config);
-        $prefixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $prefixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
-        $suffixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $suffixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
         /** @var AccessInterceptorValueHolderMock $proxy */
         $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
@@ -129,7 +132,7 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
      */
     public function testWillTryAutoGeneration() : void
     {
-        $instance       = new stdClass();
+        $instance = new stdClass();
         /** @var class-string $proxyClassName */
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
@@ -181,15 +184,17 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory            = new AccessInterceptorScopeLocalizerFactory($this->config);
-        $prefixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $prefixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
-        $suffixInterceptors = ['methodName' => static function () : void {
-            self::fail('Not supposed to be called');
-        },
+        $suffixInterceptors = [
+            'methodName' => static function () : void {
+                self::fail('Not supposed to be called');
+            },
         ];
-        $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
+        $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf($proxyClassName, $proxy);

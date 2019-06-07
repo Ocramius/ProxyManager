@@ -111,7 +111,6 @@ final class LazyLoadingValueHolderInstantiationBench
      * @psalm-template OriginalClass
      * @psalm-param class-string<OriginalClass> $originalClass
      * @psalm-return class-string<OriginalClass>
-     *
      * @psalm-suppress MoreSpecificReturnType
      */
     private function generateProxy(string $originalClass) : string

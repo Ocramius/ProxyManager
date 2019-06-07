@@ -33,9 +33,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     *
      * @psalm-param class-string $className
-     *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function testGeneratesValidCode(string $className) : void
