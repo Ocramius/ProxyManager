@@ -24,7 +24,8 @@
         "ocramius/package-versions": "^1.4.0"
     },
     "conflict": {
-        "zendframework/zend-stdlib": "<3.2.1"
+        "zendframework/zend-stdlib": "<3.2.1",
+        "doctrine/annotations": "<1.6.1"
     },
     "require-dev": {
         "ext-phar":                     "*",
