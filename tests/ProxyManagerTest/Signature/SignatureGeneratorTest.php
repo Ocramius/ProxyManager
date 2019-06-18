@@ -45,7 +45,7 @@ final class SignatureGeneratorTest extends TestCase
         self::assertSame($expected, $this->signatureGenerator->generateSignatureKey($parameters));
     }
 
-    /** @return array<int, array<int, array<string>|string> */
+    /** @return array<int, array<int, array<string>|string>> */
     public static function signatures() : array
     {
         return [
