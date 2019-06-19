@@ -12,17 +12,21 @@ use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Proxy\AccessInterceptorInterface;
+use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
+use ProxyManagerTestAsset\CallableInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
+use ProxyManagerTestAsset\ClassWithPublicArrayPropertyAccessibleViaMethod;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
@@ -51,21 +55,21 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue) : void
     {
-        $proxyName = $this->generateProxy($className);
-
-        /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $this->makeProxy($className, $instance);
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
         self::assertSame($instance, $proxy->getWrappedValueHolderValue());
         self::assertSame($expectedValue, $callback(...array_values($params)));
 
-        /** @var callable&MockObject $listener */
-        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
+        $listener = $this->createMock(CallableInterface::class);
         $listener
             ->expects(self::once())
             ->method('__invoke')
@@ -73,8 +77,14 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             $method,
-            static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
-                $listener($proxy, $instance, $method, $params, $returnEarly);
+            static function (
+                AccessInterceptorInterface $proxy,
+                object $instance,
+                string $method,
+                array $params,
+                bool & $returnEarly
+            ) use ($listener) : void {
+                $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
 
@@ -84,7 +94,13 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             $method,
-            static function ($proxy, $instance, string $method, $params, & $returnEarly) use ($random) : string {
+            static function (
+                AccessInterceptorInterface $proxy,
+                object $instance,
+                string $method,
+                array $params,
+                bool & $returnEarly
+            ) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -99,6 +115,10 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsWithSuffixListener(
         string $className,
@@ -107,16 +127,12 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy($className);
-
-        /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $this->makeProxy($className, $instance);
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
 
-        /** @var callable&MockObject $listener */
-        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
+        $listener = $this->createMock(CallableInterface::class);
         $listener
             ->expects(self::once())
             ->method('__invoke')
@@ -124,8 +140,16 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodSuffixInterceptor(
             $method,
-            static function ($proxy, $instance, $method, $params, $returnValue, & $returnEarly) use ($listener) : void {
-                $listener($proxy, $instance, $method, $params, $returnValue, $returnEarly);
+            /** @param mixed $returnValue */
+            static function (
+                AccessInterceptorInterface $proxy,
+                object $instance,
+                string $method,
+                array $params,
+                $returnValue,
+                bool & $returnEarly
+            ) use ($listener) : void {
+                $listener->__invoke($proxy, $instance, $method, $params, $returnValue, $returnEarly);
             }
         );
 
@@ -135,7 +159,15 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodSuffixInterceptor(
             $method,
-            static function ($proxy, $instance, string $method, $params, $returnValue, & $returnEarly) use ($random) : string {
+            /** @param mixed $returnValue */
+            static function (
+                AccessInterceptorInterface $proxy,
+                object $instance,
+                string $method,
+                array $params,
+                $returnValue,
+                bool & $returnEarly
+            ) use ($random) : string {
                 $returnEarly = true;
 
                 return $random;
@@ -150,6 +182,10 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterUnSerialization(
         string $className,
@@ -158,9 +194,8 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy($className);
         /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy    = unserialize(serialize($proxyName::staticProxyConstructor($instance)));
+        $proxy    = unserialize(serialize($this->makeProxy($className, $instance)));
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
@@ -173,6 +208,10 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterCloning(
         string $className,
@@ -181,10 +220,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy($className);
-
-        /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $this->makeProxy($className, $instance);
         $cloned   = clone $proxy;
         $callback = [$cloned, $method];
 
@@ -217,11 +253,15 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
     ) : void {
-        $newValue               = uniqid();
+        $newValue               = uniqid('', true);
         $proxy->$publicProperty = $newValue;
 
         self::assertSame($newValue, $proxy->$publicProperty);
-        self::assertSame($newValue, $proxy->getWrappedValueHolderValue()->$publicProperty);
+
+        $wrappedValue = $proxy->getWrappedValueHolderValue();
+
+        self::assertNotNull($wrappedValue);
+        self::assertSame($newValue, $wrappedValue->$publicProperty);
     }
 
     /**
@@ -259,19 +299,16 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testCanWriteToArrayKeysInPublicProperty() : void
     {
-        $instance  = new ClassWithPublicArrayProperty();
-        $className = get_class($instance);
-        $proxyName = $this->generateProxy($className);
-        /** @var ClassWithPublicArrayProperty $proxy */
-        $proxy = $proxyName::staticProxyConstructor($instance);
+        $instance  = new ClassWithPublicArrayPropertyAccessibleViaMethod();
+        $proxy     = $this->makeProxy(ClassWithPublicArrayPropertyAccessibleViaMethod::class, $instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
-        self::assertSame('bar', $proxy->arrayProperty['foo']);
+        self::assertSame('bar', $proxy->getArrayProperty()['foo']);
 
         $proxy->arrayProperty = ['tab' => 'taz'];
 
-        self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
+        self::assertSame(['tab' => 'taz'], $proxy->getArrayProperty());
     }
 
     /**
@@ -280,18 +317,15 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
     public function testWillNotModifyRetrievedPublicProperties() : void
     {
         $instance  = new ClassWithPublicProperties();
-        $className = get_class($instance);
-        $proxyName = $this->generateProxy($className);
-        /** @var ClassWithPublicProperties $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $this->makeProxy(ClassWithPublicProperties::class, $instance);
         $variable = $proxy->property0;
 
-        self::assertSame('property0', $variable);
+        self::assertByRefVariableValueSame('property0', $variable);
 
         $variable = 'foo';
 
-        self::assertSame('property0', $proxy->property0);
-        self::assertSame('foo', $variable);
+        self::assertByRefVariableValueSame('property0', $proxy->property0);
+        self::assertByRefVariableValueSame('foo', $variable);
     }
 
     /**
@@ -300,18 +334,15 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
     public function testWillModifyByRefRetrievedPublicProperties() : void
     {
         $instance  = new ClassWithPublicProperties();
-        $className = get_class($instance);
-        $proxyName = $this->generateProxy($className);
-        /** @var ClassWithPublicProperties $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($instance);
+        $proxy    = $this->makeProxy(ClassWithPublicProperties::class, $instance);
         $variable = &$proxy->property0;
 
-        self::assertSame('property0', $variable);
+        self::assertByRefVariableValueSame('property0', $variable);
 
         $variable = 'foo';
 
-        self::assertSame('foo', $proxy->property0);
-        self::assertSame('foo', $variable);
+        self::assertByRefVariableValueSame('foo', $proxy->property0);
+        self::assertByRefVariableValueSame('foo', $variable);
     }
 
     /**
@@ -328,9 +359,8 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = $this->generateProxy(ClassWithCounterConstructor::class);
 
-        /** @var ClassWithCounterConstructor $proxy */
         $proxy = new $proxyName(15);
 
         self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
@@ -345,11 +375,10 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $factory      = new AccessInterceptorValueHolderFactory();
         $targetObject = new ClassWithMethodWithVariadicFunction();
 
-        /** @var ClassWithMethodWithVariadicFunction $object */
         $object = $factory->createProxy(
             $targetObject,
             [
-                static function () : string {
+                'bar' => static function () : string {
                     return 'Foo Baz';
                 },
             ]
@@ -375,7 +404,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                static function () : string {
+                'bar' => static function () : string {
                     return 'Foo Baz';
                 },
             ]
@@ -400,10 +429,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testWillNotForwardDynamicArguments() : void
     {
-        $proxyName = $this->generateProxy(ClassWithDynamicArgumentsMethod::class);
-
-        /** @var ClassWithDynamicArgumentsMethod $object */
-        $object = $proxyName::staticProxyConstructor(new ClassWithDynamicArgumentsMethod());
+        $object = $this->makeProxy(ClassWithDynamicArgumentsMethod::class, new ClassWithDynamicArgumentsMethod());
 
         self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
 
@@ -414,6 +440,11 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
     /**
      * Generates a proxy for the given class name, and retrieves its class name
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $parentClassName
+     * @psalm-return class-string<OriginalClass>
+     * @psalm-suppress MoreSpecificReturnType
      */
     private function generateProxy(string $parentClassName) : string
     {
@@ -425,6 +456,9 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
         $strategy->generate($generatedClass);
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         */
         return $generatedClassName;
     }
 
@@ -487,25 +521,25 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
      *
-     * @return string[][]|object[][]|AccessInterceptorValueHolderInterface[][]
+     * @return array<int, array<int, object|AccessInterceptorValueHolderInterface|string>>
      */
     public function getPropertyAccessProxies() : array
     {
         $instance1  = new BaseClass();
-        $proxyName1 = $this->generateProxy(get_class($instance1));
         $instance2  = new BaseClass();
-        $proxyName2 = $this->generateProxy(get_class($instance2));
+        /** @var AccessInterceptorValueHolderInterface $serialized */
+        $serialized = unserialize(serialize($this->makeProxy(BaseClass::class, $instance2)));
 
         return [
             [
                 $instance1,
-                $proxyName1::staticProxyConstructor($instance1),
+                $this->makeProxy(BaseClass::class, $instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ],
             [
                 $instance2,
-                unserialize(serialize($proxyName2::staticProxyConstructor($instance2))),
+                $serialized,
                 'publicProperty',
                 'publicPropertyDefault',
             ],
@@ -523,12 +557,8 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $expectedValue,
         string $propertyName
     ) : void {
-        $proxyName = $this->generateProxy(get_class($realInstance));
-        /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($realInstance);
-
-        /** @var callable&MockObject $listener */
-        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
+        $proxy    = $this->makeProxy(get_class($realInstance), $realInstance);
+        $listener = $this->createMock(CallableInterface::class);
 
         $listener
             ->expects(self::once())
@@ -538,7 +568,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxy->setMethodPrefixInterceptor(
             '__get',
             static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
-                $listener($proxy, $instance, $method, $params, $returnEarly);
+                $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
 
@@ -559,12 +589,9 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $expectedValue,
         string $propertyName
     ) : void {
-        $proxyName = $this->generateProxy(get_class($realInstance));
         /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy = unserialize(serialize($proxyName::staticProxyConstructor($realInstance)));
-
-        /** @var callable&MockObject $listener */
-        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
+        $proxy    = unserialize(serialize($this->makeProxy(get_class($realInstance), $realInstance)));
+        $listener = $this->createMock(CallableInterface::class);
 
         $listener
             ->expects(self::once())
@@ -574,7 +601,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxy->setMethodPrefixInterceptor(
             '__get',
             static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
-                $listener($proxy, $instance, $method, $params, $returnEarly);
+                $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
 
@@ -595,12 +622,9 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         string $expectedValue,
         string $propertyName
     ) : void {
-        $proxyName = $this->generateProxy(get_class($realInstance));
-        /** @var AccessInterceptorValueHolderInterface $proxy */
-        $proxy = clone $proxyName::staticProxyConstructor($realInstance);
+        $proxy = clone $this->makeProxy(get_class($realInstance), $realInstance);
 
-        /** @var callable&MockObject $listener */
-        $listener = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
+        $listener = $this->createMock(CallableInterface::class);
 
         $listener
             ->expects(self::once())
@@ -610,7 +634,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $proxy->setMethodPrefixInterceptor(
             '__get',
             static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
-                $listener($proxy, $instance, $method, $params, $returnEarly);
+                $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
 
@@ -622,8 +646,6 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : Generator
     {
-        $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
-
         foreach ((new ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
             $property->setAccessible(true);
 
@@ -649,7 +671,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
             // callee is a proxy (not to be lazy-loaded!)
             yield '(proxy) ' . OtherObjectAccessClass::class . '#$' . $propertyName => [
-                $proxyClass::staticProxyConstructor(new OtherObjectAccessClass()),
+                $this->makeProxy(OtherObjectAccessClass::class, new OtherObjectAccessClass()),
                 $realInstance,
                 'get' . ucfirst($propertyName),
                 $expectedValue,
@@ -667,14 +689,11 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $addMore   = random_int(201, 300);
         $increment = random_int(301, 400);
 
-        $proxyName = $this->generateProxy(VoidCounter::class);
-
-        /** @var VoidCounter $object */
-        $object = $proxyName::staticProxyConstructor(
+        $object = (new AccessInterceptorValueHolderFactory())->createProxy(
             new VoidCounter(),
             [
                 'increment' => static function (
-                    VoidCounter $proxy,
+                    AccessInterceptorInterface $proxy,
                     VoidCounter $instance,
                     string $method,
                     array $params,
@@ -689,7 +708,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
             ],
             [
                 'increment' => static function (
-                    VoidCounter $proxy,
+                    AccessInterceptorInterface $proxy,
                     VoidCounter $instance,
                     string $method,
                     array $params,
@@ -713,5 +732,34 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $object->increment($addMore);
         self::assertSame($increment + $addMore + 1, $object->counter);
+    }
+
+    /**
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $originalClassName
+     * @psalm-param OriginalClass $realInstance
+     * @psalm-return AccessInterceptorValueHolderInterface<OriginalClass>&ValueHolderInterface<OriginalClass>&OriginalClass
+     *
+     * @psalm-suppress MixedInferredReturnType
+     * @psalm-suppress MoreSpecificReturnType
+     */
+    private function makeProxy(string $originalClassName, object $realInstance) : AccessInterceptorValueHolderInterface
+    {
+        $proxyClassName = $this->generateProxy($originalClassName);
+
+        /**
+         * @psalm-suppress MixedMethodCall
+         * @psalm-suppress MixedReturnStatement
+         */
+        return $proxyClassName::staticProxyConstructor($realInstance);
+    }
+
+    /**
+     * @param mixed $expected
+     * @param mixed $actual
+     */
+    private static function assertByRefVariableValueSame($expected, & $actual) : void
+    {
+        self::assertSame($expected, $actual);
     }
 }
