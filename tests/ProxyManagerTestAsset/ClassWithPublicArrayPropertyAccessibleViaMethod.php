@@ -11,8 +11,14 @@ namespace ProxyManagerTestAsset;
  * @author Marco Pivetta <ocramius@gmail.com>
  * @license MIT
  */
-class ClassWithPublicArrayProperty
+class ClassWithPublicArrayPropertyAccessibleViaMethod
 {
     /** @var mixed[] */
     public $arrayProperty = [];
+
+    /** @return mixed[] */
+    public function getArrayProperty() : array
+    {
+        return $this->arrayProperty;
+    }
 }

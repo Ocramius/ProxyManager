@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    totallyTyped="true"
+    rememberPropertyAssignmentsAfterCall="false"
 >
     <projectFiles>
         <directory name="examples"/>
@@ -12,7 +13,6 @@
         <directory name="tests/ProxyManagerBench"/>
         <directory name="tests/ProxyManagerTest/Autoloader"/>
         <directory name="tests/ProxyManagerTest/Exception"/>
-        <!-- @TODO Factory/RemoteObject -->
         <file name="tests/ProxyManagerTest/Factory/AbstractBaseFactoryTest.php"/>
         <file name="tests/ProxyManagerTest/Factory/AccessInterceptorScopeLocalizerFactoryTest.php"/>
         <file name="tests/ProxyManagerTest/Factory/AccessInterceptorValueHolderFactoryTest.php"/>
@@ -22,6 +22,7 @@
         <file name="tests/ProxyManagerTest/Factory/RemoteObjectFactoryTest.php"/>
         <directory name="tests/ProxyManagerTest/FileLocator"/>
         <!-- @TODO Functional -->
+        <file name="tests/ProxyManagerTest/Functional/AccessInterceptorScopeLocalizerFunctionalTest.php"/>
         <directory name="tests/ProxyManagerTest/Generator"/>
         <directory name="tests/ProxyManagerTest/GeneratorStrategy"/>
         <directory name="tests/ProxyManagerTest/Inflector"/>
