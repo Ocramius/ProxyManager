@@ -11,35 +11,11 @@
         <directory name="src"/>
         <directory name="tests/static-analysis"/>
         <directory name="tests/ProxyManagerBench"/>
-        <directory name="tests/ProxyManagerTest/Autoloader"/>
-        <directory name="tests/ProxyManagerTest/Exception"/>
-        <file name="tests/ProxyManagerTest/Factory/AbstractBaseFactoryTest.php"/>
-        <file name="tests/ProxyManagerTest/Factory/AccessInterceptorScopeLocalizerFactoryTest.php"/>
-        <file name="tests/ProxyManagerTest/Factory/AccessInterceptorValueHolderFactoryTest.php"/>
-        <file name="tests/ProxyManagerTest/Factory/LazyLoadingGhostFactoryTest.php"/>
-        <file name="tests/ProxyManagerTest/Factory/LazyLoadingValueHolderFactoryTest.php"/>
-        <file name="tests/ProxyManagerTest/Factory/NullObjectFactoryTest.php"/>
-        <file name="tests/ProxyManagerTest/Factory/RemoteObjectFactoryTest.php"/>
-        <directory name="tests/ProxyManagerTest/FileLocator"/>
-        <!-- @TODO Functional -->
-        <file name="tests/ProxyManagerTest/Functional/AccessInterceptorScopeLocalizerFunctionalTest.php"/>
-        <file name="tests/ProxyManagerTest/Functional/AccessInterceptorValueHolderFunctionalTest.php"/>
-        <file name="tests/ProxyManagerTest/Functional/FatalPreventionFunctionalTest.php"/>
-        <file name="tests/ProxyManagerTest/Functional/LazyLoadingGhostFunctionalTest.php"/>
-        <file name="tests/ProxyManagerTest/Functional/LazyLoadingValueHolderFunctionalTest.php"/>
-        <file name="tests/ProxyManagerTest/Functional/MultipleProxyGenerationTest.php"/>
-        <file name="tests/ProxyManagerTest/Functional/NullObjectFunctionalTest.php"/>
-        <directory name="tests/ProxyManagerTest/Generator"/>
-        <directory name="tests/ProxyManagerTest/GeneratorStrategy"/>
-        <directory name="tests/ProxyManagerTest/Inflector"/>
-        <directory name="tests/ProxyManagerTest/ProxyGenerator"/>
-        <directory name="tests/ProxyManagerTest/Signature"/>
-        <file name="tests/ProxyManagerTest/Assert.php"/>
-        <file name="tests/ProxyManagerTest/ConfigurationTest.php"/>
-        <file name="tests/ProxyManagerTest/VersionTest.php"/>
+        <directory name="tests/ProxyManagerTest"/>
         <ignoreFiles>
             <!-- remote objects contain references to Zend\Server, which is not installed -->
             <directory name="tests/ProxyManagerTest/Factory/RemoteObject"/>
+            <file name="tests/ProxyManagerTest/Functional/RemoteObjectFunctionalTest.php"/>
             <directory name="vendor"/>
             <!-- uses dependencies that are not available while testing: -->
             <file name="examples/remote-proxy.php"/>
