@@ -32,7 +32,7 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
      *
      * @psalm-param class-string<RealObjectType> $className
      * @psalm-param Closure(
-     *   object|null=,
+     *   RealObjectType|null=,
      *   RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface=,
      *   string=,
      *   array<string, mixed>=,
