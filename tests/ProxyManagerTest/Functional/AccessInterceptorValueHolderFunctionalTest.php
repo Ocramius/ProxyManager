@@ -397,12 +397,8 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testWillForwardVariadicByRefArguments() : void
     {
-        $factory      = new AccessInterceptorValueHolderFactory();
-        $targetObject = new ClassWithMethodWithByRefVariadicFunction();
-
-        /** @var ClassWithMethodWithByRefVariadicFunction $object */
-        $object = $factory->createProxy(
-            $targetObject,
+        $object = (new AccessInterceptorValueHolderFactory())->createProxy(
+            new ClassWithMethodWithByRefVariadicFunction(),
             [
                 'bar' => static function () : string {
                     return 'Foo Baz';

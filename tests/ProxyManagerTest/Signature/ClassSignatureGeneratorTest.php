@@ -34,7 +34,6 @@ final class ClassSignatureGeneratorTest extends TestCase
 
     public function testAddSignature() : void
     {
-        /** @var ClassGenerator&MockObject $classGenerator */
         $classGenerator = $this->createMock(ClassGenerator::class);
 
         $classGenerator

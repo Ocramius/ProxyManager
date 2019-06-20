@@ -125,8 +125,7 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
      */
     public function testWillTryAutoGeneration() : void
     {
-        $instance = new stdClass();
-        /** @var class-string $proxyClassName */
+        $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->createMock(AutoloaderInterface::class);
@@ -187,7 +186,6 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
                 self::fail('Not supposed to be called');
             },
         ];
-        /** @var AccessInterceptorValueHolderMock $proxy */
         $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf($proxyClassName, $proxy);

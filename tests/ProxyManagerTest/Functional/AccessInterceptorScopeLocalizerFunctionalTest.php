@@ -534,7 +534,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
         $targetObject  = new ClassWithMethodWithByRefVariadicFunction();
 
-        /** @var ClassWithMethodWithByRefVariadicFunction $object */
         $object = $factory->createProxy(
             $targetObject,
             [
@@ -560,7 +559,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function testWillNotForwardDynamicArguments() : void
     {
-        /** @var ClassWithDynamicArgumentsMethod $object */
         $object = (new AccessInterceptorScopeLocalizerFactory())
             ->createProxy(
                 new ClassWithDynamicArgumentsMethod(),

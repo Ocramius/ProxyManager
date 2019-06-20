@@ -19,9 +19,16 @@ abstract class UniqueIdentifierGenerator
 
     /**
      * Generates a valid unique identifier from the given name
+     *
+     * @psalm-return class-string
+     *
+     * @psalm-suppress MoreSpecificReturnType
      */
     public static function getIdentifier(string $name) : string
     {
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         */
         return str_replace(
             '.',
             '',

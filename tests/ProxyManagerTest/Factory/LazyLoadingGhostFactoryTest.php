@@ -84,7 +84,6 @@ final class LazyLoadingGhostFactoryTest extends TestCase
      */
     public function testWillSkipAutoGeneration() : void
     {
-        /** @var class-string $className */
         $className = UniqueIdentifierGenerator::getIdentifier('foo');
 
         $this

@@ -62,6 +62,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         /**
          * @psalm-suppress InvalidStringClass
          * @psalm-suppress MixedAssignment
+         * @psalm-suppress MixedMethodCall
          */
         $proxy = $generatedClassName::staticProxyConstructor();
 

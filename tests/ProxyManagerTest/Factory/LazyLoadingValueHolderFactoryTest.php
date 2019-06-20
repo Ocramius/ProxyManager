@@ -86,7 +86,6 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
      */
     public function testWillSkipAutoGeneration() : void
     {
-        /** @var class-string $className */
         $className = UniqueIdentifierGenerator::getIdentifier('foo');
 
         $this
@@ -116,9 +115,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
      */
     public function testWillTryAutoGeneration() : void
     {
-        /** @var class-string $className */
-        $className = UniqueIdentifierGenerator::getIdentifier('foo');
-        /** @var class-string $proxyClassName */
+        $className      = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
         $autoloader     = $this->createMock(AutoloaderInterface::class);

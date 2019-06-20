@@ -81,10 +81,9 @@ final class RemoteObjectFactoryTest extends TestCase
             ->with(BaseInterface::class)
             ->willReturn(RemoteObjectMock::class);
 
-        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
-        /** @var stdClass|RemoteObjectMock $proxy */
+
         $proxy = $factory->createProxy(BaseInterface::class);
 
         self::assertInstanceOf(RemoteObjectMock::class, $proxy);

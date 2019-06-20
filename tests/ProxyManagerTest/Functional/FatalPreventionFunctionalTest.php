@@ -51,7 +51,6 @@ final class FatalPreventionFunctionalTest extends TestCase
     {
         $generatedClass    = new ClassGenerator(uniqid('generated', true));
         $generatorStrategy = new EvaluatingGeneratorStrategy();
-        /** @var ProxyGeneratorInterface $classGenerator */
         $classGenerator          = new $generatorClass();
         $classSignatureGenerator = new ClassSignatureGenerator(new SignatureGenerator());
 
