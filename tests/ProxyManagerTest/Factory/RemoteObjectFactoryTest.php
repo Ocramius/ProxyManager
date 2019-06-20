@@ -150,7 +150,6 @@ final class RemoteObjectFactoryTest extends TestCase
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
-        /** @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
         $factory = new RemoteObjectFactory($adapter, $this->config);
         $factory->createProxy(BaseInterface::class);

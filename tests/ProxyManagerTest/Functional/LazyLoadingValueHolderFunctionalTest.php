@@ -62,7 +62,6 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue) : void
     {
-        /** @var VirtualProxyInterface $proxy */
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance)
@@ -130,7 +129,6 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        /** @var VirtualProxyInterface $proxy */
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance)

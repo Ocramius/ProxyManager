@@ -108,7 +108,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
         $initializeMatcher->expects(self::never())->method('__invoke'); // should not initialize the proxy
 
-        /** @var GhostObjectInterface $proxy */
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance, $initializeMatcher)
@@ -173,7 +172,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        /** @var GhostObjectInterface $proxy */
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance)
@@ -1518,7 +1516,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     {
         $initialCounter = random_int(10, 1000);
 
-        /** @var VoidCounter|LazyLoadingInterface $proxy */
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             VoidCounter::class,
             static function (
@@ -1535,9 +1532,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 return true;
             }
         );
-
-        self::assertInstanceOf(VoidCounter::class, $proxy);
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
 
         $increment = random_int(1001, 10000);
 
