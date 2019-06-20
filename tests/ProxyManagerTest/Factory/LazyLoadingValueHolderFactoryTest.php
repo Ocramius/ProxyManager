@@ -102,7 +102,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
         };
         $proxy       = $factory->createProxy($className, $initializer);
 
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 
     /**
@@ -174,6 +174,6 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
         self::assertInstanceOf($proxyClassName, $proxy);
 
         self::assertSame($proxyClassName, get_class($proxy));
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 }

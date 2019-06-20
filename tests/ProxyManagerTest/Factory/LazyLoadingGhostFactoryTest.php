@@ -100,7 +100,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
         };
         $proxy       = $factory->createProxy($className, $initializer);
 
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 
     /**
@@ -168,6 +168,6 @@ final class LazyLoadingGhostFactoryTest extends TestCase
         };
         $proxy       = $factory->createProxy($className, $initializer);
 
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 }

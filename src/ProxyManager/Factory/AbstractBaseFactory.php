@@ -60,6 +60,7 @@ abstract class AbstractBaseFactory
             'className'           => $className,
             'factory'             => static::class,
             'proxyManagerVersion' => Version::getVersion(),
+            'proxyOptions'        => $proxyOptions,
         ];
         $proxyClassName  = $this
             ->configuration
