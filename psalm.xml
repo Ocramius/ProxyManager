@@ -27,6 +27,7 @@
         <file name="tests/ProxyManagerTest/Functional/FatalPreventionFunctionalTest.php"/>
         <file name="tests/ProxyManagerTest/Functional/LazyLoadingGhostFunctionalTest.php"/>
         <file name="tests/ProxyManagerTest/Functional/LazyLoadingValueHolderFunctionalTest.php"/>
+        <file name="tests/ProxyManagerTest/Functional/MultipleProxyGenerationTest.php"/>
         <directory name="tests/ProxyManagerTest/Generator"/>
         <directory name="tests/ProxyManagerTest/GeneratorStrategy"/>
         <directory name="tests/ProxyManagerTest/Inflector"/>

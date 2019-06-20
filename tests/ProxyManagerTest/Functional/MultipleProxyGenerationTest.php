@@ -51,23 +51,25 @@ final class MultipleProxyGenerationTest extends TestCase
      *
      * @dataProvider getTestedClasses
      */
-    public function testCanGenerateMultipleDifferentProxiesForSameClass(string $className) : void
+    public function testCanGenerateMultipleDifferentProxiesForSameClass(object $object) : void
     {
         $ghostProxyFactory                      = new LazyLoadingGhostFactory();
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
-        $initializer                            = static function () : void {
+        $className                              = get_class($object);
+        $initializer                            = static function () : bool {
+            return true;
         };
 
         $generated = [
             $ghostProxyFactory->createProxy($className, $initializer),
             $virtualProxyFactory->createProxy($className, $initializer),
-            $accessInterceptorFactory->createProxy(new $className()),
+            $accessInterceptorFactory->createProxy($object),
         ];
 
         if ($className !== ClassWithMixedTypedProperties::class) {
-            $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy(new $className());
+            $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy($object);
         }
 
         foreach ($generated as $key => $proxy) {
@@ -83,39 +85,40 @@ final class MultipleProxyGenerationTest extends TestCase
 
             $proxyClass = get_class($proxy);
 
+            /** @psalm-suppress InvalidStringClass */
             self::assertInstanceOf($proxyClass, new $proxyClass(), 'Proxy can be instantiated via normal constructor');
         }
     }
 
     /**
-     * @return string[][]
+     * @return object[][]
      */
     public function getTestedClasses() : array
     {
         return [
-            [BaseClass::class],
-            [ClassWithMagicMethods::class],
-            [ClassWithFinalMethods::class],
-            [ClassWithFinalMagicMethods::class],
-            [ClassWithByRefMagicMethods::class],
-            [ClassWithMixedProperties::class],
-            [ClassWithMixedTypedProperties::class],
-            [ClassWithMixedReferenceableTypedProperties::class],
-            [ClassWithPrivateProperties::class],
-            [ClassWithProtectedProperties::class],
-            [ClassWithPublicProperties::class],
-            [EmptyClass::class],
-            [HydratedObject::class],
-            [ClassWithSelfHint::class],
-            [ClassWithParentHint::class],
-            [ClassWithCollidingPrivateInheritedProperties::class],
-            [ClassWithMethodWithVariadicFunction::class],
-            [ClassWithMethodWithByRefVariadicFunction::class],
-            [ScalarTypeHintedClass::class],
-            [IterableTypeHintClass::class],
-            [ObjectTypeHintClass::class],
-            [ReturnTypeHintedClass::class],
-            [VoidMethodTypeHintedClass::class],
+            [new BaseClass()],
+            [new ClassWithMagicMethods()],
+            [new ClassWithFinalMethods()],
+            [new ClassWithFinalMagicMethods()],
+            [new ClassWithByRefMagicMethods()],
+            [new ClassWithMixedProperties()],
+            [new ClassWithMixedTypedProperties()],
+            [new ClassWithMixedReferenceableTypedProperties()],
+            [new ClassWithPrivateProperties()],
+            [new ClassWithProtectedProperties()],
+            [new ClassWithPublicProperties()],
+            [new EmptyClass()],
+            [new HydratedObject()],
+            [new ClassWithSelfHint()],
+            [new ClassWithParentHint()],
+            [new ClassWithCollidingPrivateInheritedProperties()],
+            [new ClassWithMethodWithVariadicFunction()],
+            [new ClassWithMethodWithByRefVariadicFunction()],
+            [new ScalarTypeHintedClass()],
+            [new IterableTypeHintClass()],
+            [new ObjectTypeHintClass()],
+            [new ReturnTypeHintedClass()],
+            [new VoidMethodTypeHintedClass()],
         ];
     }
 }
