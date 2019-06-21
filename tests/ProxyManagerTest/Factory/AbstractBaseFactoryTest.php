@@ -17,6 +17,7 @@ use ProxyManager\Signature\SignatureCheckerInterface;
 use ReflectionMethod;
 use stdClass;
 use Zend\Code\Generator\ClassGenerator;
+use function uniqid;
 
 /**
  * Tests for {@see \ProxyManager\Factory\AbstractBaseFactory}
@@ -167,6 +168,43 @@ class AbstractBaseFactoryTest extends TestCase
         self::assertSame(
             $generatedClass,
             $generateProxy->invoke($this->factory, stdClass::class, ['some' => 'proxy', 'options' => 'here'])
+        );
+    }
+
+    /**
+     * @group 469
+     */
+    public function testGeneratesClassBasedOnGivenProxyOptions() : void
+    {
+        $generateProxy = new ReflectionMethod($this->factory, 'generateProxy');
+
+        $generateProxy->setAccessible(true);
+        $generatedClass = UniqueIdentifierGenerator::getIdentifier('fooBar');
+        $proxyOptions   = [uniqid('key', true) => uniqid('value', true)];
+
+        $this
+            ->classNameInflector
+            ->expects(self::any())
+            ->method('getProxyClassName')
+            ->with('stdClass', self::callback(static function (array $parameters) use ($proxyOptions) : bool {
+                self::assertSame($proxyOptions, $parameters['proxyOptions']);
+
+                return true;
+            }))
+            ->will(self::returnValue($generatedClass));
+
+        $this
+            ->proxyAutoloader
+            ->method('__invoke')
+            ->will(self::returnCallback(function (string $className) : bool {
+                eval('class ' . $className . ' {}');
+
+                return true;
+            }));
+
+        self::assertSame(
+            $generatedClass,
+            $generateProxy->invoke($this->factory, stdClass::class, $proxyOptions)
         );
     }
 }
