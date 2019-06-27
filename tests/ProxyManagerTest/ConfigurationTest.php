@@ -56,7 +56,6 @@ final class ConfigurationTest extends TestCase
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(ClassNameInflectorInterface::class, $this->configuration->getClassNameInflector());
 
-        /** @var ClassNameInflectorInterface $inflector */
         $inflector = $this->createMock(ClassNameInflectorInterface::class);
 
         $this->configuration->setClassNameInflector($inflector);
@@ -80,7 +79,6 @@ final class ConfigurationTest extends TestCase
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(GeneratorStrategyInterface::class, $this->configuration->getGeneratorStrategy());
 
-        /** @var GeneratorStrategyInterface $strategy */
         $strategy = $this->createMock(GeneratorStrategyInterface::class);
 
         $this->configuration->setGeneratorStrategy($strategy);
@@ -108,7 +106,6 @@ final class ConfigurationTest extends TestCase
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(AutoloaderInterface::class, $this->configuration->getProxyAutoloader());
 
-        /** @var AutoloaderInterface $autoloader */
         $autoloader = $this->createMock(AutoloaderInterface::class);
 
         $this->configuration->setProxyAutoloader($autoloader);
@@ -124,7 +121,6 @@ final class ConfigurationTest extends TestCase
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
 
-        /** @var SignatureGeneratorInterface $signatureGenerator */
         $signatureGenerator = $this->createMock(SignatureGeneratorInterface::class);
 
         $this->configuration->setSignatureGenerator($signatureGenerator);
@@ -140,7 +136,6 @@ final class ConfigurationTest extends TestCase
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
 
-        /** @var SignatureCheckerInterface $signatureChecker */
         $signatureChecker = $this->createMock(SignatureCheckerInterface::class);
 
         $this->configuration->setSignatureChecker($signatureChecker);
@@ -158,7 +153,6 @@ final class ConfigurationTest extends TestCase
             ClassSignatureGeneratorInterface::class,
             $this->configuration->getClassSignatureGenerator()
         );
-        /** @var ClassSignatureGeneratorInterface $classSignatureGenerator */
         $classSignatureGenerator = $this->createMock(ClassSignatureGeneratorInterface::class);
 
         $this->configuration->setClassSignatureGenerator($classSignatureGenerator);

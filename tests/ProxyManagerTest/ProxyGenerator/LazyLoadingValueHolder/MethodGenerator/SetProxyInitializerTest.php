@@ -24,7 +24,6 @@ final class SetProxyInitializerTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');
@@ -35,7 +34,6 @@ final class SetProxyInitializerTest extends TestCase
         self::assertSame('setProxyInitializer', $setter->getName());
         self::assertCount(1, $parameters);
 
-        /** @var ParameterGenerator $initializer */
         $initializer = array_shift($parameters);
 
         self::assertInstanceOf(ParameterGenerator::class, $initializer);

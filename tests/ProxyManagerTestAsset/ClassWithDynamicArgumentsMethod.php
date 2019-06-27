@@ -13,6 +13,8 @@ namespace ProxyManagerTestAsset;
 class ClassWithDynamicArgumentsMethod
 {
     /**
+     * @param mixed ...$args
+     *
      * @return mixed[]
      */
     public function dynamicArgumentsMethod()

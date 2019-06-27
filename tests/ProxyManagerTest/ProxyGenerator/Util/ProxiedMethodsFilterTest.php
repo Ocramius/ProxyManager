@@ -32,18 +32,14 @@ use function sort;
 final class ProxiedMethodsFilterTest extends TestCase
 {
     /**
-     * @param string[]|null $excludes
-     * @param string[]      $expectedMethods
+     * @param array<int, string>|null $excludes
+     * @param string[]                $expectedMethods
      *
      * @dataProvider expectedMethods
      */
     public function testFiltering(ReflectionClass $reflectionClass, ?array $excludes, array $expectedMethods) : void
     {
         $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
-
-        foreach ($filtered as $method) {
-            self::assertInstanceOf(ReflectionMethod::class, $method);
-        }
 
         $keys = array_map(
             static function (ReflectionMethod $method) : string {
@@ -59,8 +55,8 @@ final class ProxiedMethodsFilterTest extends TestCase
     }
 
     /**
-     * @param string[]|null $excludes
-     * @param string[]      $expectedMethods
+     * @param array<int, string>|null $excludes
+     * @param string[]                $expectedMethods
      *
      * @dataProvider expectedAbstractPublicMethods
      */
@@ -70,10 +66,6 @@ final class ProxiedMethodsFilterTest extends TestCase
         array $expectedMethods
     ) : void {
         $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
-
-        foreach ($filtered as $method) {
-            self::assertInstanceOf(ReflectionMethod::class, $method);
-        }
 
         $keys = array_map(
             static function (ReflectionMethod $method) : string {

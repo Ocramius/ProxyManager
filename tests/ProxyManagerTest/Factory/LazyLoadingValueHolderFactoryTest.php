@@ -72,12 +72,10 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
      */
     public static function testWithOptionalFactory() : void
     {
-        $factory = new LazyLoadingValueHolderFactory();
-
-        $configuration = Assert::readAttribute($factory, 'configuration');
-
-        self::assertNotEmpty($configuration);
-        self::assertInstanceOf(Configuration::class, $configuration);
+        self::assertInstanceOf(
+            Configuration::class,
+            Assert::readAttribute(new LazyLoadingValueHolderFactory(), 'configuration')
+        );
     }
 
     /**
@@ -98,13 +96,12 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
             ->willReturn(LazyLoadingMock::class);
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = static function () : void {
+        $initializer = static function () : bool {
+            return true;
         };
-        /** @var LazyLoadingMock $proxy */
-        $proxy = $factory->createProxy($className, $initializer);
+        $proxy       = $factory->createProxy($className, $initializer);
 
-        self::assertInstanceOf(LazyLoadingMock::class, $proxy);
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 
     /**
@@ -166,15 +163,14 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = static function () : void {
+        $initializer = static function () : bool {
+            return true;
         };
-        /** @var LazyLoadingMock $proxy */
-        $proxy = $factory->createProxy($className, $initializer);
+        $proxy       = $factory->createProxy($className, $initializer);
 
-        /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf($proxyClassName, $proxy);
 
         self::assertSame($proxyClassName, get_class($proxy));
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 }

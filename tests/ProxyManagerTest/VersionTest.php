@@ -19,8 +19,6 @@ final class VersionTest extends TestCase
     {
         $version = Version::getVersion();
 
-        self::assertIsString($version);
-        self::assertNotEmpty($version);
         self::assertStringMatchesFormat('%A@%A', $version);
     }
 }

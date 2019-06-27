@@ -5,16 +5,11 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Functional;
 
 use Generator;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use ProxyManager\Proxy\RemoteObjectInterface;
-use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
+use ProxyManager\Factory\RemoteObjectFactory;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\BazServiceInterface;
@@ -43,7 +38,6 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
-        /** @var Client&MockObject $client_Framework_MockObject_MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
@@ -63,7 +57,6 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
-        /** @var Client&MockObject $client_Framework_MockObject_MockObject */
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 
         $client
@@ -83,13 +76,15 @@ final class RemoteObjectFunctionalTest extends TestCase
      * @param mixed         $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass of object
+     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
     public function testXmlRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
     {
-        $proxyName = $this->generateProxy($instanceOrClassName);
+        $proxy = (new RemoteObjectFactory($this->getXmlRpcAdapter($expectedValue, $method, $params)))
+            ->createProxy($instanceOrClassName);
 
-        /** @var RemoteObjectInterface $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($this->getXmlRpcAdapter($expectedValue, $method, $params));
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
@@ -102,13 +97,15 @@ final class RemoteObjectFunctionalTest extends TestCase
      * @param mixed         $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass of object
+     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
     public function testJsonRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
     {
-        $proxyName = $this->generateProxy($instanceOrClassName);
+        $proxy = (new RemoteObjectFactory($this->getJsonRpcAdapter($expectedValue, $method, $params)))
+            ->createProxy($instanceOrClassName);
 
-        /** @var RemoteObjectInterface $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($this->getJsonRpcAdapter($expectedValue, $method, $params));
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
@@ -120,35 +117,16 @@ final class RemoteObjectFunctionalTest extends TestCase
      * @param mixed         $propertyValue
      *
      * @dataProvider getPropertyAccessProxies
+     *
+     * @psalm-template OriginalClass of object
+     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
     public function testJsonRpcPropertyReadAccess($instanceOrClassName, string $publicProperty, $propertyValue) : void
     {
-        $proxyName = $this->generateProxy($instanceOrClassName);
-
-        /** @var RemoteObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor(
-            $this->getJsonRpcAdapter($propertyValue, '__get', [$publicProperty])
-        );
+        $proxy = (new RemoteObjectFactory($this->getJsonRpcAdapter($propertyValue, '__get', [$publicProperty])))
+            ->createProxy($instanceOrClassName);
 
         self::assertSame($propertyValue, $proxy->$publicProperty);
-    }
-
-    /**
-     * Generates a proxy for the given class name, and retrieves its class name
-     *
-     * @param string|object $parentClassName
-     */
-    private function generateProxy($parentClassName) : string
-    {
-        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
-        $generator          = new RemoteObjectGenerator();
-        $generatedClass     = new ClassGenerator($generatedClassName);
-        $strategy           = new EvaluatingGeneratorStrategy();
-
-        $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
-        $strategy->generate($generatedClass);
-
-        return $generatedClassName;
     }
 
     /**
@@ -227,9 +205,6 @@ final class RemoteObjectFunctionalTest extends TestCase
         string $expectedValue,
         string $propertyName
     ) : void {
-        $proxyName = $this->generateProxy(get_class($realInstance));
-
-        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
@@ -238,8 +213,8 @@ final class RemoteObjectFunctionalTest extends TestCase
             ->with(get_class($realInstance), '__get', [$propertyName])
             ->willReturn($expectedValue);
 
-        /** @var OtherObjectAccessClass|RemoteObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($adapter);
+        $proxy = (new RemoteObjectFactory($adapter))
+            ->createProxy($realInstance);
 
         /** @var callable $accessor */
         $accessor = [$callerObject, $method];
@@ -258,9 +233,6 @@ final class RemoteObjectFunctionalTest extends TestCase
         string $expectedValue,
         string $propertyName
     ) : void {
-        $proxyName = $this->generateProxy(get_class($realInstance));
-
-        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $adapter
@@ -269,8 +241,8 @@ final class RemoteObjectFunctionalTest extends TestCase
             ->with(get_class($realInstance), '__get', [$propertyName])
             ->willReturn($expectedValue);
 
-        /** @var OtherObjectAccessClass|RemoteObjectInterface $proxy */
-        $proxy = clone $proxyName::staticProxyConstructor($adapter);
+        $proxy = clone (new RemoteObjectFactory($adapter))
+            ->createProxy($realInstance);
 
         /** @var callable $accessor */
         $accessor = [$callerObject, $method];
@@ -283,9 +255,6 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     public function testWillExecuteLogicInAVoidMethod() : void
     {
-        $proxyName = $this->generateProxy(VoidCounter::class);
-
-        /** @var AdapterInterface&MockObject $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
 
         $increment = random_int(10, 1000);
@@ -296,8 +265,8 @@ final class RemoteObjectFunctionalTest extends TestCase
             ->with(VoidCounter::class, 'increment', [$increment])
             ->willReturn(random_int(10, 1000));
 
-        /** @var VoidCounter $proxy */
-        $proxy = clone $proxyName::staticProxyConstructor($adapter);
+        $proxy = clone (new RemoteObjectFactory($adapter))
+            ->createProxy(VoidCounter::class);
 
         $proxy->increment($increment);
     }

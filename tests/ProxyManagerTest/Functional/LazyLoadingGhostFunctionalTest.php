@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Functional;
 
 use BadMethodCallException;
+use Closure;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
 use PHPUnit\Framework\TestCase;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Factory\LazyLoadingGhostFactory;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\CallableInterface;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
@@ -60,6 +59,10 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyInitializingMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsThatLazyLoadTheObject(
         string $className,
@@ -68,14 +71,11 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy($className);
-
-        /** @var GhostObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
+        $proxy = (new LazyLoadingGhostFactory())
+            ->createProxy($className, $this->createInitializer($className, $instance));
 
         self::assertFalse($proxy->isProxyInitialized());
 
-        /** @var callable $callProxyMethod */
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
@@ -89,6 +89,10 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyNonInitializingMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsThatDoNotLazyLoadTheObject(
         string $className,
@@ -97,19 +101,17 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxyName         = $this->generateProxy($className);
-        $initializeMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
+        $initializeMatcher = $this->createMock(CallableInterface::class);
 
         $initializeMatcher->expects(self::never())->method('__invoke'); // should not initialize the proxy
 
-        /** @var GhostObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor(
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            $className,
             $this->createInitializer($className, $instance, $initializeMatcher)
         );
 
         self::assertFalse($proxy->isProxyInitialized());
 
-        /** @var callable $callProxyMethod */
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
@@ -123,6 +125,10 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterUnSerialization(
         string $className,
@@ -131,16 +137,14 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy($className);
-
         /** @var GhostObjectInterface $proxy */
-        $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
+        $proxy = unserialize(serialize((new LazyLoadingGhostFactory())->createProxy(
+            $className,
             $this->createInitializer($className, $instance)
         )));
 
         self::assertTrue($proxy->isProxyInitialized());
 
-        /** @var callable $callProxyMethod */
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
@@ -153,6 +157,10 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
+     *
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $className
+     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterCloning(
         string $className,
@@ -161,15 +169,14 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy($className);
-
-        /** @var GhostObjectInterface $proxy */
-        $proxy  = $proxyName::staticProxyConstructor($this->createInitializer($className, $instance));
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            $className,
+            $this->createInitializer($className, $instance)
+        );
         $cloned = clone $proxy;
 
         self::assertTrue($cloned->isProxyInitialized());
 
-        /** @var callable $callProxyMethod */
         $callProxyMethod = [$proxy, $method];
         $parameterValues = array_values($params);
 
@@ -241,20 +248,18 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testCanWriteToArrayKeysInPublicProperty() : void
     {
-        $instance    = new ClassWithPublicArrayProperty();
-        $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
-        $proxyName   = $this->generateProxy($className);
-        /** @var ClassWithPublicArrayProperty $proxy */
-        $proxy = $proxyName::staticProxyConstructor($initializer);
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithPublicArrayProperty::class,
+            $this->createInitializer(ClassWithPublicArrayProperty::class, new ClassWithPublicArrayProperty())
+        );
 
         $proxy->arrayProperty['foo'] = 'bar';
 
-        self::assertSame('bar', $proxy->arrayProperty['foo']);
+        self::assertByRefVariableValueSame('bar', $proxy->arrayProperty['foo']);
 
         $proxy->arrayProperty = ['tab' => 'taz'];
 
-        self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
+        self::assertByRefVariableValueSame(['tab' => 'taz'], $proxy->arrayProperty);
     }
 
     /**
@@ -262,20 +267,18 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testWillNotModifyRetrievedPublicProperties() : void
     {
-        $instance    = new ClassWithPublicProperties();
-        $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
-        $proxyName   = $this->generateProxy($className);
-        /** @var ClassWithPublicProperties $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($initializer);
+        $proxy    = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithPublicProperties::class,
+            $this->createInitializer(ClassWithPublicProperties::class, new ClassWithPublicProperties())
+        );
         $variable = $proxy->property0;
 
-        self::assertSame('property0', $variable);
+        self::assertByRefVariableValueSame('property0', $variable);
 
         $variable = 'foo';
 
-        self::assertSame('property0', $proxy->property0);
-        self::assertSame('foo', $variable);
+        self::assertByRefVariableValueSame('property0', $proxy->property0);
+        self::assertByRefVariableValueSame('foo', $variable);
     }
 
     /**
@@ -283,30 +286,31 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testWillModifyByRefRetrievedPublicProperties() : void
     {
-        $instance    = new ClassWithPublicProperties();
-        $className   = get_class($instance);
-        $initializer = $this->createInitializer($className, $instance);
-        $proxyName   = $this->generateProxy($className);
-        /** @var ClassWithPublicProperties $proxy */
-        $proxy    = $proxyName::staticProxyConstructor($initializer);
+        $instance = new ClassWithPublicProperties();
+        $proxy    = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithPublicProperties::class,
+            $this->createInitializer(ClassWithPublicProperties::class, $instance)
+        );
         $variable = &$proxy->property0;
 
-        self::assertSame('property0', $variable);
+        self::assertByRefVariableValueSame('property0', $variable);
 
         $variable = 'foo';
 
-        self::assertSame('foo', $proxy->property0);
-        self::assertSame('foo', $variable);
+        self::assertByRefVariableValueSame('foo', $proxy->property0);
+        self::assertByRefVariableValueSame('foo', $variable);
     }
 
     public function testKeepsInitializerWhenNotOverwitten() : void
     {
-        $instance    = new BaseClass();
-        $proxyName   = $this->generateProxy(get_class($instance));
-        $initializer = static function () : void {
+        $initializer = static function () : bool {
+            return true;
         };
-        /** @var GhostObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($initializer);
+
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            BaseClass::class,
+            $initializer
+        );
 
         $proxy->initializeProxy();
 
@@ -318,14 +322,20 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testKeepsInitializedPublicProperties() : void
     {
-        $instance    = new BaseClass();
-        $proxyName   = $this->generateProxy(get_class($instance));
-        $initializer = static function (BaseClass $proxy, string $method, $parameters, & $initializer) : void {
-            $initializer           = null;
-            $proxy->publicProperty = 'newValue';
-        };
-        /** @var GhostObjectInterface&BaseClass $proxy */
-        $proxy = $proxyName::staticProxyConstructor($initializer);
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            BaseClass::class,
+            static function (
+                object $proxy,
+                string $method,
+                array $parameters,
+                ?Closure & $initializer
+            ) : bool {
+                $initializer           = null;
+                $proxy->publicProperty = 'newValue';
+
+                return true;
+            }
+        );
 
         $proxy->initializeProxy();
         self::assertSame('newValue', $proxy->publicProperty);
@@ -342,11 +352,12 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testPublicPropertyDefaultWillBePreserved() : void
     {
-        $instance  = new ClassWithPublicProperties();
-        $proxyName = $this->generateProxy(get_class($instance));
-        /** @var ClassWithPublicProperties $proxy */
-        $proxy = $proxyName::staticProxyConstructor(static function () : void {
-        });
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithPublicProperties::class,
+            static function () : bool {
+                return true;
+            }
+        );
 
         self::assertSame('property0', $proxy->property0);
     }
@@ -356,14 +367,15 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testProtectedPropertyDefaultWillBePreserved() : void
     {
-        $instance  = new ClassWithProtectedProperties();
-        $proxyName = $this->generateProxy(get_class($instance));
-        /** @var ClassWithProtectedProperties $proxy */
-        $proxy = $proxyName::staticProxyConstructor(static function () : void {
-        });
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithProtectedProperties::class,
+            static function () : bool {
+                return true;
+            }
+        );
 
         // Check protected property via reflection
-        $reflectionProperty = new ReflectionProperty($instance, 'property0');
+        $reflectionProperty = new ReflectionProperty(ClassWithProtectedProperties::class, 'property0');
         $reflectionProperty->setAccessible(true);
 
         self::assertSame('property0', $reflectionProperty->getValue($proxy));
@@ -374,14 +386,15 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testPrivatePropertyDefaultWillBePreserved() : void
     {
-        $instance  = new ClassWithPrivateProperties();
-        $proxyName = $this->generateProxy(get_class($instance));
-        /** @var ClassWithPrivateProperties $proxy */
-        $proxy = $proxyName::staticProxyConstructor(static function () : void {
-        });
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithPrivateProperties::class,
+            static function () : bool {
+                return true;
+            }
+        );
 
         // Check protected property via reflection
-        $reflectionProperty = new ReflectionProperty($instance, 'property0');
+        $reflectionProperty = new ReflectionProperty(ClassWithPrivateProperties::class, 'property0');
         $reflectionProperty->setAccessible(true);
 
         self::assertSame('property0', $reflectionProperty->getValue($proxy));
@@ -393,14 +406,15 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testMultiLevelPrivatePropertiesDefaultsWillBePreserved() : void
     {
-        $instance  = new ClassWithCollidingPrivateInheritedProperties();
-        $proxyName = $this->generateProxy(ClassWithCollidingPrivateInheritedProperties::class);
-        /** @var ClassWithPrivateProperties $proxy */
-        $proxy = $proxyName::staticProxyConstructor(static function () : void {
-        });
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithCollidingPrivateInheritedProperties::class,
+            static function () : bool {
+                return true;
+            }
+        );
 
-        $childProperty  = new ReflectionProperty($instance, 'property0');
-        $parentProperty = new ReflectionProperty(get_parent_class($instance), 'property0');
+        $childProperty  = new ReflectionProperty(ClassWithCollidingPrivateInheritedProperties::class, 'property0');
+        $parentProperty = new ReflectionProperty(get_parent_class(ClassWithCollidingPrivateInheritedProperties::class), 'property0');
 
         $childProperty->setAccessible(true);
         $parentProperty->setAccessible(true);
@@ -415,19 +429,25 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testMultiLevelPrivatePropertiesByRefInitialization() : void
     {
-        $class     = ClassWithCollidingPrivateInheritedProperties::class;
-        $proxyName = $this->generateProxy($class);
-        /** @var ClassWithPrivateProperties $proxy */
-        $proxy = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) use ($class) : void {
-                $initializer                                                 = null;
-                $properties["\0" . $class . "\0property0"]                   = 'foo';
-                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithCollidingPrivateInheritedProperties::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer                                                                            = null;
+                $properties["\0" . ClassWithCollidingPrivateInheritedProperties::class . "\0property0"]                   = 'foo';
+                $properties["\0" . get_parent_class(ClassWithCollidingPrivateInheritedProperties::class) . "\0property0"] = 'bar';
+
+                return true;
             }
         );
 
-        $childProperty  = new ReflectionProperty($class, 'property0');
-        $parentProperty = new ReflectionProperty(get_parent_class($class), 'property0');
+        $childProperty  = new ReflectionProperty(ClassWithCollidingPrivateInheritedProperties::class, 'property0');
+        $parentProperty = new ReflectionProperty(get_parent_class(ClassWithCollidingPrivateInheritedProperties::class), 'property0');
 
         $childProperty->setAccessible(true);
         $parentProperty->setAccessible(true);
@@ -445,28 +465,42 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testGetPropertyFromDifferentProxyInstances() : void
     {
-        $class     = ClassWithCollidingPrivateInheritedProperties::class;
-        $proxyName = $this->generateProxy($class);
+        $factory = new LazyLoadingGhostFactory();
+        $proxy1  = $factory->createProxy(
+            ClassWithCollidingPrivateInheritedProperties::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer                                                                                              = null;
+                $properties["\0" . ClassWithCollidingPrivateInheritedProperties::class . "\0property0"]                   = 'foo';
+                $properties["\0" . get_parent_class(ClassWithCollidingPrivateInheritedProperties::class) . "\0property0"] = 'bar';
 
-        /** @var ClassWithPrivateProperties $proxy1 */
-        $proxy1 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) use ($class) : void {
-                $initializer                                                 = null;
-                $properties["\0" . $class . "\0property0"]                   = 'foo';
-                $properties["\0" . get_parent_class($class) . "\0property0"] = 'bar';
+                return true;
             }
         );
-        /** @var ClassWithPrivateProperties $proxy2 */
-        $proxy2 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) use ($class) : void {
-                $initializer                                                 = null;
-                $properties["\0" . $class . "\0property0"]                   = 'baz';
-                $properties["\0" . get_parent_class($class) . "\0property0"] = 'tab';
+        $proxy2  = $factory->createProxy(
+            ClassWithCollidingPrivateInheritedProperties::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer                                                                                              = null;
+                $properties["\0" . ClassWithCollidingPrivateInheritedProperties::class . "\0property0"]                   = 'baz';
+                $properties["\0" . get_parent_class(ClassWithCollidingPrivateInheritedProperties::class) . "\0property0"] = 'tab';
+
+                return true;
             }
         );
 
-        $childProperty  = new ReflectionProperty($class, 'property0');
-        $parentProperty = new ReflectionProperty(get_parent_class($class), 'property0');
+        $childProperty  = new ReflectionProperty(ClassWithCollidingPrivateInheritedProperties::class, 'property0');
+        $parentProperty = new ReflectionProperty(get_parent_class(ClassWithCollidingPrivateInheritedProperties::class), 'property0');
 
         $childProperty->setAccessible(true);
         $parentProperty->setAccessible(true);
@@ -487,19 +521,31 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testSetPrivatePropertyOnDifferentProxyInstances() : void
     {
-        $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
-        $proxyName = $this->generateProxy($class);
-
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy1 */
-        $proxy1 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer) : void {
+        $factory = new LazyLoadingGhostFactory();
+        $proxy1  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer
+            ) : bool {
                 $initializer = null;
+
+                return true;
             }
         );
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy2 */
-        $proxy2 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer) : void {
+        $proxy2  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer
+            ) : bool {
                 $initializer = null;
+
+                return true;
             }
         );
 
@@ -518,20 +564,33 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testIssetPrivatePropertyOnDifferentProxyInstances() : void
     {
-        $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
-        $proxyName = $this->generateProxy($class);
-
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy1 */
-        $proxy1 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer) : void {
+        $factory = new LazyLoadingGhostFactory();
+        $proxy1  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer
+            ) : bool {
                 $initializer = null;
+
+                return true;
             }
         );
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy2 */
-        $proxy2 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) use ($class) : void {
-                $initializer                                     = null;
-                $properties["\0" . $class . "\0privateProperty"] = null;
+        $proxy2  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer                                                                                = null;
+                $properties["\0" . ClassWithMixedPropertiesAndAccessorMethods::class . "\0privateProperty"] = null;
+
+                return true;
             }
         );
 
@@ -550,19 +609,31 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testUnsetPrivatePropertyOnDifferentProxyInstances() : void
     {
-        $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
-        $proxyName = $this->generateProxy($class);
-
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy1 */
-        $proxy1 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer) : void {
+        $factory = new LazyLoadingGhostFactory();
+        $proxy1  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer
+            ) : bool {
                 $initializer = null;
+
+                return true;
             }
         );
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy2 */
-        $proxy2 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer) : void {
+        $proxy2  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer
+            ) : bool {
                 $initializer = null;
+
+                return true;
             }
         );
 
@@ -584,25 +655,39 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testIssetPrivateAndProtectedPropertiesDoesCheckAgainstBooleanFalse() : void
     {
-        $class     = ClassWithMixedPropertiesAndAccessorMethods::class;
-        $proxyName = $this->generateProxy($class);
+        $factory = new LazyLoadingGhostFactory();
+        $proxy1  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer                                                                                = null;
+                $properties['publicProperty']                                                               = false;
+                $properties["\0*\0protectedProperty"]                                                       = false;
+                $properties["\0" . ClassWithMixedPropertiesAndAccessorMethods::class . "\0privateProperty"] = false;
 
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy1 */
-        $proxy1 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) use ($class) : void {
-                $initializer                                     = null;
-                $properties['publicProperty']                    = false;
-                $properties["\0*\0protectedProperty"]            = false;
-                $properties["\0" . $class . "\0privateProperty"] = false;
+                return true;
             }
         );
-        /** @var ClassWithMixedPropertiesAndAccessorMethods $proxy2 */
-        $proxy2 = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) use ($class) : void {
-                $initializer                                     = null;
-                $properties['publicProperty']                    = null;
-                $properties["\0*\0protectedProperty"]            = null;
-                $properties["\0" . $class . "\0privateProperty"] = null;
+        $proxy2  = $factory->createProxy(
+            ClassWithMixedPropertiesAndAccessorMethods::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
+                $initializer                                                                                = null;
+                $properties['publicProperty']                                                               = null;
+                $properties["\0*\0protectedProperty"]                                                       = null;
+                $properties["\0" . ClassWithMixedPropertiesAndAccessorMethods::class . "\0privateProperty"] = null;
+
+                return true;
             }
         );
 
@@ -617,10 +702,15 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
     public function testByRefInitialization() : void
     {
-        $proxyName = $this->generateProxy(ClassWithMixedProperties::class);
-        /** @var ClassWithPrivateProperties $proxy */
-        $proxy = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) : void {
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithMixedProperties::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
                 $initializer                                                               = null;
                 $properties["\0" . ClassWithMixedProperties::class . "\0privateProperty0"] = 'private0';
                 $properties["\0" . ClassWithMixedProperties::class . "\0privateProperty1"] = 'private1';
@@ -631,6 +721,8 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 $properties['publicProperty0']                                             = 'public0';
                 $properties['publicProperty1']                                             = 'public1';
                 $properties['publicProperty2']                                             = 'public2';
+
+                return true;
             }
         );
 
@@ -645,14 +737,21 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
     public function testByRefInitializationOfTypedProperties() : void
     {
-        $proxyName = $this->generateProxy(ClassWithMixedTypedProperties::class);
-        /** @var ClassWithMixedTypedProperties $proxy */
-        $proxy = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $properties) : void {
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithMixedTypedProperties::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) : bool {
                 $initializer                                                                         = null;
                 $properties["\0" . ClassWithMixedTypedProperties::class . "\0privateStringProperty"] = 'private0';
                 $properties["\0*\0protectedStringProperty"]                                          = 'protected0';
                 $properties['publicStringProperty']                                                  = 'public0';
+
+                return true;
             }
         );
 
@@ -685,9 +784,16 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = $this->generateProxy(get_class($instance));
+        $proxyName = get_class(
+            (new LazyLoadingGhostFactory())
+                ->createProxy(
+                    ClassWithCounterConstructor::class,
+                    static function () : bool {
+                        return true;
+                    }
+                )
+        );
 
-        /** @var ClassWithCounterConstructor $proxy */
         $proxy = new $proxyName(15);
 
         self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
@@ -699,13 +805,13 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
     public function testInitializeProxyWillReturnTrueOnSuccessfulInitialization() : void
     {
-        $proxyName = $this->generateProxy(ClassWithMixedTypedProperties::class);
-
-        /** @var GhostObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor($this->createInitializer(
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
             ClassWithMixedTypedProperties::class,
-            new ClassWithMixedTypedProperties()
-        ));
+            $this->createInitializer(
+                ClassWithMixedTypedProperties::class,
+                new ClassWithMixedTypedProperties()
+            )
+        );
 
         self::assertTrue($proxy->initializeProxy());
         self::assertTrue($proxy->isProxyInitialized());
@@ -713,31 +819,19 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     }
 
     /**
-     * Generates a proxy for the given class name, and retrieves its class name
+     * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
      *
-     * @param mixed[] $proxyOptions
+     * @psalm-return Closure(
+     *   GhostObjectInterface $proxy,
+     *   string $method,
+     *   array $params,
+     *   ?Closure $initializer
+     * ) : bool
      */
-    private function generateProxy(string $parentClassName, array $proxyOptions = []) : string
+    private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null) : Closure
     {
-        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
-        $generatedClass     = new ClassGenerator($generatedClassName);
-
-        (new LazyLoadingGhostGenerator())->generate(
-            new ReflectionClass($parentClassName),
-            $generatedClass,
-            $proxyOptions
-        );
-        (new EvaluatingGeneratorStrategy())->generate($generatedClass);
-
-        return $generatedClassName;
-    }
-
-    private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null
-    ) : callable
-    {
-        /** @var callable|Mock $initializerMatcher */
         if (! $initializerMatcher) {
-            $initializerMatcher = $this->getMockBuilder(stdClass::class)->setMethods(['__invoke'])->getMock();
+            $initializerMatcher = $this->createMock(CallableInterface::class);
 
             $initializerMatcher
                 ->expects(self::once())
@@ -748,13 +842,11 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 ));
         }
 
-        self::assertIsCallable($initializerMatcher);
-
         return static function (
             GhostObjectInterface $proxy,
-            $method,
-            $params,
-            & $initializer
+            string $method,
+            array $params,
+            ?Closure & $initializer
         ) use (
             $initializerMatcher,
             $realInstance
@@ -772,7 +864,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 $property->setValue($proxy, $property->getValue($realInstance));
             }
 
-            $initializerMatcher($proxy, $method, $params);
+            $initializerMatcher->__invoke($proxy, $method, $params);
 
             return true;
         };
@@ -899,22 +991,29 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     public function getPropertyAccessProxies() : array
     {
         $instance1  = new BaseClass();
-        $proxyName1 = $this->generateProxy(get_class($instance1));
         $instance2  = new BaseClass();
-        $proxyName2 = $this->generateProxy(get_class($instance2));
+
+        $factory = new LazyLoadingGhostFactory();
+
+        /** @var GhostObjectInterface $serialized */
+        $serialized = unserialize(serialize($factory->createProxy(
+            BaseClass::class,
+            $this->createInitializer(BaseClass::class, $instance2)
+        )));
 
         return [
             [
                 $instance1,
-                new $proxyName1($this->createInitializer(BaseClass::class, $instance1)),
+                $factory->createProxy(
+                    BaseClass::class,
+                    $this->createInitializer(BaseClass::class, $instance1)
+                ),
                 'publicProperty',
                 'publicPropertyDefault',
             ],
             [
                 $instance2,
-                unserialize(
-                    serialize(new $proxyName2($this->createInitializer(BaseClass::class, $instance2)))
-                ),
+                $serialized,
                 'publicProperty',
                 'publicPropertyDefault',
             ],
@@ -926,6 +1025,9 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      * @param mixed[] $proxyOptions
      *
      * @dataProvider skipPropertiesFixture
+     *
+     * @psalm-param class-string $className
+     * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
      */
     public function testInitializationIsSkippedForSkippedProperties(
         string $className,
@@ -934,10 +1036,15 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $proxyOptions,
         $expected
     ) : void {
-        $proxy       = $this->generateProxy($className, $proxyOptions);
-        $ghostObject = $proxy::staticProxyConstructor(static function () use ($propertyName) : void {
-            self::fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
-        });
+        $ghostObject = (new LazyLoadingGhostFactory())->createProxy(
+            $className,
+            static function () use ($propertyName) : bool {
+                self::fail(sprintf('The Property "%s" was not expected to be lazy-loaded', $propertyName));
+
+                return true;
+            },
+            $proxyOptions
+        );
 
         $property = new ReflectionProperty($propertyClass, $propertyName);
         $property->setAccessible(true);
@@ -946,9 +1053,12 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     }
 
     /**
-     * @param mixed[] $proxyOptions
+     * @param array<string, mixed> $proxyOptions
      *
      * @dataProvider skipPropertiesFixture
+     *
+     * @psalm-param class-string $className
+     * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
      */
     public function testSkippedPropertiesAreNotOverwrittenOnInitialization(
         string $className,
@@ -956,14 +1066,19 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         string $propertyName,
         array $proxyOptions
     ) : void {
-        $proxyName = $this->generateProxy($className, $proxyOptions);
-        /** @var GhostObjectInterface $ghostObject */
-        $ghostObject = $proxyName::staticProxyConstructor(
-            static function ($proxy, string $method, $params, & $initializer) : bool {
+        $ghostObject = (new LazyLoadingGhostFactory())->createProxy(
+            $className,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer
+            ) : bool {
                 $initializer = null;
 
                 return true;
-            }
+            },
+            $proxyOptions
         );
 
         $property = new ReflectionProperty($propertyClass, $propertyName);
@@ -988,13 +1103,19 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testWillForwardVariadicByRefArguments() : void
     {
-        $proxyName = $this->generateProxy(ClassWithMethodWithByRefVariadicFunction::class);
-        /** @var ClassWithMethodWithByRefVariadicFunction $object */
-        $object = $proxyName::staticProxyConstructor(static function ($proxy, string $method, $params, & $initializer) : bool {
-            $initializer = null;
+        $object = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithMethodWithByRefVariadicFunction::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer
+            ) : bool {
+                $initializer = null;
 
-            return true;
-        });
+                return true;
+            }
+        );
 
         $parameters = ['a', 'b', 'c'];
 
@@ -1009,10 +1130,12 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testWillForwardDynamicArguments() : void
     {
-        $proxyName = $this->generateProxy(ClassWithDynamicArgumentsMethod::class);
-        /** @var ClassWithDynamicArgumentsMethod $object */
-        $object = $proxyName::staticProxyConstructor(static function () : void {
-        });
+        $object = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithDynamicArgumentsMethod::class,
+            static function () : bool {
+                return true;
+            }
+        );
 
         // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)
         self::assertSame(['a', 'b'], (new ClassWithDynamicArgumentsMethod())->dynamicArgumentsMethod('a', 'b'));
@@ -1088,18 +1211,22 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         string $propertyIndex,
         string $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy(get_class($callerObject));
-        /** @var OtherObjectAccessClass|LazyLoadingInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $props) use ($propertyIndex, $expectedValue
-            ) : void {
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            OtherObjectAccessClass::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) use ($propertyIndex, $expectedValue) : bool {
                 $initializer = null;
 
-                $props[$propertyIndex] = $expectedValue;
+                $properties[$propertyIndex] = $expectedValue;
+
+                return true;
             }
         );
-
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
 
         $accessor = [$callerObject, $method];
 
@@ -1120,18 +1247,24 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         string $propertyIndex,
         string $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy(get_class($callerObject));
-        /** @var OtherObjectAccessClass|LazyLoadingInterface $proxy */
-        $proxy = unserialize(serialize($proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $props) use ($propertyIndex, $expectedValue
-            ) : void {
+        /** @var OtherObjectAccessClass&LazyLoadingInterface $proxy */
+        $proxy = unserialize(serialize(
+            (new LazyLoadingGhostFactory())->createProxy(
+                OtherObjectAccessClass::class,
+            static function (
+                GhostObjectInterface$proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) use ($propertyIndex, $expectedValue) : bool {
                 $initializer = null;
 
-                $props[$propertyIndex] = $expectedValue;
+                $properties[$propertyIndex] = $expectedValue;
+
+                return true;
             }
         )));
-
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
 
         $accessor = [$callerObject, $method];
 
@@ -1151,18 +1284,22 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         string $propertyIndex,
         string $expectedValue
     ) : void {
-        $proxyName = $this->generateProxy(get_class($callerObject));
-        /** @var OtherObjectAccessClass|LazyLoadingInterface $proxy */
-        $proxy = clone $proxyName::staticProxyConstructor(
-            static function ($proxy, $method, $params, & $initializer, array $props) use ($propertyIndex, $expectedValue
-            ) : void {
+        $proxy = clone (new LazyLoadingGhostFactory())->createProxy(
+            OtherObjectAccessClass::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) use ($propertyIndex, $expectedValue) : bool {
                 $initializer = null;
 
-                $props[$propertyIndex] = $expectedValue;
+                $properties[$propertyIndex] = $expectedValue;
+
+                return true;
             }
         );
-
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
 
         $accessor = [$callerObject, $method];
 
@@ -1175,7 +1312,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     /** @return string[][]|object[][] */
     public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : array
     {
-        $proxyClass = $this->generateProxy(OtherObjectAccessClass::class);
+        $factory = new LazyLoadingGhostFactory();
 
         return [
             OtherObjectAccessClass::class . '#$privateProperty'                => [
@@ -1197,25 +1334,40 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 uniqid('', true),
             ],
             '(proxy) ' . OtherObjectAccessClass::class . '#$privateProperty'   => [
-                $proxyClass::staticProxyConstructor(static function () : void {
-                    self::fail('Should never be initialized, as its values aren\'t accessed');
-                }),
+                $factory->createProxy(
+                    OtherObjectAccessClass::class,
+                    static function () : bool {
+                        self::fail('Should never be initialized, as its values aren\'t accessed');
+
+                        return true;
+                    }
+                ),
                 'getPrivateProperty',
                 "\0" . OtherObjectAccessClass::class . "\0privateProperty",
                 uniqid('', true),
             ],
             '(proxy) ' . OtherObjectAccessClass::class . '#$protectedProperty' => [
-                $proxyClass::staticProxyConstructor(static function () : void {
-                    self::fail('Should never be initialized, as its values aren\'t accessed');
-                }),
+                $factory->createProxy(
+                    OtherObjectAccessClass::class,
+                    static function () : bool {
+                        self::fail('Should never be initialized, as its values aren\'t accessed');
+
+                        return true;
+                    }
+                ),
                 'getProtectedProperty',
                 "\0*\0protectedProperty",
                 uniqid('', true),
             ],
             '(proxy) ' . OtherObjectAccessClass::class . '#$publicProperty'    => [
-                $proxyClass::staticProxyConstructor(static function () : void {
-                    self::fail('Should never be initialized, as its values aren\'t accessed');
-                }),
+                $factory->createProxy(
+                    OtherObjectAccessClass::class,
+                    static function () : bool {
+                        self::fail('Should never be initialized, as its values aren\'t accessed');
+
+                        return true;
+                    }
+                ),
                 'getPublicProperty',
                 'publicProperty',
                 uniqid('', true),
@@ -1228,24 +1380,20 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testFriendObjectWillNotCauseLazyLoadingOnSkippedProperty() : void
     {
-        $proxyName = $this->generateProxy(
-            OtherObjectAccessClass::class,
-            [
-                'skippedProperties' => [
-                    "\0" . OtherObjectAccessClass::class . "\0privateProperty",
-                    "\0*\0protectedProperty",
-                    'publicProperty',
-                ],
-            ]
-        );
-
-        /** @var OtherObjectAccessClass|LazyLoadingInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor(static function () : void {
-            throw new BadMethodCallException('The proxy should never be initialized, as all properties are skipped');
-        });
-
-        self::assertInstanceOf(OtherObjectAccessClass::class, $proxy);
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
+        $proxy = (new LazyLoadingGhostFactory())
+            ->createProxy(
+                OtherObjectAccessClass::class,
+                static function () : bool {
+                    throw new BadMethodCallException('The proxy should never be initialized, as all properties are skipped');
+                },
+                [
+                    'skippedProperties' => [
+                        "\0" . OtherObjectAccessClass::class . "\0privateProperty",
+                        "\0*\0protectedProperty",
+                        'publicProperty',
+                    ],
+                ]
+            );
 
         $privatePropertyValue   = uniqid('', true);
         $protectedPropertyValue = uniqid('', true);
@@ -1265,12 +1413,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
         $friendObject = new OtherObjectAccessClass();
 
-        self::assertInstanceOf(OtherObjectAccessClass::class, $proxy);
-
-        if (! ($proxy instanceof OtherObjectAccessClass)) {
-            return;
-        }
-
         self::assertSame($privatePropertyValue, $friendObject->getPrivateProperty($proxy));
         self::assertSame($protectedPropertyValue, $friendObject->getProtectedProperty($proxy));
         self::assertSame($publicPropertyValue, $friendObject->getPublicProperty($proxy));
@@ -1278,24 +1420,22 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
     public function testClonedSkippedPropertiesArePreserved() : void
     {
-        $proxyName = $this->generateProxy(
-            BaseClass::class,
-            [
-                'skippedProperties' => [
-                    "\0" . BaseClass::class . "\0privateProperty",
-                    "\0*\0protectedProperty",
-                    'publicProperty',
-                ],
-            ]
-        );
+        $proxy = (new LazyLoadingGhostFactory())
+            ->createProxy(
+                BaseClass::class,
+                static function (GhostObjectInterface $proxy) : bool {
+                    $proxy->setProxyInitializer(null);
 
-        /** @var BaseClass|GhostObjectInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor(static function ($proxy) : void {
-            $proxy->setProxyInitializer(null);
-        });
-
-        self::assertInstanceOf(BaseClass::class, $proxy);
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
+                    return true;
+                },
+                [
+                    'skippedProperties' => [
+                        "\0" . BaseClass::class . "\0privateProperty",
+                        "\0*\0protectedProperty",
+                        'publicProperty',
+                    ],
+                ]
+            );
 
         $reflectionPrivate   = new ReflectionProperty(BaseClass::class, 'privateProperty');
         $reflectionProtected = new ReflectionProperty(BaseClass::class, 'protectedProperty');
@@ -1331,23 +1471,24 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testWillExecuteLogicInAVoidMethod() : void
     {
-        $proxyName = $this->generateProxy(VoidCounter::class);
-
         $initialCounter = random_int(10, 1000);
 
-        /** @var VoidCounter|LazyLoadingInterface $proxy */
-        $proxy = $proxyName::staticProxyConstructor(
-            static function (VoidCounter $proxy, $method, $params, & $initializer, array $props) use ($initialCounter) : bool {
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            VoidCounter::class,
+            static function (
+                LazyLoadingInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) use ($initialCounter) : bool {
                 $initializer = null;
 
-                $props['counter'] = $initialCounter;
+                $properties['counter'] = $initialCounter;
 
                 return true;
             }
         );
-
-        self::assertInstanceOf(VoidCounter::class, $proxy);
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
 
         $increment = random_int(1001, 10000);
 
@@ -1364,5 +1505,14 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
             . $property->getName(),
             (array) $object
         );
+    }
+
+    /**
+     * @param mixed $expected
+     * @param mixed $actual
+     */
+    private static function assertByRefVariableValueSame($expected, & $actual) : void
+    {
+        self::assertSame($expected, $actual);
     }
 }

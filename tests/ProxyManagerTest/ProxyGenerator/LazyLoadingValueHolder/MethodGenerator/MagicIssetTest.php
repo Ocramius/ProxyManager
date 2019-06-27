@@ -25,15 +25,9 @@ final class MagicIssetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap&MockObject $publicProperties */
-        $publicProperties = $this
-            ->getMockBuilder(PublicPropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $publicProperties = $this->createMock(PublicPropertiesMap::class);
 
         $initializer->method('getName')->willReturn('foo');
         $valueHolder->method('getName')->willReturn('bar');

@@ -23,11 +23,8 @@ final class InterceptedMethodTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $valueHolder->method('getName')->willReturn('foo');
@@ -40,8 +37,6 @@ final class InterceptedMethodTest extends TestCase
             $prefixInterceptors,
             $suffixInterceptors
         );
-
-        self::assertInstanceOf(MethodGenerator::class, $method);
 
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());

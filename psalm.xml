@@ -1,15 +1,21 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    totallyTyped="true"
+    rememberPropertyAssignmentsAfterCall="false"
 >
     <projectFiles>
         <directory name="examples"/>
         <directory name="src"/>
         <directory name="tests/static-analysis"/>
+        <directory name="tests/ProxyManagerBench"/>
+        <directory name="tests/ProxyManagerTest"/>
         <ignoreFiles>
+            <!-- remote objects contain references to Zend\Server, which is not installed -->
+            <directory name="tests/ProxyManagerTest/Factory/RemoteObject"/>
+            <file name="tests/ProxyManagerTest/Functional/RemoteObjectFunctionalTest.php"/>
             <directory name="vendor"/>
             <!-- uses dependencies that are not available while testing: -->
             <file name="examples/remote-proxy.php"/>
@@ -37,7 +43,7 @@
 
         <ForbiddenCode errorLevel="suppress"/>
 
-        <InternalMethod errorLevel="error"/>
+        <InternalMethod errorLevel="suppress"/>
         <InternalProperty errorLevel="error"/>
         <InternalClass errorLevel="error"/>
 

@@ -26,17 +26,10 @@ final class MagicSetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator&MockObject $valueHolder */
         $valueHolder = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PublicPropertiesMap&MockObject $publicProperties */
-        $publicProperties = $this
-            ->getMockBuilder(PublicPropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $publicProperties = $this->createMock(PublicPropertiesMap::class);
 
         $valueHolder->method('getName')->willReturn('bar');
         $prefixInterceptors->method('getName')->willReturn('pre');

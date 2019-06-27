@@ -70,12 +70,10 @@ final class LazyLoadingGhostFactoryTest extends TestCase
      */
     public static function testWithOptionalFactory() : void
     {
-        $factory = new LazyLoadingGhostFactory();
-
-        $configuration = Assert::readAttribute($factory, 'configuration');
-
-        self::assertNotEmpty($configuration);
-        self::assertInstanceOf(Configuration::class, $configuration);
+        self::assertInstanceOf(
+            Configuration::class,
+            Assert::readAttribute(new LazyLoadingGhostFactory(), 'configuration')
+        );
     }
 
     /**
@@ -96,13 +94,12 @@ final class LazyLoadingGhostFactoryTest extends TestCase
             ->willReturn(LazyLoadingMock::class);
 
         $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = static function () : void {
+        $initializer = static function () : bool {
+            return true;
         };
-        /** @var LazyLoadingMock $proxy */
-        $proxy = $factory->createProxy($className, $initializer);
+        $proxy       = $factory->createProxy($className, $initializer);
 
-        self::assertInstanceOf(LazyLoadingMock::class, $proxy);
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 
     /**
@@ -116,6 +113,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
      */
     public function testWillTryAutoGeneration() : void
     {
+        /** @var class-string $className */
         $className      = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
@@ -164,11 +162,11 @@ final class LazyLoadingGhostFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = static function () : void {
+        $initializer = static function () : bool {
+            return true;
         };
-        /** @var LazyLoadingMock $proxy */
-        $proxy = $factory->createProxy($className, $initializer);
+        $proxy       = $factory->createProxy($className, $initializer);
 
-        self::assertSame($initializer, $proxy->initializer);
+        self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 }

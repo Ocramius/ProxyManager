@@ -39,8 +39,6 @@ final class PublicPropertiesMapTest extends TestCase
             Properties::fromReflectionClass(new ReflectionClass(ClassWithPublicProperties::class))
         );
 
-        self::assertIsArray($publicProperties->getDefaultValue()->getValue());
-        self::assertCount(10, $publicProperties->getDefaultValue()->getValue());
         self::assertTrue($publicProperties->isStatic());
         self::assertSame('private', $publicProperties->getVisibility());
         self::assertFalse($publicProperties->isEmpty());

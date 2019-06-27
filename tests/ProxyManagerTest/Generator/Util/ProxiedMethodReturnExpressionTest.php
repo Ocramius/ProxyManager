@@ -28,7 +28,9 @@ final class ProxiedMethodReturnExpressionTest extends TestCase
         self::assertSame($expectedGeneratedCode, ProxiedMethodReturnExpression::generate($expression, $originalMethod));
     }
 
-    /** @return string[][]|ReflectionMethod[][]|null[][]>>*/
+    /**
+     * @psalm-return array<string, array{0: string, 1: ReflectionMethod|null, 2: string}>
+     */
     public function returnExpressionsProvider() : array
     {
         return [

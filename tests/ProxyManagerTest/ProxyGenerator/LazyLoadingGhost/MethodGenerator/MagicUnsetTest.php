@@ -108,18 +108,9 @@ PHP;
     {
         $this->initializer         = $this->createMock(PropertyGenerator::class);
         $this->initMethod          = $this->createMock(MethodGenerator::class);
-        $this->publicProperties    = $this
-            ->getMockBuilder(PublicPropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->protectedProperties = $this
-            ->getMockBuilder(ProtectedPropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->privateProperties   = $this
-            ->getMockBuilder(PrivatePropertiesMap::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->publicProperties    = $this->createMock(PublicPropertiesMap::class);
+        $this->protectedProperties = $this->createMock(ProtectedPropertiesMap::class);
+        $this->privateProperties   = $this->createMock(PrivatePropertiesMap::class);
 
         $this->initializer->method('getName')->willReturn('foo');
         $this->initMethod->method('getName')->willReturn('baz');

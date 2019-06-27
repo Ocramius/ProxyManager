@@ -53,7 +53,6 @@ final class FileWriterGeneratorStrategyTest extends TestCase
 
     public function testGenerate() : void
     {
-        /** @var FileLocatorInterface&MockObject $locator */
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = $this->tempDir . '/' . uniqid('FileWriterGeneratorStrategyTest', true) . '.php';
@@ -93,7 +92,6 @@ final class FileWriterGeneratorStrategyTest extends TestCase
         $tmpDirPath = $this->tempDir . '/' . uniqid('nonWritable', true);
         mkdir($tmpDirPath, 0555, true);
 
-        /** @var FileLocatorInterface&MockObject $locator */
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = $tmpDirPath . '/' . uniqid('FileWriterGeneratorStrategyFailedFileWriteTest', true) . '.php';
@@ -112,7 +110,6 @@ final class FileWriterGeneratorStrategyTest extends TestCase
 
     public function testGenerateWillFailIfTmpFileCannotBeMovedToFinalDestination() : void
     {
-        /** @var FileLocatorInterface&MockObject $locator */
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = $this->tempDir . '/' . uniqid('FileWriterGeneratorStrategyFailedFileMoveTest', true) . '.php';
@@ -137,7 +134,6 @@ final class FileWriterGeneratorStrategyTest extends TestCase
 
         mkdir($tmpDirPath);
 
-        /** @var FileLocatorInterface&MockObject $locator */
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
         $tmpFile   = $tmpDirPath . '/' . uniqid('FileWriterGeneratorStrategyFailedFileMoveTest', true) . '.php';

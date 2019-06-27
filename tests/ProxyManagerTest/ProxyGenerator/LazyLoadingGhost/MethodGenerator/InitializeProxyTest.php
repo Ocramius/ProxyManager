@@ -22,9 +22,7 @@ final class InitializeProxyTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        /** @var PropertyGenerator&MockObject $initializer */
         $initializer = $this->createMock(PropertyGenerator::class);
-        /** @var MethodGenerator&MockObject $initCall */
         $initCall = $this->createMock(MethodGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');

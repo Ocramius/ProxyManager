@@ -25,9 +25,7 @@ final class MagicCloneTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->method('getName')->willReturn('pre');
@@ -46,9 +44,7 @@ final class MagicCloneTest extends TestCase
     public function testBodyStructureWithInheritedMethod() : void
     {
         $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        /** @var PropertyGenerator&MockObject $prefixInterceptors */
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
-        /** @var PropertyGenerator&MockObject $suffixInterceptors */
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
         $prefixInterceptors->method('getName')->willReturn('pre');

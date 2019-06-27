@@ -44,18 +44,20 @@ final class FatalPreventionFunctionalTest extends TestCase
      * @param string $className      a valid (existing/autoloadable) class name
      *
      * @dataProvider getTestedClasses
+     *
+     * @psalm-param class-string<ProxyGeneratorInterface> $generatorClass
+     * @psalm-param class-string                          $className
      */
     public function testCodeGeneration(string $generatorClass, string $className) : void
     {
         $generatedClass    = new ClassGenerator(uniqid('generated', true));
         $generatorStrategy = new EvaluatingGeneratorStrategy();
-        /** @var ProxyGeneratorInterface $classGenerator */
         $classGenerator          = new $generatorClass();
         $classSignatureGenerator = new ClassSignatureGenerator(new SignatureGenerator());
 
         try {
             $classGenerator->generate(new ReflectionClass($className), $generatedClass);
-            $classSignatureGenerator->addSignature($generatedClass, ['eval tests']);
+            $classSignatureGenerator->addSignature($generatedClass, ['key' => 'eval tests']);
             $generatorStrategy->generate($generatedClass);
         } catch (ExceptionInterface $e) {
             // empty catch: this is actually a supported failure
@@ -68,20 +70,20 @@ final class FatalPreventionFunctionalTest extends TestCase
 
     /**
      * @return string[][]
+     *
+     * @psalm-return array<int, array<int, class-string<ProxyGeneratorInterface>|class-string>>
      */
     public function getTestedClasses() : array
     {
-        $that = $this;
-
         return array_merge(
             [],
             ...array_map(
-                static function ($generator) use ($that) : array {
+                function ($generator) : array {
                     return array_map(
                         static function ($class) use ($generator) : array {
                             return [$generator, $class];
                         },
-                        $that->getProxyTestedClasses()
+                        $this->getProxyTestedClasses()
                     );
                 },
                 [
@@ -99,9 +101,11 @@ final class FatalPreventionFunctionalTest extends TestCase
     /**
      * @return string[]
      *
+     * @psalm-return array<int, class-string>
+     *
      * @private (public only for PHP 5.3 compatibility)
      */
-    public function getProxyTestedClasses() : array
+    private function getProxyTestedClasses() : array
     {
         $skippedPaths = [
             realpath(__DIR__ . '/../../../src'),

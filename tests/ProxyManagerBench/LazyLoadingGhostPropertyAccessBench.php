@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace ProxyManagerBench;
 
+use Closure;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\Factory\LazyLoadingGhostFactory;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
-use ReflectionClass;
 use ReflectionProperty;
 use function assert;
-use function class_exists;
 
 /**
  * Benchmark that provides results for simple initialization/state access for lazy loading ghost proxies
@@ -296,30 +294,22 @@ final class LazyLoadingGhostPropertyAccessBench
         unset($this->initializedMixedPropertiesProxy->publicProperty0);
     }
 
-    private function buildProxy(string $originalClass) : LazyLoadingInterface
+    /**
+     * @psalm-template OriginalClass
+     * @psalm-param class-string<OriginalClass> $originalClass
+     * @psalm-return OriginalClass&GhostObjectInterface<OriginalClass>
+     * @psalm-suppress MixedInferredReturnType
+     */
+    private function buildProxy(string $originalClass) : GhostObjectInterface
     {
-        return $this->generateProxyClass($originalClass)::staticProxyConstructor(
-            static function ($proxy, string $method, $params, & $initializer) : bool {
-                $initializer = null;
+        return (new LazyLoadingGhostFactory())
+            ->createProxy(
+                $originalClass,
+                static function (object $proxy, string $method, array $params, ?Closure & $initializer) : bool {
+                    $initializer = null;
 
-                return true;
-            }
-        );
-    }
-
-    private function generateProxyClass(string $originalClassName) : string
-    {
-        $generatedClassName = self::class . '\\' . $originalClassName;
-
-        if (class_exists($generatedClassName)) {
-            return $generatedClassName;
-        }
-
-        $generatedClass = new ClassGenerator($generatedClassName);
-
-        (new LazyLoadingGhostGenerator())->generate(new ReflectionClass($originalClassName), $generatedClass, []);
-        (new EvaluatingGeneratorStrategy())->generate($generatedClass);
-
-        return $generatedClassName;
+                    return true;
+                }
+            );
     }
 }

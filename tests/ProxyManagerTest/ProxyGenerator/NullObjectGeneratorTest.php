@@ -33,6 +33,8 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
+     * @psalm-param class-string $className
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function testGeneratesValidCode(string $className) : void
     {
@@ -57,6 +59,11 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             self::assertTrue($generatedReflection->implementsInterface($interface));
         }
 
+        /**
+         * @psalm-suppress InvalidStringClass
+         * @psalm-suppress MixedAssignment
+         * @psalm-suppress MixedMethodCall
+         */
         $proxy = $generatedClassName::staticProxyConstructor();
 
         self::assertInstanceOf($className, $proxy);
@@ -64,6 +71,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         foreach (Properties::fromReflectionClass($generatedReflection)
                 ->onlyNullableProperties()
                 ->getPublicProperties() as $property) {
+            /** @psalm-suppress MixedPropertyFetch */
             self::assertNull($proxy->{$property->getName()});
         }
 
@@ -97,7 +105,9 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         ];
     }
 
-    /** @return string[][] */
+    /**
+     * @psalm-return array<int, array<int, class-string>>
+     */
     public function getTestedImplementations() : array
     {
         return [

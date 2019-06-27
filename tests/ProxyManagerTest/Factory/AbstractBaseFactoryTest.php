@@ -120,7 +120,7 @@ final class AbstractBaseFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($generatedClass)
-            ->will(self::returnCallback(static function ($className) : bool {
+            ->will(self::returnCallback(static function (string $className) : bool {
                 eval('class ' . $className . ' {}');
 
                 return true;
@@ -134,7 +134,7 @@ final class AbstractBaseFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(static function (ReflectionClass $reflectionClass) : bool {
-                    return $reflectionClass->getName() === 'stdClass';
+                    return $reflectionClass->getName() === stdClass::class;
                 }),
                 self::isInstanceOf(ClassGenerator::class),
                 ['some' => 'proxy', 'options' => 'here']
