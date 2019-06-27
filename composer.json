@@ -25,7 +25,7 @@
     },
     "conflict": {
         "zendframework/zend-stdlib": "<3.2.1",
-        "doctrine/annotations": "<1.6.1"
+        "doctrine/annotations":      "<1.6.1"
     },
     "require-dev": {
         "ext-phar":                     "*",
@@ -38,7 +38,7 @@
         "phpbench/phpbench":            "^0.16.9",
         "infection/infection":          "^0.13.2",
         "symfony/console":              "^4.3.1",
-        "vimeo/psalm":                  "dev-master@dev"
+        "vimeo/psalm":                  "^3.4.6"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
