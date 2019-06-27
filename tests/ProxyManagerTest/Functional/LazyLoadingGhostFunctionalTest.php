@@ -9,12 +9,8 @@ use Closure;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\LazyLoadingGhostFactory;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\CallableInterface;
@@ -75,7 +71,8 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxy = $this->makeProxy($className, $this->createInitializer($className, $instance));
+        $proxy = (new LazyLoadingGhostFactory())
+            ->createProxy($className, $this->createInitializer($className, $instance));
 
         self::assertFalse($proxy->isProxyInitialized());
 
@@ -787,7 +784,15 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = $this->generateProxy(ClassWithCounterConstructor::class);
+        $proxyName = get_class(
+            (new LazyLoadingGhostFactory())
+                ->createProxy(
+                    ClassWithCounterConstructor::class,
+                    static function () : bool {
+                        return true;
+                    }
+                )
+        );
 
         $proxy = new $proxyName(15);
 
@@ -811,54 +816,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         self::assertTrue($proxy->initializeProxy());
         self::assertTrue($proxy->isProxyInitialized());
         self::assertFalse($proxy->initializeProxy());
-    }
-
-    /**
-     * Generates a proxy for the given class name, and retrieves its class name
-     *
-     * @param array{skippedProperties?: array<int, string>} $proxyOptions
-     *
-     * @psalm-template OriginalClass
-     * @psalm-param class-string<OriginalClass> $parentClassName
-     * @psalm-return class-string<OriginalClass>
-     * @psalm-suppress MoreSpecificReturnType
-     */
-    private function generateProxy(string $parentClassName, array $proxyOptions = []) : string
-    {
-        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
-        $generatedClass     = new ClassGenerator($generatedClassName);
-
-        (new LazyLoadingGhostGenerator())->generate(
-            new ReflectionClass($parentClassName),
-            $generatedClass,
-            $proxyOptions
-        );
-        (new EvaluatingGeneratorStrategy())->generate($generatedClass);
-
-        /**
-         * @psalm-suppress LessSpecificReturnStatement
-         */
-        return $generatedClassName;
-    }
-
-    /**
-     * @psalm-template OriginalClass
-     * @psalm-param class-string<OriginalClass> $originalClassName
-     * @psalm-param OriginalClass $realInstance
-     * @psalm-return GhostObjectInterface<OriginalClass>&OriginalClass
-     *
-     * @psalm-suppress MixedInferredReturnType
-     * @psalm-suppress MoreSpecificReturnType
-     */
-    private function makeProxy(string $originalClassName, callable $initializer) : GhostObjectInterface
-    {
-        $proxyClassName = $this->generateProxy($originalClassName);
-
-        /**
-         * @psalm-suppress MixedMethodCall
-         * @psalm-suppress MixedReturnStatement
-         */
-        return $proxyClassName::staticProxyConstructor($initializer);
     }
 
     /**
@@ -1327,7 +1284,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         string $propertyIndex,
         string $expectedValue
     ) : void {
-        $proxy = clone $this->makeProxy(
+        $proxy = clone (new LazyLoadingGhostFactory())->createProxy(
             OtherObjectAccessClass::class,
             static function (
                 GhostObjectInterface $proxy,
