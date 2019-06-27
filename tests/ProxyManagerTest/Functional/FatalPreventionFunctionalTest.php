@@ -46,6 +46,7 @@ final class FatalPreventionFunctionalTest extends TestCase
      * @dataProvider getTestedClasses
      *
      * @psalm-param class-string<ProxyGeneratorInterface> $generatorClass
+     * @psalm-param class-string                          $className
      */
     public function testCodeGeneration(string $generatorClass, string $className) : void
     {

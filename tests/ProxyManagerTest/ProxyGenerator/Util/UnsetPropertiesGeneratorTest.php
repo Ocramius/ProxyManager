@@ -24,6 +24,8 @@ final class UnsetPropertiesGeneratorTest extends TestCase
 {
     /**
      * @dataProvider classNamesProvider
+     *
+     * @psalm-param class-string $className
      */
     public function testGeneratedCode(string $className, string $expectedCode, string $instanceName) : void
     {

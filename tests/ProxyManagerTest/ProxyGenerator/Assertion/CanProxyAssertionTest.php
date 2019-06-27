@@ -75,6 +75,8 @@ final class CanProxyAssertionTest extends TestCase
 
     /**
      * @dataProvider validClasses
+     *
+     * @psalm-param class-string $className
      */
     public function testAllowedClass(string $className) : void
     {

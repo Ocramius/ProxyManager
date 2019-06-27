@@ -36,6 +36,8 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
+     *
+     * @psalm-param class-string $className
      */
     public function testGeneratesValidCode(string $className) : void
     {
