@@ -10,12 +10,8 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
-use ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\CallableInterface;
@@ -313,7 +309,15 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = $this->generateProxy(ClassWithCounterConstructor::class);
+        $proxyName = get_class(
+            (new LazyLoadingValueHolderFactory())
+                ->createProxy(
+                    ClassWithCounterConstructor::class,
+                    static function () : bool {
+                        return true;
+                    }
+                )
+        );
 
         $proxy = new $proxyName(15);
 
@@ -368,30 +372,6 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
 
         self::assertSame(['a', 'b'], $object->dynamicArgumentsMethod('a', 'b'));
-    }
-
-    /**
-     * Generates a proxy for the given class name, and retrieves its class name
-     *
-     * @psalm-template OriginalClass
-     * @psalm-param class-string<OriginalClass> $parentClassName
-     * @psalm-return class-string<OriginalClass>
-     * @psalm-suppress MoreSpecificReturnType
-     */
-    private function generateProxy(string $parentClassName) : string
-    {
-        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
-        $generator          = new LazyLoadingValueHolderGenerator();
-        $generatedClass     = new ClassGenerator($generatedClassName);
-        $strategy           = new EvaluatingGeneratorStrategy();
-
-        $generator->generate(new ReflectionClass($parentClassName), $generatedClass);
-        $strategy->generate($generatedClass);
-
-        /**
-         * @psalm-suppress LessSpecificReturnStatement
-         */
-        return $generatedClassName;
     }
 
     /**
