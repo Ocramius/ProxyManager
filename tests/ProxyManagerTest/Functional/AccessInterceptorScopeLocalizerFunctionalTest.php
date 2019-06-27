@@ -7,13 +7,8 @@ namespace ProxyManagerTest\Functional;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
-use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
-use ProxyManager\Generator\ClassGenerator;
-use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\AccessInterceptorInterface;
-use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\BaseClass;
@@ -23,7 +18,6 @@ use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithParentHint;
-use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicArrayPropertyAccessibleViaMethod;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
@@ -32,7 +26,6 @@ use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 use function array_values;
-use function get_class;
 use function random_int;
 use function serialize;
 use function uniqid;
@@ -52,14 +45,13 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @dataProvider getProxyMethods
      *
-     * @psalm-template OriginalClass
+     * @psalm-template OriginalClass as object
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
      */
-    public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue
-    ) : void
+    public function testMethodCalls(object $instance, string $method, array $params, $expectedValue) : void
     {
-        $proxy = $this->makeProxy($className, $instance);
+        $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $this->assertProxySynchronized($instance, $proxy);
 
@@ -117,18 +109,17 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @dataProvider getProxyMethods
      *
-     * @psalm-template OriginalClass
+     * @psalm-template OriginalClass as object
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsWithSuffixListener(
-        string $className,
         object $instance,
         string $method,
         array $params,
         $expectedValue
     ) : void {
-        $proxy    = $this->makeProxy($className, $instance);
+        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
@@ -186,19 +177,18 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @dataProvider getProxyMethods
      *
-     * @psalm-template OriginalClass
+     * @psalm-template OriginalClass as object
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterUnSerialization(
-        string $className,
         object $instance,
         string $method,
         array $params,
         $expectedValue
     ) : void {
         /** @var AccessInterceptorInterface $proxy */
-        $proxy = unserialize(serialize($this->makeProxy($className, $instance)));
+        $proxy = unserialize(serialize((new AccessInterceptorScopeLocalizerFactory())->createProxy($instance)));
 
         $callback = [$proxy, $method];
 
@@ -213,18 +203,17 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @dataProvider getProxyMethods
      *
-     * @psalm-template OriginalClass
+     * @psalm-template OriginalClass as object
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterCloning(
-        string $className,
         object $instance,
         string $method,
         array $params,
         $expectedValue
     ) : void {
-        $proxy    = $this->makeProxy($className, $instance);
+        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
         $cloned   = clone $proxy;
         $callback = [$cloned, $method];
 
@@ -296,7 +285,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     public function testCanWriteToArrayKeysInPublicProperty() : void
     {
         $instance  = new ClassWithPublicArrayPropertyAccessibleViaMethod();
-        $proxy     = $this->makeProxy(ClassWithPublicArrayPropertyAccessibleViaMethod::class, $instance);
+        $proxy     = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -315,7 +304,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     public function testWillNotModifyRetrievedPublicProperties() : void
     {
         $instance  = new ClassWithPublicProperties();
-        $proxy = $this->makeProxy(ClassWithPublicProperties::class, $instance);
+        $proxy     = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $variable = $proxy->property0;
 
@@ -336,7 +325,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     public function testWillModifyByRefRetrievedPublicProperties() : void
     {
         $instance  = new ClassWithPublicProperties();
-        $proxy = $this->makeProxy(ClassWithPublicProperties::class, $instance);
+        $proxy     = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $variable = &$proxy->property0;
 
@@ -365,7 +354,10 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = $this->generateProxy(ClassWithCounterConstructor::class);
+        $proxyName = get_class(
+            (new AccessInterceptorScopeLocalizerFactory())
+                ->createProxy(new ClassWithCounterConstructor(0))
+        );
 
         $proxy = new $proxyName(15);
 
@@ -377,52 +369,9 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /**
-     * Generates a proxy for the given class name, and retrieves its class name
-     *
-     * @throws UnsupportedProxiedClassException
-     *
-     * @psalm-template OriginalClass
-     * @psalm-param class-string<OriginalClass> $originalClassName
-     * @psalm-return class-string<OriginalClass>
-     * @psalm-suppress MoreSpecificReturnType
-     */
-    private function generateProxy(string $originalClassName) : string
-    {
-        $generatedClassName = __NAMESPACE__ . '\\' . UniqueIdentifierGenerator::getIdentifier('Foo');
-        $generator          = new AccessInterceptorScopeLocalizerGenerator();
-        $generatedClass     = new ClassGenerator($generatedClassName);
-        $strategy           = new EvaluatingGeneratorStrategy();
-
-        $generator->generate(new ReflectionClass($originalClassName), $generatedClass);
-        $strategy->generate($generatedClass);
-
-        /** @psalm-suppress LessSpecificReturnStatement */
-        return $generatedClassName;
-    }
-
-    /**
-     * @psalm-template OriginalClass
-     * @psalm-param class-string<OriginalClass> $originalClassName
-     * @psalm-param OriginalClass $realInstance
-     * @psalm-return AccessInterceptorInterface<OriginalClass>&OriginalClass
-     * @psalm-suppress MixedInferredReturnType
-     * @psalm-suppress MoreSpecificReturnType
-     */
-    private function makeProxy(string $originalClassName, object $realInstance) : AccessInterceptorInterface
-    {
-        $proxyClassName = $this->generateProxy($originalClassName);
-
-        /**
-         * @psalm-suppress MixedMethodCall
-         * @psalm-suppress MixedReturnStatement
-         */
-        return $proxyClassName::staticProxyConstructor($realInstance);
-    }
-
-    /**
      * Generates a list of object | invoked method | parameters | expected result
      *
-     * @return array<int, array<class-string|object|array<string, mixed>|string>>
+     * @return array<int, array<object|array<string, mixed>|string>>
      */
     public static function getProxyMethods() : array
     {
@@ -431,35 +380,30 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         return [
             [
-                BaseClass::class,
                 new BaseClass(),
                 'publicMethod',
                 [],
                 'publicMethodDefault',
             ],
             [
-                BaseClass::class,
                 new BaseClass(),
                 'publicTypeHintedMethod',
                 ['param' => new stdClass()],
                 'publicTypeHintedMethodDefault',
             ],
             [
-                BaseClass::class,
                 new BaseClass(),
                 'publicByReferenceMethod',
                 [],
                 'publicByReferenceMethodDefault',
             ],
             [
-                ClassWithSelfHint::class,
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 ['parameter' => $selfHintParam],
                 $selfHintParam,
             ],
             [
-                ClassWithParentHint::class,
                 new ClassWithParentHint(),
                 'parentHintMethod',
                 ['parameter' => $empty],
@@ -480,7 +424,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         return [
             [
                 $instance,
-                $this->makeProxy(BaseClass::class, $instance),
+                (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance),
                 'publicProperty',
                 'publicPropertyDefault',
             ],
