@@ -44,10 +44,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
-     *
-     * @psalm-template OriginalClass as object
-     * @psalm-param class-string<OriginalClass> $className
-     * @psalm-param OriginalClass $instance
      */
     public function testMethodCalls(object $instance, string $method, array $params, $expectedValue) : void
     {
@@ -108,10 +104,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
-     *
-     * @psalm-template OriginalClass as object
-     * @psalm-param class-string<OriginalClass> $className
-     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsWithSuffixListener(
         object $instance,
@@ -176,10 +168,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
-     *
-     * @psalm-template OriginalClass as object
-     * @psalm-param class-string<OriginalClass> $className
-     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterUnSerialization(
         object $instance,
@@ -202,10 +190,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
-     *
-     * @psalm-template OriginalClass as object
-     * @psalm-param class-string<OriginalClass> $className
-     * @psalm-param OriginalClass $instance
      */
     public function testMethodCallsAfterCloning(
         object $instance,
