@@ -95,7 +95,7 @@ PHP;
         foreach ($properties->getGroupedPrivateProperties() as $className => $privateProperties) {
             $cacheKey      = 'cache' . str_replace('\\', '_', $className);
             $assignments[] = 'static $' . $cacheKey . ";\n\n"
-                . '$' . $cacheKey . ' ?: $' . $cacheKey . " = \\Closure::bind(function (\$instance) {\n"
+                . '$' . $cacheKey . ' ?: $' . $cacheKey . " = \\Closure::bind(static function (\$instance) {\n"
                 . $this->getPropertyDefaultsAssignments($privateProperties) . "\n"
                 . '}, null, ' . var_export($className, true) . ");\n\n"
                 . '$' . $cacheKey . "(\$this);\n\n";

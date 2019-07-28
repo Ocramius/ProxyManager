@@ -35,26 +35,26 @@ final class CallInitializerTest extends TestCase
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
         );
 
-        $expectedCode = 'if ($this->track || ! $this->init) {
+        $expectedCode = <<<'PHP'
+if ($this->track || ! $this->init) {
     return;
 }
 
 $this->track = true;
 
-$this->publicProperty0 = \'publicProperty0\';
-$this->publicProperty1 = \'publicProperty1\';
-$this->publicProperty2 = \'publicProperty2\';
-$this->protectedProperty0 = \'protectedProperty0\';
-$this->protectedProperty1 = \'protectedProperty1\';
-$this->protectedProperty2 = \'protectedProperty2\';
+$this->publicProperty0 = 'publicProperty0';
+$this->publicProperty1 = 'publicProperty1';
+$this->publicProperty2 = 'publicProperty2';
+$this->protectedProperty0 = 'protectedProperty0';
+$this->protectedProperty1 = 'protectedProperty1';
+$this->protectedProperty2 = 'protectedProperty2';
 static $cacheProxyManagerTestAsset_ClassWithMixedProperties;
 
-$cacheProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedProperties = '
-        . '\Closure::bind(function ($instance) {
-    $instance->privateProperty0 = \'privateProperty0\';
-    $instance->privateProperty1 = \'privateProperty1\';
-    $instance->privateProperty2 = \'privateProperty2\';
-}, null, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
+$cacheProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedProperties = \Closure::bind(static function ($instance) {
+    $instance->privateProperty0 = 'privateProperty0';
+    $instance->privateProperty1 = 'privateProperty1';
+    $instance->privateProperty2 = 'privateProperty2';
+}, null, 'ProxyManagerTestAsset\\ClassWithMixedProperties');
 
 $cacheProxyManagerTestAsset_ClassWithMixedProperties($this);
 
@@ -62,32 +62,29 @@ $cacheProxyManagerTestAsset_ClassWithMixedProperties($this);
 
 
 $properties = [
-    \'publicProperty0\' => & $this->publicProperty0,
-    \'publicProperty1\' => & $this->publicProperty1,
-    \'publicProperty2\' => & $this->publicProperty2,
-    \'\' . "\0" . \'*\' . "\0" . \'protectedProperty0\' => & $this->protectedProperty0,
-    \'\' . "\0" . \'*\' . "\0" . \'protectedProperty1\' => & $this->protectedProperty1,
-    \'\' . "\0" . \'*\' . "\0" . \'protectedProperty2\' => & $this->protectedProperty2,
+    'publicProperty0' => & $this->publicProperty0,
+    'publicProperty1' => & $this->publicProperty1,
+    'publicProperty2' => & $this->publicProperty2,
+    '' . "\0" . '*' . "\0" . 'protectedProperty0' => & $this->protectedProperty0,
+    '' . "\0" . '*' . "\0" . 'protectedProperty1' => & $this->protectedProperty1,
+    '' . "\0" . '*' . "\0" . 'protectedProperty2' => & $this->protectedProperty2,
 ];
 
 static $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties;
 
-$cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties '
-            . '= \Closure::bind(function ($instance, array & $properties) {
-    $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty0\'] = '
-            . '& $instance->privateProperty0;
-    $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty1\'] = '
-            . '& $instance->privateProperty1;
-    $properties[\'\' . "\0" . \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\' . "\0" . \'privateProperty2\'] = '
-            . '& $instance->privateProperty2;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
+$cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties = \Closure::bind(function ($instance, array & $properties) {
+    $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty0'] = & $instance->privateProperty0;
+    $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty1'] = & $instance->privateProperty1;
+    $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty2'] = & $instance->privateProperty2;
+}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties');
 
 $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
 
 $result = $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
 $this->track = false;
 
-return $result;';
+return $result;
+PHP;
 
         self::assertSame(
             $expectedCode,
@@ -162,7 +159,7 @@ $this->protectedNullableIterableProperty = array (
 );
 static $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties;
 
-$cacheProxyManagerTestAsset_ClassWithMixedTypedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(function ($instance) {
+$cacheProxyManagerTestAsset_ClassWithMixedTypedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(static function ($instance) {
     $instance->privateUnTypedProperty = 'privateUnTypedProperty';
     $instance->privateUnTypedPropertyWithoutDefaultValue = NULL;
     $instance->privateBoolProperty = true;

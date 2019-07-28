@@ -18,7 +18,7 @@ use function var_export;
 final class UnsetPropertiesGenerator
 {
     /** @var string */
-    private static $closureTemplate = <<<'PHP'
+    private const CLOSURE_TEMPLATE = <<<'PHP'
 \Closure::bind(function (\%s $instance) {
     %s
 }, $%s, %s)->__invoke($%s);
@@ -76,7 +76,7 @@ PHP;
         $declaringClassName = $declaringClass->getName();
 
         return sprintf(
-            self::$closureTemplate,
+            self::CLOSURE_TEMPLATE,
             $declaringClassName,
             self::generateUnsetStatement($properties, 'instance'),
             $instanceName,

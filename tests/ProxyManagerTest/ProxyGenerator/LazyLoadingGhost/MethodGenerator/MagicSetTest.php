@@ -73,7 +73,7 @@ if (isset(self::$baz[$name])) {
         $cacheKey = $class . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
-            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
+            : $accessorCache[$cacheKey] = \Closure::bind(static function ($instance, $value) use ($name) {
                 return ($instance->$name = $value);
             }, null, $class);
 
@@ -85,7 +85,7 @@ if (isset(self::$baz[$name])) {
         $cacheKey = $tmpClass . '#' . $name;
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
-            : $accessorCache[$cacheKey] = \Closure::bind(function ($instance, $value) use ($name) {
+            : $accessorCache[$cacheKey] = \Closure::bind(static function ($instance, $value) use ($name) {
                 return ($instance->$name = $value);
             }, null, $tmpClass);
 
