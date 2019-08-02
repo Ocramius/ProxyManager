@@ -14,7 +14,7 @@ before_script:
   - sh .travis.install.sh
 
 script:
-  - phpdbg -qrr vendor/bin/phpunit --testsuite=unit
+  - phpdbg -qrr vendor/bin/phpunit --testsuite=unit --verbose
 
 matrix:
   allow_failures:
