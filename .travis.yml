@@ -5,46 +5,18 @@ sudo: false
 
 php:
   - 7.4snapshot
-  - nightly
 
 env:
   matrix:
     - DEPENDENCIES="high"
-    - DEPENDENCIES="low"
-  global:
-    - GIT_NAME:  "'Marco Pivetta'"
-    - GIT_EMAIL: ocramius@gmail.com
-    - GH_REF:    github.com/Ocramius/ProxyManager
-    - secure: HUDB66EnmKFx2A+E3HxvuX/7XSjgfNy8dnzcpG+K9mf/JM5JXZflK3xO3J3LCgSQG6Ptwr2yy//7vX+PdJMdSRTmP+d/dy6v8yLRP+GvYZXLIbuKg7dQjLerOxJcy9JhU2eAEBevc002PwFqLalfhCyWLvLiCof8++E2uGbvTSU=
 
 before_script:
   - sh .travis.install.sh
 
 script:
-  - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml --group=Coverage
-  - ./vendor/bin/phpunit --disallow-test-output --exclude-group=Coverage
-  - php -n ./vendor/bin/phpbench run --revs=100 --iterations=3 --warmup=1 --report=aggregate
-  - echo "Running examples"
-  - php examples/access-interceptor-scope-localizer.php
-  - php examples/ghost-object.php
-  - php examples/ghost-object-skipped-properties.php
-  - php examples/smart-reference.php
-  - php examples/virtual-proxy.php
-  - php tests/static-analysis/access-interceptor-scope-localizer.php
-  - php tests/static-analysis/lazy-loading-ghost-object.php
-  - php tests/static-analysis/null-object.php
-  - php tests/static-analysis/access-interceptor-value-holder.php
-  - php tests/static-analysis/lazy-loading-value-holder.php
-  - php tests/static-analysis/remote-object.php
-  - ./vendor/bin/phpcs || true
-  - ./vendor/bin/psalm
   - phpdbg -qrr vendor/bin/phpunit --testsuite=unit
   - ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
 
 matrix:
   allow_failures:
     - php: nightly
-
-after_script:
-  - sh .travis.coverage.sh
-  - ./vendor/bin/couscous travis-auto-deploy --php-version=7.2
