@@ -15,7 +15,6 @@ before_script:
 
 script:
   - phpdbg -qrr vendor/bin/phpunit --testsuite=unit
-  - ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
 
 matrix:
   allow_failures:
