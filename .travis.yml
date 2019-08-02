@@ -38,6 +38,7 @@ script:
   - php tests/static-analysis/remote-object.php
   - ./vendor/bin/phpcs || true
   - ./vendor/bin/psalm
+  - phpdbg -qrr vendor/bin/phpunit --testsuite=unit
   - ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
 
 matrix:
