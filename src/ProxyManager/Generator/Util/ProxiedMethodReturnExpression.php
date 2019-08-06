@@ -16,7 +16,15 @@ final class ProxiedMethodReturnExpression
 {
     public static function generate(string $returnedValueExpression, ?\ReflectionMethod $originalMethod) : string
     {
-        if ($originalMethod && 'void' === (string) $originalMethod->getReturnType()) {
+        $originalReturnType = $originalMethod === null
+            ? null
+            : $originalMethod->getReturnType();
+
+        $originalReturnTypeName = $originalReturnType === null
+            ? null
+            : $originalReturnType->getName();
+
+        if ($originalReturnTypeName === 'void') {
             return $returnedValueExpression . ";\nreturn;";
         }
 
