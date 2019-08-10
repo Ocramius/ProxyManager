@@ -26,6 +26,7 @@ use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
 use function array_values;
+use function get_class;
 use function random_int;
 use function serialize;
 use function uniqid;
@@ -268,8 +269,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function testCanWriteToArrayKeysInPublicProperty() : void
     {
-        $instance  = new ClassWithPublicArrayPropertyAccessibleViaMethod();
-        $proxy     = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
+        $instance = new ClassWithPublicArrayPropertyAccessibleViaMethod();
+        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -287,8 +288,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function testWillNotModifyRetrievedPublicProperties() : void
     {
-        $instance  = new ClassWithPublicProperties();
-        $proxy     = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
+        $instance = new ClassWithPublicProperties();
+        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $variable = $proxy->property0;
 
@@ -308,8 +309,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function testWillModifyByRefRetrievedPublicProperties() : void
     {
-        $instance  = new ClassWithPublicProperties();
-        $proxy     = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
+        $instance = new ClassWithPublicProperties();
+        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $variable = &$proxy->property0;
 
@@ -403,7 +404,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies() : array
     {
-        $instance  = new BaseClass();
+        $instance = new BaseClass();
 
         return [
             [

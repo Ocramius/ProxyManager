@@ -23,9 +23,9 @@ final class MagicSetTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
-        $initializer = $this->createMock(PropertyGenerator::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $reflection       = new ReflectionClass(EmptyClass::class);
+        $initializer      = $this->createMock(PropertyGenerator::class);
+        $valueHolder      = $this->createMock(PropertyGenerator::class);
         $publicProperties = $this->createMock(PublicPropertiesMap::class);
 
         $initializer->method('getName')->willReturn('foo');
@@ -51,9 +51,9 @@ final class MagicSetTest extends TestCase
      */
     public function testBodyStructureWithPreExistingMagicMethod() : void
     {
-        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
-        $initializer = $this->createMock(PropertyGenerator::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $reflection       = new ReflectionClass(ClassWithMagicMethods::class);
+        $initializer      = $this->createMock(PropertyGenerator::class);
+        $valueHolder      = $this->createMock(PropertyGenerator::class);
         $publicProperties = $this->createMock(PublicPropertiesMap::class);
 
         $initializer->method('getName')->willReturn('foo');

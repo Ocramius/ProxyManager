@@ -186,7 +186,7 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
                 self::fail('Not supposed to be called');
             },
         ];
-        $proxy = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
+        $proxy              = $factory->createProxy($instance, $prefixInterceptors, $suffixInterceptors);
 
         self::assertInstanceOf($proxyClassName, $proxy);
         self::assertSame($instance, $proxy->instance);

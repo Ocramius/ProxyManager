@@ -23,7 +23,7 @@ final class StaticProxyConstructorTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
@@ -63,7 +63,7 @@ return $instance;',
 
     public function testBodyStructureWithoutPublicProperties() : void
     {
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
@@ -98,7 +98,7 @@ return $instance;',
      */
     public function testUnsetsPrivatePropertiesAsWell() : void
     {
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 

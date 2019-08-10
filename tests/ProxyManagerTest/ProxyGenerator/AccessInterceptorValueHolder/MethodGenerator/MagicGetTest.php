@@ -24,11 +24,11 @@ final class MagicGetTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $reflection         = new ReflectionClass(EmptyClass::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
-        $publicProperties = $this->createMock(PublicPropertiesMap::class);
+        $publicProperties   = $this->createMock(PublicPropertiesMap::class);
 
         $valueHolder->method('getName')->willReturn('bar');
         $prefixInterceptors->method('getName')->willReturn('pre');

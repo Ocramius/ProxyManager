@@ -23,7 +23,7 @@ final class InterceptedMethodTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 

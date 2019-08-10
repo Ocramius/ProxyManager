@@ -24,7 +24,7 @@ final class MagicGetTest extends TestCase
     public function testBodyStructure() : void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
-        $adapter = $this->createMock(PropertyGenerator::class);
+        $adapter    = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('foo');
 
         $magicGet = new MagicGet($reflection, $adapter);

@@ -17,7 +17,6 @@ use function var_export;
  */
 final class UnsetPropertiesGenerator
 {
-    /** @var string */
     private const CLOSURE_TEMPLATE = <<<'PHP'
 \Closure::bind(function (\%s $instance) {
     %s

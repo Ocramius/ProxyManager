@@ -4,51 +4,67 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\GeneratorStrategy;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use Closure;
+use ErrorException;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
-use const PATH_SEPARATOR;
 use const SCANDIR_SORT_ASCENDING;
 use function class_exists;
 use function clearstatcache;
 use function decoct;
 use function fileperms;
-use function ini_set;
-use function is_dir;
 use function mkdir;
+use function restore_error_handler;
 use function rmdir;
 use function scandir;
+use function set_error_handler;
 use function strpos;
 use function sys_get_temp_dir;
+use function tempnam;
 use function umask;
 use function uniqid;
+use function unlink;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}
  *
- * @group Coverage
+ * @group  Coverage
  * @covers \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy
- * @runTestsInSeparateProcesses
  *
  * Note: this test generates temporary files that are not deleted
  */
 final class FileWriterGeneratorStrategyTest extends TestCase
 {
     private string $tempDir;
+    private Closure $originalErrorHandler;
 
     protected function setUp() : void
     {
-        $this->tempDir = sys_get_temp_dir() . '/' . uniqid('FileWriterGeneratorStrategyTest', true);
+        parent::setUp();
 
-        if (! is_dir($this->tempDir)) {
-            mkdir($this->tempDir);
-        }
+        $this->tempDir              = tempnam(sys_get_temp_dir(), 'FileWriterGeneratorStrategyTest');
+        $this->originalErrorHandler = static function () : bool {
+            throw new ErrorException();
+        };
 
-        ini_set('open_basedir', __DIR__ . '/../../..' . PATH_SEPARATOR . $this->tempDir);
+        unlink($this->tempDir);
+        mkdir($this->tempDir);
+        set_error_handler($this->originalErrorHandler);
+    }
+
+    protected function tearDown() : void
+    {
+        self::assertSame($this->originalErrorHandler, set_error_handler(static function () : bool {
+            return true;
+        }));
+        restore_error_handler();
+        restore_error_handler();
+
+        parent::tearDown();
     }
 
     public function testGenerate() : void

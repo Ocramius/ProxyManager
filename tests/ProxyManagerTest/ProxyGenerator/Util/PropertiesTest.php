@@ -15,6 +15,7 @@ use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 use ReflectionProperty;
+use function array_keys;
 use function array_map;
 use function array_values;
 
@@ -420,5 +421,40 @@ final class PropertiesTest extends TestCase
             ["\0*\0protectedProperty0"],
             ["\0ProxyManagerTestAsset\\ClassWithMixedProperties\0privateProperty0"],
         ];
+    }
+
+    public function testWithoutNonReferenceableProperties() : void
+    {
+        $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
+            ->withoutNonReferenceableProperties()
+            ->getPublicProperties();
+
+        self::assertSame(
+            [
+                'publicUnTypedProperty',
+                'publicUnTypedPropertyWithoutDefaultValue',
+                'publicBoolProperty',
+                'publicNullableBoolProperty',
+                'publicNullableBoolPropertyWithoutDefaultValue',
+                'publicIntProperty',
+                'publicNullableIntProperty',
+                'publicNullableIntPropertyWithoutDefaultValue',
+                'publicFloatProperty',
+                'publicNullableFloatProperty',
+                'publicNullableFloatPropertyWithoutDefaultValue',
+                'publicStringProperty',
+                'publicNullableStringProperty',
+                'publicNullableStringPropertyWithoutDefaultValue',
+                'publicArrayProperty',
+                'publicNullableArrayProperty',
+                'publicNullableArrayPropertyWithoutDefaultValue',
+                'publicIterableProperty',
+                'publicNullableIterableProperty',
+                'publicNullableIterablePropertyWithoutDefaultValue',
+                'publicNullableObjectProperty',
+                'publicNullableClassProperty',
+            ],
+            array_keys($properties)
+        );
     }
 }

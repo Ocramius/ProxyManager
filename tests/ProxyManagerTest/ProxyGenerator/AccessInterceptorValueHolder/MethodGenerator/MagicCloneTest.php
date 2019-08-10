@@ -23,8 +23,8 @@ final class MagicCloneTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $reflection         = new ReflectionClass(EmptyClass::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 

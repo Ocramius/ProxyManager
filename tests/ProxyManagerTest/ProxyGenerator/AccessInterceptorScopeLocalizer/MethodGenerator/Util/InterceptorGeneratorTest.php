@@ -24,9 +24,9 @@ final class InterceptorGeneratorTest extends TestCase
 {
     public function testInterceptorGenerator() : void
     {
-        $method = $this->createMock(MethodGenerator::class);
-        $bar = $this->createMock(ParameterGenerator::class);
-        $baz = $this->createMock(ParameterGenerator::class);
+        $method             = $this->createMock(MethodGenerator::class);
+        $bar                = $this->createMock(ParameterGenerator::class);
+        $baz                = $this->createMock(ParameterGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
@@ -77,9 +77,9 @@ PHP;
 
     public function testInterceptorGeneratorWithVoidReturnType() : void
     {
-        $method = $this->createMock(MethodGenerator::class);
-        $bar = $this->createMock(ParameterGenerator::class);
-        $baz = $this->createMock(ParameterGenerator::class);
+        $method             = $this->createMock(MethodGenerator::class);
+        $bar                = $this->createMock(ParameterGenerator::class);
+        $baz                = $this->createMock(ParameterGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
@@ -133,9 +133,9 @@ PHP;
 
     public function testInterceptorGeneratorWithExistingNonVoidMethod() : void
     {
-        $method = $this->createMock(MethodGenerator::class);
-        $bar = $this->createMock(ParameterGenerator::class);
-        $baz = $this->createMock(ParameterGenerator::class);
+        $method             = $this->createMock(MethodGenerator::class);
+        $bar                = $this->createMock(ParameterGenerator::class);
+        $baz                = $this->createMock(ParameterGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
