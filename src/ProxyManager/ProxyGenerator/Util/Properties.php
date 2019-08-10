@@ -102,6 +102,8 @@ final class Properties
 
     /**
      * Properties that cannot be referenced are non-nullable typed properties that aren't initialised
+     *
+     * @deprecated no longer in use: please do not rely on this method
      */
     public function withoutNonReferenceableProperties() : self
     {
