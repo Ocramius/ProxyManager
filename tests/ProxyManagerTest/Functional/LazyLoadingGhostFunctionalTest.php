@@ -821,10 +821,10 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     /**
      * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
      * @psalm-return Closure(
-     *   GhostObjectInterface $proxy,
-     *   string $method,
-     *   array $params,
-     *   ?Closure $initializer
+     *   GhostObjectInterface,
+     *   string,
+     *   array,
+     *   ?Closure
      * ) : bool
      */
     private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null) : Closure
