@@ -45,10 +45,9 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      */
     public function generate(ClassGenerator $classGenerator) : string
     {
-        $className = $classGenerator->getNamespaceName()
-            . '\\' . trim($classGenerator->getName(), '\\');
         /** @var string $generatedCode */
         $generatedCode = $classGenerator->generate();
+        $className     = $classGenerator->getNamespaceName() . '\\' . $classGenerator->getName();
         $fileName      = $this->fileLocator->getProxyFileName($className);
 
         set_error_handler($this->emptyErrorHandler);
