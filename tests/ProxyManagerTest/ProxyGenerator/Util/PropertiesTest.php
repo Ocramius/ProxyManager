@@ -15,6 +15,7 @@ use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 use ReflectionProperty;
+use function array_keys;
 use function array_map;
 use function array_values;
 
@@ -422,7 +423,7 @@ final class PropertiesTest extends TestCase
         ];
     }
 
-    public function testWithoutNonReferenceableProperties()
+    public function testWithoutNonReferenceableProperties() : void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
             ->withoutNonReferenceableProperties()

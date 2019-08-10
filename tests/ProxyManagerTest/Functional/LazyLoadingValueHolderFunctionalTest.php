@@ -125,7 +125,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
+        $proxy  = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance)
         );
@@ -236,7 +236,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function testWillNotModifyRetrievedPublicProperties() : void
     {
-        $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
+        $proxy    = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithPublicProperties::class,
             $this->createInitializer(ClassWithPublicProperties::class, new ClassWithPublicProperties())
         );
@@ -255,7 +255,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function testWillModifyByRefRetrievedPublicProperties() : void
     {
-        $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
+        $proxy    = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithPublicProperties::class,
             $this->createInitializer(ClassWithPublicProperties::class, new ClassWithPublicProperties())
         );
@@ -276,7 +276,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function testWillAllowMultipleProxyInitialization() : void
     {
-        $counter    = 0;
+        $counter = 0;
 
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             BaseClass::class,
@@ -375,8 +375,6 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     }
 
     /**
-     * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
-     *
      * @return Closure(
      *  object|null,
      *  VirtualProxyInterface,
@@ -384,6 +382,8 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      *  array,
      *  ?Closure
      * ) : bool
+     *
+     * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
      */
     private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null) : Closure
     {
@@ -534,9 +534,9 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies() : array
     {
-        $instance1  = new BaseClass();
-        $instance2  = new BaseClass();
-        $factory    = new LazyLoadingValueHolderFactory();
+        $instance1 = new BaseClass();
+        $instance2 = new BaseClass();
+        $factory   = new LazyLoadingValueHolderFactory();
         /** @var VirtualProxyInterface $serialized */
         $serialized = unserialize(serialize($factory->createProxy(
             BaseClass::class,
@@ -598,7 +598,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     ) : void {
         $className = get_class($realInstance);
         /** @var LazyLoadingInterface $proxy */
-        $proxy     = unserialize(serialize((new LazyLoadingValueHolderFactory())->createProxy(
+        $proxy = unserialize(serialize((new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $realInstance)
         )));

@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace ProxyManagerTest\GeneratorStrategy;
 
 use Closure;
+use ErrorException;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
+use const SCANDIR_SORT_ASCENDING;
 use function class_exists;
 use function clearstatcache;
 use function decoct;
 use function fileperms;
 use function mkdir;
+use function restore_error_handler;
 use function rmdir;
 use function scandir;
 use function set_error_handler;
@@ -24,7 +27,7 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function umask;
 use function uniqid;
-use const SCANDIR_SORT_ASCENDING;
+use function unlink;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}
@@ -43,9 +46,9 @@ final class FileWriterGeneratorStrategyTest extends TestCase
     {
         parent::setUp();
 
-        $this->tempDir = tempnam(sys_get_temp_dir(), 'FileWriterGeneratorStrategyTest');
-        $this->originalErrorHandler = static function () {
-            throw new \ErrorException();
+        $this->tempDir              = tempnam(sys_get_temp_dir(), 'FileWriterGeneratorStrategyTest');
+        $this->originalErrorHandler = static function () : bool {
+            throw new ErrorException();
         };
 
         unlink($this->tempDir);
@@ -55,7 +58,8 @@ final class FileWriterGeneratorStrategyTest extends TestCase
 
     protected function tearDown() : void
     {
-        self::assertSame($this->originalErrorHandler, set_error_handler(static function () {
+        self::assertSame($this->originalErrorHandler, set_error_handler(static function () : bool {
+            return true;
         }));
         restore_error_handler();
         restore_error_handler();

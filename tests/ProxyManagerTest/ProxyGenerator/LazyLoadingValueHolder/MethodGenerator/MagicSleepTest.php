@@ -23,7 +23,7 @@ final class MagicSleepTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
+        $reflection  = new ReflectionClass(EmptyClass::class);
         $initializer = $this->createMock(PropertyGenerator::class);
         $valueHolder = $this->createMock(PropertyGenerator::class);
 

@@ -48,8 +48,8 @@ final class LazyLoadingMethodInterceptorTest extends TestCase
     public function testBodyStructureWithoutParameters() : void
     {
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicMethod');
-        $initializer = $this->createMock(PropertyGenerator::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $initializer      = $this->createMock(PropertyGenerator::class);
+        $valueHolder      = $this->createMock(PropertyGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');
         $valueHolder->method('getName')->willReturn('bar');

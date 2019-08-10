@@ -50,8 +50,8 @@ final class FatalPreventionFunctionalTest extends TestCase
      */
     public function testCodeGeneration(string $generatorClass, string $className) : void
     {
-        $generatedClass    = new ClassGenerator(uniqid('generated', true));
-        $generatorStrategy = new EvaluatingGeneratorStrategy();
+        $generatedClass          = new ClassGenerator(uniqid('generated', true));
+        $generatorStrategy       = new EvaluatingGeneratorStrategy();
         $classGenerator          = new $generatorClass();
         $classSignatureGenerator = new ClassSignatureGenerator(new SignatureGenerator());
 

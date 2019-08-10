@@ -273,8 +273,8 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testCanWriteToArrayKeysInPublicProperty() : void
     {
-        $instance  = new ClassWithPublicArrayPropertyAccessibleViaMethod();
-        $proxy     = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
+        $instance = new ClassWithPublicArrayPropertyAccessibleViaMethod();
+        $proxy    = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -290,7 +290,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testWillNotModifyRetrievedPublicProperties() : void
     {
-        $instance  = new ClassWithPublicProperties();
+        $instance = new ClassWithPublicProperties();
         $proxy    = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
         $variable = $proxy->property0;
 
@@ -307,7 +307,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function testWillModifyByRefRetrievedPublicProperties() : void
     {
-        $instance  = new ClassWithPublicProperties();
+        $instance = new ClassWithPublicProperties();
         $proxy    = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
         $variable = &$proxy->property0;
 
@@ -468,8 +468,8 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies() : array
     {
-        $instance1  = new BaseClass();
-        $instance2  = new BaseClass();
+        $instance1 = new BaseClass();
+        $instance2 = new BaseClass();
         /** @var AccessInterceptorValueHolderInterface $serialized */
         $serialized = unserialize(serialize((new AccessInterceptorValueHolderFactory())->createProxy($instance2)));
 

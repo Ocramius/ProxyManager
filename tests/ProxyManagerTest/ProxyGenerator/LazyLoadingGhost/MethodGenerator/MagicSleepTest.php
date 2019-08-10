@@ -24,9 +24,9 @@ final class MagicSleepTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
+        $reflection  = new ReflectionClass(EmptyClass::class);
         $initializer = $this->createMock(PropertyGenerator::class);
-        $initMethod = $this->createMock(MethodGenerator::class);
+        $initMethod  = $this->createMock(MethodGenerator::class);
 
         $initializer->method('getName')->willReturn('foo');
         $initMethod->method('getName')->willReturn('bar');

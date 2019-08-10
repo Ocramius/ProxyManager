@@ -24,7 +24,7 @@ final class MagicSleepTest extends TestCase
      */
     public function testBodyStructure() : void
     {
-        $reflection = new ReflectionClass(EmptyClass::class);
+        $reflection         = new ReflectionClass(EmptyClass::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
@@ -47,7 +47,7 @@ final class MagicSleepTest extends TestCase
      */
     public function testBodyStructureWithInheritedMethod() : void
     {
-        $reflection = new ReflectionClass(ClassWithMagicMethods::class);
+        $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 

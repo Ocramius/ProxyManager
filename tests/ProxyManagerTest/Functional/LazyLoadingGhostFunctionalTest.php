@@ -169,7 +169,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ) : void {
-        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+        $proxy  = (new LazyLoadingGhostFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance)
         );
@@ -438,7 +438,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 ?Closure & $initializer,
                 array $properties
             ) : bool {
-                $initializer                                                                            = null;
+                $initializer                                                                                              = null;
                 $properties["\0" . ClassWithCollidingPrivateInheritedProperties::class . "\0property0"]                   = 'foo';
                 $properties["\0" . get_parent_class(ClassWithCollidingPrivateInheritedProperties::class) . "\0property0"] = 'bar';
 
@@ -820,7 +820,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
     /**
      * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
-     *
      * @psalm-return Closure(
      *   GhostObjectInterface $proxy,
      *   string $method,
@@ -990,8 +989,8 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies() : array
     {
-        $instance1  = new BaseClass();
-        $instance2  = new BaseClass();
+        $instance1 = new BaseClass();
+        $instance2 = new BaseClass();
 
         $factory = new LazyLoadingGhostFactory();
 
@@ -1219,7 +1218,10 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 array $params,
                 ?Closure & $initializer,
                 array $properties
-            ) use ($propertyIndex, $expectedValue) : bool {
+            ) use (
+                $propertyIndex,
+                $expectedValue
+            ) : bool {
                 $initializer = null;
 
                 $properties[$propertyIndex] = $expectedValue;
@@ -1251,20 +1253,24 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         $proxy = unserialize(serialize(
             (new LazyLoadingGhostFactory())->createProxy(
                 OtherObjectAccessClass::class,
-            static function (
-                GhostObjectInterface$proxy,
-                string $method,
-                array $params,
-                ?Closure & $initializer,
-                array $properties
-            ) use ($propertyIndex, $expectedValue) : bool {
-                $initializer = null;
+                static function (
+                    GhostObjectInterface $proxy,
+                    string $method,
+                    array $params,
+                    ?Closure & $initializer,
+                    array $properties
+                ) use (
+                    $propertyIndex,
+                    $expectedValue
+                ) : bool {
+                    $initializer = null;
 
-                $properties[$propertyIndex] = $expectedValue;
+                    $properties[$propertyIndex] = $expectedValue;
 
-                return true;
-            }
-        )));
+                    return true;
+                }
+            )
+        ));
 
         $accessor = [$callerObject, $method];
 
@@ -1292,7 +1298,10 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 array $params,
                 ?Closure & $initializer,
                 array $properties
-            ) use ($propertyIndex, $expectedValue) : bool {
+            ) use (
+                $propertyIndex,
+                $expectedValue
+            ) : bool {
                 $initializer = null;
 
                 $properties[$propertyIndex] = $expectedValue;

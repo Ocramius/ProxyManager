@@ -24,10 +24,10 @@ final class InterceptorGeneratorTest extends TestCase
 {
     public function testInterceptorGenerator() : void
     {
-        $method = $this->createMock(MethodGenerator::class);
-        $bar = $this->createMock(ParameterGenerator::class);
-        $baz = $this->createMock(ParameterGenerator::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $method             = $this->createMock(MethodGenerator::class);
+        $bar                = $this->createMock(ParameterGenerator::class);
+        $baz                = $this->createMock(ParameterGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
@@ -80,10 +80,10 @@ PHP;
 
     public function testInterceptorGeneratorWithVoidMethod() : void
     {
-        $method = $this->createMock(MethodGenerator::class);
-        $bar = $this->createMock(ParameterGenerator::class);
-        $baz = $this->createMock(ParameterGenerator::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $method             = $this->createMock(MethodGenerator::class);
+        $bar                = $this->createMock(ParameterGenerator::class);
+        $baz                = $this->createMock(ParameterGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 
@@ -139,10 +139,10 @@ PHP;
 
     public function testInterceptorGeneratorWithNonVoidOriginalMethod() : void
     {
-        $method = $this->createMock(MethodGenerator::class);
-        $bar = $this->createMock(ParameterGenerator::class);
-        $baz = $this->createMock(ParameterGenerator::class);
-        $valueHolder = $this->createMock(PropertyGenerator::class);
+        $method             = $this->createMock(MethodGenerator::class);
+        $bar                = $this->createMock(ParameterGenerator::class);
+        $baz                = $this->createMock(ParameterGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $suffixInterceptors = $this->createMock(PropertyGenerator::class);
 

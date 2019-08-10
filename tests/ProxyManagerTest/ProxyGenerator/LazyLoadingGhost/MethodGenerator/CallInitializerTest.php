@@ -23,7 +23,7 @@ final class CallInitializerTest extends TestCase
 {
     public function testBodyStructure() : void
     {
-        $initializer = $this->createMock(PropertyGenerator::class);
+        $initializer           = $this->createMock(PropertyGenerator::class);
         $initializationTracker = $this->createMock(PropertyGenerator::class);
 
         $initializer->method('getName')->willReturn('init');
@@ -94,7 +94,7 @@ PHP;
 
     public function testBodyStructureWithTypedProperties() : void
     {
-        $initializer = $this->createMock(PropertyGenerator::class);
+        $initializer           = $this->createMock(PropertyGenerator::class);
         $initializationTracker = $this->createMock(PropertyGenerator::class);
 
         $initializer->method('getName')->willReturn('init');
