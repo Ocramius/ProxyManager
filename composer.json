@@ -36,7 +36,7 @@
         "couscous/couscous":            "^1.7.1",
         "nikic/php-parser":             "^4.2.2",
         "phpbench/phpbench":            "^0.16.9",
-        "infection/infection":          "^0.13.2",
+        "infection/infection":          "^0.13.4",
         "symfony/console":              "^4.3.3",
         "vimeo/psalm":                  "3.4.6"
     },
