@@ -4,29 +4,27 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\GeneratorStrategy;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
-use const PATH_SEPARATOR;
-use const SCANDIR_SORT_ASCENDING;
 use function class_exists;
 use function clearstatcache;
 use function decoct;
 use function fileperms;
-use function ini_get;
-use function ini_set;
-use function is_dir;
 use function mkdir;
 use function rmdir;
 use function scandir;
+use function set_error_handler;
 use function strpos;
 use function sys_get_temp_dir;
 use function tempnam;
 use function umask;
 use function uniqid;
+use const SCANDIR_SORT_ASCENDING;
 
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}
@@ -39,15 +37,30 @@ use function uniqid;
 final class FileWriterGeneratorStrategyTest extends TestCase
 {
     private string $tempDir;
+    private Closure $originalErrorHandler;
 
     protected function setUp() : void
     {
         parent::setUp();
 
         $this->tempDir = tempnam(sys_get_temp_dir(), 'FileWriterGeneratorStrategyTest');
+        $this->originalErrorHandler = static function () {
+            throw new \ErrorException();
+        };
 
         unlink($this->tempDir);
         mkdir($this->tempDir);
+        set_error_handler($this->originalErrorHandler);
+    }
+
+    protected function tearDown() : void
+    {
+        self::assertSame($this->originalErrorHandler, set_error_handler(static function () {
+        }));
+        restore_error_handler();
+        restore_error_handler();
+
+        parent::tearDown();
     }
 
     public function testGenerate() : void
