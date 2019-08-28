@@ -5,7 +5,6 @@ phpunit.xml
 phpmd.xml
 phpdox.xml
 clover.xml
-.couscous
 infectionlog.json
 infectionlog.txt
 .phpunit.result.cache

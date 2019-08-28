@@ -1,8 +1,0 @@
-baseUrl: https://github.com/ProxyManager
-template:
-    directory: doc-template
-
-exclude:
-    - vendor
-    - bin
-    - tests
