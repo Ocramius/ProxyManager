@@ -33,7 +33,6 @@
         "squizlabs/php_codesniffer":    "^3.4.2",
         "slevomat/coding-standard":     "^5.0.4",
         "doctrine/coding-standard":     "^6.0.0",
-        "couscous/couscous":            "^1.7.2",
         "nikic/php-parser":             "^4.2.2",
         "phpbench/phpbench":            "^0.16.9",
         "infection/infection":          "^0.13.4",

@@ -1,8 +1,0 @@
-baseUrl: https://ocramius.github.io/ProxyManager
-template:
-    directory: doc-template
-
-exclude:
-    - vendor
-    - bin
-    - tests
