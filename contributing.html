@@ -1,123 +1,13 @@
 <!DOCTYPE html>
 <html class="no-js" id="top">
 <head>
-    <title>ProxyManager Documentation - Contributing</title>
+    <title>ProxyManager Documentation</title>
 
     <meta name="description" content="A proxyManager write in php" />
     <meta name="keywords" content="ProxyManager, proxy, manager, ocramius, Marco Pivetta, php" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600' rel='stylesheet' type='text/css'>
-    <link href="https://ocramius.github.io/ProxyManager/css/main.css" rel="stylesheet" />
-    <link href="https://ocramius.github.io/ProxyManager/css/highlight.dark.css" rel="stylesheet" />
-    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <link rel="shortcut icon" href="favicon.ico">
+    <meta http-equiv="refresh" content="0;URL='https://github.com/Ocramius/ProxyManager/blob/master/CONTRIBUTING.md'" />
 </head>
 <body>
-
-<header class="site-header">
-<div class="container">
-<h1><a href="https://ocramius.github.io/ProxyManager"><img alt="ProxyManager" src="https://ocramius.github.io/ProxyManager/img/block.png" /></a></h1>
-
-<nav class="main-nav" role="navigation">
-<ul>
-    <li><a href="https://github.com/Ocramius/ProxyManager" target="_blank">Github</a></li>
-
-    </ul>
-    <div class="bcms-clearfix"></div>
-</nav>
-</div>
-</header>
-<main role="main">
-<section class="component-content"><div class="page-title-wrapper">
-<div class="container">
-    <img src="https://github.com/Ocramius/ProxyManager/raw/master/proxy-manager.png">
-    <h2 class="page-title">Proxy Manager</h2>
-</div>
-</div>
-
-<div class="component-demo" id="live-demo">
-    <div class="container">
-            <div class="main-wrapper" style="text-align: right">
-                <iframe src="http://ghbtns.com/github-btn.html?user=ocramius&amp;repo=ProxyManager&amp;type=fork&amp;count=true&amp;size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="310" height="40"></iframe>
-
-                <iframe src="http://ghbtns.com/github-btn.html?user=ocramius&amp;repo=ProxyManager&amp;type=watch&amp;count=true&amp;size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200" height="40"></iframe>
-
-            </div>
-        <div class="bcms-clearfix bcms-clearfix"></div>
-    </div>
-</div>
-<div class="component-info">
-<div class="container">
-
-<aside class="sidebar">
-    <nav class="spy-nav">
-        <ul>
-            <li><a href="https://ocramius.github.io/ProxyManager/index.html">Intro</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/lazy-loading-value-holder.html">Virtual Proxy</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/lazy-loading-ghost-object.html">Ghost Object</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/access-interceptor-value-holder.html">Smart Reference</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/access-interceptor-scope-localizer.html">Smart Reference<br/>(fluent safe)</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/null-object.html">Null Objects</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/remote-object.html">Remote Object</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/generator-strategies.html">Code Evaluators</a></li>
-            <li><a href="https://ocramius.github.io/ProxyManager/docs/tuning-for-production.html">Tuning for Production</a></li>
-        </ul>
-    </nav>
-<div class="bcms-clearfix bcms-clearfix"></div>
-<a class="btn btn-action btn-full download-component"
-    href="https://ocramius.github.io/ProxyManager/docs/download.html">Download</a>
-    <div class="bcms-clearfix"></div>
-</aside>
-
-<div class="content">
-    
-        <h1 id="contributing">Contributing</h1>
-<ul>
-<li>Coding standard for the project is <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/psr-2-coding-style-guide.html">PSR-2</a></li>
-<li>The project will follow strict <a href="http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php">object calisthenics</a></li>
-<li>Any contribution must provide tests for additional introduced conditions</li>
-<li>Any un-confirmed issue needs a failing test case before being accepted</li>
-<li>Pull requests must be sent from a new hotfix/feature branch, not from <code>master</code>.</li>
-</ul>
-<h2 id="installation">Installation</h2>
-<p>To install the project and run the tests, you need to clone it first:</p>
-<pre><code class="language-sh">$ git clone git://github.com/Ocramius/ProxyManager.git</code></pre>
-<p>You will then need to run a composer installation:</p>
-<pre><code class="language-sh">$ cd ProxyManager
-$ curl -s https://getcomposer.org/installer | php
-$ php composer.phar update</code></pre>
-<h2 id="testing">Testing</h2>
-<p>The PHPUnit version to be used is the one installed as a dev- dependency via composer:</p>
-<pre><code class="language-sh">$ ./vendor/bin/phpunit</code></pre>
-<p>Accepted coverage for new contributions is 80%. Any contribution not satisfying this requirement
-won't be merged.</p>
-
-    </div>
-</div>
-</div>
-</section>
-</main>
-
-    <footer class="site-footer" role="contentinfo">
-        <div class="container">
-            <div class="footer-logos">
-                <ul>
-                    <li><a href="https://ocramius.github.io/ProxyManager/stability.html">Stability</a> | </li>
-                    <li><a href="https://ocramius.github.io/ProxyManager/upgrade.html">Upgrade Notes</a> | </li>
-                    <li><a href="https://ocramius.github.io/ProxyManager/changelog.html">Changelog</a> | </li>
-                    <li><a href="https://ocramius.github.io/ProxyManager/contributing.html">Contributing</a> | </li>
-                    <li><a href="https://ocramius.github.io/ProxyManager/docs/credits.html">Credits</a> | </li>
-                    <li><a href="https://ocramius.github.io/ProxyManager/docs/copyright.html">Copyright</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="bcms-clearfix"></div>
-    </footer>
-    <div class="bcms-clearfix"></div>
-    </body>
+</body>
 </html>
