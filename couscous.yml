@@ -1,4 +1,4 @@
-baseUrl: https://ocramius.github.io/ProxyManager
+baseUrl: https://github.com/ProxyManager
 template:
     directory: doc-template
 
