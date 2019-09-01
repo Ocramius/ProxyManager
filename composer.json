@@ -35,7 +35,7 @@
         "doctrine/coding-standard":     "^6.0.0",
         "nikic/php-parser":             "^4.2.3",
         "phpbench/phpbench":            "^0.16.9",
-        "infection/infection":          "^0.13.4",
+        "infection/infection":          "^0.13.6",
         "symfony/console":              "^4.3.4",
         "vimeo/psalm":                  "3.4.11"
     },
