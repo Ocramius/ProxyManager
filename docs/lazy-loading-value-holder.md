@@ -50,7 +50,7 @@ You usually need a lazy value holder in cases where the following applies:
 
 ## Usage examples
 
-[ProxyManager](https://github.com/Ocramius/ProxyManager) provides a factory that eases instantiation of lazy loading
+*ProxyManager* provides a factory that eases instantiation of lazy loading
 value holders. To use it, follow these steps:
 
 Firstly, define your object's logic without taking care of lazy loading:

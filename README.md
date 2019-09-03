@@ -17,8 +17,7 @@ This library aims to provide abstraction for generating various kinds of
 
 ## Documentation
 
-You can learn about the proxy pattern and how to use the **ProxyManager** in the [docs](docs), which are also
-[compiled to HTML](http://ocramius.github.io/ProxyManager).
+You can learn about the proxy pattern and how to use the **ProxyManager** in the [docs](docs).
 
 ## Professional Support
 
@@ -53,4 +52,4 @@ $proxy = $factory->createProxy(
 $proxy->doFoo();
 ```
 
-See the [online documentation](http://ocramius.github.io/ProxyManager) for more supported proxy types and examples. 
+See the [documentation](docs) for more supported proxy types and examples. 
