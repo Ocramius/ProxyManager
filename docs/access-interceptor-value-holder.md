@@ -110,4 +110,4 @@ $suffixInterceptor = function ($proxy, $instance, $method, $params, $returnValue
 
 ## Tuning performance for production
 
-See [Tuning ProxyManager for Production](https://github.com/Ocramius/ProxyManager/blob/master/docs/tuning-for-production.md).
+See [Tuning ProxyManager for Production](tuning-for-production.md).
