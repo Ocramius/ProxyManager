@@ -510,7 +510,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             '__get',
-            static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
+            static function (object $proxy, object $instance, string $method, array $params, bool & $returnEarly) use ($listener) : void {
                 $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
@@ -543,7 +543,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             '__get',
-            static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
+            static function (object $proxy, object $instance, string $method, array $params, bool & $returnEarly) use ($listener) : void {
                 $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
@@ -576,7 +576,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $proxy->setMethodPrefixInterceptor(
             '__get',
-            static function ($proxy, $instance, $method, $params, & $returnEarly) use ($listener) : void {
+            static function (object $proxy, object $instance, string $method, array $params, bool & $returnEarly) use ($listener) : void {
                 $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
