@@ -11,6 +11,8 @@ use function str_replace;
 
 /**
  * {@inheritDoc}
+ *
+ * @psalm-immutable
  */
 class FileLocator implements FileLocatorInterface
 {

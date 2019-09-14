@@ -16,6 +16,8 @@ use function substr;
  * with a deterministic attached suffix,
  * in order to prevent property name collisions
  * and tampering from userland
+ *
+ * @psalm-immutable
  */
 abstract class IdentifierSuffixer
 {

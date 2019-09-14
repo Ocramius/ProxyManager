@@ -14,6 +14,8 @@ use function sprintf;
 
 /**
  * Exception for invalid proxied classes
+ *
+ * @psalm-immutable
  */
 class UnsupportedProxiedClassException extends LogicException implements ExceptionInterface
 {

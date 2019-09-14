@@ -9,6 +9,8 @@ use function sprintf;
 
 /**
  * Exception for non writable files
+ *
+ * @psalm-immutable
  */
 class FileNotWritableException extends UnexpectedValueException implements ExceptionInterface
 {

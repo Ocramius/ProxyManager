@@ -8,6 +8,8 @@ use Throwable;
 
 /**
  * Base exception class for the proxy manager
+ *
+ * @psalm-immutable
  */
 interface ExceptionInterface extends Throwable
 {

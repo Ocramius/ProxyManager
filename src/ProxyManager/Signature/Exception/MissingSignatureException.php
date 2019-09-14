@@ -11,6 +11,8 @@ use function sprintf;
 
 /**
  * Exception for no found signatures
+ *
+ * @psalm-immutable
  */
 class MissingSignatureException extends UnexpectedValueException implements ExceptionInterface
 {

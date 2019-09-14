@@ -8,6 +8,8 @@ use ProxyManager\Proxy\ProxyInterface;
 
 /**
  * Interface for a proxy- to user-class and user- to proxy-class name inflector
+ *
+ * @psalm-immutable
  */
 interface ClassNameInflectorInterface
 {

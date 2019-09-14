@@ -9,6 +9,8 @@ use ProxyManager\Inflector\Util\ParameterHasher;
 
 /**
  * {@inheritDoc}
+ *
+ * @psalm-immutable
  */
 final class SignatureGenerator implements SignatureGeneratorInterface
 {

@@ -12,6 +12,8 @@ use function is_string;
 
 /**
  * Generator for signatures to be used to check the validity of generated code
+ *
+ * @psalm-external-mutation-free
  */
 final class SignatureChecker implements SignatureCheckerInterface
 {

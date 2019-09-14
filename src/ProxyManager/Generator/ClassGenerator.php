@@ -10,6 +10,8 @@ use function trim;
 
 /**
  * Class generator that ensures that interfaces/classes that are implemented/extended are FQCNs
+ *
+ * @psalm-external-mutation-free
  */
 class ClassGenerator extends ZendClassGenerator
 {

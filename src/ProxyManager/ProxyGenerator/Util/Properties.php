@@ -18,6 +18,8 @@ use function array_values;
 /**
  * DTO containing the list of all non-static proxy properties and utility methods to access them
  * in various formats/collections
+ *
+ * @psalm-immutable
  */
 final class Properties
 {
