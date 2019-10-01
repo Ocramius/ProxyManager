@@ -29,7 +29,7 @@
     },
     "require-dev": {
         "ext-phar":                     "*",
-        "phpunit/phpunit":              "^8.3.4",
+        "phpunit/phpunit":              "^8.3.5",
         "squizlabs/php_codesniffer":    "^3.4.2",
         "slevomat/coding-standard":     "^5.0.4",
         "doctrine/coding-standard":     "^6.0.0",
