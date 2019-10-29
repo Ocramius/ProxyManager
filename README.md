@@ -19,9 +19,11 @@ This library aims to provide abstraction for generating various kinds of
 
 You can learn about the proxy pattern and how to use the **ProxyManager** in the [docs](docs).
 
-## Professional Support
+## ocramius/proxy-manager for enterprise
 
-[Professionally supported `ocramius/proxy-manager` is available through Tidelift](https://tidelift.com/subscription/pkg/packagist-ocramius-proxy-manager?utm_source=packagist-ocramius-proxy-manager&utm_medium=referral&utm_campaign=readme) .
+Available as part of the Tidelift Subscription.
+
+The maintainer of ocramius/proxy-manager and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.](https://tidelift.com/subscription/pkg/packagist-ocramius-proxy-manager?utm_source=packagist-ocramius-proxy-manager&utm_medium=referral&utm_campaign=enterprise&utm_term=repo).
 
 You can also contact the maintainer at ocramius@gmail.com for looking into issues related to this package
 in your private projects.
