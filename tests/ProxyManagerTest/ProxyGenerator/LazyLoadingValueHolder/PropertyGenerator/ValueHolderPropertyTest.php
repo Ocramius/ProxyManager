@@ -28,6 +28,9 @@ final class ValueHolderPropertyTest extends AbstractUniquePropertyNameTest
     /** @group #400 */
     public function testWillDocumentPropertyType() : void
     {
+        $docBlock = (new ValueHolderProperty(new ReflectionClass(self::class)))->getDocBlock();
+
+        self::assertNotNull($docBlock);
         self::assertEquals(
             <<<'PHPDOC'
 /**
@@ -36,7 +39,7 @@ final class ValueHolderPropertyTest extends AbstractUniquePropertyNameTest
 
 PHPDOC
             ,
-            (new ValueHolderProperty(new ReflectionClass(self::class)))->getDocBlock()->generate()
+            $docBlock->generate()
         );
     }
 }
