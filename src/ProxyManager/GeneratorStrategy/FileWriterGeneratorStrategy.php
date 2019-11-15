@@ -7,17 +7,11 @@ namespace ProxyManager\GeneratorStrategy;
 use Closure;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
+use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
+use Webimpress\SafeWriter\FileWriter;
 use Zend\Code\Generator\ClassGenerator;
-use function chmod;
-use function dirname;
-use function file_put_contents;
-use function rename;
 use function restore_error_handler;
 use function set_error_handler;
-use function tempnam;
-use function trim;
-use function umask;
-use function unlink;
 
 /**
  * Generator strategy that writes the generated classes to disk while generating them
@@ -53,36 +47,13 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
         set_error_handler($this->emptyErrorHandler);
 
         try {
-            $this->writeFile("<?php\n\n" . $generatedCode, $fileName);
+            FileWriter::writeFile($fileName, "<?php\n\n" . $generatedCode);
 
             return $generatedCode;
+        } catch (FileWriterException $e) {
+            throw FileNotWritableException::exception($e);
         } finally {
             restore_error_handler();
-        }
-    }
-
-    /**
-     * Writes the source file in such a way that race conditions are avoided when the same file is written
-     * multiple times in a short time period
-     *
-     * @throws FileNotWritableException
-     */
-    private function writeFile(string $source, string $location) : void
-    {
-        $directory   = dirname($location);
-        $tmpFileName = tempnam($directory, 'temporaryProxyManagerFile');
-
-        if ($tmpFileName === false) {
-            throw FileNotWritableException::fromNotWritableDirectory($directory);
-        }
-
-        file_put_contents($tmpFileName, $source);
-        chmod($tmpFileName, 0666 & ~umask());
-
-        if (! rename($tmpFileName, $location)) {
-            unlink($tmpFileName);
-
-            throw FileNotWritableException::fromInvalidMoveOperation($tmpFileName, $location);
         }
     }
 }

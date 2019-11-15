@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\Exception;
 
 use UnexpectedValueException;
+use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
 use function sprintf;
 
 /**
@@ -29,5 +30,10 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
             . 'either the directory does not exist, or it is not writable',
             $directory
         ));
+    }
+
+    public static function exception(FileWriterException $e) : self
+    {
+        return new self($e->getMessage(), $e->getCode(), $e);
     }
 }
