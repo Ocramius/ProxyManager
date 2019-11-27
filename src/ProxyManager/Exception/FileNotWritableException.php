@@ -34,6 +34,6 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
 
     public static function exception(FileWriterException $e) : self
     {
-        return new self($e->getMessage(), $e->getCode(), $e);
+        return new self($e->getMessage(), (int) $e->getCode(), $e);
     }
 }
