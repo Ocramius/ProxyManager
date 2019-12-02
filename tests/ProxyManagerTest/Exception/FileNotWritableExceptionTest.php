@@ -18,14 +18,14 @@ final class FileNotWritableExceptionTest extends TestCase
 {
     public function testFromPrevious() : void
     {
-        $previous = $this->getMockBuilder(FileWriterException::class)
-            ->enableOriginalConstructor()
-            ->setConstructorArgs(['Previous exception message'])
-            ->getMock();
+        $previousExceptionMock = $this->getMockBuilder(FileWriterException::class);
+        $previousExceptionMock->enableOriginalConstructor();
+        $previousExceptionMock->setConstructorArgs(['Previous exception message']);
+        $previousException = $previousExceptionMock->getMock();
 
-        $exception = FileNotWritableException::fromPrevious($previous);
+        $exception = FileNotWritableException::fromPrevious($previousException);
 
         self::assertSame('Previous exception message', $exception->getMessage());
-        self::assertSame($previous, $exception->getPrevious());
+        self::assertSame($previousException, $exception->getPrevious());
     }
 }
