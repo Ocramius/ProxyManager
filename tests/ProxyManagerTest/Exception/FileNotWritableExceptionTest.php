@@ -6,6 +6,7 @@ namespace ProxyManagerTest\Exception;
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
+use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
 
 /**
  * Tests for {@see \ProxyManager\Exception\FileNotWritableException}
@@ -15,25 +16,16 @@ use ProxyManager\Exception\FileNotWritableException;
  */
 final class FileNotWritableExceptionTest extends TestCase
 {
-    public function testFromInvalidMoveOperation() : void
+    public function testFromPrevious() : void
     {
-        $exception = FileNotWritableException::fromInvalidMoveOperation('/tmp/a', '/tmp/b');
+        $previous = $this->getMockBuilder(FileWriterException::class)
+            ->enableOriginalConstructor()
+            ->setConstructorArgs(['Previous exception message'])
+            ->getMock();
 
-        self::assertSame(
-            'Could not move file "/tmp/a" to location "/tmp/b": either the source file is not readable,'
-            . ' or the destination is not writable',
-            $exception->getMessage()
-        );
-    }
+        $exception = FileNotWritableException::fromPrevious($previous);
 
-    public function testFromNotWritableDirectory() : void
-    {
-        $exception = FileNotWritableException::fromNotWritableDirectory('/tmp/a');
-
-        self::assertSame(
-            'Could not create temp file in directory "/tmp/a" '
-            . 'either the directory does not exist, or it is not writable',
-            $exception->getMessage()
-        );
+        self::assertSame('Previous exception message', $exception->getMessage());
+        self::assertSame($previous, $exception->getPrevious());
     }
 }
