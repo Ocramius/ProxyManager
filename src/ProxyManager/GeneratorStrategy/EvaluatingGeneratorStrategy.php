@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\GeneratorStrategy;
 
+use Webimpress\SafeWriter\FileWriter;
 use Zend\Code\Generator\ClassGenerator;
-use function assert;
-use function file_put_contents;
 use function ini_get;
-use function is_string;
-use function sys_get_temp_dir;
-use function tempnam;
 use function unlink;
 
 /**
@@ -43,11 +39,9 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
 
         // @codeCoverageIgnoreStart
         if (! $this->canEval) {
-            $fileName = tempnam(sys_get_temp_dir(), 'EvaluatingGeneratorStrategy.php.tmp.');
+            $fileName = __DIR__ . '/EvaluatingGeneratorStrategy.php.tmp';
+            FileWriter::writeFile($fileName, "<?php\n" . $code);
 
-            assert(is_string($fileName));
-
-            file_put_contents($fileName, "<?php\n" . $code);
             /* @noinspection PhpIncludeInspection */
             require $fileName;
             unlink($fileName);

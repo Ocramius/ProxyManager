@@ -21,7 +21,8 @@
     "require": {
         "php":                       "7.4.*",
         "zendframework/zend-code":   "^3.4.0",
-        "ocramius/package-versions": "^1.5.1"
+        "ocramius/package-versions": "^1.5.1",
+        "webimpress/safe-writer":    "^2.0"
     },
     "conflict": {
         "zendframework/zend-stdlib": "<3.2.1",
