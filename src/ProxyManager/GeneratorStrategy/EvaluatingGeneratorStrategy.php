@@ -8,7 +8,6 @@ use Webimpress\SafeWriter\FileWriter;
 use Zend\Code\Generator\ClassGenerator;
 use function ini_get;
 use function unlink;
-use const DIRECTORY_SEPARATOR;
 
 /**
  * Generator strategy that produces the code and evaluates it at runtime
@@ -40,7 +39,7 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
 
         // @codeCoverageIgnoreStart
         if (! $this->canEval) {
-            $fileName = __DIR__ . DIRECTORY_SEPARATOR . 'EvaluatingGeneratorStrategy.php.tmp';
+            $fileName = __DIR__ . '/EvaluatingGeneratorStrategy.php.tmp';
             FileWriter::writeFile($fileName, "<?php\n" . $code);
 
             /* @noinspection PhpIncludeInspection */
