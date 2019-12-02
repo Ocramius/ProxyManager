@@ -51,7 +51,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
 
             return $generatedCode;
         } catch (FileWriterException $e) {
-            throw FileNotWritableException::exception($e);
+            throw FileNotWritableException::fromPrevious($e);
         } finally {
             restore_error_handler();
         }
