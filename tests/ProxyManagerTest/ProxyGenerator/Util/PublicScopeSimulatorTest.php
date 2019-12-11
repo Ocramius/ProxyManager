@@ -40,7 +40,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     return;
 }
 
-$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function & () use ($targetObject, $name) {
     return $targetObject->$foo;
 };
@@ -74,7 +74,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     return;
 }
 
-$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function & () use ($targetObject, $name, $value) {
     return $targetObject->$foo = $baz;
 };
@@ -108,7 +108,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     return;
 }
 
-$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function () use ($targetObject, $name) {
     return isset($targetObject->$foo);
 };
@@ -142,7 +142,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     return;
 }
 
-$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function () use ($targetObject, $name) {
     unset($targetObject->$foo);
 };
@@ -241,7 +241,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     return;
 }
 
-$targetObject = unserialize(sprintf('O:%d:"%s":0:{}', strlen(get_parent_class($this)), get_parent_class($this)));
+$targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function & () use ($targetObject, $name) {
     return $targetObject->$foo;
 };
