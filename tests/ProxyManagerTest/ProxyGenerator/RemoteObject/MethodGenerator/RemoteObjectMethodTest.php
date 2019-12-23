@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManagerTestAsset\BaseClass;
@@ -20,9 +19,29 @@ use Zend\Code\Reflection\MethodReflection;
 final class RemoteObjectMethodTest extends TestCase
 {
     /**
+     * @var string
+     */
+    private const STATIC_CODE = <<<PHP
+\$reflectionMethod = new \\ReflectionMethod(__CLASS__, __FUNCTION__);
+\$args = \\func_get_args();
+foreach (\\array_slice(\$reflectionMethod->getParameters(), \\count(\$args)) as \$param) {
+            /**
+             * @var ReflectionParameter \$param
+             */
+            if (\$param->isDefaultValueAvailable()) {
+                \$args[] = \$param->getDefaultValue();
+            }
+}
+
+
+PHP;
+
+
+
+    /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithParameters() : void
+    public function testBodyStructureWithParameters(): void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -41,8 +60,8 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicByReferenceParameterMethod\', \func_get_args());'
+            self::STATIC_CODE . '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            . '\'publicByReferenceParameterMethod\', $args);'
             . "\n\nreturn \$return;",
             $method->getBody()
         );
@@ -51,7 +70,7 @@ final class RemoteObjectMethodTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithArrayParameter() : void
+    public function testBodyStructureWithArrayParameter(): void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -67,8 +86,8 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicArrayHintedMethod', $method->getName());
         self::assertCount(1, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicArrayHintedMethod\', \func_get_args());'
+            self::STATIC_CODE . '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            . '\'publicArrayHintedMethod\', $args);'
             . "\n\nreturn \$return;",
             $method->getBody()
         );
@@ -77,7 +96,7 @@ final class RemoteObjectMethodTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithoutParameters() : void
+    public function testBodyStructureWithoutParameters(): void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -93,8 +112,8 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicMethod\', \func_get_args());'
+            self::STATIC_CODE . '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            . '\'publicMethod\', $args);'
             . "\n\nreturn \$return;",
             $method->getBody()
         );
