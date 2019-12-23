@@ -9,7 +9,7 @@ use ProxyManager\Factory\RemoteObject\AdapterInterface;
 
 interface FooServiceInterface
 {
-    public function fooBar(string $requiredParam, string $optionalParam = 'default');
+    public function fooBar(string $requiredParam, string $optionalParam = 'default', string ...$strs);
 }
 
 class CustomAdapter implements AdapterInterface
@@ -25,6 +25,12 @@ $factory = new \ProxyManager\Factory\RemoteObjectFactory(new CustomAdapter(), $c
 $proxy   = $factory->createProxy(FooServiceInterface::class);
 
 echo $proxy->fooBar('required') . "\n";
+echo $proxy->fooBar('required', 'passed') . "\n";
+echo $proxy->fooBar('required', 'passed', 'first_variadic') . "\n";
+echo $proxy->fooBar('required', 'passed', 'first_variadic', 'second_variadic') . "\n";
 ?>
 --EXPECTF--
 required,default
+required,passed
+required,passed,first_variadic
+required,passed,first_variadic,second_variadic
