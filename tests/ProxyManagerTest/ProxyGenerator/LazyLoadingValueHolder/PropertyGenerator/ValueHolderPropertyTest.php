@@ -7,7 +7,7 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerat
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator\ValueHolderProperty}

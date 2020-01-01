@@ -6,7 +6,7 @@ namespace ProxyManagerTest\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker}

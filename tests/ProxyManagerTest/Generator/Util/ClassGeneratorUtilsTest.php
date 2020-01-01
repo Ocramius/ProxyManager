@@ -10,8 +10,8 @@ use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ReflectionClass;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\MethodGenerator;
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\MethodGenerator;
 
 /**
  * Test to {@see ProxyManager\Generator\Util\ClassGeneratorUtils}

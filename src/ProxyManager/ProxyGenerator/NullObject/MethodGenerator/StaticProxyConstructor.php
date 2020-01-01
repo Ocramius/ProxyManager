@@ -8,7 +8,7 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use function array_map;
 use function implode;
 

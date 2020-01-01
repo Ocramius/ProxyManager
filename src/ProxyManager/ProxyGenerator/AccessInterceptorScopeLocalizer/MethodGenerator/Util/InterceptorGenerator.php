@@ -7,8 +7,8 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionMethod;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 use function array_keys;
 use function array_map;
 use function implode;

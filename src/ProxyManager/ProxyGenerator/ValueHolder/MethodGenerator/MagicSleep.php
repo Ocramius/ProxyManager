@@ -6,7 +6,7 @@ namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
 use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 use function var_export;
 
 /**

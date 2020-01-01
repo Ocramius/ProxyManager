@@ -6,8 +6,8 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 use ProxyManager\ProxyGenerator\Util\Properties;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the initializer for a lazy object

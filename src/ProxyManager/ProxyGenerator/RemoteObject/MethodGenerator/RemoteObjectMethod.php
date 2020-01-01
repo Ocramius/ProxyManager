@@ -7,8 +7,8 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\PropertyGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 use function var_export;
 
 /**

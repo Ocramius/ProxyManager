@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Implementation for {@see \ProxyManager\Proxy\LazyLoadingInterface::setProxyInitializer}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Generator;
 
-use Zend\Code\Generator\ClassGenerator as ZendClassGenerator;
+use Laminas\Code\Generator\ClassGenerator as ZendClassGenerator;
 use function array_map;
 use function trim;
 

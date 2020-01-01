@@ -7,9 +7,9 @@ namespace ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for lazy loading proxies

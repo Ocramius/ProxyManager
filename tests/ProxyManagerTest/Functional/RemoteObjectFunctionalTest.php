@@ -18,7 +18,7 @@ use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
 use ProxyManagerTestAsset\RemoteProxy\VariadicArgumentsServiceInterface;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
-use Zend\Server\Client;
+use Laminas\Server\Client;
 use function get_class;
 use function random_int;
 use function ucfirst;

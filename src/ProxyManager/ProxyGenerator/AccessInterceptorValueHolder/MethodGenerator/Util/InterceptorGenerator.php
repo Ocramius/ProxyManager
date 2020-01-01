@@ -7,7 +7,7 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerat
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionMethod;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 use function array_keys;
 use function implode;
 use function str_replace;

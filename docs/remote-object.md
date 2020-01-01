@@ -51,7 +51,7 @@ class Foo implements FooServiceInterface
     }
 }
 
-$server = new Zend\XmlRpc\Server();
+$server = new Laminas\XmlRpc\Server();
 $server->setClass('Foo', 'FooServiceInterface');  // my FooServiceInterface implementation
 $server->handle();
 ```
@@ -67,7 +67,7 @@ interface FooServiceInterface
 
 $factory = new \ProxyManager\Factory\RemoteObjectFactory(
     new \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc(
-        new \Zend\XmlRpc\Client('https://localhost/xmlrpc.php')
+        new \Laminas\XmlRpc\Client('https://localhost/xmlrpc.php')
     )
 );
 

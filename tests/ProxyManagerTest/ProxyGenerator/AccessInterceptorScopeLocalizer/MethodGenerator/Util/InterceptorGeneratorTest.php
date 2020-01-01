@@ -11,8 +11,8 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use ReflectionMethod;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator}

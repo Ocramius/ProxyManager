@@ -7,7 +7,7 @@ namespace ProxyManagerTest\ProxyGenerator\Util;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}

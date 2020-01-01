@@ -7,7 +7,7 @@ namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManagerTestAsset\BaseClass;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor}

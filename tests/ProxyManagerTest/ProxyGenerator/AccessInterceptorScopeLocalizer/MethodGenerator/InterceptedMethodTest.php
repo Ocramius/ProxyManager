@@ -10,8 +10,8 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
-use Zend\Code\Generator\PropertyGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\PropertyGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod}

@@ -18,7 +18,7 @@ use ProxyManager\Signature\SignatureCheckerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use stdClass;
-use Zend\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use function class_exists;
 
 /**

@@ -12,7 +12,7 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
-use Zend\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator}

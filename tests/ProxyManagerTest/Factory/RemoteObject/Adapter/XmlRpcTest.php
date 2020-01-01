@@ -7,7 +7,7 @@ namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc;
-use Zend\Server\Client;
+use Laminas\Server\Client;
 
 /**
  * Tests for {@see \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc}

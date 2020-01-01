@@ -12,9 +12,9 @@ use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInter
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\NullObjectInterface}

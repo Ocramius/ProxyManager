@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\Signature;
 
-use Zend\Code\Exception\InvalidArgumentException;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Applies a signature to a given class generator

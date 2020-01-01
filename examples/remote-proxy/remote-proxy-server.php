@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Example\RemoteProxyServer;
 
-use Zend\XmlRpc\Server;
+use Laminas\XmlRpc\Server;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
