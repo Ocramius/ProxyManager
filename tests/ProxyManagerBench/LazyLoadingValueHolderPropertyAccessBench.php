@@ -200,7 +200,7 @@ final class LazyLoadingValueHolderPropertyAccessBench
     /**
      * @psalm-template OriginalClass
      * @psalm-param class-string<OriginalClass> $originalClass
-     * @psalm-return RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface
+     * @psalm-return OriginalClass&ValueHolderInterface<OriginalClass>&VirtualProxyInterface
      * @psalm-suppress MixedInferredReturnType
      */
     private function buildProxy(string $originalClass) : VirtualProxyInterface
