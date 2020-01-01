@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\Util;
 
 use InvalidArgumentException;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 use function sprintf;
 
 /**

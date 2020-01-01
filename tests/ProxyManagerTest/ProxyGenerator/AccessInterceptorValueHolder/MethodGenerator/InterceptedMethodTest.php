@@ -9,8 +9,8 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod;
 use ProxyManagerTestAsset\BaseClass;
-use Zend\Code\Generator\PropertyGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\PropertyGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 use function strpos;
 
 /**

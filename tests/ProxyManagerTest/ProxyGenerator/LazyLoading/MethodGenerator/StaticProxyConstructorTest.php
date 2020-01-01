@@ -10,7 +10,7 @@ use ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstruct
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoading\MethodGenerator\StaticProxyConstructor}

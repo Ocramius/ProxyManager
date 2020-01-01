@@ -6,8 +6,8 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 
 use ProxyManager\Generator\MethodGenerator;
 use ReflectionClass;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\ParameterGenerator;
 
 /**
  * The `staticProxyConstructor` implementation for an access interceptor scope localizer proxy

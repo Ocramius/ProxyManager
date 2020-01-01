@@ -6,9 +6,9 @@ namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator;
 
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 use ReflectionClass;
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the wrapped value of a lazy loading proxy

@@ -7,8 +7,8 @@ namespace ProxyManagerTest\ProxyGenerator\AccessInterceptor\MethodGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor;
-use Zend\Code\Generator\PropertyGenerator;
-use Zend\Code\Generator\TypeGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\TypeGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor}

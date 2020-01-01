@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet}

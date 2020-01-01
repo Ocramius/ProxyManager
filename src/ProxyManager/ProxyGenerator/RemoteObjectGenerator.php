@@ -18,10 +18,10 @@ use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
-use Zend\Code\Generator\ClassGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Generator\MethodGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 use function array_map;
 use function array_merge;
 

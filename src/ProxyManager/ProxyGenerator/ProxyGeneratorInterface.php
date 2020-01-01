@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator;
 
 use ReflectionClass;
-use Zend\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 
 /**
  * Base interface for proxy generators - describes how a proxy generator should use

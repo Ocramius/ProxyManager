@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Signature;
 
-use Zend\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 
 /**
  * Applies a signature to a given class generator

@@ -6,8 +6,8 @@ namespace ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Property that contains the remote object adapter

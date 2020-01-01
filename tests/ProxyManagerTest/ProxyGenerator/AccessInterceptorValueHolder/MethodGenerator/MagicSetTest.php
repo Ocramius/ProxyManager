@@ -10,7 +10,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Mag
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 use function strpos;
 
 /**

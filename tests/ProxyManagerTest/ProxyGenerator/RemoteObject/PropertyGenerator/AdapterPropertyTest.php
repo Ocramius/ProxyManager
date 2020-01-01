@@ -6,7 +6,7 @@ namespace ProxyManagerTest\ProxyGenerator\RemoteObject\PropertyGenerator;
 
 use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty}

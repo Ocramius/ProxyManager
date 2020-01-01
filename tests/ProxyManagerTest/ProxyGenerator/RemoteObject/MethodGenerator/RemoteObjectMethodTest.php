@@ -9,8 +9,8 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManagerTestAsset\BaseClass;
 use ReflectionClass;
-use Zend\Code\Generator\PropertyGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\PropertyGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod}
@@ -41,7 +41,7 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            '$return = $this->adapter->call(\'Laminas\\\Code\\\Generator\\\PropertyGenerator\', '
             . '\'publicByReferenceParameterMethod\', \func_get_args());'
             . "\n\nreturn \$return;",
             $method->getBody()
@@ -67,7 +67,7 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicArrayHintedMethod', $method->getName());
         self::assertCount(1, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            '$return = $this->adapter->call(\'Laminas\\\Code\\\Generator\\\PropertyGenerator\', '
             . '\'publicArrayHintedMethod\', \func_get_args());'
             . "\n\nreturn \$return;",
             $method->getBody()
@@ -93,7 +93,7 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
+            '$return = $this->adapter->call(\'Laminas\\\Code\\\Generator\\\PropertyGenerator\', '
             . '\'publicMethod\', \func_get_args());'
             . "\n\nreturn \$return;",
             $method->getBody()

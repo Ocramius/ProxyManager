@@ -9,7 +9,7 @@ use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
 use Webimpress\SafeWriter\FileWriter;
-use Zend\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use function restore_error_handler;
 use function set_error_handler;
 

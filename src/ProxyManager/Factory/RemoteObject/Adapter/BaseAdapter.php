@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use Zend\Server\Client;
+use Laminas\Server\Client;
 use function array_key_exists;
 
 /**

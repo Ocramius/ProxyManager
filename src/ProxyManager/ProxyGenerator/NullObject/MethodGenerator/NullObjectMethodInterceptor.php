@@ -6,7 +6,7 @@ namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Method decorator for null objects

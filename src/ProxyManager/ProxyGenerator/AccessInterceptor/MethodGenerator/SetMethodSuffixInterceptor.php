@@ -6,9 +6,9 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use Closure;
 use ProxyManager\Generator\MethodGenerator;
-use Zend\Code\Generator\Exception\InvalidArgumentException;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodSuffixInterceptor}

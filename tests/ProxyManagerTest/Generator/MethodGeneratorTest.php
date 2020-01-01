@@ -13,8 +13,8 @@ use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use stdClass;
-use Zend\Code\Generator\ParameterGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\Generator\MethodGenerator}

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\Generator;
 
-use Zend\Code\Generator\DocBlockGenerator;
-use Zend\Code\Generator\MethodGenerator as ZendMethodGenerator;
-use Zend\Code\Reflection\MethodReflection;
+use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\MethodGenerator as ZendMethodGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Method generator that fixes minor quirks in ZF2's method generator

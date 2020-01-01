@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\PropertyGenerator;
 
 use PHPUnit\Framework\TestCase;
-use Zend\Code\Generator\PropertyGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Base test for unique property names

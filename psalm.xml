@@ -13,7 +13,7 @@
         <directory name="tests/ProxyManagerBench"/>
         <directory name="tests/ProxyManagerTest"/>
         <ignoreFiles>
-            <!-- remote objects contain references to Zend\Server, which is not installed -->
+            <!-- remote objects contain references to Laminas\Server, which is not installed -->
             <directory name="tests/ProxyManagerTest/Factory/RemoteObject"/>
             <file name="tests/ProxyManagerTest/Functional/RemoteObjectFunctionalTest.php"/>
             <directory name="vendor"/>
@@ -26,10 +26,10 @@
         <UndefinedClass>
             <errorLevel type="suppress">
                 <!-- zendframework/zend-server is not a direct package nor build dependency, and it should stay that way -->
-                <referencedClass name="Zend\Http\Client\Adapter\Exception\RuntimeException"/>
-                <referencedClass name="Zend\Server\Client"/>
-                <referencedClass name="Zend\XmlRpc\Server"/>
-                <referencedClass name="Zend\XmlRpc\Client"/>
+                <referencedClass name="Laminas\Http\Client\Adapter\Exception\RuntimeException"/>
+                <referencedClass name="Laminas\Server\Client"/>
+                <referencedClass name="Laminas\XmlRpc\Server"/>
+                <referencedClass name="Laminas\XmlRpc\Client"/>
             </errorLevel>
         </UndefinedClass>
         <LessSpecificReturnType errorLevel="error"/>

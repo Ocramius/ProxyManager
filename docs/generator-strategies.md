@@ -4,7 +4,7 @@ title: Generator strategies
 
 # Generator strategies
 
-ProxyManager allows you to generate classes based on generator strategies and a given `Zend\Code\Generator\ClassGenerator` as of the [interface of a generator strategy](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/GeneratorStrategy/GeneratorStrategyInterface.php).
+ProxyManager allows you to generate classes based on generator strategies and a given `Laminas\Code\Generator\ClassGenerator` as of the [interface of a generator strategy](https://github.com/Ocramius/ProxyManager/blob/master/src/ProxyManager/GeneratorStrategy/GeneratorStrategyInterface.php).
 
 Currently, 3 generator strategies are shipped with ProxyManager:
 
