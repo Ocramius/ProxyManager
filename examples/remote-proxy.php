@@ -14,7 +14,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 if (! class_exists('Laminas\XmlRpc\Client')) {
     echo "This example needs Laminas\\XmlRpc\\Client to run. \n In order to install it, "
         . "please run following:\n\n"
-        . "\$ php composer.phar require zendframework/zend-xmlrpc:2.*\n\n";
+        . "\$ php composer.phar require laminas/laminas-xmlrpc:2.*\n\n";
 
     exit(2);
 }

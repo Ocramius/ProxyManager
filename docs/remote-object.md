@@ -14,13 +14,13 @@ be implemented both by the client and the RPC server.
 
 ## Adapters
 
-ZendFramework's RPC components (XmlRpc, JsonRpc & Soap) can be used with the remote object. You will need to require the one 
+Laminas's RPC components (XmlRpc, JsonRpc & Soap) can be used with the remote object. You will need to require the one 
 you need via composer:
 
 ```sh
-$ php composer.phar require zendframework/zend-xmlrpc:2.*
-$ php composer.phar require zendframework/zend-json:2.*
-$ php composer.phar require zendframework/zend-soap:2.*
+$ php composer.phar require laminas/laminas-xmlrpc:2.*
+$ php composer.phar require laminas/laminas-json:2.*
+$ php composer.phar require laminas/laminas-soap:2.*
 ```
 
 ProxyManager comes with 3 adapters:
