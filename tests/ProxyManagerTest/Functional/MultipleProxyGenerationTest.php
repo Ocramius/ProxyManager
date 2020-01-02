@@ -85,7 +85,10 @@ final class MultipleProxyGenerationTest extends TestCase
 
             $proxyClass = get_class($proxy);
 
-            /** @psalm-suppress InvalidStringClass */
+            /**
+             * @psalm-suppress InvalidStringClass
+             * @psalm-suppress MixedMethodCall 
+             */
             self::assertInstanceOf($proxyClass, new $proxyClass(), 'Proxy can be instantiated via normal constructor');
         }
     }
