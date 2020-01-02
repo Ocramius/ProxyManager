@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
+use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
-use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Method decorator for null objects

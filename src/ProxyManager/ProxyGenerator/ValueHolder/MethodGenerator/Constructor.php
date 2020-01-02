@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\PropertyGenerator;
+use Laminas\Code\Reflection\MethodReflection;
+use Laminas\Code\Reflection\ParameterReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
 use ReflectionMethod;
-use Laminas\Code\Generator\Exception\InvalidArgumentException;
-use Laminas\Code\Generator\PropertyGenerator;
-use Laminas\Code\Reflection\MethodReflection;
-use Laminas\Code\Reflection\ParameterReflection;
 use function array_filter;
 use function array_map;
 use function implode;

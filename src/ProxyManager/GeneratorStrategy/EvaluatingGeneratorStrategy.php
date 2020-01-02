@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManager\GeneratorStrategy;
 
-use Webimpress\SafeWriter\FileWriter;
 use Laminas\Code\Generator\ClassGenerator;
+use Webimpress\SafeWriter\FileWriter;
 use function ini_get;
 use function unlink;
 

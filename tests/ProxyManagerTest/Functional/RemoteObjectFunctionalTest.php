@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Functional;
 
 use Generator;
+use Laminas\Server\Client;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
@@ -18,7 +19,6 @@ use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
 use ProxyManagerTestAsset\RemoteProxy\VariadicArgumentsServiceInterface;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
-use Laminas\Server\Client;
 use function get_class;
 use function random_int;
 use function ucfirst;

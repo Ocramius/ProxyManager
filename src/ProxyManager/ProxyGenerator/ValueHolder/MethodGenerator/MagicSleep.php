@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator;
 
+use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
-use Laminas\Code\Generator\PropertyGenerator;
 use function var_export;
 
 /**

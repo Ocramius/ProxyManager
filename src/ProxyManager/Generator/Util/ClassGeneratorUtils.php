@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\Generator\Util;
 
-use ReflectionClass;
 use Laminas\Code\Generator\ClassGenerator;
 use Laminas\Code\Generator\MethodGenerator;
+use ReflectionClass;
 
 /**
  * Util class to help to generate code

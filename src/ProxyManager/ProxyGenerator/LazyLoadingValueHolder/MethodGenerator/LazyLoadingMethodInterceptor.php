@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
-use ProxyManager\Generator\MethodGenerator;
-use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Reflection\MethodReflection;
+use ProxyManager\Generator\MethodGenerator;
+use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use function implode;
 use function var_export;
 

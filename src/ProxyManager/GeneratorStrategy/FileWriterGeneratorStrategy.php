@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace ProxyManager\GeneratorStrategy;
 
 use Closure;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
 use Webimpress\SafeWriter\FileWriter;
-use Laminas\Code\Generator\ClassGenerator;
 use function restore_error_handler;
 use function set_error_handler;
 

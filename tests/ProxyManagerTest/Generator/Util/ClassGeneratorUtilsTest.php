@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator\Util;
 
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\MethodGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ReflectionClass;
-use Laminas\Code\Generator\ClassGenerator;
-use Laminas\Code\Generator\MethodGenerator;
 
 /**
  * Test to {@see ProxyManager\Generator\Util\ClassGeneratorUtils}

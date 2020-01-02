@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Factory;
 
+use Laminas\Code\Generator\ClassGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
@@ -18,7 +19,6 @@ use ProxyManager\Signature\SignatureCheckerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use stdClass;
-use Laminas\Code\Generator\ClassGenerator;
 use function class_exists;
 
 /**

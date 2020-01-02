@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
+use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
 use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
 use ReflectionClass;
-use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Magic `__sleep` for lazy loading ghost objects

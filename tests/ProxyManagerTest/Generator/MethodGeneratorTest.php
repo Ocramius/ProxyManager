@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator;
 
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManagerTestAsset\BaseClass;
@@ -13,8 +15,6 @@ use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use stdClass;
-use Laminas\Code\Generator\ParameterGenerator;
-use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\Generator\MethodGenerator}

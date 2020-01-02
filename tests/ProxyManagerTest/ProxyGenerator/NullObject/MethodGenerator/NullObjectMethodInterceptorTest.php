@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\NullObject\MethodGenerator;
 
+use Laminas\Code\Reflection\MethodReflection;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManagerTestAsset\BaseClass;
-use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor}

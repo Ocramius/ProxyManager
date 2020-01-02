@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
@@ -11,7 +12,6 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ReflectionClass;
-use Laminas\Code\Generator\ClassGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator}

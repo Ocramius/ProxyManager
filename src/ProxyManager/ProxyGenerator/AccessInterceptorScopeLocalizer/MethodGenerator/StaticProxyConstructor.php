@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator;
 
-use ProxyManager\Generator\MethodGenerator;
-use ReflectionClass;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\ParameterGenerator;
+use ProxyManager\Generator\MethodGenerator;
+use ReflectionClass;
 
 /**
  * The `staticProxyConstructor` implementation for an access interceptor scope localizer proxy

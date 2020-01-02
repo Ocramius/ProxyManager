@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
-use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use function array_map;
 use function implode;
 
