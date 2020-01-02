@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\NullObjectInterface;
@@ -12,9 +15,6 @@ use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInter
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructor;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
-use Laminas\Code\Generator\ClassGenerator;
-use Laminas\Code\Generator\Exception\InvalidArgumentException;
-use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Generator for proxies implementing {@see \ProxyManager\Proxy\NullObjectInterface}

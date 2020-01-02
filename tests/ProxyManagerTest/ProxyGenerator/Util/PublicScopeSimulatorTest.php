@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
 use InvalidArgumentException;
+use Laminas\Code\Generator\PropertyGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
-use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}

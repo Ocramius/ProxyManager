@@ -226,8 +226,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
-    ) : void
+    public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
     {
         $newValue               = uniqid('value', true);
         $proxy->$publicProperty = $newValue;
@@ -239,8 +238,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyExistence(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
-    ) : void
+    public function testPropertyExistence(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
     {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
@@ -253,8 +251,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyUnset(object $instance, AccessInterceptorInterface $proxy, string $publicProperty
-    ) : void
+    public function testPropertyUnset(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
     {
         self::markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);
@@ -312,7 +309,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $instance = new ClassWithPublicProperties();
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
-        $variable = &$proxy->property0;
+        $variable = & $proxy->property0;
 
         self::assertByRefVariableValueSame('property0', $variable);
 

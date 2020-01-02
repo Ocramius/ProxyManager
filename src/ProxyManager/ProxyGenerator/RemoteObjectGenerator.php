@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator;
 
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\MethodGenerator;
+use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManager\Proxy\RemoteObjectInterface;
@@ -18,10 +22,6 @@ use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
-use Laminas\Code\Generator\ClassGenerator;
-use Laminas\Code\Generator\Exception\InvalidArgumentException;
-use Laminas\Code\Generator\MethodGenerator;
-use Laminas\Code\Reflection\MethodReflection;
 use function array_map;
 use function array_merge;
 

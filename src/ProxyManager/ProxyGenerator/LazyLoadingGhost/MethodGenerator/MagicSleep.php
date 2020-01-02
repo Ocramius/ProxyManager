@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
-use ProxyManager\Generator\MagicMethodGenerator;
-use ReflectionClass;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\MagicMethodGenerator;
+use ReflectionClass;
 
 /**
  * Magic `__sleep` for lazy loading ghost objects

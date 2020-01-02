@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\PropertyGenerator;
 
-use ProxyManager\Generator\Util\IdentifierSuffixer;
-use ProxyManager\ProxyGenerator\Util\Properties;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
+use ProxyManager\ProxyGenerator\Util\Properties;
 
 /**
  * Map of public properties that exist in the class being proxied

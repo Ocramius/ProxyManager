@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator;
 
 use Closure;
-use ProxyManager\Generator\MethodGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\MethodGenerator;
 
 /**
  * Implementation for {@see \ProxyManager\Proxy\AccessInterceptorInterface::setMethodSuffixInterceptor}

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingValueHolder\PropertyGenerator;
 
-use ProxyManager\Generator\Util\IdentifierSuffixer;
-use ReflectionClass;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
+use ReflectionClass;
 
 /**
  * Property that contains the wrapped value of a lazy loading proxy

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Signature;
 
+use Laminas\Code\Generator\ClassGenerator;
+use Laminas\Code\Generator\PropertyGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Signature\ClassSignatureGenerator;
 use ProxyManager\Signature\SignatureGeneratorInterface;
-use Laminas\Code\Generator\ClassGenerator;
-use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\Signature\ClassSignatureGenerator}

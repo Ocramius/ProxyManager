@@ -309,7 +309,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
     {
         $instance = new ClassWithPublicProperties();
         $proxy    = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
-        $variable = &$proxy->property0;
+        $variable = & $proxy->property0;
 
         self::assertByRefVariableValueSame('property0', $variable);
 

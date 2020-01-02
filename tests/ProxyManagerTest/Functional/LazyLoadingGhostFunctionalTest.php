@@ -202,8 +202,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyWriteAccess(object $instance, GhostObjectInterface $proxy, string $publicProperty
-    ) : void
+    public function testPropertyWriteAccess(object $instance, GhostObjectInterface $proxy, string $publicProperty) : void
     {
         $newValue               = uniqid('', true);
         $proxy->$publicProperty = $newValue;
@@ -291,7 +290,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
             ClassWithPublicProperties::class,
             $this->createInitializer(ClassWithPublicProperties::class, $instance)
         );
-        $variable = &$proxy->property0;
+        $variable = & $proxy->property0;
 
         self::assertByRefVariableValueSame('property0', $variable);
 

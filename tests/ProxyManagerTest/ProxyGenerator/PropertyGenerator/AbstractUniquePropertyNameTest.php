@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\PropertyGenerator;
 
-use PHPUnit\Framework\TestCase;
 use Laminas\Code\Generator\PropertyGenerator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Base test for unique property names

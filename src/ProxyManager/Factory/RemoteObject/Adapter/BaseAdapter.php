@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManager\Factory\RemoteObject\Adapter;
 
-use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use Laminas\Server\Client;
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use function array_key_exists;
 
 /**

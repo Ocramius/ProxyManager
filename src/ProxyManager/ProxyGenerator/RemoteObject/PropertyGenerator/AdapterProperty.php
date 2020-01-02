@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator;
 
-use ProxyManager\Factory\RemoteObject\AdapterInterface;
-use ProxyManager\Generator\Util\IdentifierSuffixer;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
+use ProxyManager\Factory\RemoteObject\AdapterInterface;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 
 /**
  * Property that contains the remote object adapter

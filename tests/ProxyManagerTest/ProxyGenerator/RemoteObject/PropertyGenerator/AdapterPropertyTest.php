@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\RemoteObject\PropertyGenerator;
 
+use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyNameTest;
-use Laminas\Code\Generator\PropertyGenerator;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty}

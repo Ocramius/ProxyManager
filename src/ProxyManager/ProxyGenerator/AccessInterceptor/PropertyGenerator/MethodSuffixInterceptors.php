@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator;
 
-use ProxyManager\Generator\Util\IdentifierSuffixer;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
 
 /**
  * Property that contains the interceptor for operations to be executed after method execution

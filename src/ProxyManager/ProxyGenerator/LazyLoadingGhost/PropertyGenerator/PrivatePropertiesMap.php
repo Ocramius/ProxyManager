@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator;
 
-use ProxyManager\Generator\Util\IdentifierSuffixer;
-use ProxyManager\ProxyGenerator\Util\Properties;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
+use ProxyManager\Generator\Util\IdentifierSuffixer;
+use ProxyManager\ProxyGenerator\Util\Properties;
 
 /**
  * Property that contains the initializer for a lazy object
