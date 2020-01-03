@@ -25,7 +25,7 @@
     <issueHandlers>
         <UndefinedClass>
             <errorLevel type="suppress">
-                <!-- zendframework/zend-server is not a direct package nor build dependency, and it should stay that way -->
+                <!-- laminas/laminas-server is not a direct package nor build dependency, and it should stay that way -->
                 <referencedClass name="Laminas\Http\Client\Adapter\Exception\RuntimeException"/>
                 <referencedClass name="Laminas\Server\Client"/>
                 <referencedClass name="Laminas\XmlRpc\Server"/>
