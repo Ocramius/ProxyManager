@@ -44,17 +44,15 @@ PHP;
         $defaultValues          = self::getDefaultValuesForMethod($originalMethod);
         $declaredParameterCount = count($originalMethod->getParameters());
 
-        $body = strtr(
-            self::TEMPLATE,
-            [
-                '#PROXIED_RETURN#' => $proxiedReturn,
-                '#DEFAULT_VALUES#' => var_export($defaultValues, true),
-                '#PARAMETER_COUNT#' => var_export($declaredParameterCount, true),
-            ]
-        );
-
         $method->setBody(
-            $body
+            strtr(
+                self::TEMPLATE,
+                [
+                    '#PROXIED_RETURN#' => $proxiedReturn,
+                    '#DEFAULT_VALUES#' => var_export($defaultValues, true),
+                    '#PARAMETER_COUNT#' => var_export($declaredParameterCount, true),
+                ]
+            )
         );
 
         return $method;
