@@ -56,7 +56,7 @@
             "ProxyManagerBench\\": "tests/ProxyManagerBench",
             "ProxyManagerTest\\": "tests/ProxyManagerTest",
             "ProxyManagerTestAsset\\": "tests/ProxyManagerTestAsset",
-            "Zend": "tests/Stubbed/Zend"
+            "Zend\\": "tests/Stubbed/Zend"
         }
     },
     "extra": {
