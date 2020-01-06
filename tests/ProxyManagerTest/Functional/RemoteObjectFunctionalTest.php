@@ -139,7 +139,7 @@ final class RemoteObjectFunctionalTest extends TestCase
         $proxy = (new RemoteObjectFactory($this->getJsonRpcAdapter($propertyValue, '__get', [$publicProperty])))
             ->createProxy($instanceOrClassName);
 
-        self::assertSame($propertyValue, $proxy->{$publicProperty});
+        self::assertSame($propertyValue, $proxy->$publicProperty);
     }
 
     /**
