@@ -40,7 +40,6 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
     {
-        /** @var Client|MockObject $client */
         $client = $this->getMockBuilder(Client::class)->getMock();
 
         $client
@@ -60,7 +59,6 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
-        /** @var Client|MockObject $client */
         $client = $this->getMockBuilder(Client::class)->getMock();
 
         $client
