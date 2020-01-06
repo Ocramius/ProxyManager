@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Functional;
 
 use Generator;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
@@ -199,7 +198,7 @@ final class RemoteObjectFunctionalTest extends TestCase
                 RemoteServiceWithDefaultsInterface::class,
                 'optionalNonNullable',
                 ['aaa'],
-                ['aaa', ''],
+                ['aaa', 'Optional parameter to be kept during calls'],
                 200,
             ],
             [

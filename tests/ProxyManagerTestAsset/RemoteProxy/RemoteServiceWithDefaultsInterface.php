@@ -9,7 +9,7 @@ namespace ProxyManagerTestAsset\RemoteProxy;
  */
 interface RemoteServiceWithDefaultsInterface
 {
-    public function optionalNonNullable(string $foo, string $optional = '') : int;
+    public function optionalNonNullable(string $foo, string $optional = 'Optional parameter to be kept during calls') : int;
 
     public function optionalNullable(string $foo, ?float $nullable = null) : int;
 }
