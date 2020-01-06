@@ -19,29 +19,9 @@ use Zend\Code\Reflection\MethodReflection;
 final class RemoteObjectMethodTest extends TestCase
 {
     /**
-     * @var string
-     */
-    private const STATIC_CODE = <<<PHP
-\$reflectionMethod = new \\ReflectionMethod(__CLASS__, __FUNCTION__);
-\$args = \\func_get_args();
-foreach (\\array_slice(\$reflectionMethod->getParameters(), \\count(\$args)) as \$param) {
-            /**
-             * @var ReflectionParameter \$param
-             */
-            if (\$param->isDefaultValueAvailable()) {
-                \$args[] = \$param->getDefaultValue();
-            }
-}
-
-
-PHP;
-
-
-
-    /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithParameters(): void
+    public function testBodyStructureWithParameters() : void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -60,9 +40,17 @@ PHP;
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertSame(
-            self::STATIC_CODE . '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicByReferenceParameterMethod\', $args);'
-            . "\n\nreturn \$return;",
+            '$defaultValues = array (
+  0 => NULL,
+  1 => NULL,
+);
+$declaredParameterCount = 2;
+
+$args = \func_get_args() + $defaultValues;
+
+$return = $this->adapter->call(\'Zend\\\\Code\\\\Generator\\\\PropertyGenerator\', \'publicByReferenceParameterMethod\', $args);
+
+return $return;',
             $method->getBody()
         );
     }
@@ -70,7 +58,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithArrayParameter(): void
+    public function testBodyStructureWithArrayParameter() : void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -86,9 +74,16 @@ PHP;
         self::assertSame('publicArrayHintedMethod', $method->getName());
         self::assertCount(1, $method->getParameters());
         self::assertSame(
-            self::STATIC_CODE . '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicArrayHintedMethod\', $args);'
-            . "\n\nreturn \$return;",
+            "\$defaultValues = array (
+  0 => NULL,
+);
+\$declaredParameterCount = 1;
+
+\$args = \\func_get_args() + \$defaultValues;
+
+\$return = \$this->adapter->call('Zend\\\\Code\\\\Generator\\\\PropertyGenerator', 'publicArrayHintedMethod', \$args);
+
+return \$return;",
             $method->getBody()
         );
     }
@@ -96,7 +91,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithoutParameters(): void
+    public function testBodyStructureWithoutParameters() : void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -112,9 +107,15 @@ PHP;
         self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
-            self::STATIC_CODE . '$return = $this->adapter->call(\'Zend\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicMethod\', $args);'
-            . "\n\nreturn \$return;",
+            "\$defaultValues = array (
+);
+\$declaredParameterCount = 0;
+
+\$args = \\func_get_args() + \$defaultValues;
+
+\$return = \$this->adapter->call('Zend\\\\Code\\\\Generator\\\\PropertyGenerator', 'publicMethod', \$args);
+
+return \$return;",
             $method->getBody()
         );
     }
