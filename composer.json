@@ -55,7 +55,8 @@
         "psr-4": {
             "ProxyManagerBench\\": "tests/ProxyManagerBench",
             "ProxyManagerTest\\": "tests/ProxyManagerTest",
-            "ProxyManagerTestAsset\\": "tests/ProxyManagerTestAsset"
+            "ProxyManagerTestAsset\\": "tests/ProxyManagerTestAsset",
+            "Zend": "tests/Stubbed/Zend"
         }
     },
     "extra": {
