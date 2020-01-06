@@ -68,6 +68,7 @@ PHP;
         $defaultValues = [];
         foreach ($originalMethod->getParameters() as $parameter) {
             if ($parameter->isOptional() && $parameter->isDefaultValueAvailable()) {
+                /** @psalm-var int|float|bool|array|string|null */
                 $defaultValues[] = $parameter->getDefaultValue();
                 continue;
             }
