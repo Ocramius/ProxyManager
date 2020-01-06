@@ -34,27 +34,15 @@ PHP;
         PropertyGenerator $adapterProperty,
         ReflectionClass $originalClass
     ) : self {
-        $defaultValues = [];
-        foreach ($originalMethod->getParameters() as $parameter) {
-            if ($parameter->isOptional() && $parameter->isDefaultValueAvailable()) {
-                $defaultValues[] = $parameter->getDefaultValue();
-                continue;
-            }
-
-            if ($parameter->isVariadic()) {
-                continue;
-            }
-
-            $defaultValues[] = null;
-        }
-        $declaredParameterCount = count($originalMethod->getParameters());
-
         /** @var self $method */
         $method        = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $proxiedReturn = '$return = $this->' . $adapterProperty->getName()
             . '->call(' . var_export($originalClass->getName(), true)
             . ', ' . var_export($originalMethod->getName(), true) . ', $args);' . "\n\n"
             . ProxiedMethodReturnExpression::generate('$return', $originalMethod);
+
+        $defaultValues = self::getDefaultValuesForMethod($originalMethod)
+        $declaredParameterCount = count($originalMethod->getParameters());
 
         $body = strtr(
             self::TEMPLATE,
@@ -70,5 +58,28 @@ PHP;
         );
 
         return $method;
+    }
+
+    /**
+     * @param MethodReflection $originalMethod
+     * @return array
+     */
+    private static function getDefaultValuesForMethod(MethodReflection $originalMethod): array
+    {
+        $defaultValues = [];
+        foreach ($originalMethod->getParameters() as $parameter) {
+            if ($parameter->isOptional() && $parameter->isDefaultValueAvailable()) {
+                $defaultValues[] = $parameter->getDefaultValue();
+                continue;
+            }
+
+            if ($parameter->isVariadic()) {
+                continue;
+            }
+
+            $defaultValues[] = null;
+        }
+
+        return $defaultValues;
     }
 }

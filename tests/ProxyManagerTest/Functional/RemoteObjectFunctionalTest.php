@@ -36,15 +36,15 @@ final class RemoteObjectFunctionalTest extends TestCase
 {
     /**
      * @param mixed   $expectedValue
-     * @param mixed[] $params
+     * @param mixed[] $parametersExpectedByClient
      */
-    protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
+    protected function getXmlRpcAdapter($expectedValue, string $method, array $parametersExpectedByClient) : XmlRpcAdapter
     {
         $client = $this->getMockBuilder(Client::class)->getMock();
 
         $client
             ->method('call')
-            ->with(self::stringEndsWith($method), $params)
+            ->with(self::stringEndsWith($method), $parametersExpectedByClient)
             ->willReturn($expectedValue);
 
         return new XmlRpcAdapter(
@@ -75,7 +75,7 @@ final class RemoteObjectFunctionalTest extends TestCase
     /**
      * @param string|object $instanceOrClassName
      * @param array|mixed[] $passedParams
-     * @param mixed[]       $parametersForProxy
+     * @param mixed[]       $callParametersExpectedByAdapter
      * @param mixed         $expectedValue
      *
      * @dataProvider getProxyMethods
@@ -87,10 +87,10 @@ final class RemoteObjectFunctionalTest extends TestCase
         $instanceOrClassName,
         string $method,
         array $passedParams,
-        array $parametersForProxy,
+        array $callParametersExpectedByAdapter,
         $expectedValue
     ) : void {
-        $proxy = (new RemoteObjectFactory($this->getXmlRpcAdapter($expectedValue, $method, $parametersForProxy)))
+        $proxy = (new RemoteObjectFactory($this->getXmlRpcAdapter($expectedValue, $method, $callParametersExpectedByAdapter)))
             ->createProxy($instanceOrClassName);
 
         $callback = [$proxy, $method];
