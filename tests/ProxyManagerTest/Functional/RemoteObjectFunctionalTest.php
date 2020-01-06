@@ -15,6 +15,7 @@ use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\BazServiceInterface;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
+use ProxyManagerTestAsset\RemoteProxy\RemoteServiceWithDefaultsAndVariadicArguments;
 use ProxyManagerTestAsset\RemoteProxy\RemoteServiceWithDefaultsInterface;
 use ProxyManagerTestAsset\RemoteProxy\VariadicArgumentsServiceInterface;
 use ProxyManagerTestAsset\VoidCounter;
@@ -206,6 +207,70 @@ final class RemoteObjectFunctionalTest extends TestCase
                 'optionalNullable',
                 ['aaa'],
                 ['aaa', null],
+                200,
+            ],
+            'when passing only the required parameters' => [
+                RemoteServiceWithDefaultsInterface::class,
+                'manyRequiredWithManyOptional',
+                ['aaa', 100],
+                [
+                    'aaa',
+                    100,
+                    'Optional parameter to be kept during calls',
+                    100,
+                    'Yet another optional parameter to be kept during calls',
+                ],
+                200,
+            ],
+            'when passing required params and one optional params' => [
+                RemoteServiceWithDefaultsInterface::class,
+                'manyRequiredWithManyOptional',
+                ['aaa', 100, 'passed'],
+                [
+                    'aaa',
+                    100,
+                    'passed',
+                    100,
+                    'Yet another optional parameter to be kept during calls',
+                ],
+                200,
+            ],
+            'when passing required params and some optional params' => [
+                RemoteServiceWithDefaultsInterface::class,
+                'manyRequiredWithManyOptional',
+                ['aaa', 100, 'passed', 90],
+                [
+                    'aaa',
+                    100,
+                    'passed',
+                    90,
+                    'Yet another optional parameter to be kept during calls',
+                ],
+                200,
+            ],
+            'when passing only required for method with optional and variadic params' => [
+                RemoteServiceWithDefaultsAndVariadicArguments::class,
+                'optionalWithVariadic',
+                ['aaa'],
+                [
+                    'aaa',
+                    'Optional param to be kept on proxy call',
+                ],
+                200,
+            ],
+            'when passing required, optional and variadic params' => [
+                RemoteServiceWithDefaultsAndVariadicArguments::class,
+                'optionalWithVariadic',
+                ['aaa', 'Optional param to be kept on proxy call', 10, 20, 30, 50, 90],
+                [
+                    'aaa',
+                    'Optional param to be kept on proxy call',
+                    10,
+                    20,
+                    30,
+                    50,
+                    90,
+                ],
                 200,
             ],
         ];
