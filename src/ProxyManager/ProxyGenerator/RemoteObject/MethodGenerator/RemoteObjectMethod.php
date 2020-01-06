@@ -41,7 +41,7 @@ PHP;
             . ', ' . var_export($originalMethod->getName(), true) . ', $args);' . "\n\n"
             . ProxiedMethodReturnExpression::generate('$return', $originalMethod);
 
-        $defaultValues = self::getDefaultValuesForMethod($originalMethod)
+        $defaultValues          = self::getDefaultValuesForMethod($originalMethod);
         $declaredParameterCount = count($originalMethod->getParameters());
 
         $body = strtr(
@@ -61,10 +61,9 @@ PHP;
     }
 
     /**
-     * @param MethodReflection $originalMethod
      * @return array
      */
-    private static function getDefaultValuesForMethod(MethodReflection $originalMethod): array
+    private static function getDefaultValuesForMethod(MethodReflection $originalMethod) : array
     {
         $defaultValues = [];
         foreach ($originalMethod->getParameters() as $parameter) {
