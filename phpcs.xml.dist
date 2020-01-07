@@ -28,5 +28,10 @@
         <exclude name="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse"/>
         <!-- enforced types are now declared via psalm's "totallyTyped" restrictions -->
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
+        <!-- correct type declarations are coming from psalm, not from phpcs -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.IncorrectReturnTypeHint"/>
+
+        <!-- spaces after reference markers are wished and endorsed -->
+        <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterReference"/>
     </rule>
 </ruleset>
