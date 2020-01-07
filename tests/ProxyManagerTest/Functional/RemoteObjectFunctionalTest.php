@@ -15,6 +15,8 @@ use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\BazServiceInterface;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
 use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
+use ProxyManagerTestAsset\RemoteProxy\RemoteServiceWithDefaultsAndVariadicArguments;
+use ProxyManagerTestAsset\RemoteProxy\RemoteServiceWithDefaultsInterface;
 use ProxyManagerTestAsset\RemoteProxy\VariadicArgumentsServiceInterface;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
@@ -34,15 +36,15 @@ final class RemoteObjectFunctionalTest extends TestCase
 {
     /**
      * @param mixed   $expectedValue
-     * @param mixed[] $params
+     * @param mixed[] $parametersExpectedByClient
      */
-    protected function getXmlRpcAdapter($expectedValue, string $method, array $params) : XmlRpcAdapter
+    protected function getXmlRpcAdapter($expectedValue, string $method, array $parametersExpectedByClient) : XmlRpcAdapter
     {
-        $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
+        $client = $this->getMockBuilder(Client::class)->getMock();
 
         $client
             ->method('call')
-            ->with(self::stringEndsWith($method), $params)
+            ->with(self::stringEndsWith($method), $parametersExpectedByClient)
             ->willReturn($expectedValue);
 
         return new XmlRpcAdapter(
@@ -57,7 +59,7 @@ final class RemoteObjectFunctionalTest extends TestCase
      */
     protected function getJsonRpcAdapter($expectedValue, string $method, array $params) : JsonRpcAdapter
     {
-        $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
+        $client = $this->getMockBuilder(Client::class)->getMock();
 
         $client
             ->method('call')
@@ -72,7 +74,8 @@ final class RemoteObjectFunctionalTest extends TestCase
 
     /**
      * @param string|object $instanceOrClassName
-     * @param mixed[]       $params
+     * @param array|mixed[] $passedParams
+     * @param mixed[]       $callParametersExpectedByAdapter
      * @param mixed         $expectedValue
      *
      * @dataProvider getProxyMethods
@@ -80,20 +83,26 @@ final class RemoteObjectFunctionalTest extends TestCase
      * @psalm-template OriginalClass of object
      * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
-    public function testXmlRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
-    {
-        $proxy = (new RemoteObjectFactory($this->getXmlRpcAdapter($expectedValue, $method, $params)))
+    public function testXmlRpcMethodCalls(
+        $instanceOrClassName,
+        string $method,
+        array $passedParams,
+        array $callParametersExpectedByAdapter,
+        $expectedValue
+    ) : void {
+        $proxy = (new RemoteObjectFactory($this->getXmlRpcAdapter($expectedValue, $method, $callParametersExpectedByAdapter)))
             ->createProxy($instanceOrClassName);
 
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
-        self::assertSame($expectedValue, $callback(...$params));
+        self::assertSame($expectedValue, $callback(...$passedParams));
     }
 
     /**
      * @param string|object $instanceOrClassName
-     * @param mixed[]       $params
+     * @param array|mixed[] $passedParams
+     * @param mixed[]       $parametersForProxy
      * @param mixed         $expectedValue
      *
      * @dataProvider getProxyMethods
@@ -101,15 +110,20 @@ final class RemoteObjectFunctionalTest extends TestCase
      * @psalm-template OriginalClass of object
      * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
-    public function testJsonRpcMethodCalls($instanceOrClassName, string $method, array $params, $expectedValue) : void
-    {
-        $proxy = (new RemoteObjectFactory($this->getJsonRpcAdapter($expectedValue, $method, $params)))
+    public function testJsonRpcMethodCalls(
+        $instanceOrClassName,
+        string $method,
+        array $passedParams,
+        array $parametersForProxy,
+        $expectedValue
+    ) : void {
+        $proxy = (new RemoteObjectFactory($this->getJsonRpcAdapter($expectedValue, $method, $parametersForProxy)))
             ->createProxy($instanceOrClassName);
 
         $callback = [$proxy, $method];
 
         self::assertIsCallable($callback);
-        self::assertSame($expectedValue, $callback(...$params));
+        self::assertSame($expectedValue, $callback(...$passedParams));
     }
 
     /**
@@ -143,11 +157,13 @@ final class RemoteObjectFunctionalTest extends TestCase
                 FooServiceInterface::class,
                 'foo',
                 [],
+                [],
                 'bar remote',
             ],
             [
                 Foo::class,
                 'foo',
+                [],
                 [],
                 'bar remote',
             ],
@@ -155,11 +171,13 @@ final class RemoteObjectFunctionalTest extends TestCase
                 new Foo(),
                 'foo',
                 [],
+                [],
                 'bar remote',
             ],
             [
                 BazServiceInterface::class,
                 'baz',
+                ['baz'],
                 ['baz'],
                 'baz remote',
             ],
@@ -167,13 +185,93 @@ final class RemoteObjectFunctionalTest extends TestCase
                 new ClassWithSelfHint(),
                 'selfHintMethod',
                 [$selfHintParam],
+                [$selfHintParam],
                 $selfHintParam,
             ],
             [
                 VariadicArgumentsServiceInterface::class,
                 'method',
                 ['aaa', 1, 2, 3, 4, 5],
+                ['aaa', 1, 2, 3, 4, 5],
                 true,
+            ],
+            [
+                RemoteServiceWithDefaultsInterface::class,
+                'optionalNonNullable',
+                ['aaa'],
+                ['aaa', 'Optional parameter to be kept during calls'],
+                200,
+            ],
+            [
+                RemoteServiceWithDefaultsInterface::class,
+                'optionalNullable',
+                ['aaa'],
+                ['aaa', null],
+                200,
+            ],
+            'when passing only the required parameters' => [
+                RemoteServiceWithDefaultsInterface::class,
+                'manyRequiredWithManyOptional',
+                ['aaa', 100],
+                [
+                    'aaa',
+                    100,
+                    'Optional parameter to be kept during calls',
+                    100,
+                    'Yet another optional parameter to be kept during calls',
+                ],
+                200,
+            ],
+            'when passing required params and one optional params' => [
+                RemoteServiceWithDefaultsInterface::class,
+                'manyRequiredWithManyOptional',
+                ['aaa', 100, 'passed'],
+                [
+                    'aaa',
+                    100,
+                    'passed',
+                    100,
+                    'Yet another optional parameter to be kept during calls',
+                ],
+                200,
+            ],
+            'when passing required params and some optional params' => [
+                RemoteServiceWithDefaultsInterface::class,
+                'manyRequiredWithManyOptional',
+                ['aaa', 100, 'passed', 90],
+                [
+                    'aaa',
+                    100,
+                    'passed',
+                    90,
+                    'Yet another optional parameter to be kept during calls',
+                ],
+                200,
+            ],
+            'when passing only required for method with optional and variadic params' => [
+                RemoteServiceWithDefaultsAndVariadicArguments::class,
+                'optionalWithVariadic',
+                ['aaa'],
+                [
+                    'aaa',
+                    'Optional param to be kept on proxy call',
+                ],
+                200,
+            ],
+            'when passing required, optional and variadic params' => [
+                RemoteServiceWithDefaultsAndVariadicArguments::class,
+                'optionalWithVariadic',
+                ['aaa', 'Optional param to be kept on proxy call', 10, 20, 30, 50, 90],
+                [
+                    'aaa',
+                    'Optional param to be kept on proxy call',
+                    10,
+                    20,
+                    30,
+                    50,
+                    90,
+                ],
+                200,
             ],
         ];
     }
