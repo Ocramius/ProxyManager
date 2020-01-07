@@ -12,8 +12,6 @@ use function array_filter;
 
 /**
  * Assertion that verifies that a class can be proxied
- *
- * @psalm-immutable
  */
 final class CanProxyAssertion
 {

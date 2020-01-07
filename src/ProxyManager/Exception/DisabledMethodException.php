@@ -9,8 +9,6 @@ use function sprintf;
 
 /**
  * Exception for forcefully disabled methods
- *
- * @psalm-immutable
  */
 class DisabledMethodException extends BadMethodCallException implements ExceptionInterface
 {

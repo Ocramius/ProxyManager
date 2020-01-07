@@ -9,8 +9,6 @@ use function serialize;
 
 /**
  * Encodes parameters into a class-name safe string
- *
- * @psalm-immutable
  */
 class ParameterEncoder
 {

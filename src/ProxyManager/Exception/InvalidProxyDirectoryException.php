@@ -9,8 +9,6 @@ use function sprintf;
 
 /**
  * Exception for invalid directories
- *
- * @psalm-immutable
  */
 class InvalidProxyDirectoryException extends InvalidArgumentException implements ExceptionInterface
 {

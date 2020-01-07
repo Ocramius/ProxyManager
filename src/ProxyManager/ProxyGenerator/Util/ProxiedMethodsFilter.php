@@ -15,8 +15,6 @@ use function strtolower;
 
 /**
  * Utility class used to filter methods that can be proxied
- *
- * @psalm-immutable
  */
 final class ProxiedMethodsFilter
 {

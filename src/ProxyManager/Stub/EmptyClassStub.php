@@ -6,8 +6,6 @@ namespace ProxyManager\Stub;
 
 /**
  * Just an empty instantiable class
- *
- * @psalm-immutable
  */
 final class EmptyClassStub
 {

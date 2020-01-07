@@ -10,8 +10,6 @@ use ReflectionMethod;
  * Utility class to generate return expressions in method, given a method signature.
  *
  * This is required since return expressions may be forbidden by the method signature (void).
- *
- * @psalm-immutable
  */
 final class ProxiedMethodReturnExpression
 {
