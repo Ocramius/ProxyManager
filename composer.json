@@ -56,7 +56,8 @@
         "psr-4": {
             "ProxyManagerBench\\": "tests/ProxyManagerBench",
             "ProxyManagerTest\\": "tests/ProxyManagerTest",
-            "ProxyManagerTestAsset\\": "tests/ProxyManagerTestAsset"
+            "ProxyManagerTestAsset\\": "tests/ProxyManagerTestAsset",
+            "Laminas\\Server\\": "tests/Stubbed/Laminas/Server"
         }
     },
     "extra": {

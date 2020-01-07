@@ -41,9 +41,17 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Laminas\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicByReferenceParameterMethod\', \func_get_args());'
-            . "\n\nreturn \$return;",
+            '$defaultValues = array (
+  0 => NULL,
+  1 => NULL,
+);
+$declaredParameterCount = 2;
+
+$args = \func_get_args() + $defaultValues;
+
+$return = $this->adapter->call(\'Laminas\\\\Code\\\\Generator\\\\PropertyGenerator\', \'publicByReferenceParameterMethod\', $args);
+
+return $return;',
             $method->getBody()
         );
     }
@@ -67,9 +75,16 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicArrayHintedMethod', $method->getName());
         self::assertCount(1, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Laminas\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicArrayHintedMethod\', \func_get_args());'
-            . "\n\nreturn \$return;",
+            "\$defaultValues = array (
+  0 => NULL,
+);
+\$declaredParameterCount = 1;
+
+\$args = \\func_get_args() + \$defaultValues;
+
+\$return = \$this->adapter->call('Laminas\\\\Code\\\\Generator\\\\PropertyGenerator', 'publicArrayHintedMethod', \$args);
+
+return \$return;",
             $method->getBody()
         );
     }
@@ -93,9 +108,15 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
-            '$return = $this->adapter->call(\'Laminas\\\Code\\\Generator\\\PropertyGenerator\', '
-            . '\'publicMethod\', \func_get_args());'
-            . "\n\nreturn \$return;",
+            "\$defaultValues = array (
+);
+\$declaredParameterCount = 0;
+
+\$args = \\func_get_args() + \$defaultValues;
+
+\$return = \$this->adapter->call('Laminas\\\\Code\\\\Generator\\\\PropertyGenerator', 'publicMethod', \$args);
+
+return \$return;",
             $method->getBody()
         );
     }
