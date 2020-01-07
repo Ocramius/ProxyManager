@@ -13,8 +13,6 @@ use function substr;
 
 /**
  * {@inheritDoc}
- *
- * @psalm-immutable
  */
 final class ClassNameInflector implements ClassNameInflectorInterface
 {

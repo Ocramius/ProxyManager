@@ -9,8 +9,6 @@ use ReflectionMethod;
 
 /**
  * Internal utility class - allows fetching a method from a given class, if it exists
- *
- * @psalm-immutable
  */
 final class GetMethodIfExists
 {

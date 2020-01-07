@@ -11,8 +11,6 @@ use function sprintf;
 
 /**
  * Exception for invalid provided signatures
- *
- * @psalm-immutable
  */
 class InvalidSignatureException extends UnexpectedValueException implements ExceptionInterface
 {
