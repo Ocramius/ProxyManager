@@ -14,6 +14,8 @@ use function var_export;
 
 /**
  * Generates code necessary to unset all the given properties from a particular given instance string name
+ *
+ * @psalm-immutable
  */
 final class UnsetPropertiesGenerator
 {

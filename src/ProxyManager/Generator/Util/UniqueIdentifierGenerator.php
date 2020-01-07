@@ -11,6 +11,8 @@ use function uniqid;
 /**
  * Utility class capable of generating unique
  * valid class/property/method identifiers
+ *
+ * @psalm-immutable
  */
 abstract class UniqueIdentifierGenerator
 {

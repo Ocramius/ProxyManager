@@ -11,6 +11,8 @@ use PackageVersions\Versions;
  * Version class
  *
  * Note that we cannot check the version at runtime via `git` because that would cause a lot of I/O operations.
+ *
+ * @psalm-immutable
  */
 final class Version
 {

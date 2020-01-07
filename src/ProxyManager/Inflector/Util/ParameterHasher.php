@@ -9,6 +9,8 @@ use function serialize;
 
 /**
  * Converts given parameters into a likely unique hash
+ *
+ * @psalm-immutable
  */
 class ParameterHasher
 {

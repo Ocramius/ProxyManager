@@ -12,6 +12,8 @@ use function sprintf;
  * Generates code necessary to simulate a fatal error in case of unauthorized
  * access to class members in magic methods even when in child classes and dealing
  * with protected members.
+ *
+ * @psalm-immutable
  */
 class PublicScopeSimulator
 {

@@ -6,6 +6,8 @@ namespace ProxyManager\Signature\Exception;
 
 /**
  * Exception marker for exceptions from the signature sub-component
+ *
+ * @psalm-immutable
  */
 interface ExceptionInterface
 {

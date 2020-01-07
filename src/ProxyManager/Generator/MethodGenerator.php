@@ -10,6 +10,8 @@ use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Method generator that fixes minor quirks in ZF2's method generator
+ *
+ * @psalm-external-mutation-free
  */
 class MethodGenerator extends ZendMethodGenerator
 {
