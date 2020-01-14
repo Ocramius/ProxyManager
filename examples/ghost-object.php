@@ -48,7 +48,7 @@ class Foo
             ) : bool {
                 $initializer = null;
 
-                $properties["\0Foo\0foo"] = 'Hello World!';
+                $properties["\0ProxyManager\\Example\\GhostObject\\Foo\0foo"] = 'Hello World!';
 
                 return true;
             }

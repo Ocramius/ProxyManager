@@ -42,7 +42,7 @@ class User
 
             var_dump('Triggered lazy-loading!');
 
-            $properties["\0User\0username"] = 'Ocramius';
+            $properties["\0ProxyManager\\Example\\GhostObjectSkippedProperties\\User\0username"] = 'Ocramius';
 
             return true;
         },
