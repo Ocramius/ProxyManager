@@ -6,6 +6,7 @@ namespace ProxyManager\FileLocator;
 
 use ProxyManager\Exception\InvalidProxyDirectoryException;
 use const DIRECTORY_SEPARATOR;
+use function is_dir;
 use function realpath;
 use function str_replace;
 
@@ -24,10 +25,12 @@ class FileLocator implements FileLocatorInterface
         $absolutePath = realpath($proxiesDirectory);
 
         if ($absolutePath === false) {
-            throw InvalidProxyDirectoryException::proxyDirectoryNotFound($proxiesDirectory);
+            if (! is_dir($proxiesDirectory)) {
+                throw InvalidProxyDirectoryException::proxyDirectoryNotFound($proxiesDirectory);
+            }
         }
 
-        $this->proxiesDirectory = $absolutePath;
+        $this->proxiesDirectory = $absolutePath ?: $proxiesDirectory;
     }
 
     /**

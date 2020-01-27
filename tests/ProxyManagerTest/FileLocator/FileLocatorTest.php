@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\FileLocator;
 
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\InvalidProxyDirectoryException;
 use ProxyManager\FileLocator\FileLocator;
@@ -35,5 +36,17 @@ final class FileLocatorTest extends TestCase
     {
         $this->expectException(InvalidProxyDirectoryException::class);
         new FileLocator(__DIR__ . '/non-existing');
+    }
+
+    /**
+     * @covers \ProxyManager\FileLocator\FileLocator::__construct
+     */
+    public function testStreamWrappersSupported() : void
+    {
+        $vfs     = vfsStream::setup('root', null, ['dir' => []]);
+        $path    = $vfs->url() . '/dir';
+        $locator = new FileLocator($path);
+        self::assertSame($path . DIRECTORY_SEPARATOR . 'FooBarBaz.php', $locator->getProxyFileName('Foo\\Bar\\Baz'));
+        self::assertSame($path . DIRECTORY_SEPARATOR . 'Foo_Bar_Baz.php', $locator->getProxyFileName('Foo_Bar_Baz'));
     }
 }
