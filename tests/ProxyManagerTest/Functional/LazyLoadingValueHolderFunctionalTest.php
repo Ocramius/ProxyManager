@@ -228,7 +228,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 
         $proxy->arrayProperty = ['tab' => 'taz'];
 
-        self::assertByRefVariableValueSame(['tab' => 'taz'], $proxy->arrayProperty);
+        self::assertSame(['tab' => 'taz'], $proxy->arrayProperty);
     }
 
     /**
@@ -246,7 +246,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 
         $variable = 'foo';
 
-        self::assertByRefVariableValueSame('property0', $proxy->property0);
+        self::assertSame('property0', $proxy->property0);
         self::assertByRefVariableValueSame('foo', $variable);
     }
 
@@ -265,7 +265,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 
         $variable = 'foo';
 
-        self::assertByRefVariableValueSame('foo', $proxy->property0);
+        self::assertSame('foo', $proxy->property0);
         self::assertByRefVariableValueSame('foo', $variable);
     }
 
