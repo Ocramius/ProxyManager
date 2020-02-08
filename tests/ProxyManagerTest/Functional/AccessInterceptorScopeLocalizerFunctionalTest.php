@@ -294,7 +294,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $variable = 'foo';
 
-        self::assertByRefVariableValueSame('property0', $proxy->property0);
+        self::assertSame('property0', $proxy->property0);
 
         $this->assertProxySynchronized($instance, $proxy);
 
@@ -315,7 +315,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $variable = 'foo';
 
-        self::assertByRefVariableValueSame('foo', $proxy->property0);
+        self::assertSame('foo', $proxy->property0);
 
         $this->assertProxySynchronized($instance, $proxy);
 
@@ -559,6 +559,10 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @param mixed $expected
      * @param mixed $actual
+     *
+     * @psalm-template ExpectedType
+     * @psalm-param ExpectedType $expected
+     * @psalm-assert ExpectedType $actual
      */
     private static function assertByRefVariableValueSame($expected, & $actual) : void
     {

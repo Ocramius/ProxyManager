@@ -14,7 +14,9 @@ use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
+use function assert;
 use function class_exists;
+use function is_a;
 
 /**
  * Benchmark that provides results for simple object instantiation for lazy loading ghost proxies
@@ -114,6 +116,8 @@ final class LazyLoadingGhostInstantiationBench
         $generatedClassName = self::class . '\\' . $originalClass;
 
         if (class_exists($generatedClassName)) {
+            assert(is_a($generatedClassName, $originalClass, true));
+
             return $generatedClassName;
         }
 

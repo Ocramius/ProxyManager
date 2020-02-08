@@ -17,6 +17,7 @@ use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 use function assert;
 use function class_exists;
+use function is_a;
 
 /**
  * Benchmark that provides results for state access/initialization time for lazy loading value holder proxies
@@ -237,6 +238,8 @@ final class LazyLoadingValueHolderPropertyAccessBench
         $generatedClassName = self::class . '\\' . $originalClassName;
 
         if (class_exists($generatedClassName)) {
+            assert(is_a($generatedClassName, $originalClassName, true));
+
             return $generatedClassName;
         }
 

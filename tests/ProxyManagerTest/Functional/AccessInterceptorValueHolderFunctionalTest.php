@@ -298,7 +298,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $variable = 'foo';
 
-        self::assertByRefVariableValueSame('property0', $proxy->property0);
+        self::assertSame('property0', $proxy->property0);
         self::assertByRefVariableValueSame('foo', $variable);
     }
 
@@ -315,7 +315,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
         $variable = 'foo';
 
-        self::assertByRefVariableValueSame('foo', $proxy->property0);
+        self::assertSame('foo', $proxy->property0);
         self::assertByRefVariableValueSame('foo', $variable);
     }
 

@@ -121,7 +121,7 @@ final class AbstractBaseFactoryTest extends TestCase
             ->method('__invoke')
             ->with($generatedClass)
             ->will(self::returnCallback(static function (string $className) : bool {
-                eval('class ' . $className . ' {}');
+                eval('class ' . $className . ' extends \\stdClass {}');
 
                 return true;
             }));

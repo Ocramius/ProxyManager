@@ -13,7 +13,9 @@ use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Version;
 use ReflectionClass;
 use function array_key_exists;
+use function assert;
 use function class_exists;
+use function is_a;
 
 /**
  * Base factory common logic
@@ -26,7 +28,7 @@ abstract class AbstractBaseFactory
      * Cached checked class names
      *
      * @var array<string, string>
-     * @psalm-var array<string, class-string>
+     * @psalm-var array<class-string, class-string>
      */
     private array $checkedClasses = [];
 
@@ -53,7 +55,11 @@ abstract class AbstractBaseFactory
     protected function generateProxy(string $className, array $proxyOptions = []) : string
     {
         if (array_key_exists($className, $this->checkedClasses)) {
-            return $this->checkedClasses[$className];
+            $generatedClassName = $this->checkedClasses[$className];
+
+            assert(is_a($generatedClassName, $className, true));
+
+            return $generatedClassName;
         }
 
         $proxyParameters = [

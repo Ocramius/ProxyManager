@@ -76,6 +76,8 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      * Retrieve interfaces that should be implemented by the generated code
      *
      * @return string[]
+     *
+     * @psalm-return list<class-string>
      */
     abstract protected function getExpectedImplementedInterfaces() : array;
 
