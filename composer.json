@@ -38,7 +38,6 @@
         "nikic/php-parser":             "^4.3.0",
         "phpbench/phpbench":            "^0.17.0",
         "infection/infection":          "^0.15.0",
-        "symfony/console":              "^4.4.4",
         "vimeo/psalm":                  "^3.8.5"
     },
     "suggest": {
