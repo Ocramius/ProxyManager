@@ -19,8 +19,8 @@ use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\LazyLoadingMock;
 
 /**
- * Tests for {@see \ProxyManager\Factory\LazyLoadingGhostFactory}
- *
+ * @covers \ProxyManager\Factory\AbstractBaseFactory
+ * @covers \ProxyManager\Factory\LazyLoadingGhostFactory
  * @group Coverage
  */
 final class LazyLoadingGhostFactoryTest extends TestCase

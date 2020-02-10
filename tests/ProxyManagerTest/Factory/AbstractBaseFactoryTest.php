@@ -22,8 +22,6 @@ use stdClass;
 use function class_exists;
 
 /**
- * Tests for {@see \ProxyManager\Factory\AbstractBaseFactory}
- *
  * @covers \ProxyManager\Factory\AbstractBaseFactory
  * @group Coverage
  */

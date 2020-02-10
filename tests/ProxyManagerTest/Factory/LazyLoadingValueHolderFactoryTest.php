@@ -21,8 +21,8 @@ use ProxyManagerTestAsset\LazyLoadingMock;
 use function get_class;
 
 /**
- * Tests for {@see \ProxyManager\Factory\LazyLoadingValueHolderFactory}
- *
+ * @covers \ProxyManager\Factory\AbstractBaseFactory
+ * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory
  * @group Coverage
  */
 final class LazyLoadingValueHolderFactoryTest extends TestCase

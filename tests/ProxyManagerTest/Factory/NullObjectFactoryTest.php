@@ -19,8 +19,8 @@ use ProxyManagerTestAsset\NullObjectMock;
 use stdClass;
 
 /**
- * Tests for {@see \ProxyManager\Factory\NullObjectFactory}
- *
+ * @covers \ProxyManager\Factory\AbstractBaseFactory
+ * @covers \ProxyManager\Factory\NullObjectFactory
  * @group Coverage
  */
 final class NullObjectFactoryTest extends TestCase

@@ -21,8 +21,8 @@ use ProxyManagerTestAsset\EmptyClass;
 use stdClass;
 
 /**
- * Tests for {@see \ProxyManager\Factory\AccessInterceptorValueHolderFactory}
- *
+ * @covers \ProxyManager\Factory\AbstractBaseFactory
+ * @covers \ProxyManager\Factory\AccessInterceptorValueHolderFactory
  * @group Coverage
  */
 final class AccessInterceptorValueHolderFactoryTest extends TestCase
