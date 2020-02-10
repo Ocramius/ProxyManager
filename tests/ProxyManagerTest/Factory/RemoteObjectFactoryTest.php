@@ -21,8 +21,8 @@ use ProxyManagerTestAsset\RemoteProxy\RemoteObjectMock;
 use stdClass;
 
 /**
- * Tests for {@see \ProxyManager\Factory\RemoteObjectFactory}
- *
+ * @covers \ProxyManager\Factory\AbstractBaseFactory
+ * @covers \ProxyManager\Factory\RemoteObjectFactory
  * @group Coverage
  */
 final class RemoteObjectFactoryTest extends TestCase
@@ -67,10 +67,6 @@ final class RemoteObjectFactoryTest extends TestCase
 
     /**
      * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\RemoteObjectFactory::__construct
-     * @covers \ProxyManager\Factory\RemoteObjectFactory::createProxy
-     * @covers \ProxyManager\Factory\RemoteObjectFactory::getGenerator
      */
     public function testWillSkipAutoGeneration() : void
     {
@@ -91,10 +87,6 @@ final class RemoteObjectFactoryTest extends TestCase
 
     /**
      * {@inheritDoc}
-     *
-     * @covers \ProxyManager\Factory\RemoteObjectFactory::__construct
-     * @covers \ProxyManager\Factory\RemoteObjectFactory::createProxy
-     * @covers \ProxyManager\Factory\RemoteObjectFactory::getGenerator
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */

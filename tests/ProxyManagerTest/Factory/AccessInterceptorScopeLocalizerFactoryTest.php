@@ -22,8 +22,8 @@ use ProxyManagerTestAsset\LazyLoadingMock;
 use stdClass;
 
 /**
- * Tests for {@see \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory}
- *
+ * @covers \ProxyManager\Factory\AbstractBaseFactory
+ * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory
  * @group Coverage
  */
 final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
