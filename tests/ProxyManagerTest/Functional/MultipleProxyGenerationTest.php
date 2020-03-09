@@ -19,6 +19,7 @@ use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedReadOnlyProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
@@ -107,6 +108,7 @@ final class MultipleProxyGenerationTest extends TestCase
             [new ClassWithMixedProperties()],
             [new ClassWithMixedTypedProperties()],
             [new ClassWithMixedReferenceableTypedProperties()],
+            [new ClassWithMixedReferenceableTypedReadOnlyProperties()],
             [new ClassWithPrivateProperties()],
             [new ClassWithProtectedProperties()],
             [new ClassWithPublicProperties()],

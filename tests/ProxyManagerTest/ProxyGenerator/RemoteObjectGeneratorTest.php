@@ -16,6 +16,7 @@ use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
+use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedReadOnlyProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
 use function array_diff;
@@ -89,6 +90,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMixedProperties::class],
             [ClassWithMixedTypedProperties::class],
             [ClassWithMixedReferenceableTypedProperties::class],
+            [ClassWithMixedReferenceableTypedReadOnlyProperties::class],
             [BaseInterface::class],
         ];
     }

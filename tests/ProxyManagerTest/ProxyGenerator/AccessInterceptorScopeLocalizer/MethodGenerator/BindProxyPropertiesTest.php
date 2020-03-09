@@ -193,6 +193,7 @@ $this->post = $suffixInterceptors;',
         );
     }
 
+    // @TODO Need to add a test to also check \ProxyManagerTestAsset\ClassWithMixedReferenceableTypedReadOnlyProperties (should be the same)
     public function testBodyStructureWithTypedProperties() : void
     {
         $method = new BindProxyProperties(
