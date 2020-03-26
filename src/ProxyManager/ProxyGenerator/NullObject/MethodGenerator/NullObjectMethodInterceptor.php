@@ -14,11 +14,11 @@ use ProxyManager\Generator\Util\IdentifierSuffixer;
 class NullObjectMethodInterceptor extends MethodGenerator
 {
     /**
-     * @return self|static
+     * @return static
      */
     public static function generateMethod(MethodReflection $originalMethod) : self
     {
-        /** @var self $method */
+        /** @var static $method */
         $method = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
 
         if ($originalMethod->returnsReference()) {

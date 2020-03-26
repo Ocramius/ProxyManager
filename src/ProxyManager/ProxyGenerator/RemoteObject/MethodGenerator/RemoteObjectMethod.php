@@ -28,13 +28,13 @@ $args = \func_get_args() + $defaultValues;
 #PROXIED_RETURN#
 PHP;
 
-    /** @return self|static */
+    /** @return static */
     public static function generateMethod(
         MethodReflection $originalMethod,
         PropertyGenerator $adapterProperty,
         ReflectionClass $originalClass
     ) : self {
-        /** @var self $method */
+        /** @var static $method */
         $method        = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $proxiedReturn = '$return = $this->' . $adapterProperty->getName()
             . '->call(' . var_export($originalClass->getName(), true)
