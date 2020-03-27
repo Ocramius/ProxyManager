@@ -1,5 +1,4 @@
-/examples export-ignore
-/html-docs export-ignore
+/.github export-ignore
 /tests export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
@@ -9,11 +8,10 @@
 .travis.yml export-ignore
 CONTRIBUTING.md export-ignore
 infection.json.dist export-ignore
-index.html export-ignore
 phpbench.json export-ignore
+phpcs.xml.dist export-ignore
 phpdox.xml.dist export-ignore
 phpmd.xml.dist export-ignore
 phpunit.xml.dist export-ignore
-phpstan.neon export-ignore
-phpstan.tests.neon export-ignore
 proxy-manager.png export-ignore
+psalm.xml export-ignore
