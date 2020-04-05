@@ -280,7 +280,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             BaseClass::class,
-            static function (?object & $wrappedInstance) use (& $counter) : bool {
+            static function (?BaseClass & $wrappedInstance) use (& $counter) : bool {
                 $wrappedInstance = new BaseClass();
 
                 /** @var int $counter */
@@ -335,7 +335,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     {
         $object = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithMethodWithByRefVariadicFunction::class,
-            static function (?object & $wrappedInstance) : bool {
+            static function (?ClassWithMethodWithByRefVariadicFunction & $wrappedInstance) : bool {
                 $wrappedInstance = new ClassWithMethodWithByRefVariadicFunction();
 
                 return true;
@@ -360,7 +360,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     {
         $object = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithDynamicArgumentsMethod::class,
-            static function (?object & $wrappedInstance) : bool {
+            static function (?ClassWithDynamicArgumentsMethod & $wrappedInstance) : bool {
                 $wrappedInstance = new ClassWithDynamicArgumentsMethod();
 
                 return true;
@@ -375,15 +375,19 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     }
 
     /**
+     * @template TClass
+     *
+     * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
+     * @psalm-param class-string<TClass> $className
+     * @psalm-param TClass $realInstance
+     *
      * @return Closure(
-     *  object|null,
+     *  TClass|null,
      *  VirtualProxyInterface,
      *  string,
      *  array,
      *  ?Closure
      * ) : bool
-     *
-     * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
      */
     private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null) : Closure
     {
@@ -402,7 +406,11 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
                 );
         }
 
-        return static function (
+        return
+        /**
+         * @psalm-param ?TClass $wrappedObject
+         */
+        static function (
             ?object & $wrappedObject,
             VirtualProxyInterface $proxy,
             string $method,

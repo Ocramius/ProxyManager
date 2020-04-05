@@ -20,7 +20,7 @@ class MyProxiedClass
         ->createProxy(
             MyProxiedClass::class,
             static function (
-                ?object & $instance,
+                ?MyProxiedClass & $instance,
                 LazyLoadingInterface $proxy,
                 string $method,
                 array $parameters,
@@ -36,7 +36,7 @@ class MyProxiedClass
 
     $valueHolder = (new LazyLoadingValueHolderFactory())
         ->createProxy(MyProxiedClass::class, static function (
-            ?object & $wrappedObject,
+            ?MyProxiedClass & $wrappedObject,
             LazyLoadingInterface $proxy,
             string $method,
             array $parameters,

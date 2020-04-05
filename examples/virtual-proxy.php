@@ -31,7 +31,7 @@ class Foo
         $proxy = $factory->createProxy(
             Foo::class,
             static function (
-                ?object & $wrappedObject, ?object $proxy, string $method, array $parameters, ?Closure & $initializer
+                ?Foo & $wrappedObject, ?object $proxy, string $method, array $parameters, ?Closure & $initializer
             ) {
                 $initializer = null;
                 $wrappedObject = new Foo();

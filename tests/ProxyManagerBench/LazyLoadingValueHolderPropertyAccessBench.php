@@ -44,6 +44,9 @@ final class LazyLoadingValueHolderPropertyAccessBench
     /** @var ClassWithMixedProperties&VirtualProxyInterface */
     private ClassWithMixedProperties $initializedMixedPropertiesProxy;
 
+    /**
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     */
     public function setUp() : void
     {
         $emptyClassProxy                  = $this->buildProxy(EmptyClass::class);
