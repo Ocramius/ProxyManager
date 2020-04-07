@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php":                       "7.4.*",
+        "php":                       "7.4.0",
         "laminas/laminas-code":      "^3.4.1",
         "ocramius/package-versions": "^1.5.1",
         "webimpress/safe-writer":    "^2.0"
