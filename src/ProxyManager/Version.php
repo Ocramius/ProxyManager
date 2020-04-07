@@ -26,6 +26,8 @@ final class Version
      * where the detected version is what composer could detect.
      *
      * @throws OutOfBoundsException
+     *
+     * @psalm-pure
      */
     public static function getVersion() : string
     {
