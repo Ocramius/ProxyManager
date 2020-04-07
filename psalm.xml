@@ -43,5 +43,11 @@
                 <referencedMethod name="ProxyManager\ProxyGenerator\Util\Properties::onlyPropertiesThatCanBeUnset"/>
             </errorLevel>
         </DeprecatedMethod>
+
+        <ForbiddenCode>
+            <errorLevel type="suppress">
+                <directory name="examples"/>
+            </errorLevel>
+        </ForbiddenCode>
     </issueHandlers>
 </psalm>
