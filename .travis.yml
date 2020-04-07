@@ -4,8 +4,7 @@ cache: false
 sudo: false
 
 php:
-  - 7.4
-  - nightly
+  - 7.4.0
 
 env:
   matrix:
@@ -39,10 +38,6 @@ script:
   - ./vendor/bin/phpcs
   - ./vendor/bin/psalm
   - ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
-
-matrix:
-  allow_failures:
-    - php: nightly
 
 after_script:
   - sh .travis.coverage.sh
