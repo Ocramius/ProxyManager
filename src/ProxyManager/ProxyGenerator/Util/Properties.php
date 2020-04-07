@@ -85,19 +85,10 @@ final class Properties
         }));
     }
 
+    /** @deprecated Since PHP 7.4.1, all properties can be unset, regardless if typed or not */
     public function onlyPropertiesThatCanBeUnset() : self
     {
-        return new self(array_filter($this->properties, static function (ReflectionProperty $property) : bool {
-            if (! $property->hasType()) {
-                return true;
-            }
-
-            return array_key_exists(
-                $property->getName(),
-                // https://bugs.php.net/bug.php?id=77673
-                array_flip(array_keys($property->getDeclaringClass()->getDefaultProperties()))
-            );
-        }));
+        return $this;
     }
 
     /**

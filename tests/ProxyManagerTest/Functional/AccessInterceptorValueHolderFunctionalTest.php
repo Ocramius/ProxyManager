@@ -21,11 +21,14 @@ use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayPropertyAccessibleViaMethod;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
+use ReflectionProperty;
 use stdClass;
 use function array_values;
 use function get_class;
@@ -249,6 +252,12 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
 
+        $propertyType = (new ReflectionProperty($instance, $publicProperty))->getType();
+
+        if ($propertyType !== null && ! $propertyType->allowsNull()) {
+            return;
+        }
+
         $proxy->getWrappedValueHolderValue()->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
     }
@@ -468,15 +477,23 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies() : array
     {
-        $instance1 = new BaseClass();
-        $instance2 = new BaseClass();
+        $instance1             = new BaseClass();
+        $instance2             = new BaseClass();
+        $typedProperty         = new ClassWithPublicStringTypedProperty();
+        $typedNullableProperty = new ClassWithPublicStringNullableTypedProperty();
+
+        $typedProperty->typedProperty                 = 'Typed property initialized value';
+        $typedNullableProperty->typedNullableProperty = 'Typed nullable property initialized value';
+
+        $factory = new AccessInterceptorValueHolderFactory();
+
         /** @var AccessInterceptorValueHolderInterface $serialized */
-        $serialized = unserialize(serialize((new AccessInterceptorValueHolderFactory())->createProxy($instance2)));
+        $serialized = unserialize(serialize($factory->createProxy($instance2)));
 
         return [
             [
                 $instance1,
-                (new AccessInterceptorValueHolderFactory())->createProxy($instance1),
+                $factory->createProxy($instance1),
                 'publicProperty',
                 'publicPropertyDefault',
             ],
@@ -485,6 +502,18 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
                 $serialized,
                 'publicProperty',
                 'publicPropertyDefault',
+            ],
+            [
+                $typedProperty,
+                $factory->createProxy($typedProperty),
+                'typedProperty',
+                'Typed property initialized value',
+            ],
+            [
+                $typedNullableProperty,
+                $factory->createProxy($typedNullableProperty),
+                'typedNullableProperty',
+                'Typed nullable property initialized value',
             ],
         ];
     }

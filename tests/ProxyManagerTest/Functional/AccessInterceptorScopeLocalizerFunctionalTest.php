@@ -7,6 +7,7 @@ namespace ProxyManagerTest\Functional;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
+use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\Util\Properties;
@@ -20,6 +21,7 @@ use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayPropertyAccessibleViaMethod;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
@@ -554,6 +556,17 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $object->increment($addMore);
         self::assertSame($increment + $addMore + 1, $object->counter);
+    }
+
+    /** @group 574 */
+    public function testWillRefuseToGenerateReferencesToTypedPropertiesWithoutDefaultValues() : void
+    {
+        $instance = new ClassWithPublicStringNullableTypedProperty();
+        $factory  = new AccessInterceptorScopeLocalizerFactory();
+
+        $this->expectException(UnsupportedProxiedClassException::class);
+
+        $factory->createProxy($instance);
     }
 
     /**

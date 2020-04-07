@@ -28,6 +28,8 @@ use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
@@ -225,6 +227,12 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function testPropertyAbsence(object $instance, GhostObjectInterface $proxy, string $publicProperty) : void
     {
+        $propertyType = (new ReflectionProperty($instance, $publicProperty))->getType();
+
+        if ($propertyType !== null && ! $propertyType->allowsNull()) {
+            self::markTestSkipped('Non-nullable typed properties cannot be removed/unset');
+        }
+
         $proxy->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
         self::assertTrue($proxy->isProxyInitialized());
@@ -988,8 +996,13 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies() : array
     {
-        $instance1 = new BaseClass();
-        $instance2 = new BaseClass();
+        $instance1             = new BaseClass();
+        $instance2             = new BaseClass();
+        $typedProperty         = new ClassWithPublicStringTypedProperty();
+        $typedNullableProperty = new ClassWithPublicStringNullableTypedProperty();
+
+        $typedProperty->typedProperty                 = 'Typed property initialized value';
+        $typedNullableProperty->typedNullableProperty = 'Typed nullable property initialized value';
 
         $factory = new LazyLoadingGhostFactory();
 
@@ -1014,6 +1027,24 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 $serialized,
                 'publicProperty',
                 'publicPropertyDefault',
+            ],
+            [
+                $typedProperty,
+                $factory->createProxy(
+                    ClassWithPublicStringTypedProperty::class,
+                    $this->createInitializer(ClassWithPublicStringTypedProperty::class, $typedProperty)
+                ),
+                'typedProperty',
+                'Typed property initialized value',
+            ],
+            [
+                $typedNullableProperty,
+                $factory->createProxy(
+                    ClassWithPublicStringNullableTypedProperty::class,
+                    $this->createInitializer(ClassWithPublicStringNullableTypedProperty::class, $typedNullableProperty)
+                ),
+                'typedNullableProperty',
+                'Typed nullable property initialized value',
             ],
         ];
     }

@@ -23,6 +23,8 @@ use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
@@ -192,6 +194,12 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function testPropertyAbsence(object $instance, VirtualProxyInterface $proxy, string $publicProperty) : void
     {
+        $propertyType = (new ReflectionProperty($instance, $publicProperty))->getType();
+
+        if ($propertyType !== null && ! $propertyType->allowsNull()) {
+            self::markTestSkipped('Non-nullable typed properties cannot be removed/unset');
+        }
+
         $instance                  = $proxy->getWrappedValueHolderValue() ?: $instance;
         $instance->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
@@ -534,9 +542,15 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies() : array
     {
-        $instance1 = new BaseClass();
-        $instance2 = new BaseClass();
-        $factory   = new LazyLoadingValueHolderFactory();
+        $instance1             = new BaseClass();
+        $instance2             = new BaseClass();
+        $typedProperty         = new ClassWithPublicStringTypedProperty();
+        $typedNullableProperty = new ClassWithPublicStringNullableTypedProperty();
+
+        $typedProperty->typedProperty                 = 'Typed property initialized value';
+        $typedNullableProperty->typedNullableProperty = 'Typed nullable property initialized value';
+
+        $factory = new LazyLoadingValueHolderFactory();
         /** @var VirtualProxyInterface $serialized */
         $serialized = unserialize(serialize($factory->createProxy(
             BaseClass::class,
@@ -558,6 +572,24 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
                 $serialized,
                 'publicProperty',
                 'publicPropertyDefault',
+            ],
+            [
+                $typedProperty,
+                $factory->createProxy(
+                    ClassWithPublicStringTypedProperty::class,
+                    $this->createInitializer(ClassWithPublicStringTypedProperty::class, $typedProperty)
+                ),
+                'typedProperty',
+                'Typed property initialized value',
+            ],
+            [
+                $typedNullableProperty,
+                $factory->createProxy(
+                    ClassWithPublicStringNullableTypedProperty::class,
+                    $this->createInitializer(ClassWithPublicStringNullableTypedProperty::class, $typedNullableProperty)
+                ),
+                'typedNullableProperty',
+                'Typed nullable property initialized value',
             ],
         ];
     }
