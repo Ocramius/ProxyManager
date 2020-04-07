@@ -40,7 +40,7 @@
 
         <DeprecatedMethod>
             <errorLevel type="suppress">
-                <file name="tests/ProxyManagerTest/ProxyGenerator/Util/PropertiesTest.php"/>
+                <referencedMethod name="ProxyManager\ProxyGenerator\Util\Properties::onlyPropertiesThatCanBeUnset"/>
             </errorLevel>
         </DeprecatedMethod>
     </issueHandlers>
