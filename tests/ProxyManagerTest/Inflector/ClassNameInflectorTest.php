@@ -99,7 +99,7 @@ final class ClassNameInflectorTest extends TestCase
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+)(\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+)*/',
             $inflector->getProxyClassName($className, $parameters),
             'Class name string is a valid class identifier'

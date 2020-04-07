@@ -32,7 +32,7 @@ final class UniqueIdentifierGeneratorTest extends TestCase
      */
     public function testGeneratesValidIdentifiers(string $name) : void
     {
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/',
             UniqueIdentifierGenerator::getIdentifier($name)
         );
