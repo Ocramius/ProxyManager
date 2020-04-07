@@ -24,6 +24,8 @@ use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
@@ -107,6 +109,8 @@ final class MultipleProxyGenerationTest extends TestCase
             [new ClassWithMixedProperties()],
             [new ClassWithMixedTypedProperties()],
             [new ClassWithMixedReferenceableTypedProperties()],
+//            [new ClassWithPublicStringTypedProperty()],
+//            [new ClassWithPublicStringNullableTypedProperty()],
             [new ClassWithPrivateProperties()],
             [new ClassWithProtectedProperties()],
             [new ClassWithPublicProperties()],

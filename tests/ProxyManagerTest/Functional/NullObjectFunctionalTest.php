@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
+use Error;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\NullObjectFactory;
 use ProxyManager\Proxy\NullObjectInterface;
@@ -12,10 +13,16 @@ use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithParentHint;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableNullDefaultTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
+use ReflectionProperty;
 use stdClass;
+use TypeError;
+use function array_key_exists;
 use function array_values;
 use function random_int;
 use function serialize;
@@ -78,6 +85,12 @@ final class NullObjectFunctionalTest extends TestCase
      */
     public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty) : void
     {
+        if (! $this->propertyHasDefaultNullableValue(new ReflectionProperty($proxy, $publicProperty))) {
+            // Accessing a typed property without default value before initialization
+            $this->expectException(Error::class);
+            $this->expectExceptionMessageMatches('/must not be accessed before initialization/');
+        }
+
         self::assertNull($proxy->$publicProperty);
     }
 
@@ -97,6 +110,12 @@ final class NullObjectFunctionalTest extends TestCase
      */
     public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty) : void
     {
+        if (! $this->propertyHasDefaultNullableValue(new ReflectionProperty($proxy, $publicProperty))) {
+            // Accessing a typed property without default value before initialization
+            $this->expectException(Error::class);
+            $this->expectExceptionMessageMatches('/must not be accessed before initialization/');
+        }
+
         self::assertNull($proxy->$publicProperty);
     }
 
@@ -200,6 +219,21 @@ final class NullObjectFunctionalTest extends TestCase
                 'publicProperty',
                 'publicPropertyDefault',
             ],
+            [
+                $factory->createProxy(ClassWithPublicStringTypedProperty::class),
+                'typedProperty',
+                'Typed property initialized value',
+            ],
+            [
+                $factory->createProxy(ClassWithPublicStringNullableTypedProperty::class),
+                'typedNullableProperty',
+                'Typed nullable property initialized value',
+            ],
+            [
+                $factory->createProxy(ClassWithPublicStringNullableNullDefaultTypedProperty::class),
+                'typedNullableNullDefaultProperty',
+                null,
+            ],
         ];
     }
 
@@ -215,5 +249,13 @@ final class NullObjectFunctionalTest extends TestCase
         $parameterValues = array_values($parameters);
 
         self::assertNull($method(...$parameterValues));
+    }
+
+    private function propertyHasDefaultNullableValue(ReflectionProperty $property) : bool
+    {
+        $type = $property->getType();
+
+        return $type === null
+            || $type->allowsNull();
     }
 }

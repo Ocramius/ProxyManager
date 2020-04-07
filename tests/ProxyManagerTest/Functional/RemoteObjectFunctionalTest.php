@@ -11,6 +11,9 @@ use ProxyManager\Factory\RemoteObject\Adapter\JsonRpc as JsonRpcAdapter;
 use ProxyManager\Factory\RemoteObject\Adapter\XmlRpc as XmlRpcAdapter;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
 use ProxyManager\Factory\RemoteObjectFactory;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableNullDefaultTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
+use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\BazServiceInterface;
@@ -288,6 +291,21 @@ final class RemoteObjectFunctionalTest extends TestCase
                 FooServiceInterface::class,
                 'publicProperty',
                 'publicProperty remote',
+            ],
+            [
+                ClassWithPublicStringTypedProperty::class,
+                'typedProperty',
+                'typedProperty remote',
+            ],
+            [
+                ClassWithPublicStringNullableTypedProperty::class,
+                'typedNullableProperty',
+                'typedNullableProperty remote',
+            ],
+            [
+                ClassWithPublicStringNullableNullDefaultTypedProperty::class,
+                'typedNullableNullDefaultProperty',
+                'typedNullableNullDefaultProperty remote',
             ],
         ];
     }
