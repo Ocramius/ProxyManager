@@ -21,8 +21,6 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionProperty;
 use stdClass;
-use TypeError;
-use function array_key_exists;
 use function array_values;
 use function random_int;
 use function serialize;
@@ -200,7 +198,7 @@ final class NullObjectFunctionalTest extends TestCase
     /**
      * Generates proxies and instances with a public property to feed to the property accessor methods
      *
-     * @return array<int, array<int, NullObjectInterface|string>>
+     * @return array<int, array<int, NullObjectInterface|string|null>>
      */
     public function getPropertyAccessProxies() : array
     {
