@@ -56,6 +56,9 @@ final class LazyLoadingGhostPropertyAccessBench
     /** @var ClassWithMixedProperties&LazyLoadingInterface */
     private ClassWithMixedProperties $initializedMixedPropertiesProxy;
 
+    /**
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     */
     public function setUp() : void
     {
         $emptyClassProxy                     = $this->buildProxy(EmptyClass::class);
