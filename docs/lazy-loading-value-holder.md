@@ -126,8 +126,8 @@ The initializer closure should usually be coded like following:
 ```php
 $initializer = function (& $wrappedObject, $proxy, $method, array $parameters, & $initializer) {
     $newlyCreatedObject = new Foo(); // instantiation logic
-    $newlyCreatedObject->setBar('baz') // instantiation logic
-    $newlyCreatedObject->setBat('bam') // instantiation logic
+    $newlyCreatedObject->setBar('baz'); // instantiation logic
+    $newlyCreatedObject->setBat('bam'); // instantiation logic
 
     $wrappedObject = $newlyCreatedObject; // set wrapped object in the proxy
     $initializer   = null; // disable initializer

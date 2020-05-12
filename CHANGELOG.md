@@ -176,7 +176,7 @@ By-ref variadic arguments are also supported:
 ```php
 class SayHello
 {
-    public function hello(string ... & $names)
+    public function hello(string &...$names)
     {
         foreach ($names as & $name) {
             $name = 'hello, ' . $name;
@@ -194,6 +194,8 @@ This is no longer true, and you will be able to use the constructor of your obje
 if the class wasn't proxied at all:
 
 ```php
+<?php
+
 class SayHello
 {
     public function __construct()
