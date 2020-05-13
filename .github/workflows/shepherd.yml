@@ -22,6 +22,7 @@ jobs:
       -   name: Setup PHP
           uses: shivammathur/setup-php@v2
           with:
+            extensions: "json"
             php-version: "${{ matrix.php }}"
 
       - name: Run Psalm (--shepherd)
