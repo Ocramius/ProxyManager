@@ -22,9 +22,9 @@ jobs:
       -   name: Setup PHP
           uses: shivammathur/setup-php@v2
           with:
-            extensions: "json"
-            ini-values: "memory_limit=-1"
             php-version: "${{ matrix.php }}"
+            ini-values: "memory_limit=-1"
+            extensions: "json"
 
       - name: Run Psalm (--shepherd)
         run: ./vendor/bin/psalm --threads=2 --output-format=github --shepherd
@@ -34,10 +34,6 @@ jobs:
 
       - name: Run PhpUnit without coverage
         run: ./vendor/bin/phpunit --disallow-test-output --exclude-group=Coverage
-
-      - name: Run PhpBench
-        run: |
-          ./vendor/bin/phpbench run --revs=100 --iterations=3 --warmup=1 --report=aggregate
 
       - name: Run examples
         run: |
@@ -52,3 +48,11 @@ jobs:
           php tests/static-analysis/access-interceptor-value-holder.php
           php tests/static-analysis/lazy-loading-value-holder.php
           php tests/static-analysis/remote-object.php
+
+      - name: Run Infection
+        run: |
+          ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
+
+      - name: Run PhpBench
+        run: |
+          ./vendor/bin/phpbench run --revs=100 --iterations=3 --warmup=1 --report=aggregate

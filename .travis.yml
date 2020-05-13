@@ -22,7 +22,6 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit --disallow-test-output --coverage-clover ./clover.xml --group=Coverage
-  - ulimit -n 4096 && phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --min-msi=84 --min-covered-msi=86
 
 matrix:
   allow_failures:
