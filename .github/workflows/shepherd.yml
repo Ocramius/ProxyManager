@@ -1,10 +1,15 @@
-name: Run Shepherd
+name: Tests
 
 on: [push, pull_request]
 
 jobs:
   build:
+    name: CI
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['7.4']
 
     steps:
       - uses: actions/checkout@v2
@@ -14,5 +19,24 @@ jobs:
         env:
           COMPOSER_ROOT_VERSION: dev-master
 
-      - name: Run Psalm
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: "${{ matrix.php }}"
+
+      - name: Run Psalm (--shepherd)
         run: ./vendor/bin/psalm --threads=2 --output-format=github --shepherd
+
+      - name: Run examples
+        run: |
+          php examples/access-interceptor-scope-localizer.php
+          php examples/ghost-object.php
+          php examples/ghost-object-skipped-properties.php
+          php examples/smart-reference.php
+          php examples/virtual-proxy.php
+          php tests/static-analysis/access-interceptor-scope-localizer.php
+          php tests/static-analysis/lazy-loading-ghost-object.php
+          php tests/static-analysis/null-object.php
+          php tests/static-analysis/access-interceptor-value-holder.php
+          php tests/static-analysis/lazy-loading-value-holder.php
+          php tests/static-analysis/remote-object.php
