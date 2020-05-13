@@ -10,12 +10,20 @@ jobs:
     strategy:
       matrix:
         php: ['7.4']
+        dependencies: ['high', 'low']
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Install dependencies
+        if: matrix.dependencies == 'high'
         run: composer install --prefer-dist --no-progress --no-suggest
+        env:
+          COMPOSER_ROOT_VERSION: dev-master
+
+      - name: Install dependencies low
+        if: matrix.dependencies == 'low'
+        run: composer update --prefer-lowest --prefer-stable --no-progress --no-suggest
         env:
           COMPOSER_ROOT_VERSION: dev-master
 
