@@ -27,6 +27,9 @@ jobs:
       - name: Run Psalm (--shepherd)
         run: ./vendor/bin/psalm --threads=2 --output-format=github --shepherd
 
+      - name: Run PhpCs
+        run: ./vendor/bin/phpcs
+
       - name: Run examples
         run: |
           php examples/access-interceptor-scope-localizer.php
