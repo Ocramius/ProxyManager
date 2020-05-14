@@ -33,12 +33,13 @@ jobs:
             php-version: "${{ matrix.php }}"
             ini-values: "memory_limit=-1"
             extensions: "json"
+            tools: cs2pr
 
       - name: Run Psalm (--shepherd)
         run: ./vendor/bin/psalm --threads=2 --output-format=github --shepherd
 
       - name: Run PhpCs
-        run: ./vendor/bin/phpcs
+        run: ./vendor/bin/phpcs -q --report=checkstyle | cs2pr
 
       - name: Run PhpUnit without coverage
         run: ./vendor/bin/phpunit --disallow-test-output --exclude-group=Coverage
