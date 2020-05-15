@@ -40,6 +40,9 @@ jobs:
       - name: Run PhpCs
         run: ./vendor/bin/phpcs
 
+      - name: Run Xulieta
+        run: ./vendor/bin/xulieta check:erromeu .
+
       - name: Run PhpUnit without coverage
         run: ./vendor/bin/phpunit --disallow-test-output --exclude-group=Coverage
 
