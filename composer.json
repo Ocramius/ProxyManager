@@ -36,7 +36,7 @@
         "slevomat/coding-standard":     "^5.0.4",
         "doctrine/coding-standard":     "^6.0.0",
         "nikic/php-parser":             "^4.4.0",
-        "phpbench/phpbench":            "^0.17.0",
+        "phpbench/phpbench":            "^0.17.1",
         "infection/infection":          "^0.16.3",
         "vimeo/psalm":                  "^3.11.5",
         "codelicia/xulieta":            "^0.1.2"
