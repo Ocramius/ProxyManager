@@ -37,7 +37,7 @@
         "doctrine/coding-standard":     "^6.0.0",
         "nikic/php-parser":             "^4.4.0",
         "phpbench/phpbench":            "^0.17.0",
-        "infection/infection":          "^0.16.3",
+        "infection/infection":          "^0.16.4",
         "vimeo/psalm":                  "^3.11.5",
         "codelicia/xulieta":            "^0.1.2"
     },
