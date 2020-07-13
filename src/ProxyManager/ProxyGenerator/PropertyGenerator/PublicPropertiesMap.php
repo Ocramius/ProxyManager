@@ -34,7 +34,7 @@ class PublicPropertiesMap extends PropertyGenerator
         $this->setDocBlock('@var bool[] map of public properties of the parent class');
     }
 
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
         return ! $this->publicProperties;
     }

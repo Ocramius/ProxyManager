@@ -18,7 +18,7 @@ class ParameterEncoder
      *
      * @param mixed[] $parameters
      */
-    public function encodeParameters(array $parameters) : string
+    public function encodeParameters(array $parameters): string
     {
         return base64_encode(serialize($parameters));
     }

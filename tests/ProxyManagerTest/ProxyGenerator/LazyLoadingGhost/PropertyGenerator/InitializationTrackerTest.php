@@ -16,15 +16,12 @@ use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyName
  */
 final class InitializationTrackerTest extends AbstractUniquePropertyNameTest
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function createProperty() : PropertyGenerator
+    protected function createProperty(): PropertyGenerator
     {
         return new InitializationTracker();
     }
 
-    public function testInitializationFlagIsFalseByDefault() : void
+    public function testInitializationFlagIsFalseByDefault(): void
     {
         $property = $this->createProperty();
 

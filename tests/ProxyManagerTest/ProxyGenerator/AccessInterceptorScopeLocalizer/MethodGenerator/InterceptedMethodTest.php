@@ -27,10 +27,7 @@ final class InterceptedMethodTest extends TestCase
     /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $suffixInterceptors;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -41,7 +38,7 @@ final class InterceptedMethodTest extends TestCase
         $this->suffixInterceptors->method('getName')->willReturn('post');
     }
 
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $method = InterceptedMethod::generateMethod(
             new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod'),
@@ -57,7 +54,7 @@ final class InterceptedMethodTest extends TestCase
         );
     }
 
-    public function testForwardsVariadicParameters() : void
+    public function testForwardsVariadicParameters(): void
     {
         $method = InterceptedMethod::generateMethod(
             new MethodReflection(ClassWithMethodWithVariadicFunction::class, 'foo'),

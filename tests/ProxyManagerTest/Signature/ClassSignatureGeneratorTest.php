@@ -23,23 +23,20 @@ final class ClassSignatureGeneratorTest extends TestCase
     private SignatureGeneratorInterface $signatureGenerator;
     private ClassSignatureGenerator $classSignatureGenerator;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->signatureGenerator      = $this->createMock(SignatureGeneratorInterface::class);
         $this->classSignatureGenerator = new ClassSignatureGenerator($this->signatureGenerator);
     }
 
-    public function testAddSignature() : void
+    public function testAddSignature(): void
     {
         $classGenerator = $this->createMock(ClassGenerator::class);
 
         $classGenerator
             ->expects(self::once())
             ->method('addPropertyFromGenerator')
-            ->with(self::callback(static function (PropertyGenerator $property) : bool {
+            ->with(self::callback(static function (PropertyGenerator $property): bool {
                 return $property->getName() === 'signaturePropertyName'
                     && $property->isStatic()
                     && $property->getVisibility() === 'private'

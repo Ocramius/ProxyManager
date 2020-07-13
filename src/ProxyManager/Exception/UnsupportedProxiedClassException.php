@@ -8,6 +8,7 @@ use LogicException;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
+
 use function array_map;
 use function implode;
 use function sprintf;
@@ -17,7 +18,7 @@ use function sprintf;
  */
 class UnsupportedProxiedClassException extends LogicException implements ExceptionInterface
 {
-    public static function unsupportedLocalizedReflectionProperty(ReflectionProperty $property) : self
+    public static function unsupportedLocalizedReflectionProperty(ReflectionProperty $property): self
     {
         return new self(
             sprintf(
@@ -31,11 +32,11 @@ class UnsupportedProxiedClassException extends LogicException implements Excepti
     public static function nonReferenceableLocalizedReflectionProperties(
         ReflectionClass $class,
         Properties $properties
-    ) : self {
+    ): self {
         return new self(sprintf(
             'Cannot create references for following properties of class %s: %s',
             $class->getName(),
-            implode(', ', array_map(static function (ReflectionProperty $property) : string {
+            implode(', ', array_map(static function (ReflectionProperty $property): string {
                 return $property->getName();
             }, $properties->getInstanceProperties()))
         ));

@@ -16,7 +16,7 @@ class MethodGenerator extends ZendMethodGenerator
     /**
      * @return static
      */
-    public static function fromReflectionWithoutBodyAndDocBlock(MethodReflection $reflectionMethod) : self
+    public static function fromReflectionWithoutBodyAndDocBlock(MethodReflection $reflectionMethod): self
     {
         /** @var static $method */
         $method = parent::copyMethodSignature($reflectionMethod);
@@ -30,7 +30,7 @@ class MethodGenerator extends ZendMethodGenerator
     /**
      * {@inheritDoc} override needed to specify type in more detail
      */
-    public function getDocBlock() : ?DocBlockGenerator
+    public function getDocBlock(): ?DocBlockGenerator
     {
         return parent::getDocBlock();
     }
@@ -38,7 +38,7 @@ class MethodGenerator extends ZendMethodGenerator
     /**
      * {@inheritDoc} override needed to specify type in more detail
      */
-    public function getSourceContent() : ?string
+    public function getSourceContent(): ?string
     {
         return parent::getSourceContent();
     }

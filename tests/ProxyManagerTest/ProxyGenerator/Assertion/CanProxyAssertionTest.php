@@ -39,14 +39,14 @@ use ReflectionClass;
  */
 final class CanProxyAssertionTest extends TestCase
 {
-    public function testDeniesFinalClasses() : void
+    public function testDeniesFinalClasses(): void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(FinalClass::class));
     }
 
-    public function testDeniesClassesWithAbstractProtectedMethods() : void
+    public function testDeniesClassesWithAbstractProtectedMethods(): void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
@@ -55,7 +55,7 @@ final class CanProxyAssertionTest extends TestCase
         ));
     }
 
-    public function testAllowsInterfaceByDefault() : void
+    public function testAllowsInterfaceByDefault(): void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(
             BaseInterface::class
@@ -64,7 +64,7 @@ final class CanProxyAssertionTest extends TestCase
         self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
-    public function testDeniesInterfaceIfSpecified() : void
+    public function testDeniesInterfaceIfSpecified(): void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(BaseClass::class), false);
 
@@ -77,14 +77,14 @@ final class CanProxyAssertionTest extends TestCase
      * @dataProvider validClasses
      * @psalm-param class-string $className
      */
-    public function testAllowedClass(string $className) : void
+    public function testAllowedClass(string $className): void
     {
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass($className));
 
         self::assertTrue(true); // not nice, but assertions are just fail-checks, no real code executed
     }
 
-    public function testDisallowsConstructor() : void
+    public function testDisallowsConstructor(): void
     {
         $this->expectException(BadMethodCallException::class);
 
@@ -94,7 +94,7 @@ final class CanProxyAssertionTest extends TestCase
     /**
      * @return string[][]
      */
-    public function validClasses() : array
+    public function validClasses(): array
     {
         return [
             [AccessInterceptorValueHolderMock::class],

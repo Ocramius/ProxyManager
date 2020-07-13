@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\GetMethodIfExists;
 use ReflectionClass;
 use ReflectionMethod;
+
 use function uniqid;
 
 /**
@@ -18,7 +19,7 @@ use function uniqid;
  */
 final class GetMethodIfExistsTest extends TestCase
 {
-    public function testGetExistingMethod() : void
+    public function testGetExistingMethod(): void
     {
         $method = GetMethodIfExists::get(new ReflectionClass(self::class), 'testGetExistingMethod');
 
@@ -27,7 +28,7 @@ final class GetMethodIfExistsTest extends TestCase
         self::assertSame(self::class, $method->getDeclaringClass()->getName());
     }
 
-    public function testGetNonExistingMethod() : void
+    public function testGetNonExistingMethod(): void
     {
         self::assertNull(GetMethodIfExists::get(new ReflectionClass(self::class), uniqid('nonExisting', true)));
     }

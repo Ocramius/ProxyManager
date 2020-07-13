@@ -18,7 +18,7 @@ final class DisabledMethodExceptionTest extends TestCase
     /**
      * @covers \ProxyManager\Exception\DisabledMethodException::disabledMethod
      */
-    public function testProxyDirectoryNotFound() : void
+    public function testProxyDirectoryNotFound(): void
     {
         $exception = DisabledMethodException::disabledMethod('foo::bar');
 

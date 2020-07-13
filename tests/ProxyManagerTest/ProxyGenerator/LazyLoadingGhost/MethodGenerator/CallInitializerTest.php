@@ -21,7 +21,7 @@ use ReflectionClass;
  */
 final class CallInitializerTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $initializer           = $this->createMock(PropertyGenerator::class);
         $initializationTracker = $this->createMock(PropertyGenerator::class);
@@ -92,7 +92,7 @@ PHP;
         );
     }
 
-    public function testBodyStructureWithTypedProperties() : void
+    public function testBodyStructureWithTypedProperties(): void
     {
         $initializer           = $this->createMock(PropertyGenerator::class);
         $initializationTracker = $this->createMock(PropertyGenerator::class);

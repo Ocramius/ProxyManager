@@ -13,8 +13,10 @@ use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
 use ReflectionMethod;
+
 use function array_filter;
 use function array_map;
+use function assert;
 use function implode;
 use function reset;
 use function var_export;
@@ -27,11 +29,10 @@ class Constructor extends MethodGenerator
     /**
      * @throws InvalidArgumentException
      */
-    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder) : self
+    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder): self
     {
         $originalConstructor = self::getConstructor($originalClass);
 
-        /** @var self $constructor */
         $constructor = $originalConstructor
             ? self::fromReflectionWithoutBodyAndDocBlock($originalConstructor)
             : new self('__construct');
@@ -54,13 +55,13 @@ class Constructor extends MethodGenerator
     private static function generateOriginalConstructorCall(
         MethodReflection $originalConstructor,
         PropertyGenerator $valueHolder
-    ) : string {
+    ): string {
         return "\n\n"
             . '$this->' . $valueHolder->getName() . '->' . $originalConstructor->getName() . '('
             . implode(
                 ', ',
                 array_map(
-                    static function (ParameterReflection $parameter) : string {
+                    static function (ParameterReflection $parameter): string {
                         return ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
                     },
                     $originalConstructor->getParameters()
@@ -69,10 +70,10 @@ class Constructor extends MethodGenerator
             . ');';
     }
 
-    private static function getConstructor(ReflectionClass $class) : ?MethodReflection
+    private static function getConstructor(ReflectionClass $class): ?MethodReflection
     {
         $constructors = array_map(
-            static function (ReflectionMethod $method) : MethodReflection {
+            static function (ReflectionMethod $method): MethodReflection {
                 return new MethodReflection(
                     $method->getDeclaringClass()->getName(),
                     $method->getName()
@@ -80,7 +81,7 @@ class Constructor extends MethodGenerator
             },
             array_filter(
                 $class->getMethods(),
-                static function (ReflectionMethod $method) : bool {
+                static function (ReflectionMethod $method): bool {
                     return $method->isConstructor();
                 }
             )

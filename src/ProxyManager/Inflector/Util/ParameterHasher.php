@@ -17,7 +17,7 @@ class ParameterHasher
      *
      * @param mixed[] $parameters
      */
-    public function hashParameters(array $parameters) : string
+    public function hashParameters(array $parameters): string
     {
         return md5(serialize($parameters));
     }

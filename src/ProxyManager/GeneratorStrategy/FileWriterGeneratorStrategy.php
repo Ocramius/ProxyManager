@@ -10,6 +10,9 @@ use ProxyManager\Exception\FileNotWritableException;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
 use Webimpress\SafeWriter\FileWriter;
+
+use function assert;
+use function is_string;
 use function restore_error_handler;
 use function set_error_handler;
 
@@ -26,7 +29,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     public function __construct(FileLocatorInterface $fileLocator)
     {
         $this->fileLocator       = $fileLocator;
-        $this->emptyErrorHandler = static function () : void {
+        $this->emptyErrorHandler = static function (): void {
         };
     }
 
@@ -37,12 +40,12 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
      *
      * @throws FileNotWritableException
      */
-    public function generate(ClassGenerator $classGenerator) : string
+    public function generate(ClassGenerator $classGenerator): string
     {
-        /** @var string $generatedCode */
         $generatedCode = $classGenerator->generate();
-        $className     = $classGenerator->getNamespaceName() . '\\' . $classGenerator->getName();
-        $fileName      = $this->fileLocator->getProxyFileName($className);
+        assert(is_string($generatedCode));
+        $className = $classGenerator->getNamespaceName() . '\\' . $classGenerator->getName();
+        $fileName  = $this->fileLocator->getProxyFileName($className);
 
         set_error_handler($this->emptyErrorHandler);
 

@@ -36,7 +36,7 @@ class ProtectedPropertiesMap extends PropertyGenerator
     }
 
     /** @return string[] */
-    private function getMap(Properties $properties) : array
+    private function getMap(Properties $properties): array
     {
         $map = [];
 

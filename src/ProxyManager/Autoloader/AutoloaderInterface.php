@@ -14,5 +14,5 @@ interface AutoloaderInterface
      *
      * @psalm-param class-string $className
      */
-    public function __invoke(string $className) : bool;
+    public function __invoke(string $className): bool;
 }

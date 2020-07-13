@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace ProxyManager\Inflector;
 
 use ProxyManager\Inflector\Util\ParameterHasher;
+
 use function is_int;
 use function ltrim;
 use function strlen;
 use function strrpos;
 use function substr;
 
-/**
- * {@inheritDoc}
- */
 final class ClassNameInflector implements ClassNameInflectorInterface
 {
     protected string $proxyNamespace;
@@ -35,7 +33,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
      *
      * @psalm-suppress MoreSpecificReturnType we ignore these issues because classes may not have been loaded yet
      */
-    public function getUserClassName(string $className) : string
+    public function getUserClassName(string $className): string
     {
         $className = ltrim($className, '\\');
         $position  = strrpos($className, $this->proxyMarker);
@@ -58,7 +56,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
      *
      * @psalm-suppress MoreSpecificReturnType we ignore these issues because classes may not have been loaded yet
      */
-    public function getProxyClassName(string $className, array $options = []) : string
+    public function getProxyClassName(string $className, array $options = []): string
     {
         /** @psalm-suppress LessSpecificReturnStatement */
         return $this->proxyNamespace
@@ -67,10 +65,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
             . '\\Generated' . $this->parameterHasher->hashParameters($options);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isProxyClassName(string $className) : bool
+    public function isProxyClassName(string $className): bool
     {
         return strrpos($className, $this->proxyMarker) !== false;
     }

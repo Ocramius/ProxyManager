@@ -38,7 +38,7 @@ class PrivatePropertiesMap extends PropertyGenerator
     /**
      * @return array<string, array<class-string, bool>>
      */
-    private function getMap(Properties $properties) : array
+    private function getMap(Properties $properties): array
     {
         $map = [];
 

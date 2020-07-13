@@ -16,7 +16,7 @@ use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
  */
 final class FileNotWritableExceptionTest extends TestCase
 {
-    public function testFromPrevious() : void
+    public function testFromPrevious(): void
     {
         $previousExceptionMock = $this->getMockBuilder(FileWriterException::class);
         $previousExceptionMock->enableOriginalConstructor();

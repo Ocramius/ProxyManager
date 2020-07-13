@@ -16,7 +16,7 @@ class BaseGeneratorStrategy implements GeneratorStrategyInterface
      *
      * @psalm-suppress MixedInferredReturnType upstream has no declared type
      */
-    public function generate(ClassGenerator $classGenerator) : string
+    public function generate(ClassGenerator $classGenerator): string
     {
         /** @psalm-suppress MixedReturnStatement upstream has no declared type */
         return $classGenerator->generate();

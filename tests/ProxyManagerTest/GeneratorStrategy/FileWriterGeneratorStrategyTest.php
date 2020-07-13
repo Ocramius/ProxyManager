@@ -12,7 +12,7 @@ use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
-use const SCANDIR_SORT_ASCENDING;
+
 use function class_exists;
 use function clearstatcache;
 use function decoct;
@@ -29,6 +29,8 @@ use function umask;
 use function uniqid;
 use function unlink;
 
+use const SCANDIR_SORT_ASCENDING;
+
 /**
  * Tests for {@see \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy}
  *
@@ -42,12 +44,12 @@ final class FileWriterGeneratorStrategyTest extends TestCase
     private string $tempDir;
     private Closure $originalErrorHandler;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->tempDir              = tempnam(sys_get_temp_dir(), 'FileWriterGeneratorStrategyTest');
-        $this->originalErrorHandler = static function () : bool {
+        $this->originalErrorHandler = static function (): bool {
             throw new ErrorException();
         };
 
@@ -56,9 +58,9 @@ final class FileWriterGeneratorStrategyTest extends TestCase
         set_error_handler($this->originalErrorHandler);
     }
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
-        self::assertSame($this->originalErrorHandler, set_error_handler(static function () : bool {
+        self::assertSame($this->originalErrorHandler, set_error_handler(static function (): bool {
             return true;
         }));
         restore_error_handler();
@@ -67,7 +69,7 @@ final class FileWriterGeneratorStrategyTest extends TestCase
         parent::tearDown();
     }
 
-    public function testGenerate() : void
+    public function testGenerate(): void
     {
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
@@ -103,7 +105,7 @@ final class FileWriterGeneratorStrategyTest extends TestCase
         self::assertTrue(class_exists($fqcn, false));
     }
 
-    public function testGenerateWillFailIfTmpFileCannotBeWrittenToDisk() : void
+    public function testGenerateWillFailIfTmpFileCannotBeWrittenToDisk(): void
     {
         $tmpDirPath = $this->tempDir . '/' . uniqid('nonWritable', true);
         mkdir($tmpDirPath, 0555, true);
@@ -124,7 +126,7 @@ final class FileWriterGeneratorStrategyTest extends TestCase
         $generator->generate(new ClassGenerator($fqcn));
     }
 
-    public function testGenerateWillFailIfTmpFileCannotBeMovedToFinalDestination() : void
+    public function testGenerateWillFailIfTmpFileCannotBeMovedToFinalDestination(): void
     {
         $locator   = $this->createMock(FileLocatorInterface::class);
         $generator = new FileWriterGeneratorStrategy($locator);
@@ -144,7 +146,7 @@ final class FileWriterGeneratorStrategyTest extends TestCase
         $generator->generate(new ClassGenerator($fqcn));
     }
 
-    public function testWhenFailingAllTemporaryFilesAreRemoved() : void
+    public function testWhenFailingAllTemporaryFilesAreRemoved(): void
     {
         $tmpDirPath = $this->tempDir . '/' . uniqid('noTempFilesLeftBehind', true);
 

@@ -25,7 +25,7 @@ final class ClassSignatureGenerator implements ClassSignatureGeneratorInterface
      *
      * @throws InvalidArgumentException
      */
-    public function addSignature(ClassGenerator $classGenerator, array $parameters) : ClassGenerator
+    public function addSignature(ClassGenerator $classGenerator, array $parameters): ClassGenerator
     {
         $classGenerator->addPropertyFromGenerator(new PropertyGenerator(
             'signature' . $this->signatureGenerator->generateSignatureKey($parameters),

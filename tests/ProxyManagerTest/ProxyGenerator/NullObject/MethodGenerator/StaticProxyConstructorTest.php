@@ -19,7 +19,7 @@ use ReflectionClass;
  */
 final class StaticProxyConstructorTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(ClassWithMixedProperties::class)
@@ -45,7 +45,7 @@ return $instance;',
         );
     }
 
-    public function testBodyStructureWithoutPublicProperties() : void
+    public function testBodyStructureWithoutPublicProperties(): void
     {
         $constructor = new StaticProxyConstructor(
             new ReflectionClass(ClassWithPrivateProperties::class)
@@ -66,7 +66,7 @@ return $instance;',
         );
     }
 
-    public function testBodyStructureWithTypedProperties() : void
+    public function testBodyStructureWithTypedProperties(): void
     {
         $constructor = new StaticProxyConstructor(new ReflectionClass(ClassWithMixedTypedProperties::class));
 

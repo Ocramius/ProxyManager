@@ -21,7 +21,7 @@ use ReflectionClass;
  */
 final class InvalidProxiedClassExceptionTest extends TestCase
 {
-    public function testInterfaceNotSupported() : void
+    public function testInterfaceNotSupported(): void
     {
         self::assertSame(
             'Provided interface "ProxyManagerTestAsset\BaseInterface" cannot be proxied',
@@ -31,7 +31,7 @@ final class InvalidProxiedClassExceptionTest extends TestCase
         );
     }
 
-    public function testFinalClassNotSupported() : void
+    public function testFinalClassNotSupported(): void
     {
         self::assertSame(
             'Provided class "ProxyManagerTestAsset\FinalClass" is final and cannot be proxied',
@@ -41,7 +41,7 @@ final class InvalidProxiedClassExceptionTest extends TestCase
         );
     }
 
-    public function testAbstractProtectedMethodsNotSupported() : void
+    public function testAbstractProtectedMethodsNotSupported(): void
     {
         self::assertSame(
             'Provided class "ProxyManagerTestAsset\ClassWithAbstractProtectedMethod" has following protected abstract'
@@ -53,7 +53,7 @@ final class InvalidProxiedClassExceptionTest extends TestCase
         );
     }
 
-    public function testProtectedMethodsNotSupported() : void
+    public function testProtectedMethodsNotSupported(): void
     {
         self::assertSame(
             'Provided class "ProxyManagerTestAsset\ClassWithProtectedMethod" has following protected abstract'
@@ -64,7 +64,7 @@ final class InvalidProxiedClassExceptionTest extends TestCase
         );
     }
 
-    public function testAbstractPublicMethodsNotSupported() : void
+    public function testAbstractPublicMethodsNotSupported(): void
     {
         self::assertSame(
             'Provided class "ProxyManagerTestAsset\ClassWithAbstractPublicMethod" has following protected abstract'

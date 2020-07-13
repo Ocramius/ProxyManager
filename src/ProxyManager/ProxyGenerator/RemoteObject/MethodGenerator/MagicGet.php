@@ -9,6 +9,7 @@ use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MagicMethodGenerator;
 use ReflectionClass;
+
 use function var_export;
 
 /**

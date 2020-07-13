@@ -8,6 +8,7 @@ use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionMethod;
+
 use function array_keys;
 use function implode;
 use function str_replace;
@@ -56,7 +57,7 @@ PHP;
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors,
         ?ReflectionMethod $originalMethod
-    ) : string {
+    ): string {
         $name                   = var_export($method->getName(), true);
         $valueHolderName        = $valueHolder->getName();
         $prefixInterceptorsName = $prefixInterceptors->getName();

@@ -19,7 +19,7 @@ use ReflectionClass;
  */
 final class MagicMethodGeneratorTest extends TestCase
 {
-    public function testGeneratesCorrectByRefReturnValue() : void
+    public function testGeneratesCorrectByRefReturnValue(): void
     {
         $reflection  = new ReflectionClass(ClassWithByRefMagicMethods::class);
         $magicMethod = new MagicMethodGenerator($reflection, '__get', ['name']);
@@ -27,7 +27,7 @@ final class MagicMethodGeneratorTest extends TestCase
         self::assertStringMatchesFormat('%Apublic function & __get(%A', $magicMethod->generate());
     }
 
-    public function testGeneratesCorrectByValReturnValue() : void
+    public function testGeneratesCorrectByValReturnValue(): void
     {
         $reflection  = new ReflectionClass(ClassWithMagicMethods::class);
         $magicMethod = new MagicMethodGenerator($reflection, '__get', ['name']);
@@ -35,7 +35,7 @@ final class MagicMethodGeneratorTest extends TestCase
         self::assertStringMatchesFormat('%Apublic function __get(%A', $magicMethod->generate());
     }
 
-    public function testGeneratesByRefReturnValueWithNonExistingGetMethod() : void
+    public function testGeneratesByRefReturnValueWithNonExistingGetMethod(): void
     {
         $reflection  = new ReflectionClass(EmptyClass::class);
         $magicMethod = new MagicMethodGenerator($reflection, '__get', ['name']);
@@ -43,7 +43,7 @@ final class MagicMethodGeneratorTest extends TestCase
         self::assertStringMatchesFormat('%Apublic function & __get(%A', $magicMethod->generate());
     }
 
-    public function testGeneratesByValReturnValueWithNonExistingNonGetMethod() : void
+    public function testGeneratesByValReturnValueWithNonExistingNonGetMethod(): void
     {
         $reflection  = new ReflectionClass(EmptyClass::class);
         $magicMethod = new MagicMethodGenerator($reflection, '__set', ['name']);

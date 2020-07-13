@@ -23,7 +23,7 @@ final class BaseAdapterTest extends TestCase
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\BaseAdapter::call
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::getServiceName
      */
-    public function testBaseAdapter() : void
+    public function testBaseAdapter(): void
     {
         $client = $this
             ->getMockBuilder(Client::class)
@@ -57,7 +57,7 @@ final class BaseAdapterTest extends TestCase
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\BaseAdapter::call
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::getServiceName
      */
-    public function testBaseAdapterWithServiceMap() : void
+    public function testBaseAdapterWithServiceMap(): void
     {
         $client = $this
             ->getMockBuilder(Client::class)

@@ -11,6 +11,7 @@ use ProxyManager\ProxyGenerator\NullObjectGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
+
 use function get_class;
 use function is_object;
 
@@ -44,7 +45,7 @@ class NullObjectFactory extends AbstractBaseFactory
      * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
      *                                         interfaced (by design)
      */
-    public function createProxy($instanceOrClassName) : NullObjectInterface
+    public function createProxy($instanceOrClassName): NullObjectInterface
     {
         $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
         $proxyClassName = $this->generateProxy($className);
@@ -58,10 +59,7 @@ class NullObjectFactory extends AbstractBaseFactory
         return $proxyClassName::staticProxyConstructor();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getGenerator() : ProxyGeneratorInterface
+    protected function getGenerator(): ProxyGeneratorInterface
     {
         return $this->generator;
     }

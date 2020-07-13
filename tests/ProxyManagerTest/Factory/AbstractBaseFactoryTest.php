@@ -19,6 +19,7 @@ use ProxyManager\Signature\SignatureCheckerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use stdClass;
+
 use function class_exists;
 
 /**
@@ -52,10 +53,7 @@ final class AbstractBaseFactoryTest extends TestCase
     /** @var ClassSignatureGeneratorInterface&MockObject */
     private ClassSignatureGeneratorInterface $classSignatureGenerator;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $configuration                 = $this->createMock(Configuration::class);
         $this->generator               = $this->createMock(ProxyGeneratorInterface::class);
@@ -95,7 +93,7 @@ final class AbstractBaseFactoryTest extends TestCase
         $this->factory->method('getGenerator')->willReturn($this->generator);
     }
 
-    public function testGeneratesClass() : void
+    public function testGeneratesClass(): void
     {
         $generateProxy = new ReflectionMethod($this->factory, 'generateProxy');
 
@@ -118,7 +116,7 @@ final class AbstractBaseFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($generatedClass)
-            ->will(self::returnCallback(static function (string $className) : bool {
+            ->will(self::returnCallback(static function (string $className): bool {
                 eval('class ' . $className . ' extends \\stdClass {}');
 
                 return true;
@@ -131,7 +129,7 @@ final class AbstractBaseFactoryTest extends TestCase
             ->expects(self::once())
             ->method('generate')
             ->with(
-                self::callback(static function (ReflectionClass $reflectionClass) : bool {
+                self::callback(static function (ReflectionClass $reflectionClass): bool {
                     return $reflectionClass->getName() === stdClass::class;
                 }),
                 self::isInstanceOf(ClassGenerator::class),

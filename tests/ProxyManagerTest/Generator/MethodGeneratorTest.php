@@ -24,7 +24,7 @@ use stdClass;
  */
 final class MethodGeneratorTest extends TestCase
 {
-    public function testGeneratedMethodsAreAllConcrete() : void
+    public function testGeneratedMethodsAreAllConcrete(): void
     {
         $methodGenerator = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             ClassWithAbstractPublicMethod::class,
@@ -34,7 +34,7 @@ final class MethodGeneratorTest extends TestCase
         self::assertFalse($methodGenerator->isInterface());
     }
 
-    public function testGenerateSimpleMethod() : void
+    public function testGenerateSimpleMethod(): void
     {
         $methodGenerator = new MethodGenerator();
 
@@ -54,7 +54,7 @@ final class MethodGeneratorTest extends TestCase
     /**
      * Verify that building from reflection works
      */
-    public function testGenerateFromReflection() : void
+    public function testGenerateFromReflection(): void
     {
         $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             self::class,
@@ -84,7 +84,7 @@ final class MethodGeneratorTest extends TestCase
         self::assertSame(MethodGenerator::VISIBILITY_PRIVATE, $method->getVisibility());
     }
 
-    public function testGeneratedParametersFromReflection() : void
+    public function testGeneratedParametersFromReflection(): void
     {
         $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             BaseClass::class,
@@ -105,7 +105,7 @@ final class MethodGeneratorTest extends TestCase
     /**
      * @dataProvider scalarTypeHintedMethods
      */
-    public function testGenerateMethodWithScalarTypeHinting(string $methodName, string $type) : void
+    public function testGenerateMethodWithScalarTypeHinting(string $methodName, string $type): void
     {
         $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             ScalarTypeHintedClass::class,
@@ -124,7 +124,7 @@ final class MethodGeneratorTest extends TestCase
     }
 
     /** @return string[][] */
-    public function scalarTypeHintedMethods() : array
+    public function scalarTypeHintedMethods(): array
     {
         return [
             ['acceptString', 'string'],
@@ -134,7 +134,7 @@ final class MethodGeneratorTest extends TestCase
         ];
     }
 
-    public function testGenerateMethodWithVoidReturnTypeHinting() : void
+    public function testGenerateMethodWithVoidReturnTypeHinting(): void
     {
         $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             VoidMethodTypeHintedInterface::class,
@@ -148,7 +148,7 @@ final class MethodGeneratorTest extends TestCase
     /**
      * @dataProvider returnTypeHintsProvider
      */
-    public function testReturnTypeHintGeneration(string $methodName, string $expectedType) : void
+    public function testReturnTypeHintGeneration(string $methodName, string $expectedType): void
     {
         $method = MethodGenerator::fromReflectionWithoutBodyAndDocBlock(new MethodReflection(
             ReturnTypeHintedClass::class,
@@ -162,7 +162,7 @@ final class MethodGeneratorTest extends TestCase
     /**
      * @return string[][]
      */
-    public static function returnTypeHintsProvider() : array
+    public static function returnTypeHintsProvider(): array
     {
         return [
             ['returnString', 'string'],

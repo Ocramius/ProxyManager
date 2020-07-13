@@ -19,7 +19,7 @@ final class ClassGeneratorTest extends TestCase
     /**
      * @covers \ProxyManager\Generator\ClassGenerator::setExtendedClass
      */
-    public function testExtendedClassesAreFQCNs() : void
+    public function testExtendedClassesAreFQCNs(): void
     {
         $desiredFqcn     = '\\stdClass';
         $classNameInputs = [stdClass::class, '\\stdClass\\'];
@@ -35,7 +35,7 @@ final class ClassGeneratorTest extends TestCase
     /**
      * @covers \ProxyManager\Generator\ClassGenerator::setImplementedInterfaces
      */
-    public function testImplementedInterfacesAreFQCNs() : void
+    public function testImplementedInterfacesAreFQCNs(): void
     {
         $desiredFqcns        = ['\\Countable'];
         $interfaceNameInputs = [[Countable::class], ['\\Countable\\']];

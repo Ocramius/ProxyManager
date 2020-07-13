@@ -11,6 +11,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\Mag
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
+
 use function strpos;
 
 /**
@@ -23,7 +24,7 @@ final class MagicIssetTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicIsset::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $reflection         = new ReflectionClass(EmptyClass::class);
         $valueHolder        = $this->createMock(PropertyGenerator::class);

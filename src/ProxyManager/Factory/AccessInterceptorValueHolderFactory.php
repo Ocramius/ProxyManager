@@ -14,6 +14,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
+
 use function get_class;
 
 /**
@@ -69,7 +70,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
         object $instance,
         array $prefixInterceptors = [],
         array $suffixInterceptors = []
-    ) : AccessInterceptorValueHolderInterface {
+    ): AccessInterceptorValueHolderInterface {
         $proxyClassName = $this->generateProxy(get_class($instance));
 
         /**
@@ -81,10 +82,7 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
         return $proxyClassName::staticProxyConstructor($instance, $prefixInterceptors, $suffixInterceptors);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getGenerator() : ProxyGeneratorInterface
+    protected function getGenerator(): ProxyGeneratorInterface
     {
         return $this->generator;
     }

@@ -14,5 +14,5 @@ interface GeneratorStrategyInterface
     /**
      * Generate the provided class
      */
-    public function generate(ClassGenerator $classGenerator) : string;
+    public function generate(ClassGenerator $classGenerator): string;
 }

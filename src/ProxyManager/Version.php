@@ -29,7 +29,7 @@ final class Version
      *
      * @psalm-pure
      */
-    public static function getVersion() : string
+    public static function getVersion(): string
     {
         return Versions::getVersion('ocramius/proxy-manager');
     }

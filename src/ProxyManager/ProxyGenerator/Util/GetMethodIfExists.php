@@ -16,7 +16,7 @@ final class GetMethodIfExists
     {
     }
 
-    public static function get(ReflectionClass $class, string $method) : ?ReflectionMethod
+    public static function get(ReflectionClass $class, string $method): ?ReflectionMethod
     {
         return $class->hasMethod($method) ? $class->getMethod($method) : null;
     }

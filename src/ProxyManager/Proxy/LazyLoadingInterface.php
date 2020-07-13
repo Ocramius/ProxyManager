@@ -54,17 +54,17 @@ interface LazyLoadingInterface extends ProxyInterface
      *   array<string, mixed>=
      * ) : bool
      */
-    public function getProxyInitializer() : ?Closure;
+    public function getProxyInitializer(): ?Closure;
 
     /**
      * Force initialization of the proxy
      *
      * @return bool true if the proxy could be initialized
      */
-    public function initializeProxy() : bool;
+    public function initializeProxy(): bool;
 
     /**
      * Retrieves current initialization status of the proxy
      */
-    public function isProxyInitialized() : bool;
+    public function isProxyInitialized(): bool;
 }

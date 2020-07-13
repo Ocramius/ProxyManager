@@ -22,7 +22,7 @@ final class XmlRpcTest extends TestCase
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc::__construct
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\XmlRpc::getServiceName
      */
-    public function testCanBuildAdapterWithXmlRpcClient() : void
+    public function testCanBuildAdapterWithXmlRpcClient(): void
     {
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 

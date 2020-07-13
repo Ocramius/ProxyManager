@@ -33,6 +33,7 @@ use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolde
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\MagicSleep;
 use ReflectionClass;
 use ReflectionMethod;
+
 use function array_map;
 use function array_merge;
 
@@ -72,7 +73,7 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
         array_map(
-            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator): void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -126,8 +127,8 @@ class AccessInterceptorValueHolderGenerator implements ProxyGeneratorInterface
         MethodPrefixInterceptors $prefixes,
         MethodSuffixInterceptors $suffixes,
         ValueHolderProperty $valueHolder
-    ) : callable {
-        return static function (ReflectionMethod $method) use ($prefixes, $suffixes, $valueHolder) : InterceptedMethod {
+    ): callable {
+        return static function (ReflectionMethod $method) use ($prefixes, $suffixes, $valueHolder): InterceptedMethod {
             return InterceptedMethod::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $valueHolder,

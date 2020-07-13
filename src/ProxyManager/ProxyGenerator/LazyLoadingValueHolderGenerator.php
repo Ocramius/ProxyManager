@@ -34,6 +34,7 @@ use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 use ReflectionClass;
 use ReflectionMethod;
+
 use function array_map;
 use function array_merge;
 
@@ -71,7 +72,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
         array_map(
-            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator): void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
@@ -102,8 +103,8 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
     private function buildLazyLoadingMethodInterceptor(
         InitializerProperty $initializer,
         ValueHolderProperty $valueHolder
-    ) : callable {
-        return static function (ReflectionMethod $method) use ($initializer, $valueHolder) : LazyLoadingMethodInterceptor {
+    ): callable {
+        return static function (ReflectionMethod $method) use ($initializer, $valueHolder): LazyLoadingMethodInterceptor {
             return LazyLoadingMethodInterceptor::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $initializer,

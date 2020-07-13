@@ -26,16 +26,13 @@ final class SignatureCheckerTest extends TestCase
     /** @var SignatureGeneratorInterface&MockObject */
     private SignatureGeneratorInterface $signatureGenerator;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->signatureGenerator = $this->createMock(SignatureGeneratorInterface::class);
         $this->signatureChecker   = new SignatureChecker($this->signatureGenerator);
     }
 
-    public function testCheckSignatureWithValidKey() : void
+    public function testCheckSignatureWithValidKey(): void
     {
         $this
             ->signatureGenerator
@@ -53,7 +50,7 @@ final class SignatureCheckerTest extends TestCase
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }
 
-    public function testCheckSignatureWithInvalidKey() : void
+    public function testCheckSignatureWithInvalidKey(): void
     {
         $this
             ->signatureGenerator
@@ -72,7 +69,7 @@ final class SignatureCheckerTest extends TestCase
         $this->signatureChecker->checkSignature(new ReflectionClass($this), ['foo' => 'bar']);
     }
 
-    public function testCheckSignatureWithInvalidValue() : void
+    public function testCheckSignatureWithInvalidValue(): void
     {
         $this
             ->signatureGenerator

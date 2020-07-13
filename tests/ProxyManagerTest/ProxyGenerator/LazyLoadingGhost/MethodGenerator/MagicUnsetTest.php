@@ -101,10 +101,7 @@ if (isset(self::$baz[$name])) {
 %A
 PHP;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->initializer         = $this->createMock(PropertyGenerator::class);
         $this->initMethod          = $this->createMock(MethodGenerator::class);
@@ -123,7 +120,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $magicIsset = new MagicUnset(
             new ReflectionClass(ClassWithTwoPublicProperties::class),
@@ -142,7 +139,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset::__construct
      */
-    public function testBodyStructureWithOverriddenMagicGet() : void
+    public function testBodyStructureWithOverriddenMagicGet(): void
     {
         $magicIsset = new MagicUnset(
             new ReflectionClass(ClassWithMagicMethods::class),

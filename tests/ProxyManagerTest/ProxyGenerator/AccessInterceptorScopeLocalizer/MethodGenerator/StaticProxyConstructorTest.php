@@ -26,10 +26,7 @@ final class StaticProxyConstructorTest extends TestCase
     /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $suffixInterceptors;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $this->suffixInterceptors = $this->createMock(PropertyGenerator::class);
@@ -38,7 +35,7 @@ final class StaticProxyConstructorTest extends TestCase
         $this->suffixInterceptors->method('getName')->willReturn('post');
     }
 
-    public function testSignature() : void
+    public function testSignature(): void
     {
         $method = new StaticProxyConstructor(new ReflectionClass(ClassWithProtectedProperties::class));
 
@@ -55,7 +52,7 @@ final class StaticProxyConstructorTest extends TestCase
         self::assertSame('array', $parameters['suffixInterceptors']->getType());
     }
 
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $method = new StaticProxyConstructor(new ReflectionClass(ClassWithPublicProperties::class));
 

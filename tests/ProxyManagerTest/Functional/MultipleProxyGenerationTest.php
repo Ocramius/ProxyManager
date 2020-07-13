@@ -34,6 +34,7 @@ use ProxyManagerTestAsset\ObjectTypeHintClass;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
+
 use function get_class;
 
 /**
@@ -53,14 +54,14 @@ final class MultipleProxyGenerationTest extends TestCase
      *
      * @dataProvider getTestedClasses
      */
-    public function testCanGenerateMultipleDifferentProxiesForSameClass(object $object) : void
+    public function testCanGenerateMultipleDifferentProxiesForSameClass(object $object): void
     {
         $ghostProxyFactory                      = new LazyLoadingGhostFactory();
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
         $className                              = get_class($object);
-        $initializer                            = static function () : bool {
+        $initializer                            = static function (): bool {
             return true;
         };
 
@@ -98,7 +99,7 @@ final class MultipleProxyGenerationTest extends TestCase
     /**
      * @return object[][]
      */
-    public function getTestedClasses() : array
+    public function getTestedClasses(): array
     {
         return [
             [new BaseClass()],

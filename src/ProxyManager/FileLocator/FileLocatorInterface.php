@@ -12,5 +12,5 @@ interface FileLocatorInterface
     /**
      * Retrieves the file name for the given proxy
      */
-    public function getProxyFileName(string $className) : string;
+    public function getProxyFileName(string $className): string;
 }

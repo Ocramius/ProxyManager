@@ -20,6 +20,7 @@ use ProxyManager\Signature\ClassSignatureGenerator;
 use ProxyManager\Signature\SignatureGenerator;
 use ReflectionClass;
 use ReflectionException;
+
 use function array_filter;
 use function array_map;
 use function array_merge;
@@ -48,7 +49,7 @@ final class FatalPreventionFunctionalTest extends TestCase
      * @psalm-param class-string<ProxyGeneratorInterface> $generatorClass
      * @psalm-param class-string                          $className
      */
-    public function testCodeGeneration(string $generatorClass, string $className) : void
+    public function testCodeGeneration(string $generatorClass, string $className): void
     {
         $generatedClass          = new ClassGenerator(uniqid('generated', true));
         $generatorStrategy       = new EvaluatingGeneratorStrategy();
@@ -73,14 +74,14 @@ final class FatalPreventionFunctionalTest extends TestCase
      *
      * @psalm-return array<int, array<int, class-string<ProxyGeneratorInterface>|class-string>>
      */
-    public function getTestedClasses() : array
+    public function getTestedClasses(): array
     {
         return array_merge(
             [],
             ...array_map(
-                function ($generator) : array {
+                function ($generator): array {
                     return array_map(
-                        static function ($class) use ($generator) : array {
+                        static function ($class) use ($generator): array {
                             return [$generator, $class];
                         },
                         $this->getProxyTestedClasses()
@@ -105,7 +106,7 @@ final class FatalPreventionFunctionalTest extends TestCase
      *
      * @private (public only for PHP 5.3 compatibility)
      */
-    private function getProxyTestedClasses() : array
+    private function getProxyTestedClasses(): array
     {
         $skippedPaths = [
             realpath(__DIR__ . '/../../../src'),
@@ -115,7 +116,7 @@ final class FatalPreventionFunctionalTest extends TestCase
 
         return array_filter(
             get_declared_classes(),
-            static function ($className) use ($skippedPaths) : bool {
+            static function ($className) use ($skippedPaths): bool {
                 $reflectionClass = new ReflectionClass($className);
 
                 $fileName = $reflectionClass->getFileName();

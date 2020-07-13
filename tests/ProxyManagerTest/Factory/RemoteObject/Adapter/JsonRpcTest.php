@@ -22,7 +22,7 @@ final class JsonRpcTest extends TestCase
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::__construct
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\JsonRpc::getServiceName
      */
-    public function testCanBuildAdapterWithJsonRpcClient() : void
+    public function testCanBuildAdapterWithJsonRpcClient(): void
     {
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 

@@ -20,7 +20,7 @@ final class ParameterHasherTest extends TestCase
      * @dataProvider getParameters
      * @covers \ProxyManager\Inflector\Util\ParameterHasher::hashParameters
      */
-    public function testGeneratesValidClassName(array $parameters, string $expectedHash) : void
+    public function testGeneratesValidClassName(array $parameters, string $expectedHash): void
     {
         $encoder = new ParameterHasher();
 
@@ -28,7 +28,7 @@ final class ParameterHasherTest extends TestCase
     }
 
     /** @return mixed[][][]|string[][] */
-    public static function getParameters() : array
+    public static function getParameters(): array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

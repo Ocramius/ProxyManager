@@ -16,10 +16,7 @@ use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyName
  */
 final class MethodSuffixInterceptorsTest extends AbstractUniquePropertyNameTest
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function createProperty() : PropertyGenerator
+    protected function createProperty(): PropertyGenerator
     {
         return new MethodSuffixInterceptors();
     }

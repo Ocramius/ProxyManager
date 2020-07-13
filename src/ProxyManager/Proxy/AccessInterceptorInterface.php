@@ -35,7 +35,7 @@ interface AccessInterceptorInterface extends ProxyInterface
      *   bool=
      * ) : mixed $prefixInterceptor
      */
-    public function setMethodPrefixInterceptor(string $methodName, ?Closure $prefixInterceptor = null) : void;
+    public function setMethodPrefixInterceptor(string $methodName, ?Closure $prefixInterceptor = null): void;
 
     /**
      * Set or remove the suffix interceptor for a method
@@ -60,5 +60,5 @@ interface AccessInterceptorInterface extends ProxyInterface
      *   bool=
      * ) : mixed $suffixInterceptor
      */
-    public function setMethodSuffixInterceptor(string $methodName, ?Closure $suffixInterceptor = null) : void;
+    public function setMethodSuffixInterceptor(string $methodName, ?Closure $suffixInterceptor = null): void;
 }

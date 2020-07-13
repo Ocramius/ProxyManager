@@ -22,7 +22,7 @@ final class RemoteObjectMethodTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithParameters() : void
+    public function testBodyStructureWithParameters(): void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -59,7 +59,7 @@ return $return;',
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithArrayParameter() : void
+    public function testBodyStructureWithArrayParameter(): void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');
@@ -92,7 +92,7 @@ return \$return;",
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod
      */
-    public function testBodyStructureWithoutParameters() : void
+    public function testBodyStructureWithoutParameters(): void
     {
         $adapter = $this->createMock(PropertyGenerator::class);
         $adapter->method('getName')->willReturn('adapter');

@@ -12,6 +12,7 @@ use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ProxyManager\Version;
 use ReflectionClass;
+
 use function array_key_exists;
 use function assert;
 use function class_exists;
@@ -52,7 +53,7 @@ abstract class AbstractBaseFactory
      *
      * @psalm-return class-string<RealObjectType>
      */
-    protected function generateProxy(string $className, array $proxyOptions = []) : string
+    protected function generateProxy(string $className, array $proxyOptions = []): string
     {
         if (array_key_exists($className, $this->checkedClasses)) {
             $generatedClassName = $this->checkedClasses[$className];
@@ -90,7 +91,7 @@ abstract class AbstractBaseFactory
         return $this->checkedClasses[$className] = $proxyClassName;
     }
 
-    abstract protected function getGenerator() : ProxyGeneratorInterface;
+    abstract protected function getGenerator(): ProxyGeneratorInterface;
 
     /**
      * Generates the provided `$proxyClassName` from the given `$className` and `$proxyParameters`
@@ -106,7 +107,7 @@ abstract class AbstractBaseFactory
         string $className,
         array $proxyParameters,
         array $proxyOptions = []
-    ) : void {
+    ): void {
         $className = $this->configuration->getClassNameInflector()->getUserClassName($className);
         $phpClass  = new ClassGenerator($proxyClassName);
 

@@ -15,6 +15,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
+
 use function assert;
 use function class_exists;
 use function is_a;
@@ -47,7 +48,7 @@ final class LazyLoadingValueHolderPropertyAccessBench
     /**
      * @psalm-suppress RedundantConditionGivenDocblockType
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         $emptyClassProxy                  = $this->buildProxy(EmptyClass::class);
         $publicPropertiesProxy            = $this->buildProxy(ClassWithPublicProperties::class);
@@ -83,120 +84,120 @@ final class LazyLoadingValueHolderPropertyAccessBench
         $this->initializedMixedPropertiesProxy->initializeProxy();
     }
 
-    public function benchEmptyClassInitialization() : void
+    public function benchEmptyClassInitialization(): void
     {
         $this->emptyClassProxy->initializeProxy();
     }
 
-    public function benchInitializedEmptyClassInitialization() : void
+    public function benchInitializedEmptyClassInitialization(): void
     {
         $this->initializedEmptyClassProxy->initializeProxy();
     }
 
-    public function benchObjectWithPublicPropertiesInitialization() : void
+    public function benchObjectWithPublicPropertiesInitialization(): void
     {
         $this->publicPropertiesProxy->initializeProxy();
     }
 
-    public function benchInitializedObjectWithPublicPropertiesInitialization() : void
+    public function benchInitializedObjectWithPublicPropertiesInitialization(): void
     {
         $this->initializedPublicPropertiesProxy->initializeProxy();
     }
 
-    public function benchObjectWithPublicPropertiesPropertyRead() : void
+    public function benchObjectWithPublicPropertiesPropertyRead(): void
     {
         $this->publicPropertiesProxy->property0;
     }
 
-    public function benchInitializedObjectWithPublicPropertiesPropertyRead() : void
+    public function benchInitializedObjectWithPublicPropertiesPropertyRead(): void
     {
         $this->initializedPublicPropertiesProxy->property0;
     }
 
-    public function benchObjectWithPublicPropertiesPropertyWrite() : void
+    public function benchObjectWithPublicPropertiesPropertyWrite(): void
     {
         $this->publicPropertiesProxy->property0 = 'foo';
     }
 
-    public function benchInitializedObjectWithPublicPropertiesPropertyWrite() : void
+    public function benchInitializedObjectWithPublicPropertiesPropertyWrite(): void
     {
         $this->initializedPublicPropertiesProxy->property0 = 'foo';
     }
 
-    public function benchObjectWithPublicPropertiesPropertyIsset() : void
+    public function benchObjectWithPublicPropertiesPropertyIsset(): void
     {
         /* @noinspection PhpExpressionResultUnusedInspection */
         /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->publicPropertiesProxy->property0);
     }
 
-    public function benchInitializedObjectWithPublicPropertiesPropertyIsset() : void
+    public function benchInitializedObjectWithPublicPropertiesPropertyIsset(): void
     {
         /* @noinspection PhpExpressionResultUnusedInspection */
         /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->initializedPublicPropertiesProxy->property0);
     }
 
-    public function benchObjectWithPublicPropertiesPropertyUnset() : void
+    public function benchObjectWithPublicPropertiesPropertyUnset(): void
     {
         unset($this->publicPropertiesProxy->property0);
     }
 
-    public function benchInitializedObjectWithPublicPropertiesPropertyUnset() : void
+    public function benchInitializedObjectWithPublicPropertiesPropertyUnset(): void
     {
         unset($this->initializedPublicPropertiesProxy->property0);
     }
 
-    public function benchObjectWithMixedPropertiesInitialization() : void
+    public function benchObjectWithMixedPropertiesInitialization(): void
     {
         $this->mixedPropertiesProxy->initializeProxy();
     }
 
-    public function benchInitializedObjectWithMixedPropertiesInitialization() : void
+    public function benchInitializedObjectWithMixedPropertiesInitialization(): void
     {
         $this->initializedMixedPropertiesProxy->initializeProxy();
     }
 
-    public function benchObjectWithMixedPropertiesPropertyRead() : void
+    public function benchObjectWithMixedPropertiesPropertyRead(): void
     {
         $this->mixedPropertiesProxy->publicProperty0;
     }
 
-    public function benchInitializedObjectWithMixedPropertiesPropertyRead() : void
+    public function benchInitializedObjectWithMixedPropertiesPropertyRead(): void
     {
         $this->initializedMixedPropertiesProxy->publicProperty0;
     }
 
-    public function benchObjectWithMixedPropertiesPropertyWrite() : void
+    public function benchObjectWithMixedPropertiesPropertyWrite(): void
     {
         $this->mixedPropertiesProxy->publicProperty0 = 'foo';
     }
 
-    public function benchInitializedObjectWithMixedPropertiesPropertyWrite() : void
+    public function benchInitializedObjectWithMixedPropertiesPropertyWrite(): void
     {
         $this->initializedMixedPropertiesProxy->publicProperty0 = 'foo';
     }
 
-    public function benchObjectWithMixedPropertiesPropertyIsset() : void
+    public function benchObjectWithMixedPropertiesPropertyIsset(): void
     {
         /* @noinspection PhpExpressionResultUnusedInspection */
         /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->mixedPropertiesProxy->publicProperty0);
     }
 
-    public function benchInitializedObjectWithMixedPropertiesPropertyIsset() : void
+    public function benchInitializedObjectWithMixedPropertiesPropertyIsset(): void
     {
         /* @noinspection PhpExpressionResultUnusedInspection */
         /* @noinspection UnSafeIsSetOverArrayInspection */
         isset($this->initializedMixedPropertiesProxy->publicProperty0);
     }
 
-    public function benchObjectWithMixedPropertiesPropertyUnset() : void
+    public function benchObjectWithMixedPropertiesPropertyUnset(): void
     {
         unset($this->mixedPropertiesProxy->publicProperty0);
     }
 
-    public function benchInitializedObjectWithMixedPropertiesPropertyUnset() : void
+    public function benchInitializedObjectWithMixedPropertiesPropertyUnset(): void
     {
         unset($this->initializedMixedPropertiesProxy->publicProperty0);
     }
@@ -207,7 +208,7 @@ final class LazyLoadingValueHolderPropertyAccessBench
      * @psalm-return OriginalClass&ValueHolderInterface<OriginalClass>&VirtualProxyInterface
      * @psalm-suppress MixedInferredReturnType
      */
-    private function buildProxy(string $originalClass) : VirtualProxyInterface
+    private function buildProxy(string $originalClass): VirtualProxyInterface
     {
         /**
          * @psalm-suppress MixedReturnStatement
@@ -220,7 +221,7 @@ final class LazyLoadingValueHolderPropertyAccessBench
                 string $method,
                 array $params,
                 ?Closure & $initializer
-            ) use ($originalClass) : bool {
+            ) use ($originalClass): bool {
                 $initializer = null;
 
                 $valueHolder = new $originalClass();
@@ -236,7 +237,7 @@ final class LazyLoadingValueHolderPropertyAccessBench
      * @psalm-return class-string<OriginalClass>
      * @psalm-suppress MoreSpecificReturnType
      */
-    private function generateProxyClass(string $originalClassName) : string
+    private function generateProxyClass(string $originalClassName): string
     {
         $generatedClassName = self::class . '\\' . $originalClassName;
 

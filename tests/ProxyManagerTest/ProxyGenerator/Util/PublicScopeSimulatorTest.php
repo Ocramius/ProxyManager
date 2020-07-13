@@ -17,7 +17,7 @@ use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
  */
 final class PublicScopeSimulatorTest extends TestCase
 {
-    public function testSimpleGet() : void
+    public function testSimpleGet(): void
     {
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
@@ -62,7 +62,7 @@ PHP;
         );
     }
 
-    public function testSimpleSet() : void
+    public function testSimpleSet(): void
     {
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
@@ -96,7 +96,7 @@ PHP;
         );
     }
 
-    public function testSimpleIsset() : void
+    public function testSimpleIsset(): void
     {
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
@@ -130,7 +130,7 @@ PHP;
         );
     }
 
-    public function testSimpleUnset() : void
+    public function testSimpleUnset(): void
     {
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
@@ -164,7 +164,7 @@ PHP;
         );
     }
 
-    public function testSetRequiresValueParameterName() : void
+    public function testSetRequiresValueParameterName(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -177,7 +177,7 @@ PHP;
         );
     }
 
-    public function testDelegatesToValueHolderWhenAvailable() : void
+    public function testDelegatesToValueHolderWhenAvailable(): void
     {
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
@@ -211,14 +211,14 @@ PHP;
         );
     }
 
-    public function testSetRequiresValidOperation() : void
+    public function testSetRequiresValidOperation(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         PublicScopeSimulator::getPublicAccessSimulationCode('invalid', 'foo');
     }
 
-    public function testWillReturnDirectlyWithNoReturnParam() : void
+    public function testWillReturnDirectlyWithNoReturnParam(): void
     {
         $expected = <<<'PHP'
 $realInstanceReflection = new \ReflectionClass(get_parent_class($this));

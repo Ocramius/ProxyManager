@@ -15,6 +15,7 @@ use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
 use ReflectionProperty;
+
 use function array_keys;
 use function array_map;
 use function array_values;
@@ -27,7 +28,7 @@ use function array_values;
  */
 final class PropertiesTest extends TestCase
 {
-    public function testGetPublicProperties() : void
+    public function testGetPublicProperties(): void
     {
         $properties       = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $publicProperties = $properties->getPublicProperties();
@@ -38,14 +39,14 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey('publicProperty2', $publicProperties);
     }
 
-    public function testGetPublicPropertiesSkipsAbstractMethods() : void
+    public function testGetPublicPropertiesSkipsAbstractMethods(): void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractPublicMethod::class));
 
         self::assertEmpty($properties->getPublicProperties());
     }
 
-    public function testGetProtectedProperties() : void
+    public function testGetProtectedProperties(): void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
 
@@ -58,7 +59,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey("\0*\0protectedProperty2", $protectedProperties);
     }
 
-    public function testOnlyNullableProperties() : void
+    public function testOnlyNullableProperties(): void
     {
         $nullablePublicProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
                                               ->onlyNullableProperties()
@@ -116,13 +117,13 @@ final class PropertiesTest extends TestCase
                 'privateNullableObjectProperty',
                 'privateNullableClassProperty',
             ],
-            array_values(array_map(static function (ReflectionProperty $property) : string {
+            array_values(array_map(static function (ReflectionProperty $property): string {
                 return $property->getName();
             }, $nullablePublicProperties))
         );
     }
 
-    public function testOnlyPropertiesThatCanBeUnset() : void
+    public function testOnlyPropertiesThatCanBeUnset(): void
     {
         $nonReferenceableProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
                                                 ->onlyPropertiesThatCanBeUnset()
@@ -221,13 +222,13 @@ final class PropertiesTest extends TestCase
                 'privateClassProperty',
                 'privateNullableClassProperty',
             ],
-            array_values(array_map(static function (ReflectionProperty $property) : string {
+            array_values(array_map(static function (ReflectionProperty $property): string {
                 return $property->getName();
             }, $nonReferenceableProperties))
         );
     }
 
-    public function testOnlyNonReferenceableProperties() : void
+    public function testOnlyNonReferenceableProperties(): void
     {
         self::assertTrue(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedReferenceableTypedProperties::class))
@@ -291,20 +292,20 @@ final class PropertiesTest extends TestCase
                 'privateClassProperty',
                 'privateNullableClassProperty',
             ],
-            array_values(array_map(static function (ReflectionProperty $property) : string {
+            array_values(array_map(static function (ReflectionProperty $property): string {
                 return $property->getName();
             }, $nonReferenceableProperties))
         );
     }
 
-    public function testGetProtectedPropertiesSkipsAbstractMethods() : void
+    public function testGetProtectedPropertiesSkipsAbstractMethods(): void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class));
 
         self::assertEmpty($properties->getProtectedProperties());
     }
 
-    public function testGetPrivateProperties() : void
+    public function testGetPrivateProperties(): void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
 
@@ -319,7 +320,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey($prefix . 'privateProperty2', $privateProperties);
     }
 
-    public function testGetPrivatePropertiesFromInheritance() : void
+    public function testGetPrivatePropertiesFromInheritance(): void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
@@ -347,7 +348,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey($prefix . 'property9', $privateProperties);
     }
 
-    public function testGetAccessibleMethods() : void
+    public function testGetAccessibleMethods(): void
     {
         $properties           = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $accessibleProperties = $properties->getAccessibleProperties();
@@ -361,7 +362,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey("\0*\0protectedProperty2", $accessibleProperties);
     }
 
-    public function testGetGroupedPrivateProperties() : void
+    public function testGetGroupedPrivateProperties(): void
     {
         $properties     = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class));
         $groupedPrivate = $properties->getGroupedPrivateProperties();
@@ -377,7 +378,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey('privateProperty2', $group);
     }
 
-    public function testGetGroupedPrivatePropertiesWithInheritedProperties() : void
+    public function testGetGroupedPrivatePropertiesWithInheritedProperties(): void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithCollidingPrivateInheritedProperties::class)
@@ -406,7 +407,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey('property9', $group2);
     }
 
-    public function testGetInstanceProperties() : void
+    public function testGetInstanceProperties(): void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithMixedProperties::class)
@@ -420,7 +421,7 @@ final class PropertiesTest extends TestCase
      *
      * @dataProvider propertiesToSkipFixture
      */
-    public function testSkipPropertiesByFiltering(string $propertyName) : void
+    public function testSkipPropertiesByFiltering(string $propertyName): void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithMixedProperties::class)
@@ -432,7 +433,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
-    public function testSkipOverwritedPropertyUsingInheritance() : void
+    public function testSkipOverwritedPropertyUsingInheritance(): void
     {
         $propertyName = "\0ProxyManagerTestAsset\\ClassWithCollidingPrivateInheritedProperties\0property0";
 
@@ -446,7 +447,7 @@ final class PropertiesTest extends TestCase
         self::assertArrayNotHasKey($propertyName, $filteredProperties->getInstanceProperties());
     }
 
-    public function testPropertiesIsSkippedFromRelatedMethods() : void
+    public function testPropertiesIsSkippedFromRelatedMethods(): void
     {
         $properties = Properties::fromReflectionClass(
             new ReflectionClass(ClassWithMixedProperties::class)
@@ -461,7 +462,7 @@ final class PropertiesTest extends TestCase
     }
 
     /** @return string[][] */
-    public function propertiesToSkipFixture() : array
+    public function propertiesToSkipFixture(): array
     {
         return [
             ['publicProperty0'],
@@ -470,7 +471,7 @@ final class PropertiesTest extends TestCase
         ];
     }
 
-    public function testWithoutNonReferenceableProperties() : void
+    public function testWithoutNonReferenceableProperties(): void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
             ->withoutNonReferenceableProperties()

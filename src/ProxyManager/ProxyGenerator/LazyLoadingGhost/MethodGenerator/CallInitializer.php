@@ -10,6 +10,7 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionProperty;
+
 use function array_map;
 use function implode;
 use function sprintf;
@@ -81,7 +82,7 @@ PHP;
         ));
     }
 
-    private function propertiesInitializationCode(Properties $properties) : string
+    private function propertiesInitializationCode(Properties $properties): string
     {
         $assignments = [];
 
@@ -107,12 +108,12 @@ PHP;
     /**
      * @param ReflectionProperty[] $properties
      */
-    private function getPropertyDefaultsAssignments(array $properties) : string
+    private function getPropertyDefaultsAssignments(array $properties): string
     {
         return implode(
             "\n",
             array_map(
-                function (ReflectionProperty $property) : string {
+                function (ReflectionProperty $property): string {
                     return '    $instance->' . $property->getName()
                         . ' = ' . $this->getExportedPropertyDefaultValue($property) . ';';
                 },
@@ -121,7 +122,7 @@ PHP;
         );
     }
 
-    private function propertiesReferenceArrayCode(Properties $properties) : string
+    private function propertiesReferenceArrayCode(Properties $properties): string
     {
         $assignments = [];
 
@@ -151,7 +152,7 @@ PHP;
     /**
      * @param array<string, ReflectionProperty> $properties indexed by internal name
      */
-    private function generatePrivatePropertiesAssignmentsCode(array $properties) : string
+    private function generatePrivatePropertiesAssignmentsCode(array $properties): string
     {
         $code = '';
 
@@ -164,7 +165,7 @@ PHP;
         return $code;
     }
 
-    private function getExportedPropertyDefaultValue(ReflectionProperty $property) : string
+    private function getExportedPropertyDefaultValue(ReflectionProperty $property): string
     {
         $name     = $property->getName();
         $defaults = $property->getDeclaringClass()->getDefaultProperties();

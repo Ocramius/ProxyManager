@@ -22,7 +22,7 @@ final class SoapTest extends TestCase
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::__construct
      * @covers \ProxyManager\Factory\RemoteObject\Adapter\Soap::getServiceName
      */
-    public function testCanBuildAdapterWithSoapRpcClient() : void
+    public function testCanBuildAdapterWithSoapRpcClient(): void
     {
         $client = $this->getMockBuilder(Client::class)->setMethods(['call'])->getMock();
 

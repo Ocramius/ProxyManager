@@ -20,7 +20,7 @@ use ReflectionClass;
  */
 final class StaticProxyConstructorTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $initializer = $this->createMock(PropertyGenerator::class);
 

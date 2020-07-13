@@ -19,7 +19,7 @@ final class InitializeProxyTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\InitializeProxy::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $initializer = $this->createMock(PropertyGenerator::class);
         $valueHolder = $this->createMock(PropertyGenerator::class);

@@ -29,7 +29,7 @@ class NullObjectGenerator implements ProxyGeneratorInterface
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator) : void
+    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator): void
     {
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 

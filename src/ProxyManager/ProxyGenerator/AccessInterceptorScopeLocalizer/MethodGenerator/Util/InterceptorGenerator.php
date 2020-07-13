@@ -9,6 +9,7 @@ use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionMethod;
+
 use function array_keys;
 use function array_map;
 use function implode;
@@ -57,7 +58,7 @@ PHP;
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors,
         ?ReflectionMethod $originalMethod
-    ) : string {
+    ): string {
         $replacements = [
             '{{$name}}'                        => var_export($method->getName(), true),
             '{{$prefixInterceptorsName}}'      => $prefixInterceptors->getName(),
@@ -66,7 +67,7 @@ PHP;
             '{{$suffixInterceptorsName}}'      => $suffixInterceptors->getName(),
             '{{$suffixEarlyReturnExpression}}' => ProxiedMethodReturnExpression::generate('$suffixReturnValue', $originalMethod),
             '{{$returnExpression}}'            => ProxiedMethodReturnExpression::generate('$returnValue', $originalMethod),
-            '{{$paramsString}}'                => 'array(' . implode(', ', array_map(static function (ParameterGenerator $parameter) : string {
+            '{{$paramsString}}'                => 'array(' . implode(', ', array_map(static function (ParameterGenerator $parameter): string {
                 return var_export($parameter->getName(), true) . ' => $' . $parameter->getName();
             }, $method->getParameters())) . ')',
         ];

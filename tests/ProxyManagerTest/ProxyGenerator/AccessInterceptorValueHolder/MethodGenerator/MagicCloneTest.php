@@ -21,7 +21,7 @@ final class MagicCloneTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\MagicClone::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $reflection         = new ReflectionClass(EmptyClass::class);
         $valueHolder        = $this->createMock(PropertyGenerator::class);

@@ -32,8 +32,11 @@ use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use ReflectionProperty;
 use stdClass;
+
 use function array_values;
+use function assert;
 use function get_class;
+use function is_callable;
 use function random_int;
 use function serialize;
 use function ucfirst;
@@ -58,7 +61,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
      */
-    public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue) : void
+    public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue): void
     {
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
@@ -67,8 +70,8 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 
         self::assertFalse($proxy->isProxyInitialized());
 
-        /** @var callable $callProxyMethod */
         $callProxyMethod = [$proxy, $method];
+        assert(is_callable($callProxyMethod));
         $parameterValues = array_values($params);
 
         self::assertSame($expectedValue, $callProxyMethod(...$parameterValues));
@@ -92,12 +95,12 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         string $method,
         array $params,
         $expectedValue
-    ) : void {
-        /** @var VirtualProxyInterface $proxy */
+    ): void {
         $proxy = unserialize(serialize((new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance)
         )));
+        assert($proxy instanceof VirtualProxyInterface);
 
         self::assertTrue($proxy->isProxyInitialized());
 
@@ -126,7 +129,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         string $method,
         array $params,
         $expectedValue
-    ) : void {
+    ): void {
         $proxy  = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $instance)
@@ -155,7 +158,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         VirtualProxyInterface $proxy,
         string $publicProperty,
         $propertyValue
-    ) : void {
+    ): void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         self::assertTrue($proxy->isProxyInitialized());
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
@@ -164,7 +167,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyWriteAccess(object $instance, VirtualProxyInterface $proxy, string $publicProperty) : void
+    public function testPropertyWriteAccess(object $instance, VirtualProxyInterface $proxy, string $publicProperty): void
     {
         $newValue               = uniqid('', true);
         $proxy->$publicProperty = $newValue;
@@ -182,7 +185,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyExistence(object $instance, VirtualProxyInterface $proxy, string $publicProperty) : void
+    public function testPropertyExistence(object $instance, VirtualProxyInterface $proxy, string $publicProperty): void
     {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         self::assertTrue($proxy->isProxyInitialized());
@@ -192,7 +195,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyAbsence(object $instance, VirtualProxyInterface $proxy, string $publicProperty) : void
+    public function testPropertyAbsence(object $instance, VirtualProxyInterface $proxy, string $publicProperty): void
     {
         $propertyType = (new ReflectionProperty($instance, $publicProperty))->getType();
 
@@ -209,7 +212,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyUnset(object $instance, VirtualProxyInterface $proxy, string $publicProperty) : void
+    public function testPropertyUnset(object $instance, VirtualProxyInterface $proxy, string $publicProperty): void
     {
         $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
         unset($proxy->$publicProperty);
@@ -223,7 +226,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * Verifies that accessing a public property containing an array behaves like in a normal context
      */
-    public function testCanWriteToArrayKeysInPublicProperty() : void
+    public function testCanWriteToArrayKeysInPublicProperty(): void
     {
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithPublicArrayProperty::class,
@@ -242,7 +245,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * Verifies that public properties retrieved via `__get` don't get modified in the object itself
      */
-    public function testWillNotModifyRetrievedPublicProperties() : void
+    public function testWillNotModifyRetrievedPublicProperties(): void
     {
         $proxy    = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithPublicProperties::class,
@@ -261,7 +264,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * Verifies that public properties references retrieved via `__get` modify in the object state
      */
-    public function testWillModifyByRefRetrievedPublicProperties() : void
+    public function testWillModifyByRefRetrievedPublicProperties(): void
     {
         $proxy    = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithPublicProperties::class,
@@ -282,13 +285,13 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      *
      * Verifies that initialization of a value holder proxy may happen multiple times
      */
-    public function testWillAllowMultipleProxyInitialization() : void
+    public function testWillAllowMultipleProxyInitialization(): void
     {
         $counter = 0;
 
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             BaseClass::class,
-            static function (?object & $wrappedInstance) use (& $counter) : bool {
+            static function (?object & $wrappedInstance) use (& $counter): bool {
                 $wrappedInstance = new BaseClass();
 
                 /** @var int $counter */
@@ -307,7 +310,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      * @group 115
      * @group 175
      */
-    public function testWillBehaveLikeObjectWithNormalConstructor() : void
+    public function testWillBehaveLikeObjectWithNormalConstructor(): void
     {
         $instance = new ClassWithCounterConstructor(10);
 
@@ -321,7 +324,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
             (new LazyLoadingValueHolderFactory())
                 ->createProxy(
                     ClassWithCounterConstructor::class,
-                    static function () : bool {
+                    static function (): bool {
                         return true;
                     }
                 )
@@ -339,11 +342,11 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * @group 265
      */
-    public function testWillForwardVariadicByRefArguments() : void
+    public function testWillForwardVariadicByRefArguments(): void
     {
         $object = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithMethodWithByRefVariadicFunction::class,
-            static function (?object & $wrappedInstance) : bool {
+            static function (?object & $wrappedInstance): bool {
                 $wrappedInstance = new ClassWithMethodWithByRefVariadicFunction();
 
                 return true;
@@ -364,11 +367,11 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      *
      * @group 265
      */
-    public function testWillNotForwardDynamicArguments() : void
+    public function testWillNotForwardDynamicArguments(): void
     {
         $object = (new LazyLoadingValueHolderFactory())->createProxy(
             ClassWithDynamicArgumentsMethod::class,
-            static function (?object & $wrappedInstance) : bool {
+            static function (?object & $wrappedInstance): bool {
                 $wrappedInstance = new ClassWithDynamicArgumentsMethod();
 
                 return true;
@@ -396,7 +399,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      * @psalm-param class-string<TClass> $className
      * @psalm-param TClass $realInstance
      */
-    private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null) : Closure
+    private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null): Closure
     {
         if (! $initializerMatcher) {
             $initializerMatcher = $this->createMock(CallableInterface::class);
@@ -425,7 +428,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         ) use (
             $initializerMatcher,
             $realInstance
-        ) : bool {
+        ): bool {
             $initializer = null;
 
             $wrappedObject = $realInstance;
@@ -441,7 +444,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      *
      * @return string[][]|object[][]|bool[][]|mixed[][][]
      */
-    public function getProxyMethods() : array
+    public function getProxyMethods(): array
     {
         $selfHintParam = new ClassWithSelfHint();
         $empty         = new EmptyClass();
@@ -546,7 +549,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      *
      * @return array<int, array<int, object|VirtualProxyInterface|string>>
      */
-    public function getPropertyAccessProxies() : array
+    public function getPropertyAccessProxies(): array
     {
         $instance1             = new BaseClass();
         $instance2             = new BaseClass();
@@ -556,12 +559,12 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         $typedProperty->typedProperty                 = 'Typed property initialized value';
         $typedNullableProperty->typedNullableProperty = 'Typed nullable property initialized value';
 
-        $factory = new LazyLoadingValueHolderFactory();
-        /** @var VirtualProxyInterface $serialized */
+        $factory    = new LazyLoadingValueHolderFactory();
         $serialized = unserialize(serialize($factory->createProxy(
             BaseClass::class,
             $this->createInitializer(BaseClass::class, $instance2)
         )));
+        assert($serialized instanceof VirtualProxyInterface);
 
         return [
             [
@@ -609,7 +612,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         object $realInstance,
         string $method,
         string $expectedValue
-    ) : void {
+    ): void {
         $className = get_class($realInstance);
         $proxy     = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
@@ -633,16 +636,16 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         object $realInstance,
         string $method,
         string $expectedValue
-    ) : void {
+    ): void {
         $className = get_class($realInstance);
-        /** @var LazyLoadingInterface $proxy */
-        $proxy = unserialize(serialize((new LazyLoadingValueHolderFactory())->createProxy(
+        $proxy     = unserialize(serialize((new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $realInstance)
         )));
+        assert($proxy instanceof LazyLoadingInterface);
 
-        /** @var callable $accessor */
         $accessor = [$callerObject, $method];
+        assert(is_callable($accessor));
 
         self::assertTrue($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
@@ -657,15 +660,15 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         object $realInstance,
         string $method,
         string $expectedValue
-    ) : void {
+    ): void {
         $className = get_class($realInstance);
         $proxy     = clone (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $realInstance)
         );
 
-        /** @var callable $accessor */
         $accessor = [$callerObject, $method];
+        assert(is_callable($accessor));
 
         self::assertTrue($proxy->isProxyInitialized());
         self::assertSame($expectedValue, $accessor($proxy));
@@ -674,7 +677,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     /**
      * @group 327
      */
-    public function testWillExecuteLogicInAVoidMethod() : void
+    public function testWillExecuteLogicInAVoidMethod(): void
     {
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             VoidCounter::class,
@@ -688,7 +691,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         self::assertSame($increment, $proxy->counter);
     }
 
-    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope() : Generator
+    public function getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope(): Generator
     {
         foreach ((new ReflectionClass(OtherObjectAccessClass::class))->getProperties() as $property) {
             $propertyName  = $property->getName();
@@ -721,7 +724,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     }
 
     /** @param array<string, string> $values */
-    private function buildInstanceWithValues(object $instance, array $values) : object
+    private function buildInstanceWithValues(object $instance, array $values): object
     {
         foreach ($values as $property => $value) {
             $property = new ReflectionProperty($instance, $property);
@@ -738,7 +741,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      * @param mixed $expected
      * @param mixed $actual
      */
-    private static function assertByRefVariableValueSame($expected, & $actual) : void
+    private static function assertByRefVariableValueSame($expected, & $actual): void
     {
         self::assertSame($expected, $actual);
     }

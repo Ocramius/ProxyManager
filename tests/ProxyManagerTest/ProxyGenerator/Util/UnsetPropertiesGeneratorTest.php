@@ -26,7 +26,7 @@ final class UnsetPropertiesGeneratorTest extends TestCase
      * @dataProvider classNamesProvider
      * @psalm-param class-string $className
      */
-    public function testGeneratedCode(string $className, string $expectedCode, string $instanceName) : void
+    public function testGeneratedCode(string $className, string $expectedCode, string $instanceName): void
     {
         self::assertSame(
             $expectedCode,
@@ -40,7 +40,7 @@ final class UnsetPropertiesGeneratorTest extends TestCase
     /**
      * @return string[][]
      */
-    public function classNamesProvider() : array
+    public function classNamesProvider(): array
     {
         return [
             EmptyClass::class => [

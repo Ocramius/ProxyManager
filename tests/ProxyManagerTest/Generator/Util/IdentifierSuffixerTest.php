@@ -7,6 +7,7 @@ namespace ProxyManagerTest\Generator\Util;
 use PackageVersions\Versions;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
+
 use function serialize;
 use function sha1;
 use function strlen;
@@ -23,7 +24,7 @@ final class IdentifierSuffixerTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public function testGeneratesSuffixedIdentifiers(string $name) : void
+    public function testGeneratesSuffixedIdentifiers(string $name): void
     {
         self::assertSame(
             IdentifierSuffixer::getIdentifier($name),
@@ -34,7 +35,7 @@ final class IdentifierSuffixerTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name) : void
+    public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name): void
     {
         self::assertStringEndsWith(
             substr(sha1($name . sha1(serialize(Versions::VERSIONS))), 0, 5),
@@ -45,7 +46,7 @@ final class IdentifierSuffixerTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public function testGeneratesValidIdentifiers(string $name) : void
+    public function testGeneratesValidIdentifiers(string $name): void
     {
         self::assertMatchesRegularExpression(
             '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/',
@@ -56,7 +57,7 @@ final class IdentifierSuffixerTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public static function testGeneratedIdentifierSuffix(string $name) : void
+    public static function testGeneratedIdentifierSuffix(string $name): void
     {
         // 5 generated characters are enough to keep idiots from tampering with these properties "the easy way"
         self::assertGreaterThan(5, strlen(IdentifierSuffixer::getIdentifier($name)));
@@ -67,7 +68,7 @@ final class IdentifierSuffixerTest extends TestCase
      *
      * @return string[][]
      */
-    public static function getBaseIdentifierNames() : array
+    public static function getBaseIdentifierNames(): array
     {
         return [
             [''],
