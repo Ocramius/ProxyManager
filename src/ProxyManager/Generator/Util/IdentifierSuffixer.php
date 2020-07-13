@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManager\Generator\Util;
 
-use PackageVersions\Versions;
+use Composer\InstalledVersions;
 
 use function preg_match;
 use function serialize;
@@ -48,6 +48,6 @@ abstract class IdentifierSuffixer
 
     private static function loadBaseHashSalt(): string
     {
-        return sha1(serialize(Versions::VERSIONS));
+        return sha1(serialize(InstalledVersions::getRawData()));
     }
 }

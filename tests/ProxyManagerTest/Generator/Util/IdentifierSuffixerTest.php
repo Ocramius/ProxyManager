@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Generator\Util;
 
-use PackageVersions\Versions;
+use Composer\InstalledVersions;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 
@@ -38,7 +38,7 @@ final class IdentifierSuffixerTest extends TestCase
     public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name): void
     {
         self::assertStringEndsWith(
-            substr(sha1($name . sha1(serialize(Versions::VERSIONS))), 0, 5),
+            substr(sha1($name . sha1(serialize(InstalledVersions::getRawData()))), 0, 5),
             IdentifierSuffixer::getIdentifier($name)
         );
     }
