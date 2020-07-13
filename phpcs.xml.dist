@@ -42,5 +42,8 @@
 
         <!-- `@param callable (?A, B) : C` is incorrectly recognized as nullable parameter in the first position of a callable -->
         <exclude name="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition.NullTypeHintNotOnLastPosition"/>
+
+        <!-- due to BC on interfaces, some `: void` return type signatures are omitted by design -->
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
     </rule>
 </ruleset>

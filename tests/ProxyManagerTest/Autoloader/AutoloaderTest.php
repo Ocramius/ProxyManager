@@ -10,6 +10,7 @@ use ProxyManager\Autoloader\Autoloader;
 use ProxyManager\FileLocator\FileLocatorInterface;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\Inflector\ClassNameInflectorInterface;
+
 use function class_exists;
 use function file_put_contents;
 use function spl_autoload_register;
@@ -37,7 +38,7 @@ final class AutoloaderTest extends TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__construct
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fileLocator        = $this->createMock(FileLocatorInterface::class);
         $this->classNameInflector = $this->createMock(ClassNameInflectorInterface::class);
@@ -47,7 +48,7 @@ final class AutoloaderTest extends TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillNotAutoloadUserClasses() : void
+    public function testWillNotAutoloadUserClasses(): void
     {
         /** @var class-string $className */
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
@@ -64,7 +65,7 @@ final class AutoloaderTest extends TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillNotAutoloadNonExistingClass() : void
+    public function testWillNotAutoloadNonExistingClass(): void
     {
         /** @var class-string $className */
         $className = 'Foo\\' . UniqueIdentifierGenerator::getIdentifier('Bar');
@@ -86,7 +87,7 @@ final class AutoloaderTest extends TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillNotAutoloadExistingClass() : void
+    public function testWillNotAutoloadExistingClass(): void
     {
         self::assertFalse($this->autoloadWithoutFurtherAutoloaders(self::class));
     }
@@ -94,7 +95,7 @@ final class AutoloaderTest extends TestCase
     /**
      * @covers \ProxyManager\Autoloader\Autoloader::__invoke
      */
-    public function testWillAutoloadExistingFile() : void
+    public function testWillAutoloadExistingFile(): void
     {
         $namespace = 'Foo';
         $className = UniqueIdentifierGenerator::getIdentifier('Bar');
@@ -121,10 +122,10 @@ final class AutoloaderTest extends TestCase
     }
 
     /** @psalm-param class-string $className */
-    private function autoloadWithoutFurtherAutoloaders(string $className) : bool
+    private function autoloadWithoutFurtherAutoloaders(string $className): bool
     {
         $failingAutoloader = null;
-        $failingAutoloader = function (string $className) use (& $failingAutoloader) : void {
+        $failingAutoloader = function (string $className) use (& $failingAutoloader): void {
             spl_autoload_unregister($failingAutoloader);
 
             $this->fail(sprintf('Fallback autoloading was triggered to load "%s"', $className));

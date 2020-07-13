@@ -17,7 +17,7 @@ final class SignatureGeneratorTest extends TestCase
 {
     private SignatureGenerator $signatureGenerator;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->signatureGenerator = new SignatureGenerator();
     }
@@ -27,7 +27,7 @@ final class SignatureGeneratorTest extends TestCase
      *
      * @dataProvider signatures
      */
-    public function testGenerateSignature(array $parameters, string $expected) : void
+    public function testGenerateSignature(array $parameters, string $expected): void
     {
         self::assertSame($expected, $this->signatureGenerator->generateSignature($parameters));
     }
@@ -37,13 +37,13 @@ final class SignatureGeneratorTest extends TestCase
      *
      * @dataProvider signatureKeys
      */
-    public function testGenerateSignatureKey(array $parameters, string $expected) : void
+    public function testGenerateSignatureKey(array $parameters, string $expected): void
     {
         self::assertSame($expected, $this->signatureGenerator->generateSignatureKey($parameters));
     }
 
     /** @return array<int, array<int, array<string>|string>> */
-    public static function signatures() : array
+    public static function signatures(): array
     {
         return [
             [
@@ -70,7 +70,7 @@ final class SignatureGeneratorTest extends TestCase
     }
 
     /** @return string[][]|string[][][] */
-    public static function signatureKeys() : array
+    public static function signatureKeys(): array
     {
         return [
             [[], '40cd750bba9870f18aada2478b24840a'],

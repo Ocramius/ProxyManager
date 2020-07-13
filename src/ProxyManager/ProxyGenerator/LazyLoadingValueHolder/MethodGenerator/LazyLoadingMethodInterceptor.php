@@ -10,7 +10,6 @@ use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 
-use function assert;
 use function implode;
 use function var_export;
 
@@ -27,7 +26,7 @@ class LazyLoadingMethodInterceptor extends MethodGenerator
         PropertyGenerator $initializerProperty,
         PropertyGenerator $valueHolderProperty
     ): self {
-        $method = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
+        $method            = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $initializerName   = $initializerProperty->getName();
         $valueHolderName   = $valueHolderProperty->getName();
         $parameters        = $originalMethod->getParameters();

@@ -22,7 +22,7 @@ final class ClassNameInflectorTest extends TestCase
      *
      * @dataProvider getClassNames
      */
-    public function testInflector(string $realClassName, string $proxyClassName) : void
+    public function testInflector(string $realClassName, string $proxyClassName): void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -34,7 +34,7 @@ final class ClassNameInflectorTest extends TestCase
         self::assertStringMatchesFormat($realClassName, $inflector->getUserClassName($proxyClassName));
     }
 
-    public function testGeneratesSameClassNameWithSameParameters() : void
+    public function testGeneratesSameClassNameWithSameParameters(): void
     {
         /** @var class-string $fooBar */
         $fooBar    = 'Foo\\Bar';
@@ -51,7 +51,7 @@ final class ClassNameInflectorTest extends TestCase
         );
     }
 
-    public function testGeneratesDifferentClassNameWithDifferentParameters() : void
+    public function testGeneratesDifferentClassNameWithDifferentParameters(): void
     {
         /** @var class-string $fooBar */
         $fooBar    = 'Foo\\Bar';
@@ -75,7 +75,7 @@ final class ClassNameInflectorTest extends TestCase
         );
     }
 
-    public function testGeneratesCorrectClassNameWhenGivenLeadingBackslash() : void
+    public function testGeneratesCorrectClassNameWhenGivenLeadingBackslash(): void
     {
         /** @var class-string $fooBar */
         $fooBar = 'Foo\\Bar';
@@ -95,7 +95,7 @@ final class ClassNameInflectorTest extends TestCase
      *
      * @dataProvider getClassAndParametersCombinations
      */
-    public function testClassNameIsValidClassIdentifier(string $className, array $parameters) : void
+    public function testClassNameIsValidClassIdentifier(string $className, array $parameters): void
     {
         $inflector = new ClassNameInflector('ProxyNS');
 
@@ -111,7 +111,7 @@ final class ClassNameInflectorTest extends TestCase
      *
      * @return string[][]
      */
-    public static function getClassNames() : array
+    public static function getClassNames(): array
     {
         return [
             ['Foo', 'ProxyNS\\' . ClassNameInflectorInterface::PROXY_MARKER . '\\Foo\\%s'],
@@ -124,7 +124,7 @@ final class ClassNameInflectorTest extends TestCase
      *
      * @return mixed[][]
      */
-    public static function getClassAndParametersCombinations() : array
+    public static function getClassAndParametersCombinations(): array
     {
         return [
             ['Foo', []],
