@@ -21,7 +21,7 @@
     "require": {
         "php":                       "~7.4.1",
         "laminas/laminas-code":      "^3.4.1",
-        "ocramius/package-versions": "^1.8.0",
+        "ocramius/package-versions": "^1.8.0,<1.10.0",
         "webimpress/safe-writer":    "^2.0.1"
     },
     "conflict": {
