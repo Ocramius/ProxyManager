@@ -1,0 +1,69 @@
+name: "Check Demo Scripts"
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  demo-scripts:
+    name: "Check Demo Scripts"
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        dependencies:
+          - "locked"
+        php-version:
+          - "7.4"
+        operating-system:
+          - "ubuntu-latest"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "pcov"
+          php-version: "${{ matrix.php-version }}"
+          ini-values: memory_limit=-1
+
+      - name: "Cache dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+          restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
+
+      - name: "Install lowest dependencies"
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
+
+      - name: "Install highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
+        run: "composer update --no-interaction --no-progress --no-suggest"
+
+      - name: "Install locked dependencies"
+        if: ${{ matrix.dependencies == 'locked' }}
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: "Check Demo Scripts"
+        run: |
+          php examples/access-interceptor-scope-localizer.php
+          php examples/ghost-object.php
+          php examples/ghost-object-skipped-properties.php
+          php examples/smart-reference.php
+          php examples/virtual-proxy.php
+
+      - name: "Check Static Analysis Scripts"
+        run: |
+          php tests/static-analysis/access-interceptor-scope-localizer.php
+          php tests/static-analysis/lazy-loading-ghost-object.php
+          php tests/static-analysis/null-object.php
+          php tests/static-analysis/access-interceptor-value-holder.php
+          php tests/static-analysis/lazy-loading-value-holder.php
+          php tests/static-analysis/remote-object.php

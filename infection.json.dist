@@ -4,8 +4,12 @@
             "src"
         ]
     },
-    "timeout": 15,
     "logs": {
-        "text": "infectionlog.txt"
-    }
+        "text": "php://stderr",
+        "badge": {
+            "branch": "master"
+        }
+    },
+    "minMsi": 84,
+    "minCoveredMsi": 86
 }
