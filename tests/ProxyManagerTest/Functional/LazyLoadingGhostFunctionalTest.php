@@ -1281,7 +1281,6 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         string $propertyIndex,
         string $expectedValue
     ): void {
-        /** @var GhostObjectInterface $proxy */
         $proxy = unserialize(serialize(
             (new LazyLoadingGhostFactory())->createProxy(
                 OtherObjectAccessClass::class,
@@ -1304,6 +1303,8 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
                 }
             )
         ));
+
+        self::assertInstanceOf(GhostObjectInterface::class, $proxy);
 
         $accessor = [$callerObject, $method];
 

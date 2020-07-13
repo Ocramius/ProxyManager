@@ -37,9 +37,6 @@ final class LazyLoadingGhostFactoryTest extends TestCase
     /** @var Configuration&MockObject */
     protected Configuration $config;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function setUp() : void
     {
         $this->config                  = $this->createMock(Configuration::class);

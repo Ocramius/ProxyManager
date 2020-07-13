@@ -20,7 +20,7 @@ use ReflectionClass;
  */
 final class SignatureCheckerTest extends TestCase
 {
-    private string $signatureExample = 'valid-signature';
+    public string $signatureExample = 'valid-signature';
     private SignatureChecker $signatureChecker;
 
     /** @var SignatureGeneratorInterface&MockObject */

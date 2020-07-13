@@ -59,9 +59,7 @@ PHP;
         return $method;
     }
 
-    /**
-     * @return array
-     */
+    /** @psalm-return list<int|float|bool|array|string|null> */
     private static function getDefaultValuesForMethod(MethodReflection $originalMethod): array
     {
         $defaultValues = [];
