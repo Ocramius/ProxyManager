@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolder\MethodGenerator\InterceptedMethod;
 use ProxyManagerTestAsset\BaseClass;
+
 use function strpos;
 
 /**
@@ -21,7 +22,7 @@ use function strpos;
  */
 final class InterceptedMethodTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);

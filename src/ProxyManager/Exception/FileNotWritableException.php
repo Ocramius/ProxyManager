@@ -6,6 +6,7 @@ namespace ProxyManager\Exception;
 
 use UnexpectedValueException;
 use Webimpress\SafeWriter\Exception\ExceptionInterface as FileWriterException;
+
 use function sprintf;
 
 /**
@@ -16,7 +17,7 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
     /**
      * @deprecated
      */
-    public static function fromInvalidMoveOperation(string $fromPath, string $toPath) : self
+    public static function fromInvalidMoveOperation(string $fromPath, string $toPath): self
     {
         return new self(sprintf(
             'Could not move file "%s" to location "%s": '
@@ -29,7 +30,7 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
     /**
      * @deprecated
      */
-    public static function fromNotWritableDirectory(string $directory) : self
+    public static function fromNotWritableDirectory(string $directory): self
     {
         return new self(sprintf(
             'Could not create temp file in directory "%s" '
@@ -38,7 +39,7 @@ class FileNotWritableException extends UnexpectedValueException implements Excep
         ));
     }
 
-    public static function fromPrevious(FileWriterException $previous) : self
+    public static function fromPrevious(FileWriterException $previous): self
     {
         return new self($previous->getMessage(), 0, $previous);
     }

@@ -21,7 +21,9 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionProperty;
 use stdClass;
+
 use function array_values;
+use function assert;
 use function random_int;
 use function serialize;
 use function uniqid;
@@ -42,7 +44,7 @@ final class NullObjectFunctionalTest extends TestCase
      *
      * @psalm-param class-string $className
      */
-    public function testMethodCalls(string $className, string $method, array $params) : void
+    public function testMethodCalls(string $className, string $method, array $params): void
     {
         $proxy = (new NullObjectFactory())->createProxy($className);
 
@@ -56,10 +58,10 @@ final class NullObjectFunctionalTest extends TestCase
      *
      * @psalm-param class-string $className
      */
-    public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params) : void
+    public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params): void
     {
-        /** @var NullObjectInterface $proxy */
         $proxy = unserialize(serialize((new NullObjectFactory())->createProxy($className)));
+        assert($proxy instanceof NullObjectInterface);
 
         $this->assertNullMethodCall($proxy, $method, $params);
     }
@@ -71,7 +73,7 @@ final class NullObjectFunctionalTest extends TestCase
      *
      * @psalm-param class-string $className
      */
-    public function testMethodCallsAfterCloning(string $className, string $method, array $params) : void
+    public function testMethodCallsAfterCloning(string $className, string $method, array $params): void
     {
         $proxy = (new NullObjectFactory())->createProxy($className);
 
@@ -81,7 +83,7 @@ final class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty) : void
+    public function testPropertyReadAccess(NullObjectInterface $proxy, string $publicProperty): void
     {
         if (! $this->propertyHasDefaultNullableValue(new ReflectionProperty($proxy, $publicProperty))) {
             // Accessing a typed property without default value before initialization
@@ -95,7 +97,7 @@ final class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty) : void
+    public function testPropertyWriteAccess(NullObjectInterface $proxy, string $publicProperty): void
     {
         $newValue               = uniqid('', true);
         $proxy->$publicProperty = $newValue;
@@ -106,7 +108,7 @@ final class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty) : void
+    public function testPropertyExistence(NullObjectInterface $proxy, string $publicProperty): void
     {
         if (! $this->propertyHasDefaultNullableValue(new ReflectionProperty($proxy, $publicProperty))) {
             // Accessing a typed property without default value before initialization
@@ -120,7 +122,7 @@ final class NullObjectFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty) : void
+    public function testPropertyUnset(NullObjectInterface $proxy, string $publicProperty): void
     {
         unset($proxy->$publicProperty);
 
@@ -132,7 +134,7 @@ final class NullObjectFunctionalTest extends TestCase
      *
      * @return string[][]|null[][]|mixed[][][]|object[][]
      */
-    public function getProxyMethods() : array
+    public function getProxyMethods(): array
     {
         $selfHintParam = new ClassWithSelfHint();
         $empty         = new EmptyClass();
@@ -200,11 +202,11 @@ final class NullObjectFunctionalTest extends TestCase
      *
      * @return array<int, array<int, NullObjectInterface|string|null>>
      */
-    public function getPropertyAccessProxies() : array
+    public function getPropertyAccessProxies(): array
     {
-        $factory = new NullObjectFactory();
-        /** @var NullObjectInterface $serialized */
+        $factory    = new NullObjectFactory();
         $serialized = unserialize(serialize($factory->createProxy(BaseClass::class)));
+        assert($serialized instanceof NullObjectInterface);
 
         return [
             [
@@ -238,7 +240,7 @@ final class NullObjectFunctionalTest extends TestCase
     /**
      * @param mixed[] $parameters
      */
-    private function assertNullMethodCall(NullObjectInterface $proxy, string $methodName, array $parameters) : void
+    private function assertNullMethodCall(NullObjectInterface $proxy, string $methodName, array $parameters): void
     {
         $method = [$proxy, $methodName];
 
@@ -249,7 +251,7 @@ final class NullObjectFunctionalTest extends TestCase
         self::assertNull($method(...$parameterValues));
     }
 
-    private function propertyHasDefaultNullableValue(ReflectionProperty $property) : bool
+    private function propertyHasDefaultNullableValue(ReflectionProperty $property): bool
     {
         $type = $property->getType();
 

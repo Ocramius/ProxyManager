@@ -16,10 +16,7 @@ use ProxyManagerTest\ProxyGenerator\PropertyGenerator\AbstractUniquePropertyName
  */
 final class InitializerPropertyTest extends AbstractUniquePropertyNameTest
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function createProperty() : PropertyGenerator
+    protected function createProperty(): PropertyGenerator
     {
         return new InitializerProperty();
     }

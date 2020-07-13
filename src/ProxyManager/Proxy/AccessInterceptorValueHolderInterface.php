@@ -26,7 +26,7 @@ interface AccessInterceptorValueHolderInterface extends AccessInterceptorInterfa
      *   bool=
      * ) : mixed $prefixInterceptor
      */
-    public function setMethodPrefixInterceptor(string $methodName, ?Closure $prefixInterceptor = null) : void;
+    public function setMethodPrefixInterceptor(string $methodName, ?Closure $prefixInterceptor = null): void;
 
     /**
      * {@inheritDoc}
@@ -45,7 +45,7 @@ interface AccessInterceptorValueHolderInterface extends AccessInterceptorInterfa
      *   bool=
      * ) : mixed $suffixInterceptor
      */
-    public function setMethodSuffixInterceptor(string $methodName, ?Closure $suffixInterceptor = null) : void;
+    public function setMethodSuffixInterceptor(string $methodName, ?Closure $suffixInterceptor = null): void;
 
     /**
      * {@inheritDoc}
@@ -54,5 +54,5 @@ interface AccessInterceptorValueHolderInterface extends AccessInterceptorInterfa
      *
      * @psalm-return InterceptedObjectType|null
      */
-    public function getWrappedValueHolderValue() : ?object;
+    public function getWrappedValueHolderValue(): ?object;
 }

@@ -24,14 +24,14 @@ final class ProxiedMethodReturnExpressionTest extends TestCase
         string $expression,
         ?ReflectionMethod $originalMethod,
         string $expectedGeneratedCode
-    ) : void {
+    ): void {
         self::assertSame($expectedGeneratedCode, ProxiedMethodReturnExpression::generate($expression, $originalMethod));
     }
 
     /**
      * @psalm-return array<string, array{0: string, 1: ReflectionMethod|null, 2: string}>
      */
-    public function returnExpressionsProvider() : array
+    public function returnExpressionsProvider(): array
     {
         return [
             'variable, no original method' => [

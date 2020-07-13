@@ -6,6 +6,7 @@ namespace ProxyManager\Signature\Exception;
 
 use ReflectionClass;
 use UnexpectedValueException;
+
 use function count;
 use function sprintf;
 
@@ -20,7 +21,7 @@ class InvalidSignatureException extends UnexpectedValueException implements Exce
         array $parameters,
         string $signature,
         string $expected
-    ) : self {
+    ): self {
         return new self(sprintf(
             'Found signature "%s" for class "%s" does not correspond to expected signature "%s" for %d parameters',
             $signature,

@@ -7,6 +7,7 @@ namespace ProxyManager\Signature;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ReflectionClass;
+
 use function array_key_exists;
 use function is_string;
 
@@ -25,7 +26,7 @@ final class SignatureChecker implements SignatureCheckerInterface
     /**
      * {@inheritDoc}
      */
-    public function checkSignature(ReflectionClass $class, array $parameters) : void
+    public function checkSignature(ReflectionClass $class, array $parameters): void
     {
         $propertyName      = 'signature' . $this->signatureGenerator->generateSignatureKey($parameters);
         $signature         = $this->signatureGenerator->generateSignature($parameters);

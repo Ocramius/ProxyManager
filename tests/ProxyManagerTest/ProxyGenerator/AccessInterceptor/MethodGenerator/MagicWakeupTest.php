@@ -19,7 +19,7 @@ use ReflectionClass;
  */
 final class MagicWakeupTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $reflection = new ReflectionClass(
             ClassWithTwoPublicProperties::class
@@ -32,7 +32,7 @@ final class MagicWakeupTest extends TestCase
         self::assertSame("unset(\$this->bar, \$this->baz);\n\n", $magicWakeup->getBody());
     }
 
-    public function testBodyStructureWithoutPublicProperties() : void
+    public function testBodyStructureWithoutPublicProperties(): void
     {
         $magicWakeup = new MagicWakeup(new ReflectionClass(EmptyClass::class));
 
@@ -44,7 +44,7 @@ final class MagicWakeupTest extends TestCase
     /**
      * @group 276
      */
-    public function testWillUnsetPrivateProperties() : void
+    public function testWillUnsetPrivateProperties(): void
     {
         $magicWakeup = new MagicWakeup(new ReflectionClass(ClassWithMixedProperties::class));
 

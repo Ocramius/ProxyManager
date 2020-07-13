@@ -22,6 +22,7 @@ use ProxyManager\ProxyGenerator\RemoteObject\PropertyGenerator\AdapterProperty;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ReflectionClass;
 use ReflectionMethod;
+
 use function array_map;
 use function array_merge;
 
@@ -56,12 +57,12 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($adapter = new AdapterProperty());
 
         array_map(
-            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator) : void {
+            static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator): void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
                 array_map(
-                    static function (ReflectionMethod $method) use ($adapter, $originalClass) : RemoteObjectMethod {
+                    static function (ReflectionMethod $method) use ($adapter, $originalClass): RemoteObjectMethod {
                         return RemoteObjectMethod::generateMethod(
                             new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                             $adapter,

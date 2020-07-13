@@ -45,5 +45,5 @@ interface GhostObjectInterface extends LazyLoadingInterface
      *   array<string, mixed>=
      * ) : bool
      */
-    public function getProxyInitializer() : ?Closure;
+    public function getProxyInitializer(): ?Closure;
 }

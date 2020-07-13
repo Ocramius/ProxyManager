@@ -18,7 +18,7 @@ final class InvalidProxyDirectoryExceptionTest extends TestCase
     /**
      * @covers \ProxyManager\Exception\InvalidProxyDirectoryException::proxyDirectoryNotFound
      */
-    public function testProxyDirectoryNotFound() : void
+    public function testProxyDirectoryNotFound(): void
     {
         $exception = InvalidProxyDirectoryException::proxyDirectoryNotFound('foo/bar');
 

@@ -15,6 +15,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\ProtectedProp
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
+
 use function sprintf;
 
 /**

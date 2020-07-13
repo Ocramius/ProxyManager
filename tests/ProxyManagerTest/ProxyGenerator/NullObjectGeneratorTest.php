@@ -36,7 +36,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      * @psalm-param class-string $className
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function testGeneratesValidCode(string $className) : void
+    public function testGeneratesValidCode(string $className): void
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');
@@ -68,9 +68,11 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 
         self::assertInstanceOf($className, $proxy);
 
-        foreach (Properties::fromReflectionClass($generatedReflection)
+        foreach (
+            Properties::fromReflectionClass($generatedReflection)
                 ->onlyNullableProperties()
-                ->getPublicProperties() as $property) {
+                ->getPublicProperties() as $property
+        ) {
             /** @psalm-suppress MixedPropertyFetch */
             self::assertNull($proxy->{$property->getName()});
         }
@@ -87,10 +89,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getProxyGenerator() : ProxyGeneratorInterface
+    protected function getProxyGenerator(): ProxyGeneratorInterface
     {
         return new NullObjectGenerator();
     }
@@ -98,7 +97,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces() : array
+    protected function getExpectedImplementedInterfaces(): array
     {
         return [
             NullObjectInterface::class,
@@ -108,7 +107,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
     /**
      * @psalm-return array<int, array<int, class-string>>
      */
-    public function getTestedImplementations() : array
+    public function getTestedImplementations(): array
     {
         return [
             [BaseClass::class],

@@ -23,10 +23,7 @@ final class ConfigurationTest extends TestCase
 {
     private Configuration $configuration;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->configuration = new Configuration();
     }
@@ -35,7 +32,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getProxiesNamespace
      * @covers \ProxyManager\Configuration::setProxiesNamespace
      */
-    public function testGetSetProxiesNamespace() : void
+    public function testGetSetProxiesNamespace(): void
     {
         self::assertSame(
             'ProxyManagerGeneratedProxy',
@@ -51,7 +48,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getClassNameInflector
      * @covers \ProxyManager\Configuration::setClassNameInflector
      */
-    public function testSetGetClassNameInflector() : void
+    public function testSetGetClassNameInflector(): void
     {
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(ClassNameInflectorInterface::class, $this->configuration->getClassNameInflector());
@@ -65,7 +62,7 @@ final class ConfigurationTest extends TestCase
     /**
      * @covers \ProxyManager\Configuration::getGeneratorStrategy
      */
-    public function testDefaultGeneratorStrategyNeedToBeAInstanceOfEvaluatingGeneratorStrategy() : void
+    public function testDefaultGeneratorStrategyNeedToBeAInstanceOfEvaluatingGeneratorStrategy(): void
     {
         self::assertInstanceOf(EvaluatingGeneratorStrategy::class, $this->configuration->getGeneratorStrategy());
     }
@@ -74,7 +71,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getGeneratorStrategy
      * @covers \ProxyManager\Configuration::setGeneratorStrategy
      */
-    public function testSetGetGeneratorStrategy() : void
+    public function testSetGetGeneratorStrategy(): void
     {
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(GeneratorStrategyInterface::class, $this->configuration->getGeneratorStrategy());
@@ -89,7 +86,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getProxiesTargetDir
      * @covers \ProxyManager\Configuration::setProxiesTargetDir
      */
-    public function testSetGetProxiesTargetDir() : void
+    public function testSetGetProxiesTargetDir(): void
     {
         self::assertDirectoryExists($this->configuration->getProxiesTargetDir());
 
@@ -101,7 +98,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getProxyAutoloader
      * @covers \ProxyManager\Configuration::setProxyAutoloader
      */
-    public function testSetGetProxyAutoloader() : void
+    public function testSetGetProxyAutoloader(): void
     {
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(AutoloaderInterface::class, $this->configuration->getProxyAutoloader());
@@ -116,7 +113,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getSignatureGenerator
      * @covers \ProxyManager\Configuration::setSignatureGenerator
      */
-    public function testSetGetSignatureGenerator() : void
+    public function testSetGetSignatureGenerator(): void
     {
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
@@ -131,7 +128,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getSignatureChecker
      * @covers \ProxyManager\Configuration::setSignatureChecker
      */
-    public function testSetGetSignatureChecker() : void
+    public function testSetGetSignatureChecker(): void
     {
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(SignatureCheckerInterface::class, $this->configuration->getSignatureChecker());
@@ -146,7 +143,7 @@ final class ConfigurationTest extends TestCase
      * @covers \ProxyManager\Configuration::getClassSignatureGenerator
      * @covers \ProxyManager\Configuration::setClassSignatureGenerator
      */
-    public function testSetGetClassSignatureGenerator() : void
+    public function testSetGetClassSignatureGenerator(): void
     {
         /** @noinspection UnnecessaryAssertionInspection */
         self::assertInstanceOf(

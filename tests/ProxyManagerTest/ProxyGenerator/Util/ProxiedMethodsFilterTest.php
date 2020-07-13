@@ -20,6 +20,7 @@ use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\LazyLoadingMock;
 use ReflectionClass;
 use ReflectionMethod;
+
 use function array_map;
 use function sort;
 
@@ -37,12 +38,12 @@ final class ProxiedMethodsFilterTest extends TestCase
      *
      * @dataProvider expectedMethods
      */
-    public function testFiltering(ReflectionClass $reflectionClass, ?array $excludes, array $expectedMethods) : void
+    public function testFiltering(ReflectionClass $reflectionClass, ?array $excludes, array $expectedMethods): void
     {
         $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
 
         $keys = array_map(
-            static function (ReflectionMethod $method) : string {
+            static function (ReflectionMethod $method): string {
                 return $method->getName();
             },
             $filtered
@@ -64,11 +65,11 @@ final class ProxiedMethodsFilterTest extends TestCase
         ReflectionClass $reflectionClass,
         ?array $excludes,
         array $expectedMethods
-    ) : void {
+    ): void {
         $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
 
         $keys = array_map(
-            static function (ReflectionMethod $method) : string {
+            static function (ReflectionMethod $method): string {
                 return $method->getName();
             },
             $filtered
@@ -85,7 +86,7 @@ final class ProxiedMethodsFilterTest extends TestCase
      *
      * @return ReflectionClass[][]|null[][]|string[][][]
      */
-    public function expectedMethods() : array
+    public function expectedMethods(): array
     {
         return [
             [
@@ -205,7 +206,7 @@ final class ProxiedMethodsFilterTest extends TestCase
      *
      * @return ReflectionClass[][]|null[][]|string[][][]
      */
-    public function expectedAbstractPublicMethods() : array
+    public function expectedAbstractPublicMethods(): array
     {
         return [
             [

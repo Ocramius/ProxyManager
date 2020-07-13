@@ -23,7 +23,7 @@ final class MagicGetTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicGet::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
         $initializer      = $this->createMock(PropertyGenerator::class);
@@ -52,7 +52,7 @@ final class MagicGetTest extends TestCase
     /**
      * @group 344
      */
-    public function testBodyStructureWithPreExistingGetMethod() : void
+    public function testBodyStructureWithPreExistingGetMethod(): void
     {
         $reflection       = new ReflectionClass(ClassWithMagicMethods::class);
         $initializer      = $this->createMock(PropertyGenerator::class);

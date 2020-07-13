@@ -6,7 +6,9 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use ReflectionClass;
 use ReflectionProperty;
+
 use function array_map;
+use function assert;
 use function implode;
 use function reset;
 use function sprintf;
@@ -23,13 +25,13 @@ final class UnsetPropertiesGenerator
 }, $%s, %s)->__invoke($%s);
 PHP;
 
-    public static function generateSnippet(Properties $properties, string $instanceName) : string
+    public static function generateSnippet(Properties $properties, string $instanceName): string
     {
         return self::generateUnsetAccessiblePropertiesCode($properties, $instanceName)
             . self::generateUnsetPrivatePropertiesCode($properties, $instanceName);
     }
 
-    private static function generateUnsetAccessiblePropertiesCode(Properties $properties, string $instanceName) : string
+    private static function generateUnsetAccessiblePropertiesCode(Properties $properties, string $instanceName): string
     {
         $accessibleProperties = $properties->getAccessibleProperties();
 
@@ -40,7 +42,7 @@ PHP;
         return self::generateUnsetStatement($accessibleProperties, $instanceName) . "\n\n";
     }
 
-    private static function generateUnsetPrivatePropertiesCode(Properties $properties, string $instanceName) : string
+    private static function generateUnsetPrivatePropertiesCode(Properties $properties, string $instanceName): string
     {
         $groups = $properties->getGroupedPrivateProperties();
 
@@ -51,8 +53,8 @@ PHP;
         $unsetClosureCalls = [];
 
         foreach ($groups as $privateProperties) {
-            /** @var ReflectionProperty $firstProperty */
             $firstProperty = reset($privateProperties);
+            assert($firstProperty instanceof ReflectionProperty);
 
             $unsetClosureCalls[] = self::generateUnsetClassPrivatePropertiesBlock(
                 $firstProperty->getDeclaringClass(),
@@ -69,7 +71,7 @@ PHP;
         ReflectionClass $declaringClass,
         array $properties,
         string $instanceName
-    ) : string {
+    ): string {
         $declaringClassName = $declaringClass->getName();
 
         return sprintf(
@@ -83,13 +85,13 @@ PHP;
     }
 
     /** @param array<string, ReflectionProperty> $properties */
-    private static function generateUnsetStatement(array $properties, string $instanceName) : string
+    private static function generateUnsetStatement(array $properties, string $instanceName): string
     {
         return 'unset('
             . implode(
                 ', ',
                 array_map(
-                    static function (ReflectionProperty $property) use ($instanceName) : string {
+                    static function (ReflectionProperty $property) use ($instanceName): string {
                         return '$' . $instanceName . '->' . $property->getName();
                     },
                     $properties

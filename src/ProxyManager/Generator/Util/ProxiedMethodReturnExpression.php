@@ -13,7 +13,7 @@ use ReflectionMethod;
  */
 final class ProxiedMethodReturnExpression
 {
-    public static function generate(string $returnedValueExpression, ?ReflectionMethod $originalMethod) : string
+    public static function generate(string $returnedValueExpression, ?ReflectionMethod $originalMethod): string
     {
         $originalReturnType = $originalMethod === null
             ? null

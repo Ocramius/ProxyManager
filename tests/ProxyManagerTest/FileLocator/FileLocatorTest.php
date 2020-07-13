@@ -7,6 +7,7 @@ namespace ProxyManagerTest\FileLocator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\InvalidProxyDirectoryException;
 use ProxyManager\FileLocator\FileLocator;
+
 use const DIRECTORY_SEPARATOR;
 
 /**
@@ -20,7 +21,7 @@ final class FileLocatorTest extends TestCase
      * @covers \ProxyManager\FileLocator\FileLocator::__construct
      * @covers \ProxyManager\FileLocator\FileLocator::getProxyFileName
      */
-    public function testGetProxyFileName() : void
+    public function testGetProxyFileName(): void
     {
         $locator = new FileLocator(__DIR__);
 
@@ -31,7 +32,7 @@ final class FileLocatorTest extends TestCase
     /**
      * @covers \ProxyManager\FileLocator\FileLocator::__construct
      */
-    public function testRejectsNonExistingDirectory() : void
+    public function testRejectsNonExistingDirectory(): void
     {
         $this->expectException(InvalidProxyDirectoryException::class);
         new FileLocator(__DIR__ . '/non-existing');

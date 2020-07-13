@@ -28,10 +28,7 @@ final class BindProxyPropertiesTest extends TestCase
     /** @var PropertyGenerator&MockObject */
     private PropertyGenerator $suffixInterceptors;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->prefixInterceptors = $this->createMock(PropertyGenerator::class);
         $this->suffixInterceptors = $this->createMock(PropertyGenerator::class);
@@ -40,7 +37,7 @@ final class BindProxyPropertiesTest extends TestCase
         $this->suffixInterceptors->method('getName')->willReturn('post');
     }
 
-    public function testSignature() : void
+    public function testSignature(): void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithProtectedProperties::class),
@@ -63,7 +60,7 @@ final class BindProxyPropertiesTest extends TestCase
         self::assertSame('array', $parameters['suffixInterceptors']->getType());
     }
 
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithMixedProperties::class),
@@ -103,7 +100,7 @@ PHP;
         self::assertSame($expectedCode, $method->getBody());
     }
 
-    public function testBodyStructureWithProtectedProperties() : void
+    public function testBodyStructureWithProtectedProperties(): void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithProtectedProperties::class),
@@ -138,7 +135,7 @@ $this->post = $suffixInterceptors;',
         );
     }
 
-    public function testBodyStructureWithPrivateProperties() : void
+    public function testBodyStructureWithPrivateProperties(): void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithPrivateProperties::class),
@@ -193,7 +190,7 @@ $this->post = $suffixInterceptors;',
         );
     }
 
-    public function testBodyStructureWithTypedProperties() : void
+    public function testBodyStructureWithTypedProperties(): void
     {
         $method = new BindProxyProperties(
             new ReflectionClass(ClassWithMixedReferenceableTypedProperties::class),

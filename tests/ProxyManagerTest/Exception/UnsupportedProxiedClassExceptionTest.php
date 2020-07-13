@@ -20,7 +20,7 @@ use ReflectionProperty;
  */
 final class UnsupportedProxiedClassExceptionTest extends TestCase
 {
-    public function testUnsupportedLocalizedReflectionProperty() : void
+    public function testUnsupportedLocalizedReflectionProperty(): void
     {
         self::assertSame(
             'Provided reflection property "property0" of class "' . ClassWithPrivateProperties::class
@@ -31,7 +31,7 @@ final class UnsupportedProxiedClassExceptionTest extends TestCase
         );
     }
 
-    public function testNonReferenceableLocalizedReflectionProperties() : void
+    public function testNonReferenceableLocalizedReflectionProperties(): void
     {
         $reflectionClass = new ReflectionClass(ClassWithMixedTypedProperties::class);
 

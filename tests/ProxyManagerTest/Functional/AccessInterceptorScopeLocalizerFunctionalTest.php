@@ -27,7 +27,9 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
+
 use function array_values;
+use function assert;
 use function get_class;
 use function random_int;
 use function serialize;
@@ -48,7 +50,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @dataProvider getProxyMethods
      */
-    public function testMethodCalls(object $instance, string $method, array $params, $expectedValue) : void
+    public function testMethodCalls(object $instance, string $method, array $params, $expectedValue): void
     {
         $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
@@ -73,7 +75,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                 string $method,
                 array $params,
                 bool & $returnEarly
-            ) use ($listener) : void {
+            ) use ($listener): void {
                 $listener->__invoke($proxy, $instance, $method, $params, $returnEarly);
             }
         );
@@ -90,7 +92,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                 string $method,
                 array $params,
                 bool & $returnEarly
-            ) use ($random) : string {
+            ) use ($random): string {
                 $returnEarly = true;
 
                 return $random;
@@ -113,7 +115,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         string $method,
         array $params,
         $expectedValue
-    ) : void {
+    ): void {
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
         $callback = [$proxy, $method];
 
@@ -135,7 +137,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                 array $params,
                 $returnValue,
                 bool & $returnEarly
-            ) use ($listener) : void {
+            ) use ($listener): void {
                 $listener->__invoke($proxy, $instance, $method, $params, $returnValue, $returnEarly);
             }
         );
@@ -154,7 +156,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                 array $params,
                 $returnValue,
                 bool & $returnEarly
-            ) use ($random) : string {
+            ) use ($random): string {
                 $returnEarly = true;
 
                 return $random;
@@ -177,9 +179,9 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         string $method,
         array $params,
         $expectedValue
-    ) : void {
-        /** @var AccessInterceptorInterface $proxy */
+    ): void {
         $proxy = unserialize(serialize((new AccessInterceptorScopeLocalizerFactory())->createProxy($instance)));
+        assert($proxy instanceof AccessInterceptorInterface);
 
         $callback = [$proxy, $method];
 
@@ -199,7 +201,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         string $method,
         array $params,
         $expectedValue
-    ) : void {
+    ): void {
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
         $cloned   = clone $proxy;
         $callback = [$cloned, $method];
@@ -220,7 +222,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         AccessInterceptorInterface $proxy,
         string $publicProperty,
         $propertyValue
-    ) : void {
+    ): void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertProxySynchronized($instance, $proxy);
     }
@@ -228,7 +230,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
+    public function testPropertyWriteAccess(object $instance, AccessInterceptorInterface $proxy, string $publicProperty): void
     {
         $newValue               = uniqid('value', true);
         $proxy->$publicProperty = $newValue;
@@ -240,7 +242,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyExistence(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
+    public function testPropertyExistence(object $instance, AccessInterceptorInterface $proxy, string $publicProperty): void
     {
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
@@ -253,7 +255,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @dataProvider getPropertyAccessProxies
      */
-    public function testPropertyUnset(object $instance, AccessInterceptorInterface $proxy, string $publicProperty) : void
+    public function testPropertyUnset(object $instance, AccessInterceptorInterface $proxy, string $publicProperty): void
     {
         self::markTestSkipped('It is currently not possible to synchronize properties un-setting');
         unset($proxy->$publicProperty);
@@ -266,7 +268,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * Verifies that accessing a public property containing an array behaves like in a normal context
      */
-    public function testCanWriteToArrayKeysInPublicProperty() : void
+    public function testCanWriteToArrayKeysInPublicProperty(): void
     {
         $instance = new ClassWithPublicArrayPropertyAccessibleViaMethod();
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
@@ -285,7 +287,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * Verifies that public properties retrieved via `__get` don't get modified in the object state
      */
-    public function testWillNotModifyRetrievedPublicProperties() : void
+    public function testWillNotModifyRetrievedPublicProperties(): void
     {
         $instance = new ClassWithPublicProperties();
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
@@ -306,7 +308,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * Verifies that public properties references retrieved via `__get` modify in the object state
      */
-    public function testWillModifyByRefRetrievedPublicProperties() : void
+    public function testWillModifyByRefRetrievedPublicProperties(): void
     {
         $instance = new ClassWithPublicProperties();
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
@@ -328,7 +330,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @group 115
      * @group 175
      */
-    public function testWillBehaveLikeObjectWithNormalConstructor() : void
+    public function testWillBehaveLikeObjectWithNormalConstructor(): void
     {
         $instance = new ClassWithCounterConstructor(10);
 
@@ -357,7 +359,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @return array<int, array<object|array<string, mixed>|string>>
      */
-    public static function getProxyMethods() : array
+    public static function getProxyMethods(): array
     {
         $selfHintParam = new ClassWithSelfHint();
         $empty         = new EmptyClass();
@@ -401,7 +403,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @return array<int, array<int, object|AccessInterceptorInterface|string>>
      */
-    public function getPropertyAccessProxies() : array
+    public function getPropertyAccessProxies(): array
     {
         $instance = new BaseClass();
 
@@ -415,7 +417,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         ];
     }
 
-    private function assertProxySynchronized(object $instance, AccessInterceptorInterface $proxy) : void
+    private function assertProxySynchronized(object $instance, AccessInterceptorInterface $proxy): void
     {
         $reflectionClass = new ReflectionClass($instance);
 
@@ -430,7 +432,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         }
     }
 
-    public function testWillForwardVariadicArguments() : void
+    public function testWillForwardVariadicArguments(): void
     {
         $configuration = new Configuration();
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
@@ -439,7 +441,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                'bar' => static function () : string {
+                'bar' => static function (): string {
                     return 'Foo Baz';
                 },
             ]
@@ -456,7 +458,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @group 265
      */
-    public function testWillForwardVariadicByRefArguments() : void
+    public function testWillForwardVariadicByRefArguments(): void
     {
         $configuration = new Configuration();
         $factory       = new AccessInterceptorScopeLocalizerFactory($configuration);
@@ -465,7 +467,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                'bar' => static function () : string {
+                'bar' => static function (): string {
                     return 'Foo Baz';
                 },
             ]
@@ -485,13 +487,13 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      *
      * @group 265
      */
-    public function testWillNotForwardDynamicArguments() : void
+    public function testWillNotForwardDynamicArguments(): void
     {
         $object = (new AccessInterceptorScopeLocalizerFactory())
             ->createProxy(
                 new ClassWithDynamicArgumentsMethod(),
                 [
-                    'dynamicArgumentsMethod' => static function () : string {
+                    'dynamicArgumentsMethod' => static function (): string {
                         return 'Foo Baz';
                     },
                 ]
@@ -507,7 +509,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     /**
      * @group 327
      */
-    public function testWillInterceptAndReturnEarlyOnVoidMethod() : void
+    public function testWillInterceptAndReturnEarlyOnVoidMethod(): void
     {
         $skip      = random_int(100, 200);
         $addMore   = random_int(201, 300);
@@ -523,7 +525,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                         string $method,
                         array $params,
                         ?bool & $returnEarly
-                    ) use ($skip) : void {
+                    ) use ($skip): void {
                         if ($skip !== $params['amount']) {
                             return;
                         }
@@ -538,7 +540,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                         string $method,
                         array $params,
                         ?bool & $returnEarly
-                    ) use ($addMore) : void {
+                    ) use ($addMore): void {
                         if ($addMore !== $params['amount']) {
                             return;
                         }
@@ -559,7 +561,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /** @group 574 */
-    public function testWillRefuseToGenerateReferencesToTypedPropertiesWithoutDefaultValues() : void
+    public function testWillRefuseToGenerateReferencesToTypedPropertiesWithoutDefaultValues(): void
     {
         $instance = new ClassWithPublicStringNullableTypedProperty();
         $factory  = new AccessInterceptorScopeLocalizerFactory();
@@ -577,7 +579,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      * @psalm-param ExpectedType $expected
      * @psalm-assert ExpectedType $actual
      */
-    private static function assertByRefVariableValueSame($expected, & $actual) : void
+    private static function assertByRefVariableValueSame($expected, & $actual): void
     {
         self::assertSame($expected, $actual);
     }

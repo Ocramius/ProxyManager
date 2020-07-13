@@ -9,6 +9,7 @@ use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\Util\InterceptorGenerator;
+
 use function implode;
 
 /**
@@ -23,8 +24,7 @@ class InterceptedMethod extends MethodGenerator
         MethodReflection $originalMethod,
         PropertyGenerator $prefixInterceptors,
         PropertyGenerator $suffixInterceptors
-    ) : self {
-        /** @var self $method */
+    ): self {
         $method          = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $forwardedParams = [];
 

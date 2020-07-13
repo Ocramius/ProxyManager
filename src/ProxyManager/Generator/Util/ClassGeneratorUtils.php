@@ -17,7 +17,7 @@ final class ClassGeneratorUtils
         ReflectionClass $originalClass,
         ClassGenerator $classGenerator,
         MethodGenerator $generatedMethod
-    ) : bool {
+    ): bool {
         $methodName = $generatedMethod->getName();
 
         if ($originalClass->hasMethod($methodName) && $originalClass->getMethod($methodName)->isFinal()) {

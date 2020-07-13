@@ -40,10 +40,7 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
     /** @var Configuration&MockObject */
     private Configuration $config;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->config                  = $this->createMock(Configuration::class);
         $this->inflector               = $this->createMock(ClassNameInflectorInterface::class);
@@ -71,7 +68,7 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
      *
      * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::__construct
      */
-    public static function testWithOptionalFactory() : void
+    public static function testWithOptionalFactory(): void
     {
         $factory = new AccessInterceptorValueHolderFactory();
 
@@ -91,7 +88,7 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
      * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::createProxy
      * @covers \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory::getGenerator
      */
-    public function testWillSkipAutoGeneration() : void
+    public function testWillSkipAutoGeneration(): void
     {
         $instance = new stdClass();
 
@@ -104,12 +101,12 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
 
         $factory            = new AccessInterceptorScopeLocalizerFactory($this->config);
         $prefixInterceptors = [
-            'methodName' => static function () : void {
+            'methodName' => static function (): void {
                 self::fail('Not supposed to be called');
             },
         ];
         $suffixInterceptors = [
-            'methodName' => static function () : void {
+            'methodName' => static function (): void {
                 self::fail('Not supposed to be called');
             },
         ];
@@ -130,7 +127,7 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration() : void
+    public function testWillTryAutoGeneration(): void
     {
         $instance       = new stdClass();
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
@@ -145,7 +142,7 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    static function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
+                    static function (ClassGenerator $targetClass) use ($proxyClassName): bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -156,7 +153,7 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->willReturnCallback(static function () use ($proxyClassName) : bool {
+            ->willReturnCallback(static function () use ($proxyClassName): bool {
                 eval(
                     'class ' . $proxyClassName
                     . ' extends \\ProxyManagerTestAsset\\AccessInterceptorValueHolderMock {}'
@@ -184,12 +181,12 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
 
         $factory            = new AccessInterceptorScopeLocalizerFactory($this->config);
         $prefixInterceptors = [
-            'methodName' => static function () : void {
+            'methodName' => static function (): void {
                 self::fail('Not supposed to be called');
             },
         ];
         $suffixInterceptors = [
-            'methodName' => static function () : void {
+            'methodName' => static function (): void {
                 self::fail('Not supposed to be called');
             },
         ];

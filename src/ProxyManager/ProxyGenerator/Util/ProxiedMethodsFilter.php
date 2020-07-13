@@ -6,6 +6,7 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use ReflectionClass;
 use ReflectionMethod;
+
 use function array_filter;
 use function array_flip;
 use function array_key_exists;
@@ -19,7 +20,7 @@ use function strtolower;
 final class ProxiedMethodsFilter
 {
     /** @var array<int, string> */
-    private static $defaultExcluded = [
+    private static array $defaultExcluded = [
         '__get',
         '__set',
         '__isset',
@@ -35,7 +36,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getProxiedMethods(ReflectionClass $class, ?array $excluded = null) : array
+    public static function getProxiedMethods(ReflectionClass $class, ?array $excluded = null): array
     {
         return self::doFilter($class, $excluded ?? self::$defaultExcluded);
     }
@@ -46,7 +47,7 @@ final class ProxiedMethodsFilter
      *
      * @return ReflectionMethod[]
      */
-    public static function getAbstractProxiedMethods(ReflectionClass $class, ?array $excluded = null) : array
+    public static function getAbstractProxiedMethods(ReflectionClass $class, ?array $excluded = null): array
     {
         return self::doFilter($class, $excluded ?? self::$defaultExcluded, true);
     }
@@ -56,13 +57,13 @@ final class ProxiedMethodsFilter
      *
      * @return array<int, ReflectionMethod>
      */
-    private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false) : array
+    private static function doFilter(ReflectionClass $class, array $excluded, bool $requireAbstract = false): array
     {
         $ignored = array_flip(array_map('strtolower', $excluded));
 
         return array_values(array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
-            static function (ReflectionMethod $method) use ($ignored, $requireAbstract) : bool {
+            static function (ReflectionMethod $method) use ($ignored, $requireAbstract): bool {
                 return (! $requireAbstract || $method->isAbstract()) && ! (
                     array_key_exists(strtolower($method->getName()), $ignored)
                     || self::methodCannotBeProxied($method)
@@ -74,7 +75,7 @@ final class ProxiedMethodsFilter
     /**
      * Checks whether the method cannot be proxied
      */
-    private static function methodCannotBeProxied(ReflectionMethod $method) : bool
+    private static function methodCannotBeProxied(ReflectionMethod $method): bool
     {
         return $method->isConstructor() || $method->isFinal() || $method->isStatic();
     }

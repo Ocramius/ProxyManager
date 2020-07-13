@@ -23,7 +23,7 @@ abstract class UniqueIdentifierGenerator
      * @psalm-return class-string
      * @psalm-suppress MoreSpecificReturnType
      */
-    public static function getIdentifier(string $name) : string
+    public static function getIdentifier(string $name): string
     {
         /**
          * @psalm-suppress LessSpecificReturnStatement

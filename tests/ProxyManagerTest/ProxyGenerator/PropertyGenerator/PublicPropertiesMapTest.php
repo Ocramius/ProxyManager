@@ -20,7 +20,7 @@ use ReflectionClass;
  */
 final class PublicPropertiesMapTest extends TestCase
 {
-    public function testEmptyClass() : void
+    public function testEmptyClass(): void
     {
         $publicProperties = new PublicPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(EmptyClass::class))
@@ -33,7 +33,7 @@ final class PublicPropertiesMapTest extends TestCase
         self::assertTrue($publicProperties->isEmpty());
     }
 
-    public function testClassWithPublicProperties() : void
+    public function testClassWithPublicProperties(): void
     {
         $publicProperties = new PublicPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithPublicProperties::class))
@@ -59,7 +59,7 @@ final class PublicPropertiesMapTest extends TestCase
         );
     }
 
-    public function testClassWithMixedProperties() : void
+    public function testClassWithMixedProperties(): void
     {
         self::assertSame(
             [

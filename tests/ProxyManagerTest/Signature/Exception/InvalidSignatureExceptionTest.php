@@ -16,7 +16,7 @@ use ReflectionClass;
  */
 final class InvalidSignatureExceptionTest extends TestCase
 {
-    public function testFromInvalidSignature() : void
+    public function testFromInvalidSignature(): void
     {
         $exception = InvalidSignatureException::fromInvalidSignature(
             new ReflectionClass(self::class),

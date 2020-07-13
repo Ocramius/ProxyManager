@@ -27,7 +27,7 @@ final class BaselinePropertyAccessBench
     private ReflectionProperty $accessMixedPropertiesPrivate;
     private ReflectionProperty $accessMixedPropertiesProtected;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->privateProperties   = new ClassWithPrivateProperties();
         $this->protectedProperties = new ClassWithProtectedProperties();
@@ -53,62 +53,62 @@ final class BaselinePropertyAccessBench
         $this->accessMixedPropertiesProtected->setAccessible(true);
     }
 
-    public function benchPrivatePropertyRead() : void
+    public function benchPrivatePropertyRead(): void
     {
         $this->accessPrivateProperty->getValue($this->privateProperties);
     }
 
-    public function benchPrivatePropertyWrite() : void
+    public function benchPrivatePropertyWrite(): void
     {
         $this->accessPrivateProperty->setValue($this->privateProperties, 'foo');
     }
 
-    public function benchProtectedPropertyRead() : void
+    public function benchProtectedPropertyRead(): void
     {
         $this->accessProtectedProperty->getValue($this->protectedProperties);
     }
 
-    public function benchProtectedPropertyWrite() : void
+    public function benchProtectedPropertyWrite(): void
     {
         $this->accessProtectedProperty->setValue($this->protectedProperties, 'foo');
     }
 
-    public function benchPublicPropertyRead() : void
+    public function benchPublicPropertyRead(): void
     {
         $this->publicProperties->property0;
     }
 
-    public function benchPublicPropertyWrite() : void
+    public function benchPublicPropertyWrite(): void
     {
         $this->publicProperties->property0 = 'foo';
     }
 
-    public function benchMixedPropertiesPrivatePropertyRead() : void
+    public function benchMixedPropertiesPrivatePropertyRead(): void
     {
         $this->accessMixedPropertiesPrivate->getValue($this->mixedProperties);
     }
 
-    public function benchMixedPropertiesPrivatePropertyWrite() : void
+    public function benchMixedPropertiesPrivatePropertyWrite(): void
     {
         $this->accessMixedPropertiesPrivate->setValue($this->mixedProperties, 'foo');
     }
 
-    public function benchMixedPropertiesProtectedPropertyRead() : void
+    public function benchMixedPropertiesProtectedPropertyRead(): void
     {
         $this->accessMixedPropertiesProtected->getValue($this->mixedProperties);
     }
 
-    public function benchMixedPropertiesProtectedPropertyWrite() : void
+    public function benchMixedPropertiesProtectedPropertyWrite(): void
     {
         $this->accessMixedPropertiesProtected->setValue($this->mixedProperties, 'foo');
     }
 
-    public function benchMixedPropertiesPublicPropertyRead() : void
+    public function benchMixedPropertiesPublicPropertyRead(): void
     {
         $this->mixedProperties->publicProperty0;
     }
 
-    public function benchMixedPropertiesPublicPropertyWrite() : void
+    public function benchMixedPropertiesPublicPropertyWrite(): void
     {
         $this->mixedProperties->publicProperty0 = 'foo';
     }

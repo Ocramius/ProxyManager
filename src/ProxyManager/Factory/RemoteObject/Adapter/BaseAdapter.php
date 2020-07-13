@@ -6,6 +6,7 @@ namespace ProxyManager\Factory\RemoteObject\Adapter;
 
 use Laminas\Server\Client;
 use ProxyManager\Factory\RemoteObject\AdapterInterface;
+
 use function array_key_exists;
 
 /**
@@ -50,5 +51,5 @@ abstract class BaseAdapter implements AdapterInterface
     /**
      * Get the service name will be used by the adapter
      */
-    abstract protected function getServiceName(string $wrappedClass, string $method) : string;
+    abstract protected function getServiceName(string $wrappedClass, string $method): string;
 }

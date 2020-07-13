@@ -21,7 +21,7 @@ use ReflectionClass;
  */
 final class ClassGeneratorUtilsTest extends TestCase
 {
-    public function testCantAddAFinalMethod() : void
+    public function testCantAddAFinalMethod(): void
     {
         $classGenerator  = $this->createMock(ClassGenerator::class);
         $methodGenerator = $this->createMock(MethodGenerator::class);
@@ -40,7 +40,7 @@ final class ClassGeneratorUtilsTest extends TestCase
         self::assertFalse(ClassGeneratorUtils::addMethodIfNotFinal($reflection, $classGenerator, $methodGenerator));
     }
 
-    public function testCanAddANotFinalMethod() : void
+    public function testCanAddANotFinalMethod(): void
     {
         $classGenerator  = $this->createMock(ClassGenerator::class);
         $methodGenerator = $this->createMock(MethodGenerator::class);

@@ -17,16 +17,13 @@ use ReflectionClass;
  */
 final class ValueHolderPropertyTest extends AbstractUniquePropertyNameTest
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function createProperty() : PropertyGenerator
+    protected function createProperty(): PropertyGenerator
     {
         return new ValueHolderProperty(new ReflectionClass(self::class));
     }
 
     /** @group #400 */
-    public function testWillDocumentPropertyType() : void
+    public function testWillDocumentPropertyType(): void
     {
         $docBlock = (new ValueHolderProperty(new ReflectionClass(self::class)))->getDocBlock();
 

@@ -20,7 +20,7 @@ final class GetWrappedValueHolderValueTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $valueHolder = $this->createMock(PropertyGenerator::class);
 

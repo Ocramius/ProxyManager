@@ -26,7 +26,7 @@ final class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
      *
      * {@inheritDoc}
      */
-    public function testGeneratesValidCode(string $className) : void
+    public function testGeneratesValidCode(string $className): void
     {
         $reflectionClass = new ReflectionClass($className);
 
@@ -38,7 +38,7 @@ final class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
         parent::testGeneratesValidCode($className);
     }
 
-    public function testWillRejectInterfaces() : void
+    public function testWillRejectInterfaces(): void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
@@ -47,7 +47,7 @@ final class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
             ->generate(new ReflectionClass(BaseInterface::class), new ClassGenerator());
     }
 
-    public function testAllAbstractMethodsWillBeMadeConcrete() : void
+    public function testAllAbstractMethodsWillBeMadeConcrete(): void
     {
         $classGenerator = new ClassGenerator();
 
@@ -60,10 +60,7 @@ final class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getProxyGenerator() : ProxyGeneratorInterface
+    protected function getProxyGenerator(): ProxyGeneratorInterface
     {
         return new LazyLoadingGhostGenerator();
     }
@@ -71,7 +68,7 @@ final class LazyLoadingGhostGeneratorTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces() : array
+    protected function getExpectedImplementedInterfaces(): array
     {
         return [GhostObjectInterface::class];
     }

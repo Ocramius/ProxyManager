@@ -20,7 +20,7 @@ final class ParameterEncoderTest extends TestCase
      * @dataProvider getParameters
      * @covers \ProxyManager\Inflector\Util\ParameterEncoder::encodeParameters
      */
-    public function testGeneratesValidClassName(array $parameters) : void
+    public function testGeneratesValidClassName(array $parameters): void
     {
         $encoder = new ParameterEncoder();
 
@@ -32,7 +32,7 @@ final class ParameterEncoderTest extends TestCase
     }
 
     /** @return mixed[][] */
-    public static function getParameters() : array
+    public static function getParameters(): array
     {
         return [
             [[]],

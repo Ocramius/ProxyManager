@@ -39,10 +39,7 @@ final class RemoteObjectFactoryTest extends TestCase
     /** @var Configuration&MockObject */
     private Configuration $config;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->config                  = $this->createMock(Configuration::class);
         $this->inflector               = $this->createMock(ClassNameInflectorInterface::class);
@@ -65,10 +62,7 @@ final class RemoteObjectFactoryTest extends TestCase
             ->willReturn($this->classSignatureGenerator);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function testWillSkipAutoGeneration() : void
+    public function testWillSkipAutoGeneration(): void
     {
         $this
             ->inflector
@@ -90,7 +84,7 @@ final class RemoteObjectFactoryTest extends TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration() : void
+    public function testWillTryAutoGeneration(): void
     {
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);
@@ -104,7 +98,7 @@ final class RemoteObjectFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    static function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
+                    static function (ClassGenerator $targetClass) use ($proxyClassName): bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -115,7 +109,7 @@ final class RemoteObjectFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->willReturnCallback(static function () use ($proxyClassName) : bool {
+            ->willReturnCallback(static function () use ($proxyClassName): bool {
                 eval(
                     'class ' . $proxyClassName . ' implements \ProxyManager\Proxy\RemoteObjectInterface {'
                     . 'public static function staticProxyConstructor() : self { return new static(); }'

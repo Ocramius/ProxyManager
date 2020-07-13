@@ -37,10 +37,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
     /** @var Configuration&MockObject */
     protected Configuration $config;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->config                  = $this->createMock(Configuration::class);
         $this->inflector               = $this->createMock(ClassNameInflectorInterface::class);
@@ -68,7 +65,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
      *
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
      */
-    public static function testWithOptionalFactory() : void
+    public static function testWithOptionalFactory(): void
     {
         self::assertInstanceOf(
             Configuration::class,
@@ -82,7 +79,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::__construct
      * @covers \ProxyManager\Factory\LazyLoadingGhostFactory::createProxy
      */
-    public function testWillSkipAutoGeneration() : void
+    public function testWillSkipAutoGeneration(): void
     {
         $className = UniqueIdentifierGenerator::getIdentifier('foo');
 
@@ -94,7 +91,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
             ->willReturn(LazyLoadingMock::class);
 
         $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = static function () : bool {
+        $initializer = static function (): bool {
             return true;
         };
         $proxy       = $factory->createProxy($className, $initializer);
@@ -111,7 +108,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration() : void
+    public function testWillTryAutoGeneration(): void
     {
         /** @var class-string $className */
         $className      = UniqueIdentifierGenerator::getIdentifier('foo');
@@ -127,7 +124,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    static function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
+                    static function (ClassGenerator $targetClass) use ($proxyClassName): bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -138,7 +135,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->willReturnCallback(static function () use ($proxyClassName) : bool {
+            ->willReturnCallback(static function () use ($proxyClassName): bool {
                 eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
 
                 return true;
@@ -162,7 +159,7 @@ final class LazyLoadingGhostFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingGhostFactory($this->config);
-        $initializer = static function () : bool {
+        $initializer = static function (): bool {
             return true;
         };
         $proxy       = $factory->createProxy($className, $initializer);

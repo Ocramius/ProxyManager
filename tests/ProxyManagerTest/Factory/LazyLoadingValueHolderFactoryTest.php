@@ -18,6 +18,7 @@ use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\LazyLoadingMock;
+
 use function get_class;
 
 /**
@@ -39,10 +40,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
     /** @var Configuration&MockObject */
     private Configuration $config;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->config                  = $this->createMock(Configuration::class);
         $this->inflector               = $this->createMock(ClassNameInflectorInterface::class);
@@ -70,7 +68,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
      *
      * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::__construct
      */
-    public static function testWithOptionalFactory() : void
+    public static function testWithOptionalFactory(): void
     {
         self::assertInstanceOf(
             Configuration::class,
@@ -84,7 +82,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
      * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::__construct
      * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory::createProxy
      */
-    public function testWillSkipAutoGeneration() : void
+    public function testWillSkipAutoGeneration(): void
     {
         $className = UniqueIdentifierGenerator::getIdentifier('foo');
 
@@ -96,7 +94,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
             ->willReturn(LazyLoadingMock::class);
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = static function () : bool {
+        $initializer = static function (): bool {
             return true;
         };
         $proxy       = $factory->createProxy($className, $initializer);
@@ -113,7 +111,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
      *
      * NOTE: serious mocking going on in here (a class is generated on-the-fly) - careful
      */
-    public function testWillTryAutoGeneration() : void
+    public function testWillTryAutoGeneration(): void
     {
         $className      = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
@@ -128,7 +126,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    static function (ClassGenerator $targetClass) use ($proxyClassName) : bool {
+                    static function (ClassGenerator $targetClass) use ($proxyClassName): bool {
                         return $targetClass->getName() === $proxyClassName;
                     }
                 )
@@ -139,7 +137,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($proxyClassName)
-            ->willReturnCallback(static function () use ($proxyClassName) : bool {
+            ->willReturnCallback(static function () use ($proxyClassName): bool {
                 eval('class ' . $proxyClassName . ' extends \\ProxyManagerTestAsset\\LazyLoadingMock {}');
 
                 return true;
@@ -163,7 +161,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = static function () : bool {
+        $initializer = static function (): bool {
             return true;
         };
         $proxy       = $factory->createProxy($className, $initializer);

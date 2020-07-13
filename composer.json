@@ -21,7 +21,7 @@
     "require": {
         "php":                       "~7.4.1",
         "laminas/laminas-code":      "^3.4.1",
-        "ocramius/package-versions": "^1.8.0,<1.10.0",
+        "composer-runtime-api":      "^2.0.0",
         "webimpress/safe-writer":    "^2.0.1"
     },
     "conflict": {
@@ -31,14 +31,14 @@
     },
     "require-dev": {
         "ext-phar":                     "*",
-        "phpunit/phpunit":              "^9.1.5",
+        "phpunit/phpunit":              "^9.2.5",
         "squizlabs/php_codesniffer":    "^3.5.5",
-        "slevomat/coding-standard":     "^5.0.4",
-        "doctrine/coding-standard":     "^6.0.0",
-        "nikic/php-parser":             "^4.4.0",
-        "phpbench/phpbench":            "^0.17.0",
-        "infection/infection":          "^0.16.3",
-        "vimeo/psalm":                  "^3.11.5",
+        "slevomat/coding-standard":     "^6.3.10",
+        "doctrine/coding-standard":     "^8.1.0",
+        "nikic/php-parser":             "^4.6.0",
+        "phpbench/phpbench":            "^0.17.1",
+        "infection/infection":          "^0.16.4",
+        "vimeo/psalm":                  "^3.12.2",
         "codelicia/xulieta":            "^0.1.2"
     },
     "suggest": {

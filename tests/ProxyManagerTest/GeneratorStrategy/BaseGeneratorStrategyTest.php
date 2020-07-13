@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\BaseGeneratorStrategy;
+
 use function strpos;
 
 /**
@@ -20,7 +21,7 @@ final class BaseGeneratorStrategyTest extends TestCase
     /**
      * @covers \ProxyManager\GeneratorStrategy\BaseGeneratorStrategy::generate
      */
-    public function testGenerate() : void
+    public function testGenerate(): void
     {
         $strategy       = new BaseGeneratorStrategy();
         $className      = UniqueIdentifierGenerator::getIdentifier('Foo');

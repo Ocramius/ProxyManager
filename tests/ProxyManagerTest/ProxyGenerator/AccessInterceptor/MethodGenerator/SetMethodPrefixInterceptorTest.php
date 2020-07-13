@@ -20,7 +20,7 @@ final class SetMethodPrefixInterceptorTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodPrefixInterceptor::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $suffix = $this->createMock(PropertyGenerator::class);
 

@@ -18,10 +18,8 @@ interface SignatureCheckerInterface
      *
      * @param array<string, mixed> $parameters
      *
-     * @return void
-     *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      */
-    public function checkSignature(ReflectionClass $class, array $parameters);
+    public function checkSignature(ReflectionClass $class, array $parameters): void;
 }

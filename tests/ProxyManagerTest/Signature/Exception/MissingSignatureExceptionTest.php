@@ -16,7 +16,7 @@ use ReflectionClass;
  */
 final class MissingSignatureExceptionTest extends TestCase
 {
-    public function testFromMissingSignature() : void
+    public function testFromMissingSignature(): void
     {
         $exception = MissingSignatureException::fromMissingSignature(
             new ReflectionClass(self::class),

@@ -12,6 +12,7 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
+
 use function get_class;
 use function is_object;
 
@@ -53,7 +54,7 @@ class RemoteObjectFactory extends AbstractBaseFactory
      * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
      *                                         interfaced (by design)
      */
-    public function createProxy($instanceOrClassName) : RemoteObjectInterface
+    public function createProxy($instanceOrClassName): RemoteObjectInterface
     {
         $proxyClassName = $this->generateProxy(
             is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName
@@ -68,10 +69,7 @@ class RemoteObjectFactory extends AbstractBaseFactory
         return $proxyClassName::staticProxyConstructor($this->adapter);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getGenerator() : ProxyGeneratorInterface
+    protected function getGenerator(): ProxyGeneratorInterface
     {
         return $this->generator ?? $this->generator = new RemoteObjectGenerator();
     }

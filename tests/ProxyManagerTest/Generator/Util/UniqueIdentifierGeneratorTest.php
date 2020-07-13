@@ -6,6 +6,7 @@ namespace ProxyManagerTest\Generator\Util;
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
+
 use function strlen;
 
 /**
@@ -19,7 +20,7 @@ final class UniqueIdentifierGeneratorTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public function testGeneratesUniqueIdentifiers(string $name) : void
+    public function testGeneratesUniqueIdentifiers(string $name): void
     {
         self::assertNotSame(
             UniqueIdentifierGenerator::getIdentifier($name),
@@ -30,7 +31,7 @@ final class UniqueIdentifierGeneratorTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public function testGeneratesValidIdentifiers(string $name) : void
+    public function testGeneratesValidIdentifiers(string $name): void
     {
         self::assertMatchesRegularExpression(
             '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/',
@@ -41,7 +42,7 @@ final class UniqueIdentifierGeneratorTest extends TestCase
     /**
      * @dataProvider getBaseIdentifierNames
      */
-    public function testGeneratedIdentifierEntropy(string $name) : void
+    public function testGeneratedIdentifierEntropy(string $name): void
     {
         self::assertGreaterThan(14, strlen(UniqueIdentifierGenerator::getIdentifier($name)));
     }
@@ -51,7 +52,7 @@ final class UniqueIdentifierGeneratorTest extends TestCase
      *
      * @return string[][]
      */
-    public static function getBaseIdentifierNames() : array
+    public static function getBaseIdentifierNames(): array
     {
         return [
             [''],

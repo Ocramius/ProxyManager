@@ -27,7 +27,7 @@ final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTe
      *
      * {@inheritDoc}
      */
-    public function testGeneratesValidCode(string $className) : void
+    public function testGeneratesValidCode(string $className): void
     {
         $reflectionClass = new ReflectionClass($className);
 
@@ -43,7 +43,7 @@ final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTe
         parent::testGeneratesValidCode($className);
     }
 
-    public function testWillRejectInterfaces() : void
+    public function testWillRejectInterfaces(): void
     {
         $this->expectException(InvalidProxiedClassException::class);
 
@@ -52,10 +52,7 @@ final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTe
             ->generate(new ReflectionClass(BaseInterface::class), new ClassGenerator());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getProxyGenerator() : ProxyGeneratorInterface
+    protected function getProxyGenerator(): ProxyGeneratorInterface
     {
         return new AccessInterceptorScopeLocalizerGenerator();
     }
@@ -63,7 +60,7 @@ final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTe
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces() : array
+    protected function getExpectedImplementedInterfaces(): array
     {
         return [AccessInterceptorInterface::class];
     }

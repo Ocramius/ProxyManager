@@ -22,7 +22,7 @@ use ReflectionClass;
  */
 final class ConstructorTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
@@ -51,7 +51,7 @@ unset($this->bar, $this->baz);
         );
     }
 
-    public function testBodyStructureWithoutPublicProperties() : void
+    public function testBodyStructureWithoutPublicProperties(): void
     {
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
@@ -75,7 +75,7 @@ if (! $this->foo) {
         );
     }
 
-    public function testBodyStructureWithStaticProperties() : void
+    public function testBodyStructureWithStaticProperties(): void
     {
         $valueHolder = $this->createMock(PropertyGenerator::class);
 
@@ -103,7 +103,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
         self::assertSame($expectedCode, $constructor->getBody());
     }
 
-    public function testBodyStructureWithVariadicArguments() : void
+    public function testBodyStructureWithVariadicArguments(): void
     {
         $valueHolder = $this->createMock(PropertyGenerator::class);
 

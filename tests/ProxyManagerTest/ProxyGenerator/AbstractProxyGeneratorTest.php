@@ -38,7 +38,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      * Verifies that generated code is valid and implements expected interfaces
      * @psalm-param class-string $className
      */
-    public function testGeneratesValidCode(string $className) : void
+    public function testGeneratesValidCode(string $className): void
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');
@@ -70,7 +70,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
     /**
      * Retrieve a new generator instance
      */
-    abstract protected function getProxyGenerator() : ProxyGeneratorInterface;
+    abstract protected function getProxyGenerator(): ProxyGeneratorInterface;
 
     /**
      * Retrieve interfaces that should be implemented by the generated code
@@ -79,10 +79,10 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      *
      * @psalm-return list<class-string>
      */
-    abstract protected function getExpectedImplementedInterfaces() : array;
+    abstract protected function getExpectedImplementedInterfaces(): array;
 
     /** @return string[][] */
-    public function getTestedImplementations() : array
+    public function getTestedImplementations(): array
     {
         return [
             [BaseClass::class],

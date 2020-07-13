@@ -21,7 +21,7 @@ final class MagicSetTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\MagicSet::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $reflection = new ReflectionClass(EmptyClass::class);
         $adapter    = $this->createMock(PropertyGenerator::class);

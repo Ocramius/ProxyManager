@@ -9,6 +9,7 @@ use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 use ReflectionProperty;
+
 use function array_map;
 use function implode;
 
@@ -29,7 +30,7 @@ class StaticProxyConstructor extends MethodGenerator
         parent::__construct('staticProxyConstructor', [], self::FLAG_PUBLIC | self::FLAG_STATIC);
 
         $nullableProperties = array_map(
-            static function (ReflectionProperty $publicProperty) : string {
+            static function (ReflectionProperty $publicProperty): string {
                 return '$instance->' . $publicProperty->getName() . ' = null;';
             },
             Properties::fromReflectionClass($originalClass)

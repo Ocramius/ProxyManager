@@ -10,6 +10,7 @@ use Laminas\Code\Generator\TypeGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer;
+
 use function array_shift;
 
 /**
@@ -22,7 +23,7 @@ final class SetProxyInitializerTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\SetProxyInitializer::__construct
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $initializer = $this->createMock(PropertyGenerator::class);
 

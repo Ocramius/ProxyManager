@@ -9,6 +9,7 @@ use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
 use ReflectionClass;
+
 use function count;
 use function strtr;
 use function var_export;
@@ -33,7 +34,7 @@ PHP;
         MethodReflection $originalMethod,
         PropertyGenerator $adapterProperty,
         ReflectionClass $originalClass
-    ) : self {
+    ): self {
         /** @var static $method */
         $method        = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $proxiedReturn = '$return = $this->' . $adapterProperty->getName()
@@ -58,10 +59,8 @@ PHP;
         return $method;
     }
 
-    /**
-     * @return array
-     */
-    private static function getDefaultValuesForMethod(MethodReflection $originalMethod) : array
+    /** @psalm-return list<int|float|bool|array|string|null> */
+    private static function getDefaultValuesForMethod(MethodReflection $originalMethod): array
     {
         $defaultValues = [];
         foreach ($originalMethod->getParameters() as $parameter) {

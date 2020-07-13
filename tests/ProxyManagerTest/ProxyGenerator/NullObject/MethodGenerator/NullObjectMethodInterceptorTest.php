@@ -19,7 +19,7 @@ final class NullObjectMethodInterceptorTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $reflection = new MethodReflection(BaseClass::class, 'publicByReferenceParameterMethod');
         $method     = NullObjectMethodInterceptor::generateMethod($reflection);
@@ -32,7 +32,7 @@ final class NullObjectMethodInterceptorTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor
      */
-    public function testBodyStructureWithoutParameters() : void
+    public function testBodyStructureWithoutParameters(): void
     {
         $reflectionMethod = new MethodReflection(self::class, 'testBodyStructureWithoutParameters');
 
@@ -46,9 +46,9 @@ final class NullObjectMethodInterceptorTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor
      */
-    public function testBodyStructureWithoutByRefReturn() : void
+    public function testBodyStructureWithoutByRefReturn(): void
     {
-        $reflectionMethod = new MethodReflection('ProxyManagerTestAsset\BaseClass', 'publicByReferenceMethod');
+        $reflectionMethod = new MethodReflection(BaseClass::class, 'publicByReferenceMethod');
 
         $method = NullObjectMethodInterceptor::generateMethod($reflectionMethod);
 

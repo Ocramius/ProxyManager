@@ -21,7 +21,7 @@ use ReflectionClass;
  */
 final class MagicUnsetTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $reflection       = new ReflectionClass(EmptyClass::class);
         $initializer      = $this->createMock(PropertyGenerator::class);
@@ -49,7 +49,7 @@ final class MagicUnsetTest extends TestCase
     /**
      * @group 344
      */
-    public function testBodyStructureWithPreExistingMagicMethod() : void
+    public function testBodyStructureWithPreExistingMagicMethod(): void
     {
         $reflection       = new ReflectionClass(ClassWithMagicMethods::class);
         $initializer      = $this->createMock(PropertyGenerator::class);

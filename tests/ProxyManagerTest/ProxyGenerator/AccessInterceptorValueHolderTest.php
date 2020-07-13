@@ -18,10 +18,7 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
  */
 final class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function getProxyGenerator() : ProxyGeneratorInterface
+    protected function getProxyGenerator(): ProxyGeneratorInterface
     {
         return new AccessInterceptorValueHolderGenerator();
     }
@@ -29,7 +26,7 @@ final class AccessInterceptorValueHolderTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces() : array
+    protected function getExpectedImplementedInterfaces(): array
     {
         return [
             AccessInterceptorValueHolderInterface::class,

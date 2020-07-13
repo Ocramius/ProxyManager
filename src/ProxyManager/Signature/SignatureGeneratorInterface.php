@@ -14,12 +14,12 @@ interface SignatureGeneratorInterface
      *
      * @param array<string, mixed> $parameters
      */
-    public function generateSignature(array $parameters) : string;
+    public function generateSignature(array $parameters): string;
 
     /**
      * Generates a signature key to be looked up when verifying generated code validity
      *
      * @param array<string, mixed> $parameters
      */
-    public function generateSignatureKey(array $parameters) : string;
+    public function generateSignatureKey(array $parameters): string;
 }

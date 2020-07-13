@@ -48,7 +48,7 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
         string $className,
         Closure $initializer,
         array $proxyOptions = []
-    ) : VirtualProxyInterface {
+    ): VirtualProxyInterface {
         $proxyClassName = $this->generateProxy($className, $proxyOptions);
 
         /**
@@ -60,10 +60,7 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
         return $proxyClassName::staticProxyConstructor($initializer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getGenerator() : ProxyGeneratorInterface
+    protected function getGenerator(): ProxyGeneratorInterface
     {
         return $this->generator;
     }

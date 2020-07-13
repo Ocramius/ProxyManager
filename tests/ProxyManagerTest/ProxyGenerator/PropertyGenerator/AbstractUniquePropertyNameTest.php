@@ -17,7 +17,7 @@ abstract class AbstractUniquePropertyNameTest extends TestCase
     /**
      * Verifies that a given property name is the same across two different instantiations of the property
      */
-    public function testUniqueProperty() : void
+    public function testUniqueProperty(): void
     {
         $property1 = $this->createProperty();
         $property2 = $this->createProperty();
@@ -26,5 +26,5 @@ abstract class AbstractUniquePropertyNameTest extends TestCase
         self::assertSame($property1->getName(), $property2->getName());
     }
 
-    abstract protected function createProperty() : PropertyGenerator;
+    abstract protected function createProperty(): PropertyGenerator;
 }

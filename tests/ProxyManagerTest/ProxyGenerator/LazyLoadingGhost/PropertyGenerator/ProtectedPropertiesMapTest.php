@@ -20,17 +20,14 @@ use ReflectionClass;
  */
 final class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function createProperty() : PropertyGenerator
+    protected function createProperty(): PropertyGenerator
     {
         return new ProtectedPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
         );
     }
 
-    public function testExtractsProtectedProperties() : void
+    public function testExtractsProtectedProperties(): void
     {
         $map = new ProtectedPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
@@ -46,7 +43,7 @@ final class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
         );
     }
 
-    public function testSkipsAbstractProtectedMethods() : void
+    public function testSkipsAbstractProtectedMethods(): void
     {
         $map = new ProtectedPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class))
@@ -55,7 +52,7 @@ final class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
         self::assertSame([], $map->getDefaultValue()->getValue());
     }
 
-    public function testIsStaticPrivate() : void
+    public function testIsStaticPrivate(): void
     {
         $map = $this->createProperty();
 

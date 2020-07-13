@@ -16,10 +16,7 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
  */
 final class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTest
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function getProxyGenerator() : ProxyGeneratorInterface
+    protected function getProxyGenerator(): ProxyGeneratorInterface
     {
         return new LazyLoadingValueHolderGenerator();
     }
@@ -27,7 +24,7 @@ final class LazyLoadingValueHolderGeneratorTest extends AbstractProxyGeneratorTe
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces() : array
+    protected function getExpectedImplementedInterfaces(): array
     {
         return [VirtualProxyInterface::class];
     }

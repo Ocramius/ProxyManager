@@ -23,7 +23,7 @@ interface ClassNameInflectorInterface
      * @psalm-param class-string<RealClassName>|class-string<ProxyInterface<RealClassName>> $className
      * @psalm-return class-string<RealClassName>
      */
-    public function getUserClassName(string $className) : string;
+    public function getUserClassName(string $className): string;
 
     /**
      * Retrieve the class name of the proxy for the given user-defined class name
@@ -36,7 +36,7 @@ interface ClassNameInflectorInterface
      *
      * @psalm-return class-string<RealClassName&ProxyInterface>
      */
-    public function getProxyClassName(string $className, array $options = []) : string;
+    public function getProxyClassName(string $className, array $options = []): string;
 
     /**
      * Retrieve whether the provided class name is a proxy
@@ -44,5 +44,5 @@ interface ClassNameInflectorInterface
      * @psalm-template RealClassName of object
      * @psalm-param class-string<RealClassName>|class-string<ProxyInterface<RealClassName>> $className
      */
-    public function isProxyClassName(string $className) : bool;
+    public function isProxyClassName(string $className): bool;
 }

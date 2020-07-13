@@ -15,7 +15,7 @@ use ProxyManager\Version;
  */
 final class VersionTest extends TestCase
 {
-    public static function testGetVersion() : void
+    public static function testGetVersion(): void
     {
         $version = Version::getVersion();
 

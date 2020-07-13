@@ -22,7 +22,7 @@ use ReflectionMethod;
  */
 final class InterceptorGeneratorTest extends TestCase
 {
-    public function testInterceptorGenerator() : void
+    public function testInterceptorGenerator(): void
     {
         $method             = $this->createMock(MethodGenerator::class);
         $bar                = $this->createMock(ParameterGenerator::class);
@@ -75,7 +75,7 @@ PHP;
         );
     }
 
-    public function testInterceptorGeneratorWithVoidReturnType() : void
+    public function testInterceptorGeneratorWithVoidReturnType(): void
     {
         $method             = $this->createMock(MethodGenerator::class);
         $bar                = $this->createMock(ParameterGenerator::class);
@@ -131,7 +131,7 @@ PHP;
         );
     }
 
-    public function testInterceptorGeneratorWithExistingNonVoidMethod() : void
+    public function testInterceptorGeneratorWithExistingNonVoidMethod(): void
     {
         $method             = $this->createMock(MethodGenerator::class);
         $bar                = $this->createMock(ParameterGenerator::class);

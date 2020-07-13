@@ -21,7 +21,7 @@ use ReflectionClass;
  */
 final class StaticProxyConstructorTest extends TestCase
 {
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
@@ -61,7 +61,7 @@ return $instance;',
         );
     }
 
-    public function testBodyStructureWithoutPublicProperties() : void
+    public function testBodyStructureWithoutPublicProperties(): void
     {
         $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);
@@ -96,7 +96,7 @@ return $instance;',
     /**
      * @group 276
      */
-    public function testUnsetsPrivatePropertiesAsWell() : void
+    public function testUnsetsPrivatePropertiesAsWell(): void
     {
         $valueHolder        = $this->createMock(PropertyGenerator::class);
         $prefixInterceptors = $this->createMock(PropertyGenerator::class);

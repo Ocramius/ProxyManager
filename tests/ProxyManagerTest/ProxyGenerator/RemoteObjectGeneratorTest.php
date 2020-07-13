@@ -18,6 +18,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
+
 use function array_diff;
 
 /**
@@ -33,7 +34,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
      *
      * Verifies that generated code is valid and implements expected interfaces
      */
-    public function testGeneratesValidCode(string $className) : void
+    public function testGeneratesValidCode(string $className): void
     {
         $generator          = $this->getProxyGenerator();
         $generatedClassName = UniqueIdentifierGenerator::getIdentifier('AbstractProxyGeneratorTest');
@@ -61,10 +62,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function getProxyGenerator() : ProxyGeneratorInterface
+    protected function getProxyGenerator(): ProxyGeneratorInterface
     {
         return new RemoteObjectGenerator();
     }
@@ -72,7 +70,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
     /**
      * {@inheritDoc}
      */
-    protected function getExpectedImplementedInterfaces() : array
+    protected function getExpectedImplementedInterfaces(): array
     {
         return [
             RemoteObjectInterface::class,
@@ -80,7 +78,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
     }
 
     /** @return string[][] */
-    public function getTestedImplementations() : array
+    public function getTestedImplementations(): array
     {
         return [
             [BaseClass::class],

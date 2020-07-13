@@ -42,7 +42,6 @@ final class MagicGetTest extends TestCase
     /** @var InitializationTracker&MockObject */
     private InitializationTracker $initializationTracker;
 
-    /** @var string */
     private string $expectedCode = <<<'PHP'
 $this->foo && ! $this->init && $this->baz('__get', array('name' => $name));
 
@@ -105,10 +104,7 @@ if (isset(self::$baz[$name])) {
 %a
 PHP;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->initializer           = $this->createMock(PropertyGenerator::class);
         $this->initMethod            = $this->createMock(MethodGenerator::class);
@@ -129,7 +125,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $magicGet = new MagicGet(
             new ReflectionClass(BaseClass::class),
@@ -150,7 +146,7 @@ PHP;
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicGet
      */
-    public function testBodyStructureWithOverriddenMagicGet() : void
+    public function testBodyStructureWithOverriddenMagicGet(): void
     {
         $magicGet = new MagicGet(
             new ReflectionClass(ClassWithMagicMethods::class),

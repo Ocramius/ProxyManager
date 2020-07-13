@@ -21,7 +21,7 @@ final class LazyLoadingMethodInterceptorTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor
      */
-    public function testBodyStructure() : void
+    public function testBodyStructure(): void
     {
         $initializer = $this->createMock(PropertyGenerator::class);
         $valueHolder = $this->createMock(PropertyGenerator::class);
@@ -45,7 +45,7 @@ final class LazyLoadingMethodInterceptorTest extends TestCase
     /**
      * @covers \ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\LazyLoadingMethodInterceptor
      */
-    public function testBodyStructureWithoutParameters() : void
+    public function testBodyStructureWithoutParameters(): void
     {
         $reflectionMethod = new MethodReflection(BaseClass::class, 'publicMethod');
         $initializer      = $this->createMock(PropertyGenerator::class);
