@@ -34,7 +34,7 @@ final class Version
      */
     public static function getVersion(): string
     {
-        return InstalledVersions::getPrettyVersion('ocramius/package-versions')
-            . '@' . InstalledVersions::getReference('ocramius/package-versions');
+        return InstalledVersions::getPrettyVersion('ocramius/proxy-manager')
+            . '@' . InstalledVersions::getReference('ocramius/proxy-manager');
     }
 }
