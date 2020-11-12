@@ -40,7 +40,7 @@ class Constructor extends MethodGenerator
         $constructor->setBody(
             'static $reflection;' . "\n\n"
             . 'if (! $this->' . $valueHolder->getName() . ') {' . "\n"
-            . '    $reflection = $reflection ?: new \ReflectionClass('
+            . '    $reflection = $reflection ?? new \ReflectionClass('
             . var_export($originalClass->getName(), true)
             . ");\n"
             . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"

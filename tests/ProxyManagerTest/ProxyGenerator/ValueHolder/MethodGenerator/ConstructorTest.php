@@ -41,7 +41,7 @@ final class ConstructorTest extends TestCase
             'static $reflection;
 
 if (! $this->foo) {
-    $reflection = $reflection ?: new \ReflectionClass(\'ProxyManagerTestAsset\\\\ProxyGenerator\\\\LazyLoading\\\\'
+    $reflection = $reflection ?? new \ReflectionClass(\'ProxyManagerTestAsset\\\\ProxyGenerator\\\\LazyLoading\\\\'
             . 'MethodGenerator\\\\ClassWithTwoPublicProperties\');
     $this->foo = $reflection->newInstanceWithoutConstructor();
 unset($this->bar, $this->baz);
@@ -68,7 +68,7 @@ unset($this->bar, $this->baz);
             'static $reflection;
 
 if (! $this->foo) {
-    $reflection = $reflection ?: new \ReflectionClass(\'ProxyManagerTestAsset\\\\EmptyClass\');
+    $reflection = $reflection ?? new \ReflectionClass(\'ProxyManagerTestAsset\\\\EmptyClass\');
     $this->foo = $reflection->newInstanceWithoutConstructor();
 }',
             $constructor->getBody()
@@ -89,7 +89,7 @@ if (! $this->foo) {
         $expectedCode = 'static $reflection;
 
 if (! $this->foo) {
-    $reflection = $reflection ?: new \ReflectionClass(\'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
+    $reflection = $reflection ?? new \ReflectionClass(\'ProxyManagerTestAsset\\\\ClassWithMixedProperties\');
     $this->foo = $reflection->newInstanceWithoutConstructor();
 unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $this->protectedProperty0, '
             . '$this->protectedProperty1, $this->protectedProperty2);
@@ -121,7 +121,7 @@ unset($this->publicProperty0, $this->publicProperty1, $this->publicProperty2, $t
 static $reflection;
 
 if (! $this->foo) {
-    $reflection = $reflection ?: new \ReflectionClass('ProxyManagerTestAsset\\ClassWithVariadicConstructorArgument');
+    $reflection = $reflection ?? new \ReflectionClass('ProxyManagerTestAsset\\ClassWithVariadicConstructorArgument');
     $this->foo = $reflection->newInstanceWithoutConstructor();
 \Closure::bind(function (\ProxyManagerTestAsset\ClassWithVariadicConstructorArgument $instance) {
     unset($instance->foo, $instance->bar);

@@ -35,7 +35,7 @@ abstract class AbstractBaseFactory
 
     public function __construct(?Configuration $configuration = null)
     {
-        $this->configuration = $configuration ?: new Configuration();
+        $this->configuration = $configuration ?? new Configuration();
     }
 
     /**

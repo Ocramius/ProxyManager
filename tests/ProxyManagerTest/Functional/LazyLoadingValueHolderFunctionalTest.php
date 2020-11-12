@@ -203,7 +203,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
             self::markTestSkipped('Non-nullable typed properties cannot be removed/unset');
         }
 
-        $instance                  = $proxy->getWrappedValueHolderValue() ?: $instance;
+        $instance                  = $proxy->getWrappedValueHolderValue() ?? $instance;
         $instance->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
         self::assertTrue($proxy->isProxyInitialized());
@@ -214,7 +214,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      */
     public function testPropertyUnset(object $instance, VirtualProxyInterface $proxy, string $publicProperty): void
     {
-        $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
+        $instance = $proxy->getWrappedValueHolderValue() ?? $instance;
         unset($proxy->$publicProperty);
 
         self::assertTrue($proxy->isProxyInitialized());
