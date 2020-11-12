@@ -79,7 +79,7 @@ class PublicScopeSimulator
             return '';
         }
 
-        return '    $backtrace = debug_backtrace(false);' . "\n"
+        return '    $backtrace = debug_backtrace(false, 1);' . "\n"
             . '    trigger_error(' . "\n"
             . '        sprintf(' . "\n"
             . '            \'Undefined property: %s::$%s in %s on line %s\',' . "\n"
@@ -147,7 +147,7 @@ class PublicScopeSimulator
      */
     private static function getScopeReBind(): string
     {
-        return '$backtrace = debug_backtrace(true);' . "\n"
+        return '$backtrace = debug_backtrace(true, 2);' . "\n"
             . '$scopeObject = isset($backtrace[1][\'object\'])'
             . ' ? $backtrace[1][\'object\'] : new \ProxyManager\Stub\EmptyClassStub();' . "\n"
             . '$accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));' . "\n";

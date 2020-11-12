@@ -50,7 +50,7 @@ $this->protectedProperty1 = 'protectedProperty1';
 $this->protectedProperty2 = 'protectedProperty2';
 static $cacheProxyManagerTestAsset_ClassWithMixedProperties;
 
-$cacheProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedProperties = \Closure::bind(static function ($instance) {
+$cacheProxyManagerTestAsset_ClassWithMixedProperties ?? $cacheProxyManagerTestAsset_ClassWithMixedProperties = \Closure::bind(static function ($instance) {
     $instance->privateProperty0 = 'privateProperty0';
     $instance->privateProperty1 = 'privateProperty1';
     $instance->privateProperty2 = 'privateProperty2';
@@ -72,7 +72,7 @@ $properties = [
 
 static $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties;
 
-$cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?: $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties = \Closure::bind(function ($instance, array & $properties) {
+$cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?? $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties = \Closure::bind(function ($instance, array & $properties) {
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty0'] = & $instance->privateProperty0;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty1'] = & $instance->privateProperty1;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty2'] = & $instance->privateProperty2;
@@ -175,7 +175,7 @@ $this->protectedNullableObjectProperty = NULL;
 $this->protectedNullableClassProperty = NULL;
 static $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties;
 
-$cacheProxyManagerTestAsset_ClassWithMixedTypedProperties ?: $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(static function ($instance) {
+$cacheProxyManagerTestAsset_ClassWithMixedTypedProperties ?? $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(static function ($instance) {
     $instance->privateUnTypedProperty = 'privateUnTypedProperty';
     $instance->privateUnTypedPropertyWithoutDefaultValue = NULL;
     $instance->privateBoolProperty = true;
@@ -262,7 +262,7 @@ $properties = [
 
 static $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties;
 
-$cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties ?: $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(function ($instance, array & $properties) {
+$cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties ?? $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(function ($instance, array & $properties) {
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateUnTypedProperty'] = & $instance->privateUnTypedProperty;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateUnTypedPropertyWithoutDefaultValue'] = & $instance->privateUnTypedPropertyWithoutDefaultValue;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateBoolProperty'] = & $instance->privateBoolProperty;
