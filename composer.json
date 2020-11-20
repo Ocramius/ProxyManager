@@ -38,7 +38,7 @@
         "nikic/php-parser":             "^4.6.0",
         "phpbench/phpbench":            "^0.17.1 || 1.0.0-alpha2",
         "infection/infection":          "^0.20.1",
-        "vimeo/psalm":                  "^3.12.2",
+        "vimeo/psalm":                  "^4.2.1",
         "codelicia/xulieta":            "^0.1.2"
     },
     "suggest": {
