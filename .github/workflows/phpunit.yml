@@ -18,9 +18,12 @@ jobs:
           - "locked"
         php-version:
           - "7.4"
-          - "8.0"
         operating-system:
           - "ubuntu-latest"
+        include:
+          - php-version: "8.0"
+            dependencies: "highest"
+            operating-system: "ubuntu-latest"
 
     steps:
       - name: "Checkout"
