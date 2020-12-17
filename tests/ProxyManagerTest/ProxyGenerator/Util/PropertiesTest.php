@@ -126,7 +126,6 @@ final class PropertiesTest extends TestCase
     public function testOnlyPropertiesThatCanBeUnset(): void
     {
         $nonReferenceableProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedTypedProperties::class))
-                                                ->onlyPropertiesThatCanBeUnset()
                                                 ->getInstanceProperties();
 
         self::assertSame(
