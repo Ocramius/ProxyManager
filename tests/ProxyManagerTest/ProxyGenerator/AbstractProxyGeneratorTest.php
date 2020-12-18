@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator;
 
 use PHPUnit\Framework\TestCase;
-use ProxyManager\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -17,6 +17,7 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
+use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ProxyManagerTestAsset\IterableMethodTypeHintedInterface;
 use ProxyManagerTestAsset\ObjectMethodTypeHintedInterface;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
@@ -24,6 +25,7 @@ use ProxyManagerTestAsset\ReturnTypeHintedInterface;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use ReflectionClass;
+use const PHP_VERSION_ID;
 
 /**
  * Base test for proxy generators
@@ -84,7 +86,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
     /** @return string[][] */
     public function getTestedImplementations(): array
     {
-        return [
+        $implementations = [
             [BaseClass::class],
             [ClassWithMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
@@ -100,5 +102,11 @@ abstract class AbstractProxyGeneratorTest extends TestCase
             [IterableMethodTypeHintedInterface::class],
             [ObjectMethodTypeHintedInterface::class],
         ];
+
+        if (PHP_VERSION_ID > 80000) {
+            $implementations[] = [ClassWithPhp80TypedMethods::class];
+        }
+
+        return $implementations;
     }
 }
