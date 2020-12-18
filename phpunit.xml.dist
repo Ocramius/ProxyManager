@@ -17,16 +17,16 @@
     beStrictAboutChangesToGlobalState="true"
 >
     <testsuites>
-      <testsuite name="unit">
-        <directory>./tests/ProxyManagerTest</directory>
-      </testsuite>
-      <testsuite name="integration">
-        <directory suffix=".phpt">./tests/language-feature-scripts</directory>
-      </testsuite>
+        <testsuite name="unit">
+            <directory>./tests/ProxyManagerTest</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory suffix=".phpt">./tests/language-feature-scripts</directory>
+        </testsuite>
     </testsuites>
     <coverage includeUncoveredFiles="true">
-      <include>
-        <directory suffix=".php">./src</directory>
-      </include>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
     </coverage>
 </phpunit>
