@@ -25,8 +25,8 @@ $factory
         $initializer = null;
         $wrapped     = new PharMock();
     })
-    ->compress('Lazy Loaded!');
+    ->compress(Phar::GZ);
 
 ?>
 --EXPECT--
-Lazy Loaded!
+4096
