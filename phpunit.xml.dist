@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
     bootstrap="./vendor/autoload.php"
     colors="true"
     convertErrorsToExceptions="true"
@@ -17,16 +17,16 @@
     beStrictAboutChangesToGlobalState="true"
 >
     <testsuites>
-        <testsuite name="unit">
-            <directory>./tests/ProxyManagerTest</directory>
-        </testsuite>
-        <testsuite name="integration">
-            <directory suffix=".phpt">./tests/language-feature-scripts</directory>
-        </testsuite>
+      <testsuite name="unit">
+        <directory>./tests/ProxyManagerTest</directory>
+      </testsuite>
+      <testsuite name="integration">
+        <directory suffix=".phpt">./tests/language-feature-scripts</directory>
+      </testsuite>
     </testsuites>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
+    <coverage includeUncoveredFiles="true">
+      <include>
+        <directory suffix=".php">./src</directory>
+      </include>
+    </coverage>
 </phpunit>
