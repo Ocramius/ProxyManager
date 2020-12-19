@@ -6,6 +6,7 @@ namespace ProxyManager\Generator\Util;
 
 use Composer\InstalledVersions;
 
+use function class_exists;
 use function preg_match;
 use function serialize;
 use function sha1;
@@ -48,6 +49,10 @@ abstract class IdentifierSuffixer
 
     private static function loadBaseHashSalt(): string
     {
+        if (! class_exists(InstalledVersions::class)) {
+            return self::class;
+        }
+
         return sha1(serialize(InstalledVersions::getRawData()));
     }
 }

@@ -33,6 +33,7 @@ final class IdentifierSuffixerTest extends TestCase
     }
 
     /**
+     * @requires function \Composer\InstalledVersions::getRawData
      * @dataProvider getBaseIdentifierNames
      */
     public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name): void

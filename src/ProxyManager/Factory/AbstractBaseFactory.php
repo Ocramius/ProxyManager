@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManager\Factory;
 
+use Composer\InstalledVersions;
 use OutOfBoundsException;
+use PackageVersions\Versions;
 use ProxyManager\Configuration;
 use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -63,10 +65,19 @@ abstract class AbstractBaseFactory
             return $generatedClassName;
         }
 
+        if (class_exists(InstalledVersions::class)) {
+            $proxyManagerVersion = InstalledVersions::getPrettyVersion('ocramius/proxy-manager')
+                . '@' . InstalledVersions::getReference('ocramius/proxy-manager');
+        } elseif (class_exists(Versions::class)) {
+            $proxyManagerVersion = Versions::getVersion('ocramius/proxy-manager');
+        } else {
+            $proxyManagerVersion = '2.99.99@ocramius/proxy-manager';
+        }
+
         $proxyParameters = [
             'className'           => $className,
             'factory'             => static::class,
-            'proxyManagerVersion' => Version::getVersion(),
+            'proxyManagerVersion' => $proxyManagerVersion,
             'proxyOptions'        => $proxyOptions,
         ];
         $proxyClassName  = $this
