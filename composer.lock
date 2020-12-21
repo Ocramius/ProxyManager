@@ -1614,16 +1614,16 @@
         },
         {
             "name": "lstrojny/functional-php",
-            "version": "1.12.0",
+            "version": "1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lstrojny/functional-php.git",
-                "reference": "11610f50323519dd38bd7b527d6730e524e5eb58"
+                "reference": "9e8363e3cb9db924327f51b5804f4dfba03605aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lstrojny/functional-php/zipball/11610f50323519dd38bd7b527d6730e524e5eb58",
-                "reference": "11610f50323519dd38bd7b527d6730e524e5eb58",
+                "url": "https://api.github.com/repos/lstrojny/functional-php/zipball/9e8363e3cb9db924327f51b5804f4dfba03605aa",
+                "reference": "9e8363e3cb9db924327f51b5804f4dfba03605aa",
                 "shasum": ""
             },
             "require": {
@@ -1688,7 +1688,7 @@
                     "src/Functional/LessThanOrEqual.php",
                     "src/Functional/LexicographicCompare.php",
                     "src/Functional/Map.php",
-                    "src/Functional/Match.php",
+                    "src/Functional/Matching.php",
                     "src/Functional/Maximum.php",
                     "src/Functional/Memoize.php",
                     "src/Functional/Minimum.php",
@@ -1729,6 +1729,7 @@
                     "src/Functional/True.php",
                     "src/Functional/Truthy.php",
                     "src/Functional/Unique.php",
+                    "src/Functional/ValueToKey.php",
                     "src/Functional/With.php",
                     "src/Functional/Zip.php",
                     "src/Functional/ZipAll.php"
@@ -1755,9 +1756,9 @@
             ],
             "support": {
                 "issues": "https://github.com/lstrojny/functional-php/issues",
-                "source": "https://github.com/lstrojny/functional-php/tree/master"
+                "source": "https://github.com/lstrojny/functional-php/tree/1.14.1"
             },
-            "time": "2020-06-16T09:17:22+00:00"
+            "time": "2020-10-12T09:48:50+00:00"
         },
         {
             "name": "myclabs/deep-copy",
