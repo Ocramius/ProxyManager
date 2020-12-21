@@ -18,7 +18,7 @@ class ClassWithFinalMethods extends TestCase
     {
     }
 
-    final private function bar()
+    private function bar()
     {
     }
 

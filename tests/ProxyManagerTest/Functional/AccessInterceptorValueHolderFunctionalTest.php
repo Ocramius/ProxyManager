@@ -273,7 +273,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty
     ): void {
-        $instance = $proxy->getWrappedValueHolderValue() ?: $instance;
+        $instance = $proxy->getWrappedValueHolderValue() ?? $instance;
         unset($proxy->$publicProperty);
 
         self::assertFalse(isset($instance->$publicProperty));

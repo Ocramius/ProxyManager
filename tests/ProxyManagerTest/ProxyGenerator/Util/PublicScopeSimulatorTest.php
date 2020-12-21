@@ -25,7 +25,7 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
-    $backtrace = debug_backtrace(false);
+    $backtrace = debug_backtrace(false, 1);
     trigger_error(
         sprintf(
             'Undefined property: %s::$%s in %s on line %s',
@@ -44,7 +44,7 @@ $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function & () use ($targetObject, $name) {
     return $targetObject->$foo;
 };
-$backtrace = debug_backtrace(true);
+$backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
@@ -78,7 +78,7 @@ $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function & () use ($targetObject, $name, $value) {
     return $targetObject->$foo = $baz;
 };
-$backtrace = debug_backtrace(true);
+$backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
@@ -112,7 +112,7 @@ $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function () use ($targetObject, $name) {
     return isset($targetObject->$foo);
 };
-$backtrace = debug_backtrace(true);
+$backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = $accessor();
@@ -146,7 +146,7 @@ $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function () use ($targetObject, $name) {
     unset($targetObject->$foo);
 };
-$backtrace = debug_backtrace(true);
+$backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = $accessor();
@@ -193,7 +193,7 @@ $targetObject = $this->valueHolder;
 $accessor = function & () use ($targetObject, $name, $value) {
     return $targetObject->$foo = $baz;
 };
-$backtrace = debug_backtrace(true);
+$backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $bar = & $accessor();
@@ -226,7 +226,7 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
-    $backtrace = debug_backtrace(false);
+    $backtrace = debug_backtrace(false, 1);
     trigger_error(
         sprintf(
             'Undefined property: %s::$%s in %s on line %s',
@@ -245,7 +245,7 @@ $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function & () use ($targetObject, $name) {
     return $targetObject->$foo;
 };
-$backtrace = debug_backtrace(true);
+$backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
 $returnValue = & $accessor();
