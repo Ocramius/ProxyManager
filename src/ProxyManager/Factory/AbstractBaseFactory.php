@@ -17,6 +17,8 @@ use function array_key_exists;
 use function assert;
 use function class_exists;
 use function is_a;
+use function serialize;
+use function sha1;
 
 /**
  * Base factory common logic
@@ -29,7 +31,7 @@ abstract class AbstractBaseFactory
      * Cached checked class names
      *
      * @var array<string, string>
-     * @psalm-var array<class-string, class-string>
+     * @psalm-var array<string, class-string>
      */
     private array $checkedClasses = [];
 
@@ -55,8 +57,10 @@ abstract class AbstractBaseFactory
      */
     protected function generateProxy(string $className, array $proxyOptions = []): string
     {
-        if (array_key_exists($className, $this->checkedClasses)) {
-            $generatedClassName = $this->checkedClasses[$className];
+        $cacheKey = $proxyOptions ? sha1(serialize([$className, $proxyOptions])) : $className;
+
+        if (array_key_exists($cacheKey, $this->checkedClasses)) {
+            $generatedClassName = $this->checkedClasses[$cacheKey];
 
             assert(is_a($generatedClassName, $className, true));
 
@@ -88,7 +92,7 @@ abstract class AbstractBaseFactory
             ->getSignatureChecker()
             ->checkSignature(new ReflectionClass($proxyClassName), $proxyParameters);
 
-        return $this->checkedClasses[$className] = $proxyClassName;
+        return $this->checkedClasses[$cacheKey] = $proxyClassName;
     }
 
     abstract protected function getGenerator(): ProxyGeneratorInterface;
