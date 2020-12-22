@@ -44,7 +44,7 @@ class PublicScopeSimulator
         ?string $returnPropertyName = null
     ): string {
         $byRef  = self::getByRefReturnValue($operationType);
-        $value  = $operationType === self::OPERATION_SET ? ', $value' : '';
+        $value  = $operationType === self::OPERATION_SET ? ', $' . ($valueParameter ?? 'value') : '';
         $target = '$this';
 
         if ($valueHolder) {
@@ -59,7 +59,7 @@ class PublicScopeSimulator
             . "    return;\n"
             . '}' . "\n\n"
             . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
-            . '$accessor = function ' . $byRef . '() use ($targetObject, $name' . $value . ') {' . "\n"
+            . '$accessor = function ' . $byRef . '() use ($targetObject, $' . $nameParameter . $value . ') {' . "\n"
             . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
             . "};\n"
             . self::getScopeReBind()
@@ -130,7 +130,7 @@ class PublicScopeSimulator
                     throw new InvalidArgumentException('Parameter $valueParameter not provided');
                 }
 
-                return 'return $targetObject->$' . $nameParameter . ' = $' . $valueParameter . ';';
+                return '$targetObject->$' . $nameParameter . ' = $' . $valueParameter . '; return $targetObject->$' . $nameParameter . ';';
 
             case self::OPERATION_ISSET:
                 return 'return isset($targetObject->$' . $nameParameter . ');';

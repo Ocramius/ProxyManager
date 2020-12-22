@@ -8,6 +8,9 @@ use InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
+use ProxyManagerTestAsset\ClassWithMixedProperties;
+
+use function sprintf;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}
@@ -41,7 +44,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function & () use ($targetObject, $name) {
+$accessor = function & () use ($targetObject, $foo) {
     return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
@@ -70,13 +73,13 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
-    return $targetObject->$foo = $baz;
+    $targetObject->$foo = $baz; return $targetObject->$foo;
     return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function & () use ($targetObject, $name, $value) {
-    return $targetObject->$foo = $baz;
+$accessor = function & () use ($targetObject, $foo, $baz) {
+    $targetObject->$foo = $baz; return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
@@ -109,7 +112,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function () use ($targetObject, $name) {
+$accessor = function () use ($targetObject, $foo) {
     return isset($targetObject->$foo);
 };
 $backtrace = debug_backtrace(true, 2);
@@ -143,7 +146,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function () use ($targetObject, $name) {
+$accessor = function () use ($targetObject, $foo) {
     unset($targetObject->$foo);
 };
 $backtrace = debug_backtrace(true, 2);
@@ -185,13 +188,13 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this->valueHolder;
 
-    return $targetObject->$foo = $baz;
+    $targetObject->$foo = $baz; return $targetObject->$foo;
     return;
 }
 
 $targetObject = $this->valueHolder;
-$accessor = function & () use ($targetObject, $name, $value) {
-    return $targetObject->$foo = $baz;
+$accessor = function & () use ($targetObject, $foo, $baz) {
+    $targetObject->$foo = $baz; return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
@@ -242,7 +245,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function & () use ($targetObject, $name) {
+$accessor = function & () use ($targetObject, $foo) {
     return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
@@ -260,5 +263,31 @@ PHP;
                 'foo'
             )
         );
+    }
+
+    public function testFunctional(): void
+    {
+        /** @psalm-var ClassWithMixedProperties $sut */
+        $sut = eval(
+            sprintf(
+                'return new class() extends %s
+                {
+                    public function doGet($prop) { %s }
+                    public function doSet($prop, $val) { %s }
+                    public function doIsset($prop) { %s }
+                    public function doUnset($prop) { %s }
+                };',
+                ClassWithMixedProperties::class,
+                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_GET, 'prop'),
+                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_SET, 'prop', 'val'),
+                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_ISSET, 'prop'),
+                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_UNSET, 'prop')
+            )
+        );
+
+        $this->assertSame('publicProperty0', $sut->doGet('publicProperty0'));
+        $this->assertSame('bar', $sut->doSet('publicProperty0', 'bar'));
+        $this->assertTrue($sut->doIsset('publicProperty0'));
+        $this->assertNull($sut->doUnset('publicProperty0'));
     }
 }
