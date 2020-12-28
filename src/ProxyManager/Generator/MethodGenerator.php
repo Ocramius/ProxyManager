@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace ProxyManager\Generator;
 
 use Laminas\Code\Generator\DocBlockGenerator;
-use Laminas\Code\Generator\MethodGenerator as ZendMethodGenerator;
+use Laminas\Code\Generator\MethodGenerator as LaminasMethodGenerator;
 use Laminas\Code\Reflection\MethodReflection;
 
 /**
  * Method generator that fixes minor quirks in ZF2's method generator
  */
-class MethodGenerator extends ZendMethodGenerator
+class MethodGenerator extends LaminasMethodGenerator
 {
     /**
      * @return static

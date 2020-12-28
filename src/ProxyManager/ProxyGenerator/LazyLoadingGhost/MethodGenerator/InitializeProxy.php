@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator;
 
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
-use Laminas\Code\Generator\MethodGenerator as ZendMethodGenerator;
+use Laminas\Code\Generator\MethodGenerator as LaminasMethodGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MethodGenerator;
 
@@ -20,7 +20,7 @@ class InitializeProxy extends MethodGenerator
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(PropertyGenerator $initializerProperty, ZendMethodGenerator $callInitializer)
+    public function __construct(PropertyGenerator $initializerProperty, LaminasMethodGenerator $callInitializer)
     {
         parent::__construct('initializeProxy');
         $this->setReturnType('bool');
