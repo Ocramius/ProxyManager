@@ -45,7 +45,8 @@ class MagicSet extends MagicMethodGenerator
             'name',
             'value',
             $valueHolder,
-            'returnValue'
+            'returnValue',
+            $originalClass
         );
 
         if (! $publicProperties->isEmpty()) {

@@ -16,12 +16,10 @@ use ReflectionClass;
  * Tests for {@see \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicGet}
  *
  * @group Coverage
+ * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicGet
  */
 final class MagicGetTest extends TestCase
 {
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicGet::__construct
-     */
     public function testBodyStructure(): void
     {
         $reflection         = new ReflectionClass(EmptyClass::class);
@@ -42,9 +40,6 @@ final class MagicGetTest extends TestCase
         self::assertStringMatchesFormat('%a$returnValue = & $accessor();%a', $magicGet->getBody());
     }
 
-    /**
-     * @covers \ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicGet::__construct
-     */
     public function testBodyStructureWithInheritedMethod(): void
     {
         $reflection         = new ReflectionClass(ClassWithMagicMethods::class);
