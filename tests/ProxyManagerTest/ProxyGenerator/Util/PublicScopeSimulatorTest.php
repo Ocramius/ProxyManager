@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
+use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}
@@ -277,7 +278,7 @@ PHP
                 null,
                 null,
                 null,
-                new \ReflectionClass(ArrayAccess::class)
+                new ReflectionClass(ArrayAccess::class)
             )
         );
     }
