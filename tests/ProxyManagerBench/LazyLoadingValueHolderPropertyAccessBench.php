@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace ProxyManagerBench;
 
 use Closure;
-use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
 use Laminas\Code\Generator\ClassGenerator;
+use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
