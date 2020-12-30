@@ -104,7 +104,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
             [ObjectMethodTypeHintedInterface::class],
         ];
 
-        if (PHP_VERSION_ID > 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             $implementations[] = [ClassWithPhp80TypedMethods::class];
         }
 

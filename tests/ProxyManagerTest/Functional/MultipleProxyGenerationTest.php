@@ -132,7 +132,7 @@ final class MultipleProxyGenerationTest extends TestCase
             [new VoidMethodTypeHintedClass()],
         ];
 
-        if (PHP_VERSION_ID > 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             $objects[] = [new ClassWithPhp80TypedMethods()];
         }
 
