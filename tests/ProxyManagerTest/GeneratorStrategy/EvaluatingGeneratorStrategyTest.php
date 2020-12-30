@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerTest\GeneratorStrategy;
 
 use PHPUnit\Framework\TestCase;
-use ProxyManager\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 

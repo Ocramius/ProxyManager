@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProxyManagerBench;
 
 use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
-use ProxyManager\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManagerTestAsset\ClassWithMixedProperties;

@@ -6,7 +6,7 @@ namespace ProxyManagerTest\Functional;
 
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\ExceptionInterface;
-use ProxyManager\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\ProxyInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;

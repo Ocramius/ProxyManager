@@ -6,7 +6,7 @@ namespace ProxyManagerBench;
 
 use Closure;
 use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
-use ProxyManager\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\ValueHolderInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;

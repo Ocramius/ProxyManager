@@ -6,7 +6,7 @@ namespace ProxyManager\Factory;
 
 use OutOfBoundsException;
 use ProxyManager\Configuration;
-use ProxyManager\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
