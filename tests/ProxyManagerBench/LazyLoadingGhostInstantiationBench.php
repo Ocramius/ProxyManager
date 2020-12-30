@@ -48,6 +48,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfEmptyObject(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->emptyClassProxy();
     }
 
@@ -60,6 +61,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithPrivateProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->privatePropertiesProxy();
     }
 
@@ -72,6 +74,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithProtectedProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->protectedPropertiesProxy();
     }
 
@@ -84,6 +87,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithPublicProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->publicPropertiesProxy();
     }
 
@@ -96,6 +100,7 @@ final class LazyLoadingGhostInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithMixedProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->mixedPropertiesProxy();
     }
 

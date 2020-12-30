@@ -124,7 +124,6 @@ final class Properties
             $this->properties,
             static function (ReflectionProperty $property): bool {
                 $type = $property->getType();
-                assert($type instanceof ReflectionType || $type === null);
 
                 return $type === null || $type->allowsNull();
             }

@@ -224,6 +224,7 @@ final class LazyLoadingValueHolderPropertyAccessBench
             ) use ($originalClass): bool {
                 $initializer = null;
 
+                /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
                 $valueHolder = new $originalClass();
 
                 return true;

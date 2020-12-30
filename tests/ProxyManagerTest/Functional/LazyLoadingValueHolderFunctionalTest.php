@@ -330,6 +330,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
                 )
         );
 
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         $proxy = new $proxyName(15);
 
         self::assertSame(15, $proxy->amount, 'Verifying that the proxy constructor works as expected');
