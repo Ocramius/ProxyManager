@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ProxyManager\Generator\Util;
 
 use ReflectionMethod;
+use ReflectionNamedType;
 
 /**
  * Utility class to generate return expressions in method, given a method signature.
@@ -19,11 +20,7 @@ final class ProxiedMethodReturnExpression
             ? null
             : $originalMethod->getReturnType();
 
-        $originalReturnTypeName = $originalReturnType === null
-            ? null
-            : $originalReturnType->getName();
-
-        if ($originalReturnTypeName === 'void') {
+        if ($originalReturnType instanceof ReflectionNamedType && $originalReturnType->getName() === 'void') {
             return $returnedValueExpression . ";\nreturn;";
         }
 
