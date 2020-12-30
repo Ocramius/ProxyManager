@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use PHPUnit\Framework\TestCase;
 use Laminas\Code\Generator\ClassGenerator;
+use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
@@ -25,6 +25,7 @@ use ProxyManagerTestAsset\ReturnTypeHintedInterface;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use ReflectionClass;
+
 use const PHP_VERSION_ID;
 
 /**

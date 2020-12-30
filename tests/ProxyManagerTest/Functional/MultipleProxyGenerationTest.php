@@ -38,6 +38,8 @@ use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 
 use function get_class;
 
+use const PHP_VERSION_ID;
+
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
  *

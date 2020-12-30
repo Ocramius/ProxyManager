@@ -22,6 +22,8 @@ use ReflectionClass;
 
 use function array_diff;
 
+use const PHP_VERSION_ID;
+
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObjectGenerator}
  *

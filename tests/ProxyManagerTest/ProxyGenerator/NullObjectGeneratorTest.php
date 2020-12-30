@@ -22,6 +22,8 @@ use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ReflectionClass;
 use ReflectionMethod;
 
+use const PHP_VERSION_ID;
+
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator}
  *
