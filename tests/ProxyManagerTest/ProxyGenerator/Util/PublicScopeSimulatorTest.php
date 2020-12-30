@@ -299,35 +299,4 @@ PHP
             )
         );
     }
-
-    /**
-     * @group #632
-     * @group #645
-     * @group #646
-     */
-    public function testFunctional(): void
-    {
-        /** @psalm-var ClassWithMixedProperties $sut */
-        $sut = eval(
-            sprintf(
-                'return new class() extends %s
-                {
-                    public function doGet($prop) { %s }
-                    public function doSet($prop, $val) { %s }
-                    public function doIsset($prop) { %s }
-                    public function doUnset($prop) { %s }
-                };',
-                ClassWithMixedProperties::class,
-                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_GET, 'prop'),
-                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_SET, 'prop', 'val'),
-                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_ISSET, 'prop'),
-                PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_UNSET, 'prop')
-            )
-        );
-
-        $this->assertSame('publicProperty0', $sut->doGet('publicProperty0'));
-        $this->assertSame('bar', $sut->doSet('publicProperty0', 'bar'));
-        $this->assertTrue($sut->doIsset('publicProperty0'));
-        $this->assertNull($sut->doUnset('publicProperty0'));
-    }
 }
