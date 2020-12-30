@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "417104fd18caab76018c9e062ab0f4c7",
+    "content-hash": "f94b651e23c7cd3954949cc381ceb82a",
     "packages": [
         {
             "name": "laminas/laminas-code",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-code.git",
-                "reference": "131153f1b93d3415462c74385e13d3d5588bd72e"
+                "reference": "3ebacd7b63bf9c9a13cf2443aa8c46f0221ff3c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/131153f1b93d3415462c74385e13d3d5588bd72e",
-                "reference": "131153f1b93d3415462c74385e13d3d5588bd72e",
+                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/3ebacd7b63bf9c9a13cf2443aa8c46f0221ff3c0",
+                "reference": "3ebacd7b63bf9c9a13cf2443aa8c46f0221ff3c0",
                 "shasum": ""
             },
             "require": {

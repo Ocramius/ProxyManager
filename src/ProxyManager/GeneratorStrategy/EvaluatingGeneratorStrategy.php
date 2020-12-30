@@ -7,9 +7,7 @@ namespace ProxyManager\GeneratorStrategy;
 use Laminas\Code\Generator\ClassGenerator;
 use Webimpress\SafeWriter\FileWriter;
 
-use function assert;
 use function ini_get;
-use function is_string;
 use function unlink;
 
 /**
@@ -38,7 +36,6 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
     public function generate(ClassGenerator $classGenerator): string
     {
         $code = $classGenerator->generate();
-        assert(is_string($code));
 
         // @codeCoverageIgnoreStart
         if (! $this->canEval) {
