@@ -52,6 +52,7 @@ final class LazyLoadingValueHolderInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfEmptyObject(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->emptyClassProxy();
     }
 
@@ -64,6 +65,7 @@ final class LazyLoadingValueHolderInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithPrivateProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->privatePropertiesProxy();
     }
 
@@ -76,6 +78,7 @@ final class LazyLoadingValueHolderInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithProtectedProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->protectedPropertiesProxy();
     }
 
@@ -88,6 +91,7 @@ final class LazyLoadingValueHolderInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithPublicProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->publicPropertiesProxy();
     }
 
@@ -100,6 +104,7 @@ final class LazyLoadingValueHolderInstantiationBench
 
     public function benchOriginalConstructorInstantiationOfObjectWithMixedProperties(): void
     {
+        /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         new $this->mixedPropertiesProxy();
     }
 
