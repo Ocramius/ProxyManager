@@ -40,7 +40,6 @@
 
         <DeprecatedMethod>
             <errorLevel type="suppress">
-                <referencedMethod name="ProxyManager\ProxyGenerator\Util\Properties::onlyPropertiesThatCanBeUnset"/>
                 <directory name="tests" />
             </errorLevel>
         </DeprecatedMethod>
