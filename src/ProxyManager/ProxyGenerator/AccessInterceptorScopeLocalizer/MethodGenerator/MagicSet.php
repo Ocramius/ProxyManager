@@ -43,7 +43,7 @@ class MagicSet extends MagicMethodGenerator
                 'value',
                 null,
                 'returnValue',
-                $originalClass->isInterface() ? $originalClass->getName() : null
+                $originalClass
             );
         }
 

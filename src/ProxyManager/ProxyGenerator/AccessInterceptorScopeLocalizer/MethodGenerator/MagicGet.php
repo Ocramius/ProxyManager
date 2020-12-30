@@ -39,7 +39,7 @@ class MagicGet extends MagicMethodGenerator
                 null,
                 null,
                 'returnValue',
-                $originalClass->isInterface() ? $originalClass->getName() : null
+                $originalClass
             );
         }
 

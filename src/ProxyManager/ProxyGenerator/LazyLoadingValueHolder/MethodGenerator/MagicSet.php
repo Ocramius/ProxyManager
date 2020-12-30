@@ -53,7 +53,7 @@ class MagicSet extends MagicMethodGenerator
                 'value',
                 $valueHolderProperty,
                 null,
-                $originalClass->isInterface() ? $originalClass->getName() : null
+                $originalClass
             );
 
         $this->setBody(

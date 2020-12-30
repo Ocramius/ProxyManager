@@ -46,7 +46,7 @@ class MagicIsset extends MagicMethodGenerator
             null,
             $valueHolderProperty,
             null,
-            $originalClass->isInterface() ? $originalClass->getName() : null
+            $originalClass
         );
 
         $this->setBody(

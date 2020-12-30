@@ -6,10 +6,9 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
+use ReflectionClass;
 
 use function sprintf;
-use function str_replace;
-use function substr;
 use function var_export;
 
 /**
@@ -46,7 +45,7 @@ class PublicScopeSimulator
         ?string $valueParameter = null,
         ?PropertyGenerator $valueHolder = null,
         ?string $returnPropertyName = null,
-        ?string $interfaceName = null
+        ?ReflectionClass $originalClass = null
     ): string {
         $byRef  = self::getByRefReturnValue($operationType);
         $value  = $operationType === self::OPERATION_SET ? ', $value' : '';
@@ -56,13 +55,11 @@ class PublicScopeSimulator
             $target = '$this->' . $valueHolder->getName();
         }
 
-        if ($interfaceName !== null) {
-            return '$targetObject = ' . $target . ';' . "\n\n"
-                . self::getUndefinedPropertyNotice($operationType, $nameParameter, $interfaceName)
-                . self::getOperation($operationType, $nameParameter, $valueParameter);
-        }
+        $originalClassReflection = $originalClass === null
+            ? 'new \\ReflectionClass(get_parent_class($this))'
+            : 'new \\ReflectionClass(' . var_export($originalClass->getName(), true) . ')';
 
-        return '$realInstanceReflection = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
+        return '$realInstanceReflection = ' . $originalClassReflection . ';' . "\n\n"
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {' . "\n"
             . '    $targetObject = ' . $target . ';' . "\n\n"
             . self::getUndefinedPropertyNotice($operationType, $nameParameter)
@@ -84,29 +81,23 @@ class PublicScopeSimulator
     /**
      * This will generate code that triggers a notice if access is attempted on a non-existing property
      */
-    private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter, ?string $interfaceName = null): string
+    private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter): string
     {
         if ($operationType !== self::OPERATION_GET) {
             return '';
         }
 
-        $code = '    $backtrace = debug_backtrace(false, 1);' . "\n"
+        return '    $backtrace = debug_backtrace(false, 1);' . "\n"
             . '    trigger_error(' . "\n"
             . '        sprintf(' . "\n"
             . '            \'Undefined property: %s::$%s in %s on line %s\',' . "\n"
-            . '            ' . ($interfaceName !== null ? var_export($interfaceName, true) : 'get_parent_class($this)') . ',' . "\n"
+            . '            $realInstanceReflection->getName(),' . "\n"
             . '            $' . $nameParameter . ',' . "\n"
             . '            $backtrace[0][\'file\'],' . "\n"
             . '            $backtrace[0][\'line\']' . "\n"
             . '        ),' . "\n"
             . '        \E_USER_NOTICE' . "\n"
             . '    );' . "\n";
-
-        if ($interfaceName !== null) {
-            $code = str_replace("\n    ", "\n", substr($code, 4));
-        }
-
-        return $code;
     }
 
     /**
