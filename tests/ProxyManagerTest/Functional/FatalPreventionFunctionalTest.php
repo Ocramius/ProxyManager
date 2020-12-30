@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\Functional;
 
+use Laminas\Code\Generator\ClassGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\ExceptionInterface;
-use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\ProxyInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;

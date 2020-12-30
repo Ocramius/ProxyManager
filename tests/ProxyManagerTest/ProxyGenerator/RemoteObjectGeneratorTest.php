@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use ProxyManager\Generator\ClassGenerator;
+use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\RemoteObjectInterface;
@@ -17,9 +17,12 @@ use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
+use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ReflectionClass;
 
 use function array_diff;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\RemoteObjectGenerator}
@@ -80,7 +83,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
     /** @return string[][] */
     public function getTestedImplementations(): array
     {
-        return [
+        $implementations = [
             [BaseClass::class],
             [ClassWithMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
@@ -89,5 +92,11 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
         ];
+
+        if (PHP_VERSION_ID > 80000) {
+            $implementations[] = [ClassWithPhp80TypedMethods::class];
+        }
+
+        return $implementations;
     }
 }
