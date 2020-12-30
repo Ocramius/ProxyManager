@@ -39,7 +39,7 @@ final class MagicUnsetTest extends TestCase
 
         self::assertSame('__unset', $magicGet->getName());
         self::assertCount(1, $magicGet->getParameters());
-        self::assertStringMatchesFormat('%a$returnValue = $accessor();%a', $magicGet->getBody());
+        self::assertStringMatchesFormat('%a$accessor();%a', $magicGet->getBody());
     }
 
     /**
