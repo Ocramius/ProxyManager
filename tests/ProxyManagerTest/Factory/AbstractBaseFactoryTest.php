@@ -31,7 +31,7 @@ final class AbstractBaseFactoryTest extends TestCase
     /**
      * Note: we mock the class in order to assert on the abstract method usage
      *
-     * @var AbstractBaseFactory|MockObject
+     * @var AbstractBaseFactory&MockObject
      */
     private AbstractBaseFactory $factory;
 
