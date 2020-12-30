@@ -59,12 +59,14 @@ class PublicScopeSimulator
             ? 'new \\ReflectionClass(get_parent_class($this))'
             : 'new \\ReflectionClass(' . var_export($originalClass->getName(), true) . ')';
 
+        $returnPropertyName = $returnPropertyName
+            ?? ($operationType === self::OPERATION_UNSET ? 'unset' : $returnPropertyName);
+
         return '$realInstanceReflection = ' . $originalClassReflection . ';' . "\n\n"
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {' . "\n"
             . '    $targetObject = ' . $target . ';' . "\n\n"
             . self::getUndefinedPropertyNotice($operationType, $nameParameter)
             . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
-            . "    return;\n"
             . '}' . "\n\n"
             . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
             . '$accessor = function ' . $byRef . '() use ($targetObject, $' . $nameParameter . $value . ') {' . "\n"
@@ -144,7 +146,9 @@ class PublicScopeSimulator
                 return 'return isset($targetObject->$' . $nameParameter . ');';
 
             case self::OPERATION_UNSET:
-                return 'unset($targetObject->$' . $nameParameter . ');';
+                return 'unset($targetObject->$' . $nameParameter . ');'
+                    . "\n\n"
+                    . '    return;';
         }
 
         throw new InvalidArgumentException(sprintf('Invalid operation "%s" provided', $operationType));

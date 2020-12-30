@@ -42,7 +42,6 @@ if (! $realInstanceReflection->hasProperty($foo)) {
         \E_USER_NOTICE
     );
     return $targetObject->$foo;
-    return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
@@ -76,7 +75,6 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
     $targetObject->$foo = $baz; return $targetObject->$foo;
-    return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
@@ -110,7 +108,6 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
     return isset($targetObject->$foo);
-    return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
@@ -144,12 +141,15 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
     unset($targetObject->$foo);
+
     return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
 $accessor = function () use ($targetObject, $foo) {
     unset($targetObject->$foo);
+
+    return;
 };
 $backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
@@ -165,6 +165,22 @@ PHP;
                 null,
                 null,
                 'bar'
+            )
+        );
+    }
+
+    /**
+     * @group #632
+     * @group #645
+     * @group #646
+     */
+    public function testUnsetCodeWillNotProduceReturnValueStatements(): void
+    {
+        self::assertStringNotContainsString(
+            'return ',
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_UNSET,
+                'foo'
             )
         );
     }
@@ -191,7 +207,6 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this->valueHolder;
 
     $targetObject->$foo = $baz; return $targetObject->$foo;
-    return;
 }
 
 $targetObject = $this->valueHolder;
@@ -243,7 +258,6 @@ if (! $realInstanceReflection->hasProperty($foo)) {
         \E_USER_NOTICE
     );
     return $targetObject->$foo;
-    return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
