@@ -6,8 +6,10 @@ namespace ProxyManager\ProxyGenerator\Util;
 
 use InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
+use ReflectionClass;
 
 use function sprintf;
+use function var_export;
 
 /**
  * Generates code necessary to simulate a fatal error in case of unauthorized
@@ -33,6 +35,7 @@ class PublicScopeSimulator
      *                                              to read the property. `$this` if none provided
      * @param string|null       $returnPropertyName name of the property to which we want to assign the result of
      *                                              the operation. Return directly if none provided
+     * @param string|null       $interfaceName      name of the proxified interface if any
      *
      * @throws InvalidArgumentException
      */
@@ -41,7 +44,8 @@ class PublicScopeSimulator
         string $nameParameter,
         ?string $valueParameter = null,
         ?PropertyGenerator $valueHolder = null,
-        ?string $returnPropertyName = null
+        ?string $returnPropertyName = null,
+        ?ReflectionClass $originalClass = null
     ): string {
         $byRef  = self::getByRefReturnValue($operationType);
         $value  = $operationType === self::OPERATION_SET ? ', $value' : '';
@@ -51,7 +55,11 @@ class PublicScopeSimulator
             $target = '$this->' . $valueHolder->getName();
         }
 
-        return '$realInstanceReflection = new \\ReflectionClass(get_parent_class($this));' . "\n\n"
+        $originalClassReflection = $originalClass === null
+            ? 'new \\ReflectionClass(get_parent_class($this))'
+            : 'new \\ReflectionClass(' . var_export($originalClass->getName(), true) . ')';
+
+        return '$realInstanceReflection = ' . $originalClassReflection . ';' . "\n\n"
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {' . "\n"
             . '    $targetObject = ' . $target . ';' . "\n\n"
             . self::getUndefinedPropertyNotice($operationType, $nameParameter)
@@ -83,7 +91,7 @@ class PublicScopeSimulator
             . '    trigger_error(' . "\n"
             . '        sprintf(' . "\n"
             . '            \'Undefined property: %s::$%s in %s on line %s\',' . "\n"
-            . '            get_parent_class($this),' . "\n"
+            . '            $realInstanceReflection->getName(),' . "\n"
             . '            $' . $nameParameter . ',' . "\n"
             . '            $backtrace[0][\'file\'],' . "\n"
             . '            $backtrace[0][\'line\']' . "\n"

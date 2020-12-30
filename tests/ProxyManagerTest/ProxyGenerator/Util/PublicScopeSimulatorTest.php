@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator\Util;
 
+use ArrayAccess;
 use InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
+use ReflectionClass;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}
@@ -29,7 +31,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     trigger_error(
         sprintf(
             'Undefined property: %s::$%s in %s on line %s',
-            get_parent_class($this),
+            $realInstanceReflection->getName(),
             $foo,
             $backtrace[0]['file'],
             $backtrace[0]['line']
@@ -230,7 +232,7 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     trigger_error(
         sprintf(
             'Undefined property: %s::$%s in %s on line %s',
-            get_parent_class($this),
+            $realInstanceReflection->getName(),
             $foo,
             $backtrace[0]['file'],
             $backtrace[0]['line']
@@ -258,6 +260,25 @@ PHP;
             PublicScopeSimulator::getPublicAccessSimulationCode(
                 PublicScopeSimulator::OPERATION_GET,
                 'foo'
+            )
+        );
+    }
+
+    /** @group #642 */
+    public function testWillNotAttemptToGetParentClassWhenReflectionClassIsGivenUpfront(): void
+    {
+        self::assertStringStartsWith(
+            <<<'PHP'
+$realInstanceReflection = new \ReflectionClass('ArrayAccess');
+PHP
+            ,
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_GET,
+                'foo',
+                null,
+                null,
+                null,
+                new ReflectionClass(ArrayAccess::class)
             )
         );
     }
