@@ -11,6 +11,8 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 
+use function sprintf;
+
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\PublicScopeSimulator}
  *
@@ -39,11 +41,10 @@ if (! $realInstanceReflection->hasProperty($foo)) {
         \E_USER_NOTICE
     );
     return $targetObject->$foo;
-    return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function & () use ($targetObject, $name) {
+$accessor = function & () use ($targetObject, $foo) {
     return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
@@ -64,6 +65,20 @@ PHP;
         );
     }
 
+    public function testValueParameterNameIgnoredForSetOperation(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Parameter $valueParameter should be provided (only) when $operationType === "set"');
+
+        PublicScopeSimulator::getPublicAccessSimulationCode(
+            PublicScopeSimulator::OPERATION_GET,
+            'foo',
+            'givenValue',
+            null,
+            'bar'
+        );
+    }
+
     public function testSimpleSet(): void
     {
         $expected = <<<'PHP'
@@ -72,13 +87,16 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
-    return $targetObject->$foo = $baz;
-    return;
+    $targetObject->$foo = $baz;
+
+    return $targetObject->$foo;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function & () use ($targetObject, $name, $value) {
-    return $targetObject->$foo = $baz;
+$accessor = function & () use ($targetObject, $foo, $baz) {
+    $targetObject->$foo = $baz;
+
+    return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
@@ -107,11 +125,10 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
     return isset($targetObject->$foo);
-    return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function () use ($targetObject, $name) {
+$accessor = function () use ($targetObject, $foo) {
     return isset($targetObject->$foo);
 };
 $backtrace = debug_backtrace(true, 2);
@@ -141,17 +158,20 @@ if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
     unset($targetObject->$foo);
+
     return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function () use ($targetObject, $name) {
+$accessor = function () use ($targetObject, $foo) {
     unset($targetObject->$foo);
+
+    return;
 };
 $backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
 $accessor = $accessor->bindTo($scopeObject, get_class($scopeObject));
-$bar = $accessor();
+$accessor();
 PHP;
 
         self::assertSame(
@@ -162,6 +182,39 @@ PHP;
                 null,
                 null,
                 'bar'
+            )
+        );
+    }
+
+    /**
+     * @group #632
+     * @group #645
+     * @group #646
+     */
+    public function testUnsetCodeWillNotProduceReturnValueStatements(): void
+    {
+        self::assertStringNotContainsString(
+            'return ',
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_UNSET,
+                'foo'
+            ),
+            'Generated return statements do not contain value expressions (invalid since PHP 7.3+)'
+        );
+    }
+
+    /**
+     * @group #632
+     * @group #645
+     * @group #646
+     */
+    public function testUnsetCodeWillNotAssignAccessorEvaluationToVariable(): void
+    {
+        self::assertStringEndsWith(
+            "\n" . '$accessor();',
+            PublicScopeSimulator::getPublicAccessSimulationCode(
+                PublicScopeSimulator::OPERATION_UNSET,
+                'foo'
             )
         );
     }
@@ -187,13 +240,16 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this->valueHolder;
 
-    return $targetObject->$foo = $baz;
-    return;
+    $targetObject->$foo = $baz;
+
+    return $targetObject->$foo;
 }
 
 $targetObject = $this->valueHolder;
-$accessor = function & () use ($targetObject, $name, $value) {
-    return $targetObject->$foo = $baz;
+$accessor = function & () use ($targetObject, $foo, $baz) {
+    $targetObject->$foo = $baz;
+
+    return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
 $scopeObject = isset($backtrace[1]['object']) ? $backtrace[1]['object'] : new \ProxyManager\Stub\EmptyClassStub();
@@ -240,11 +296,10 @@ if (! $realInstanceReflection->hasProperty($foo)) {
         \E_USER_NOTICE
     );
     return $targetObject->$foo;
-    return;
 }
 
 $targetObject = $realInstanceReflection->newInstanceWithoutConstructor();
-$accessor = function & () use ($targetObject, $name) {
+$accessor = function & () use ($targetObject, $foo) {
     return $targetObject->$foo;
 };
 $backtrace = debug_backtrace(true, 2);
