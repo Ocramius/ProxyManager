@@ -20,7 +20,7 @@
     ],
     "require": {
         "php":                       "~7.4.1 || ~8.0.0",
-        "laminas/laminas-code":      "^3.5.0",
+        "laminas/laminas-code":      "4.0.x-dev#131153f1b93d3415462c74385e13d3d5588bd72e",
         "composer-runtime-api":      "^2.0.0",
         "webimpress/safe-writer":    "^2.0.1"
     },
