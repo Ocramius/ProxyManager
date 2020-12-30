@@ -25,7 +25,7 @@ final class PublicScopeSimulatorFunctionalTest extends TestCase
     {
         /** @psalm-var ClassWithMixedProperties $sut */
         $sut = eval(sprintf(
-<<<'PHP'
+            <<<'PHP'
 return new class() extends %s {
     public function doGet($prop) : string { %s }
     public function doSet($prop, $val) : string { %s }
@@ -33,7 +33,7 @@ return new class() extends %s {
     public function doUnset($prop) : void { %s }
 };
 PHP
-                ,
+            ,
             ClassWithMixedProperties::class,
             PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_GET, 'prop'),
             PublicScopeSimulator::getPublicAccessSimulationCode(PublicScopeSimulator::OPERATION_SET, 'prop', 'val'),

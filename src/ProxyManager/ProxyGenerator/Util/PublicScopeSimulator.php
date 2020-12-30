@@ -37,9 +37,9 @@ class PublicScopeSimulator
      *                                              the operation. Return directly if none provided
      * @param string|null       $interfaceName      name of the proxified interface if any
      *
-     * @psalm-param $operationType self::OPERATION_*
-     *
      * @throws InvalidArgumentException
+     *
+     * @psalm-param $operationType self::OPERATION_*
      */
     public static function getPublicAccessSimulationCode(
         string $operationType,
@@ -61,8 +61,7 @@ class PublicScopeSimulator
             ? 'new \\ReflectionClass(get_parent_class($this))'
             : 'new \\ReflectionClass(' . var_export($originalClass->getName(), true) . ')';
 
-        $returnPropertyName = $returnPropertyName
-            ?? ($operationType === self::OPERATION_UNSET ? 'unset' : $returnPropertyName);
+        $returnPropertyName ??= ($operationType === self::OPERATION_UNSET ? 'unset' : $returnPropertyName);
 
         return '$realInstanceReflection = ' . $originalClassReflection . ';' . "\n\n"
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {' . "\n"
