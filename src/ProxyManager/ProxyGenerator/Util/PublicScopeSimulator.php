@@ -37,6 +37,8 @@ class PublicScopeSimulator
      *                                              the operation. Return directly if none provided
      * @param string|null       $interfaceName      name of the proxified interface if any
      *
+     * @psalm-param $operationType self::OPERATION_*
+     *
      * @throws InvalidArgumentException
      */
     public static function getPublicAccessSimulationCode(
