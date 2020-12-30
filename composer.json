@@ -27,7 +27,8 @@
     "conflict": {
         "zendframework/zend-stdlib": "<3.2.1",
         "laminas/laminas-stdlib":    "<3.2.1",
-        "doctrine/annotations":      "<1.6.1"
+        "doctrine/annotations":      "<1.6.1",
+        "thecodingmachine/safe":     "<1.3.3"
     },
     "require-dev": {
         "ext-phar":                     "*",
