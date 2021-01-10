@@ -1,7 +1,3 @@
----
-title: Remote Object Proxy
----
-
 # Remote Object Proxy
 
 The remote object implementation is a mechanism that enables a local object to control another object on another server. Each 

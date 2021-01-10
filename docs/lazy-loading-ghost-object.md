@@ -1,7 +1,3 @@
----
-title: Lazy Loading Ghost Object Proxies
----
-
 # Lazy Loading Ghost Object Proxies
 
 A Lazy Loading Ghost is a type of proxy object.
