@@ -1,7 +1,3 @@
----
-title: Access Interceptor Value Holder Proxy
----
-
 # Access Interceptor Value Holder Proxy
 
 An *access interceptor value holder* is a smart reference proxy that allows you to dynamically define the logic that will be executed before or after any of the wrapped object's methods logic.
