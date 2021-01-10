@@ -8,7 +8,7 @@ title: Contributing
  * The project will follow strict [object calisthenics](http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php)
  * Any contribution must provide tests for additional introduced conditions
  * Any un-confirmed issue needs a failing test case before being accepted
- * Pull requests must be sent from a new hotfix/feature branch, not from `master`.
+ * Pull requests must be sent from a new hotfix/feature branch
 
 ## Installation
 
