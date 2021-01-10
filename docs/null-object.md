@@ -1,7 +1,3 @@
----
-title: Null Object Proxy
----
-
 # Null Object Proxy
 
 A Null Object proxy is a [null object pattern](http://en.wikipedia.org/wiki/Null_Object_pattern) implementation.

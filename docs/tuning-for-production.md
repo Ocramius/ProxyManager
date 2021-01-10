@@ -1,8 +1,4 @@
----
-title: Tuning the ProxyManager for production
----
-
-## Tuning the ProxyManager for production
+# Tuning the ProxyManager for production
 
 By default, all proxy factories generate the required proxy classes at runtime.
 
