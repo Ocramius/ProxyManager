@@ -18,12 +18,11 @@ To install the project and run the tests, you need to clone it first:
 $ git clone git://github.com/Ocramius/ProxyManager.git
 ```
 
-You will then need to run a composer installation:
+Make sure you've [installed Composer](https://getcomposer.org/download/) and install the dependencies:
 
 ```sh
 $ cd ProxyManager
-$ curl -s https://getcomposer.org/installer | php
-$ php composer.phar update
+$ composer update
 ```
 
 ## Testing
@@ -35,4 +34,3 @@ $ ./vendor/bin/phpunit
 ```
 
 Accepted coverage for new contributions is 80%. Any contribution not satisfying this requirement won't be merged.
-
