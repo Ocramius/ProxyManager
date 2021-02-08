@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "ext-phar":                     "*",
-        "phpunit/phpunit":              "^9.5.1",
+        "phpunit/phpunit":              "^9.5.2",
         "squizlabs/php_codesniffer":    "^3.5.5",
         "slevomat/coding-standard":     "^6.3.10",
         "doctrine/coding-standard":     "^8.1.0",
