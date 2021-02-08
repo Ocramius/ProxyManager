@@ -40,7 +40,7 @@
         "phpbench/phpbench":            "^0.17.1 || 1.0.0-alpha2",
         "infection/infection":          "^0.21.0",
         "vimeo/psalm":                  "^4.4.1",
-        "codelicia/xulieta":            "^0.1.5"
+        "codelicia/xulieta":            "^0.1.6"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
