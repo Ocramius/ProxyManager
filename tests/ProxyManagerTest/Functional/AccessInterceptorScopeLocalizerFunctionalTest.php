@@ -180,6 +180,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         array $params,
         $expectedValue
     ): void {
+        /** @psalm-var AccessInterceptorInterface<object> $proxy */
         $proxy = unserialize(serialize((new AccessInterceptorScopeLocalizerFactory())->createProxy($instance)));
         assert($proxy instanceof AccessInterceptorInterface);
 
@@ -271,7 +272,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     public function testCanWriteToArrayKeysInPublicProperty(): void
     {
         $instance = new ClassWithPublicArrayPropertyAccessibleViaMethod();
-        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
+        /** @psalm-var AccessInterceptorInterface<object>&ClassWithPublicArrayPropertyAccessibleViaMethod $proxy */
+        $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $proxy->arrayProperty['foo'] = 'bar';
 
@@ -290,7 +292,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     public function testWillNotModifyRetrievedPublicProperties(): void
     {
         $instance = new ClassWithPublicProperties();
-        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
+        /** @psalm-var AccessInterceptorInterface<object>&ClassWithPublicProperties $proxy */
+        $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $variable = $proxy->property0;
 
@@ -311,7 +314,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     public function testWillModifyByRefRetrievedPublicProperties(): void
     {
         $instance = new ClassWithPublicProperties();
-        $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
+        /** @psalm-var AccessInterceptorInterface<object>&ClassWithPublicProperties $proxy */
+        $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
         $variable = & $proxy->property0;
 
