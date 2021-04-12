@@ -406,6 +406,26 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                 ['parameter' => $empty],
                 $empty,
             ],
+            [
+                new ClassWithNonNullableTypedProperties(
+                    'privatePropertyValue',
+                    'protectedPropertyValue',
+                    'prublicPropertyValue'
+                ),
+                'getPrivateProperty',
+                [],
+                'privatePropertyValue',
+            ],
+            [
+                new ClassWithNonNullableTypedProperties(
+                    'privatePropertyValue',
+                    'protectedPropertyValue',
+                    'prublicPropertyValue'
+                ),
+                'getProtectedProperty',
+                [],
+                'protectedPropertyValue',
+            ],
         ];
     }
 
