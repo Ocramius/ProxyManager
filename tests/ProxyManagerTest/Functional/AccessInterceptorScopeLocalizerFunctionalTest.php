@@ -242,8 +242,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
 
-        $class    = new ReflectionObject($instance);
-        $property = $class->getProperty($publicProperty);
+        $class        = new ReflectionObject($instance);
+        $property     = $class->getProperty($publicProperty);
         $propertyType = $property->getType();
         if ($propertyType instanceof ReflectionType && ! $propertyType->allowsNull()) {
             return;
