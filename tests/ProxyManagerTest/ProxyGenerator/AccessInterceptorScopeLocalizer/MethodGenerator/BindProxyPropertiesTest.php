@@ -68,8 +68,6 @@ final class BindProxyPropertiesTest extends TestCase
             $this->suffixInterceptors
         );
 
-        $expectedCode =
-
         $expectedCode = <<<'PHP'
 $class = new \ReflectionObject($localizedObject);
 $this->bindProxyProperty($localizedObject, $class, 'publicProperty0');
@@ -141,7 +139,6 @@ $this->bindProxyProperty($localizedObject, $class, 'property9');
 $this->pre = $prefixInterceptors;
 $this->post = $suffixInterceptors;
 PHP;
-
 
         self::assertSame(
             $expectedCode,
