@@ -28,6 +28,7 @@ use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use ReflectionObject;
+use ReflectionType;
 use stdClass;
 
 use function array_values;
@@ -243,7 +244,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
         $class    = new ReflectionObject($instance);
         $property = $class->getProperty($publicProperty);
-        if ($property->getType() && ! $property->getType()->allowsNull()) {
+        $propertyType = $property->getType();
+        if ($propertyType instanceof ReflectionType && ! $propertyType->allowsNull()) {
             return;
         }
 
