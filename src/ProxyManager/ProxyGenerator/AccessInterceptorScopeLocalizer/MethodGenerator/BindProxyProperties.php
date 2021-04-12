@@ -6,13 +6,14 @@ namespace ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGene
 
 use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
-use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionClass;
 
 use function implode;
-use function var_export;
+use function sprintf;
+
+use const PHP_EOL;
 
 /**
  * The `bindProxyProperties` method implementation for access interceptor scope localizers
@@ -42,38 +43,19 @@ class BindProxyProperties extends MethodGenerator
             . '@param \\Closure[] $suffixInterceptors method interceptors to be used before method logic'
         );
 
-        $localizedProperties        = [];
-        $properties                 = Properties::fromReflectionClass($originalClass);
-        $nonReferenceableProperties = $properties
-            ->onlyNonReferenceableProperties()
-            ->onlyInstanceProperties();
+        $properties = Properties::fromReflectionClass($originalClass);
 
-        if (! $nonReferenceableProperties->empty()) {
-            throw UnsupportedProxiedClassException::nonReferenceableLocalizedReflectionProperties(
-                $originalClass,
-                $nonReferenceableProperties
+        $bodyLines = ['$class = new \ReflectionObject($localizedObject);'];
+        foreach ($properties->getInstanceProperties() as $property) {
+            $bodyLines[] = sprintf(
+                '$this->bindProxyProperty($localizedObject, $class, \'%s\');',
+                $property->getName()
             );
         }
 
-        foreach ($properties->getAccessibleProperties() as $property) {
-            $propertyName = $property->getName();
+        $bodyLines[] = sprintf('$this->%s = $prefixInterceptors;', $prefixInterceptors->getName());
+        $bodyLines[] = sprintf('$this->%s = $suffixInterceptors;', $suffixInterceptors->getName());
 
-            $localizedProperties[] = '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ';';
-        }
-
-        foreach ($properties->getPrivateProperties() as $property) {
-            $propertyName = $property->getName();
-
-            $localizedProperties[] = "\\Closure::bind(function () use (\$localizedObject) {\n    "
-                . '$this->' . $propertyName . ' = & $localizedObject->' . $propertyName . ";\n"
-                . '}, $this, ' . var_export($property->getDeclaringClass()->getName(), true)
-                . ')->__invoke();';
-        }
-
-        $this->setBody(
-            ($localizedProperties ? implode("\n\n", $localizedProperties) . "\n\n" : '')
-            . '$this->' . $prefixInterceptors->getName() . " = \$prefixInterceptors;\n"
-            . '$this->' . $suffixInterceptors->getName() . ' = $suffixInterceptors;'
-        );
+        $this->setBody(implode(PHP_EOL, $bodyLines));
     }
 }

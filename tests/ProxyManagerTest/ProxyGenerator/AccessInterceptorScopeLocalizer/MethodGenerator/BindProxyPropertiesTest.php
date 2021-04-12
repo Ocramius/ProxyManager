@@ -68,31 +68,19 @@ final class BindProxyPropertiesTest extends TestCase
             $this->suffixInterceptors
         );
 
+        $expectedCode =
+
         $expectedCode = <<<'PHP'
-$this->publicProperty0 = & $localizedObject->publicProperty0;
-
-$this->publicProperty1 = & $localizedObject->publicProperty1;
-
-$this->publicProperty2 = & $localizedObject->publicProperty2;
-
-$this->protectedProperty0 = & $localizedObject->protectedProperty0;
-
-$this->protectedProperty1 = & $localizedObject->protectedProperty1;
-
-$this->protectedProperty2 = & $localizedObject->protectedProperty2;
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateProperty0 = & $localizedObject->privateProperty0;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateProperty1 = & $localizedObject->privateProperty1;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateProperty2 = & $localizedObject->privateProperty2;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties')->__invoke();
-
+$class = new \ReflectionObject($localizedObject);
+$this->bindProxyProperty($localizedObject, $class, 'publicProperty0');
+$this->bindProxyProperty($localizedObject, $class, 'publicProperty1');
+$this->bindProxyProperty($localizedObject, $class, 'publicProperty2');
+$this->bindProxyProperty($localizedObject, $class, 'protectedProperty0');
+$this->bindProxyProperty($localizedObject, $class, 'protectedProperty1');
+$this->bindProxyProperty($localizedObject, $class, 'protectedProperty2');
+$this->bindProxyProperty($localizedObject, $class, 'privateProperty0');
+$this->bindProxyProperty($localizedObject, $class, 'privateProperty1');
+$this->bindProxyProperty($localizedObject, $class, 'privateProperty2');
 $this->pre = $prefixInterceptors;
 $this->post = $suffixInterceptors;
 PHP;
@@ -108,29 +96,24 @@ PHP;
             $this->suffixInterceptors
         );
 
-        self::assertSame(
-            '$this->property0 = & $localizedObject->property0;
-
-$this->property1 = & $localizedObject->property1;
-
-$this->property2 = & $localizedObject->property2;
-
-$this->property3 = & $localizedObject->property3;
-
-$this->property4 = & $localizedObject->property4;
-
-$this->property5 = & $localizedObject->property5;
-
-$this->property6 = & $localizedObject->property6;
-
-$this->property7 = & $localizedObject->property7;
-
-$this->property8 = & $localizedObject->property8;
-
-$this->property9 = & $localizedObject->property9;
-
+        $expectedCode = <<<'PHP'
+$class = new \ReflectionObject($localizedObject);
+$this->bindProxyProperty($localizedObject, $class, 'property0');
+$this->bindProxyProperty($localizedObject, $class, 'property1');
+$this->bindProxyProperty($localizedObject, $class, 'property2');
+$this->bindProxyProperty($localizedObject, $class, 'property3');
+$this->bindProxyProperty($localizedObject, $class, 'property4');
+$this->bindProxyProperty($localizedObject, $class, 'property5');
+$this->bindProxyProperty($localizedObject, $class, 'property6');
+$this->bindProxyProperty($localizedObject, $class, 'property7');
+$this->bindProxyProperty($localizedObject, $class, 'property8');
+$this->bindProxyProperty($localizedObject, $class, 'property9');
 $this->pre = $prefixInterceptors;
-$this->post = $suffixInterceptors;',
+$this->post = $suffixInterceptors;
+PHP;
+
+        self::assertSame(
+            $expectedCode,
             $method->getBody()
         );
     }
@@ -143,49 +126,25 @@ $this->post = $suffixInterceptors;',
             $this->suffixInterceptors
         );
 
-        self::assertSame(
-            '\Closure::bind(function () use ($localizedObject) {
-    $this->property0 = & $localizedObject->property0;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property1 = & $localizedObject->property1;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property2 = & $localizedObject->property2;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property3 = & $localizedObject->property3;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property4 = & $localizedObject->property4;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property5 = & $localizedObject->property5;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property6 = & $localizedObject->property6;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property7 = & $localizedObject->property7;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property8 = & $localizedObject->property8;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->property9 = & $localizedObject->property9;
-}, $this, \'ProxyManagerTestAsset\\\\ClassWithPrivateProperties\')->__invoke();
-
+        $expectedCode = <<<'PHP'
+$class = new \ReflectionObject($localizedObject);
+$this->bindProxyProperty($localizedObject, $class, 'property0');
+$this->bindProxyProperty($localizedObject, $class, 'property1');
+$this->bindProxyProperty($localizedObject, $class, 'property2');
+$this->bindProxyProperty($localizedObject, $class, 'property3');
+$this->bindProxyProperty($localizedObject, $class, 'property4');
+$this->bindProxyProperty($localizedObject, $class, 'property5');
+$this->bindProxyProperty($localizedObject, $class, 'property6');
+$this->bindProxyProperty($localizedObject, $class, 'property7');
+$this->bindProxyProperty($localizedObject, $class, 'property8');
+$this->bindProxyProperty($localizedObject, $class, 'property9');
 $this->pre = $prefixInterceptors;
-$this->post = $suffixInterceptors;',
+$this->post = $suffixInterceptors;
+PHP;
+
+
+        self::assertSame(
+            $expectedCode,
             $method->getBody()
         );
     }
@@ -198,116 +157,53 @@ $this->post = $suffixInterceptors;',
             $this->suffixInterceptors
         );
 
-        self::assertSame(
-            <<<'PHP'
-$this->publicUnTypedProperty = & $localizedObject->publicUnTypedProperty;
-
-$this->publicBoolProperty = & $localizedObject->publicBoolProperty;
-
-$this->publicNullableBoolProperty = & $localizedObject->publicNullableBoolProperty;
-
-$this->publicIntProperty = & $localizedObject->publicIntProperty;
-
-$this->publicNullableIntProperty = & $localizedObject->publicNullableIntProperty;
-
-$this->publicFloatProperty = & $localizedObject->publicFloatProperty;
-
-$this->publicNullableFloatProperty = & $localizedObject->publicNullableFloatProperty;
-
-$this->publicStringProperty = & $localizedObject->publicStringProperty;
-
-$this->publicNullableStringProperty = & $localizedObject->publicNullableStringProperty;
-
-$this->publicArrayProperty = & $localizedObject->publicArrayProperty;
-
-$this->publicNullableArrayProperty = & $localizedObject->publicNullableArrayProperty;
-
-$this->publicIterableProperty = & $localizedObject->publicIterableProperty;
-
-$this->publicNullableIterableProperty = & $localizedObject->publicNullableIterableProperty;
-
-$this->protectedUnTypedProperty = & $localizedObject->protectedUnTypedProperty;
-
-$this->protectedBoolProperty = & $localizedObject->protectedBoolProperty;
-
-$this->protectedNullableBoolProperty = & $localizedObject->protectedNullableBoolProperty;
-
-$this->protectedIntProperty = & $localizedObject->protectedIntProperty;
-
-$this->protectedNullableIntProperty = & $localizedObject->protectedNullableIntProperty;
-
-$this->protectedFloatProperty = & $localizedObject->protectedFloatProperty;
-
-$this->protectedNullableFloatProperty = & $localizedObject->protectedNullableFloatProperty;
-
-$this->protectedStringProperty = & $localizedObject->protectedStringProperty;
-
-$this->protectedNullableStringProperty = & $localizedObject->protectedNullableStringProperty;
-
-$this->protectedArrayProperty = & $localizedObject->protectedArrayProperty;
-
-$this->protectedNullableArrayProperty = & $localizedObject->protectedNullableArrayProperty;
-
-$this->protectedIterableProperty = & $localizedObject->protectedIterableProperty;
-
-$this->protectedNullableIterableProperty = & $localizedObject->protectedNullableIterableProperty;
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateUnTypedProperty = & $localizedObject->privateUnTypedProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateBoolProperty = & $localizedObject->privateBoolProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateNullableBoolProperty = & $localizedObject->privateNullableBoolProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateIntProperty = & $localizedObject->privateIntProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateNullableIntProperty = & $localizedObject->privateNullableIntProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateFloatProperty = & $localizedObject->privateFloatProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateNullableFloatProperty = & $localizedObject->privateNullableFloatProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateStringProperty = & $localizedObject->privateStringProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateNullableStringProperty = & $localizedObject->privateNullableStringProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateArrayProperty = & $localizedObject->privateArrayProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateNullableArrayProperty = & $localizedObject->privateNullableArrayProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateIterableProperty = & $localizedObject->privateIterableProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
-\Closure::bind(function () use ($localizedObject) {
-    $this->privateNullableIterableProperty = & $localizedObject->privateNullableIterableProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
-
+        $expectedCode = <<<'PHP'
+$class = new \ReflectionObject($localizedObject);
+$this->bindProxyProperty($localizedObject, $class, 'publicUnTypedProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicBoolProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicNullableBoolProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicIntProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicNullableIntProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicFloatProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicNullableFloatProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicStringProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicNullableStringProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicArrayProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicNullableArrayProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicIterableProperty');
+$this->bindProxyProperty($localizedObject, $class, 'publicNullableIterableProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedUnTypedProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedBoolProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedNullableBoolProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedIntProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedNullableIntProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedFloatProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedNullableFloatProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedStringProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedNullableStringProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedArrayProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedNullableArrayProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedIterableProperty');
+$this->bindProxyProperty($localizedObject, $class, 'protectedNullableIterableProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateUnTypedProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateBoolProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateNullableBoolProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateIntProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateNullableIntProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateFloatProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateNullableFloatProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateStringProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateNullableStringProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateArrayProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateNullableArrayProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateIterableProperty');
+$this->bindProxyProperty($localizedObject, $class, 'privateNullableIterableProperty');
 $this->pre = $prefixInterceptors;
 $this->post = $suffixInterceptors;
-PHP
-            ,
+PHP;
+
+        self::assertSame(
+            $expectedCode,
             $method->getBody()
         );
     }
