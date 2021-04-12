@@ -18,6 +18,7 @@ use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
+use ProxyManagerTestAsset\ClassWithNonNullableTypedProperties;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayPropertyAccessibleViaMethod;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -26,6 +27,7 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
+use ReflectionObject;
 use stdClass;
 
 use function array_values;
@@ -247,6 +249,12 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
 
+        $class    = new ReflectionObject($instance);
+        $property = $class->getProperty($publicProperty);
+        if ($property->getType() && ! $property->getType()->allowsNull()) {
+            return;
+        }
+
         $instance->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
@@ -406,14 +414,25 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies(): array
     {
-        $instance = new BaseClass();
+        $baseClassInstance                      = new BaseClass();
+        $classWithNonNullablePropertiesInstance = new ClassWithNonNullableTypedProperties(
+            'privatePropertyValue',
+            'protectedPropertyValue',
+            'publicPropertyValue'
+        );
 
         return [
             [
-                $instance,
-                (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance),
+                $baseClassInstance,
+                (new AccessInterceptorScopeLocalizerFactory())->createProxy($baseClassInstance),
                 'publicProperty',
                 'publicPropertyDefault',
+            ],
+            [
+                $classWithNonNullablePropertiesInstance,
+                (new AccessInterceptorScopeLocalizerFactory())->createProxy($classWithNonNullablePropertiesInstance),
+                'publicProperty',
+                'publicPropertyValue',
             ],
         ];
     }
