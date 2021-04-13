@@ -603,9 +603,10 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /** @group 574 */
-    public function testWillRefuseToGenerateReferencesToTypedPropertiesWithoutDefaultValues(): void
+    public function testWillThrowExceptionOnInstanceWithUninitializedProperties(): void
     {
-        $instance = new ClassWithPublicStringNullableTypedProperty();
+        $class    = new ReflectionClass(ClassWithNonNullableTypedProperties::class);
+        $instance = $class->newInstanceWithoutConstructor();
         $factory  = new AccessInterceptorScopeLocalizerFactory();
 
         $this->expectException(UnsupportedProxiedClassException::class);
