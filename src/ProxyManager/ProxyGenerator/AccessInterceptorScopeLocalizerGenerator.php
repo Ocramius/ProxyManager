@@ -16,7 +16,6 @@ use ProxyManager\ProxyGenerator\AccessInterceptor\MethodGenerator\SetMethodSuffi
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodPrefixInterceptors;
 use ProxyManager\ProxyGenerator\AccessInterceptor\PropertyGenerator\MethodSuffixInterceptors;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\BindProxyProperties;
-use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\BindProxyProperty;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\InterceptedMethod;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicClone;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizer\MethodGenerator\MagicGet;
@@ -72,7 +71,6 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
                 ),
                 [
                     new StaticProxyConstructor($originalClass),
-                    new BindProxyProperty($originalClass),
                     new BindProxyProperties($originalClass, $prefixInterceptors, $suffixInterceptors),
                     new SetMethodPrefixInterceptor($prefixInterceptors),
                     new SetMethodSuffixInterceptor($suffixInterceptors),
