@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\GeneratorStrategy;
 
-use Closure;
-use ErrorException;
 use Laminas\Code\Generator\ClassGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\FileNotWritableException;
@@ -18,10 +16,8 @@ use function clearstatcache;
 use function decoct;
 use function fileperms;
 use function mkdir;
-use function restore_error_handler;
 use function rmdir;
 use function scandir;
-use function set_error_handler;
 use function strpos;
 use function sys_get_temp_dir;
 use function tempnam;
@@ -42,31 +38,15 @@ use const SCANDIR_SORT_ASCENDING;
 final class FileWriterGeneratorStrategyTest extends TestCase
 {
     private string $tempDir;
-    private Closure $originalErrorHandler;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->tempDir              = tempnam(sys_get_temp_dir(), 'FileWriterGeneratorStrategyTest');
-        $this->originalErrorHandler = static function (): bool {
-            throw new ErrorException();
-        };
+        $this->tempDir = tempnam(sys_get_temp_dir(), 'FileWriterGeneratorStrategyTest');
 
         unlink($this->tempDir);
         mkdir($this->tempDir);
-        set_error_handler($this->originalErrorHandler);
-    }
-
-    protected function tearDown(): void
-    {
-        self::assertSame($this->originalErrorHandler, set_error_handler(static function (): bool {
-            return true;
-        }));
-        restore_error_handler();
-        restore_error_handler();
-
-        parent::tearDown();
     }
 
     public function testGenerate(): void
