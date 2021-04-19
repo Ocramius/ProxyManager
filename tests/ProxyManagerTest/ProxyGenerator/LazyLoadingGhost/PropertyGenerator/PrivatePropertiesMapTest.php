@@ -30,27 +30,29 @@ final class PrivatePropertiesMapTest extends AbstractUniquePropertyNameTest
 
     public function testExtractsProtectedProperties(): void
     {
-        $map = new PrivatePropertiesMap(
+        $defaultValue = (new PrivatePropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
-        );
+        ))->getDefaultValue();
 
+        self::assertNotNull($defaultValue);
         self::assertSame(
             [
                 'privateProperty0' => [ClassWithMixedProperties::class => true],
                 'privateProperty1' => [ClassWithMixedProperties::class => true],
                 'privateProperty2' => [ClassWithMixedProperties::class => true],
             ],
-            $map->getDefaultValue()->getValue()
+            $defaultValue->getValue()
         );
     }
 
     public function testSkipsAbstractProtectedMethods(): void
     {
-        $map = new PrivatePropertiesMap(
+        $defaultValue = (new PrivatePropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class))
-        );
+        ))->getDefaultValue();
 
-        self::assertSame([], $map->getDefaultValue()->getValue());
+        self::assertNotNull($defaultValue);
+        self::assertSame([], $defaultValue->getValue());
     }
 
     public function testIsStaticPrivate(): void

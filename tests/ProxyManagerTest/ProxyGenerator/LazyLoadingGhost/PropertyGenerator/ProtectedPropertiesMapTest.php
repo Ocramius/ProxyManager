@@ -29,27 +29,29 @@ final class ProtectedPropertiesMapTest extends AbstractUniquePropertyNameTest
 
     public function testExtractsProtectedProperties(): void
     {
-        $map = new ProtectedPropertiesMap(
+        $defaultValue = (new ProtectedPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
-        );
+        ))->getDefaultValue();
 
+        self::assertNotNull($defaultValue);
         self::assertSame(
             [
                 'protectedProperty0' => ClassWithMixedProperties::class,
                 'protectedProperty1' => ClassWithMixedProperties::class,
                 'protectedProperty2' => ClassWithMixedProperties::class,
             ],
-            $map->getDefaultValue()->getValue()
+            $defaultValue->getValue()
         );
     }
 
     public function testSkipsAbstractProtectedMethods(): void
     {
-        $map = new ProtectedPropertiesMap(
+        $defaultValue = (new ProtectedPropertiesMap(
             Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class))
-        );
+        ))->getDefaultValue();
 
-        self::assertSame([], $map->getDefaultValue()->getValue());
+        self::assertNotNull($defaultValue);
+        self::assertSame([], $defaultValue->getValue());
     }
 
     public function testIsStaticPrivate(): void
