@@ -26,8 +26,11 @@ final class PublicPropertiesMapTest extends TestCase
             Properties::fromReflectionClass(new ReflectionClass(EmptyClass::class))
         );
 
-        self::assertIsArray($publicProperties->getDefaultValue()->getValue());
-        self::assertEmpty($publicProperties->getDefaultValue()->getValue());
+        $defaultValue = $publicProperties->getDefaultValue();
+
+        self::assertNotNull($defaultValue);
+        self::assertIsArray($defaultValue->getValue());
+        self::assertEmpty($defaultValue->getValue());
         self::assertTrue($publicProperties->isStatic());
         self::assertSame('private', $publicProperties->getVisibility());
         self::assertTrue($publicProperties->isEmpty());
@@ -39,9 +42,12 @@ final class PublicPropertiesMapTest extends TestCase
             Properties::fromReflectionClass(new ReflectionClass(ClassWithPublicProperties::class))
         );
 
+        $defaultValue = $publicProperties->getDefaultValue();
+
         self::assertTrue($publicProperties->isStatic());
         self::assertSame('private', $publicProperties->getVisibility());
         self::assertFalse($publicProperties->isEmpty());
+        self::assertNotNull($defaultValue);
         self::assertSame(
             [
                 'property0' => true,
@@ -55,21 +61,24 @@ final class PublicPropertiesMapTest extends TestCase
                 'property8' => true,
                 'property9' => true,
             ],
-            $publicProperties->getDefaultValue()->getValue()
+            $defaultValue->getValue()
         );
     }
 
     public function testClassWithMixedProperties(): void
     {
+        $defaultValue = (new PublicPropertiesMap(
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
+        ))->getDefaultValue();
+
+        self::assertNotNull($defaultValue);
         self::assertSame(
             [
                 'publicProperty0' => true,
                 'publicProperty1' => true,
                 'publicProperty2' => true,
             ],
-            (new PublicPropertiesMap(
-                Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedProperties::class))
-            ))->getDefaultValue()->getValue()
+            $defaultValue->getValue()
         );
     }
 }

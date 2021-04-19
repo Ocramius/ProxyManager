@@ -37,10 +37,13 @@ final class ClassSignatureGeneratorTest extends TestCase
             ->expects(self::once())
             ->method('addPropertyFromGenerator')
             ->with(self::callback(static function (PropertyGenerator $property): bool {
+                $defaultValue = $property->getDefaultValue();
+
                 return $property->getName() === 'signaturePropertyName'
                     && $property->isStatic()
                     && $property->getVisibility() === 'private'
-                    && $property->getDefaultValue()->getValue() === 'valid-signature';
+                    && $defaultValue !== null
+                    && $defaultValue->getValue() === 'valid-signature';
             }));
 
         $this
