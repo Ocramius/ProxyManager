@@ -6,6 +6,7 @@ namespace ProxyManager\Generator\Util;
 
 use Composer\InstalledVersions;
 
+use function is_callable;
 use function preg_match;
 use function serialize;
 use function sha1;
@@ -48,6 +49,10 @@ abstract class IdentifierSuffixer
 
     private static function loadBaseHashSalt(): string
     {
-        return sha1(serialize(InstalledVersions::getRawData()));
+        return sha1(serialize(
+            is_callable([InstalledVersions::class, 'getAllRawData'])
+                ? InstalledVersions::getAllRawData() // Composer >= 2.0.14
+                : InstalledVersions::getRawData()
+        ));
     }
 }
