@@ -25,6 +25,7 @@
         "webimpress/safe-writer":    "^2.2.0"
     },
     "conflict": {
+        "composer/composer":         "<2.0.14",
         "zendframework/zend-stdlib": "<3.2.1",
         "laminas/laminas-stdlib":    "<3.2.1",
         "doctrine/annotations":      "<1.6.1",
