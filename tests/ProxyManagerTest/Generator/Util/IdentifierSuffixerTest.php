@@ -8,7 +8,6 @@ use Composer\InstalledVersions;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
 
-use function is_callable;
 use function serialize;
 use function sha1;
 use function strlen;
@@ -38,11 +37,7 @@ final class IdentifierSuffixerTest extends TestCase
      */
     public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name): void
     {
-        $hashedData = sha1(serialize(
-            is_callable([InstalledVersions::class, 'getAllRawData'])
-                ? InstalledVersions::getAllRawData()
-                : InstalledVersions::getRawData()
-        ));
+        $hashedData = sha1(serialize(InstalledVersions::getAllRawData()));
 
         self::assertStringEndsWith(
             substr(sha1($name . $hashedData), 0, 5),
