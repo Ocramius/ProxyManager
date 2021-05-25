@@ -40,7 +40,7 @@
         "nikic/php-parser":             "^4.10.5",
         "phpbench/phpbench":            "^0.17.1 || 1.0.0-alpha2",
         "infection/infection":          "^0.21.5",
-        "vimeo/psalm":                  "^4.4.1",
+        "vimeo/psalm":                  "^4.7.3",
         "codelicia/xulieta":            "^0.1.6"
     },
     "suggest": {
