@@ -36,10 +36,6 @@ final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTe
             $this->expectException(InvalidProxiedClassException::class);
         }
 
-        if ($reflectionClass->getName() === ClassWithMixedTypedProperties::class) {
-            $this->expectException(UnsupportedProxiedClassException::class);
-        }
-
         parent::testGeneratesValidCode($className);
     }
 

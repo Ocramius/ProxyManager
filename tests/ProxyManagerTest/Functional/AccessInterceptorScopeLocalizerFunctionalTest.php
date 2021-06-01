@@ -18,6 +18,7 @@ use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
+use ProxyManagerTestAsset\ClassWithNonNullableTypedProperties;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPublicArrayPropertyAccessibleViaMethod;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -26,6 +27,8 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
+use ReflectionObject;
+use ReflectionType;
 use stdClass;
 
 use function array_values;
@@ -247,6 +250,13 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertSame(isset($instance->$publicProperty), isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
 
+        $class        = new ReflectionObject($instance);
+        $property     = $class->getProperty($publicProperty);
+        $propertyType = $property->getType();
+        if ($propertyType instanceof ReflectionType && ! $propertyType->allowsNull()) {
+            return;
+        }
+
         $instance->$publicProperty = null;
         self::assertFalse(isset($proxy->$publicProperty));
         $this->assertProxySynchronized($instance, $proxy);
@@ -396,6 +406,26 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
                 ['parameter' => $empty],
                 $empty,
             ],
+            [
+                new ClassWithNonNullableTypedProperties(
+                    'privatePropertyValue',
+                    'protectedPropertyValue',
+                    'prublicPropertyValue'
+                ),
+                'getPrivateProperty',
+                [],
+                'privatePropertyValue',
+            ],
+            [
+                new ClassWithNonNullableTypedProperties(
+                    'privatePropertyValue',
+                    'protectedPropertyValue',
+                    'prublicPropertyValue'
+                ),
+                'getProtectedProperty',
+                [],
+                'protectedPropertyValue',
+            ],
         ];
     }
 
@@ -406,14 +436,25 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
      */
     public function getPropertyAccessProxies(): array
     {
-        $instance = new BaseClass();
+        $baseClassInstance                      = new BaseClass();
+        $classWithNonNullablePropertiesInstance = new ClassWithNonNullableTypedProperties(
+            'privatePropertyValue',
+            'protectedPropertyValue',
+            'publicPropertyValue'
+        );
 
         return [
             [
-                $instance,
-                (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance),
+                $baseClassInstance,
+                (new AccessInterceptorScopeLocalizerFactory())->createProxy($baseClassInstance),
                 'publicProperty',
                 'publicPropertyDefault',
+            ],
+            [
+                $classWithNonNullablePropertiesInstance,
+                (new AccessInterceptorScopeLocalizerFactory())->createProxy($classWithNonNullablePropertiesInstance),
+                'publicProperty',
+                'publicPropertyValue',
             ],
         ];
     }
@@ -562,9 +603,10 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /** @group 574 */
-    public function testWillRefuseToGenerateReferencesToTypedPropertiesWithoutDefaultValues(): void
+    public function testWillThrowExceptionOnInstanceWithUninitializedProperties(): void
     {
-        $instance = new ClassWithPublicStringNullableTypedProperty();
+        $class    = new ReflectionClass(ClassWithNonNullableTypedProperties::class);
+        $instance = $class->newInstanceWithoutConstructor();
         $factory  = new AccessInterceptorScopeLocalizerFactory();
 
         $this->expectException(UnsupportedProxiedClassException::class);
