@@ -21,11 +21,10 @@
     "require": {
         "php":                       "~7.4.1 || ~8.0.0",
         "laminas/laminas-code":      "^4.3.0",
-        "composer-runtime-api":      "^2.0.0",
+        "composer-runtime-api":      "^2.1.0",
         "webimpress/safe-writer":    "^2.2.0"
     },
     "conflict": {
-        "composer/composer":         "<2.0.14",
         "zendframework/zend-stdlib": "<3.2.1",
         "laminas/laminas-stdlib":    "<3.2.1",
         "doctrine/annotations":      "<1.6.1",
