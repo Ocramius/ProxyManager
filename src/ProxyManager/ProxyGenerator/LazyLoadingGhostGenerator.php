@@ -25,6 +25,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSet;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicSleep;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\MagicUnset;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SetProxyInitializer;
+use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\SkipDestructor;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializationTracker;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\InitializerProperty;
 use ProxyManager\ProxyGenerator\LazyLoadingGhost\PropertyGenerator\PrivatePropertiesMap;
@@ -53,7 +54,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      * @throws InvalidProxiedClassException
      * @throws InvalidArgumentException
      *
-     * @psalm-param array{skippedProperties?: array<int, string>} $proxyOptions
+     * @psalm-param array{skippedProperties?: array<int, string>, skipDestructor?: bool} $proxyOptions
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator, array $proxyOptions = [])
     {
@@ -65,6 +66,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
         $publicProperties    = new PublicPropertiesMap($filteredProperties);
         $privateProperties   = new PrivatePropertiesMap($filteredProperties);
         $protectedProperties = new ProtectedPropertiesMap($filteredProperties);
+        $skipDestructor      = ($proxyOptions['skipDestructor'] ?? false) && $originalClass->hasMethod('__destruct');
 
         $classGenerator->setExtendedClass($originalClass->getName());
         $classGenerator->setImplementedInterfaces([GhostObjectInterface::class]);
@@ -81,7 +83,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
             array_merge(
-                $this->getAbstractProxiedMethods($originalClass),
+                $this->getAbstractProxiedMethods($originalClass, $skipDestructor),
                 [
                     $init,
                     new StaticProxyConstructor($initializer, $filteredProperties),
@@ -124,7 +126,8 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
                     new GetProxyInitializer($initializer),
                     new InitializeProxy($initializer, $init),
                     new IsProxyInitialized($initializer),
-                ]
+                ],
+                $skipDestructor ? [new SkipDestructor($initializer)] : []
             )
         );
     }
@@ -134,8 +137,22 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
      *
      * @return MethodGenerator[]
      */
-    private function getAbstractProxiedMethods(ReflectionClass $originalClass): array
+    private function getAbstractProxiedMethods(ReflectionClass $originalClass, bool $skipDestructor): array
     {
+        $excludedMethods = [
+            '__get',
+            '__set',
+            '__isset',
+            '__unset',
+            '__clone',
+            '__sleep',
+            '__wakeup',
+        ];
+
+        if ($skipDestructor) {
+            $excludedMethods[] = '__destruct';
+        }
+
         return array_map(
             static function (ReflectionMethod $method): ProxyManagerMethodGenerator {
                 $generated = ProxyManagerMethodGenerator::fromReflectionWithoutBodyAndDocBlock(
@@ -146,7 +163,7 @@ class LazyLoadingGhostGenerator implements ProxyGeneratorInterface
 
                 return $generated;
             },
-            ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass)
+            ProxiedMethodsFilter::getAbstractProxiedMethods($originalClass, $excludedMethods)
         );
     }
 }
