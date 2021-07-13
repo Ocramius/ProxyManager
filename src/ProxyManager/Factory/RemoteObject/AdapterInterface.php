@@ -13,8 +13,6 @@ interface AdapterInterface
      * Call remote object
      *
      * @param array<int, mixed> $params
-     *
-     * @return mixed
      */
-    public function call(string $wrappedClass, string $method, array $params = []);
+    public function call(string $wrappedClass, string $method, array $params = []): mixed;
 }

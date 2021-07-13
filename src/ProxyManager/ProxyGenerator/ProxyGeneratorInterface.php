@@ -16,6 +16,10 @@ interface ProxyGeneratorInterface
     /**
      * Apply modifications to the provided $classGenerator to proxy logic from $originalClass
      *
+     * Due to BC compliance, we cannot add a native `: void` return type declaration here
+     *
+     * phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
      * @return void
      */
     public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator);

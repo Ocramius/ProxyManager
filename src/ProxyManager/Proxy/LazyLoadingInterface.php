@@ -40,6 +40,10 @@ interface LazyLoadingInterface extends ProxyInterface
      *   array<string, mixed>=
      * ) : bool $initializer
      *
+     * Due to BC compliance, we cannot add a native `: void` return type declaration here
+     *
+     * phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
      * @return void
      */
     public function setProxyInitializer(?Closure $initializer = null);
