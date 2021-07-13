@@ -286,6 +286,8 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
             static function (?object & $wrappedInstance) use (& $counter): bool {
                 $wrappedInstance = new BaseClass();
 
+                // sometimes, we need to declare `/** @var type $var */` to declare a by-ref variable type - phpcs can't understand it
+                // phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment
                 /** @var int $counter */
                 $wrappedInstance->publicProperty = (string) ($counter += 1);
 

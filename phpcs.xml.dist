@@ -28,9 +28,6 @@
         <!-- spaces after reference markers are wished and endorsed -->
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterReference"/>
 
-        <!-- sometimes, we need to declare `/** @var type $var */` to declare a by-ref variable type - phpcs can't understand it -->
-        <exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment"/>
-
         <!-- There isn't an `assert(...)` equivalent replacement of `/** @var class-string $foo */` due to side-effects of `class_exists()` -->
         <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion"/>
 
