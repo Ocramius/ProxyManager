@@ -42,7 +42,7 @@ interface LazyLoadingInterface extends ProxyInterface
      *
      * Due to BC compliance, we cannot add a native `: void` return type declaration here
      *
-     * phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      *
      * @return void
      */
