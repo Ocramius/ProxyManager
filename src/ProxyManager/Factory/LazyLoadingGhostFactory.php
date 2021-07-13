@@ -8,7 +8,6 @@ use Closure;
 use OutOfBoundsException;
 use ProxyManager\Configuration;
 use ProxyManager\Proxy\GhostObjectInterface;
-use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;

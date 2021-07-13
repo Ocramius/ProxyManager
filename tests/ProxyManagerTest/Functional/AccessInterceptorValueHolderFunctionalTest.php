@@ -12,7 +12,6 @@ use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\Proxy\AccessInterceptorValueHolderInterface;
 use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\BaseClass;
-use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\CallableInterface;
 use ProxyManagerTestAsset\ClassWithCounterConstructor;
 use ProxyManagerTestAsset\ClassWithDynamicArgumentsMethod;

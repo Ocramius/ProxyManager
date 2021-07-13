@@ -19,8 +19,6 @@ use ProxyManagerTest\Assert;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\LazyLoadingMock;
 
-use function get_class;
-
 /**
  * @covers \ProxyManager\Factory\AbstractBaseFactory
  * @covers \ProxyManager\Factory\LazyLoadingValueHolderFactory

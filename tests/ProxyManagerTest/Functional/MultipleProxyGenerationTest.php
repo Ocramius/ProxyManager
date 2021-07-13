@@ -25,8 +25,6 @@ use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
-use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
-use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
@@ -35,8 +33,6 @@ use ProxyManagerTestAsset\ObjectTypeHintClass;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
-
-use function get_class;
 
 use const PHP_VERSION_ID;
 

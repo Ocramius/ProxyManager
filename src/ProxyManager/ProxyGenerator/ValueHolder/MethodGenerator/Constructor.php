@@ -16,7 +16,6 @@ use ReflectionMethod;
 
 use function array_filter;
 use function array_map;
-use function assert;
 use function implode;
 use function reset;
 use function var_export;

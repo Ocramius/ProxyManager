@@ -26,7 +26,6 @@ use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 
 use function assert;
-use function get_class;
 use function is_callable;
 use function random_int;
 use function ucfirst;
