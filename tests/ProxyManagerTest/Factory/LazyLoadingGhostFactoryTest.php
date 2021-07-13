@@ -110,7 +110,6 @@ final class LazyLoadingGhostFactoryTest extends TestCase
      */
     public function testWillTryAutoGeneration(): void
     {
-        /** @var class-string $className */
         $className      = UniqueIdentifierGenerator::getIdentifier('foo');
         $proxyClassName = UniqueIdentifierGenerator::getIdentifier('bar');
         $generator      = $this->createMock(GeneratorStrategyInterface::class);

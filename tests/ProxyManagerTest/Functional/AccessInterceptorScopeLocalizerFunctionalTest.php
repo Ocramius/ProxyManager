@@ -29,7 +29,6 @@ use ReflectionClass;
 use stdClass;
 
 use function array_values;
-use function assert;
 use function get_class;
 use function random_int;
 use function serialize;
@@ -177,8 +176,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         array $params,
         mixed $expectedValue
     ): void {
+        /** @psalm-var AccessInterceptorInterface<object> $proxy */
         $proxy = unserialize(serialize((new AccessInterceptorScopeLocalizerFactory())->createProxy($instance)));
-        assert($proxy instanceof AccessInterceptorInterface);
 
         $callback = [$proxy, $method];
 
@@ -412,6 +411,12 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         ];
     }
 
+    /**
+     * @psalm-param T                               $instance
+     * @psalm-param T&AccessInterceptorInterface<T> $proxy
+     *
+     * @psalm-template T of object
+     */
     private function assertProxySynchronized(object $instance, AccessInterceptorInterface $proxy): void
     {
         $reflectionClass = new ReflectionClass($instance);

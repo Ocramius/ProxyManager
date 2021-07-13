@@ -1224,6 +1224,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     /**
      * @group        276
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     * @psalm-suppress UnusedVariable this method uses by-ref assignment of properties, and isn't recognized by static analysis
      */
     public function testWillLazyLoadMembersOfOtherProxiesWithTheSamePrivateScope(
         object $callerObject,
@@ -1263,6 +1264,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     /**
      * @group        276
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     * @psalm-suppress UnusedVariable this method uses by-ref assignment of properties, and isn't recognized by static analysis
      */
     public function testWillAccessMembersOfOtherDeSerializedProxiesWithTheSamePrivateScope(
         object $callerObject,
@@ -1306,6 +1308,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     /**
      * @group        276
      * @dataProvider getMethodsThatAccessPropertiesOnOtherObjectsInTheSameScope
+     * @psalm-suppress UnusedVariable this method uses by-ref assignment of properties, and isn't recognized by static analysis
      */
     public function testWillAccessMembersOfOtherClonedProxiesWithTheSamePrivateScope(
         object $callerObject,
@@ -1500,6 +1503,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
     /**
      * @group 327
+     * @psalm-suppress UnusedVariable this method uses by-ref assignment of properties, and isn't recognized by static analysis
      */
     public function testWillExecuteLogicInAVoidMethod(): void
     {
