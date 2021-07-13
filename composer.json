@@ -25,7 +25,6 @@
         "webimpress/safe-writer":    "^2.2.0"
     },
     "conflict": {
-        "doctrine/annotations":      "<1.6.1",
         "thecodingmachine/safe":     "<1.3.3"
     },
     "require-dev": {
