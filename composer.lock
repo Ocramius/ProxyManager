@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "624f9b2f72b13a856d775cd77dc64bb0",
+    "content-hash": "da7e8e29fd166baf1cd0f010bacd1478",
     "packages": [
         {
             "name": "laminas/laminas-code",
@@ -3084,6 +3084,57 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "roave/infection-static-analysis-plugin",
+            "version": "1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/infection-static-analysis-plugin.git",
+                "reference": "c1e5428a85ff24fa4ca75ac43f29c608d02379fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/infection-static-analysis-plugin/zipball/c1e5428a85ff24fa4ca75ac43f29c608d02379fe",
+                "reference": "c1e5428a85ff24fa4ca75ac43f29c608d02379fe",
+                "shasum": ""
+            },
+            "require": {
+                "infection/infection": "0.23.0",
+                "ocramius/package-versions": "^1.9.0 || ^2.0.0",
+                "php": "~7.4.7|~8.0.0",
+                "sanmai/later": "^0.1.2",
+                "vimeo/psalm": "^4.7.2"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^9.0.0",
+                "phpunit/phpunit": "^9.5.4"
+            },
+            "bin": [
+                "bin/roave-infection-static-analysis-plugin"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Roave\\InfectionStaticAnalysis\\": "src/Roave/InfectionStaticAnalysis"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                }
+            ],
+            "description": "Static analysis on top of mutation testing - prevents escaped mutants from being invalid according to static analysis",
+            "support": {
+                "issues": "https://github.com/Roave/infection-static-analysis-plugin/issues",
+                "source": "https://github.com/Roave/infection-static-analysis-plugin/tree/1.8.0"
+            },
+            "time": "2021-05-13T19:12:14+00:00"
         },
         {
             "name": "sanmai/later",
