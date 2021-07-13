@@ -70,8 +70,6 @@ final class AccessInterceptorScopeLocalizerFactoryTest extends TestCase
      */
     public static function testWithOptionalFactory(): void
     {
-        $factory = new AccessInterceptorValueHolderFactory();
-
         self::assertInstanceOf(
             Configuration::class,
             Assert::readAttribute(

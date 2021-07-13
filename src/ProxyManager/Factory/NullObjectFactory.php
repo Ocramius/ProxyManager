@@ -31,21 +31,19 @@ class NullObjectFactory extends AbstractBaseFactory
 
     /**
      * @param object|string $instanceOrClassName the object to be wrapped or interface to transform to null object
+     * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
+     *
+     * @psalm-return RealObjectType&NullObjectInterface
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
      *
      * @psalm-template RealObjectType of object
-     *
-     * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
-     *
-     * @psalm-return RealObjectType&NullObjectInterface
-     *
      * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
      *                                         interfaced (by design)
      */
-    public function createProxy($instanceOrClassName): NullObjectInterface
+    public function createProxy(object|string $instanceOrClassName): NullObjectInterface
     {
         $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
         $proxyClassName = $this->generateProxy($className);

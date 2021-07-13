@@ -18,7 +18,6 @@ use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\RemoteProxy\RemoteObjectMock;
-use stdClass;
 
 /**
  * @covers \ProxyManager\Factory\AbstractBaseFactory

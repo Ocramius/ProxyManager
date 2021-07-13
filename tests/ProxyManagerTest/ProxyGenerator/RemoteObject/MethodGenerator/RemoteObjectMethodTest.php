@@ -6,7 +6,6 @@ namespace ProxyManagerTest\ProxyGenerator\RemoteObject\MethodGenerator;
 
 use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Reflection\MethodReflection;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\RemoteObject\MethodGenerator\RemoteObjectMethod;
 use ProxyManagerTestAsset\BaseClass;

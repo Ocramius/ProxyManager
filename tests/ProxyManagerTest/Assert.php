@@ -11,10 +11,7 @@ use ReflectionObject;
  */
 final class Assert
 {
-    /**
-     * @return mixed
-     */
-    public static function readAttribute(object $object, string $propertyName)
+    public static function readAttribute(object $object, string $propertyName): mixed
     {
         $reflection = new ReflectionObject($object);
         $property   = $reflection->getProperty($propertyName);

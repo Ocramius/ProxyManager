@@ -38,6 +38,14 @@
         <PropertyNotSetInConstructor errorLevel="suppress"/>
         <UnresolvableInclude errorLevel="suppress"/>
 
+        <UnusedClosureParam>
+            <errorLevel type="suppress">
+                <!-- examples/tests use a lot of the initializers, and skip some parameters (uninteresting) by design -->
+                <directory name="examples"/>
+                <directory name="tests"/>
+            </errorLevel>
+        </UnusedClosureParam>
+
         <DeprecatedMethod>
             <errorLevel type="suppress">
                 <directory name="tests" />

@@ -24,18 +24,9 @@
 
         <!-- we cannot enforce the " : void" return type hint due to BC compliance, for now -->
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint"/>
-        <!-- use statements also affect @psalm-* type declarations, and cannot therefore be dropped -->
-        <exclude name="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse"/>
-        <!-- enforced types are now declared via psalm's "totallyTyped" restrictions -->
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
-        <!-- correct type declarations are coming from psalm, not from phpcs -->
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.IncorrectReturnTypeHint"/>
 
         <!-- spaces after reference markers are wished and endorsed -->
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterReference"/>
-
-        <!-- sometimes, we need to declare `/** @var type $var */` to declare a by-ref variable type - phpcs can't understand it -->
-        <exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment"/>
 
         <!-- There isn't an `assert(...)` equivalent replacement of `/** @var class-string $foo */` due to side-effects of `class_exists()` -->
         <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion"/>
@@ -43,7 +34,7 @@
         <!-- `@param callable (?A, B) : C` is incorrectly recognized as nullable parameter in the first position of a callable -->
         <exclude name="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition.NullTypeHintNotOnLastPosition"/>
 
-        <!-- due to BC on interfaces, some `: void` return type signatures are omitted by design -->
-        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
+        <!-- `get_class($v)` is equivalent to `$v::class`, but this is not yet recognized by psalm -->
+        <exclude name="SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall"/>
     </rule>
 </ruleset>

@@ -43,11 +43,10 @@ final class FatalPreventionFunctionalTest extends TestCase
      * @param string $generatorClass an instantiable class (no arguments) implementing
      *                               the {@see \ProxyManager\ProxyGenerator\ProxyGeneratorInterface}
      * @param string $className      a valid (existing/autoloadable) class name
-     *
-     * @dataProvider getTestedClasses
-     *
      * @psalm-param class-string<ProxyGeneratorInterface> $generatorClass
      * @psalm-param class-string                          $className
+     *
+     * @dataProvider getTestedClasses
      */
     public function testCodeGeneration(string $generatorClass, string $className): void
     {
@@ -71,7 +70,6 @@ final class FatalPreventionFunctionalTest extends TestCase
 
     /**
      * @return string[][]
-     *
      * @psalm-return array<int, array<int, class-string<ProxyGeneratorInterface>|class-string>>
      */
     public function getTestedClasses(): array
@@ -101,7 +99,6 @@ final class FatalPreventionFunctionalTest extends TestCase
 
     /**
      * @return string[]
-     *
      * @psalm-return array<int, class-string>
      *
      * @private (public only for PHP 5.3 compatibility)

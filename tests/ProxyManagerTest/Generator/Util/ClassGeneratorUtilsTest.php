@@ -6,7 +6,6 @@ namespace ProxyManagerTest\Generator\Util;
 
 use Laminas\Code\Generator\ClassGenerator;
 use Laminas\Code\Generator\MethodGenerator;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Generator\Util\ClassGeneratorUtils;
 use ProxyManagerTestAsset\BaseClass;

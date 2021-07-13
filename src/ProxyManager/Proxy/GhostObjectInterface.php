@@ -18,8 +18,6 @@ interface GhostObjectInterface extends LazyLoadingInterface
      *
      * Definitions are duplicated here to allow templated definitions in this child type.
      *
-     * @psalm-suppress ImplementedParamTypeMismatch Note that the closure signature below is slightly different
-     *                                              from the one declared in LazyLoadingInterface.
      * @psalm-param null|Closure(
      *   LazilyLoadedObjectType&GhostObjectInterface<LazilyLoadedObjectType>=,
      *   string=,
@@ -27,6 +25,9 @@ interface GhostObjectInterface extends LazyLoadingInterface
      *   ?Closure=,
      *   array<string, mixed>=
      * ) : bool $initializer
+     *
+     * @psalm-suppress ImplementedParamTypeMismatch Note that the closure signature below is slightly different
+     *                                              from the one declared in LazyLoadingInterface.
      */
     public function setProxyInitializer(?Closure $initializer = null);
 
@@ -35,8 +36,6 @@ interface GhostObjectInterface extends LazyLoadingInterface
      *
      * Definitions are duplicated here to allow templated definitions in this child type
      *
-     * @psalm-suppress ImplementedReturnTypeMismatch Note that the closure signature below is slightly different
-     *                                               from the one declared in LazyLoadingInterface.
      * @psalm-return null|Closure(
      *   LazilyLoadedObjectType&GhostObjectInterface<LazilyLoadedObjectType>=,
      *   string,
@@ -44,6 +43,9 @@ interface GhostObjectInterface extends LazyLoadingInterface
      *   ?Closure=,
      *   array<string, mixed>=
      * ) : bool
+     *
+     * @psalm-suppress ImplementedReturnTypeMismatch Note that the closure signature below is slightly different
+     *                                               from the one declared in LazyLoadingInterface.
      */
     public function getProxyInitializer(): ?Closure;
 }

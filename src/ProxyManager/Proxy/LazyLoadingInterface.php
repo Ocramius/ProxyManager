@@ -31,8 +31,6 @@ interface LazyLoadingInterface extends ProxyInterface
      * ) {};
      * </code>
      *
-     * @return void
-     *
      * @psalm-param null|Closure(
      *   LazilyLoadedObjectType|null=,
      *   LazilyLoadedObjectType&LazyLoadingInterface<LazilyLoadedObjectType>=,
@@ -41,6 +39,12 @@ interface LazyLoadingInterface extends ProxyInterface
      *   ?Closure=,
      *   array<string, mixed>=
      * ) : bool $initializer
+     *
+     * Due to BC compliance, we cannot add a native `: void` return type declaration here
+     *
+     * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     *
+     * @return void
      */
     public function setProxyInitializer(?Closure $initializer = null);
 

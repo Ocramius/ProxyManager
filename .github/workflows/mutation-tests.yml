@@ -53,7 +53,7 @@ jobs:
         run: "composer install --no-interaction --no-progress --no-suggest"
 
       - name: "Infection"
-        run: "./vendor/bin/infection --test-framework-options='--testsuite=unit'"
+        run: "./vendor/bin/roave-infection-static-analysis-plugin --test-framework-options='--testsuite=unit'"
         env:
           INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
