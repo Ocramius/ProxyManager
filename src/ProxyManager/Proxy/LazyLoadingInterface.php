@@ -31,8 +31,6 @@ interface LazyLoadingInterface extends ProxyInterface
      * ) {};
      * </code>
      *
-     * @return void
-     *
      * @psalm-param null|Closure(
      *   LazilyLoadedObjectType|null=,
      *   LazilyLoadedObjectType&LazyLoadingInterface<LazilyLoadedObjectType>=,
@@ -41,6 +39,8 @@ interface LazyLoadingInterface extends ProxyInterface
      *   ?Closure=,
      *   array<string, mixed>=
      * ) : bool $initializer
+     *
+     * @return void
      */
     public function setProxyInitializer(?Closure $initializer = null);
 

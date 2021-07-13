@@ -45,5 +45,8 @@
 
         <!-- due to BC on interfaces, some `: void` return type signatures are omitted by design -->
         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
+
+        <!-- `get_class($v)` is equivalent to `$v::class`, but this is not yet recognized by psalm -->
+        <exclude name="SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall"/>
     </rule>
 </ruleset>

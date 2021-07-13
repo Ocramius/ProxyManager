@@ -40,10 +40,9 @@ class PublicScopeSimulator
      * @param string|null       $returnPropertyName name of the property to which we want to assign the result of
      *                                              the operation. Return directly if none provided
      * @param string|null       $interfaceName      name of the proxified interface if any
+     * @psalm-param $operationType self::OPERATION_*
      *
      * @throws InvalidArgumentException
-     *
-     * @psalm-param $operationType self::OPERATION_*
      */
     public static function getPublicAccessSimulationCode(
         string $operationType,
@@ -142,9 +141,9 @@ class PublicScopeSimulator
     }
 
     /**
-     * @throws InvalidArgumentException
-     *
      * @psalm-param $operationType self::OPERATION_*
+     *
+     * @throws InvalidArgumentException
      */
     private static function getOperation(string $operationType, string $nameParameter, ?string $valueParameter): string
     {

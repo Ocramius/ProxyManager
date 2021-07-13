@@ -39,22 +39,19 @@ class RemoteObjectFactory extends AbstractBaseFactory
     }
 
     /**
-     * @param string|object $instanceOrClassName
+     * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
+     *
+     * @psalm-return RealObjectType&RemoteObjectInterface
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException
      * @throws OutOfBoundsException
      *
      * @psalm-template RealObjectType of object
-     *
-     * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
-     *
-     * @psalm-return RealObjectType&RemoteObjectInterface
-     *
      * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
      *                                         interfaced (by design)
      */
-    public function createProxy($instanceOrClassName): RemoteObjectInterface
+    public function createProxy(string|object $instanceOrClassName): RemoteObjectInterface
     {
         $proxyClassName = $this->generateProxy(
             is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName

@@ -37,13 +37,6 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *                                       before method logic is executed
      * @param array<string, Closure> $suffixInterceptors an array (indexed by method name) of interceptor closures to be called
      *                                       after method logic is executed
-     *
-     * @throws InvalidSignatureException
-     * @throws MissingSignatureException
-     * @throws OutOfBoundsException
-     *
-     * @psalm-template RealObjectType of object
-     *
      * @psalm-param RealObjectType $instance
      * @psalm-param array<string, callable(
      *   RealObjectType&AccessInterceptorInterface<RealObjectType>=,
@@ -63,6 +56,11 @@ class AccessInterceptorValueHolderFactory extends AbstractBaseFactory
      *
      * @psalm-return RealObjectType&AccessInterceptorInterface<RealObjectType>&ValueHolderInterface<RealObjectType>&AccessInterceptorValueHolderInterface<RealObjectType>
      *
+     * @throws InvalidSignatureException
+     * @throws MissingSignatureException
+     * @throws OutOfBoundsException
+     *
+     * @psalm-template RealObjectType of object
      * @psalm-suppress MixedInferredReturnType We ignore type checks here, since `staticProxyConstructor` is not
      *                                         interfaced (by design)
      */

@@ -39,10 +39,9 @@ final class NullObjectFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
+     * @psalm-param class-string $className
      *
      * @dataProvider getProxyMethods
-     *
-     * @psalm-param class-string $className
      */
     public function testMethodCalls(string $className, string $method, array $params): void
     {
@@ -53,10 +52,9 @@ final class NullObjectFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
+     * @psalm-param class-string $className
      *
      * @dataProvider getProxyMethods
-     *
-     * @psalm-param class-string $className
      */
     public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params): void
     {
@@ -68,10 +66,9 @@ final class NullObjectFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
+     * @psalm-param class-string $className
      *
      * @dataProvider getProxyMethods
-     *
-     * @psalm-param class-string $className
      */
     public function testMethodCallsAfterCloning(string $className, string $method, array $params): void
     {

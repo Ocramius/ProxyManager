@@ -168,7 +168,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
 
         self::assertInstanceOf($proxyClassName, $proxy);
 
-        self::assertSame($proxyClassName, get_class($proxy));
+        self::assertSame($proxyClassName, $proxy::class);
         self::assertSame($initializer, $proxy->getProxyInitializer());
     }
 }

@@ -299,9 +299,11 @@ final class LazyLoadingGhostPropertyAccessBench
     }
 
     /**
-     * @psalm-template OriginalClass
      * @psalm-param class-string<OriginalClass> $originalClass
+     *
      * @psalm-return OriginalClass&GhostObjectInterface<OriginalClass>
+     *
+     * @psalm-template OriginalClass
      * @psalm-suppress MixedInferredReturnType
      */
     private function buildProxy(string $originalClass): GhostObjectInterface

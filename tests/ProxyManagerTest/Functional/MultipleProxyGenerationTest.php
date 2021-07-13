@@ -63,7 +63,7 @@ final class MultipleProxyGenerationTest extends TestCase
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
-        $className                              = get_class($object);
+        $className                              = $object::class;
         $initializer                            = static function (): bool {
             return true;
         };
@@ -86,10 +86,10 @@ final class MultipleProxyGenerationTest extends TestCase
                     continue;
                 }
 
-                self::assertNotSame(get_class($comparedProxy), get_class($proxy));
+                self::assertNotSame($comparedProxy::class, $proxy::class);
             }
 
-            $proxyClass = get_class($proxy);
+            $proxyClass = $proxy::class;
 
             /**
              * @psalm-suppress InvalidStringClass

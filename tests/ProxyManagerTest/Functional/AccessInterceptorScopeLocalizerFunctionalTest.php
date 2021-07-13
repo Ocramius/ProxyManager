@@ -46,11 +46,10 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
-    public function testMethodCalls(object $instance, string $method, array $params, $expectedValue): void
+    public function testMethodCalls(object $instance, string $method, array $params, mixed $expectedValue): void
     {
         $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
 
@@ -106,7 +105,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
@@ -114,7 +112,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
         $callback = [$proxy, $method];
@@ -170,7 +168,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
@@ -178,7 +175,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy = unserialize(serialize((new AccessInterceptorScopeLocalizerFactory())->createProxy($instance)));
         assert($proxy instanceof AccessInterceptorInterface);
@@ -192,7 +189,6 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
@@ -200,7 +196,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy    = (new AccessInterceptorScopeLocalizerFactory())->createProxy($instance);
         $cloned   = clone $proxy;
@@ -213,15 +209,13 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /**
-     * @param mixed $propertyValue
-     *
      * @dataProvider getPropertyAccessProxies
      */
     public function testPropertyReadAccess(
         object $instance,
         AccessInterceptorInterface $proxy,
         string $publicProperty,
-        $propertyValue
+        mixed $propertyValue
     ): void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         $this->assertProxySynchronized($instance, $proxy);
@@ -573,14 +567,12 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
     }
 
     /**
-     * @param mixed $expected
-     * @param mixed $actual
+     * @psalm-param ExpectedType $expected
      *
      * @psalm-template ExpectedType
-     * @psalm-param ExpectedType $expected
      * @psalm-assert ExpectedType $actual
      */
-    private static function assertByRefVariableValueSame($expected, & $actual): void
+    private static function assertByRefVariableValueSame(mixed $expected, mixed & $actual): void
     {
         self::assertSame($expected, $actual);
     }

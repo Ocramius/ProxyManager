@@ -51,11 +51,10 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
-    public function testMethodCalls(object $instance, string $method, array $params, $expectedValue): void
+    public function testMethodCalls(object $instance, string $method, array $params, mixed $expectedValue): void
     {
         $proxy    = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
         $callback = [$proxy, $method];
@@ -107,7 +106,6 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
@@ -115,7 +113,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy    = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
         $callback = [$proxy, $method];
@@ -169,7 +167,6 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
@@ -177,7 +174,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy = unserialize(serialize((new AccessInterceptorValueHolderFactory())->createProxy($instance)));
         assert($proxy instanceof AccessInterceptorValueHolderInterface);
@@ -190,7 +187,6 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
      *
      * @dataProvider getProxyMethods
      */
@@ -198,7 +194,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy    = (new AccessInterceptorValueHolderFactory())->createProxy($instance);
         $cloned   = clone $proxy;
@@ -211,15 +207,13 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
     }
 
     /**
-     * @param mixed $propertyValue
-     *
      * @dataProvider getPropertyAccessProxies
      */
     public function testPropertyReadAccess(
         object $instance,
         AccessInterceptorValueHolderInterface $proxy,
         string $publicProperty,
-        $propertyValue
+        mixed $propertyValue
     ): void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         self::assertEquals($instance, $proxy->getWrappedValueHolderValue());
@@ -710,11 +704,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         self::assertSame($increment + $addMore + 1, $object->counter);
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     */
-    private static function assertByRefVariableValueSame($expected, & $actual): void
+    private static function assertByRefVariableValueSame(mixed $expected, mixed & $actual): void
     {
         self::assertSame($expected, $actual);
     }
