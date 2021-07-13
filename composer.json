@@ -32,7 +32,7 @@
         "phpunit/phpunit":              "^9.5.6",
         "squizlabs/php_codesniffer":    "^3.6.0",
         "doctrine/coding-standard":     "^9.0.0",
-        "phpbench/phpbench":            "^1.0.0",
+        "phpbench/phpbench":            "^1.0.3",
         "infection/infection":          "^0.21.5",
         "vimeo/psalm":                  "^4.4.1",
         "codelicia/xulieta":            "^0.1.6"
