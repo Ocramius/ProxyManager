@@ -13,8 +13,6 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 
-use function get_class;
-
 /**
  * Factory responsible of producing proxy objects
  */
@@ -67,7 +65,7 @@ class AccessInterceptorScopeLocalizerFactory extends AbstractBaseFactory
         array $prefixInterceptors = [],
         array $suffixInterceptors = []
     ): AccessInterceptorInterface {
-        $proxyClassName = $this->generateProxy(get_class($instance));
+        $proxyClassName = $this->generateProxy($instance::class);
 
         /**
          * We ignore type checks here, since `staticProxyConstructor` is not interfaced (by design)

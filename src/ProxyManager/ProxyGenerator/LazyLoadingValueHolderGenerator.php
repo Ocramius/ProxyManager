@@ -104,12 +104,10 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         InitializerProperty $initializer,
         ValueHolderProperty $valueHolder
     ): callable {
-        return static function (ReflectionMethod $method) use ($initializer, $valueHolder): LazyLoadingMethodInterceptor {
-            return LazyLoadingMethodInterceptor::generateMethod(
-                new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                $initializer,
-                $valueHolder
-            );
-        };
+        return static fn (ReflectionMethod $method): LazyLoadingMethodInterceptor => LazyLoadingMethodInterceptor::generateMethod(
+            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+            $initializer,
+            $valueHolder
+        );
     }
 }

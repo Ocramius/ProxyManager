@@ -58,9 +58,7 @@ final class CanProxyAssertion
     {
         $protectedAbstract = array_filter(
             $originalClass->getMethods(),
-            static function (ReflectionMethod $method): bool {
-                return $method->isAbstract() && $method->isProtected();
-            }
+            static fn (ReflectionMethod $method): bool => $method->isAbstract() && $method->isProtected()
         );
 
         if ($protectedAbstract) {

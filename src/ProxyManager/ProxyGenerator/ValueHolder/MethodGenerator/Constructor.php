@@ -60,9 +60,7 @@ class Constructor extends MethodGenerator
             . implode(
                 ', ',
                 array_map(
-                    static function (ParameterReflection $parameter): string {
-                        return ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
-                    },
+                    static fn (ParameterReflection $parameter): string => ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName(),
                     $originalConstructor->getParameters()
                 )
             )
@@ -72,17 +70,13 @@ class Constructor extends MethodGenerator
     private static function getConstructor(ReflectionClass $class): ?MethodReflection
     {
         $constructors = array_map(
-            static function (ReflectionMethod $method): MethodReflection {
-                return new MethodReflection(
-                    $method->getDeclaringClass()->getName(),
-                    $method->getName()
-                );
-            },
+            static fn (ReflectionMethod $method): MethodReflection => new MethodReflection(
+                $method->getDeclaringClass()->getName(),
+                $method->getName()
+            ),
             array_filter(
                 $class->getMethods(),
-                static function (ReflectionMethod $method): bool {
-                    return $method->isConstructor();
-                }
+                static fn (ReflectionMethod $method): bool => $method->isConstructor()
             )
         );
 

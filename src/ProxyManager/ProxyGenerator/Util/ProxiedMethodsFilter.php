@@ -63,12 +63,10 @@ final class ProxiedMethodsFilter
 
         return array_values(array_filter(
             $class->getMethods(ReflectionMethod::IS_PUBLIC),
-            static function (ReflectionMethod $method) use ($ignored, $requireAbstract): bool {
-                return (! $requireAbstract || $method->isAbstract()) && ! (
-                    array_key_exists(strtolower($method->getName()), $ignored)
-                    || self::methodCannotBeProxied($method)
-                );
-            }
+            static fn (ReflectionMethod $method): bool => (! $requireAbstract || $method->isAbstract()) && ! (
+                array_key_exists(strtolower($method->getName()), $ignored)
+                || self::methodCannotBeProxied($method)
+            )
         ));
     }
 
