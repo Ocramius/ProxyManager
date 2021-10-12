@@ -91,9 +91,7 @@ PHP;
             . implode(
                 ', ',
                 array_map(
-                    static function (ReflectionProperty $property) use ($instanceName): string {
-                        return '$' . $instanceName . '->' . $property->getName();
-                    },
+                    static fn (ReflectionProperty $property): string => '$' . $instanceName . '->' . $property->getName(),
                     $properties
                 )
             )

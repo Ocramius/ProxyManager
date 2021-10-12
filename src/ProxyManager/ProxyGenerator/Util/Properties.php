@@ -23,15 +23,11 @@ use function assert;
  */
 final class Properties
 {
-    /** @var ReflectionProperty[] */
-    private array $properties;
-
     /**
      * @param ReflectionProperty[] $properties
      */
-    private function __construct(array $properties)
+    private function __construct(private array $properties)
     {
-        $this->properties = $properties;
     }
 
     public static function fromReflectionClass(ReflectionClass $reflection): self
@@ -46,15 +42,11 @@ final class Properties
         } while ($class);
 
         return new self(array_merge(
-            ...array_map(static function (ReflectionClass $class): array {
-                return array_values(array_filter(
-                    $class->getProperties(),
-                    static function (ReflectionProperty $property) use ($class): bool {
-                        return $class->getName() === $property->getDeclaringClass()->getName()
-                            && ! $property->isStatic();
-                    }
-                ));
-            }, $parentClasses)
+            ...array_map(static fn (ReflectionClass $class): array => array_values(array_filter(
+                $class->getProperties(),
+                static fn (ReflectionProperty $property): bool => $class->getName() === $property->getDeclaringClass()->getName()
+                    && ! $property->isStatic()
+            )), $parentClasses)
         ));
     }
 

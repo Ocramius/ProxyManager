@@ -12,7 +12,6 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 
-use function get_class;
 use function is_object;
 
 /**
@@ -45,7 +44,7 @@ class NullObjectFactory extends AbstractBaseFactory
      */
     public function createProxy(object|string $instanceOrClassName): NullObjectInterface
     {
-        $className      = is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName;
+        $className      = is_object($instanceOrClassName) ? $instanceOrClassName::class : $instanceOrClassName;
         $proxyClassName = $this->generateProxy($className);
 
         /**

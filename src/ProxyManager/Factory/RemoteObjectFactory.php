@@ -13,7 +13,6 @@ use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 
-use function get_class;
 use function is_object;
 
 /**
@@ -21,20 +20,16 @@ use function is_object;
  */
 class RemoteObjectFactory extends AbstractBaseFactory
 {
-    protected AdapterInterface $adapter;
     private ?RemoteObjectGenerator $generator;
 
     /**
      * {@inheritDoc}
      *
-     * @param AdapterInterface $adapter
-     * @param Configuration    $configuration
+     * @param Configuration $configuration
      */
-    public function __construct(AdapterInterface $adapter, ?Configuration $configuration = null)
+    public function __construct(protected AdapterInterface $adapter, ?Configuration $configuration = null)
     {
         parent::__construct($configuration);
-
-        $this->adapter   = $adapter;
         $this->generator = new RemoteObjectGenerator();
     }
 
@@ -54,7 +49,7 @@ class RemoteObjectFactory extends AbstractBaseFactory
     public function createProxy(string|object $instanceOrClassName): RemoteObjectInterface
     {
         $proxyClassName = $this->generateProxy(
-            is_object($instanceOrClassName) ? get_class($instanceOrClassName) : $instanceOrClassName
+            is_object($instanceOrClassName) ? $instanceOrClassName::class : $instanceOrClassName
         );
 
         /**

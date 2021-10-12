@@ -14,24 +14,16 @@ use function array_key_exists;
  */
 abstract class BaseAdapter implements AdapterInterface
 {
-    protected Client $client;
-
-    /**
-     * Service name mapping
-     *
-     * @var array<string, string>
-     */
-    protected array $map = [];
-
     /**
      * Constructor
      *
      * @param array<string, string> $map map of service names to their aliases
      */
-    public function __construct(Client $client, array $map = [])
-    {
-        $this->client = $client;
-        $this->map    = $map;
+    public function __construct(
+        protected Client $client,
+        // Service name mapping
+        protected array $map = []
+    ) {
     }
 
     /**

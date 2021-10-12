@@ -21,12 +21,10 @@ use function set_error_handler;
  */
 class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
 {
-    protected FileLocatorInterface $fileLocator;
     private Closure $emptyErrorHandler;
 
-    public function __construct(FileLocatorInterface $fileLocator)
+    public function __construct(protected FileLocatorInterface $fileLocator)
     {
-        $this->fileLocator       = $fileLocator;
         $this->emptyErrorHandler = static function (): void {
         };
     }
