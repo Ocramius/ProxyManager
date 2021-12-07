@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da7e8e29fd166baf1cd0f010bacd1478",
+    "content-hash": "c6077e3749b74c31dc9ba7baab837d51",
     "packages": [
         {
             "name": "laminas/laminas-code",
@@ -6107,6 +6107,7 @@
                 "issues": "https://github.com/webmozart/path-util/issues",
                 "source": "https://github.com/webmozart/path-util/tree/2.3.0"
             },
+            "abandoned": "symfony/filesystem",
             "time": "2015-12-17T08:42:14+00:00"
         }
     ],
@@ -6116,7 +6117,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~8.0.0",
+        "php": "~8.0.0 || ~8.0.0",
         "composer-runtime-api": "^2.1.0"
     },
     "platform-dev": {
