@@ -36,10 +36,11 @@ use const PHP_VERSION_ID;
 abstract class AbstractProxyGeneratorTest extends TestCase
 {
     /**
+     * @psalm-param class-string $className
+     *
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     * @psalm-param class-string $className
      */
     public function testGeneratesValidCode(string $className): void
     {
@@ -79,7 +80,6 @@ abstract class AbstractProxyGeneratorTest extends TestCase
      * Retrieve interfaces that should be implemented by the generated code
      *
      * @return string[]
-     *
      * @psalm-return list<class-string>
      */
     abstract protected function getExpectedImplementedInterfaces(): array;

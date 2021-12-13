@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ProxyManagerTest\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator;
 
 use Laminas\Code\Generator\PropertyGenerator;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\LazyLoadingValueHolder\MethodGenerator\MagicIsset;
 use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;

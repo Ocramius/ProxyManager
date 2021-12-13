@@ -13,11 +13,8 @@ use Laminas\Code\Generator\PropertyGenerator;
  */
 final class ClassSignatureGenerator implements ClassSignatureGeneratorInterface
 {
-    private SignatureGeneratorInterface $signatureGenerator;
-
-    public function __construct(SignatureGeneratorInterface $signatureGenerator)
+    public function __construct(private SignatureGeneratorInterface $signatureGenerator)
     {
-        $this->signatureGenerator = $signatureGenerator;
     }
 
     /**

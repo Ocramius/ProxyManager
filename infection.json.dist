@@ -6,10 +6,11 @@
     },
     "logs": {
         "text": "php://stderr",
+        "github": true,
         "badge": {
             "branch": "master"
         }
     },
-    "minMsi": 84.5,
-    "minCoveredMsi": 86
+    "minMsi": 84,
+    "minCoveredMsi": 89.7
 }

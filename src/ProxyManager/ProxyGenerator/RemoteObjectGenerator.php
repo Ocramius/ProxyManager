@@ -62,13 +62,11 @@ class RemoteObjectGenerator implements ProxyGeneratorInterface
             },
             array_merge(
                 array_map(
-                    static function (ReflectionMethod $method) use ($adapter, $originalClass): RemoteObjectMethod {
-                        return RemoteObjectMethod::generateMethod(
-                            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                            $adapter,
-                            $originalClass
-                        );
-                    },
+                    static fn (ReflectionMethod $method): RemoteObjectMethod => RemoteObjectMethod::generateMethod(
+                        new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+                        $adapter,
+                        $originalClass
+                    ),
                     ProxiedMethodsFilter::getProxiedMethods(
                         $originalClass,
                         ['__get', '__set', '__isset', '__unset']

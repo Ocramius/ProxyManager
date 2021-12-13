@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ProxyManagerTest\Factory\RemoteObject\Adapter;
 
 use Laminas\Server\Client;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\RemoteObject\Adapter\BaseAdapter;
 

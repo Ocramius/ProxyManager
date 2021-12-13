@@ -89,12 +89,10 @@ class AccessInterceptorScopeLocalizerGenerator implements ProxyGeneratorInterfac
         MethodPrefixInterceptors $prefixInterceptors,
         MethodSuffixInterceptors $suffixInterceptors
     ): callable {
-        return static function (ReflectionMethod $method) use ($prefixInterceptors, $suffixInterceptors): InterceptedMethod {
-            return InterceptedMethod::generateMethod(
-                new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
-                $prefixInterceptors,
-                $suffixInterceptors
-            );
-        };
+        return static fn (ReflectionMethod $method): InterceptedMethod => InterceptedMethod::generateMethod(
+            new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
+            $prefixInterceptors,
+            $suffixInterceptors
+        );
     }
 }

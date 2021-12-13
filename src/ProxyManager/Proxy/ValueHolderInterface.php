@@ -13,7 +13,6 @@ interface ValueHolderInterface extends ProxyInterface
 {
     /**
      * @return object|null the wrapped value
-     *
      * @psalm-return WrappedValueHolderType|null
      */
     public function getWrappedValueHolderValue(): ?object;

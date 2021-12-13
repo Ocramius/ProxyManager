@@ -35,7 +35,6 @@ PHP;
         PropertyGenerator $adapterProperty,
         ReflectionClass $originalClass
     ): self {
-        /** @var static $method */
         $method        = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
         $proxiedReturn = '$return = $this->' . $adapterProperty->getName()
             . '->call(' . var_export($originalClass->getName(), true)

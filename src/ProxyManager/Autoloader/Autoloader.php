@@ -12,13 +12,8 @@ use function file_exists;
 
 class Autoloader implements AutoloaderInterface
 {
-    protected FileLocatorInterface $fileLocator;
-    protected ClassNameInflectorInterface $classNameInflector;
-
-    public function __construct(FileLocatorInterface $fileLocator, ClassNameInflectorInterface $classNameInflector)
+    public function __construct(protected FileLocatorInterface $fileLocator, protected ClassNameInflectorInterface $classNameInflector)
     {
-        $this->fileLocator        = $fileLocator;
-        $this->classNameInflector = $classNameInflector;
     }
 
     public function __invoke(string $className): bool

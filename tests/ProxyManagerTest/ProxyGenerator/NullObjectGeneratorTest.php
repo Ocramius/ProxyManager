@@ -33,10 +33,11 @@ use const PHP_VERSION_ID;
 final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
 {
     /**
+     * @psalm-param class-string $className
+     *
      * @dataProvider getTestedImplementations
      *
      * Verifies that generated code is valid and implements expected interfaces
-     * @psalm-param class-string $className
      * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function testGeneratesValidCode(string $className): void

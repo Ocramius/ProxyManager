@@ -124,10 +124,7 @@ final class AutoloaderTest extends TestCase
     /** @psalm-param class-string $className */
     private function autoloadWithoutFurtherAutoloaders(string $className): bool
     {
-        $failingAutoloader = null;
-        $failingAutoloader = function (string $className) use (& $failingAutoloader): void {
-            spl_autoload_unregister($failingAutoloader);
-
+        $failingAutoloader = function (string $className): void {
             $this->fail(sprintf('Fallback autoloading was triggered to load "%s"', $className));
         };
 

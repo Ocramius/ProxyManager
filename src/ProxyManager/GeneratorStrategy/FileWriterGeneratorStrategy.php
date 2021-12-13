@@ -21,12 +21,10 @@ use function set_error_handler;
  */
 class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
 {
-    protected FileLocatorInterface $fileLocator;
     private Closure $emptyErrorHandler;
 
-    public function __construct(FileLocatorInterface $fileLocator)
+    public function __construct(protected FileLocatorInterface $fileLocator)
     {
-        $this->fileLocator       = $fileLocator;
         $this->emptyErrorHandler = static function (): void {
         };
     }
@@ -41,7 +39,7 @@ class FileWriterGeneratorStrategy implements GeneratorStrategyInterface
     public function generate(ClassGenerator $classGenerator): string
     {
         $generatedCode = $classGenerator->generate();
-        $className     = $classGenerator->getNamespaceName() . '\\' . $classGenerator->getName();
+        $className     = (string) $classGenerator->getNamespaceName() . '\\' . $classGenerator->getName();
         $fileName      = $this->fileLocator->getProxyFileName($className);
 
         set_error_handler($this->emptyErrorHandler);

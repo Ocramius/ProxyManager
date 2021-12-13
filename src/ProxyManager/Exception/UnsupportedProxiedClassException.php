@@ -36,9 +36,7 @@ class UnsupportedProxiedClassException extends LogicException implements Excepti
         return new self(sprintf(
             'Cannot create references for following properties of class %s: %s',
             $class->getName(),
-            implode(', ', array_map(static function (ReflectionProperty $property): string {
-                return $property->getName();
-            }, $properties->getInstanceProperties()))
+            implode(', ', array_map(static fn (ReflectionProperty $property): string => $property->getName(), $properties->getInstanceProperties()))
         ));
     }
 }

@@ -48,6 +48,6 @@ abstract class IdentifierSuffixer
 
     private static function loadBaseHashSalt(): string
     {
-        return sha1(serialize(InstalledVersions::getRawData()));
+        return sha1(serialize(InstalledVersions::getAllRawData()));
     }
 }

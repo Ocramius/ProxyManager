@@ -32,7 +32,7 @@ This code is problematic and adds complexity that makes your unit tests' code ev
 Also, this kind of usage often ends up in coupling your code with a particular 
 [Dependency Injection Container](http://martinfowler.com/articles/injection.html) or a framework that fetches dependencies 
 for you. That way, further complexity is introduced, and some problems related with service location raise, as explained 
-[in this article](http://ocramius.github.com/blog/zf2-and-symfony-service-proxies-with-doctrine-proxies/).
+[in this article](http://ocramius.github.io/blog/zf2-and-symfony-service-proxies-with-doctrine-proxies/).
 
 Lazy loading value holders abstract this logic for you, hiding your complex, slow, performance-impacting objects behind tiny 
 wrappers that have their same API, and that get initialized at first usage.

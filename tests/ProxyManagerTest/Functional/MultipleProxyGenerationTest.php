@@ -25,8 +25,6 @@ use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
-use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
-use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
@@ -35,8 +33,6 @@ use ProxyManagerTestAsset\ObjectTypeHintClass;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
-
-use function get_class;
 
 use const PHP_VERSION_ID;
 
@@ -63,7 +59,7 @@ final class MultipleProxyGenerationTest extends TestCase
         $virtualProxyFactory                    = new LazyLoadingValueHolderFactory();
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
-        $className                              = get_class($object);
+        $className                              = $object::class;
         $initializer                            = static function (): bool {
             return true;
         };
@@ -86,10 +82,10 @@ final class MultipleProxyGenerationTest extends TestCase
                     continue;
                 }
 
-                self::assertNotSame(get_class($comparedProxy), get_class($proxy));
+                self::assertNotSame($comparedProxy::class, $proxy::class);
             }
 
-            $proxyClass = get_class($proxy);
+            $proxyClass = $proxy::class;
 
             /**
              * @psalm-suppress InvalidStringClass

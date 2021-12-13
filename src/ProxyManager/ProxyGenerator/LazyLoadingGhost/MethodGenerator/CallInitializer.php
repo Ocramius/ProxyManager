@@ -113,10 +113,8 @@ PHP;
         return implode(
             "\n",
             array_map(
-                function (ReflectionProperty $property): string {
-                    return '    $instance->' . $property->getName()
-                        . ' = ' . $this->getExportedPropertyDefaultValue($property) . ';';
-                },
+                fn (ReflectionProperty $property): string => '    $instance->' . $property->getName()
+                    . ' = ' . $this->getExportedPropertyDefaultValue($property) . ';',
                 $properties
             )
         );

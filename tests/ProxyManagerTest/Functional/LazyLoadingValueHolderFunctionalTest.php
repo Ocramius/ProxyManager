@@ -53,15 +53,13 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 {
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
-     *
-     * @dataProvider getProxyMethods
-     *
-     * @psalm-template OriginalClass
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
+     *
+     * @dataProvider getProxyMethods
+     * @psalm-template OriginalClass
      */
-    public function testMethodCalls(string $className, object $instance, string $method, array $params, $expectedValue): void
+    public function testMethodCalls(string $className, object $instance, string $method, array $params, mixed $expectedValue): void
     {
         $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
@@ -81,20 +79,18 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
-     *
-     * @dataProvider getProxyMethods
-     *
-     * @psalm-template OriginalClass
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
+     *
+     * @dataProvider getProxyMethods
+     * @psalm-template OriginalClass
      */
     public function testMethodCallsAfterUnSerialization(
         string $className,
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy = unserialize(serialize((new LazyLoadingValueHolderFactory())->createProxy(
             $className,
@@ -115,20 +111,18 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @param mixed   $expectedValue
-     *
-     * @dataProvider getProxyMethods
-     *
-     * @psalm-template OriginalClass
      * @psalm-param class-string<OriginalClass> $className
      * @psalm-param OriginalClass $instance
+     *
+     * @dataProvider getProxyMethods
+     * @psalm-template OriginalClass
      */
     public function testMethodCallsAfterCloning(
         string $className,
         object $instance,
         string $method,
         array $params,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy  = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
@@ -149,15 +143,13 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     }
 
     /**
-     * @param mixed $propertyValue
-     *
      * @dataProvider getPropertyAccessProxies
      */
     public function testPropertyReadAccess(
         object $instance,
         VirtualProxyInterface $proxy,
         string $publicProperty,
-        $propertyValue
+        mixed $propertyValue
     ): void {
         self::assertSame($propertyValue, $proxy->$publicProperty);
         self::assertTrue($proxy->isProxyInitialized());
@@ -294,6 +286,8 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
             static function (?object & $wrappedInstance) use (& $counter): bool {
                 $wrappedInstance = new BaseClass();
 
+                // sometimes, we need to declare `/** @var type $var */` to declare a by-ref variable type - phpcs can't understand it
+                // phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment
                 /** @var int $counter */
                 $wrappedInstance->publicProperty = (string) ($counter += 1);
 
@@ -387,6 +381,10 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
     }
 
     /**
+     * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
+     * @psalm-param class-string<TClass> $className
+     * @psalm-param TClass $realInstance
+     *
      * @return Closure(
      *  TClass|null,
      *  VirtualProxyInterface,
@@ -396,9 +394,6 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
      * ) : bool
      *
      * @template TClass
-     * @psalm-param (CallableInterface&Mock)|null $initializerMatcher
-     * @psalm-param class-string<TClass> $className
-     * @psalm-param TClass $realInstance
      */
     private function createInitializer(string $className, object $realInstance, ?Mock $initializerMatcher = null): Closure
     {
@@ -614,7 +609,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         string $method,
         string $expectedValue
     ): void {
-        $className = get_class($realInstance);
+        $className = $realInstance::class;
         $proxy     = (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $realInstance)
@@ -638,7 +633,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         string $method,
         string $expectedValue
     ): void {
-        $className = get_class($realInstance);
+        $className = $realInstance::class;
         $proxy     = unserialize(serialize((new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $realInstance)
@@ -662,7 +657,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         string $method,
         string $expectedValue
     ): void {
-        $className = get_class($realInstance);
+        $className = $realInstance::class;
         $proxy     = clone (new LazyLoadingValueHolderFactory())->createProxy(
             $className,
             $this->createInitializer($className, $realInstance)
@@ -738,11 +733,7 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         return $instance;
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     */
-    private static function assertByRefVariableValueSame($expected, & $actual): void
+    private static function assertByRefVariableValueSame(mixed $expected, mixed & $actual): void
     {
         self::assertSame($expected, $actual);
     }

@@ -37,8 +37,10 @@ final class IdentifierSuffixerTest extends TestCase
      */
     public function testGeneratedSuffixDependsOnPackageInstalledVersions(string $name): void
     {
+        $hashedData = sha1(serialize(InstalledVersions::getAllRawData()));
+
         self::assertStringEndsWith(
-            substr(sha1($name . sha1(serialize(InstalledVersions::getRawData()))), 0, 5),
+            substr(sha1($name . $hashedData), 0, 5),
             IdentifierSuffixer::getIdentifier($name)
         );
     }

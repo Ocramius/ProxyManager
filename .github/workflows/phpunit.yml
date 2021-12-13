@@ -17,7 +17,6 @@ jobs:
           - "highest"
           - "locked"
         php-version:
-          - "7.4"
           - "8.0"
         operating-system:
           - "ubuntu-latest"

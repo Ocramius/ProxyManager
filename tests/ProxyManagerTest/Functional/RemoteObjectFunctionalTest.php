@@ -26,7 +26,6 @@ use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 
 use function assert;
-use function get_class;
 use function is_callable;
 use function random_int;
 use function ucfirst;
@@ -41,10 +40,9 @@ use function uniqid;
 final class RemoteObjectFunctionalTest extends TestCase
 {
     /**
-     * @param mixed   $expectedValue
      * @param mixed[] $parametersExpectedByClient
      */
-    protected function getXmlRpcAdapter($expectedValue, string $method, array $parametersExpectedByClient): XmlRpcAdapter
+    protected function getXmlRpcAdapter(mixed $expectedValue, string $method, array $parametersExpectedByClient): XmlRpcAdapter
     {
         $client = $this->getMockBuilder(Client::class)->getMock();
 
@@ -60,10 +58,9 @@ final class RemoteObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @param mixed   $expectedValue
      * @param mixed[] $params
      */
-    protected function getJsonRpcAdapter($expectedValue, string $method, array $params): JsonRpcAdapter
+    protected function getJsonRpcAdapter(mixed $expectedValue, string $method, array $params): JsonRpcAdapter
     {
         $client = $this->getMockBuilder(Client::class)->getMock();
 
@@ -79,22 +76,19 @@ final class RemoteObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @param string|object $instanceOrClassName
      * @param array|mixed[] $passedParams
      * @param mixed[]       $callParametersExpectedByAdapter
-     * @param mixed         $expectedValue
+     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      *
      * @dataProvider getProxyMethods
-     *
      * @psalm-template OriginalClass of object
-     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
     public function testXmlRpcMethodCalls(
-        $instanceOrClassName,
+        string|object $instanceOrClassName,
         string $method,
         array $passedParams,
         array $callParametersExpectedByAdapter,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy = (new RemoteObjectFactory($this->getXmlRpcAdapter($expectedValue, $method, $callParametersExpectedByAdapter)))
             ->createProxy($instanceOrClassName);
@@ -106,22 +100,19 @@ final class RemoteObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @param string|object $instanceOrClassName
      * @param array|mixed[] $passedParams
      * @param mixed[]       $parametersForProxy
-     * @param mixed         $expectedValue
+     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      *
      * @dataProvider getProxyMethods
-     *
      * @psalm-template OriginalClass of object
-     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
     public function testJsonRpcMethodCalls(
-        $instanceOrClassName,
+        string|object $instanceOrClassName,
         string $method,
         array $passedParams,
         array $parametersForProxy,
-        $expectedValue
+        mixed $expectedValue
     ): void {
         $proxy = (new RemoteObjectFactory($this->getJsonRpcAdapter($expectedValue, $method, $parametersForProxy)))
             ->createProxy($instanceOrClassName);
@@ -133,15 +124,12 @@ final class RemoteObjectFunctionalTest extends TestCase
     }
 
     /**
-     * @param string|object $instanceOrClassName
-     * @param mixed         $propertyValue
+     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      *
      * @dataProvider getPropertyAccessProxies
-     *
      * @psalm-template OriginalClass of object
-     * @psalm-param class-string<OriginalClass>|OriginalClass $instanceOrClassName
      */
-    public function testJsonRpcPropertyReadAccess($instanceOrClassName, string $publicProperty, $propertyValue): void
+    public function testJsonRpcPropertyReadAccess(string|object $instanceOrClassName, string $publicProperty, mixed $propertyValue): void
     {
         $proxy = (new RemoteObjectFactory($this->getJsonRpcAdapter($propertyValue, '__get', [$publicProperty])))
             ->createProxy($instanceOrClassName);
@@ -329,7 +317,7 @@ final class RemoteObjectFunctionalTest extends TestCase
         $adapter
             ->expects(self::once())
             ->method('call')
-            ->with(get_class($realInstance), '__get', [$propertyName])
+            ->with($realInstance::class, '__get', [$propertyName])
             ->willReturn($expectedValue);
 
         $proxy = (new RemoteObjectFactory($adapter))
@@ -357,7 +345,7 @@ final class RemoteObjectFunctionalTest extends TestCase
         $adapter
             ->expects(self::once())
             ->method('call')
-            ->with(get_class($realInstance), '__get', [$propertyName])
+            ->with($realInstance::class, '__get', [$propertyName])
             ->willReturn($expectedValue);
 
         $proxy = clone (new RemoteObjectFactory($adapter))
