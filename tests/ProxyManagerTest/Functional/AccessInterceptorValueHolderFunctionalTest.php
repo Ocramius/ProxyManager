@@ -32,7 +32,6 @@ use stdClass;
 
 use function array_values;
 use function assert;
-use function get_class;
 use function is_callable;
 use function random_int;
 use function serialize;
@@ -338,10 +337,8 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = get_class(
-            (new AccessInterceptorValueHolderFactory())
-                ->createProxy(new ClassWithCounterConstructor(0))
-        );
+        $proxyName = (new AccessInterceptorValueHolderFactory())
+            ->createProxy(new ClassWithCounterConstructor(0))::class;
 
         /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         $proxy = new $proxyName(15);
@@ -361,9 +358,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                'bar' => static function (): string {
-                    return 'Foo Baz';
-                },
+                'bar' => static fn (): string => 'Foo Baz',
             ]
         );
 
@@ -383,9 +378,7 @@ final class AccessInterceptorValueHolderFunctionalTest extends TestCase
         $object = (new AccessInterceptorValueHolderFactory())->createProxy(
             new ClassWithMethodWithByRefVariadicFunction(),
             [
-                'bar' => static function (): string {
-                    return 'Foo Baz';
-                },
+                'bar' => static fn (): string => 'Foo Baz',
             ]
         );
 

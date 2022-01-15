@@ -60,9 +60,7 @@ final class MultipleProxyGenerationTest extends TestCase
         $accessInterceptorFactory               = new AccessInterceptorValueHolderFactory();
         $accessInterceptorScopeLocalizerFactory = new AccessInterceptorScopeLocalizerFactory();
         $className                              = $object::class;
-        $initializer                            = static function (): bool {
-            return true;
-        };
+        $initializer                            = static fn (): bool => true;
 
         $generated = [
             $ghostProxyFactory->createProxy($className, $initializer),

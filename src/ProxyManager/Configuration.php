@@ -27,14 +27,14 @@ class Configuration
 {
     public const DEFAULT_PROXY_NAMESPACE = 'ProxyManagerGeneratedProxy';
 
-    protected ?string $proxiesTargetDir;
-    protected string $proxiesNamespace = self::DEFAULT_PROXY_NAMESPACE;
-    protected ?GeneratorStrategyInterface $generatorStrategy;
-    protected ?AutoloaderInterface $proxyAutoloader;
-    protected ?ClassNameInflectorInterface $classNameInflector;
-    protected ?SignatureGeneratorInterface $signatureGenerator;
-    protected ?SignatureCheckerInterface $signatureChecker;
-    protected ?ClassSignatureGeneratorInterface $classSignatureGenerator;
+    protected ?string $proxiesTargetDir                                  = null;
+    protected string $proxiesNamespace                                   = self::DEFAULT_PROXY_NAMESPACE;
+    protected ?GeneratorStrategyInterface $generatorStrategy             = null;
+    protected ?AutoloaderInterface $proxyAutoloader                      = null;
+    protected ?ClassNameInflectorInterface $classNameInflector           = null;
+    protected ?SignatureGeneratorInterface $signatureGenerator           = null;
+    protected ?SignatureCheckerInterface $signatureChecker               = null;
+    protected ?ClassSignatureGeneratorInterface $classSignatureGenerator = null;
 
     public function setProxyAutoloader(AutoloaderInterface $proxyAutoloader): void
     {

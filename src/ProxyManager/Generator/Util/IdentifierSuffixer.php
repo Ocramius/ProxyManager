@@ -23,7 +23,7 @@ abstract class IdentifierSuffixer
     public const VALID_IDENTIFIER_FORMAT = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/';
     public const DEFAULT_IDENTIFIER      = 'g';
 
-    final private function __construct()
+    private function __construct()
     {
     }
 

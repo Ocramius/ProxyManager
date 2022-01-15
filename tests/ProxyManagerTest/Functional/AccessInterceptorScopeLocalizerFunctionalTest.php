@@ -29,7 +29,6 @@ use ReflectionClass;
 use stdClass;
 
 use function array_values;
-use function get_class;
 use function random_int;
 use function serialize;
 use function uniqid;
@@ -333,10 +332,8 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = get_class(
-            (new AccessInterceptorScopeLocalizerFactory())
-                ->createProxy(new ClassWithCounterConstructor(0))
-        );
+        $proxyName = (new AccessInterceptorScopeLocalizerFactory())
+            ->createProxy(new ClassWithCounterConstructor(0))::class;
 
         /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         $proxy = new $proxyName(15);
@@ -441,9 +438,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                'bar' => static function (): string {
-                    return 'Foo Baz';
-                },
+                'bar' => static fn (): string => 'Foo Baz',
             ]
         );
 
@@ -467,9 +462,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $object = $factory->createProxy(
             $targetObject,
             [
-                'bar' => static function (): string {
-                    return 'Foo Baz';
-                },
+                'bar' => static fn (): string => 'Foo Baz',
             ]
         );
 
@@ -493,9 +486,7 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
             ->createProxy(
                 new ClassWithDynamicArgumentsMethod(),
                 [
-                    'dynamicArgumentsMethod' => static function (): string {
-                        return 'Foo Baz';
-                    },
+                    'dynamicArgumentsMethod' => static fn (): string => 'Foo Baz',
                 ]
             );
 

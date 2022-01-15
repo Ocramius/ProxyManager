@@ -18,6 +18,7 @@ use ProxyManager\Signature\ClassSignatureGeneratorInterface;
 use ProxyManager\Signature\SignatureCheckerInterface;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\RemoteProxy\RemoteObjectMock;
+use stdClass;
 
 /**
  * @covers \ProxyManager\Factory\AbstractBaseFactory
@@ -97,9 +98,7 @@ final class RemoteObjectFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    static function (ClassGenerator $targetClass) use ($proxyClassName): bool {
-                        return $targetClass->getName() === $proxyClassName;
-                    }
+                    static fn (ClassGenerator $targetClass): bool => $targetClass->getName() === $proxyClassName
                 )
             );
 
@@ -130,7 +129,7 @@ final class RemoteObjectFactoryTest extends TestCase
             ->expects(self::once())
             ->method('getUserClassName')
             ->with(BaseInterface::class)
-            ->willReturn('stdClass');
+            ->willReturn(stdClass::class);
 
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));

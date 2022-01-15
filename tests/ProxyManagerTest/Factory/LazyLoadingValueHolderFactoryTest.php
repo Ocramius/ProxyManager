@@ -92,9 +92,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
             ->willReturn(LazyLoadingMock::class);
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = static function (): bool {
-            return true;
-        };
+        $initializer = static fn (): bool => true;
         $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertSame($initializer, $proxy->getProxyInitializer());
@@ -124,9 +122,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    static function (ClassGenerator $targetClass) use ($proxyClassName): bool {
-                        return $targetClass->getName() === $proxyClassName;
-                    }
+                    static fn (ClassGenerator $targetClass): bool => $targetClass->getName() === $proxyClassName
                 )
             );
 
@@ -159,9 +155,7 @@ final class LazyLoadingValueHolderFactoryTest extends TestCase
         $this->classSignatureGenerator->expects(self::once())->method('addSignature')->will(self::returnArgument(0));
 
         $factory     = new LazyLoadingValueHolderFactory($this->config);
-        $initializer = static function (): bool {
-            return true;
-        };
+        $initializer = static fn (): bool => true;
         $proxy       = $factory->createProxy($className, $initializer);
 
         self::assertInstanceOf($proxyClassName, $proxy);

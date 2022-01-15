@@ -43,9 +43,7 @@ final class ProxiedMethodsFilterTest extends TestCase
         $filtered = ProxiedMethodsFilter::getProxiedMethods($reflectionClass, $excludes);
 
         $keys = array_map(
-            static function (ReflectionMethod $method): string {
-                return $method->getName();
-            },
+            static fn (ReflectionMethod $method): string => $method->getName(),
             $filtered
         );
 
@@ -69,9 +67,7 @@ final class ProxiedMethodsFilterTest extends TestCase
         $filtered = ProxiedMethodsFilter::getAbstractProxiedMethods($reflectionClass, $excludes);
 
         $keys = array_map(
-            static function (ReflectionMethod $method): string {
-                return $method->getName();
-            },
+            static fn (ReflectionMethod $method): string => $method->getName(),
             $filtered
         );
 
