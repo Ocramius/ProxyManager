@@ -35,7 +35,6 @@ use stdClass;
 
 use function array_values;
 use function assert;
-use function get_class;
 use function is_callable;
 use function random_int;
 use function serialize;
@@ -314,15 +313,11 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = get_class(
-            (new LazyLoadingValueHolderFactory())
-                ->createProxy(
-                    ClassWithCounterConstructor::class,
-                    static function (): bool {
-                        return true;
-                    }
-                )
-        );
+        $proxyName = (new LazyLoadingValueHolderFactory())
+            ->createProxy(
+                ClassWithCounterConstructor::class,
+                static fn (): bool => true
+            )::class;
 
         /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         $proxy = new $proxyName(15);

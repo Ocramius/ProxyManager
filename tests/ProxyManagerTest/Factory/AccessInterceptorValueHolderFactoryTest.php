@@ -90,7 +90,7 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->inflector
             ->expects(self::once())
             ->method('getProxyClassName')
-            ->with('stdClass')
+            ->with(stdClass::class)
             ->willReturn(AccessInterceptorValueHolderMock::class);
 
         $factory            = new AccessInterceptorValueHolderFactory($this->config);
@@ -135,9 +135,7 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->method('generate')
             ->with(
                 self::callback(
-                    static function (ClassGenerator $targetClass) use ($proxyClassName): bool {
-                        return $targetClass->getName() === $proxyClassName;
-                    }
+                    static fn (ClassGenerator $targetClass): bool => $targetClass->getName() === $proxyClassName
                 )
             );
 
@@ -159,14 +157,14 @@ final class AccessInterceptorValueHolderFactoryTest extends TestCase
             ->inflector
             ->expects(self::once())
             ->method('getProxyClassName')
-            ->with('stdClass')
+            ->with(stdClass::class)
             ->willReturn($proxyClassName);
 
         $this
             ->inflector
             ->expects(self::once())
             ->method('getUserClassName')
-            ->with('stdClass')
+            ->with(stdClass::class)
             ->willReturn(EmptyClass::class);
 
         $this->signatureChecker->expects(self::atLeastOnce())->method('checkSignature');

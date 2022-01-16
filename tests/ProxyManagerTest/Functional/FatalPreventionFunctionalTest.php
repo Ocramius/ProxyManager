@@ -26,7 +26,7 @@ use function array_map;
 use function array_merge;
 use function get_declared_classes;
 use function realpath;
-use function strpos;
+use function str_starts_with;
 use function uniqid;
 
 /**
@@ -59,9 +59,7 @@ final class FatalPreventionFunctionalTest extends TestCase
             $classGenerator->generate(new ReflectionClass($className), $generatedClass);
             $classSignatureGenerator->addSignature($generatedClass, ['key' => 'eval tests']);
             $generatorStrategy->generate($generatedClass);
-        } catch (ExceptionInterface $e) {
-            // empty catch: this is actually a supported failure
-        } catch (ReflectionException $e) {
+        } catch (ExceptionInterface | ReflectionException $e) {
             // empty catch: this is actually a supported failure
         }
 
@@ -77,14 +75,10 @@ final class FatalPreventionFunctionalTest extends TestCase
         return array_merge(
             [],
             ...array_map(
-                function ($generator): array {
-                    return array_map(
-                        static function ($class) use ($generator): array {
-                            return [$generator, $class];
-                        },
-                        $this->getProxyTestedClasses()
-                    );
-                },
+                fn ($generator): array => array_map(
+                    static fn ($class): array => [$generator, $class],
+                    $this->getProxyTestedClasses()
+                ),
                 [
                     AccessInterceptorScopeLocalizerGenerator::class,
                     AccessInterceptorValueHolderGenerator::class,
@@ -133,7 +127,7 @@ final class FatalPreventionFunctionalTest extends TestCase
                 foreach ($skippedPaths as $skippedPath) {
                     self::assertIsString($skippedPath);
 
-                    if (strpos($realPath, $skippedPath) === 0) {
+                    if (str_starts_with($realPath, $skippedPath)) {
                         // skip classes defined within ProxyManager, vendor or the test suite
                         return false;
                     }

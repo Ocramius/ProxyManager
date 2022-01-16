@@ -38,9 +38,7 @@ class MyProxiedClass
     $lazyLoadingGhost = (new LazyLoadingGhostFactory())
         ->createProxy(
             MyProxiedClass::class,
-            static function () : bool {
-                return true;
-            }
+            static fn(): bool => true
         );
 
     $lazyLoadingGhost->setProxyInitializer(static function (

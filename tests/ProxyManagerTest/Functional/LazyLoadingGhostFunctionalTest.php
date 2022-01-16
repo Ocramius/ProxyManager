@@ -41,7 +41,6 @@ use stdClass;
 use function array_key_exists;
 use function array_values;
 use function assert;
-use function get_class;
 use function get_parent_class;
 use function random_int;
 use function serialize;
@@ -302,9 +301,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
 
     public function testKeepsInitializerWhenNotOverwitten(): void
     {
-        $initializer = static function (): bool {
-            return true;
-        };
+        $initializer = static fn (): bool => true;
 
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             BaseClass::class,
@@ -353,9 +350,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     {
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             ClassWithPublicProperties::class,
-            static function (): bool {
-                return true;
-            }
+            static fn (): bool => true
         );
 
         self::assertSame('property0', $proxy->property0);
@@ -368,9 +363,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     {
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             ClassWithProtectedProperties::class,
-            static function (): bool {
-                return true;
-            }
+            static fn (): bool => true
         );
 
         // Check protected property via reflection
@@ -387,9 +380,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     {
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             ClassWithPrivateProperties::class,
-            static function (): bool {
-                return true;
-            }
+            static fn (): bool => true
         );
 
         // Check protected property via reflection
@@ -407,9 +398,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     {
         $proxy = (new LazyLoadingGhostFactory())->createProxy(
             ClassWithCollidingPrivateInheritedProperties::class,
-            static function (): bool {
-                return true;
-            }
+            static fn (): bool => true
         );
 
         $childProperty  = new ReflectionProperty(ClassWithCollidingPrivateInheritedProperties::class, 'property0');
@@ -783,15 +772,11 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         self::assertSame(13, $instance->amount, 'Verifying that test asset works as expected');
         self::assertSame(13, $instance->getAmount(), 'Verifying that test asset works as expected');
 
-        $proxyName = get_class(
-            (new LazyLoadingGhostFactory())
-                ->createProxy(
-                    ClassWithCounterConstructor::class,
-                    static function (): bool {
-                        return true;
-                    }
-                )
-        );
+        $proxyName = (new LazyLoadingGhostFactory())
+            ->createProxy(
+                ClassWithCounterConstructor::class,
+                static fn (): bool => true
+            )::class;
 
         /** @psalm-suppress UnsafeInstantiation it is allowed (by design) to instantiate these proxies */
         $proxy = new $proxyName(15);
@@ -1152,9 +1137,7 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
     {
         $object = (new LazyLoadingGhostFactory())->createProxy(
             ClassWithDynamicArgumentsMethod::class,
-            static function (): bool {
-                return true;
-            }
+            static fn (): bool => true
         );
 
         // first, testing normal variadic behavior (verifying we didn't screw up in the test asset)

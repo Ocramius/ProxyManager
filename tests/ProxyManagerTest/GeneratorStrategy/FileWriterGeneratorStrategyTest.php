@@ -60,9 +60,7 @@ final class FileWriterGeneratorStrategyTest extends TestCase
 
     protected function tearDown(): void
     {
-        self::assertSame($this->originalErrorHandler, set_error_handler(static function (): bool {
-            return true;
-        }));
+        self::assertSame($this->originalErrorHandler, set_error_handler(static fn (): bool => true));
         restore_error_handler();
         restore_error_handler();
 
@@ -170,7 +168,7 @@ final class FileWriterGeneratorStrategyTest extends TestCase
             $generator->generate(new ClassGenerator($fqcn));
 
             self::fail('An exception was supposed to be thrown');
-        } catch (FileNotWritableException $exception) {
+        } catch (FileNotWritableException) {
             rmdir($tmpFile);
 
             self::assertEquals(['.', '..'], scandir($tmpDirPath, SCANDIR_SORT_ASCENDING));

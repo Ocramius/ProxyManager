@@ -86,7 +86,7 @@ final class AbstractBaseFactoryTest extends TestCase
         $this
             ->classNameInflector
             ->method('getUserClassName')
-            ->willReturn('stdClass');
+            ->willReturn(stdClass::class);
 
         $this->factory = $this->getMockForAbstractClass(AbstractBaseFactory::class, [$configuration]);
 
@@ -103,7 +103,7 @@ final class AbstractBaseFactoryTest extends TestCase
         $this
             ->classNameInflector
             ->method('getProxyClassName')
-            ->with('stdClass')
+            ->with(stdClass::class)
             ->willReturn($generatedClass);
 
         $this
@@ -129,9 +129,7 @@ final class AbstractBaseFactoryTest extends TestCase
             ->expects(self::once())
             ->method('generate')
             ->with(
-                self::callback(static function (ReflectionClass $reflectionClass): bool {
-                    return $reflectionClass->getName() === stdClass::class;
-                }),
+                self::callback(static fn (ReflectionClass $reflectionClass): bool => $reflectionClass->getName() === stdClass::class),
                 self::isInstanceOf(ClassGenerator::class),
                 ['some' => 'proxy', 'options' => 'here']
             );

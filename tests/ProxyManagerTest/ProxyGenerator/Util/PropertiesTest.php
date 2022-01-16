@@ -117,9 +117,7 @@ final class PropertiesTest extends TestCase
                 'privateNullableObjectProperty',
                 'privateNullableClassProperty',
             ],
-            array_values(array_map(static function (ReflectionProperty $property): string {
-                return $property->getName();
-            }, $nullablePublicProperties))
+            array_values(array_map(static fn (ReflectionProperty $property): string => $property->getName(), $nullablePublicProperties))
         );
     }
 
@@ -221,9 +219,7 @@ final class PropertiesTest extends TestCase
                 'privateClassProperty',
                 'privateNullableClassProperty',
             ],
-            array_values(array_map(static function (ReflectionProperty $property): string {
-                return $property->getName();
-            }, $nonReferenceableProperties))
+            array_values(array_map(static fn (ReflectionProperty $property): string => $property->getName(), $nonReferenceableProperties))
         );
     }
 
@@ -291,9 +287,7 @@ final class PropertiesTest extends TestCase
                 'privateClassProperty',
                 'privateNullableClassProperty',
             ],
-            array_values(array_map(static function (ReflectionProperty $property): string {
-                return $property->getName();
-            }, $nonReferenceableProperties))
+            array_values(array_map(static fn (ReflectionProperty $property): string => $property->getName(), $nonReferenceableProperties))
         );
     }
 
