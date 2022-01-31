@@ -6,12 +6,10 @@ namespace ProxyManagerTest\ProxyGenerator;
 
 use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
-use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManagerTestAsset\BaseInterface;
-use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ReflectionClass;
 
 /**
@@ -34,10 +32,6 @@ final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTe
         if ($reflectionClass->isInterface()) {
             // @todo interfaces *may* be proxied by deferring property localization to the constructor (no hardcoding)
             $this->expectException(InvalidProxiedClassException::class);
-        }
-
-        if ($reflectionClass->getName() === ClassWithMixedTypedProperties::class) {
-            $this->expectException(UnsupportedProxiedClassException::class);
         }
 
         parent::testGeneratesValidCode($className);
