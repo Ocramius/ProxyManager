@@ -18,6 +18,16 @@ class Kitchen implements \Serializable
     {
         $this->sweets = $serialized;
     }
+
+    function __serialize()
+    {
+        return $this->serialize();
+    }
+
+    function __unserialize($serialized): void
+    {
+        $this->unserialize($serialized);
+    }
 }
 
 $factory = new \ProxyManager\Factory\AccessInterceptorScopeLocalizerFactory($configuration);
