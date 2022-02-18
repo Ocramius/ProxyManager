@@ -27,10 +27,12 @@ use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
 use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\NeverCounter;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use ReflectionProperty;
+use RuntimeException;
 use stdClass;
 
 use function array_values;
@@ -41,6 +43,8 @@ use function serialize;
 use function ucfirst;
 use function uniqid;
 use function unserialize;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator} produced objects
@@ -678,6 +682,32 @@ final class LazyLoadingValueHolderFunctionalTest extends TestCase
         $increment = random_int(100, 1000);
 
         $proxy->increment($increment);
+
+        self::assertSame($increment, $proxy->counter);
+    }
+
+    /**
+     * @group 723
+     * @psalm-suppress UndefinedClass Class, interface or enum named never does not exist
+     */
+    public function testWillExecuteLogicInANeverMethod(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        $proxy = (new LazyLoadingValueHolderFactory())->createProxy(
+            NeverCounter::class,
+            $this->createInitializer(NeverCounter::class, new NeverCounter())
+        );
+
+        $increment = random_int(100, 1000);
+
+        try {
+            $proxy->increment($increment);
+        } catch (RuntimeException) {
+            // Do nothing
+        }
 
         self::assertSame($increment, $proxy->counter);
     }

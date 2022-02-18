@@ -18,9 +18,11 @@ use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
 use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\NeverCounter;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionProperty;
 use stdClass;
+use Throwable;
 
 use function array_values;
 use function assert;
@@ -28,6 +30,8 @@ use function random_int;
 use function serialize;
 use function uniqid;
 use function unserialize;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator} produced objects
@@ -124,6 +128,25 @@ final class NullObjectFunctionalTest extends TestCase
         unset($proxy->$publicProperty);
 
         self::assertFalse(isset($proxy->$publicProperty));
+    }
+
+    /**
+     * @group 723
+     */
+    public function testNeverReturningMethodCalls(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        $proxy  = (new NullObjectFactory())->createProxy(NeverCounter::class);
+        $method = [$proxy, 'increment'];
+
+        self::assertIsCallable($method);
+
+        $this->expectException(Throwable::class);
+        $this->expectExceptionMessage('');
+        $method(random_int(10, 1000));
     }
 
     /**
