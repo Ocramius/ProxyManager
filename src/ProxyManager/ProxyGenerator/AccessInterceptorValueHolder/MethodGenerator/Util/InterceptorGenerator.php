@@ -66,7 +66,8 @@ PHP;
 
         foreach ($method->getParameters() as $parameter) {
             $parameterName = $parameter->getName();
-            $params[]      = var_export($parameterName, true) . ' => $' . $parameter->getName();
+            $symbol        = $parameter->getPassedByReference() ? '&$' : '$';
+            $params[]      = var_export($parameterName, true) . ' => ' . $symbol . $parameterName;
         }
 
         $paramsString = 'array(' . implode(', ', $params) . ')';
