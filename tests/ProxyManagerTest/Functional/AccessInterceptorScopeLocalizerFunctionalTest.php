@@ -24,6 +24,7 @@ use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\ReferenceIncrementDecrementClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use stdClass;
@@ -560,6 +561,79 @@ final class AccessInterceptorScopeLocalizerFunctionalTest extends TestCase
         $this->expectException(UnsupportedProxiedClassException::class);
 
         $factory->createProxy($instance);
+    }
+
+    public function testByReferencePassedArgumentsAreGivenAsReferenceToInterceptorCallbacks(): void
+    {
+        $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy(
+            new ReferenceIncrementDecrementClass(),
+            [
+                'incrementReference' => static function (
+                    object $proxy,
+                    ReferenceIncrementDecrementClass $instance,
+                    string $method,
+                    array $args,
+                    bool &$returnEarly
+                ): void {
+                    self::assertSame(0, $args['reference']);
+
+                    $returnEarly       = true;
+                    $args['reference'] = 5;
+                },
+            ]
+        );
+
+        $number = 0;
+
+        $proxy->incrementReference($number);
+
+        self::assertSame(5, $number, 'Number was changed by interceptor');
+    }
+
+    public function testByReferenceArgumentsAreForwardedThroughInterceptorsAndSubject(): void
+    {
+        $proxy = (new AccessInterceptorScopeLocalizerFactory())->createProxy(
+            new ReferenceIncrementDecrementClass(),
+            [
+                'incrementReference' => static function (
+                    object $proxy,
+                    ReferenceIncrementDecrementClass $instance,
+                    string $method,
+                    array $args,
+                    bool &$returnEarly
+                ): void {
+                    self::assertSame(0, $args['reference']);
+
+                    $returnEarly       = false;
+                    $args['reference'] = 5;
+                },
+            ],
+            [
+                'incrementReference' => static function (
+                    object $proxy,
+                    ReferenceIncrementDecrementClass $instance,
+                    string $method,
+                    array $args,
+                    mixed $returnValue,
+                    bool &$returnEarly
+                ): void {
+                    self::assertIsInt($args['reference']);
+
+                    $returnEarly        = false;
+                    $args['reference'] *= 2;
+                },
+            ]
+        );
+
+        $number = 0;
+
+        $proxy->incrementReference($number);
+
+        self::assertSame(
+            12,
+            $number,
+            'Number was changed by prefix interceptor, then incremented, then doubled by suffix interceptor'
+        );
     }
 
     /**

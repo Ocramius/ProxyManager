@@ -191,4 +191,62 @@ PHP;
             )
         );
     }
+
+    public function testInterceptorGeneratorWithReferences(): void
+    {
+        $method             = $this->createMock(MethodGenerator::class);
+        $bar                = $this->createMock(ParameterGenerator::class);
+        $baz                = $this->createMock(ParameterGenerator::class);
+        $valueHolder        = $this->createMock(PropertyGenerator::class);
+        $prefixInterceptors = $this->createMock(PropertyGenerator::class);
+        $suffixInterceptors = $this->createMock(PropertyGenerator::class);
+
+        $bar->method('getName')->willReturn('bar');
+        $bar->method('getPassedByReference')->willReturn(false);
+        $baz->method('getName')->willReturn('baz');
+        $baz->method('getPassedByReference')->willReturn(true);
+        $method->method('getName')->willReturn('fooMethod');
+        $method->method('getParameters')->will(self::returnValue([$bar, $baz]));
+        $valueHolder->method('getName')->willReturn('foo');
+        $prefixInterceptors->method('getName')->willReturn('pre');
+        $suffixInterceptors->method('getName')->willReturn('post');
+
+        // @codingStandardsIgnoreStart
+        $expected = <<<'PHP'
+if (isset($this->pre['fooMethod'])) {
+    $returnEarly       = false;
+    $prefixReturnValue = $this->pre['fooMethod']->__invoke($this, $this->foo, 'fooMethod', array('bar' => $bar, 'baz' => &$baz), $returnEarly);
+
+    if ($returnEarly) {
+        return $prefixReturnValue;
+    }
+}
+
+$returnValue = "foo";
+
+if (isset($this->post['fooMethod'])) {
+    $returnEarly       = false;
+    $suffixReturnValue = $this->post['fooMethod']->__invoke($this, $this->foo, 'fooMethod', array('bar' => $bar, 'baz' => &$baz), $returnValue, $returnEarly);
+
+    if ($returnEarly) {
+        return $suffixReturnValue;
+    }
+}
+
+return $returnValue;
+PHP;
+        // @codingStandardsIgnoreEnd
+
+        self::assertSame(
+            $expected,
+            InterceptorGenerator::createInterceptedMethodBody(
+                '$returnValue = "foo";',
+                $method,
+                $valueHolder,
+                $prefixInterceptors,
+                $suffixInterceptors,
+                new ReflectionMethod(BaseClass::class, 'publicMethod')
+            )
+        );
+    }
 }

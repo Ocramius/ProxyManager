@@ -67,7 +67,11 @@ PHP;
             '{{$suffixInterceptorsName}}'      => $suffixInterceptors->getName(),
             '{{$suffixEarlyReturnExpression}}' => ProxiedMethodReturnExpression::generate('$suffixReturnValue', $originalMethod),
             '{{$returnExpression}}'            => ProxiedMethodReturnExpression::generate('$returnValue', $originalMethod),
-            '{{$paramsString}}'                => 'array(' . implode(', ', array_map(static fn (ParameterGenerator $parameter): string => var_export($parameter->getName(), true) . ' => $' . $parameter->getName(), $method->getParameters())) . ')',
+            '{{$paramsString}}'                => 'array(' . implode(', ', array_map(
+                static fn (ParameterGenerator $parameter): string => var_export($parameter->getName(), true) . ' => ' . ($parameter->getPassedByReference() ? '&$' : '$') . $parameter->getName(),
+                $method->getParameters()
+            ))
+                . ')',
         ];
 
         return str_replace(
