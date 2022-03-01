@@ -22,8 +22,6 @@ use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ReflectionClass;
 use ReflectionMethod;
 
-use const PHP_VERSION_ID;
-
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObjectGenerator}
  *
@@ -113,7 +111,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
      */
     public function getTestedImplementations(): array
     {
-        $implementations = [
+        return [
             [BaseClass::class],
             [ClassWithMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
@@ -121,12 +119,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMixedTypedProperties::class],
             [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
+            [ClassWithPhp80TypedMethods::class],
         ];
-
-        if (PHP_VERSION_ID >= 80000) {
-            $implementations[] = [ClassWithPhp80TypedMethods::class];
-        }
-
-        return $implementations;
     }
 }
