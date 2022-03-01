@@ -9,12 +9,12 @@ class Kitchen implements \Serializable
 {
     private $sweets = 'candy';
 
-    function serialize()
+    function serialize(): ?string
     {
         return $this->sweets;
     }
 
-    function unserialize($serialized)
+    function unserialize(string $serialized): void
     {
         $this->sweets = $serialized;
     }
@@ -27,4 +27,8 @@ $proxy = $factory->createProxy(new Kitchen());
 unset($proxy->sweets);
 ?>
 --EXPECTF--
+Deprecated: Kitchen implements the Serializable interface, which is deprecated. Implement __serialize() and __unserialize() instead (or in addition, if support for old PHP versions is necessary) in Standard input code on line 5
+
+Deprecated: ProxyManagerGeneratedProxy\__PM__\Kitchen\Generated%s implements the Serializable interface, which is deprecated. Implement __serialize() and __unserialize() instead (or in addition, if support for old PHP versions is necessary) in %s
+
 %SFatal error:%sCannot %s property%sin %a
