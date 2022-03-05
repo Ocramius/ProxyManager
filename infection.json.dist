@@ -7,8 +7,8 @@
     "logs": {
         "text": "php://stderr",
         "github": true,
-        "badge": {
-            "branch": "master"
+        "stryker": {
+            "badge": "master"
         }
     },
     "minMsi": 84,

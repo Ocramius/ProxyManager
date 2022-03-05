@@ -26,8 +26,6 @@ use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedInterface;
 use ReflectionClass;
 
-use const PHP_VERSION_ID;
-
 /**
  * Base test for proxy generators
  *
@@ -87,7 +85,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
     /** @return string[][] */
     public function getTestedImplementations(): array
     {
-        $implementations = [
+        return [
             [BaseClass::class],
             [ClassWithMagicMethods::class],
             [ClassWithByRefMagicMethods::class],
@@ -102,12 +100,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
             [VoidMethodTypeHintedInterface::class],
             [IterableMethodTypeHintedInterface::class],
             [ObjectMethodTypeHintedInterface::class],
+            [ClassWithPhp80TypedMethods::class],
         ];
-
-        if (PHP_VERSION_ID >= 80000) {
-            $implementations[] = [ClassWithPhp80TypedMethods::class];
-        }
-
-        return $implementations;
     }
 }

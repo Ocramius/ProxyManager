@@ -19,9 +19,9 @@
         }
     ],
     "require": {
-        "php":                       "~8.0.0",
+        "php":                       "~8.1.0",
         "composer-runtime-api":      "^2.1.0",
-        "laminas/laminas-code":      "^4.4.2",
+        "laminas/laminas-code":      "^4.5.0",
         "webimpress/safe-writer":    "^2.2.0"
     },
     "conflict": {
@@ -57,6 +57,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
