@@ -1,5 +1,11 @@
 # Proxy Manager
 
+## A message to Russian 🇷🇺 people
+
+If you currently live in Russia, please read [this message](./ToRussianPeople.md).
+
+## Purpose
+
 This library aims to provide abstraction for generating various kinds of 
   [proxy classes](http://ocramius.github.io/presentations/proxy-pattern-in-php/).
 
