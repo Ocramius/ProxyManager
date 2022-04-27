@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use Laminas\Code\Generator\ClassGenerator;
+use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Generator\Util\UniqueIdentifierGenerator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\Proxy\NullObjectInterface;
@@ -19,6 +19,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
+use ProxyManagerTestAsset\ClassWithPhp81Defaults;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -120,6 +121,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
             [ClassWithPhp80TypedMethods::class],
+            [ClassWithPhp81Defaults::class],
         ];
     }
 }

@@ -22,6 +22,7 @@ use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithParentHint;
 use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
+use ProxyManagerTestAsset\ClassWithPhp81Defaults;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
@@ -123,6 +124,7 @@ final class MultipleProxyGenerationTest extends TestCase
             [new ReturnTypeHintedClass()],
             [new VoidMethodTypeHintedClass()],
             [new ClassWithPhp80TypedMethods()],
+            [new ClassWithPhp81Defaults()],
         ];
     }
 }

@@ -40,13 +40,12 @@ final class RemoteObjectMethodTest extends TestCase
         self::assertSame('publicByReferenceParameterMethod', $method->getName());
         self::assertCount(2, $method->getParameters());
         self::assertSame(
-            '$defaultValues = array (
-  0 => NULL,
-  1 => NULL,
-);
-$declaredParameterCount = 2;
+            '$args = \func_get_args();
 
-$args = \func_get_args() + $defaultValues;
+switch (\func_num_args()) {
+    case 0: $args[] = null;
+    case 1: $args[] = null;
+}
 
 $return = $this->adapter->call(\'Laminas\\\\Code\\\\Generator\\\\PropertyGenerator\', \'publicByReferenceParameterMethod\', $args);
 
@@ -74,12 +73,11 @@ return $return;',
         self::assertSame('publicArrayHintedMethod', $method->getName());
         self::assertCount(1, $method->getParameters());
         self::assertSame(
-            "\$defaultValues = array (
-  0 => NULL,
-);
-\$declaredParameterCount = 1;
+            "\$args = \\func_get_args();
 
-\$args = \\func_get_args() + \$defaultValues;
+switch (\\func_num_args()) {
+    case 0: \$args[] = null;
+}
 
 \$return = \$this->adapter->call('Laminas\\\\Code\\\\Generator\\\\PropertyGenerator', 'publicArrayHintedMethod', \$args);
 
@@ -107,11 +105,10 @@ return \$return;",
         self::assertSame('publicMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertSame(
-            "\$defaultValues = array (
-);
-\$declaredParameterCount = 0;
+            "\$args = \\func_get_args();
 
-\$args = \\func_get_args() + \$defaultValues;
+switch (\\func_num_args()) {
+}
 
 \$return = \$this->adapter->call('Laminas\\\\Code\\\\Generator\\\\PropertyGenerator', 'publicMethod', \$args);
 
