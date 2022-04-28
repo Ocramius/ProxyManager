@@ -7,12 +7,16 @@ namespace ProxyManager\Generator;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\MethodGenerator as LaminasMethodGenerator;
 use Laminas\Code\Reflection\MethodReflection;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Method generator that fixes minor quirks in ZF2's method generator
  */
 class MethodGenerator extends LaminasMethodGenerator
 {
+    protected bool $hasTentativeReturnType = false;
+
     /**
      * @return static
      */
@@ -24,15 +28,68 @@ class MethodGenerator extends LaminasMethodGenerator
         $method->setInterface(false);
         $method->setBody('');
 
+        /** @var callable(ReflectionMethod) : ReflectionMethod $getPrototype */
+        $getPrototype = (new ReflectionMethod(ReflectionMethod::class, 'getPrototype'))->invoke(...);
+
+        while (true) {
+            if ($reflectionMethod->hasTentativeReturnType()) {
+                $method->hasTentativeReturnType = true;
+                break;
+            }
+
+            if ($reflectionMethod->isAbstract()) {
+                break;
+            }
+
+            try {
+                $reflectionMethod = $getPrototype($reflectionMethod);
+            } catch (ReflectionException $e) {
+                break;
+            }
+        }
+
         return $method;
     }
 
-    /**
-     * {@inheritDoc} override needed to specify type in more detail
-     */
     public function getDocBlock(): ?DocBlockGenerator
     {
-        return parent::getDocBlock();
+        $docBlock = parent::getDocBlock();
+
+        if (! $this->hasTentativeReturnType) {
+            return $docBlock;
+        }
+
+        if ($docBlock === null) {
+            return new class ($this->getIndentation()) extends DocBlockGenerator {
+                public function __construct(string $indentation)
+                {
+                    $this->setIndentation($indentation);
+                }
+
+                public function generate(): string
+                {
+                    return $this->getIndentation() . '#[\ReturnTypeWillChange]' . self::LINE_FEED;
+                }
+            };
+        }
+
+        return new class ($docBlock) extends DocBlockGenerator {
+            public function __construct(DocBlockGenerator $docBlock)
+            {
+                $this->setShortDescription($docBlock->getShortDescription());
+                $this->setLongDescription($docBlock->getLongDescription());
+                $this->setTags($docBlock->getTags());
+                $this->setWordWrap($docBlock->getWordWrap());
+                $this->setSourceDirty($docBlock->isSourceDirty());
+                $this->setIndentation($docBlock->getIndentation());
+                $this->setSourceContent($docBlock->getSourceContent());
+            }
+
+            public function generate(): string
+            {
+                return parent::generate() . $this->getIndentation() . '#[\ReturnTypeWillChange]' . self::LINE_FEED;
+            }
+        };
     }
 
     /**

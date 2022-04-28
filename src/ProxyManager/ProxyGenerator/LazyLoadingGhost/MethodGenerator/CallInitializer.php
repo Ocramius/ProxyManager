@@ -8,6 +8,7 @@ use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
+use ProxyManager\Generator\ValueGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ReflectionProperty;
 
@@ -168,6 +169,6 @@ PHP;
         $name     = $property->getName();
         $defaults = $property->getDeclaringClass()->getDefaultProperties();
 
-        return var_export($defaults[$name] ?? null, true);
+        return (new ValueGenerator($defaults[$name] ?? null))->generate();
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ProxyManagerTest\ProxyGenerator;
 
-use Laminas\Code\Generator\ClassGenerator;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
+use ProxyManager\Generator\ClassGenerator;
 use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;

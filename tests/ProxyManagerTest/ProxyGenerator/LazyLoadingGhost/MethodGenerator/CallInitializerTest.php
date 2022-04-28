@@ -113,98 +113,74 @@ if ($this->track || ! $this->init) {
 $this->track = true;
 
 $this->publicUnTypedProperty = 'publicUnTypedProperty';
-$this->publicUnTypedPropertyWithoutDefaultValue = NULL;
+$this->publicUnTypedPropertyWithoutDefaultValue = null;
 $this->publicBoolProperty = true;
 $this->publicNullableBoolProperty = true;
-$this->publicNullableBoolPropertyWithoutDefaultValue = NULL;
+$this->publicNullableBoolPropertyWithoutDefaultValue = null;
 $this->publicIntProperty = 123;
 $this->publicNullableIntProperty = 123;
-$this->publicNullableIntPropertyWithoutDefaultValue = NULL;
+$this->publicNullableIntPropertyWithoutDefaultValue = null;
 $this->publicFloatProperty = 123.456;
 $this->publicNullableFloatProperty = 123.456;
-$this->publicNullableFloatPropertyWithoutDefaultValue = NULL;
+$this->publicNullableFloatPropertyWithoutDefaultValue = null;
 $this->publicStringProperty = 'publicStringProperty';
 $this->publicNullableStringProperty = 'publicStringProperty';
-$this->publicNullableStringPropertyWithoutDefaultValue = NULL;
-$this->publicArrayProperty = array (
-  0 => 'publicArrayProperty',
-);
-$this->publicNullableArrayProperty = array (
-  0 => 'publicArrayProperty',
-);
-$this->publicNullableArrayPropertyWithoutDefaultValue = NULL;
-$this->publicIterableProperty = array (
-  0 => 'publicIterableProperty',
-);
-$this->publicNullableIterableProperty = array (
-  0 => 'publicIterableProperty',
-);
-$this->publicNullableIterablePropertyWithoutDefaultValue = NULL;
-$this->publicNullableObjectProperty = NULL;
-$this->publicNullableClassProperty = NULL;
+$this->publicNullableStringPropertyWithoutDefaultValue = null;
+$this->publicArrayProperty = ['publicArrayProperty'];
+$this->publicNullableArrayProperty = ['publicArrayProperty'];
+$this->publicNullableArrayPropertyWithoutDefaultValue = null;
+$this->publicIterableProperty = ['publicIterableProperty'];
+$this->publicNullableIterableProperty = ['publicIterableProperty'];
+$this->publicNullableIterablePropertyWithoutDefaultValue = null;
+$this->publicNullableObjectProperty = null;
+$this->publicNullableClassProperty = null;
 $this->protectedUnTypedProperty = 'protectedUnTypedProperty';
-$this->protectedUnTypedPropertyWithoutDefaultValue = NULL;
+$this->protectedUnTypedPropertyWithoutDefaultValue = null;
 $this->protectedBoolProperty = true;
 $this->protectedNullableBoolProperty = true;
-$this->protectedNullableBoolPropertyWithoutDefaultValue = NULL;
+$this->protectedNullableBoolPropertyWithoutDefaultValue = null;
 $this->protectedIntProperty = 123;
 $this->protectedNullableIntProperty = 123;
-$this->protectedNullableIntPropertyWithoutDefaultValue = NULL;
+$this->protectedNullableIntPropertyWithoutDefaultValue = null;
 $this->protectedFloatProperty = 123.456;
 $this->protectedNullableFloatProperty = 123.456;
-$this->protectedNullableFloatPropertyWithoutDefaultValue = NULL;
+$this->protectedNullableFloatPropertyWithoutDefaultValue = null;
 $this->protectedStringProperty = 'protectedStringProperty';
 $this->protectedNullableStringProperty = 'protectedStringProperty';
-$this->protectedNullableStringPropertyWithoutDefaultValue = NULL;
-$this->protectedArrayProperty = array (
-  0 => 'protectedArrayProperty',
-);
-$this->protectedNullableArrayProperty = array (
-  0 => 'protectedArrayProperty',
-);
-$this->protectedNullableArrayPropertyWithoutDefaultValue = NULL;
-$this->protectedIterableProperty = array (
-  0 => 'protectedIterableProperty',
-);
-$this->protectedNullableIterableProperty = array (
-  0 => 'protectedIterableProperty',
-);
-$this->protectedNullableIterablePropertyWithoutDefaultValue = NULL;
-$this->protectedNullableObjectProperty = NULL;
-$this->protectedNullableClassProperty = NULL;
+$this->protectedNullableStringPropertyWithoutDefaultValue = null;
+$this->protectedArrayProperty = ['protectedArrayProperty'];
+$this->protectedNullableArrayProperty = ['protectedArrayProperty'];
+$this->protectedNullableArrayPropertyWithoutDefaultValue = null;
+$this->protectedIterableProperty = ['protectedIterableProperty'];
+$this->protectedNullableIterableProperty = ['protectedIterableProperty'];
+$this->protectedNullableIterablePropertyWithoutDefaultValue = null;
+$this->protectedNullableObjectProperty = null;
+$this->protectedNullableClassProperty = null;
 static $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties;
 
 $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties ?? $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(static function ($instance) {
     $instance->privateUnTypedProperty = 'privateUnTypedProperty';
-    $instance->privateUnTypedPropertyWithoutDefaultValue = NULL;
+    $instance->privateUnTypedPropertyWithoutDefaultValue = null;
     $instance->privateBoolProperty = true;
     $instance->privateNullableBoolProperty = true;
-    $instance->privateNullableBoolPropertyWithoutDefaultValue = NULL;
+    $instance->privateNullableBoolPropertyWithoutDefaultValue = null;
     $instance->privateIntProperty = 123;
     $instance->privateNullableIntProperty = 123;
-    $instance->privateNullableIntPropertyWithoutDefaultValue = NULL;
+    $instance->privateNullableIntPropertyWithoutDefaultValue = null;
     $instance->privateFloatProperty = 123.456;
     $instance->privateNullableFloatProperty = 123.456;
-    $instance->privateNullableFloatPropertyWithoutDefaultValue = NULL;
+    $instance->privateNullableFloatPropertyWithoutDefaultValue = null;
     $instance->privateStringProperty = 'privateStringProperty';
     $instance->privateNullableStringProperty = 'privateStringProperty';
-    $instance->privateNullableStringPropertyWithoutDefaultValue = NULL;
-    $instance->privateArrayProperty = array (
-  0 => 'privateArrayProperty',
-);
-    $instance->privateNullableArrayProperty = array (
-  0 => 'privateArrayProperty',
-);
-    $instance->privateNullableArrayPropertyWithoutDefaultValue = NULL;
-    $instance->privateIterableProperty = array (
-  0 => 'privateIterableProperty',
-);
-    $instance->privateNullableIterableProperty = array (
-  0 => 'privateIterableProperty',
-);
-    $instance->privateNullableIterablePropertyWithoutDefaultValue = NULL;
-    $instance->privateNullableObjectProperty = NULL;
-    $instance->privateNullableClassProperty = NULL;
+    $instance->privateNullableStringPropertyWithoutDefaultValue = null;
+    $instance->privateArrayProperty = ['privateArrayProperty'];
+    $instance->privateNullableArrayProperty = ['privateArrayProperty'];
+    $instance->privateNullableArrayPropertyWithoutDefaultValue = null;
+    $instance->privateIterableProperty = ['privateIterableProperty'];
+    $instance->privateNullableIterableProperty = ['privateIterableProperty'];
+    $instance->privateNullableIterablePropertyWithoutDefaultValue = null;
+    $instance->privateNullableObjectProperty = null;
+    $instance->privateNullableClassProperty = null;
 }, null, 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties');
 
 $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties($this);

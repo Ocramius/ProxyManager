@@ -8,9 +8,10 @@ use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\ProxiedMethodReturnExpression;
+use ProxyManager\Generator\ValueGenerator;
 use ReflectionClass;
 
-use function count;
+use function sprintf;
 use function strtr;
 use function var_export;
 
@@ -21,10 +22,10 @@ class RemoteObjectMethod extends MethodGenerator
 {
     private const TEMPLATE
         = <<<'PHP'
-$defaultValues = #DEFAULT_VALUES#;
-$declaredParameterCount = #PARAMETER_COUNT#;
+$args = \func_get_args();
 
-$args = \func_get_args() + $defaultValues;
+switch (\func_num_args()) {#DEFAULT_VALUES#
+}
 
 #PROXIED_RETURN#
 PHP;
@@ -41,16 +42,14 @@ PHP;
             . ', ' . var_export($originalMethod->getName(), true) . ', $args);' . "\n\n"
             . ProxiedMethodReturnExpression::generate('$return', $originalMethod);
 
-        $defaultValues          = self::getDefaultValuesForMethod($originalMethod);
-        $declaredParameterCount = count($originalMethod->getParameters());
+        $defaultValues = self::getDefaultValuesForMethod($originalMethod);
 
         $method->setBody(
             strtr(
                 self::TEMPLATE,
                 [
                     '#PROXIED_RETURN#' => $proxiedReturn,
-                    '#DEFAULT_VALUES#' => var_export($defaultValues, true),
-                    '#PARAMETER_COUNT#' => var_export($declaredParameterCount, true),
+                    '#DEFAULT_VALUES#' => $defaultValues,
                 ]
             )
         );
@@ -58,14 +57,13 @@ PHP;
         return $method;
     }
 
-    /** @psalm-return list<int|float|bool|array|string|null> */
-    private static function getDefaultValuesForMethod(MethodReflection $originalMethod): array
+    private static function getDefaultValuesForMethod(MethodReflection $originalMethod): string
     {
-        $defaultValues = [];
-        foreach ($originalMethod->getParameters() as $parameter) {
+        $defaultValues = '';
+        foreach ($originalMethod->getParameters() as $i => $parameter) {
             if ($parameter->isOptional() && $parameter->isDefaultValueAvailable()) {
-                /** @psalm-var int|float|bool|array|string|null */
-                $defaultValues[] = $parameter->getDefaultValue();
+                $default        = new ValueGenerator($parameter->getDefaultValue(), $parameter);
+                $defaultValues .= sprintf("\n    case %d: \$args[] = %s;", $i, $default->generate());
                 continue;
             }
 
@@ -73,7 +71,7 @@ PHP;
                 continue;
             }
 
-            $defaultValues[] = null;
+            $defaultValues .= sprintf("\n    case %d: \$args[] = null;", $i);
         }
 
         return $defaultValues;

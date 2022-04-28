@@ -18,12 +18,15 @@ use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\RemoteProxy\BazServiceInterface;
 use ProxyManagerTestAsset\RemoteProxy\Foo;
+use ProxyManagerTestAsset\RemoteProxy\FooEnum;
 use ProxyManagerTestAsset\RemoteProxy\FooServiceInterface;
 use ProxyManagerTestAsset\RemoteProxy\RemoteServiceWithDefaultsAndVariadicArguments;
 use ProxyManagerTestAsset\RemoteProxy\RemoteServiceWithDefaultsInterface;
+use ProxyManagerTestAsset\RemoteProxy\RemoteServiceWithPhp81DefaultsInterface;
 use ProxyManagerTestAsset\RemoteProxy\VariadicArgumentsServiceInterface;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
+use stdClass;
 
 use function assert;
 use function is_callable;
@@ -264,6 +267,16 @@ final class RemoteObjectFunctionalTest extends TestCase
                     30,
                     50,
                     90,
+                ],
+                200,
+            ],
+            'when using php8.1 defaults' => [
+                RemoteServiceWithPhp81DefaultsInterface::class,
+                'php81Defaults',
+                [],
+                [
+                    FooEnum::bar,
+                    new stdClass(),
                 ],
                 200,
             ],
