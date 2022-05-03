@@ -20,11 +20,15 @@ class PublicPropertiesMap extends PropertyGenerator
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(Properties $properties)
+    public function __construct(Properties $properties, bool $skipReadOnlyProperties = false)
     {
         parent::__construct(IdentifierSuffixer::getIdentifier('publicProperties'));
 
         foreach ($properties->getPublicProperties() as $publicProperty) {
+            if ($skipReadOnlyProperties && $publicProperty->isReadOnly()) {
+                continue;
+            }
+
             $this->publicProperties[$publicProperty->getName()] = true;
         }
 

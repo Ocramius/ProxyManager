@@ -11,6 +11,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 
@@ -99,6 +100,15 @@ unset($bar->publicUnTypedProperty, $bar->publicUnTypedPropertyWithoutDefaultValu
 
 
 PHP,
+                'bar',
+            ],
+            ClassWithReadOnlyProperties::class => [
+                ClassWithReadOnlyProperties::class,
+                '\Closure::bind(function (\ProxyManagerTestAsset\ClassWithReadOnlyProperties $instance) {
+    unset($instance->property0, $instance->property1, $instance->property2);
+}, $bar, \'ProxyManagerTestAsset\\\\ClassWithReadOnlyProperties\')->__invoke($bar);
+
+',
                 'bar',
             ],
         ];

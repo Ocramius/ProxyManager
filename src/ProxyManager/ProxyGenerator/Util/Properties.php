@@ -78,6 +78,17 @@ final class Properties
                 return false;
             }
 
+            if ($property->isReadOnly()) {
+                return true;
+            }
+
+            $type = $property->getType();
+            assert($type instanceof ReflectionType);
+
+            if ($type->allowsNull()) {
+                return false;
+            }
+
             return ! array_key_exists(
                 $property->getName(),
                 // https://bugs.php.net/bug.php?id=77673
@@ -100,6 +111,10 @@ final class Properties
         return new self(array_filter($this->properties, static function (ReflectionProperty $property): bool {
             if (! $property->hasType()) {
                 return true;
+            }
+
+            if ($property->isReadOnly()) {
+                return false;
             }
 
             $type = $property->getType();

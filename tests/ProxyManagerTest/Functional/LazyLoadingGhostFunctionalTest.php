@@ -30,6 +30,7 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
 use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
@@ -756,6 +757,44 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         self::assertSame('private0', $privateProperty->getValue($proxy));
         self::assertSame('protected0', $properties["\0*\0protectedStringProperty"]->getValue($proxy));
         self::assertSame('public0', $proxy->publicStringProperty);
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testInitializationOfReadOnlyProperties(): void
+    {
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            ClassWithReadOnlyProperties::class,
+            static function (
+                GhostObjectInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ): bool {
+                $initializer                                                           = null;
+                $properties["\0" . ClassWithReadOnlyProperties::class . "\0property2"] = 'private0';
+                $properties["\0*\0property1"]                                          = 'protected0';
+                $properties['property0']                                               = 'public0';
+
+                return true;
+            }
+        );
+
+        $reflectionClass = new ReflectionClass(ClassWithReadOnlyProperties::class);
+
+        $properties = Properties::fromReflectionClass($reflectionClass)->getInstanceProperties();
+
+        $privateProperty   = $properties["\0" . ClassWithReadOnlyProperties::class . "\0property2"];
+        $protectedProperty = $properties["\0*\0property1"];
+
+        $privateProperty->setAccessible(true);
+        $protectedProperty->setAccessible(true);
+
+        self::assertSame('private0', $privateProperty->getValue($proxy));
+        self::assertSame('protected0', $properties["\0*\0property1"]->getValue($proxy));
+        self::assertSame('public0', $proxy->property0);
     }
 
     /**

@@ -19,6 +19,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -120,6 +121,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
             [ClassWithPhp80TypedMethods::class],
+            [ClassWithReadOnlyProperties::class],
         ];
     }
 }

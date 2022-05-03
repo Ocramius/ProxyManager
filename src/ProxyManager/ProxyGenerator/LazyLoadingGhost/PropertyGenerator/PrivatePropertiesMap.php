@@ -16,6 +16,9 @@ class PrivatePropertiesMap extends PropertyGenerator
 {
     public const KEY_DEFAULT_VALUE = 'defaultValue';
 
+    /** @var list<string> */
+    private $readOnlyPropertyNames = [];
+
     /**
      * Constructor
      *
@@ -36,13 +39,27 @@ class PrivatePropertiesMap extends PropertyGenerator
     }
 
     /**
+     * @return list<string>
+     */
+    public function getReadOnlyPropertyNames(): array
+    {
+        return $this->readOnlyPropertyNames;
+    }
+
+    /**
      * @return array<string, array<class-string, bool>>
      */
     private function getMap(Properties $properties): array
     {
         $map = [];
 
-        foreach ($properties->getPrivateProperties() as $property) {
+        foreach ($properties->getInstanceProperties() as $property) {
+            if ($property->isReadOnly()) {
+                $this->readOnlyPropertyNames[] = $property->getName();
+            } elseif (! $property->isPrivate()) {
+                continue;
+            }
+
             $map[$property->getName()][$property->getDeclaringClass()->getName()] = true;
         }
 

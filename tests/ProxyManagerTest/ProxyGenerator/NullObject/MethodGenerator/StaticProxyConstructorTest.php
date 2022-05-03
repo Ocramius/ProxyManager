@@ -9,6 +9,7 @@ use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructo
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ReflectionClass;
 
 /**
@@ -97,6 +98,29 @@ $instance->publicNullableIterableProperty = null;
 $instance->publicNullableIterablePropertyWithoutDefaultValue = null;
 $instance->publicNullableObjectProperty = null;
 $instance->publicNullableClassProperty = null;
+
+return $instance;',
+            $constructor->getBody()
+        );
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testBodyStructureWithReadOnlyProperties(): void
+    {
+        $constructor = new StaticProxyConstructor(new ReflectionClass(ClassWithReadOnlyProperties::class));
+
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertSame(ClassWithReadOnlyProperties::class, (string) $constructor->getReturnType());
+        self::assertTrue($constructor->isStatic());
+        self::assertSame('public', $constructor->getVisibility());
+        self::assertCount(0, $constructor->getParameters());
+        self::assertSame(
+            'static $reflection;
+
+$reflection = $reflection ?? new \ReflectionClass(__CLASS__);
+$instance   = $reflection->newInstanceWithoutConstructor();
 
 return $instance;',
             $constructor->getBody()
