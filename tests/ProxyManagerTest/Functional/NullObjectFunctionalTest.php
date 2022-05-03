@@ -145,7 +145,7 @@ final class NullObjectFunctionalTest extends TestCase
         self::assertIsCallable($method);
 
         $this->expectException(Throwable::class);
-        $this->expectExceptionMessage('');
+        $this->expectExceptionMessage('never-returning function must not implicitly return');
         $method(random_int(10, 1000));
     }
 
