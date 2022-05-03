@@ -16,14 +16,27 @@ final class ProxiedMethodReturnExpression
 {
     public static function generate(string $returnedValueExpression, ?ReflectionMethod $originalMethod): string
     {
-        $originalReturnType = $originalMethod === null
-            ? null
-            : $originalMethod->getReturnType();
+        $originalReturnType = $originalMethod?->getReturnType();
+        $expression         = null;
 
-        if ($originalReturnType instanceof ReflectionNamedType && $originalReturnType->getName() === 'void') {
+        if ($originalReturnType instanceof ReflectionNamedType) {
+            $expression = self::generateExpressionForNamedType($originalReturnType, $returnedValueExpression);
+        }
+
+        return $expression ?? 'return ' . $returnedValueExpression . ';';
+    }
+
+    private static function generateExpressionForNamedType(ReflectionNamedType $originalReturnType, string $returnedValueExpression): ?string
+    {
+        $originalReturnTypeName = $originalReturnType->getName();
+        if ($originalReturnTypeName === 'void') {
             return $returnedValueExpression . ";\nreturn;";
         }
 
-        return 'return ' . $returnedValueExpression . ';';
+        if ($originalReturnTypeName === 'never') {
+            return $returnedValueExpression . ';';
+        }
+
+        return null;
     }
 }

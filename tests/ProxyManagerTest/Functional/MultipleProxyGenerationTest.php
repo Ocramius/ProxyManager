@@ -34,8 +34,6 @@ use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 
-use const PHP_VERSION_ID;
-
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
  *
@@ -98,7 +96,7 @@ final class MultipleProxyGenerationTest extends TestCase
      */
     public function getTestedClasses(): array
     {
-        $objects = [
+        return [
             [new BaseClass()],
             [new ClassWithMagicMethods()],
             [new ClassWithFinalMethods()],
@@ -124,12 +122,7 @@ final class MultipleProxyGenerationTest extends TestCase
             [new ObjectTypeHintClass()],
             [new ReturnTypeHintedClass()],
             [new VoidMethodTypeHintedClass()],
+            [new ClassWithPhp80TypedMethods()],
         ];
-
-        if (PHP_VERSION_ID >= 80000) {
-            $objects[] = [new ClassWithPhp80TypedMethods()];
-        }
-
-        return $objects;
     }
 }

@@ -1,6 +1,8 @@
 --TEST--
 Verifies that lazy loading value holder factory can generate proxy for PHP core classes.
 ?>
+--INI--
+error_reporting = 2147475455 # Disable E_DEPRECATED
 --FILE--
 <?php
 

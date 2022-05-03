@@ -32,10 +32,12 @@ use ProxyManagerTestAsset\ClassWithPublicStringNullableTypedProperty;
 use ProxyManagerTestAsset\ClassWithPublicStringTypedProperty;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\NeverCounter;
 use ProxyManagerTestAsset\OtherObjectAccessClass;
 use ProxyManagerTestAsset\VoidCounter;
 use ReflectionClass;
 use ReflectionProperty;
+use RuntimeException;
 use stdClass;
 
 use function array_key_exists;
@@ -48,6 +50,8 @@ use function sprintf;
 use function str_replace;
 use function uniqid;
 use function unserialize;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\LazyLoadingGhostGenerator} produced objects
@@ -1512,6 +1516,47 @@ final class LazyLoadingGhostFunctionalTest extends TestCase
         $increment = random_int(1001, 10000);
 
         $proxy->increment($increment);
+
+        self::assertSame($initialCounter + $increment, $proxy->counter);
+    }
+
+    /**
+     * @group 723
+     * @psalm-suppress UnusedVariable this method uses by-ref assignment of properties, and isn't recognized by static analysis
+     * @psalm-suppress UndefinedClass Class, interface or enum named never does not exist
+     */
+    public function testWillExecuteLogicInANeverMethod(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        $initialCounter = random_int(10, 1000);
+
+        $proxy = (new LazyLoadingGhostFactory())->createProxy(
+            NeverCounter::class,
+            static function (
+                LazyLoadingInterface $proxy,
+                string $method,
+                array $params,
+                ?Closure & $initializer,
+                array $properties
+            ) use ($initialCounter): bool {
+                $initializer = null;
+
+                $properties['counter'] = $initialCounter;
+
+                return true;
+            }
+        );
+
+        $increment = random_int(1001, 10000);
+
+        try {
+            $proxy->increment($increment);
+        } catch (RuntimeException) {
+            // Nothing to do
+        }
 
         self::assertSame($initialCounter + $increment, $proxy->counter);
     }
