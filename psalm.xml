@@ -3,7 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    totallyTyped="true"
     rememberPropertyAssignmentsAfterCall="false"
 >
     <projectFiles>
@@ -32,6 +31,12 @@
                 <referencedClass name="Laminas\XmlRpc\Client"/>
             </errorLevel>
         </UndefinedClass>
+
+        <MissingFile>
+            <errorLevel type="suppress">
+                <file name="src/ProxyManager/GeneratorStrategy/EvaluatingGeneratorStrategy.php"/>
+            </errorLevel>
+        </MissingFile>
 
         <InternalMethod errorLevel="suppress"/>
 
