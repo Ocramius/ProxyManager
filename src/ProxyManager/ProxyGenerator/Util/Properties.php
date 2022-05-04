@@ -71,6 +71,13 @@ final class Properties
                 return false;
             }
 
+            $type = $property->getType();
+            assert($type instanceof ReflectionType);
+
+            if ($type->allowsNull()) {
+                return false;
+            }
+
             return ! array_key_exists(
                 $property->getName(),
                 // https://bugs.php.net/bug.php?id=77673
