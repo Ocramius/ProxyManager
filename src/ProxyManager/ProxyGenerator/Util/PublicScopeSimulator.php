@@ -12,6 +12,7 @@ use function array_filter;
 use function array_map;
 use function implode;
 use function sprintf;
+use function str_replace;
 use function var_export;
 
 /**
@@ -74,7 +75,7 @@ class PublicScopeSimulator
         return '$realInstanceReflection = ' . $originalClassReflection . ';' . "\n\n"
             . 'if (! $realInstanceReflection->hasProperty($' . $nameParameter . ')) {' . "\n"
             . '    $targetObject = ' . $target . ';' . "\n\n"
-            . self::getUndefinedPropertyNotice($operationType, $nameParameter)
+            . self::getUndefinedPropertyNotice($operationType, $nameParameter, $target === '$this')
             . '    ' . self::getOperation($operationType, $nameParameter, $valueParameter) . "\n"
             . '}' . "\n\n"
             . '$targetObject = ' . self::getTargetObject($valueHolder) . ";\n"
@@ -95,13 +96,13 @@ class PublicScopeSimulator
      *
      * @psalm-param $operationType self::OPERATION_*
      */
-    private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter): string
+    private static function getUndefinedPropertyNotice(string $operationType, string $nameParameter, bool $checkDynamicProperties): string
     {
         if ($operationType !== self::OPERATION_GET) {
             return '';
         }
 
-        return '    $backtrace = debug_backtrace(false, 1);' . "\n"
+        $code = '    $backtrace = debug_backtrace(false, 1);' . "\n"
             . '    trigger_error(' . "\n"
             . '        sprintf(' . "\n"
             . '            \'Undefined property: %s::$%s in %s on line %s\',' . "\n"
@@ -112,6 +113,14 @@ class PublicScopeSimulator
             . '        ),' . "\n"
             . '        \E_USER_NOTICE' . "\n"
             . '    );' . "\n";
+
+        if ($checkDynamicProperties) {
+            $code = '    if (strpos($' . $nameParameter . ', "\0") !== false'
+                . ' || ! array_key_exists($' . $nameParameter . ', (array) $targetObject)) {' . "\n"
+                . '    ' . str_replace("\n", "\n    ", $code) . "}\n";
+        }
+
+        return $code;
     }
 
     /**
