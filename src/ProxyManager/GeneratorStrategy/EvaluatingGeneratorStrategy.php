@@ -42,7 +42,10 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
             $fileName = __DIR__ . '/EvaluatingGeneratorStrategy.php.tmp';
             FileWriter::writeFile($fileName, "<?php\n" . $code);
 
-            /* @noinspection PhpIncludeInspection */
+            /**
+             * @noinspection PhpIncludeInspection
+             * @psalm-suppress MissingFile
+             */
             require $fileName;
             unlink($fileName);
 
