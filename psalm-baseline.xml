@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.24.0@06dd975cb55d36af80f242561738f16c5f58264f">
+  <file src="src/ProxyManager/GeneratorStrategy/EvaluatingGeneratorStrategy.php">
+    <MissingFile occurrences="1">
+      <code>require $fileName</code>
+    </MissingFile>
+  </file>
+</files>
