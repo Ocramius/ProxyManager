@@ -4,6 +4,7 @@
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     rememberPropertyAssignmentsAfterCall="false"
+    errorLevel="1"
 >
     <projectFiles>
         <directory name="examples"/>
