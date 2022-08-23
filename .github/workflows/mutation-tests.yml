@@ -15,7 +15,6 @@ jobs:
         dependencies:
           - "locked"
         php-version:
-          - "8.0"
           - "8.1"
         operating-system:
           - "ubuntu-latest"
