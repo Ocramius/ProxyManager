@@ -25,6 +25,7 @@ use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
@@ -34,7 +35,7 @@ use ProxyManagerTestAsset\ReturnTypeHintedClass;
 use ProxyManagerTestAsset\ScalarTypeHintedClass;
 use ProxyManagerTestAsset\VoidMethodTypeHintedClass;
 
-use const PHP_VERSION_ID;
+use function in_array;
 
 /**
  * Verifies that proxy factories don't conflict with each other when generating proxies
@@ -68,7 +69,7 @@ final class MultipleProxyGenerationTest extends TestCase
             $accessInterceptorFactory->createProxy($object),
         ];
 
-        if ($className !== ClassWithMixedTypedProperties::class) {
+        if (! in_array($className, [ClassWithMixedTypedProperties::class, ClassWithReadOnlyProperties::class], true)) {
             $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy($object);
         }
 
@@ -98,7 +99,7 @@ final class MultipleProxyGenerationTest extends TestCase
      */
     public function getTestedClasses(): array
     {
-        $objects = [
+        return [
             [new BaseClass()],
             [new ClassWithMagicMethods()],
             [new ClassWithFinalMethods()],
@@ -124,12 +125,8 @@ final class MultipleProxyGenerationTest extends TestCase
             [new ObjectTypeHintClass()],
             [new ReturnTypeHintedClass()],
             [new VoidMethodTypeHintedClass()],
+            [new ClassWithPhp80TypedMethods()],
+            [new ClassWithReadOnlyProperties()],
         ];
-
-        if (PHP_VERSION_ID >= 80000) {
-            $objects[] = [new ClassWithPhp80TypedMethods()];
-        }
-
-        return $objects;
     }
 }

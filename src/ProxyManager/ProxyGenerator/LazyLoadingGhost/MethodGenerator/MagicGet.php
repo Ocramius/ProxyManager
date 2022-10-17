@@ -16,6 +16,7 @@ use ProxyManager\ProxyGenerator\PropertyGenerator\PublicPropertiesMap;
 use ProxyManager\ProxyGenerator\Util\PublicScopeSimulator;
 use ReflectionClass;
 
+use function implode;
 use function sprintf;
 
 /**
@@ -63,7 +64,7 @@ if (isset(self::$%s[$name])) {
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
             : $accessorCache[$cacheKey] = \Closure::bind(static function & ($instance) use ($name) {
-                return $instance->$name;
+                %s
             }, null, $class);
 
         return $accessor($this);
@@ -75,7 +76,7 @@ if (isset(self::$%s[$name])) {
         $accessor = isset($accessorCache[$cacheKey])
             ? $accessorCache[$cacheKey]
             : $accessorCache[$cacheKey] = \Closure::bind(static function & ($instance) use ($name) {
-                return $instance->$name;
+                %s
             }, null, $tmpClass);
 
         return $accessor($this);
@@ -110,6 +111,15 @@ PHP;
             );
         }
 
+        $readOnlyPropertyNames = $privateProperties->getReadOnlyPropertyNames();
+
+        if ($readOnlyPropertyNames) {
+            $privateReturnCode  = sprintf('\in_array($name, [\'%s\'], true) ? $value = $instance->$name : $value = & $instance->$name;', implode("', '", $readOnlyPropertyNames));
+            $privateReturnCode .= "\n\n                return \$value;";
+        } else {
+            $privateReturnCode = 'return $instance->$name;';
+        }
+
         $this->setBody(sprintf(
             $this->callParentTemplate,
             $initializerProperty->getName(),
@@ -121,8 +131,10 @@ PHP;
             $protectedProperties->getName(),
             $privateProperties->getName(),
             $privateProperties->getName(),
+            $privateReturnCode,
             $initializationTracker->getName(),
             $privateProperties->getName(),
+            $privateReturnCode,
             $parentAccess
         ));
     }

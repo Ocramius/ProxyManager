@@ -10,6 +10,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ReflectionClass;
 
 /**
@@ -75,7 +76,7 @@ $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties ?? $cacheFetchProxyMan
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty0'] = & $instance->privateProperty0;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty1'] = & $instance->privateProperty1;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedProperties' . "\0" . 'privateProperty2'] = & $instance->privateProperty2;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedProperties');
+}, null, 'ProxyManagerTestAsset\\ClassWithMixedProperties');
 
 $cacheFetchProxyManagerTestAsset_ClassWithMixedProperties($this, $properties);
 
@@ -212,6 +213,32 @@ $cacheProxyManagerTestAsset_ClassWithMixedTypedProperties($this);
 
 
 
+$nonReferenceableProperties = new class() {
+    public ?bool $publicBoolPropertyWithoutDefaultValue;
+    public ?int $publicIntPropertyWithoutDefaultValue;
+    public ?float $publicFloatPropertyWithoutDefaultValue;
+    public ?string $publicStringPropertyWithoutDefaultValue;
+    public ?array $publicArrayPropertyWithoutDefaultValue;
+    public ?iterable $publicIterablePropertyWithoutDefaultValue;
+    public ?object $publicObjectProperty;
+    public ?\ProxyManagerTestAsset\EmptyClass $publicClassProperty;
+    public ?bool $protectedBoolPropertyWithoutDefaultValue;
+    public ?int $protectedIntPropertyWithoutDefaultValue;
+    public ?float $protectedFloatPropertyWithoutDefaultValue;
+    public ?string $protectedStringPropertyWithoutDefaultValue;
+    public ?array $protectedArrayPropertyWithoutDefaultValue;
+    public ?iterable $protectedIterablePropertyWithoutDefaultValue;
+    public ?object $protectedObjectProperty;
+    public ?\ProxyManagerTestAsset\EmptyClass $protectedClassProperty;
+    public ?bool $privateBoolPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    public ?int $privateIntPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    public ?float $privateFloatPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    public ?string $privateStringPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    public ?array $privateArrayPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    public ?iterable $privateIterablePropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    public ?object $privateObjectProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    public ?\ProxyManagerTestAsset\EmptyClass $privateClassProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+};
 $properties = [
     'publicUnTypedProperty' => & $this->publicUnTypedProperty,
     'publicUnTypedPropertyWithoutDefaultValue' => & $this->publicUnTypedPropertyWithoutDefaultValue,
@@ -257,6 +284,30 @@ $properties = [
     '' . "\0" . '*' . "\0" . 'protectedNullableIterablePropertyWithoutDefaultValue' => & $this->protectedNullableIterablePropertyWithoutDefaultValue,
     '' . "\0" . '*' . "\0" . 'protectedNullableObjectProperty' => & $this->protectedNullableObjectProperty,
     '' . "\0" . '*' . "\0" . 'protectedNullableClassProperty' => & $this->protectedNullableClassProperty,
+    'publicBoolPropertyWithoutDefaultValue' => & $nonReferenceableProperties->publicBoolPropertyWithoutDefaultValue,
+    'publicIntPropertyWithoutDefaultValue' => & $nonReferenceableProperties->publicIntPropertyWithoutDefaultValue,
+    'publicFloatPropertyWithoutDefaultValue' => & $nonReferenceableProperties->publicFloatPropertyWithoutDefaultValue,
+    'publicStringPropertyWithoutDefaultValue' => & $nonReferenceableProperties->publicStringPropertyWithoutDefaultValue,
+    'publicArrayPropertyWithoutDefaultValue' => & $nonReferenceableProperties->publicArrayPropertyWithoutDefaultValue,
+    'publicIterablePropertyWithoutDefaultValue' => & $nonReferenceableProperties->publicIterablePropertyWithoutDefaultValue,
+    'publicObjectProperty' => & $nonReferenceableProperties->publicObjectProperty,
+    'publicClassProperty' => & $nonReferenceableProperties->publicClassProperty,
+    '' . "\0" . '*' . "\0" . 'protectedBoolPropertyWithoutDefaultValue' => & $nonReferenceableProperties->protectedBoolPropertyWithoutDefaultValue,
+    '' . "\0" . '*' . "\0" . 'protectedIntPropertyWithoutDefaultValue' => & $nonReferenceableProperties->protectedIntPropertyWithoutDefaultValue,
+    '' . "\0" . '*' . "\0" . 'protectedFloatPropertyWithoutDefaultValue' => & $nonReferenceableProperties->protectedFloatPropertyWithoutDefaultValue,
+    '' . "\0" . '*' . "\0" . 'protectedStringPropertyWithoutDefaultValue' => & $nonReferenceableProperties->protectedStringPropertyWithoutDefaultValue,
+    '' . "\0" . '*' . "\0" . 'protectedArrayPropertyWithoutDefaultValue' => & $nonReferenceableProperties->protectedArrayPropertyWithoutDefaultValue,
+    '' . "\0" . '*' . "\0" . 'protectedIterablePropertyWithoutDefaultValue' => & $nonReferenceableProperties->protectedIterablePropertyWithoutDefaultValue,
+    '' . "\0" . '*' . "\0" . 'protectedObjectProperty' => & $nonReferenceableProperties->protectedObjectProperty,
+    '' . "\0" . '*' . "\0" . 'protectedClassProperty' => & $nonReferenceableProperties->protectedClassProperty,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateBoolPropertyWithoutDefaultValue' => & $nonReferenceableProperties->privateBoolPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateIntPropertyWithoutDefaultValue' => & $nonReferenceableProperties->privateIntPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateFloatPropertyWithoutDefaultValue' => & $nonReferenceableProperties->privateFloatPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateStringPropertyWithoutDefaultValue' => & $nonReferenceableProperties->privateStringPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateArrayPropertyWithoutDefaultValue' => & $nonReferenceableProperties->privateArrayPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateIterablePropertyWithoutDefaultValue' => & $nonReferenceableProperties->privateIterablePropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateObjectProperty' => & $nonReferenceableProperties->privateObjectProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateClassProperty' => & $nonReferenceableProperties->privateClassProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties,
 ];
 
 static $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties;
@@ -284,11 +335,102 @@ $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties ?? $cacheFetchPro
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateNullableIterablePropertyWithoutDefaultValue'] = & $instance->privateNullableIterablePropertyWithoutDefaultValue;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateNullableObjectProperty'] = & $instance->privateNullableObjectProperty;
     $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties' . "\0" . 'privateNullableClassProperty'] = & $instance->privateNullableClassProperty;
-}, $this, 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties');
+}, null, 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties');
 
 $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties($this, $properties);
 
 $result = $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
+isset($nonReferenceableProperties->publicBoolPropertyWithoutDefaultValue) && $this->publicBoolPropertyWithoutDefaultValue = $nonReferenceableProperties->publicBoolPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->publicIntPropertyWithoutDefaultValue) && $this->publicIntPropertyWithoutDefaultValue = $nonReferenceableProperties->publicIntPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->publicFloatPropertyWithoutDefaultValue) && $this->publicFloatPropertyWithoutDefaultValue = $nonReferenceableProperties->publicFloatPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->publicStringPropertyWithoutDefaultValue) && $this->publicStringPropertyWithoutDefaultValue = $nonReferenceableProperties->publicStringPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->publicArrayPropertyWithoutDefaultValue) && $this->publicArrayPropertyWithoutDefaultValue = $nonReferenceableProperties->publicArrayPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->publicIterablePropertyWithoutDefaultValue) && $this->publicIterablePropertyWithoutDefaultValue = $nonReferenceableProperties->publicIterablePropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->publicObjectProperty) && $this->publicObjectProperty = $nonReferenceableProperties->publicObjectProperty;
+isset($nonReferenceableProperties->publicClassProperty) && $this->publicClassProperty = $nonReferenceableProperties->publicClassProperty;
+isset($nonReferenceableProperties->protectedBoolPropertyWithoutDefaultValue) && $this->protectedBoolPropertyWithoutDefaultValue = $nonReferenceableProperties->protectedBoolPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->protectedIntPropertyWithoutDefaultValue) && $this->protectedIntPropertyWithoutDefaultValue = $nonReferenceableProperties->protectedIntPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->protectedFloatPropertyWithoutDefaultValue) && $this->protectedFloatPropertyWithoutDefaultValue = $nonReferenceableProperties->protectedFloatPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->protectedStringPropertyWithoutDefaultValue) && $this->protectedStringPropertyWithoutDefaultValue = $nonReferenceableProperties->protectedStringPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->protectedArrayPropertyWithoutDefaultValue) && $this->protectedArrayPropertyWithoutDefaultValue = $nonReferenceableProperties->protectedArrayPropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->protectedIterablePropertyWithoutDefaultValue) && $this->protectedIterablePropertyWithoutDefaultValue = $nonReferenceableProperties->protectedIterablePropertyWithoutDefaultValue;
+isset($nonReferenceableProperties->protectedObjectProperty) && $this->protectedObjectProperty = $nonReferenceableProperties->protectedObjectProperty;
+isset($nonReferenceableProperties->protectedClassProperty) && $this->protectedClassProperty = $nonReferenceableProperties->protectedClassProperty;
+static $cacheAssignProxyManagerTestAsset_ClassWithMixedTypedProperties;
+
+$cacheAssignProxyManagerTestAsset_ClassWithMixedTypedProperties ?? $cacheAssignProxyManagerTestAsset_ClassWithMixedTypedProperties = \Closure::bind(function ($instance, $nonReferenceableProperties) {
+    isset($nonReferenceableProperties->privateBoolPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateBoolPropertyWithoutDefaultValue = $nonReferenceableProperties->privateBoolPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    isset($nonReferenceableProperties->privateIntPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateIntPropertyWithoutDefaultValue = $nonReferenceableProperties->privateIntPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    isset($nonReferenceableProperties->privateFloatPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateFloatPropertyWithoutDefaultValue = $nonReferenceableProperties->privateFloatPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    isset($nonReferenceableProperties->privateStringPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateStringPropertyWithoutDefaultValue = $nonReferenceableProperties->privateStringPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    isset($nonReferenceableProperties->privateArrayPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateArrayPropertyWithoutDefaultValue = $nonReferenceableProperties->privateArrayPropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    isset($nonReferenceableProperties->privateIterablePropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateIterablePropertyWithoutDefaultValue = $nonReferenceableProperties->privateIterablePropertyWithoutDefaultValue_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    isset($nonReferenceableProperties->privateObjectProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateObjectProperty = $nonReferenceableProperties->privateObjectProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+    isset($nonReferenceableProperties->privateClassProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties) && $this->privateClassProperty = $nonReferenceableProperties->privateClassProperty_on_ProxyManagerTestAsset_ClassWithMixedTypedProperties;
+}, null, 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties');
+
+$cacheAssignProxyManagerTestAsset_ClassWithMixedTypedProperties($this, $nonReferenceableProperties);
+$this->track = false;
+
+return $result;
+PHP;
+
+        self::assertSame(
+            $expectedCode,
+            $callInitializer->getBody()
+        );
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testBodyStructureWithReadOnlyProperties(): void
+    {
+        $initializer           = $this->createMock(PropertyGenerator::class);
+        $initializationTracker = $this->createMock(PropertyGenerator::class);
+
+        $initializer->method('getName')->willReturn('init');
+        $initializationTracker->method('getName')->willReturn('track');
+
+        $callInitializer = new CallInitializer(
+            $initializer,
+            $initializationTracker,
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithReadOnlyProperties::class))
+        );
+
+        $expectedCode = <<<'PHP'
+if ($this->track || ! $this->init) {
+    return;
+}
+
+$this->track = true;
+
+
+
+
+$nonReferenceableProperties = new class() {
+    public null|\stdClass|string $property0;
+    public ?string $property1;
+    public ?string $property2_on_ProxyManagerTestAsset_ClassWithReadOnlyProperties;
+};
+$properties = [
+    'property0' => & $nonReferenceableProperties->property0,
+    '' . "\0" . '*' . "\0" . 'property1' => & $nonReferenceableProperties->property1,
+    '' . "\0" . 'ProxyManagerTestAsset\\ClassWithReadOnlyProperties' . "\0" . 'property2' => & $nonReferenceableProperties->property2_on_ProxyManagerTestAsset_ClassWithReadOnlyProperties,
+];
+
+
+
+$result = $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
+static $cacheAssignProxyManagerTestAsset_ClassWithReadOnlyProperties;
+
+$cacheAssignProxyManagerTestAsset_ClassWithReadOnlyProperties ?? $cacheAssignProxyManagerTestAsset_ClassWithReadOnlyProperties = \Closure::bind(function ($instance, $nonReferenceableProperties) {
+    isset($nonReferenceableProperties->property0) && $this->property0 = $nonReferenceableProperties->property0;
+    isset($nonReferenceableProperties->property1) && $this->property1 = $nonReferenceableProperties->property1;
+    isset($nonReferenceableProperties->property2_on_ProxyManagerTestAsset_ClassWithReadOnlyProperties) && $this->property2 = $nonReferenceableProperties->property2_on_ProxyManagerTestAsset_ClassWithReadOnlyProperties;
+}, null, 'ProxyManagerTestAsset\\ClassWithReadOnlyProperties');
+
+$cacheAssignProxyManagerTestAsset_ClassWithReadOnlyProperties($this, $nonReferenceableProperties);
 $this->track = false;
 
 return $result;
