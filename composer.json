@@ -29,7 +29,6 @@
     },
     "require-dev": {
         "ext-phar":                               "*",
-        "codelicia/xulieta":                      "^0.1.6",
         "doctrine/coding-standard":               "^9.0.0",
         "phpbench/phpbench":                      "^1.0.3",
         "phpunit/phpunit":                        "^9.5.6",
