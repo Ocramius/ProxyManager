@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php":                       "~8.0.0",
+        "php":                       "^8.0.0",
         "composer-runtime-api":      "^2.1.0",
         "laminas/laminas-code":      "^4.4.2",
         "webimpress/safe-writer":    "^2.2.0"
