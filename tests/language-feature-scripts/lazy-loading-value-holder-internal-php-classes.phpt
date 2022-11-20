@@ -3,6 +3,7 @@ Verifies that lazy loading value holder factory can generate proxy for PHP core 
 ?>
 --FILE--
 <?php
+error_reporting(E_ALL & ~E_DEPRECATED);
 
 require_once __DIR__ . '/init.php';
 
@@ -12,6 +13,7 @@ class PharMock extends Phar
     {
     }
 
+    #[\ReturnTypeWillChange]
     public function compress($compression_type, $file_ext = null)
     {
         echo $compression_type;

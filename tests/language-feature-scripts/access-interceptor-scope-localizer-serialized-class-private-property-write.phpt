@@ -2,6 +2,7 @@
 Verifies that generated access interceptors doesn't throw PHP Warning on Serialized class private property direct write
 --FILE--
 <?php
+error_reporting(E_ALL & ~E_DEPRECATED);
 
 require_once __DIR__ . '/init.php';
 
