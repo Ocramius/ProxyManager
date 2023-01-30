@@ -15,6 +15,7 @@ use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
+use ProxyManagerTestAsset\ClassWithTypedMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
@@ -128,6 +129,7 @@ final class MultipleProxyGenerationTest extends TestCase
 
         if (PHP_VERSION_ID >= 80000) {
             $objects[] = [new ClassWithPhp80TypedMethods()];
+            $objects[] = [new ClassWithTypedMagicMethods()];
         }
 
         return $objects;
