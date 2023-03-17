@@ -19,7 +19,7 @@ final class ClassNameInflector implements ClassNameInflectorInterface
     private string $proxyMarker;
     private ParameterHasher $parameterHasher;
 
-    public function __construct(protected string $proxyNamespace)
+    public function __construct(private string $proxyNamespace)
     {
         $this->proxyMarker       = '\\' . self::PROXY_MARKER . '\\';
         $this->proxyMarkerLength = strlen($this->proxyMarker);
