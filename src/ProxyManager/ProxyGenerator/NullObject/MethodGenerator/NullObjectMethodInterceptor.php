@@ -7,6 +7,9 @@ namespace ProxyManager\ProxyGenerator\NullObject\MethodGenerator;
 use Laminas\Code\Reflection\MethodReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\Generator\Util\IdentifierSuffixer;
+use ReflectionNamedType;
+
+use function in_array;
 
 /**
  * Method decorator for null objects
@@ -20,10 +23,13 @@ class NullObjectMethodInterceptor extends MethodGenerator
     {
         $method = static::fromReflectionWithoutBodyAndDocBlock($originalMethod);
 
-        if ($originalMethod->returnsReference()) {
+        $returnType = $originalMethod->getReturnType();
+        $nullCast   = $returnType instanceof ReflectionNamedType && ! $returnType->allowsNull() && in_array($returnType->getName(), ['array', 'float', 'int', 'string'], true)  ? '(' . $returnType->getName() . ') ' : '';
+
+        if ($originalMethod->returnsReference() || $nullCast !== '') {
             $reference = IdentifierSuffixer::getIdentifier('ref');
 
-            $method->setBody("\$reference = null;\nreturn \$" . $reference . ';');
+            $method->setBody('$' . $reference . ' = ' . $nullCast . "null;\nreturn \$" . $reference . ';');
         }
 
         return $method;

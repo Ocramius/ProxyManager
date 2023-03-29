@@ -17,7 +17,7 @@ class ClassWithMagicMethods
         return [$name => $value];
     }
 
-    public function __get($name)
+    public function __get($name): mixed
     {
         return $name;
     }
@@ -32,7 +32,7 @@ class ClassWithMagicMethods
         return (bool) $name;
     }
 
-    public function __sleep()
+    public function __sleep(): array
     {
         return [];
     }

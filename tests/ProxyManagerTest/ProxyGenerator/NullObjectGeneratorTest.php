@@ -89,7 +89,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             $callback = [$proxy, $method->getName()];
 
             self::assertIsCallable($callback);
-            self::assertNull($callback());
+            self::assertEmpty($callback());
         }
     }
 
