@@ -27,17 +27,19 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
-    $backtrace = debug_backtrace(false, 1);
-    trigger_error(
-        sprintf(
-            'Undefined property: %s::$%s in %s on line %s',
-            $realInstanceReflection->getName(),
-            $foo,
-            $backtrace[0]['file'],
-            $backtrace[0]['line']
-        ),
-        \E_USER_NOTICE
-    );
+    if (strpos($foo, "\0") !== false || ! array_key_exists($foo, (array) $targetObject)) {
+        $backtrace = debug_backtrace(false, 1);
+        trigger_error(
+            sprintf(
+                'Undefined property: %s::$%s in %s on line %s',
+                $realInstanceReflection->getName(),
+                $foo,
+                $backtrace[0]['file'],
+                $backtrace[0]['line']
+            ),
+            \E_USER_NOTICE
+        );
+    }
     return $targetObject->$foo;
 }
 
@@ -282,17 +284,19 @@ $realInstanceReflection = new \ReflectionClass(get_parent_class($this));
 if (! $realInstanceReflection->hasProperty($foo)) {
     $targetObject = $this;
 
-    $backtrace = debug_backtrace(false, 1);
-    trigger_error(
-        sprintf(
-            'Undefined property: %s::$%s in %s on line %s',
-            $realInstanceReflection->getName(),
-            $foo,
-            $backtrace[0]['file'],
-            $backtrace[0]['line']
-        ),
-        \E_USER_NOTICE
-    );
+    if (strpos($foo, "\0") !== false || ! array_key_exists($foo, (array) $targetObject)) {
+        $backtrace = debug_backtrace(false, 1);
+        trigger_error(
+            sprintf(
+                'Undefined property: %s::$%s in %s on line %s',
+                $realInstanceReflection->getName(),
+                $foo,
+                $backtrace[0]['file'],
+                $backtrace[0]['line']
+            ),
+            \E_USER_NOTICE
+        );
+    }
     return $targetObject->$foo;
 }
 
