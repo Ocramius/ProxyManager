@@ -35,6 +35,7 @@ class LazyLoadingValueHolderFactory extends AbstractBaseFactory
      *   array<string, mixed>=,
      *   ?Closure=
      * ) : bool $initializer
+     * @psalm-param array{skipDestructor?: bool} $proxyOptions
      *
      * @psalm-return RealObjectType&ValueHolderInterface<RealObjectType>&VirtualProxyInterface
      *
