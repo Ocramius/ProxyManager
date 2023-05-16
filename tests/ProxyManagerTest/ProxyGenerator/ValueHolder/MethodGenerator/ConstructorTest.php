@@ -8,6 +8,7 @@ use Laminas\Code\Generator\PropertyGenerator;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\Constructor;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
+use ProxyManagerTestAsset\ClassWithPromotedProperties;
 use ProxyManagerTestAsset\ClassWithVariadicConstructorArgument;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\ProxyGenerator\LazyLoading\MethodGenerator\ClassWithTwoPublicProperties;
@@ -133,4 +134,23 @@ PHP;
 
         self::assertSame($expectedCode, $constructor->getBody());
     }
+
+    public function testConstructorPropertyPromotion(): void
+    {
+        $valueHolder = $this->createMock(PropertyGenerator::class);
+
+        $constructor = Constructor::generateMethod(
+            new ReflectionClass(ClassWithPromotedProperties::class),
+            $valueHolder
+        );
+
+        self::assertSame('__construct', $constructor->getName());
+        $parameters = $constructor->getParameters();
+        self::assertCount(2, $parameters);
+
+        // Promoted constructor properties should not be doubled, since they are inherited anyway
+        $this->assertSame('int $amount', $parameters['amount']->generate());
+        $this->assertSame('?int $nullableAmount', $parameters['nullableAmount']->generate());
+    }
+
 }

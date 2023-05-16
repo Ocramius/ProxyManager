@@ -6,6 +6,7 @@ namespace ProxyManager\Generator;
 
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\MethodGenerator as LaminasMethodGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Reflection\MethodReflection;
 
 /**
@@ -19,10 +20,23 @@ class MethodGenerator extends LaminasMethodGenerator
     public static function fromReflectionWithoutBodyAndDocBlock(MethodReflection $reflectionMethod): self
     {
         /** @var static $method */
-        $method = parent::copyMethodSignature($reflectionMethod);
+        $method = static::copyMethodSignature($reflectionMethod);
 
         $method->setInterface(false);
         $method->setBody('');
+
+        return $method;
+    }
+
+    public static function copyMethodSignature(MethodReflection $reflectionMethod): parent
+    {
+        $method = parent::copyMethodSignature($reflectionMethod);
+
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            $method->setParameter(
+                ParameterGenerator::fromReflection($reflectionParameter)
+            );
+        }
 
         return $method;
     }
