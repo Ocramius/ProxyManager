@@ -31,7 +31,7 @@
         "ext-phar":                               "*",
         "doctrine/coding-standard":               "^9.0.0",
         "phpbench/phpbench":                      "^1.0.3",
-        "phpunit/phpunit":                        "^9.5.6",
+        "phpunit/phpunit":                        "^10.5.9",
         "roave/infection-static-analysis-plugin": "^1.8",
         "squizlabs/php_codesniffer":              "^3.6.0",
         "vimeo/psalm":                            "^4.8.1"
