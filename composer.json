@@ -34,7 +34,7 @@
         "phpunit/phpunit":                        "^9.5.6",
         "roave/infection-static-analysis-plugin": "^1.8",
         "squizlabs/php_codesniffer":              "^3.6.0",
-        "vimeo/psalm":                            "^4.8.1"
+        "vimeo/psalm":                            "^5.26.1"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
