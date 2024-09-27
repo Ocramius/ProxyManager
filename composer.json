@@ -19,9 +19,9 @@
         }
     ],
     "require": {
-        "php":                       "~8.0.0",
+        "php":                       "~8.3.12",
         "composer-runtime-api":      "^2.1.0",
-        "laminas/laminas-code":      "^4.4.2",
+        "laminas/laminas-code":      "^4.14.0",
         "webimpress/safe-writer":    "^2.2.0"
     },
     "conflict": {
@@ -29,12 +29,12 @@
     },
     "require-dev": {
         "ext-phar":                               "*",
-        "doctrine/coding-standard":               "^9.0.0",
-        "phpbench/phpbench":                      "^1.0.3",
-        "phpunit/phpunit":                        "^9.5.6",
-        "roave/infection-static-analysis-plugin": "^1.8",
-        "squizlabs/php_codesniffer":              "^3.6.0",
-        "vimeo/psalm":                            "^4.8.1"
+        "doctrine/coding-standard":               "^9.0.2",
+        "phpbench/phpbench":                      "^1.3.1",
+        "phpunit/phpunit":                        "^9.6.21",
+        "roave/infection-static-analysis-plugin": "^1.35.0",
+        "squizlabs/php_codesniffer":              "^3.10.3",
+        "vimeo/psalm":                            "^4.30.0"
     },
     "suggest": {
         "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
